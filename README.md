@@ -22,7 +22,7 @@ So i wanted to publish thus people can try it and have fun with it :)
   You can just display the hiro marker on desktop screen and point your phone at it.
   Or you can print the marker too.
 
-TODO add a picture here, of me pointing a phone at my screen
+![screenshot](https://cloud.githubusercontent.com/assets/252962/23072106/73a0656c-f528-11e6-9fcd-3c900d1d47d3.jpg)
 
 # Examples
 - [three.js examples](https://jeromeetienne.github.io/WebAR/three.js/examples/)
