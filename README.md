@@ -1,13 +1,15 @@
-# WebAR - Augmented Reality for the Web
+# WebAR - Making augmented reality for the web a reality
 
-- Very fast! 60 fps on 2 year-old phone! 
-- Completly open source!
-- full javascript. three.js + jsartoolkit
-- No application installation required
-- Based on standard, work on any phone with webgl and webrtc
-- Apple IOS is still working on their WebRTC support, we hope they join the party asap :)
+I am focusing hard on making WebAR a reality. 
+This repository is where i publish the code.
+Contact me anytime [@jerome_etienne](https://twitter.com/jerome_etienne).
+We reached a good status
 
-I am focusing hard on making WebAR a reality.
+- Work efficiently even on phones. 60 fps on my 2 year-old phone!
+- It is completly open source and free of charge!
+- Full javascript. based on three.js + jsartoolkit5
+- Pure Web solution, so no installation required
+- Relies on standards! It works on any phone with [webgl](http://caniuse.com/#feat=webgl) and [webrtc](http://caniuse.com/#feat=stream)
 
 >  I think WebAR landed. I got a sustainable 60fps using artoolkit+three.js. All in javascript. on a 2years old phone!
 
@@ -22,6 +24,7 @@ I am focusing hard on making WebAR a reality.
 - You can just display the hiro marker on desktop screen and point your phone at it.
   Or you can print the marker too.
 
+- TODO add a picture here
 
 # Examples
 - [three.js examples](https://jeromeetienne.github.io/WebAR/three.js/examples/)
