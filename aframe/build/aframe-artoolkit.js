@@ -51,7 +51,7 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 
 THREEx.ArMarkerControls.prototype._postInit = function(){
 	var _this = this
-	var markerRoot = this.object3d;
+	var markerObject3D = this.object3d;
 	// check if arController is init
 	var arController = this.context.arController
 	console.assert(arController !== null )
@@ -86,22 +86,24 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 		}
 
 		function onMarkerFound(){
-// console.log('onMarkerFound')			
+			// mark object as visible
+			markerObject3D.visible = true
+
 			// data.matrix is the model view matrix
 			var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
-			markerRoot.visible = true
-
+			
+			// change markerObject3D.matrix based on parameters.changeMatrixMode
 			if( _this.parameters.changeMatrixMode === 'modelViewMatrix' ){
-				markerRoot.matrix.copy(modelViewMatrix)						
+				markerObject3D.matrix.copy(modelViewMatrix)						
 			}else if( _this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
 				var cameraTransformMatrix = new THREE.Matrix4().getInverse( modelViewMatrix )
-				markerRoot.matrix.copy(cameraTransformMatrix)						
+				markerObject3D.matrix.copy(cameraTransformMatrix)						
 			}else {
 				console.assert(false)
 			}
-			// decompose the matrix into .position, .quaternion, scale
-			markerRoot.matrix.decompose(markerRoot.position, markerRoot.quaternion, markerRoot.scale)
-			// console.log('position', markerRoot.position)
+
+			// decompose the matrix into .position, .quaternion, .scale
+			markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
 		}
 	})
 }
@@ -307,6 +309,8 @@ THREEx.ArToolkitSource.prototype.init = function(onReady){
 
 	return this
         function onSourceReady(){
+		document.body.appendChild(_this.domElement);
+
 		_this.ready = true
                 console.log('completed')
 		onReady && onReady()
@@ -321,7 +325,6 @@ THREEx.ArToolkitSource.prototype.init = function(onReady){
 THREEx.ArToolkitSource.prototype._initSourceImage = function(onReady) {
 	// TODO make it static
         var domElement = document.createElement('img')
-	document.body.appendChild(domElement)
 	domElement.src = this.parameters.sourceUrl
 
 	domElement.width = this.parameters.sourceWidth
@@ -329,9 +332,13 @@ THREEx.ArToolkitSource.prototype._initSourceImage = function(onReady) {
 	domElement.style.width = this.parameters.displayWidth+'px'
 	domElement.style.height = this.parameters.displayHeight+'px'
 
-	setTimeout(function(){
-		onReady && onReady()
-	}, 0)
+	// wait until the video stream is ready
+	var interval = setInterval(function() {
+		if (!domElement.naturalWidth)	return;
+		onReady()
+		clearInterval(interval)
+	}, 1000/50);
+
 	return domElement                
 }
 
@@ -343,7 +350,6 @@ THREEx.ArToolkitSource.prototype._initSourceImage = function(onReady) {
 THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
 	// TODO make it static
 	var domElement = document.createElement('video');
-	document.body.appendChild(domElement)
 	domElement.src = this.parameters.sourceUrl
 
 	domElement.style.objectFit = 'initial'
@@ -352,6 +358,7 @@ THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
 	domElement.webkitPlaysinline = true;
 	domElement.controls = false;
 	domElement.loop = true;
+	domElement.muted = false
 
 	// trick to trigger the video on android
 	document.body.addEventListener('click', function(){
@@ -368,7 +375,7 @@ THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
 		if (!domElement.videoWidth)	return;
 		onReady()
 		clearInterval(interval)
-	}, 1000/100);
+	}, 1000/50);
 	return domElement
 }
 
@@ -383,7 +390,6 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 	navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
 	var domElement = document.createElement('video');
-	document.body.appendChild(domElement);
 	domElement.style.width = this.parameters.displayWidth+'px'
 	domElement.style.height = this.parameters.displayHeight+'px'
 
@@ -430,7 +436,7 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 				if (!domElement.videoWidth)	return;
 				onReady()
 				clearInterval(interval)
-			}, 1000/100);
+			}, 1000/50);
 		}, function(error) {
 			console.log("Can't access user media", error);
 			alert("Can't access user media :()");
@@ -449,7 +455,7 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 THREEx.ArToolkitSource.prototype.onResize = function(rendererDomElement){
 	var screenWidth = window.innerWidth
 	var screenHeight = window.innerHeight
-	
+
 	// compute sourceWidth, sourceHeight
 	if( this.domElement.nodeName === "IMG" ){
 		var sourceWidth = this.domElement.naturalWidth
@@ -493,7 +499,7 @@ THREEx.ArToolkitSource.prototype.onResize = function(rendererDomElement){
 		rendererDomElement.style.width = this.domElement.style.width
 		rendererDomElement.style.height = this.domElement.style.height	
 		rendererDomElement.style.marginLeft = this.domElement.style.marginLeft
-		rendererDomElement.style.marginTop = this.domElement.style.marginTop			
+		rendererDomElement.style.marginTop = this.domElement.style.marginTop
 	}
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -516,7 +522,7 @@ AFRAME.registerSystem('artoolkit', {
 		},
 		cameraParametersUrl : {
 			type: 'string',
-			default: 'data/camera_para.dat'
+			default: '../../data/data/camera_para.dat'
 		},
 		maxDetectionRate : {
 			type: 'number',
@@ -561,24 +567,26 @@ AFRAME.registerSystem('artoolkit', {
 		var arToolkitSource = new THREEx.ArToolkitSource(this.data)
 		this.arToolkitSource = arToolkitSource
 		arToolkitSource.init(function onReady(){
-			console.log('source is ready')
-
-                        // console.dir(_this.sceneEl.renderer)
-			// debugger
-
 			// handle resize of renderer
-			// FIXME get the renderer in aframe ? 
-			// arToolkitSource.onResize(renderer.domElement)		
-			arToolkitSource.onResize()
+			onResize()
 		})
 		
 		// handle resize
-		window.addEventListener('resize', function(){
+		window.addEventListener('resize', onResize)
+		function onResize(){
 			// handle arToolkitSource resize
-			// FIXME get the renderer in aframe ? 
-			// arToolkitSource.onResize(renderer.domElement)		
-			arToolkitSource.onResize()
-		})	
+			// var rendererDomElement = _this.sceneEl.renderer ? _this.sceneEl.renderer.domElement : undefined
+			// arToolkitSource.onResize(rendererDomElement)	
+
+			// ugly kludge to get resize on aframe... not even sure it works
+			arToolkitSource.onResize(document.body)		
+			arToolkitSource.domElement.style.marginLeft = '0px'
+			
+			var buttonElement = document.querySelector('.a-enter-vr')
+			if( buttonElement ){
+				buttonElement.style.position = 'fixed'
+			}
+		}
 		////////////////////////////////////////////////////////////////////////////////
 		//          initialize arToolkitContext
 		////////////////////////////////////////////////////////////////////////////////
@@ -596,7 +604,7 @@ AFRAME.registerSystem('artoolkit', {
 	
         tick : function(now, delta){
 		if( this.arToolkitSource.ready === false )	return
-
+// console.log('tick')
 		// update projectionMatrix
 		// NOTE: is it because the projectionMatrix is set in arToolkitContext.init is overwritten by a-frames
                 var projectionMatrix = this.arToolkitContext.arController.getCameraMatrix();

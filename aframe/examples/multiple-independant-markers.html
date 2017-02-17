@@ -1,14 +1,7 @@
 <!DOCTYPE html>
 <script src="vendor/aframe.min.js"></script>
-<!-- jsartookit -->
-<script src="../../vendor/jsartoolkit5/build/artoolkit.min.js"></script>
-<script src="../../vendor/jsartoolkit5/js/artoolkit.api.js"></script>
-<!-- aframe-artoolkit -->
-<script src="../aframe-artoolkit.js"></script>
-<!-- include threex.artoolkit -->
-<script src="../../threex-artoolkitsource.js"></script>
-<script src="../../threex-artoolkitcontext.js"></script>
-<script src="../../threex-armarkercontrols.js"></script>
+<!-- include aframe-artoolkit -->
+<script src="../build/aframe-artoolkit.js"></script>
 
 <body style='margin:0px'><div style='width:640px; height:480px;' id='scene-container'>
 	<a-scene embedded artoolkit='sourceType: webcam;'>
@@ -16,14 +9,14 @@
 			<a-box depth="1" height="1" width="1" position='0 0 0.5' material='opacity: 0.5; side:double; color:blue;'></a-box>
 		</a-marker>
 
-		<a-marker type='pattern' url='data/patt.hiro'>
+		<a-marker type='pattern' url='../../data/data/patt.hiro'>
 			<a-box depth="1" height="1" width="1" position='0 0 0.5' material='opacity: 0.5; side:double; color:red;'></a-box>
 			<a-entity geometry="primitive: torusKnot; radius: 0.25; radiusTubular: 0.05" position='0 0 0.5' material='color:grey;'>
 				<a-animation attribute="rotation" from="0 0 0" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
 			</a-entity>
 		</a-marker>
 
-		<a-marker type='pattern' url='data/patt.kanji'>
+		<a-marker type='pattern' url='../../data/data/patt.kanji'>
 			<a-box depth="1" height="1" width="1" position='0 0 0.5' material='opacity: 0.5; side:double; color:green;'></a-box>
 			<a-entity geometry="primitive: torusKnot; radius: 0.25; radiusTubular: 0.05" position='0 0 0.5' material='color:grey;'>
 				<a-animation attribute="rotation" from="0 0 0" to="360 0 0" dur="1000" easing='linear' repeat="indefinite"></a-animation>

@@ -1,2 +1,0 @@
-- if we dont see the marker, dont render the 3d scene
-- aka 

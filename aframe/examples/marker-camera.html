@@ -1,17 +1,10 @@
 <!DOCTYPE html>
 <script src="vendor/aframe.min.js"></script>
-<!-- jsartookit -->
-<script src="../../vendor/jsartoolkit5/build/artoolkit.min.js"></script>
-<script src="../../vendor/jsartoolkit5/js/artoolkit.api.js"></script>
-<!-- aframe-artoolkit -->
-<script src="../aframe-artoolkit.js"></script>
-<!-- include threex.artoolkit -->
-<script src="../../threex-artoolkitsource.js"></script>
-<script src="../../threex-artoolkitcontext.js"></script>
-<script src="../../threex-armarkercontrols.js"></script>
+<!-- include aframe-artoolkit -->
+<script src="../build/aframe-artoolkit.js"></script>
 
 <body style='margin:0px'><div style='width:640px; height:480px;' id='scene-container'>
-	<a-scene embedded artoolkit='sourceType: image; sourceUrl:./images/armchair.jpg;'>
+	<a-scene embedded artoolkit='sourceType: image; sourceUrl:../../data/images/armchair.jpg;'>
 
 		<a-sphere position="0 0.0 0.5" radius="0.5" color="#EF2D5E"></a-sphere>
 		<a-plane position="0 0 0" rotation="0 0 0" width="1" height="1" color="#7BC8A4"></a-plane>

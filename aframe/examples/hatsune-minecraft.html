@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
-<!-- a-mmd.js doesnt work on a 0.4.0 aframe -->
-<script src="https://cdn.rawgit.com/takahirox/a-mmd/master/libs/aframe.js"></script>
+<script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
 
 <!-- hatsune miku -->
 <script src="https://cdn.rawgit.com/kripken/ammo.js/dcab07bf0e7f2b4b64c01dc45da846344c8f50be/builds/ammo.js"></script>
@@ -15,11 +14,11 @@
 <script>THREEx.MinecraftChar.baseUrl = 'vendor/threex.minecraft/'</script>
 
 <body style='margin:0px'><div style='width:640px; height:480px;' id='scene-container'>
-        <a-scene embedded artoolkit='debug: false; sourceType: image; sourceUrl: ./images/armchair.jpg' antialias="true">
+        <a-scene embedded artoolkit='debug: false; sourceType: image; sourceUrl:../../data/images/armchair.jpg' antialias="true">
                 
                 <a-marker type='unknown'>
                         <!-- Add a minecraft character -->
-                        <!-- <a-minecraft rotation="90 0 0"></a-minecraft> -->
+                        <a-minecraft rotation="90 0 0"></a-minecraft>
                         
                         <!-- add an hatsune miku -->
                         <a-entity scale="0.1 0.1 0.1">

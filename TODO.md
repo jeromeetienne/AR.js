@@ -1,5 +1,8 @@
 # Release v1.0.0
 - with tag and all
+- add links in all examples
+- add a index.html in each examples directories
+- add docs on the options of threex-artoolkit
 
 
 # include motionprediction in ArMarkerControls

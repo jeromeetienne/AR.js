@@ -1,0 +1,20 @@
+<body>
+
+<script>
+	// create the webworker
+	var worker = new Worker('../workerrpcworker.js');
+	
+	worker.postMessage({
+		type: 'ArToolkitContext',
+		method: 'new',
+		args : [{
+			cameraParametersUrl: '../../data/data/camera_para.dat',
+			detectionMode: 'mono'
+		}]
+	})
+	
+	worker.onmessage = function(event){
+		console.log('main thread received a message', event)
+	}
+</script>
+</body>
