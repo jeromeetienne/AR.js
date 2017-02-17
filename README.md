@@ -15,10 +15,12 @@ I am focusing hard on making WebAR a reality.
 
 ![screenshot](https://cloud.githubusercontent.com/assets/252962/23068128/40343608-f51a-11e6-8cb3-900e37a7f658.jpg)
 
-# Try it on Mobile
-- Direct your android browser [here](https://jeromeetienne.github.io/WebAR/three.js/examples/performance.html)
-- It will read the phone webcam, localise an hiro marker and add 3d on top of it
-- Examples of [hiro marker](http://wibiwardhono.lecture.ub.ac.id/files/2015/01/HIRO.jpg)
+# Try it on Mobile ?
+- Direct your android browser to [this url](https://jeromeetienne.github.io/WebAR/three.js/examples/performance.html)
+  It will open a webpage which read the phone webcam, localise an hiro marker and add 3d on top of it
+- Here is an example of [hiro marker](http://wibiwardhono.lecture.ub.ac.id/files/2015/01/HIRO.jpg).
+- You can just display the hiro marker on desktop screen and point your phone at it.
+  Or you can print the marker too.
 
 
 # Examples
