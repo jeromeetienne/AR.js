@@ -14,18 +14,23 @@ Augmented reality for a-frame
 </a-scene>
 ```
 
+There is a resize issue at the moment. i am [working on it here](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/dev-resize.html).
+Meanwhile size [your screen in 640x480](https://developers.google.com/web/tools/chrome-devtools/device-mode/emulate-mobile-viewports)...
+Sorry for the inconveniences.
+
+
 # Show, Don't Tell
 Here are the demos
 
-- [basic.html](https://jeromeetienne.github.io/aframe-artoolkit/aframe/examples/basic.html) 
+- [basic.html](https://jeromeetienne.github.io/WebAR/aframe/examples/basic.html) 
 basic minimal examples. Good to get started
-- [demo.html](https://jeromeetienne.github.io/aframe-artoolkit/aframe/examples/demo.html) 
+- [demo.html](https://jeromeetienne.github.io/WebAR/aframe/examples/demo.html) 
 shows you all the possibilities of aframe-artoolkit. You can play around
-- [marker-camera.html](https://jeromeetienne.github.io/aframe-artoolkit/aframe/examples/marker-camera.html):
+- [marker-camera.html](https://jeromeetienne.github.io/WebAR/aframe/examples/marker-camera.html):
 Move the camera instead of using the usual "camera looking toward negative-z and modelViewMatrix"
-- [multiple-independant-markers.html](https://jeromeetienne.github.io/aframe-artoolkit/aframe/examples/multiple-independant-markers.html):
+- [multiple-independant-markers.html](https://jeromeetienne.github.io/WebAR/aframe/examples/multiple-independant-markers.html):
 Handle multiple indepant markers in a single scene.
-- [hatsune-minecraft.html](https://jeromeetienne.github.io/aframe-artoolkit/aframe/examples/minecraft.html): 
+- [hatsune-minecraft.html](https://jeromeetienne.github.io/WebAR/aframe/examples/minecraft.html): 
 include a hatsune miku or minecraft avatar on the marker
 
 
