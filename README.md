@@ -3,15 +3,13 @@
 I am focusing hard on making WebAR a reality. 
 This repository is where i publish the code.
 Contact me anytime [@jerome_etienne](https://twitter.com/jerome_etienne).
-Stuff are still moving fast, We reached a good status.
+Stuff are still moving fast, We reached a good status tho.
 So i wanted to publish thus people can try it and have fun with it :)
 
-
-- Work efficiently even on phones. [60 fps on my 2 year-old phone](https://twitter.com/jerome_etienne/status/831333879810236421)!
-- It is completly open source and free of charge!
-- Full javascript. based on three.js + jsartoolkit5
-- Pure Web solution, so no installation required
-- Relies on standards! It works on any phone with [webgl](http://caniuse.com/#feat=webgl) and [webrtc](http://caniuse.com/#feat=stream)
+- **Very Fast** : it runs efficiently even on phones. [60 fps on my 2 year-old phone](https://twitter.com/jerome_etienne/status/831333879810236421)!
+- **Free and Open** : It is completly open source and free of charge!
+- **Very Web** : It is a pure web solution, so no installation required. Full javascript. based on three.js + jsartoolkit5
+- **Only standards** : It works on any phone with [webgl](http://caniuse.com/#feat=webgl) and [webrtc](http://caniuse.com/#feat=stream)
 
 ![screenshot](https://cloud.githubusercontent.com/assets/252962/23068128/40343608-f51a-11e6-8cb3-900e37a7f658.jpg)
 
