@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+  <head>
+    <title>WebAR - Augmengted Reality for the Web</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      html {
+        font-size: 14px;
+      }
+
+      body {
+        background: rgb(94,45,239);
+        color: #fff;
+        font: normal 500 1.2rem/1.2 Inconsolata, Andale Mono, Courier New, monospace;
+        padding: 1rem 2rem;
+      }
+
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .header {
+        position: relative;
+      }
+
+      .resources {
+        font-size: 0;  /* Collapse whitespace. */
+        text-transform: uppercase;
+      }
+
+      .resources li + li {
+        margin-top: 0.5rem;
+      }
+
+      .resources a {
+        color: rgba(0,0,0,0.5);
+        display: inline-block;
+        font-size: 1.2rem;
+        margin: -0.25rem -0.5rem;
+        padding: 0.25rem 0.5rem;
+        text-decoration: none;
+        transition: all 0.075s ease-in-out;
+      }
+
+      .resources a:hover {
+        background-color: rgba(0,0,0,0.25);
+        color: #fff;
+      }
+
+      h1, h2 {
+        line-height: 100%;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+        font-weight: 100;
+        letter-spacing: 0.04rem;
+        margin-bottom: 1.25rem;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        color: rgba(0,0,0,0.5);
+        font-size: 0.9rem;
+        font-weight: 300;
+        margin: 2rem 0 0.5rem;
+        padding: 0;
+        text-transform: uppercase;
+      }
+
+      hr {
+        background: none;
+        border: 0;
+        border-bottom: 1px dashed rgba(255,255,255,0.25);
+        margin: 2rem 0;
+      }
+
+      .links li + li {
+        box-shadow: inset 0 0.15rem 0.1rem -0.15rem rgba(0,0,0,0.5);
+      }
+
+      .links a {
+        color: #fff;
+        display: block;
+        font-size: 1.5rem;
+        letter-spacing: 0.01em;
+        padding: 0.75rem 0;
+        text-decoration: none;
+        transition: opacity 0.075s ease-in-out;
+      }
+
+      .links a:hover {
+        background-color: rgba(0,0,0,0.15);
+        box-shadow: inset 0 0 0 0.15rem rgba(0,0,0,0.15);
+      }
+
+      .links a:active {
+        background-color: rgba(0,0,0,0.25);
+        opacity: 0.75;
+      }
+
+      .links li:hover,
+      .links li:hover + li {
+        margin: 0 -0.75rem;
+      }
+
+      .links li:hover a,
+      .links li:hover + li a {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+      }
+
+      @media only screen and (min-width: 1000px) {
+        h1 {
+          font-size: 3rem;
+        }
+
+        .resources {
+          font-size: 1.2;
+        }
+
+        .resources li {
+          display: inline-block;
+        }
+
+        .resources li + li {
+          margin-left: 2.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <h1>WebAR - Augmengted Reality for the Web - Three.js examples</h1>
+      <ul id="resources" class="resources">
+        <li><a href="http://github.com/jeromeetienne/WebAR/">GitHub Repo</a></li>
+        <li><a href="http://github.com/jeromeetienne/WebAR/issues">Open Issues</a></li>
+        <li><a href="http://github.com/jeromeetienne/WebAR/issues/new">File an Issue</a></li>
+      </ul>
+    </header>
+
+    <hr>
+
+    <h2 id="examples">Examples</h2>
+    <ul class="links">
+      <li><a href="basic.html">basic</a></li>
+      <li><a href="demo.html">demo</a></li>
+      <li><a href="dev.html">dev (WIP)</a></li>
+      <li><a href="performance.html">performance</a></li>
+    </ul>
+  </body>
+</html>
