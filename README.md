@@ -1,19 +1,15 @@
-# WebAR - Making augmented reality for the web a reality
+# WebAR - Efficient augmented reality for the web
 
 I am focusing hard on making WebAR a reality. 
 This repository is where i publish the code.
 Contact me anytime [@jerome_etienne](https://twitter.com/jerome_etienne).
 We reached a good status
 
-- Work efficiently even on phones. 60 fps on my 2 year-old phone!
+- Work efficiently even on phones. [60 fps on my 2 year-old phone](https://twitter.com/jerome_etienne/status/831333879810236421)!
 - It is completly open source and free of charge!
 - Full javascript. based on three.js + jsartoolkit5
 - Pure Web solution, so no installation required
 - Relies on standards! It works on any phone with [webgl](http://caniuse.com/#feat=webgl) and [webrtc](http://caniuse.com/#feat=stream)
-
->  I think WebAR landed. I got a sustainable 60fps using artoolkit+three.js. All in javascript. on a 2years old phone!
-
-[@jerome_etienne](https://twitter.com/jerome_etienne) - [initial tweet](https://twitter.com/jerome_etienne/status/831333879810236421)
 
 ![screenshot](https://cloud.githubusercontent.com/assets/252962/23068128/40343608-f51a-11e6-8cb3-900e37a7f658.jpg)
 
