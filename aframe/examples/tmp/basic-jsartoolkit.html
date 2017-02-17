@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<!-- three.js library -->
+<script src='vendor/three.js/build/three.js'></script>
+<!-- jsartookit -->
+<script src="../../vendor/jsartoolkit5/build/artoolkit.min.js"></script>
+<script src="../../vendor/jsartoolkit5/js/artoolkit.api.js"></script>
+
+<style>
+	body {
+		margin : 0px;
+		/*width: 100%;*/
+	}
+</style>
+<div style='position:absolute; top: 10px; width: 100%; text-align: center; font-family: Monospace; font-weight: bold; padding;color:grey; z-index: 1000;'>
+	Example of 
+	<a href="https://github.com/artoolkit/jsartoolkit5" target="_blank">jsARToolKit</a> 
+	by <a href="https://twitter.com/jerome_etienne" target="_blank">@jerome_etienne</a>
+	with <a href="https://github.com/mrdoob/three.js" target="_blank">three.js</a>
+	<br/>
+	<a href="https://github.com/jeromeetienne/jsartoolkit-example" target="_blank">github repo</a>
+	-
+	<a href='javascript:void(0)' onclick='toggleDebug()' style='color: grey'>toggle debug</a>
+	<br/>
+	Source:
+	<a href='javascript:void(0)' onclick='switchSource("video")' style='color: grey'>video</a>
+	<a href='javascript:void(0)' onclick='switchSource("image")' style='color: grey'>image</a>
+	<a href='javascript:void(0)' onclick='switchSource("webcam")' style='color: grey'>webcam</a>
+	<br/>
+	(put this <a href='data/Hiro%20pattern%20with%20border.pdf' target='_blank'>hiro image</a> in front of the camera)
+	- on android, click to start webcam
+	<br/>
+</div>
+<body><script>
+	var debugEnabled	= optionPresentInHash('debugEnabled') ? true : false
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Init
+	//////////////////////////////////////////////////////////////////////////////////
+
+	function initSourceVideo(onReady){
+		var srcElement = document.createElement('video');
+		document.body.appendChild(srcElement)
+		srcElement.src = '../videos/output_4.mp4';
+		// srcElement.src = 'videos/headtracking.mp4';
+		srcElement.autoplay = true;
+		srcElement.webkitPlaysinline = true;
+		srcElement.controls = false;
+		srcElement.loop = true;
+		srcElement.width = 640;
+		srcElement.height = 480;
+		setTimeout(function(){
+			onReady && onReady()
+		}, 0)
+		return srcElement
+	}
+
+	function initSourceImage(onReady){
+		var srcElement = document.createElement('img')
+		document.body.appendChild(srcElement)
+		srcElement.src = '../images/armchair.jpg'
+		// srcElement.src = '../images/chalk.jpg'
+		// srcElement.src = '../images/chalk_multi.jpg'
+		// srcElement.src = '../images/kuva.jpg'
+		// srcElement.src = '../images/img.jpg'
+		srcElement.width = 640
+		srcElement.height = 480
+
+		setTimeout(function(){
+			onReady && onReady()
+		}, 0)
+		return srcElement
+	}
+
+	function initSourceWebcam(onReady){
+		navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+
+		var srcElement = document.createElement('video');
+		document.body.appendChild(srcElement);
+
+		if (navigator.getUserMedia == false )	console.log("navigator.getUserMedia not present in your browser");
+
+	        // get the media sources
+	        MediaStreamTrack.getSources(function(sourceInfos) {
+	                // define getUserMedia() constraints
+	                var constraints = {
+				audio: false,
+				video: {
+					mandatory: {
+						maxWidth: 640,
+						maxHeight: 480
+			    		}
+			  	}
+	                }
+
+	                // it it finds the videoSource 'environment', modify constraints.video
+	                for (var i = 0; i != sourceInfos.length; ++i) {
+	                        var sourceInfo = sourceInfos[i];
+	                        if(sourceInfo.kind == "video" && sourceInfo.facing == "environment") {
+	                                constraints.video.optional = [{sourceId: sourceInfo.id}]
+	                        }
+	                }
+			navigator.getUserMedia(constraints, function success(stream) {
+				console.log('success', stream);
+				srcElement.src = window.URL.createObjectURL(stream);
+				// to start the video, when it is possible to start it only on userevent. like in android
+				document.body.addEventListener('click', function(){
+					srcElement.play();
+				})
+				srcElement.play();
+			
+				// wait until the video stream is ready
+				var interval = setInterval(function() {
+					if (!srcElement.videoWidth)	return;
+					onReady()
+					clearInterval(interval)
+				}, 1000/100);
+			}, function(error) {
+				console.log("Can't access user media", error);
+				alert("Can't access user media :()");
+			});
+		})
+
+		return srcElement
+	}
+
+	//////////////////////////////////////////////////////////////////////////////
+	//              Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+
+
+	function optionPresentInHash(varName) {
+		var query = window.location.hash.substring(1);
+		var vars = query.split('&');
+		for (var i = 0; i < vars.length; i++) {
+			if (decodeURIComponent(vars[i]) == varName) {
+				return true
+			}
+		}
+		return false
+	}
+
+	if( optionPresentInHash('webcam') === true ){		
+		var sourceType = 'webcam'
+		var srcElement = initSourceWebcam(function(){
+			onSourceImageReady(srcElement.videoWidth, srcElement.videoHeight)		
+		})
+	}else if( optionPresentInHash('image') === true ){		
+		var sourceType = 'image'
+		var srcElement = initSourceImage(function(){
+			onSourceImageReady(srcElement.width, srcElement.height)
+		})
+	}else if( optionPresentInHash('video') === true ){		
+		var sourceType = 'video'
+		var srcElement = initSourceVideo(function(){
+			onSourceImageReady(srcElement.width, srcElement.height)
+		})
+	}else {
+		switchSource('video')
+	}
+	
+	function switchSource(sourceType){
+		reloadOptions(sourceType, debugEnabled)
+	}
+	function toggleDebug(){
+		reloadOptions(sourceType, debugEnabled ? false : true)		
+	}
+	
+        function reloadOptions(sourceType, debugEnabled){
+                var optionsString = ''
+                optionsString += sourceType
+
+                if( debugEnabled === true ){
+                        optionsString += (optionsString.length ? '&': '') + 'debugEnabled'
+                }
+                location.hash   = '#'+optionsString
+                location.reload()                
+        }
+
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Init
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// init renderer
+	var renderer	= new THREE.WebGLRenderer({
+		antialias	: true,
+		alpha: true
+	});
+	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+	// renderer.setSize( 1280/2, 960/2 );
+	renderer.setSize( 640, 480 );
+	renderer.domElement.style.position = 'absolute'
+	renderer.domElement.style.top = '0px'
+	renderer.domElement.style.left = '0px'
+	document.body.appendChild( renderer.domElement );
+
+	// array of functions for the rendering loop
+	var onRenderFcts= [];
+
+	// init scene and camera
+	var scene	= new THREE.Scene();
+
+	var ambient = new THREE.AmbientLight( 0x666666 );
+	scene.add( ambient );
+
+	var directionalLight = new THREE.DirectionalLight( 0x887766 );
+	directionalLight.position.set( -1, 1, 1 ).normalize();
+	scene.add( directionalLight );
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Comments
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// Create a camera and a marker root object for your Three.js scene.
+	var camera = new THREE.Camera();
+	camera.matrixAutoUpdate = false;
+	scene.add(camera);
+
+	var arController = null;
+	function onSourceImageReady(width, height, onCompleted){
+		console.log(arguments)
+		var cameraParameters = new ARCameraParam('../data/camera_para.dat', function() {
+		
+			arController = new ARController(width, height, cameraParameters);
+			if( debugEnabled )	arController.debugSetup();
+		
+			var projectionMatrix = arController.getCameraMatrix();
+			camera.projectionMatrix.elements.set(projectionMatrix);
+			
+			arController.setPatternDetectionMode(artoolkit.AR_TEMPLATE_MATCHING_MONO_AND_MATRIX);
+			// load kanji pattern
+			arController.loadMarker('../data/patt.kanji', function(markerId) {
+				var markerWidth = 1
+				var markerTracker = arController.trackPatternMarkerId(markerId, markerWidth);
+			})
+	
+			// load hiro pattern
+			arController.loadMarker('../data/patt.hiro', function(markerId) {
+				var markerWidth = 1
+				var markerTracker = arController.trackPatternMarkerId(markerId, markerWidth)
+			})
+	
+			onCompleted && onCompleted()
+		
+		})		
+	}
+
+
+	// create the marker Root
+	var markerRoot = new THREE.Object3D()
+	markerRoot.name = 'Marker Root'
+	markerRoot.userData.markerMatrix = new Float64Array(12)
+	markerRoot.matrixAutoUpdate = false;
+	markerRoot.visible = false
+	scene.add(markerRoot);
+
+	onRenderFcts.push(function(){
+		if (!arController) return;
+
+		arController.detectMarker(srcElement);
+
+		if( debugEnabled )	arController.debugDraw();		
+		// update markerRoot with the found markers
+		var markerNum = arController.getMarkerNum();
+		if (markerNum > 0) {
+			// if( markerRoot.visible === false ) {
+				arController.getTransMatSquare(0 /* Marker index */, 1 /* Marker width */, markerRoot.userData.markerMatrix);
+			// } else {
+				// arController.getTransMatSquareCont(0, 1, markerRoot.userData.markerMatrix, markerRoot.userData.markerMatrix);
+			// }
+			arController.transMatToGLMat(markerRoot.userData.markerMatrix, markerRoot.matrix.elements);
+		}
+
+		// objects visible IIF there is a marker
+		if (markerNum > 0) {
+			markerRoot.visible = true;
+		} else {
+			markerRoot.visible = false;
+		}
+	})
+	
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		add an object in the scene
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// add a torus knot	
+	var geometry	= new THREE.CubeGeometry(1,1,1);
+	var material	= new THREE.MeshNormalMaterial({
+		transparent : true,
+		opacity: 0.5,
+		side: THREE.DoubleSide
+	}); 
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.z	= geometry.parameters.height/2
+	markerRoot.add( mesh );
+	
+	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
+	var material	= new THREE.MeshNormalMaterial(); 
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.z	= 0.5
+	markerRoot.add( mesh );
+	
+	onRenderFcts.push(function(){
+		mesh.rotation.x += 0.1
+	})
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		render the whole thing on the page
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// render the scene
+
+	onRenderFcts.push(function(){
+		renderer.render( scene, camera );
+	})
+
+	// run the rendering loop
+	var lastTimeMsec= null
+	requestAnimationFrame(function animate(nowMsec){
+		// keep looping
+		requestAnimationFrame( animate );
+		// measure time
+		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+		lastTimeMsec	= nowMsec
+		// call each update function
+		onRenderFcts.forEach(function(onRenderFct){
+			onRenderFct(deltaMsec/1000, nowMsec/1000)
+		})
+	})
+</script></body>

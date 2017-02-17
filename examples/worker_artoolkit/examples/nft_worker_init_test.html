@@ -1,0 +1,77 @@
+<html>
+<body>
+
+<script>
+
+var worker = new Worker('../js/artoolkit.worker.js');
+worker.callID = 0;
+worker.callbacks = {};
+worker.listeners = {};
+
+worker.call = function(id, method, arguments, transferables, callback) {
+	var callID = this.callID++;
+	if (typeof transferables === 'function') {
+		callback = transferables;
+		transferables = undefined;
+	}
+	this.callbacks[callID] = callback;
+	this.postMessage({
+		method: method,
+		id: id,
+		callID: callID,
+		arguments: arguments
+	}, transferables);
+};
+
+worker.addEventListener = function(name, callback) {
+	if (!this.listeners[name]) {
+		this.listeners[name] = [];
+	}
+	this.listeners[name].push(callback);
+};
+
+worker.removeEventListener = function(name, callback) {
+	if (this.listeners[name]) {
+		var index = this.listeners[name].indexOf(callback);
+		if (index > -1) {
+			this.listeners[name].splice(index, 1);
+		}
+	}
+};
+
+worker.dispatchEvent = function(event) {
+	var listeners = this.listeners[event.name];
+	if (listeners) {
+		for (var i=0; i<listeners.length; i++) {
+			listeners[i].call(this, event);
+		}
+	}
+};
+
+worker.onmessage = function(ev) {
+	if (ev.data.event) {
+		this.dispatchEvent(ev.data.event);
+	} else {
+		var callback = this.callbacks[ev.data.callID];
+		if (callback) {
+			callback(ev.data);
+		}
+		delete this.callbacks[ev.data.callID];
+	}
+};
+
+
+worker.call(null, 'new', [320, 240, '/examples/Data/camera_para.dat']);
+worker.addEventListener('load', function(ev) {
+	console.log('ARController loaded', ev);
+
+	worker.call(ev.target, 'loadNFTMarker', ['/examples/DataNFT/pinball'], function(ev) {
+		console.log('Created NFT marker', ev);
+	});
+});
+
+
+</script>
+
+</body>
+</html>

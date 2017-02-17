@@ -1,0 +1,28 @@
+<html>
+<body>
+
+<script src="js/third_party/three.js/three.min.js"></script>
+<script src="../build/artoolkit.debug.js"></script>
+<script src="../js/artoolkit.api.js"></script>
+
+<script>
+
+var cameraParam = new ARCameraParam();
+cameraParam.onload = function() {
+
+	arController = new ARController(320, 240, cameraParam);
+	arController._initNFT();
+	arController.debugSetup();
+
+	arController.loadNFTMarker('DataNFT/pinball', function(markerId) { 
+		console.log('Created NFT marker', arguments);
+	});
+
+};
+cameraParam.load('Data/camera_para.dat');
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<head>
+	<script src="https://rawgit.com/jeromeetienne/aframe-artoolkit/master/aframe/examples/vendor/aframe.min.js"></script>
+	<script src="https://rawgit.com/jeromeetienne/aframe-artoolkit/master/aframe/build/aframe-artoolkit.js"></script>
+</head>
+<body style='margin:0px'><div style='width:640px; height:480px;'>
+	<!-- enable artoolkit on this scene -->
+	<!-- <a-scene embedded artoolkit='sourceType: image; sourceUrl:https://rawgit.com/jeromeetienne/aframe-artoolkit/master/aframe/examples/images/armchair.jpg;'> -->
+	<a-scene embedded artoolkit='sourceType: webcam; cameraParametersUrl: https://rawgit.com/jeromeetienne/aframe-artoolkit/master/aframe/examples/data/camera_para.dat'>
+		<!-- define a marker -->
+		<a-marker>
+			<!-- define the object which gonna be put on this marker  -->
+			<a-box depth="1" height="1" width="1" position='0 0 0.5' material='opacity: 0.5; side:double'></a-box>
+			<a-entity geometry="primitive: torusKnot; radius: 0.3; radiusTubular: 0.05" position='0 0 0.5'>
+				<a-animation attribute="rotation" from="0 0 0" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
+			</a-entity>
+		</a-marker>
+		<!-- define a simple camera -->
+		<a-entity camera></a-entity>
+	</a-scene>
+</div></body>
+</html>

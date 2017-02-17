@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<script src="vendor/aframe.min.js"></script>
+<!-- jsartookit -->
+<script src="../../vendor/jsartoolkit5/build/artoolkit.min.js"></script>
+<script src="../../vendor/jsartoolkit5/js/artoolkit.api.js"></script>
+<!-- aframe-artoolkit -->
+<script src="../aframe-artoolkit.js"></script>
+<!-- include threex.artoolkit -->
+<script src="../../threex-artoolkitcontext.js"></script>
+<script src="../../threex-artoolkitsource.js"></script>
+<script src="../../threex-armarkercontrols.js"></script>
+
+<body style='margin:0px; overflow: hidden;'><div style='width:640px; height:480px;'>
+	<!-- <a-scene embedded artoolkit='sourceType: video; sourceUrl:./videos/headtracking.mp4;'> -->
+	<a-scene embedded artoolkit='sourceType: image; sourceUrl:./images/armchair.jpg;'>
+	<!-- <a-scene artoolkit='sourceType: image; sourceUrl:./images/screenshot.png'> -->
+
+		<a-marker type='unknown'>
+			<a-box depth="1" height="1" width="1" position='0 0 0.5' material='opacity: 0.5; side:double; color:blue;'></a-box>
+		</a-marker>
+
+		<a-entity camera></a-entity>
+	</a-scene>
+</div></body>
+</html>

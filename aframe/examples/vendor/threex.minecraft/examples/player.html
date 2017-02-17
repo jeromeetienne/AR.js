@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<script src='vendor/three.js/build/three.min.js'></script>
+<!-- include character -->
+<script src='../threex.minecraft.js'></script>
+<!-- include controls -->
+<script src='../threex.minecraftcontrols.js'></script>
+<!-- include animation -->
+<script src='../threex.animation.js'></script>
+<script src='../threex.animations.js'></script>
+<script src='../threex.minecraftcharheadanim.js'></script>
+<script src='../threex.minecraftcharbodyanim.js'></script>
+<!-- include player -->
+<script src='../threex.minecraftnickname.js'></script>
+<script src='../threex.minecraftbubble.js'></script>
+<!-- include animation -->
+<body style='margin: 0px; background-color: #bbbbbb; overflow: hidden;'><script>
+	var renderer	= new THREE.WebGLRenderer();
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	document.body.appendChild( renderer.domElement );
+	renderer.setClearColor('#444',1)
+
+	var onRenderFcts	= [];
+	var scene	= new THREE.Scene();
+	var camera	= new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 100 );
+	camera.position.y = 0.3;
+	camera.position.z = 2;
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		comment								//
+	//////////////////////////////////////////////////////////////////////////////////
+
+	var character	= new THREEx.MinecraftChar()
+	scene.add(character.root)
+
+	var controls	= new THREEx.MinecraftControls(character)
+	THREEx.MinecraftControls.setKeyboardInput(controls)
+	onRenderFcts.push(function(delta, now){
+		controls.update(delta, now)
+	})
+
+	var headAnims	= new THREEx.MinecraftCharHeadAnimations(character);
+	headAnims.start('still');
+	onRenderFcts.push(function(delta, now){
+		headAnims.update(delta, now)	
+	})
+
+
+	// init bodyAnims
+	var bodyAnims	= new THREEx.MinecraftCharBodyAnimations(character);
+	bodyAnims.start('stand');
+	onRenderFcts.push(function(delta, now){
+		bodyAnims.update(delta, now)	
+	})	
+
+	onRenderFcts.push(function(delta, now){
+		var input	= controls.input
+		if( input.up || input.down ){
+			bodyAnims.start('run');			
+		}else if( input.strafeLeft || input.strafeRight ){
+			bodyAnims.start('strafe');
+		}else {
+			bodyAnims.start('stand');			
+		}
+	})
+	//////////////////////////////////////////////////////////////////////////////////
+	//		render the scene						//
+	//////////////////////////////////////////////////////////////////////////////////
+	onRenderFcts.push(function(){
+		renderer.render( scene, camera );		
+	})
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		loop runner							//
+	//////////////////////////////////////////////////////////////////////////////////
+	var lastTimeMsec= null
+	requestAnimationFrame(function animate(nowMsec){
+		// keep looping
+		requestAnimationFrame( animate );
+		// measure time
+		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+		lastTimeMsec	= nowMsec
+		// call each update function
+		onRenderFcts.forEach(function(onRenderFct){
+			onRenderFct(deltaMsec/1000, nowMsec/1000)
+		})
+	})
+</script></body>

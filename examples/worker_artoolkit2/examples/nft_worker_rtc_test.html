@@ -1,0 +1,140 @@
+<html>
+<body>
+
+<script>
+
+var worker = new Worker('../js/artoolkit.worker.js');
+worker.callID = 0;
+worker.callbacks = {};
+worker.listeners = {};
+
+worker.call = function(id, method, arguments, transferables, callback) {
+	var callID = this.callID++;
+	if (typeof transferables === 'function') {
+		callback = transferables;
+		transferables = undefined;
+	}
+	this.callbacks[callID] = callback;
+	this.postMessage({
+		method: method,
+		id: id,
+		callID: callID,
+		arguments: arguments
+	}, transferables);
+};
+
+worker.addEventListener = function(name, callback) {
+	if (!this.listeners[name]) {
+		this.listeners[name] = [];
+	}
+	this.listeners[name].push(callback);
+};
+
+worker.removeEventListener = function(name, callback) {
+	if (this.listeners[name]) {
+		var index = this.listeners[name].indexOf(callback);
+		if (index > -1) {
+			this.listeners[name].splice(index, 1);
+		}
+	}
+};
+
+worker.dispatchEvent = function(event) {
+	var listeners = this.listeners[event.name];
+	if (listeners) {
+		for (var i=0; i<listeners.length; i++) {
+			listeners[i].call(this, event);
+		}
+	}
+};
+
+worker.onmessage = function(ev) {
+	if (ev.data.event) {
+		this.dispatchEvent(ev.data.event);
+	} else {
+		var callback = this.callbacks[ev.data.callID];
+		if (callback) {
+			callback(ev.data);
+		}
+		delete this.callbacks[ev.data.callID];
+	}
+};
+
+
+
+var video = document.createElement('video');
+
+document.body.appendChild(video);
+
+navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+
+var tw = 320;
+var th = 240;
+
+var hdConstraints = {
+	audio: false,
+	video: {
+		mandatory: {
+			maxWidth: tw,
+			maxHeight: th
+    	}
+  	}
+};
+
+if (navigator.getUserMedia) {
+	navigator.getUserMedia(hdConstraints, success, errorCallback);
+} else {
+	errorCallback('');
+}
+
+function errorCallback(e) {
+	console.log("Can't access user media", e);
+}
+
+
+function success(stream) {
+	console.log('success', stream);
+	video.src = window.URL.createObjectURL(stream);
+	video.onclick = function() { video.play(); };
+	video.play();
+
+	var canvas = document.createElement('canvas');
+	canvas.width = 320;
+	canvas.height = 240;
+	var ctx = canvas.getContext('2d');
+
+	worker.call(null, 'new', [320, 240, '/examples/Data/camera_para.dat']);
+	worker.addEventListener('load', function(ev) {
+		var id = ev.target;
+		console.log('ARController loaded', ev);
+
+		worker.call(id, 'loadNFTMarker', ['/examples/DataNFT/pinball'], function(ev) {
+			console.log('Created NFT marker', ev);
+
+			worker.addEventListener('getNFTMarker', function(ev) {
+				console.log("Found NFT marker", ev);
+			});
+
+			var processingDone = true;
+			var tick = function() {
+				if (video.videoWidth && processingDone) {
+					processingDone = false;
+					ctx.drawImage(video, 0, 0, 320, 240);
+					var imageData = ctx.getImageData(0,0,320,240);
+					worker.call(id, 'process', [imageData], [imageData.data.buffer], function(ev) {
+						console.log('Processed frame');
+						processingDone = true;
+					});
+				}
+				requestAnimationFrame(tick);
+			};
+			tick();
+		});
+	});
+}
+
+
+</script>
+
+</body>
+</html>
