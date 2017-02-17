@@ -26,3 +26,6 @@ Focus on making WebAR a reality
 - ```/three.js``` is the extension to use it with [pure three.js](https://threejs.org)
 - ```/aframe``` is the extension to use it with [a-frame](https://aframe.io)
 - ```/webxr``` is the WebVR polyfill so you can reuse your #AR / #VR content easily
+
+# Change Log
+[CHANGELOG.md](https://github.com/jeromeetienne/WebAR/blob/master/CHANGELOG.md)
