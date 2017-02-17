@@ -3,7 +3,9 @@
 I am focusing hard on making WebAR a reality. 
 This repository is where i publish the code.
 Contact me anytime [@jerome_etienne](https://twitter.com/jerome_etienne).
-We reached a good status
+Stuff are still moving fast, We reached a good status.
+So i wanted to publish thus people can try it and have fun with it :)
+
 
 - Work efficiently even on phones. [60 fps on my 2 year-old phone](https://twitter.com/jerome_etienne/status/831333879810236421)!
 - It is completly open source and free of charge!
@@ -13,14 +15,14 @@ We reached a good status
 
 ![screenshot](https://cloud.githubusercontent.com/assets/252962/23068128/40343608-f51a-11e6-8cb3-900e37a7f658.jpg)
 
-# Try it on Mobile ?
+# Try it on Mobile
 - Direct your android browser to [this url](https://jeromeetienne.github.io/WebAR/three.js/examples/performance.html)
   It will open a webpage which read the phone webcam, localise an hiro marker and add 3d on top of it
 - Here is an example of [hiro marker](http://wibiwardhono.lecture.ub.ac.id/files/2015/01/HIRO.jpg).
-- You can just display the hiro marker on desktop screen and point your phone at it.
+  You can just display the hiro marker on desktop screen and point your phone at it.
   Or you can print the marker too.
 
-- TODO add a picture here
+TODO add a picture here, of me pointing a phone at my screen
 
 # Examples
 - [three.js examples](https://jeromeetienne.github.io/WebAR/three.js/examples/)
