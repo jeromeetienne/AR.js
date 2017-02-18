@@ -66,8 +66,8 @@
 		// sourceType : 'video',
 		// sourceUrl : '../../data/videos/headtracking.mp4',		
 
-		sourceWidth: 80*3,
-		sourceHeight: 60*3,
+		// sourceWidth: 80*4,
+		// sourceHeight: 60*4,
 		// 
 	})
 
@@ -91,7 +91,7 @@
 		cameraParametersUrl: '../../data/data/camera_para.dat',
 		detectionMode: 'mono',
 		imageSmoothingEnabled: false,
-		maxDetectionRate: 30,
+		maxDetectionRate: 20,
 		sourceWidth: arToolkitSource.parameters.sourceWidth,
 		sourceHeight: arToolkitSource.parameters.sourceHeight,
 	})
@@ -118,8 +118,8 @@
 	scene.add(markerRoot)
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
-		// patternUrl : '../../data/data/patt.hiro'
-		patternUrl : '../../data/data/patt.kanji'
+		patternUrl : '../../data/data/patt.hiro'
+		// patternUrl : '../../data/data/patt.kanji'
 	})
 
 	//////////////////////////////////////////////////////////////////////////////////
