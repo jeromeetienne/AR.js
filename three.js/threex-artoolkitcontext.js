@@ -22,6 +22,10 @@ THREEx.ArToolkitContext = function(parameters){
 		// resolution of at which we detect pose in the source image
 		sourceWidth: parameters.sourceWidth !== undefined ? parameters.sourceWidth : 640,
 		sourceHeight: parameters.sourceHeight !== undefined ? parameters.sourceHeight : 480,
+		
+		// enable image smoothing or not - default to true
+		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
+		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : true,
 	}
 	
         this.arController = null;
@@ -45,6 +49,11 @@ THREEx.ArToolkitContext.prototype.init = function(onCompleted){
                 var arController = new ARController(sourceWidth, sourceHeight, _this._cameraParameters);
                 _this.arController = arController
                 
+		arController.ctx.mozImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+		arController.ctx.webkitImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+		arController.ctx.msImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+		arController.ctx.imageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;			
+ 		
 		// honor this.parameters.debug
                 if( _this.parameters.debug === true ){
 			arController.debugSetup();
