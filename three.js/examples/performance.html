@@ -89,7 +89,8 @@
 	var arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: '../../data/data/camera_para.dat',
 		detectionMode: 'mono',
-		maxDetectionRate: 15,
+		imageSmoothingEnabled: false,
+		maxDetectionRate: 30,
 		sourceWidth: arToolkitSource.parameters.sourceWidth,
 		sourceHeight: arToolkitSource.parameters.sourceHeight,
 	})
