@@ -69,16 +69,16 @@ a-frame Examples:
 WebXR Examples: 
 - [aframe](https://jeromeetienne.github.io/WebAR/aframe/examples/aframe.html) : 
   a-frame example for aframe
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/aframe.html))
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/aframe.html))
 - [basic](https://jeromeetienne.github.io/WebAR/aframe/examples/basic.html) : 
   a-frame example for basic
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/basic.html))
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/basic.html))
 - [noinstall](https://jeromeetienne.github.io/WebAR/aframe/examples/noinstall.html) : 
   a-frame example for noinstall
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/noinstall.html))
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/noinstall.html))
 - [noinstall](https://jeromeetienne.github.io/WebAR/aframe/examples/noinstall.html) : 
   a-frame example for noinstall
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/noinstall.html))
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/noinstall.html))
 
 # Folders
 - ```/three.js``` is the extension to use it with [pure three.js](https://threejs.org)
