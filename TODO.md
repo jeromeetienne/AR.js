@@ -1,12 +1,12 @@
 # Release v1.0.0
-- add links in all examples
 - add docs on the options of threex-artoolkit
 
+- DONE add links in all examples
 - DONE with tag and all
 - DONE add a index.html in each examples directories
 
-# include motionprediction in ArMarkerControls
-- cleanup the code to park it
+- DONE parked motionprediction in ArMarkerControls
+- DONE cleanup the code to park it
 - DONE rename setKnownPosition into setKnownPose
 - DONE refactor all the ```this._lastKnownPoseAt``` with a ```this._lastPose.createAt```
   and so on

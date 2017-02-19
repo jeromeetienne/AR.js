@@ -312,7 +312,7 @@ THREEx.ArToolkitSource.prototype.init = function(onReady){
 
 	// attach
         this.domElement = domElement
-        // this.domElement.classList.add('arToolKitSource')
+        this.domElement.style.position = 'absolute'
         this.domElement.style.top = '0px'
         this.domElement.style.zIndex = '-2'	
         this.domElement.style.zIndex = '-2'	
@@ -368,7 +368,7 @@ THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
 	domElement.webkitPlaysinline = true;
 	domElement.controls = false;
 	domElement.loop = true;
-	domElement.muted = false
+	domElement.muted = true
 
 	// trick to trigger the video on android
 	document.body.addEventListener('click', function(){

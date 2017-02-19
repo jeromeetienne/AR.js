@@ -29,6 +29,12 @@ It is done in 2 easy steps :)
 - [WebXR examples](https://jeromeetienne.github.io/WebAR/webxr/examples/)
 - [aframe examples](https://jeromeetienne.github.io/WebAR/aframe/examples/)
 
+# Status
+- At the three.js level is the main one. It is working well and efficiently
+- a-frame component allow everything three.js extension can do
+  - there is a resize issue at the moment. it is being worked out
+  - beyond this issue it is working without any known issues
+- webvr-polyfill: it is kind of working - still a work-in-progress
 
 # Folders
 - ```/three.js``` is the extension to use it with [pure three.js](https://threejs.org)
