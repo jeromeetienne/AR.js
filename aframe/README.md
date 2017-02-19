@@ -34,7 +34,17 @@ Handle multiple indepant markers in a single scene.
 include a hatsune miku or minecraft avatar on the marker
 
 
-# <a-marker-camera>
+# <a-marker>
+
+| Attribute | Description | Component Mapping |
+| --- | --- | --- |
+| type | type of marker - ['pattern', 'barcode', 'unknown' ] | artoolkitmarker.type |
+| size | size of the marker in meter | artoolkitmarker.size |
+| url | url of the pattern - IIF type='pattern' | artoolkitmarker.patternUrl |
+| value | value of the barcode - IIF type='barcode' | artoolkitmarker.barcodeValue |
+
+
+# \<a-marker-camera\>
 Usually the model used in augmented reality is about changing the modelViewMatrix 
 based on the marker position. the camera being static in 0,0,0 looking toward negative z.
 
@@ -55,13 +65,6 @@ modelView is able to provide multiple *independant* markers.
         <a-marker-camera>
 </a-scene>
 ```
-
-| Attribute | Description | Component Mapping |
-| --- | --- | --- |
-| type | super description | artoolkitmarker.type |
-| size | super description | artoolkitmarker.size |
-| url | super description | artoolkitmarker.patternUrl |
-| value | super description | artoolkitmarker.barcodeValue |
 
 # Links
 
