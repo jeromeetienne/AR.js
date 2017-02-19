@@ -1,6 +1,8 @@
 # Release v1.0.0
 - add docs on the options of threex-artoolkit
-- remove all the examples/index.html ? and just point them in the README.md
+  - first in the source
+  - then copy in the README.md
+- DONE remove all the examples/index.html ? and just point them in the README.md
   - yep they are ugly and useless in this case
 
 - DONE add links in all examples

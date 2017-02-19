@@ -1,30 +1,31 @@
 # threex artoolkit
-three.js extension to easily handle artoolkit
-
-- It is possible to use it thru aframe
-- It is possible to use it thru webvr
+three.js extension to easily handle artoolkit.
+It is the main part of my [WebAR effort](http://github.com/jeromeetienne/webAR)
 
 
 
-# web based augmented reality
-- web succeed thanks to standard
-- we want it thru standard 
-- lets look at webvr.
-  - dont be fooled by the V in vr
-  - it has been done with virtual reality in mind
-  - but in fact it provides 2 things 
-    - stereo display
-    - positional tracking
-  - both of those things are needed in augmented reality TODO
-- from a code point of view, virtual reality and augmented reality are very similar
-- the only difference is that augmented reality got a see-thru screen
+# THREEx.ArMarkerControls 
 
-# about webar and artoolkit
-- implement webvr-artoolkit
-- able to do webar on any device with a camera and a bunch of markers
-- aka possible to do on any phone
+Parameters:
+```json
+	// debug - true if one should display artoolkit debug canvas, false otherwise
+	debug: false,
+	// the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
+	detectionMode: 'color_and_matrix',
+	// type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
+	matrixCodeType: '3x3',
+	
+	// url of the camera parameters
+	cameraParametersUrl: 'parameters/camera_para.dat',
 
-# webvr-artoolkit
-- to provide a WebVR API to artoolkit
-- thus it would be possible to run webar on any phone
-- what is webar
+	// tune the maximum rate of pose detection in the source image
+	maxDetectionRate: 60,
+	// resolution of at which we detect pose in the source image
+	sourceWidth: 640,
+	sourceHeight: 480,
+	
+	// enable image smoothing or not for canvas copy - default to true
+	// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
+	imageSmoothingEnabled : true,
+}
+```
