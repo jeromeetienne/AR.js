@@ -1,5 +1,5 @@
 # aframe-artoolkit
-Augmented reality for a-frame
+Augmented reality for a-frame.
 
 ```html
 <!-- add artoolkit into your scene -->
@@ -14,6 +14,7 @@ Augmented reality for a-frame
 </a-scene>
 ```
 
+**NOTES** 
 There is a resize issue at the moment. i am [working on it here](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/dev-resize.html).
 Meanwhile size [your screen in 640x480](https://developers.google.com/web/tools/chrome-devtools/device-mode/emulate-mobile-viewports)...
 Sorry for the inconveniences.
@@ -33,8 +34,25 @@ Handle multiple indepant markers in a single scene.
 - [hatsune-minecraft.html](https://jeromeetienne.github.io/WebAR/aframe/examples/minecraft.html): 
 include a hatsune miku or minecraft avatar on the marker
 
+# artoolkit system
 
-# <a-marker>
+| Attribute | Description |
+| --- | --- |
+| debug | true if one should display artoolkit debug canvas, false otherwise |
+| detectionMode | the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix'] |
+| matrixCodeType | type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5] |
+| cameraParametersUrl | url of the camera parameters |
+| maxDetectionRate | tune the maximum rate of pose detection in the source image |
+| sourceType | type of source - ['webcam', 'image', 'video'] |
+| sourceUrl | url of the source - valid if sourceType = image|video |
+| sourceWidth | resolution of at which we detect pose in the source image |
+| sourceHeight | resolution of at which we detect pose in the source image |
+| displayWidth | resolution displayed for the source  |
+| displayHeight | resolution displayed for the source  |
+
+# \<a-marker\>
+
+Here are the attributes for this entity
 
 | Attribute | Description | Component Mapping |
 | --- | --- | --- |
@@ -50,6 +68,7 @@ based on the marker position. the camera being static in 0,0,0 looking toward ne
 
 We define as well a model where we move the camera, instead of the object.
 It changes the camera transform matrix.
+
 This cameraTransform mode seems more instinctive than the modelView mode.
 cameraTransform would fit well a room-scale setup, with *multiple markers connected to each other*.
 modelView is able to provide multiple *independant* markers.
