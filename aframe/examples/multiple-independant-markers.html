@@ -3,7 +3,11 @@
 <!-- include aframe-artoolkit -->
 <script src="../build/aframe-artoolkit.js"></script>
 
-<body style='margin:0px'><div style='width:640px; height:480px;' id='scene-container'>
+<body style='margin : 0px; overflow: hidden;'><div style='position: absolute; top: 10px; width:100%; text-align: center;';>
+	<a href="https://jeromeetienne.github.com/webar" target="_blank">WebAR</a> developement playground
+	<br/>
+	Contact me any time at <a href='https://twitter.com/jerome_etienne'>@jerome_etienne</a>
+</div><div style='width:640px; height:480px;' id='scene-container'>
 	<a-scene embedded artoolkit='sourceType: webcam;'>
 		<a-marker type='unknown'>
 			<a-box depth="1" height="1" width="1" position='0 0 0.5' material='opacity: 0.5; side:double; color:blue;'></a-box>
