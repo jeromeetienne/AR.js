@@ -66,24 +66,24 @@ a-frame Examples:
   a-frame example for noinstall
   ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/noinstall.html))
 
-WebXR Examples: 
-- [aframe](https://jeromeetienne.github.io/WebAR/webxr/examples/aframe.html) : 
+WebVR-polyfill Examples: 
+- [aframe](https://jeromeetienne.github.io/WebAR/webvr-polyfill/examples/aframe.html) : 
   a-frame example for aframe
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/webxr/examples/aframe.html))
-- [basic](https://jeromeetienne.github.io/WebAR/webxr/examples/basic.html) : 
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/webvr-polyfill/examples/aframe.html))
+- [basic](https://jeromeetienne.github.io/WebAR/webvr-polyfill/examples/basic.html) : 
   a-frame example for basic
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/webxr/examples/basic.html))
-- [noinstall](https://jeromeetienne.github.io/WebAR/webxr/examples/noinstall.html) : 
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/webvr-polyfill/examples/basic.html))
+- [noinstall](https://jeromeetienne.github.io/WebAR/webvr-polyfill/examples/noinstall.html) : 
   a-frame example for noinstall
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/webxr/examples/noinstall.html))
-- [noinstall](https://jeromeetienne.github.io/WebAR/webxr/examples/noinstall.html) : 
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/webvr-polyfill/examples/noinstall.html))
+- [noinstall](https://jeromeetienne.github.io/WebAR/webvr-polyfill/examples/noinstall.html) : 
   a-frame example for noinstall
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/webxr/examples/noinstall.html))
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/webvr-polyfill/examples/noinstall.html))
 
 # Folders
 - ```/three.js``` is the extension to use it with [pure three.js](https://threejs.org)
 - ```/aframe``` is the extension to use it with [a-frame](https://aframe.io)
-- ```/webxr``` is the WebVR polyfill so you can reuse your #AR / #VR content easily
+- ```/webvr-polyfill``` is the WebVR polyfill so you can reuse your #AR / #VR content easily
 
 # Licenses
 It is **all open source** ! jsartoolkit5 is under LGPLv3 license and additional permission.
@@ -92,6 +92,17 @@ And All my code in WebAR repository is under MIT license. :)
 For legal details, be sure to check [jsartoolkit5 license](https://github.com/artoolkit/jsartoolkit5/blob/master/LICENSE.txt)
 and [WebAR license](https://github.com/jeromeetienne/WebAR/blob/master/LICENSE.txt).
 
-
 # Change Log
 [CHANGELOG.md](https://github.com/jeromeetienne/WebAR/blob/master/CHANGELOG.md)
+
+# How To Release ?
+- replace ```REVISION``` in ```/three.js/threex-artoolkitcontext.js```
+- Rebuild a-frame and webvr-polyfill
+  - ```(cd aframe && make build) && (cd webvr-polyfill && make build)```
+- Commit everything
+  - ```git add . && git commit -a -m 'last commit before release'```
+- tag the release 
+  - ```git tag 1.0.0```
+- push the tag on github
+  - ```git push origin --tags```
+- update the [a-frame codepen](https://codepen.io/jeromeetienne/pen/mRqqzb?editors=1000#0)

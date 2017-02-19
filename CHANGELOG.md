@@ -1,12 +1,12 @@
-# v0.9.1-dev - Current
+# 1.0.0-dev - Current
 
-- Massive improvement in the pose detection time
-  - reduce the time of image copy by 40%!!!
+- Fixed the resize issue in a-frame!
+- Performance improvement of image copy time by 40%!!!
+  - massive improvement in the pose detection time
   - so maxDetectionRate can go way up
-- fixed the resize issue in a-frame!
 - Improved documentations
 
-# v0.9.0 - Initial Release
+# 0.9.0 - Initial Release
 
 I worked a lot on WebAR. But i recently reached [60fps on mobile phones](https://twitter.com/jerome_etienne/status/831333879810236421).
 so i think WebAR is now ready to be released :)

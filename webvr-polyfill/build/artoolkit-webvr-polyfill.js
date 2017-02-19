@@ -1753,6 +1753,10 @@ THREEx.ArToolkitContext = function(parameters){
 		// resolution of at which we detect pose in the source image
 		sourceWidth: parameters.sourceWidth !== undefined ? parameters.sourceWidth : 640,
 		sourceHeight: parameters.sourceHeight !== undefined ? parameters.sourceHeight : 480,
+		
+		// enable image smoothing or not for canvas copy - default to true
+		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
+		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : true,
 	}
 	
         this.arController = null;
@@ -1761,6 +1765,7 @@ THREEx.ArToolkitContext = function(parameters){
 }
 
 THREEx.ArToolkitContext.baseURL = '../'
+THREEx.ArToolkitContext.REVISION = '1.0.0-dev'
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
@@ -1776,6 +1781,11 @@ THREEx.ArToolkitContext.prototype.init = function(onCompleted){
                 var arController = new ARController(sourceWidth, sourceHeight, _this._cameraParameters);
                 _this.arController = arController
                 
+		arController.ctx.mozImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+		arController.ctx.webkitImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+		arController.ctx.msImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+		arController.ctx.imageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;			
+ 		
 		// honor this.parameters.debug
                 if( _this.parameters.debug === true ){
 			arController.debugSetup();
@@ -1921,6 +1931,7 @@ THREEx.ArToolkitSource.prototype.init = function(onReady){
         this.domElement.style.position = 'absolute'
         this.domElement.style.top = '0px'
         this.domElement.style.zIndex = '-2'	
+        this.domElement.style.zIndex = '-2'	
 
 	return this
         function onSourceReady(){
@@ -1973,7 +1984,7 @@ THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
 	domElement.webkitPlaysinline = true;
 	domElement.controls = false;
 	domElement.loop = true;
-	domElement.muted = false
+	domElement.muted = true
 
 	// trick to trigger the video on android
 	document.body.addEventListener('click', function(){
@@ -2097,7 +2108,6 @@ THREEx.ArToolkitSource.prototype.onResize = function(rendererDomElement){
 		// init style.height/.marginTop to normal value
 		this.domElement.style.height = screenHeight+'px'
 		this.domElement.style.marginTop = '0px'
-
 	}else{
 		// compute newHeight and set .height/.marginTop
 		var newHeight = 1 / (sourceAspect / screenWidth)
