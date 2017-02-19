@@ -1,6 +1,8 @@
 # v0.9.1-dev - Current
 
 - Improved documentations
+- Reduced significantly the time to copy the image
+- double the number of pose detection per second and still remains at 60fps
 
 # v0.9.0 - Initial Release
 

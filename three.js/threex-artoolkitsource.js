@@ -38,8 +38,9 @@ THREEx.ArToolkitSource.prototype.init = function(onReady){
 
 	// attach
         this.domElement = domElement
-        this.domElement.style.position = 'absolute'
+        // this.domElement.classList.add('arToolKitSource')
         this.domElement.style.top = '0px'
+        this.domElement.style.zIndex = '-2'	
         this.domElement.style.zIndex = '-2'	
 
 	return this
