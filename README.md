@@ -67,16 +67,16 @@ a-frame Examples:
   ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/noinstall.html))
 
 WebXR Examples: 
-- [aframe](https://jeromeetienne.github.io/WebAR/three.js/examples/aframe.html) : 
+- [aframe](https://jeromeetienne.github.io/WebAR/aframe/examples/aframe.html) : 
   a-frame example for aframe
   ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/aframe.html))
-- [basic](https://jeromeetienne.github.io/WebAR/three.js/examples/basic.html) : 
+- [basic](https://jeromeetienne.github.io/WebAR/aframe/examples/basic.html) : 
   a-frame example for basic
   ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/basic.html))
-- [noinstall](https://jeromeetienne.github.io/WebAR/three.js/examples/noinstall.html) : 
+- [noinstall](https://jeromeetienne.github.io/WebAR/aframe/examples/noinstall.html) : 
   a-frame example for noinstall
   ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/noinstall.html))
-- [noinstall](https://jeromeetienne.github.io/WebAR/three.js/examples/noinstall.html) : 
+- [noinstall](https://jeromeetienne.github.io/WebAR/aframe/examples/noinstall.html) : 
   a-frame example for noinstall
   ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/noinstall.html))
 
