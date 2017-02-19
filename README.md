@@ -59,9 +59,9 @@ a-frame Examples:
 - [marker-camera](https://jeromeetienne.github.io/WebAR/aframe/examples/marker-camera.html) : 
   a-frame example for marker-camera
   ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/marker-camera.html))
-- [mutiple-independant-markers](https://jeromeetienne.github.io/WebAR/aframe/examples/mutiple-independant-markers.html) : 
-  a-frame example for mutiple-independant-markers
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/mutiple-independant-markers.html))
+- [multiple-independant-markers](https://jeromeetienne.github.io/WebAR/aframe/examples/multiple-independant-markers.html) : 
+  a-frame example for multiple-independant-markers
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/multiple-independant-markers.html))
 - [noinstall](https://jeromeetienne.github.io/WebAR/aframe/examples/noinstall.html) : 
   a-frame example for noinstall
   ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/noinstall.html))

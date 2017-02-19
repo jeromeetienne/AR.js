@@ -14,12 +14,6 @@ Augmented reality for a-frame.
 </a-scene>
 ```
 
-**NOTES** 
-There is a resize issue at the moment. i am [working on it here](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/dev-resize.html).
-Meanwhile size [your screen in 640x480](https://developers.google.com/web/tools/chrome-devtools/device-mode/emulate-mobile-viewports)...
-Sorry for the inconveniences.
-
-
 # Show, Don't Tell
 Here are the demos
 

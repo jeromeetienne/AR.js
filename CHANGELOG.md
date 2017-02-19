@@ -3,6 +3,7 @@
 - Massive improvement in the pose detection time
   - reduce the time of image copy by 40%!!!
   - so maxDetectionRate can go way up
+- fixed the resize issue in a-frame!
 - Improved documentations
 
 # v0.9.0 - Initial Release
