@@ -56,6 +56,13 @@ modelView is able to provide multiple *independant* markers.
 </a-scene>
 ```
 
+| Attribute | Description | Component Mapping |
+| --- | --- | --- |
+| type | super description | artoolkitmarker.type |
+| size | super description | artoolkitmarker.size |
+| url | super description | artoolkitmarker.patternUrl |
+| value | super description | artoolkitmarker.barcodeValue |
+
 # Links
 
 - [slides about aframe-artoolkit](http://jeromeetienne.github.io/slides/artoolkit-aframe/)

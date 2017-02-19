@@ -1,4 +1,5 @@
-# threex artoolkit
+# threex-artoolkit
+
 threex.artookit is the three.js extension to easily handle [artoolkit](https://github.com/artoolkit/jsartoolkit5).
 It is the main part of my [WebAR effort](http://github.com/jeromeetienne/webAR)
 
@@ -15,7 +16,7 @@ threex.artoolkit is composed of 3 classes
   It will make sure to position your content right on top of the marker. 
 
 
-# THREEx.ArMarkerControls 
+### THREEx.ArMarkerControls 
 
 ```javascript
 var parameters = {
@@ -32,7 +33,7 @@ var parameters = {
 }
 ```
 
-# THREEx.ArMarkerContext
+### THREEx.ArMarkerContext
 
 ```javascript
 var parameters = {
@@ -58,7 +59,7 @@ var parameters = {
 }
 ```
 
-# THREEx.ArMarkerSource
+### THREEx.ArMarkerSource
 
 ```javascript
 var parameters = {
