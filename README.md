@@ -47,38 +47,38 @@ Three.js Examples:
 
 a-frame Examples: 
 
-- [basic](https://jeromeetienne.github.io/WebAR/three.js/examples/basic.html) : 
-  a-frame example for basic
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/basic.html))
-- [demo](https://jeromeetienne.github.io/WebAR/three.js/examples/demo.html) : 
-  a-frame example for demo
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/demo.html))
-- [hatsune-minecraft](https://jeromeetienne.github.io/WebAR/three.js/examples/hatsune-minecraft.html) : 
-  a-frame example for hatsune-minecraft
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/hatsune-minecraft.html))
-- [marker-camera](https://jeromeetienne.github.io/WebAR/three.js/examples/marker-camera.html) : 
-  a-frame example for marker-camera
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/marker-camera.html))
-- [mutiple-independant-markers](https://jeromeetienne.github.io/WebAR/three.js/examples/mutiple-independant-markers.html) : 
-  a-frame example for mutiple-independant-markers
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/mutiple-independant-markers.html))
-- [noinstall](https://jeromeetienne.github.io/WebAR/three.js/examples/noinstall.html) : 
-  a-frame example for noinstall
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/noinstall.html))
-
-WebXR Examples: 
-- [aframe](https://jeromeetienne.github.io/WebAR/aframe/examples/aframe.html) : 
-  a-frame example for aframe
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/aframe.html))
 - [basic](https://jeromeetienne.github.io/WebAR/aframe/examples/basic.html) : 
   a-frame example for basic
   ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/basic.html))
+- [demo](https://jeromeetienne.github.io/WebAR/aframe/examples/demo.html) : 
+  a-frame example for demo
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/demo.html))
+- [hatsune-minecraft](https://jeromeetienne.github.io/WebAR/aframe/examples/hatsune-minecraft.html) : 
+  a-frame example for hatsune-minecraft
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/hatsune-minecraft.html))
+- [marker-camera](https://jeromeetienne.github.io/WebAR/aframe/examples/marker-camera.html) : 
+  a-frame example for marker-camera
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/marker-camera.html))
+- [mutiple-independant-markers](https://jeromeetienne.github.io/WebAR/aframe/examples/mutiple-independant-markers.html) : 
+  a-frame example for mutiple-independant-markers
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/mutiple-independant-markers.html))
 - [noinstall](https://jeromeetienne.github.io/WebAR/aframe/examples/noinstall.html) : 
   a-frame example for noinstall
   ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/noinstall.html))
-- [noinstall](https://jeromeetienne.github.io/WebAR/aframe/examples/noinstall.html) : 
+
+WebXR Examples: 
+- [aframe](https://jeromeetienne.github.io/WebAR/webxr/examples/aframe.html) : 
+  a-frame example for aframe
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/webxr/examples/aframe.html))
+- [basic](https://jeromeetienne.github.io/WebAR/webxr/examples/basic.html) : 
+  a-frame example for basic
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/webxr/examples/basic.html))
+- [noinstall](https://jeromeetienne.github.io/WebAR/webxr/examples/noinstall.html) : 
   a-frame example for noinstall
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/noinstall.html))
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/webxr/examples/noinstall.html))
+- [noinstall](https://jeromeetienne.github.io/WebAR/webxr/examples/noinstall.html) : 
+  a-frame example for noinstall
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/webxr/examples/noinstall.html))
 
 # Folders
 - ```/three.js``` is the extension to use it with [pure three.js](https://threejs.org)
