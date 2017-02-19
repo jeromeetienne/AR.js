@@ -1,4 +1,4 @@
-# aframe-artoolkit
+# aframe-webar
 Augmented reality for a-frame.
 
 ```html
@@ -20,7 +20,7 @@ Here are the demos
 - [basic.html](https://jeromeetienne.github.io/WebAR/aframe/examples/basic.html) 
 basic minimal examples. Good to get started
 - [demo.html](https://jeromeetienne.github.io/WebAR/aframe/examples/demo.html) 
-shows you all the possibilities of aframe-artoolkit. You can play around
+shows you all the possibilities of aframe-webar. You can play around
 - [marker-camera.html](https://jeromeetienne.github.io/WebAR/aframe/examples/marker-camera.html):
 Move the camera instead of using the usual "camera looking toward negative-z and modelViewMatrix"
 - [multiple-independant-markers.html](https://jeromeetienne.github.io/WebAR/aframe/examples/multiple-independant-markers.html):
@@ -81,7 +81,7 @@ modelView is able to provide multiple *independant* markers.
 
 # Links
 
-- [slides about aframe-artoolkit](http://jeromeetienne.github.io/slides/artoolkit-aframe/)
+- [slides about aframe-webar](http://jeromeetienne.github.io/slides/artoolkit-aframe/)
 - Augmented reality is about [understand the view matrix](http://www.3dgep.com/understanding-the-view-matrix/)
 - [jsartoolkit5](https://github.com/artoolkit/jsartoolkit5)
 - [artoolkit5](https://github.com/artoolkit/artoolkit5/)

@@ -1,4 +1,4 @@
-# 1.0.0-dev - Current
+# 1.0.0-dev - WebAR has landed
 
 - Fixed the resize issue in a-frame!
 - Performance improvement of image copy time by 40%!!!
