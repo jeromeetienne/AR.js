@@ -139,7 +139,7 @@ THREEx.ArToolkitContext = function(parameters){
 		sourceWidth: parameters.sourceWidth !== undefined ? parameters.sourceWidth : 640,
 		sourceHeight: parameters.sourceHeight !== undefined ? parameters.sourceHeight : 480,
 		
-		// enable image smoothing or not - default to true
+		// enable image smoothing or not for canvas copy - default to true
 		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
 		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : true,
 	}
@@ -492,7 +492,6 @@ THREEx.ArToolkitSource.prototype.onResize = function(rendererDomElement){
 		// init style.height/.marginTop to normal value
 		this.domElement.style.height = screenHeight+'px'
 		this.domElement.style.marginTop = '0px'
-
 	}else{
 		// compute newHeight and set .height/.marginTop
 		var newHeight = 1 / (sourceAspect / screenWidth)
@@ -579,6 +578,15 @@ AFRAME.registerSystem('artoolkit', {
 		arToolkitSource.init(function onReady(){
 			// handle resize of renderer
 			onResize()
+			
+			// kludge to write a 'resize' event
+			var startedAt = Date.now()
+			function tick(){
+				if( Date.now() - startedAt > 2*1000 )	return 
+				window.dispatchEvent(new Event('resize'));
+				setTimeout(tick, 1000/60)
+			}
+			setTimeout(tick, 1000/60)
 		})
 		
 		// handle resize

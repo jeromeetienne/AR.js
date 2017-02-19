@@ -218,7 +218,6 @@ THREEx.ArToolkitSource.prototype.onResize = function(rendererDomElement){
 		// init style.height/.marginTop to normal value
 		this.domElement.style.height = screenHeight+'px'
 		this.domElement.style.marginTop = '0px'
-
 	}else{
 		// compute newHeight and set .height/.marginTop
 		var newHeight = 1 / (sourceAspect / screenWidth)

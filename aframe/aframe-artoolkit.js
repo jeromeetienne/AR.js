@@ -65,6 +65,15 @@ AFRAME.registerSystem('artoolkit', {
 		arToolkitSource.init(function onReady(){
 			// handle resize of renderer
 			onResize()
+			
+			// kludge to write a 'resize' event
+			var startedAt = Date.now()
+			function tick(){
+				if( Date.now() - startedAt > 2*1000 )	return 
+				window.dispatchEvent(new Event('resize'));
+				setTimeout(tick, 1000/60)
+			}
+			setTimeout(tick, 1000/60)
 		})
 		
 		// handle resize
