@@ -26,9 +26,9 @@ It is done in 2 easy steps :)
 
 # Status
 - At the three.js level is the main one. It is working well and efficiently
-- a-frame component allow everything three.js extension can do
-  - there is a resize issue at the moment. it is being worked out
-  - beyond this issue it is working without any known issues
+- a-frame component - it export ```<a-marker>``` tag. It becomes real easy to use.
+  It allows the things three.js extension does. Here are some slides 
+  [aframe-artoolkit](http://jeromeetienne.github.io/slides/artoolkit-aframe/)
 - webvr-polyfill: it is kind of working - still a work-in-progress
 
 # Examples
