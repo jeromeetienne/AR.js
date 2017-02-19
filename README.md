@@ -16,11 +16,14 @@ So i wanted to publish thus people can try it and have fun with it :)
 # Try it on Mobile
 It is done in 2 easy steps :)
 
-1. Direct your android browser to [this url](https://jeromeetienne.github.io/WebAR/three.js/examples/mobile-performance.html)
-  It will open a webpage which read the phone webcam, localise an hiro marker and add 3d on top of it
-2. Point your phone at a hiro marker. Here is an example of [hiro marker](http://wibiwardhono.lecture.ub.ac.id/files/2015/01/HIRO.jpg).
-  you can print the marker too or 
-  you can just display the hiro marker on desktop screen and point your phone at it. Like below.
+1. Direct your android browser to [this url](https://jeromeetienne.github.io/WebAR/three.js/examples/mobile-performance.html).
+2. Point your phone at a hiro marker. 
+
+You are done! It will open a webpage which read the phone webcam, localize an hiro marker 
+and add 3d on top of it.
+
+Here is an example of [hiro marker](http://wibiwardhono.lecture.ub.ac.id/files/2015/01/HIRO.jpg).
+You can print the marker too or you can just display it on your desktop screen, like below.
 
 ![screenshot](https://cloud.githubusercontent.com/assets/252962/23072106/73a0656c-f528-11e6-9fcd-3c900d1d47d3.jpg)
 
