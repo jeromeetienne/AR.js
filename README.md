@@ -16,7 +16,7 @@ So i wanted to publish thus people can try it and have fun with it :)
 # Try it on Mobile
 It is done in 2 easy steps :)
 
-1. Direct your android browser to [this url](https://jeromeetienne.github.io/WebAR/three.js/examples/performance.html)
+1. Direct your android browser to [this url](https://jeromeetienne.github.io/WebAR/three.js/examples/mobile-performance.html)
   It will open a webpage which read the phone webcam, localise an hiro marker and add 3d on top of it
 2. Point your phone at a hiro marker. Here is an example of [hiro marker](http://wibiwardhono.lecture.ub.ac.id/files/2015/01/HIRO.jpg).
   you can print the marker too or 
@@ -33,10 +33,52 @@ It is done in 2 easy steps :)
 
 # Examples
 
-- [cameratransform](https://jeromeetienne.github.io/WebAR/three.js/examples/cameratransform.html) 
+Three.js Examples: 
+
+- [cameratransform](https://jeromeetienne.github.io/WebAR/three.js/examples/cameratransform.html) : 
   three.js example for cameratransform
   ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/cameratransform.html))
+- [markerroot](https://jeromeetienne.github.io/WebAR/three.js/examples/markerroot.html) : 
+  three.js example for markerroot
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/markerroot.html))
+- [mobile-performance](https://jeromeetienne.github.io/WebAR/three.js/examples/mobile-performance.html) : 
+  three.js example for mobile-performance
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/mobile-performance.html))
 
+a-frame Examples: 
+
+- [basic](https://jeromeetienne.github.io/WebAR/three.js/examples/basic.html) : 
+  a-frame example for basic
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/basic.html))
+- [demo](https://jeromeetienne.github.io/WebAR/three.js/examples/demo.html) : 
+  a-frame example for demo
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/demo.html))
+- [hatsune-minecraft](https://jeromeetienne.github.io/WebAR/three.js/examples/hatsune-minecraft.html) : 
+  a-frame example for hatsune-minecraft
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/hatsune-minecraft.html))
+- [marker-camera](https://jeromeetienne.github.io/WebAR/three.js/examples/marker-camera.html) : 
+  a-frame example for marker-camera
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/marker-camera.html))
+- [mutiple-independant-markers](https://jeromeetienne.github.io/WebAR/three.js/examples/mutiple-independant-markers.html) : 
+  a-frame example for mutiple-independant-markers
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/mutiple-independant-markers.html))
+- [noinstall](https://jeromeetienne.github.io/WebAR/three.js/examples/noinstall.html) : 
+  a-frame example for noinstall
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/noinstall.html))
+
+WebXR Examples: 
+- [aframe](https://jeromeetienne.github.io/WebAR/three.js/examples/aframe.html) : 
+  a-frame example for aframe
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/aframe.html))
+- [basic](https://jeromeetienne.github.io/WebAR/three.js/examples/basic.html) : 
+  a-frame example for basic
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/basic.html))
+- [noinstall](https://jeromeetienne.github.io/WebAR/three.js/examples/noinstall.html) : 
+  a-frame example for noinstall
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/noinstall.html))
+- [noinstall](https://jeromeetienne.github.io/WebAR/three.js/examples/noinstall.html) : 
+  a-frame example for noinstall
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/noinstall.html))
 
 # Folders
 - ```/three.js``` is the extension to use it with [pure three.js](https://threejs.org)
