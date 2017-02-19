@@ -35,7 +35,7 @@ It is done in 2 easy steps :)
 
 - [cameratransform](https://jeromeetienne.github.io/WebAR/three.js/examples/cameratransform.html) 
   three.js example for cameratransform
-  - [source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/cameratransform.html)
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/cameratransform.html))
 
 
 # Folders
