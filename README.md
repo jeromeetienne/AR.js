@@ -24,17 +24,19 @@ It is done in 2 easy steps :)
 
 ![screenshot](https://cloud.githubusercontent.com/assets/252962/23072106/73a0656c-f528-11e6-9fcd-3c900d1d47d3.jpg)
 
-# Examples
-- [three.js examples](https://jeromeetienne.github.io/WebAR/three.js/examples/)
-- [WebXR examples](https://jeromeetienne.github.io/WebAR/webxr/examples/)
-- [aframe examples](https://jeromeetienne.github.io/WebAR/aframe/examples/)
-
 # Status
 - At the three.js level is the main one. It is working well and efficiently
 - a-frame component allow everything three.js extension can do
   - there is a resize issue at the moment. it is being worked out
   - beyond this issue it is working without any known issues
 - webvr-polyfill: it is kind of working - still a work-in-progress
+
+# Examples
+
+- [cameratransform](https://jeromeetienne.github.io/WebAR/three.js/examples/cameratransform.html) 
+  three.js example for cameratransform
+  - [source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/cameratransform.html)
+
 
 # Folders
 - ```/three.js``` is the extension to use it with [pure three.js](https://threejs.org)
