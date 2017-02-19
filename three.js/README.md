@@ -7,7 +7,9 @@ It is the main part of my [WebAR effort](http://github.com/jeromeetienne/webAR)
 # THREEx.ArMarkerControls 
 
 Parameters:
-```json
+
+```javascript
+var parameters = {
 	// debug - true if one should display artoolkit debug canvas, false otherwise
 	debug: false,
 	// the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
