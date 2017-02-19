@@ -98,9 +98,9 @@ and [WebAR license](https://github.com/jeromeetienne/WebAR/blob/master/LICENSE.t
 # How To Release ?
 - replace ```REVISION``` in ```/three.js/threex-artoolkitcontext.js```
 - Rebuild a-frame and webvr-polyfill
-  - ```(cd aframe && make build) && (cd webvr-polyfill && make build)```
+  - ```(cd aframe && make minify) && (cd webvr-polyfill && make minify)```
 - Commit everything
-  - ```git add . && git commit -a -m 'last commit before release'```
+  - ```git add . && git commit -a -m 'Last commit before release'```
 - tag the release 
   - ```git tag 1.0.0```
 - push the tag on github
