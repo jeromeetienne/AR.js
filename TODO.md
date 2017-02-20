@@ -1,33 +1,9 @@
-# Release v1.0.0
-- DONE add docs on the options of threex-artoolkit
-  - first in the source
-  - then copy in the README.md
-- DONE remove all the examples/index.html ? and just point them in the README.md
-  - yep they are ugly and useless in this case
-
-- DONE add links in all examples
-- DONE with tag and all
-- DONE add a index.html in each examples directories
-
-- DONE parked motionprediction in ArMarkerControls
-- DONE cleanup the code to park it
-- DONE rename setKnownPosition into setKnownPose
-- DONE refactor all the ```this._lastKnownPoseAt``` with a ```this._lastPose.createAt```
-  and so on
-
 # Misc
 - handle sensor fusion with the IMU ?
 - do a threex-artoolkitprofile.js with various performance profile
   - var arToolKitProfile = new THREEx.ARToolKitProfile(type)
   - may be dynamic 
   - type = 'phoneInHand' || 'desktop'
-  
-
-- make aframe resizable
-  - currently it start display 3d only after a resize how come ?
-
-- supposedly now resize is nice at three.js level
-  - now to a flexible resize for aframe and webvr-polyfill
 
 - see about webworkers
 - add the nft ?
@@ -49,6 +25,25 @@
   - this explains how to pass a pointer from a typearray to c++ 
   - this would avoid the dataHeap.set() - 43%
   
+# Release v1.0.0
+- DONE add docs on the options of threex-artoolkit
+  - first in the source
+  - then copy in the README.md
+- DONE remove all the examples/index.html ? and just point them in the README.md
+  - yep they are ugly and useless in this case
+
+- DONE add links in all examples
+- DONE with tag and all
+- DONE add a index.html in each examples directories
+
+- DONE parked motionprediction in ArMarkerControls
+- DONE cleanup the code to park it
+- DONE rename setKnownPosition into setKnownPose
+- DONE refactor all the ```this._lastKnownPoseAt``` with a ```this._lastPose.createAt```
+  and so on
+- DONE make aframe resizable
+
+
 # DONE stuff
 - DONE code angular velocity in motion prediction
 - DONE about resize, there is a silly blink just after the page is loaded

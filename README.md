@@ -21,7 +21,6 @@ It is done in 2 easy steps :)
 
 You are done! It will open a webpage which read the phone webcam, localize an hiro marker 
 and add 3d on top of it.
-
 Here is an example of [hiro marker](http://wibiwardhono.lecture.ub.ac.id/files/2015/01/HIRO.jpg).
 You can print the marker too or you can just display it on your desktop screen, like below.
 
@@ -99,13 +98,23 @@ and [WebAR license](https://github.com/jeromeetienne/WebAR/blob/master/LICENSE.t
 [CHANGELOG.md](https://github.com/jeromeetienne/WebAR/blob/master/CHANGELOG.md)
 
 # How To Release ?
-- replace ```REVISION``` in ```/three.js/threex-artoolkitcontext.js```
-- Rebuild a-frame and webvr-polyfill
-  - ```(cd aframe && make minify) && (cd webvr-polyfill && make minify)```
-- Commit everything
-  - ```git add . && git commit -a -m 'Last commit before release'```
-- tag the release 
-  - ```git tag 1.0.0```
-- push the tag on github
-  - ```git push origin --tags```
-- update the [a-frame codepen](https://codepen.io/jeromeetienne/pen/mRqqzb?editors=1000#0)
+
+```bash
+# replace REVISION to the proper version
+atom three.js/threex-artoolkitcontext.js
+
+# Rebuild a-frame and webvr-polyfill
+(cd aframe && make minify) && (cd webvr-polyfill && make minify)
+
+# Commit everything
+git add . && git commit -a -m 'Last commit before release'
+
+# tag the release 
+git tag 1.0.0
+
+# push the tag on github
+git push origin --tags
+
+# update the a-frame codepen 
+open "https://codepen.io/jeromeetienne/pen/mRqqzb?editors=1000#0"
+```
