@@ -14,20 +14,15 @@
 	<br/>
 	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div>
-        <!-- <a-scene embedded artoolkit='sourceType: image; sourceUrl:../../data/images/armchair.jpg' antialias="true">         -->
-        <a-scene embedded artoolkit='sourceType: webcam; sourceWidth: 240; sourceHeight: 180;' antialias="true">
+        <a-scene embedded artoolkit='sourceType: image; sourceUrl:../../data/images/armchair.jpg' antialias="true">        
+        <!-- <a-scene embedded artoolkit='sourceType: webcam; sourceWidth: 240; sourceHeight: 180;' antialias="true"> -->
 
-		<!-- <a-marker type='unknown'>                 -->
-		<a-marker type='pattern' url='../../data/data/patt.hiro' size='1'>
+		<a-marker type='unknown'>                
+		<!-- <a-marker type='pattern' url='../../data/data/patt.hiro' size='1'> -->
 			<a-entity rotation="90 0 0">
 							
 		                <!-- Add a minecraft character -->
-		                <a-minecraft head-anim='yes'></a-minecraft>
-
-				<a-text value="WebAR 1.0\nis READY!!" position='-1.5 1.70 0' transparent side='both'>
-					<a-animation attribute="position" to="-1.5 1.6 0" to="-1.5 2 0" direction="alternate" dur="500"
-						repeat="indefinite" easing='ease-in-out-cubic'></a-animation>
-				</a-text>
+		                <a-minecraft></a-minecraft>
 			</a-entity>
 		</a-marker>
 		<a-entity camera></a-entity>
