@@ -18,12 +18,16 @@
         <a-scene embedded artoolkit='sourceType: webcam; sourceWidth: 240; sourceHeight: 180;' antialias="true" outline>
 
 		<!-- <a-marker-camera type='unknown' size='1'>                 -->
-		<a-marker-camera type='pattern' url='../../data/data/patt.hiro'>
-                	<a-entity camera></a-entity>
-		</a-marker-camera>
+		<a-marker type='pattern' url='../../data/data/patt.hiro' size='1'>
+			<a-entity rotation="90 0 0">
+							
+		                <!-- Add a minecraft character -->
+		                <a-minecraft nickname='s'></a-minecraft>
 
-                <!-- Add a minecraft character -->
-                <a-minecraft rotation="90 0 0"></a-minecraft>
+				<a-text value="WebAR 1.0\nis READY!!" position='0.3 1.70 0' transparent='false'></a-text>
+			</a-entity>
+		</a-marker>
+		<a-entity camera></a-entity>
         </a-scene>
 </body>
 </html>
