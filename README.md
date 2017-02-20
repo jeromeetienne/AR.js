@@ -55,12 +55,12 @@ a-frame Examples:
 - [demo](https://jeromeetienne.github.io/WebAR/aframe/examples/demo.html) : 
   a-frame example for demo
   ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/demo.html))
-- [full-hatsune](https://jeromeetienne.github.io/WebAR/aframe/examples/full-hatsune.html) : 
-  a-frame example for full-hatsune
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/full-hatsune.html))
-- [hatsune-minecraft](https://jeromeetienne.github.io/WebAR/aframe/examples/hatsune-minecraft.html) : 
-  a-frame example for hatsune-minecraft
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/hatsune-minecraft.html))
+- [hatsune](https://jeromeetienne.github.io/WebAR/aframe/examples/hatsune.html) : 
+  a-frame example for hatsune
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/hatsune.html))
+- [minecraft](https://jeromeetienne.github.io/WebAR/aframe/examples/minecraft.html) : 
+  a-frame example for minecraft
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/minecraft.html))
 - [marker-camera](https://jeromeetienne.github.io/WebAR/aframe/examples/marker-camera.html) : 
   a-frame example for marker-camera
   ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/marker-camera.html))
