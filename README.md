@@ -55,6 +55,9 @@ a-frame Examples:
 - [demo](https://jeromeetienne.github.io/WebAR/aframe/examples/demo.html) : 
   a-frame example for demo
   ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/demo.html))
+- [full-hatsune](https://jeromeetienne.github.io/WebAR/aframe/examples/full-hatsune.html) : 
+  a-frame example for full-hatsune
+  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/full-hatsune.html))
 - [hatsune-minecraft](https://jeromeetienne.github.io/WebAR/aframe/examples/hatsune-minecraft.html) : 
   a-frame example for hatsune-minecraft
   ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/hatsune-minecraft.html))
