@@ -1,13 +1,7 @@
 <!DOCTYPE html>
-<head>
-	<script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
-	<script src="https://rawgit.com/jeromeetienne/WebAR/master/aframe/build/aframe-webar.js"></script>
-</head>
-<body style='margin : 0px; overflow: hidden;'><div style='position: fixed; top: 10px; width:inherit; text-align: center; z-index: 1;'>
-	<a href="https://github.com/jeromeetienne/WebAR/" target="_blank">WebAR</a> - example for a-frame
-	<br/>
-	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
-</div>
+<script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+<script src="https://rawgit.com/jeromeetienne/WebAR/master/aframe/build/aframe-webar.js"></script>
+<body style='margin : 0px; overflow: hidden;'>
 	<!-- enable artoolkit on this scene -->
 	<a-scene embedded artoolkit='sourceType: webcam; cameraParametersUrl: https://rawgit.com/jeromeetienne/WebAR/master/data/data/camera_para.dat'>
 		<!-- define a marker -->
@@ -22,4 +16,3 @@
 		<a-entity camera></a-entity>
 	</a-scene>
 </body>
-</html>
