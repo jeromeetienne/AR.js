@@ -1,5 +1,12 @@
 It is a polyfill for webvr API using artoolkit as positional tracker.
-Thus you can use the power of WebAR without depending on any specific API.
+As it expose the positional tracking via WebVR api, it is possible to use WebAR 
+without depending on any specific library API.
+
+*any* 3d engines can use it (or will be as soon as it is completed).
+This is the beauty of it.
+You don't need to write your 3d in a specific 3d engines, like three.js.
+Any 3d engines can use this, as long as they support WebVR standard.
+This include sketchfab, babylonjs, playcanvas, goocreate or any others.
 
 
 ```html
