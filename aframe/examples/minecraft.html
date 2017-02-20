@@ -14,16 +14,16 @@
 	<br/>
 	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div>
-        <!-- <a-scene embedded artoolkit='sourceType: image; sourceUrl:../../data/images/armchair.jpg' antialias="true"> -->
-        <a-scene embedded artoolkit='sourceType: webcam' antialias="true">
-                
-		<a-marker type='unknown' size='1'>                
-		<!-- <a-marker type='pattern' url='../../data/data/patt.hiro' size='1'>                 -->
-                        <!-- Add a minecraft character -->
-                        <a-minecraft rotation="90 0 0"></a-minecraft>
-                </a-marker>
+        <!-- <a-scene embedded artoolkit='sourceType: image; sourceUrl:../../data/images/armchair.jpg' antialias="true"> -->        
+        <a-scene embedded artoolkit='sourceType: webcam; sourceWidth: 240; sourceHeight: 180;' antialias="true" outline>
 
-                <a-entity camera></a-entity>
+		<!-- <a-marker-camera type='unknown' size='1'>                 -->
+		<a-marker-camera type='pattern' url='../../data/data/patt.hiro'>
+                	<a-entity camera></a-entity>
+		</a-marker-camera>
+
+                <!-- Add a minecraft character -->
+                <a-minecraft rotation="90 0 0"></a-minecraft>
         </a-scene>
 </body>
 </html>
