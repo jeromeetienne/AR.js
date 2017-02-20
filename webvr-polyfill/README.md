@@ -1,4 +1,5 @@
 It is a polyfill for webvr API using artoolkit as positional tracker.
+It is a work in progress, use at your own risk.
 As it expose the positional tracking via WebVR api, it is possible to use WebAR 
 without depending on any specific library API.
 
