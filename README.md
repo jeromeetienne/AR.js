@@ -78,12 +78,6 @@ WebVR-polyfill Examples:
 - [basic](https://jeromeetienne.github.io/AR.js/webvr-polyfill/examples/basic.html) : 
   a-frame example for basic
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/webvr-polyfill/examples/basic.html))
-- [noinstall](https://jeromeetienne.github.io/AR.js/webvr-polyfill/examples/noinstall.html) : 
-  a-frame example for noinstall
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/webvr-polyfill/examples/noinstall.html))
-- [noinstall](https://jeromeetienne.github.io/AR.js/webvr-polyfill/examples/noinstall.html) : 
-  a-frame example for noinstall
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/webvr-polyfill/examples/noinstall.html))
 
 # Folders
 - ```/three.js``` is the extension to use it with [pure three.js](https://threejs.org)
