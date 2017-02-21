@@ -3,10 +3,10 @@ watch: build
 	
 .PHONY: build
 build:
-	cat ../three.js/threex*.js aframe-webar.js \
+	cat ../three.js/threex*.js aframe-ar.js \
 		../three.js/vendor/jsartoolkit5/build/artoolkit.min.js \
 		../three.js/vendor/jsartoolkit5/js/artoolkit.api.js \
-		> build/aframe-webar.js 
+		> build/aframe-ar.js 
 
 minify: build
-	uglifyjs build/aframe-webar.js > build/aframe-webar.min.js
+	uglifyjs build/aframe-ar.js > build/aframe-ar.min.js

@@ -1,6 +1,6 @@
-# WebAR - Efficient augmented reality for the web
+# AR.js - Efficient Augmented Reality for the Web using ARToolKit
 
-I am focusing hard on making WebAR a reality. 
+I am focusing hard on making AR for the web a reality.
 This repository is where i publish the code.
 Contact me anytime [@jerome_etienne](https://twitter.com/jerome_etienne).
 Stuff are still moving fast, We reached a good status tho.
@@ -16,7 +16,7 @@ So i wanted to publish thus people can try it and have fun with it :)
 # Try it on Mobile
 It is done in 2 easy steps :)
 
-1. Direct your android browser to [this url](https://jeromeetienne.github.io/WebAR/three.js/examples/mobile-performance.html).
+1. Direct your android browser to [this url](https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html).
 2. Point your phone at a hiro marker. 
 
 You are done! It will open a webpage which read the phone webcam, localize an hiro marker 
@@ -37,53 +37,53 @@ You can print the marker too or you can just display it on your desktop screen, 
 
 Three.js Examples: 
 
-- [cameratransform](https://jeromeetienne.github.io/WebAR/three.js/examples/cameratransform.html) : 
+- [cameratransform](https://jeromeetienne.github.io/AR.js/three.js/examples/cameratransform.html) : 
   three.js example for cameratransform
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/cameratransform.html))
-- [markerroot](https://jeromeetienne.github.io/WebAR/three.js/examples/markerroot.html) : 
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/cameratransform.html))
+- [markerroot](https://jeromeetienne.github.io/AR.js/three.js/examples/markerroot.html) : 
   three.js example for markerroot
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/markerroot.html))
-- [mobile-performance](https://jeromeetienne.github.io/WebAR/three.js/examples/mobile-performance.html) : 
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/markerroot.html))
+- [mobile-performance](https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html) : 
   three.js example for mobile-performance
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/three.js/examples/mobile-performance.html))
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/mobile-performance.html))
 
 a-frame Examples: 
 
-- [basic](https://jeromeetienne.github.io/WebAR/aframe/examples/basic.html) : 
+- [basic](https://jeromeetienne.github.io/AR.js/aframe/examples/basic.html) : 
   a-frame example for basic
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/basic.html))
-- [demo](https://jeromeetienne.github.io/WebAR/aframe/examples/demo.html) : 
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/basic.html))
+- [demo](https://jeromeetienne.github.io/AR.js/aframe/examples/demo.html) : 
   a-frame example for demo
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/demo.html))
-- [hatsune](https://jeromeetienne.github.io/WebAR/aframe/examples/hatsune.html) : 
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/demo.html))
+- [hatsune](https://jeromeetienne.github.io/AR.js/aframe/examples/hatsune.html) : 
   a-frame example for hatsune
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/hatsune.html))
-- [minecraft](https://jeromeetienne.github.io/WebAR/aframe/examples/minecraft.html) : 
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/hatsune.html))
+- [minecraft](https://jeromeetienne.github.io/AR.js/aframe/examples/minecraft.html) : 
   a-frame example for minecraft
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/minecraft.html))
-- [marker-camera](https://jeromeetienne.github.io/WebAR/aframe/examples/marker-camera.html) : 
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/minecraft.html))
+- [marker-camera](https://jeromeetienne.github.io/AR.js/aframe/examples/marker-camera.html) : 
   a-frame example for marker-camera
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/marker-camera.html))
-- [multiple-independant-markers](https://jeromeetienne.github.io/WebAR/aframe/examples/multiple-independant-markers.html) : 
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/marker-camera.html))
+- [multiple-independant-markers](https://jeromeetienne.github.io/AR.js/aframe/examples/multiple-independant-markers.html) : 
   a-frame example for multiple-independant-markers
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/multiple-independant-markers.html))
-- [noinstall](https://jeromeetienne.github.io/WebAR/aframe/examples/noinstall.html) : 
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/multiple-independant-markers.html))
+- [noinstall](https://jeromeetienne.github.io/AR.js/aframe/examples/noinstall.html) : 
   a-frame example for noinstall
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/aframe/examples/noinstall.html))
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/noinstall.html))
 
 WebVR-polyfill Examples: 
-- [aframe](https://jeromeetienne.github.io/WebAR/webvr-polyfill/examples/aframe.html) : 
+- [aframe](https://jeromeetienne.github.io/AR.js/webvr-polyfill/examples/aframe.html) : 
   a-frame example for aframe
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/webvr-polyfill/examples/aframe.html))
-- [basic](https://jeromeetienne.github.io/WebAR/webvr-polyfill/examples/basic.html) : 
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/webvr-polyfill/examples/aframe.html))
+- [basic](https://jeromeetienne.github.io/AR.js/webvr-polyfill/examples/basic.html) : 
   a-frame example for basic
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/webvr-polyfill/examples/basic.html))
-- [noinstall](https://jeromeetienne.github.io/WebAR/webvr-polyfill/examples/noinstall.html) : 
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/webvr-polyfill/examples/basic.html))
+- [noinstall](https://jeromeetienne.github.io/AR.js/webvr-polyfill/examples/noinstall.html) : 
   a-frame example for noinstall
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/webvr-polyfill/examples/noinstall.html))
-- [noinstall](https://jeromeetienne.github.io/WebAR/webvr-polyfill/examples/noinstall.html) : 
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/webvr-polyfill/examples/noinstall.html))
+- [noinstall](https://jeromeetienne.github.io/AR.js/webvr-polyfill/examples/noinstall.html) : 
   a-frame example for noinstall
-  ([source](https://github.com/jeromeetienne/WebAR/blob/master/webvr-polyfill/examples/noinstall.html))
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/webvr-polyfill/examples/noinstall.html))
 
 # Folders
 - ```/three.js``` is the extension to use it with [pure three.js](https://threejs.org)
@@ -92,13 +92,13 @@ WebVR-polyfill Examples:
 
 # Licenses
 It is **all open source** ! jsartoolkit5 is under LGPLv3 license and additional permission.
-And All my code in WebAR repository is under MIT license. :)
+And All my code in AR.js repository is under MIT license. :)
 
 For legal details, be sure to check [jsartoolkit5 license](https://github.com/artoolkit/jsartoolkit5/blob/master/LICENSE.txt)
-and [WebAR license](https://github.com/jeromeetienne/WebAR/blob/master/LICENSE.txt).
+and [AR.js license](https://github.com/jeromeetienne/AR.js/blob/master/LICENSE.txt).
 
 # Change Log
-[CHANGELOG.md](https://github.com/jeromeetienne/WebAR/blob/master/CHANGELOG.md)
+[CHANGELOG.md](https://github.com/jeromeetienne/AR.js/blob/master/CHANGELOG.md)
 
 # How To Release ?
 

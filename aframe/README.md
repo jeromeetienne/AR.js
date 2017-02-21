@@ -1,4 +1,4 @@
-# aframe-webar
+# aframe-ar
 Augmented reality for a-frame.
 
 ```html
@@ -17,15 +17,15 @@ Augmented reality for a-frame.
 # Show, Don't Tell
 Here are the demos
 
-- [basic.html](https://jeromeetienne.github.io/WebAR/aframe/examples/basic.html) 
+- [basic.html](https://jeromeetienne.github.io/AR.js/aframe/examples/basic.html) 
 basic minimal examples. Good to get started
-- [demo.html](https://jeromeetienne.github.io/WebAR/aframe/examples/demo.html) 
-shows you all the possibilities of aframe-webar. You can play around
-- [marker-camera.html](https://jeromeetienne.github.io/WebAR/aframe/examples/marker-camera.html):
+- [demo.html](https://jeromeetienne.github.io/AR.js/aframe/examples/demo.html) 
+shows you all the possibilities of aframe-ar. You can play around
+- [marker-camera.html](https://jeromeetienne.github.io/AR.js/aframe/examples/marker-camera.html):
 Move the camera instead of using the usual "camera looking toward negative-z and modelViewMatrix"
-- [multiple-independant-markers.html](https://jeromeetienne.github.io/WebAR/aframe/examples/multiple-independant-markers.html):
+- [multiple-independant-markers.html](https://jeromeetienne.github.io/AR.js/aframe/examples/multiple-independant-markers.html):
 Handle multiple indepant markers in a single scene.
-- [hatsune-minecraft.html](https://jeromeetienne.github.io/WebAR/aframe/examples/minecraft.html): 
+- [hatsune-minecraft.html](https://jeromeetienne.github.io/AR.js/aframe/examples/minecraft.html): 
 include a hatsune miku or minecraft avatar on the marker
 
 # artoolkit system
@@ -81,7 +81,7 @@ modelView is able to provide multiple *independant* markers.
 
 # Links
 
-- [slides about aframe-webar](http://jeromeetienne.github.io/slides/artoolkit-aframe/)
+- [slides about aframe-ar](http://jeromeetienne.github.io/slides/artoolkit-aframe/)
 - Augmented reality is about [understand the view matrix](http://www.3dgep.com/understanding-the-view-matrix/)
 - [jsartoolkit5](https://github.com/artoolkit/jsartoolkit5)
 - [artoolkit5](https://github.com/artoolkit/artoolkit5/)

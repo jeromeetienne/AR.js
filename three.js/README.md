@@ -1,7 +1,7 @@
 # threex-artoolkit
 
 threex.artookit is the three.js extension to easily handle [artoolkit](https://github.com/artoolkit/jsartoolkit5).
-It is the main part of my [WebAR effort](http://github.com/jeromeetienne/webAR)
+It is the main part of my [AR.js effort](http://github.com/jeromeetienne/AR.js)
 
 # Architechture
 
