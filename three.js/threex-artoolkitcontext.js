@@ -34,7 +34,7 @@ THREEx.ArToolkitContext = function(parameters){
 }
 
 THREEx.ArToolkitContext.baseURL = '../'
-THREEx.ArToolkitContext.REVISION = '1.0.0-dev'
+THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator

@@ -1,4 +1,10 @@
-# 1.0.0-dev - WebAR has landed
+# 1.0.1-dev - Current
+
+- Added logo by @tentone - [AR.js logo](https://github.com/jeromeetienne/AR.js/blob/master/data/logo/logo-black-transparent-1280x512.png)
+
+...
+
+# 1.0.0 - AR.js has landed
 
 - Fixed the resize issue in a-frame!
 - Performance improvement of image copy time by 40%!!!

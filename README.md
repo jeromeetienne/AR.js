@@ -113,7 +113,7 @@ That said they give a rough idea.
 - Some reports it working on windows phone edge!! [13fps on Lumia 950](https://twitter.com/leinadkalpot/status/834299384510763012)
   Ok it is slow at the moment but still! it run on window phone, it is amazing :)
 
-# Standing on the shoulders of giants
+# Standing on the Shoulders of Giants
 
 So we shown it is now possible to do 60fps web-based augmented reality on a phone. 
 This is great for sure but how did we get here ? By standing on the shoulders of giants!
@@ -125,13 +125,14 @@ So i would like to thanks :
 - emscripten and asm.j! thus we could compile artoolkit c into javascript
 - chromium browser! thanks for being so fast!
 
-Only thanks to them, i could do my part : Optimizing performance from 5fps on high-end
+Only thanks to all of them, i could do my part : Optimizing performance from 5fps on high-end
 phone, to 60fps on 2years old phone.
 
 After all this work done by a lot of people, we have it! 
 We have a web-based augmented reality library fast enough for mobile.
 Now, a lot of people got a phone powerful enough to do web AR in their pocket.
 I think this performance improvement make web AR a reality.
+i am all exited :)
 
 # How To Release ?
 
