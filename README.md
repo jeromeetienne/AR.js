@@ -94,6 +94,13 @@ and [AR.js license](https://github.com/jeromeetienne/AR.js/blob/master/LICENSE.t
 # Change Log
 [CHANGELOG.md](https://github.com/jeromeetienne/AR.js/blob/master/CHANGELOG.md)
 
+
+# Support
+- It works on any browser which support WebGL and WebRTC
+- Unfortunatly, safari IOS safari doesn't support WebRTC at the moment. Apple is [currently working on it]() tho. We hope they join the party as soon as possible
+- I got reports it is working on windows phone with edge - ok it is slow at the moment
+- Sony Xperia Z2 (2.5 years old) runs around 50fps - this is a 170euro phone
+
 # How To Release ?
 
 ```bash
