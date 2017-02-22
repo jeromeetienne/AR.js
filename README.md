@@ -55,6 +55,9 @@ a-frame Examples:
 - [demo](https://jeromeetienne.github.io/AR.js/aframe/examples/demo.html) : 
   a-frame example for demo
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/demo.html))
+- [aframe-logo](https://jeromeetienne.github.io/AR.js/aframe/examples/aframe-logo.html) : 
+  a-frame example for aframe-logo
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/aframe-logo.html))
 - [hatsune](https://jeromeetienne.github.io/AR.js/aframe/examples/hatsune.html) : 
   a-frame example for hatsune
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/hatsune.html))
