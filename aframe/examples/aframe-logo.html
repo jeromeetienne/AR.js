@@ -10,38 +10,27 @@
 <script src="../../three.js/threex-artoolkitsource.js"></script>
 <script src="../../three.js/threex-armarkercontrols.js"></script>
 
+<!-- to load .ply model -->
 <script src="https://rawgit.com/donmccurdy/aframe-extras/v2.1.1/dist/aframe-extras.loaders.min.js"></script>
-  <!-- </head>
-  <body>
-    <a-scene>
-      <a-assets>
-        <a-asset-item id="myPlyModel" src="myModel.ply"></a-asset-item>
-      </a-assets>
-      <a-entity ply-model="src: #myPlyModel" rotation="-90 0 0"></a-entity>
-    </a-scene>
-  </body>
-</html> -->
 
 <body style='margin : 0px; overflow: hidden;'><div style='position: fixed; top: 10px; width:inherit; text-align: center; z-index: 1;'>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - example for a-frame
+	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - A-Frame logo in augmented reality
 	<br/>
 	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div>
 	<!-- <a-scene embedded artoolkit='sourceType: video; sourceUrl:../../data/videos/headtracking.mp4;'> -->
 	<a-scene embedded artoolkit='sourceType: webcam'>
-        <!-- <a-scene embedded artoolkit='sourceType: webcam; sourceWidth: 240; sourceHeight: 180;'> -->
-		
+	
+        <!-- <a-scene embedded artoolkit='sourceType: webcam; sourceWidth: 240; sourceHeight: 180;'> -->		
+	<!-- <a-scene artoolkit='sourceType: image; sourceUrl:../../data/images/screenshot.png'> -->
 	<!-- <a-scene embedded artoolkit='sourceType: image; sourceUrl:../../data/images/armchair.jpg;'> -->
+
 		<a-assets>
-			<a-asset-item id="assetPikachu" src="models/pikachu.ply"></a-asset-item>
 			<a-asset-item id="assetAframe" src="models/aframe.ply"></a-asset-item>
 		</a-assets>
-	<!-- <a-scene artoolkit='sourceType: image; sourceUrl:../../data/images/screenshot.png'> -->
 
 		<a-marker type='pattern' url='../../data/data/patt.hiro'>
 		<!-- <a-marker type='unknown'> -->
-			<!-- <a-box depth="1" height="1" width="1" position='0 0 0.5' material='opacity: 0.5; side:double; color:blue;'></a-box> -->
-      			<!-- <a-entity ply-model="src: #assetPikachu" rotation="0 0 180" scale='0.1 0.1 0.1'></a-entity> -->
       			<a-entity ply-model="src: #assetAframe" rotation="0 0 90" scale='0.02 0.02 0.02'></a-entity>
 		</a-marker>
 
