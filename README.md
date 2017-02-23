@@ -29,13 +29,13 @@ You can print the marker too or you can just display it on your desktop screen, 
 # Standing on the Shoulders of Giants
 
 So we shown it is now possible to do 60fps web-based augmented reality on a phone. 
-This is great for sure but how did we get here ? *By standing on the shoulders of giants!**
-It is thanks to the hard work from others, that we can today reach those mythic 60fps AR.
+This is great for sure but how did we get here ? **By standing on the shoulders of giants!**
+It is thanks to the hard work from others, that we can today reach this mythic 60fps AR.
 So i would like to thanks :
 
 - **three.js** for being a great library to do 3d on the web.
 - **artoolkit!** years of development and experiences on doing augmented reality
-- **emscripten and asm.js*! thus we could compile artoolkit c into javascript
+- **emscripten and asm.js**! thus we could compile artoolkit c into javascript
 - **chromium**! thanks for being so fast!
 
 Only thanks to all of them, i could do my part : Optimizing performance from 5fps on high-end
@@ -51,13 +51,13 @@ i am all exited by what people are gonna with it :)
 # Phone Support
 
 It works on **any browser with WebGL and WebRTC**. This is the principle.
-So android works and window mobile works.
-It doesn't work on IOS unfortunately. safari IOS safari doesn't support WebRTC at the moment. 
-Apple is [currently working on it](https://webkit.org/status/#specification-webrtc ) tho. 
+Now the specifics: android works, window mobile works, IOS doesnt work unfortunatly.
+IOS safari doesn't support WebRTC at the moment. 
+Apple is [currently working on it](https://webkit.org/status/#specification-webrtc) tho. 
 
 It is the beginning of this project. 
 Here are some initial performance numbers just to give an idea. 
-It highly depends on how heavy your 3d is and what are your tuning of AR.js, so you milage may vary . 
+It highly depends on how heavy your 3d is and what are your tuning of AR.js, so you milage may vary. 
 That said they give a rough idea. 
 
 - I got 60fps stable on nexus6p
