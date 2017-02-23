@@ -195,6 +195,9 @@ git tag 1.0.0
 # push the tag on github
 git push origin --tags
 
+# update npm package.json
+npm publish
+
 # update the a-frame codepen 
 open "https://codepen.io/jeromeetienne/pen/mRqqzb?editors=1000#0"
 ```
