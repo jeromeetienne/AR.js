@@ -1,14 +1,14 @@
 # AR.js - Efficient Augmented Reality for the Web using ARToolKit
 
 I am focusing hard on making AR for the web a reality.
-This repository is where i publish the code.
+This repository is where I publish the code.
 Contact me anytime [@jerome_etienne](https://twitter.com/jerome_etienne).
 Stuff are still moving fast, We reached a good status tho.
-So i wanted to publish thus people can try it and have fun with it :)
+So I wanted to publish thus people can try it and have fun with it :)
 
 - **Very Fast** : it runs efficiently even on phones. [60 fps on my 2 year-old phone](https://twitter.com/jerome_etienne/status/831333879810236421)!
 - **Very Webby** : It is a pure web solution, so no installation required. Full javascript based on three.js + jsartoolkit5
-- **Free and Open** : It is completly open source and free of charge!
+- **Free and Open** : It is completely open source and free of charge!
 - **Pure Standards** : It works on any phone with [webgl](http://caniuse.com/#feat=webgl) and [webrtc](http://caniuse.com/#feat=stream)
 
 ![screenshot](https://cloud.githubusercontent.com/assets/252962/23068128/40343608-f51a-11e6-8cb3-900e37a7f658.jpg)
@@ -19,7 +19,7 @@ It is done in 2 easy steps :)
 1. Direct your android browser to [this url](https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html).
 2. Point your phone at a hiro marker. 
 
-You are done! It will open a webpage which read the phone webcam, localize an hiro marker 
+You are done! It will open a webpage which read the phone webcam, localize a hiro marker 
 and add 3d on top of it.
 Here is an example of [hiro marker](http://wibiwardhono.lecture.ub.ac.id/files/2015/01/HIRO.jpg).
 You can print the marker too or you can just display it on your desktop screen, like below.
@@ -67,8 +67,8 @@ a-frame Examples:
 - [marker-camera](https://jeromeetienne.github.io/AR.js/aframe/examples/marker-camera.html) : 
   a-frame example for marker-camera
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/marker-camera.html))
-- [multiple-independant-markers](https://jeromeetienne.github.io/AR.js/aframe/examples/multiple-independant-markers.html) : 
-  a-frame example for multiple-independant-markers
+- [multiple-independent-markers](https://jeromeetienne.github.io/AR.js/aframe/examples/multiple-independant-markers.html) : 
+  a-frame example for multiple-independent-markers
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/multiple-independant-markers.html))
 - [noinstall](https://jeromeetienne.github.io/AR.js/aframe/examples/noinstall.html) : 
   a-frame example for noinstall
@@ -112,7 +112,7 @@ That said they give a rough idea.
 
 - I got 60fps stable on nexus6p
 - Some reports [Sony Xperia Z2 (2.5 years old) runs around 50fps](https://twitter.com/leinadkalpot/status/834121238087925763) - this is a 170euro phone
-- Some reports [~50fps on a old nexus5, and ~60fps on nexus 9](https://twitter.com/Ellyll/status/834312442926751744) - nexus5 is 3.5 years old!
+- Some reports [~50fps on an old nexus5, and ~60fps on nexus 9](https://twitter.com/Ellyll/status/834312442926751744) - nexus5 is 3.5 years old!
 - Some reports it working on windows phone edge!! [13fps on Lumia 950](https://twitter.com/leinadkalpot/status/834299384510763012)
   Ok it is slow at the moment but still! it run on window phone, it is amazing :)
 
@@ -121,21 +121,21 @@ That said they give a rough idea.
 So we shown it is now possible to do 60fps web-based augmented reality on a phone. 
 This is great for sure but how did we get here ? By standing on the shoulders of giants!
 It is thanks to the hard work from others, that we can today reach those mythic 60fps AR.
-So i would like to thanks :
+So I would like to thanks :
 
 - three.js for being a great library to do 3d on the web.
 - artoolkit! years of development and experiences on doing augmented reality
 - emscripten and asm.j! thus we could compile artoolkit c into javascript
 - chromium browser! thanks for being so fast!
 
-Only thanks to all of them, i could do my part : Optimizing performance from 5fps on high-end
+Only thanks to all of them, I could do my part : Optimizing performance from 5fps on high-end
 phone, to 60fps on 2years old phone.
 
 After all this work done by a lot of people, we have it! 
 We have a web-based augmented reality library fast enough for mobile.
 Now, a lot of people got a phone powerful enough to do web AR in their pocket.
 I think this performance improvement make web AR a reality.
-i am all exited :)
+I am all excited :)
 
 # How To Release ?
 
