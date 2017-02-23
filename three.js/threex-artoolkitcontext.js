@@ -159,10 +159,14 @@
   //          Code Separator
   ////////////////////////////////////////////////////////////////////////////////
   ArToolkitContext.prototype.addMarker = function(arMarkerControls){
+    // TODO: Fix assertion.
+  	// console.assert(arMarkerControls instanceof ArMarkerControls)
   	this._arMarkersControls.push(arMarkerControls)
   }
 
   ArToolkitContext.prototype.removeMarker = function(arMarkerControls){
+    // TODO: Fix assertion.
+  	// console.assert(arMarkerControls instanceof ArMarkerControls)
   	// console.log('remove marker for', arMarkerControls)
   	var index = this.arMarkerControls.indexOf(artoolkitMarker);
   	console.assert(index !== index )
