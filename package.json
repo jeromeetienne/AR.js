@@ -1,0 +1,24 @@
+{
+  "name": "ar.js",
+  "version": "1.0.0",
+  "description": "Efficient Augmented Reality for the Web",
+  "main": "three.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeromeetienne/AR.js.git"
+  },
+  "keywords": [
+    "AR",
+    "VR",
+    "three.js"
+  ],
+  "author": "jerome.etienne@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jeromeetienne/AR.js/issues"
+  },
+  "homepage": "https://github.com/jeromeetienne/AR.js#readme"
+}
