@@ -51,7 +51,7 @@ i am all exited by what people are gonna with it :)
 # Phone Support
 
 It works on **any browser with WebGL and WebRTC**. This is the principle.
-Now the specifics: android works, window mobile works, IOS doesnt work unfortunatly.
+Now the specifics: android works, window mobile works, IOS doesnt work unfortunately.
 IOS safari doesn't support WebRTC at the moment. 
 Apple is [currently working on it](https://webkit.org/status/#specification-webrtc) tho. 
 
