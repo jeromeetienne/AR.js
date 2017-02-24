@@ -40,7 +40,7 @@
 		<script>
 ;(function(){
 	
-			if ( WEBVR.isLatestAvailable() === false ) {
+			if ( WEBVR.isAvailable() === false ) {
 
 				document.body.appendChild( WEBVR.getMessage() );
 
@@ -51,14 +51,8 @@
 			var clock = new THREE.Clock();
 
 			var container;
-			var camera, scene, raycaster, renderer;
+			var camera, scene, renderer;
 			var effect, controls;
-
-			var room;
-			var isMouseDown = false;
-
-			var INTERSECTED;
-			var crosshair;
 
 			init();
 			animate();
@@ -102,6 +96,17 @@
 				object.position.z = geometry.parameters.height/2
 				scene.add( object );
 
+			// 
+			var geometry = new THREE.BoxGeometry( 1,1,1 );
+			var material =  new THREE.MeshNormalMaterial( {
+				side : THREE.DoubleSide,
+				transparent : true,
+				opacity : 0.5
+			} )
+			var object = new THREE.Mesh( geometry, material);
+			object.position.z = 20
+			scene.add( object );
+			
 				renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
 				renderer.setClearColor( 0x505050 );
 				renderer.setClearColor(new THREE.Color('lightgrey'), 0)

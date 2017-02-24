@@ -17,7 +17,7 @@ So I wanted to publish thus people can try it and have fun with it :)
 It is done in 2 easy steps :)
 
 1. Direct your android browser to [this url](https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html).
-2. Point your phone at a hiro marker. 
+2. Point your phone at a hiro marker.
 
 You are done! It will open a webpage which read the phone webcam, localize a hiro marker 
 and add 3d on top of it.
@@ -64,8 +64,8 @@ That said they give a rough idea.
 - Some reports [Sony Xperia Z2 (2.5 years old) runs around 50fps](https://twitter.com/leinadkalpot/status/834121238087925763) - this is a 170euro phone
 - Some reports [~50fps on a old nexus5, and ~60fps on nexus 9](https://twitter.com/Ellyll/status/834312442926751744) - nexus5 is 3.5 years old!
 - Some reports it working on windows phone edge!! [13fps on Lumia 950](https://twitter.com/leinadkalpot/status/834299384510763012) for some.
-  [40-45fps still on lumia 930](https://twitter.com/fastclemmy/status/834817155665391616) for others
-  it run on window phone, it is amazing :)
+  [40-45fps still on lumia 930](https://twitter.com/fastclemmy/status/834817155665391616) for others.
+  i am still amazed it run on window phone :)
 
 # Status
 - At the three.js level is the main one. It is working well and efficiently
@@ -138,11 +138,21 @@ and [AR.js license](https://github.com/jeromeetienne/AR.js/blob/master/LICENSE.t
 # Change Log
 [CHANGELOG.md](https://github.com/jeromeetienne/AR.js/blob/master/CHANGELOG.md)
 
+# Futures
+- add webworkers
+- add the nft
+- handle sensor fusion with the IMU ?
+- IDEA: produce a single image able to do qr-code and pattern marker. https://twitter.com/nlehuen/status/834115970641829888
+  - about having an image able to do qr-code and pattern marker at the same time. If we have such image, we skip one step. 
+  - The person first acquire the qr-code with his phone, and then it goes to a webpage which is a webar application.
+  - thus the publisher only has to publish this on its ads, likely on paper ads in magazine or in the street.
+  - and the user can use his phone to immediatly see the related augmented reality
+
 # How To Release ?
 
 ```bash
 # replace REVISION to the proper version
-atom three.js/threex-artoolkitcontext.js
+atom three.js/threex-artoolkitcontext.js package.json
 
 # Rebuild a-frame and webvr-polyfill
 (cd aframe && make minify) && (cd webvr-polyfill && make minify)
