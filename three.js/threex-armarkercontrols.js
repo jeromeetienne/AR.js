@@ -33,7 +33,7 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 
 	// add this marker to artoolkitsystem
 	context.addMarker(this)
-	
+
 	// wait for arController to be initialized before going on with the init
 	var delayedInitTimerId = setInterval(function(){
 		// check if arController is init
@@ -46,7 +46,7 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 		_this._postInit()
 	}, 1000/50)
 	return
-	
+
 }
 
 THREEx.ArMarkerControls.prototype._postInit = function(){
@@ -61,7 +61,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
                 arController.loadMarker(_this.parameters.patternUrl, function(markerId) {
 			_this.markerId = markerId
                         arController.trackPatternMarkerId(_this.markerId, _this.parameters.size);
-                });				
+                });
 	}else if( _this.parameters.type === 'barcode' ){
 		_this.markerId = _this.parameters.barcodeValue
 		arController.trackBarcodeMarkerId(_this.markerId, _this.parameters.size);
@@ -71,7 +71,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 		console.log(false, 'invalid marker type', _this.parameters.type)
 	}
 
-	// listen to the event 
+	// listen to the event
 	arController.addEventListener('getMarker', function(event){
 
 		if( event.data.type === artoolkit.PATTERN_MARKER && _this.parameters.type === 'pattern' ){
@@ -91,13 +91,13 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 
 			// data.matrix is the model view matrix
 			var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
-			
+
 			// change markerObject3D.matrix based on parameters.changeMatrixMode
 			if( _this.parameters.changeMatrixMode === 'modelViewMatrix' ){
-				markerObject3D.matrix.copy(modelViewMatrix)						
+				markerObject3D.matrix.copy(modelViewMatrix)
 			}else if( _this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
 				var cameraTransformMatrix = new THREE.Matrix4().getInverse( modelViewMatrix )
-				markerObject3D.matrix.copy(cameraTransformMatrix)						
+				markerObject3D.matrix.copy(cameraTransformMatrix)
 			}else {
 				console.assert(false)
 			}
@@ -110,7 +110,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 
 THREEx.ArMarkerControls.dispose = function(){
 	this.context.removeMarker(this)
-	
+
 	// TODO remove the event listener if needed
 	// unloadMaker ???
 }
