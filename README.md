@@ -63,8 +63,9 @@ That said they give a rough idea.
 - I got 60fps stable on nexus6p
 - Some reports [Sony Xperia Z2 (2.5 years old) runs around 50fps](https://twitter.com/leinadkalpot/status/834121238087925763) - this is a 170euro phone
 - Some reports [~50fps on a old nexus5, and ~60fps on nexus 9](https://twitter.com/Ellyll/status/834312442926751744) - nexus5 is 3.5 years old!
-- Some reports it working on windows phone edge!! [13fps on Lumia 950](https://twitter.com/leinadkalpot/status/834299384510763012)
-  Ok it is slow at the moment but still! it run on window phone, it is amazing :)
+- Some reports it working on windows phone edge!! [13fps on Lumia 950](https://twitter.com/leinadkalpot/status/834299384510763012) for some.
+  [40-45fps still on lumia 930](https://twitter.com/fastclemmy/status/834817155665391616) for others
+  it run on window phone, it is amazing :)
 
 # Status
 - At the three.js level is the main one. It is working well and efficiently
