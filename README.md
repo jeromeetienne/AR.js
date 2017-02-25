@@ -17,7 +17,7 @@ So I wanted to publish thus people can try it and have fun with it :)
 It is done in 2 easy steps :)
 
 1. Direct your android browser to [this url](https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html).
-2. Point your phone at a hiro marker. 
+2. Point your phone at a hiro marker.
 
 You are done! It will open a webpage which read the phone webcam, localize a hiro marker 
 and add 3d on top of it.
@@ -63,8 +63,9 @@ That said they give a rough idea.
 - I got 60fps stable on nexus6p
 - Some reports [Sony Xperia Z2 (2.5 years old) runs around 50fps](https://twitter.com/leinadkalpot/status/834121238087925763) - this is a 170euro phone
 - Some reports [~50fps on a old nexus5, and ~60fps on nexus 9](https://twitter.com/Ellyll/status/834312442926751744) - nexus5 is 3.5 years old!
-- Some reports it working on windows phone edge!! [13fps on Lumia 950](https://twitter.com/leinadkalpot/status/834299384510763012)
-  Ok it is slow at the moment but still! it run on window phone, it is amazing :)
+- Some reports it working on windows phone edge!! [13fps on Lumia 950](https://twitter.com/leinadkalpot/status/834299384510763012) for some.
+  [40-45fps still on lumia 930](https://twitter.com/fastclemmy/status/834817155665391616) for others.
+  i am still amazed it run on window phone :)
 
 # Status
 - At the three.js level is the main one. It is working well and efficiently
@@ -86,6 +87,9 @@ Three.js Examples:
 - [mobile-performance](https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html) : 
   three.js example for mobile-performance
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/mobile-performance.html))
+- [profile](https://jeromeetienne.github.io/AR.js/three.js/examples/profile.html) : 
+  three.js example for artoolkit-profile
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/profile.html))
 
 a-frame Examples: 
 
@@ -137,51 +141,21 @@ and [AR.js license](https://github.com/jeromeetienne/AR.js/blob/master/LICENSE.t
 # Change Log
 [CHANGELOG.md](https://github.com/jeromeetienne/AR.js/blob/master/CHANGELOG.md)
 
-
-# Phone Support
-
-It works on **any browser with WebGL and WebRTC**. This is the principle.
-So android works and window mobile works.
-It doesn't work on IOS unfortunately. safari IOS safari doesn't support WebRTC at the moment. 
-Apple is [currently working on it](https://webkit.org/status/#specification-webrtc ) tho. 
-
-It is the beginning of this project. 
-Here are some initial performance numbers just to give an idea. 
-It highly depends on how heavy your 3d is and what are your tuning of AR.js, so you milage may vary . 
-That said they give a rough idea. 
-
-- I got 60fps stable on nexus6p
-- Some reports [Sony Xperia Z2 (2.5 years old) runs around 50fps](https://twitter.com/leinadkalpot/status/834121238087925763) - this is a 170euro phone
-- Some reports [~50fps on an old nexus5, and ~60fps on nexus 9](https://twitter.com/Ellyll/status/834312442926751744) - nexus5 is 3.5 years old!
-- Some reports it working on windows phone edge!! [13fps on Lumia 950](https://twitter.com/leinadkalpot/status/834299384510763012)
-  Ok it is slow at the moment but still! it run on window phone, it is amazing :)
-
-# Standing on the Shoulders of Giants
-
-So we shown it is now possible to do 60fps web-based augmented reality on a phone. 
-This is great for sure but how did we get here ? By standing on the shoulders of giants!
-It is thanks to the hard work from others, that we can today reach those mythic 60fps AR.
-So I would like to thanks :
-
-- three.js for being a great library to do 3d on the web.
-- artoolkit! years of development and experiences on doing augmented reality
-- emscripten and asm.j! thus we could compile artoolkit c into javascript
-- chromium browser! thanks for being so fast!
-
-Only thanks to all of them, I could do my part : Optimizing performance from 5fps on high-end
-phone, to 60fps on 2years old phone.
-
-After all this work done by a lot of people, we have it! 
-We have a web-based augmented reality library fast enough for mobile.
-Now, a lot of people got a phone powerful enough to do web AR in their pocket.
-I think this performance improvement make web AR a reality.
-I am all excited :)
+# Futures
+- add webworkers
+- add the nft
+- handle sensor fusion with the IMU ?
+- IDEA: produce a single image able to do qr-code and pattern marker. https://twitter.com/nlehuen/status/834115970641829888
+  - about having an image able to do qr-code and pattern marker at the same time. If we have such image, we skip one step. 
+  - The person first acquire the qr-code with his phone, and then it goes to a webpage which is a webar application.
+  - thus the publisher only has to publish this on its ads, likely on paper ads in magazine or in the street.
+  - and the user can use his phone to immediatly see the related augmented reality
 
 # How To Release ?
 
 ```bash
 # replace REVISION to the proper version
-atom three.js/threex-artoolkitcontext.js
+atom three.js/threex-artoolkitcontext.js package.json
 
 # Rebuild a-frame and webvr-polyfill
 (cd aframe && make minify) && (cd webvr-polyfill && make minify)

@@ -18,14 +18,21 @@
 
   	_this._updatedAt = null
 
-  	// handle default parameters
-  	this.parameters = {
-  		// debug - true if one should display artoolkit debug canvas, false otherwise
-  		debug: parameters.debug !== undefined ? parameters.debug : false,
-  		// the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
-  		detectionMode: parameters.detectionMode !== undefined ? parameters.detectionMode : 'color_and_matrix',
-  		// type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
-  		matrixCodeType: parameters.matrixCodeType !== undefined ? parameters.matrixCodeType : '3x3',
+		// tune the maximum rate of pose detection in the source image
+		maxDetectionRate: parameters.maxDetectionRate !== undefined ? parameters.maxDetectionRate : 60,
+		// resolution of at which we detect pose in the source image
+		sourceWidth: parameters.sourceWidth !== undefined ? parameters.sourceWidth : 640,
+		sourceHeight: parameters.sourceHeight !== undefined ? parameters.sourceHeight : 480,
+		
+		// enable image smoothing or not for canvas copy - default to true
+		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
+		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : true,
+	}
+	
+        this.arController = null;
+        this._cameraParameters = null
+	this._arMarkersControls = []
+}
 
   		// url of the camera parameters
   		cameraParametersUrl: parameters.cameraParametersUrl !== undefined ? parameters.cameraParametersUrl : ArToolkitContext.baseURL + 'parameters/camera_para.dat',
@@ -36,10 +43,26 @@
   		sourceWidth: parameters.sourceWidth !== undefined ? parameters.sourceWidth : 640,
   		sourceHeight: parameters.sourceHeight !== undefined ? parameters.sourceHeight : 480,
 
-  		// enable image smoothing or not for canvas copy - default to true
-  		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
-  		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : true,
-  	}
+        console.log('ArToolkitContext: _onSourceReady width', sourceWidth, 'height', sourceHeight)
+        _this._cameraParameters = new ARCameraParam(_this.parameters.cameraParametersUrl, function() {
+        	// init controller
+                var arController = new ARController(sourceWidth, sourceHeight, _this._cameraParameters);
+                _this.arController = arController
+                
+		arController.ctx.mozImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+		arController.ctx.webkitImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+		arController.ctx.msImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+		arController.ctx.imageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;			
+ 		
+		// honor this.parameters.debug
+                if( _this.parameters.debug === true ){
+			arController.debugSetup();
+			arController.canvas.style.position = 'absolute'
+			arController.canvas.style.top = '0px'
+			arController.canvas.style.opacity = '0.6'
+			arController.canvas.style.pointerEvents = 'none'
+			arController.canvas.style.zIndex = '-1'
+		}
 
           this.arController = null;
           this._cameraParameters = null

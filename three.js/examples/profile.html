@@ -61,11 +61,12 @@
 
 
 	var artoolkitProfile = new THREEx.ArToolkitProfile()
-	// artoolkitProfile.sourceWebcam().hiroMarker();
-	artoolkitProfile.sourceVideo('../../data/videos/headtracking.mp4').kanjiMarker();
-	// artoolkitProfile.sourceImage('../../data/images/img.jpg').hiroMarker();
-
-	artoolkitProfile.performance('slow');
+	artoolkitProfile.sourceWebcam().hiroMarker()
+	// artoolkitProfile.performance('desktop-fast')
+	// artoolkitProfile.sourceVideo('../../data/videos/headtracking.mp4').kanjiMarker();
+	// artoolkitProfile.sourceImage('../../data/images/img.jpg').hiroMarker()
+	// artoolkitProfile.discoverPerformance()
+	// artoolkitProfile.discoverPerformance()
 	
 
 	var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)

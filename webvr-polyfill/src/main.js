@@ -43,20 +43,25 @@
 	var webvrPolyfill = new WebVRPolyfill().install()
 	webvrPolyfill.setFrameDataProvider(arToolKitFrameData)	
 	
+	// // handle resize
+	// window.addEventListener('resize', function(){
+	// 	// handle arToolkitSource resize
+	// 	arToolkitSource.onResize(renderer.domElement)		
+	// })
+	
 	// TODO find a better way to handle the camera
 	// it should simply be in the webvr data
-	// - if one 
+	// - this is needed to fix the weird projection matrix of artoolkit
 	requestAnimationFrame(function loop(){
 		requestAnimationFrame(loop)
 		
-		var aScene = document.querySelector('a-scene')
-		if( aScene === null || aScene.camera === undefined )	return
-		var camera = aScene.camera
+		// var aScene = document.querySelector('a-scene')
+		// if( aScene === null || aScene.camera === undefined )	return
+		// var camera = aScene.camera
 
 		// console.log('window.camera', window.camera)
-		// var camera = window.camera
-		// if( camera === undefined )	return
-		
+		var camera = window.camera
+		if( camera === undefined )	return
 		
 		camera.projectionMatrix.copy(arToolKitFrameData._camera.projectionMatrix)
 
