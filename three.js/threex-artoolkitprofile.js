@@ -1,5 +1,15 @@
 var THREEx = THREEx || {}
 
+/**
+ * TODO
+ * - .setMarkerHiro()
+ * - .setMarkerKanji()
+ * - .setSourceWebcam()
+ * - .setSourceVideo(url)
+ * - .setSourceImage(url)
+ * - .setPerformance()
+ */
+
 THREEx.ArToolkitProfile = function(label){
 	if( label === 'guess' )	label = this._guessLabel()
 	
