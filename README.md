@@ -87,6 +87,9 @@ Three.js Examples:
 - [mobile-performance](https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html) : 
   three.js example for mobile-performance
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/mobile-performance.html))
+- [profile](https://jeromeetienne.github.io/AR.js/three.js/examples/profile.html) : 
+  three.js example for artoolkit-profile
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/profile.html))
 
 a-frame Examples: 
 

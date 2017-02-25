@@ -44,7 +44,7 @@ THREEx.ArToolkitContext.prototype.init = function(onCompleted){
 	var sourceWidth = this.parameters.sourceWidth
 	var sourceHeight = this.parameters.sourceHeight
 
-        console.log('ArToolkitContext: _onSourceReady width', sourceWidth, 'height', sourceHeight)
+        // console.log('ArToolkitContext: _onSourceReady width', sourceWidth, 'height', sourceHeight)
         _this._cameraParameters = new ARCameraParam(_this.parameters.cameraParametersUrl, function() {
         	// init controller
                 var arController = new ARController(sourceWidth, sourceHeight, _this._cameraParameters);
