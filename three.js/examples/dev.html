@@ -9,6 +9,7 @@
 <!-- include threex.artoolkit -->
 <script src="../threex-artoolkitsource.js"></script>
 <script src="../threex-artoolkitcontext.js"></script>
+<script src="../threex-artoolkitprofile.js"></script>
 <script src="../threex-armarkercontrols.js"></script>
 
 <body style='margin : 0px; overflow: hidden;'><div style='position: absolute; top: 10px; width:100%; text-align: center;';>
@@ -58,22 +59,10 @@
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
 
-	var arToolkitSource = new THREEx.ArToolkitSource({
-		// to read from the webcam 
-		sourceType : 'webcam',
-		
-		// to read from an image
-		// sourceType : 'image',
-		// sourceUrl : '../../data/images/img.jpg',		
 
-		// to read from a video
-		// sourceType : 'video',
-		// sourceUrl : '../../data/videos/headtracking.mp4',		
+	var artoolkitProfile = new THREEx.ArToolkitProfile('guess')
 
-		// sourceWidth: 80*3,
-		// sourceHeight: 60*3,
-		// 
-	})
+	var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)
 
 	arToolkitSource.init(function onReady(){
 		// handle resize of renderer
@@ -91,14 +80,7 @@
 	
 
 	// create atToolkitContext
-	var arToolkitContext = new THREEx.ArToolkitContext({
-		cameraParametersUrl: '../../data/data/camera_para.dat',
-		detectionMode: 'mono',
-		imageSmoothingEnabled: false,
-		maxDetectionRate: 30,
-		sourceWidth: arToolkitSource.parameters.sourceWidth,
-		sourceHeight: arToolkitSource.parameters.sourceHeight,
-	})
+	var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
 		// copy projection matrix to camera
@@ -120,11 +102,7 @@
 	
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
-	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
-		type : 'pattern',
-		patternUrl : '../../data/data/patt.hiro'
-		// patternUrl : '../../data/data/patt.kanji'
-	})
+	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, artoolkitProfile.defaultMarkerParameters)
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
