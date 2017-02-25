@@ -43,11 +43,11 @@
 	var webvrPolyfill = new WebVRPolyfill().install()
 	webvrPolyfill.setFrameDataProvider(arToolKitFrameData)	
 	
-	// handle resize
-	window.addEventListener('resize', function(){
-		// handle arToolkitSource resize
-		arToolkitSource.onResize(renderer.domElement)		
-	})
+	// // handle resize
+	// window.addEventListener('resize', function(){
+	// 	// handle arToolkitSource resize
+	// 	arToolkitSource.onResize(renderer.domElement)		
+	// })
 	
 	// TODO find a better way to handle the camera
 	// it should simply be in the webvr data

@@ -9,7 +9,7 @@
   - it will improve the accuracy of the marker detection. trackable from further away
 - do a threex-artoolkitprofile.js with various performance profile
   - var arToolKitProfile = new THREEx.ARToolKitProfile(type)
-  - may be dynamic 
+  - may be dynamic - for resolution - 'dynamic'
   - type = 'phoneInHand' || 'desktop'
   - thus the user can go a in profiler.html and try various profiles until he find the one he needs
   - then we store that in a cookie, and other applications all use this profile
