@@ -1,20 +1,30 @@
 - pack the TODO.md and all, then switch to webvr-polyfill until it works for three.js demo, then for a-frame demo
+- aframe/examples/demo.html is buggy
+  - TODO handle resize
+  - fix javascript exception
+  - find a new name e.g. parameters.html
+  - check you got all the parameters
 
-
-# TODO
-- fix projection camera which inversing y axis, and looking toward positive z
-  - this affect webvr polyfill in three.js demo. 
-- currently the source image ratio is always in 640x480 :(
-  - the aspect of the webcam should depends on the screens
-  - it will improve the accuracy of the marker detection. trackable from further away
+# Profile
 - do a threex-artoolkitprofile.js with various performance profile
   - var arToolKitProfile = new THREEx.ARToolKitProfile(type)
   - may be dynamic - for resolution - 'dynamic'
   - type = 'phoneInHand' || 'desktop'
   - thus the user can go a in profiler.html and try various profiles until he find the one he needs
   - then we store that in a cookie, and other applications all use this profile
-  - cookie makes it stored on the browser, need one profiler per domain tho
+  - cookie/localstorage makes it stored on the browser, need one profiler per domain tho
   - but no database and no authentication needed
+- DONE artoolkit-profile.html to store the profile in localstorage
+  - it allows you to select which profile you like
+  - it has a <select> and store it in the storage - desktop-normal - phone-normal - phone-slow - dynamic
+  - in ctor, if there is a local storage use this
+
+# TODO
+- fix projection camera which inversing y axis, and looking toward positive z
+  - this affect webvr polyfill in three.js demo
+- currently the source image ratio is always in 640x480 :(
+  - the aspect of the webcam should depends on the screens
+  - it will improve the accuracy of the marker detection. trackable from further away
 
 # Idea about performance - js profiling
 - do it on canary. this is the most advanced tool for that

@@ -2,8 +2,8 @@
 
 - Added logo by @tentone - [AR.js logo](https://github.com/jeromeetienne/AR.js/blob/master/data/logo/logo-black-transparent-1280x512.png)
 - Added a-frame logo in AR - [aframe-logo.html](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/aframe-logo.html)
-- added a npm package - npm install ar.js - 
-...
+- added a npm package - npm install ar.js
+- added a profile discovery. It helps choose the performance tradeoff which fit your case - [profile](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/profile.html)
 
 # 1.0.0 - AR.js has landed
 
@@ -15,7 +15,8 @@
 
 # 0.9.0 - Initial Release
 
-I worked a lot on WebAR. But i recently reached [60fps on mobile phones](https://twitter.com/jerome_etienne/status/831333879810236421).
+I worked a lot on WebAR.
+But i recently reached [60fps on mobile phones](https://twitter.com/jerome_etienne/status/831333879810236421).
 so i think WebAR is now ready to be released :)
 
 I will keep the usual branch model

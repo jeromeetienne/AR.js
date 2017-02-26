@@ -12,11 +12,22 @@
 <script src="../threex-artoolkitprofile.js"></script>
 <script src="../threex-armarkercontrols.js"></script>
 
-<body style='margin : 0px; overflow: hidden;'><div style='position: absolute; top: 10px; width:100%; text-align: center;';>
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
 	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - developement playground
 	<br/>
 	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
-</div><script>
+</div>
+<div style='position: absolute;bottom: 0;right: 0;background-color: rgba(255,255,255,0.4); padding: 1em; z-index: 1;'>
+	<label title='Select the profile you like'>Profile :
+		<select id='artoolkitProfile'>
+		  <option value="desktop-normal">desktop-normal</option> 
+		  <option value="phone-normal">phone-normal</option>
+		  <option value="phone-slow">phone-slow</option>
+		  <option value="dynamic" selected>dynamic</option>
+		</select>
+	</label>
+</div>
+<script>
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////
@@ -54,20 +65,43 @@
 	// Create a camera
 	var camera = new THREE.Camera();
 	scene.add(camera);
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		handle profile ui
+	//////////////////////////////////////////////////////////////////////////////
+
+	if( localStorage.getItem('artoolkitPerformanceProfile') !== null ){
+		var domElement = document.querySelector('#artoolkitProfile')
+		domElement.value = localStorage.getItem('artoolkitPerformanceProfile')
+	}
+
+	document.querySelector('#artoolkitProfile').addEventListener('change', function(){
+		var domElement = document.querySelector('#artoolkitProfile')
+		localStorage.setItem('artoolkitPerformanceProfile', domElement.value);
+		location.reload();
+	})
 
 	////////////////////////////////////////////////////////////////////////////////
-	//          handle arToolkitSource
+	//          handle ArToolkitProfile
 	////////////////////////////////////////////////////////////////////////////////
 
 
 	var artoolkitProfile = new THREEx.ArToolkitProfile()
 	artoolkitProfile.sourceWebcam().hiroMarker()
-	// artoolkitProfile.performance('desktop-fast')
-	// artoolkitProfile.sourceVideo('../../data/videos/headtracking.mp4').kanjiMarker();
+	artoolkitProfile.sourceVideo('../../data/videos/headtracking.mp4').kanjiMarker();
 	// artoolkitProfile.sourceImage('../../data/images/img.jpg').hiroMarker()
-	// artoolkitProfile.discoverPerformance()
-	// artoolkitProfile.discoverPerformance()
+	// artoolkitProfile.performance('desktop-fast')
 	
+	if( localStorage.getItem('artoolkitPerformanceProfile') !== null ){
+		var label = localStorage.getItem('artoolkitPerformanceProfile')
+		console.log('Using stored profile', label)
+		artoolkitProfile.performance(label)
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		handle arToolkitSource
+	//////////////////////////////////////////////////////////////////////////////
 
 	var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)
 
@@ -144,7 +178,7 @@
 	// render the scene
 	onRenderFcts.push(function(){
 		renderer.render( scene, camera );
-		// stats.update();
+		stats.update();
 	})
 
 	// run the rendering loop

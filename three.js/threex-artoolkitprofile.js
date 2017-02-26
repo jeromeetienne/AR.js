@@ -1,11 +1,25 @@
 var THREEx = THREEx || {}
 
-
+/**
+ * ArToolkitProfile helps you build parameters for artoolkit
+ * - it is fully independant of the rest of the code
+ * - all the other classes are still expecting normal parameters
+ * - you can use this class to understand how to tune your specific usecase
+ * - it is made to help people to build parameters without understanding all the underlying details.
+ */
 THREEx.ArToolkitProfile = function(){
-	this.reset().discoverPerformance()
+	this.reset()
+
+	this.performance('default')
 }
 
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
 
+/**
+ * reset all parameters
+ */
 THREEx.ArToolkitProfile.prototype.reset = function () {
 	this.sourceParameters = {
 		// to read from the webcam 
@@ -27,7 +41,7 @@ THREEx.ArToolkitProfile.prototype.reset = function () {
 //		Performance
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArToolkitProfile.prototype.discoverPerformance = function() {
+THREEx.ArToolkitProfile.prototype._guessPerformanceLabel = function() {
 	var isMobile = navigator.userAgent.match(/Android/i)
 			|| navigator.userAgent.match(/webOS/i)
 			|| navigator.userAgent.match(/iPhone/i)
@@ -37,13 +51,16 @@ THREEx.ArToolkitProfile.prototype.discoverPerformance = function() {
 			|| navigator.userAgent.match(/Windows Phone/i)
 			? true : false 
 	if( isMobile === true ){
-		this.performance('phone-normal')
-	}else{
-		this.performance('desktop-normal')	
+		return 'phone-normal'
 	}
+	return 'desktop-normal'
 }
 
 THREEx.ArToolkitProfile.prototype.performance = function(label) {
+	if( label === 'default' ){
+		label = this._guessPerformanceLabel()
+	}
+
 	if( label === 'desktop-fast' ){
 		this.sourceParameters.sourceWidth = 640*2
 		this.sourceParameters.sourceWidth = 480*2
