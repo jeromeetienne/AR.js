@@ -2,7 +2,7 @@
   "name": "ar.js",
   "version": "1.0.0",
   "description": "Efficient Augmented Reality for the Web",
-  "main": "three.js",
+  "main": "three.js/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
