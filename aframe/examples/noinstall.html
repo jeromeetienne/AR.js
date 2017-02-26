@@ -5,7 +5,7 @@
 	<!-- enable artoolkit on this scene -->
 	<a-scene embedded artoolkit='sourceType: webcam; cameraParametersUrl: https://rawgit.com/jeromeetienne/WebAR/master/data/data/camera_para.dat'>
 		<!-- define a marker -->
-		<a-marker>
+		<a-marker type='pattern' url='../../data/data/patt.hiro' size='1'>
 			<!-- define the object which gonna be put on this marker  -->
 			<a-box depth="1" height="1" width="1" position='0 0 0.5' material='opacity: 0.5; side:double'></a-box>
 			<a-entity geometry="primitive: torusKnot; radius: 0.3; radiusTubular: 0.05" position='0 0 0.5'>

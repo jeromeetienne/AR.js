@@ -4,7 +4,11 @@
   - fix javascript exception
   - find a new name e.g. parameters.html
   - check you got all the parameters
-  
+
+# fixing projectionMatrix
+- got something working in a-frame
+- understand it and port it directly in the threex
+
 # webvr-polyfill
 - GOAL: works well using only the positional tracking, not the stereo display
   - thus it works well with all three.js examples
