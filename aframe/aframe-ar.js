@@ -111,7 +111,7 @@ AFRAME.registerSystem('artoolkit', {
 		if( this.arToolkitSource.ready === false )	return
 
                 var projectionMatrixArr = this.arToolkitContext.arController.getCameraMatrix();
-                _this.sceneEl.camera.projectionMatrix.fromArray(projprojectionMatrixArrectionMatrix);
+                this.sceneEl.camera.projectionMatrix.fromArray(projectionMatrixArr);
 
 if( false ){
 	

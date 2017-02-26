@@ -59,17 +59,21 @@
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
 
+	var arToolkitSource = new THREEx.ArToolkitSource({
+		// to read from the webcam 
+		sourceType : 'webcam',
+		
+		// to read from an image
+		// sourceType : 'image',
+		// sourceUrl : '../../data/images/img.jpg',		
 
-	var artoolkitProfile = new THREEx.ArToolkitProfile()
-	artoolkitProfile.sourceWebcam().hiroMarker();
-	// artoolkitProfile.sourceVideo('../../data/videos/headtracking.mp4').kanjiMarker();
-	// artoolkitProfile.sourceImage('../../data/images/img.jpg').hiroMarker();
-
-	
-
-	var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)
+		// to read from a video
+		// sourceType : 'video',
+		// sourceUrl : '../../data/videos/headtracking.mp4',		
+	})
 
 	arToolkitSource.init(function onReady(){
+		console.log('source is ready')
 		// handle resize of renderer
 		arToolkitSource.onResize(renderer.domElement)		
 	})
@@ -78,14 +82,19 @@
 	window.addEventListener('resize', function(){
 		// handle arToolkitSource resize
 		arToolkitSource.onResize(renderer.domElement)		
-	})	
+	})
+
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
-	////////////////////////////////////////////////////////////////////////////////
-	
+	////////////////////////////////////////////////////////////////////////////////	
 
 	// create atToolkitContext
-	var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
+	var arToolkitContext = new THREEx.ArToolkitContext({
+		cameraParametersUrl: '../../data/data/camera_para.dat',
+		detectionMode: 'mono',
+		sourceWidth: arToolkitSource.parameters.sourceWidth,
+		sourceHeight: arToolkitSource.parameters.sourceHeight,
+	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
 		// copy projection matrix to camera
@@ -107,7 +116,11 @@
 	
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
-	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, artoolkitProfile.defaultMarkerParameters)
+	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
+		type : 'pattern',
+		patternUrl : '../../data/data/patt.hiro',
+		// patternUrl : '../../data/data/patt.kanji',
+	})
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
