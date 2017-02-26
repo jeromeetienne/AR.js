@@ -11,6 +11,10 @@
 <script src="../../three.js/threex-artoolkitsource.js"></script>
 <script src="../../three.js/threex-armarkercontrols.js"></script>
 
+<!-- threex minecraft -->
+<script src='vendor/threex.minecraft/a-frame/build/aframe-minecraft.min.js'></script>
+<script>THREEx.MinecraftChar.baseUrl = 'vendor/threex.minecraft/'</script>
+
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: fixed; top: 10px; width:inherit; text-align: center; z-index: 1;'>
 	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - example for a-frame
 	<br/>
@@ -20,6 +24,8 @@
 	<!-- <a-scene embedded artoolkit='sourceType: image; sourceUrl:../../data/images/armchair.jpg;'> -->
 	<a-scene embedded artoolkit='sourceType: webcam;'>
 	<!-- <a-scene artoolkit='sourceType: image; sourceUrl:../../data/images/screenshot.png'> -->
+	<!-- <a-scene artoolkit='sourceType: image; sourceUrl:../../data/images/img.jpg'> -->
+	<!-- <a-scene artoolkit='sourceType: webcam'> -->
 
 		<!-- <a-marker type='unknown'> -->
 		<a-marker type='pattern' url='../../data/data/patt.hiro'>

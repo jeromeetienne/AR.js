@@ -68,8 +68,8 @@
 		// sourceUrl : '../../data/images/img.jpg',		
 
 		// to read from a video
-		// sourceType : 'video',
-		// sourceUrl : '../../data/videos/headtracking.mp4',		
+		sourceType : 'video',
+		sourceUrl : '../../data/videos/headtracking.mp4',		
 	})
 
 	arToolkitSource.init(function onReady(){
@@ -98,8 +98,7 @@
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
 		// copy projection matrix to camera
-		var projectionMatrix = arToolkitContext.arController.getCameraMatrix();
-		camera.projectionMatrix.fromArray(projectionMatrix);
+		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
 	})
 
 	// update artoolkit on every frame
@@ -118,8 +117,8 @@
 	scene.add(markerRoot)
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
-		patternUrl : '../../data/data/patt.hiro',
-		// patternUrl : '../../data/data/patt.kanji',
+		// patternUrl : '../../data/data/patt.hiro',
+		patternUrl : '../../data/data/patt.kanji',
 	})
 
 	//////////////////////////////////////////////////////////////////////////////////

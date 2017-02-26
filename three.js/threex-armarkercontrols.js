@@ -92,6 +92,12 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 			// data.matrix is the model view matrix
 			var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
 
+			// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
+			var tmpMatrix = new THREE.Matrix4().copy(_this.context._axistransformMatrix)
+			tmpMatrix.multiply(modelViewMatrix)
+			modelViewMatrix.copy(tmpMatrix)
+
+
 			// change markerObject3D.matrix based on parameters.changeMatrixMode
 			if( _this.parameters.changeMatrixMode === 'modelViewMatrix' ){
 				markerObject3D.matrix.copy(modelViewMatrix)

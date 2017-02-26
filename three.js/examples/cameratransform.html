@@ -87,8 +87,7 @@
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
 		// copy projection matrix to camera
-		var projectionMatrix = arToolkitContext.arController.getCameraMatrix();
-		camera.projectionMatrix.fromArray(projectionMatrix);
+		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
 	})
 
 	// update artoolkit on every frame
