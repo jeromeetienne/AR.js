@@ -33,7 +33,7 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 
 	// add this marker to artoolkitsystem
 	context.addMarker(this)
-	
+
 	// wait for arController to be initialized before going on with the init
 	var delayedInitTimerId = setInterval(function(){
 		// check if arController is init
@@ -46,7 +46,7 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 		_this._postInit()
 	}, 1000/50)
 	return
-	
+
 }
 
 THREEx.ArMarkerControls.prototype._postInit = function(){
@@ -61,7 +61,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
                 arController.loadMarker(_this.parameters.patternUrl, function(markerId) {
 			_this.markerId = markerId
                         arController.trackPatternMarkerId(_this.markerId, _this.parameters.size);
-                });				
+                });
 	}else if( _this.parameters.type === 'barcode' ){
 		_this.markerId = _this.parameters.barcodeValue
 		arController.trackBarcodeMarkerId(_this.markerId, _this.parameters.size);
@@ -71,7 +71,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 		console.log(false, 'invalid marker type', _this.parameters.type)
 	}
 
-	// listen to the event 
+	// listen to the event
 	arController.addEventListener('getMarker', function(event){
 
 		if( event.data.type === artoolkit.PATTERN_MARKER && _this.parameters.type === 'pattern' ){
@@ -91,13 +91,21 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 
 			// data.matrix is the model view matrix
 			var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
-			
+
+		// var transformMatrix = new THREE.Matrix4()
+		// // transformMatrix.multiply(new THREE.Matrix4().makeRotationX(Math.PI))
+		// transformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
+		// transformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
+		// transformMatrix.multiply(modelViewMatrix)
+		// modelViewMatrix.copy(transformMatrix)
+
+
 			// change markerObject3D.matrix based on parameters.changeMatrixMode
 			if( _this.parameters.changeMatrixMode === 'modelViewMatrix' ){
-				markerObject3D.matrix.copy(modelViewMatrix)						
+				markerObject3D.matrix.copy(modelViewMatrix)
 			}else if( _this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
 				var cameraTransformMatrix = new THREE.Matrix4().getInverse( modelViewMatrix )
-				markerObject3D.matrix.copy(cameraTransformMatrix)						
+				markerObject3D.matrix.copy(cameraTransformMatrix)
 			}else {
 				console.assert(false)
 			}
@@ -110,7 +118,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 
 THREEx.ArMarkerControls.dispose = function(){
 	this.context.removeMarker(this)
-	
+
 	// TODO remove the event listener if needed
 	// unloadMaker ???
 }
@@ -141,7 +149,7 @@ THREEx.ArToolkitContext = function(parameters){
 		
 		// enable image smoothing or not for canvas copy - default to true
 		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
-		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : true,
+		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : false,
 	}
 	
         this.arController = null;
@@ -150,7 +158,7 @@ THREEx.ArToolkitContext = function(parameters){
 }
 
 THREEx.ArToolkitContext.baseURL = '../'
-THREEx.ArToolkitContext.REVISION = '1.0.0-dev'
+THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
@@ -160,7 +168,7 @@ THREEx.ArToolkitContext.prototype.init = function(onCompleted){
 	var sourceWidth = this.parameters.sourceWidth
 	var sourceHeight = this.parameters.sourceHeight
 
-        console.log('ArToolkitContext: _onSourceReady width', sourceWidth, 'height', sourceHeight)
+        // console.log('ArToolkitContext: _onSourceReady width', sourceWidth, 'height', sourceHeight)
         _this._cameraParameters = new ARCameraParam(_this.parameters.cameraParametersUrl, function() {
         	// init controller
                 var arController = new ARController(sourceWidth, sourceHeight, _this._cameraParameters);
@@ -272,6 +280,136 @@ THREEx.ArToolkitContext.prototype.removeMarker = function(arMarkerControls){
 	var index = this.arMarkerControlss.indexOf(artoolkitMarker);
 	console.assert(index !== index )
 	this._arMarkersControls.splice(index, 1)
+}
+var THREEx = THREEx || {}
+
+/**
+ * ArToolkitProfile helps you build parameters for artoolkit
+ * - it is fully independant of the rest of the code
+ * - all the other classes are still expecting normal parameters
+ * - you can use this class to understand how to tune your specific usecase
+ * - it is made to help people to build parameters without understanding all the underlying details.
+ */
+THREEx.ArToolkitProfile = function(){
+	this.reset()
+
+	this.performance('default')
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+
+/**
+ * reset all parameters
+ */
+THREEx.ArToolkitProfile.prototype.reset = function () {
+	this.sourceParameters = {
+		// to read from the webcam 
+		sourceType : 'webcam',
+	}
+
+	this.contextParameters = {
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
+		detectionMode: 'mono',
+	}
+	this.defaultMarkerParameters = {
+		type : 'pattern',
+		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+	}
+	return this
+};
+
+//////////////////////////////////////////////////////////////////////////////
+//		Performance
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.ArToolkitProfile.prototype._guessPerformanceLabel = function() {
+	var isMobile = navigator.userAgent.match(/Android/i)
+			|| navigator.userAgent.match(/webOS/i)
+			|| navigator.userAgent.match(/iPhone/i)
+			|| navigator.userAgent.match(/iPad/i)
+			|| navigator.userAgent.match(/iPod/i)
+			|| navigator.userAgent.match(/BlackBerry/i)
+			|| navigator.userAgent.match(/Windows Phone/i)
+			? true : false 
+	if( isMobile === true ){
+		return 'phone-normal'
+	}
+	return 'desktop-normal'
+}
+
+THREEx.ArToolkitProfile.prototype.performance = function(label) {
+	if( label === 'default' ){
+		label = this._guessPerformanceLabel()
+	}
+
+	if( label === 'desktop-fast' ){
+		this.sourceParameters.sourceWidth = 640*2
+		this.sourceParameters.sourceWidth = 480*2
+
+		this.contextParameters.maxDetectionRate = 60
+	}else if( label === 'desktop-normal' ){
+		this.sourceParameters.sourceWidth = 640
+		this.sourceParameters.sourceWidth = 480
+
+		this.contextParameters.maxDetectionRate = 60
+	}else if( label === 'phone-normal' ){
+		this.sourceParameters.sourceWidth = 240
+		this.sourceParameters.sourceWidth = 180
+
+		this.contextParameters.maxDetectionRate = 30	
+	}else if( label === 'phone-slow' ){
+		this.sourceParameters.sourceWidth = 240
+		this.sourceParameters.sourceWidth = 180
+
+		this.contextParameters.maxDetectionRate = 15		
+	}else {
+		console.assert(false, 'unknonwn label '+label)
+	}
+	this.contextParameters.sourceWidth = this.sourceParameters.sourceWidth	
+	this.contextParameters.sourceHeight = this.sourceParameters.sourceHeight	
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Marker
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArToolkitProfile.prototype.kanjiMarker = function () {
+	this.contextParameters.detectionMode = 'mono'
+
+	this.defaultMarkerParameters.type = 'pattern'
+	this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji'
+	return this
+}
+
+THREEx.ArToolkitProfile.prototype.hiroMarker = function () {
+	this.contextParameters.detectionMode = 'mono'
+
+	this.defaultMarkerParameters.type = 'pattern'
+	this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+	return this
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Source
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArToolkitProfile.prototype.sourceWebcam = function () {
+	this.sourceParameters.sourceType = 'webcam'
+	delete this.sourceParameters.sourceUrl
+	return this
+}
+
+
+THREEx.ArToolkitProfile.prototype.sourceVideo = function (url) {
+	this.sourceParameters.sourceType = 'video'
+	this.sourceParameters.sourceUrl = url
+	return this
+}
+
+THREEx.ArToolkitProfile.prototype.sourceImage = function (url) {
+	this.sourceParameters.sourceType = 'image'
+	this.sourceParameters.sourceUrl = url
+	return this
 }
 var THREEx = THREEx || {}
 
@@ -583,7 +721,7 @@ AFRAME.registerSystem('artoolkit', {
 			// kludge to write a 'resize' event
 			var startedAt = Date.now()
 			function tick(){
-				if( Date.now() - startedAt > 2*1000 )	return 
+				if( Date.now() - startedAt > 10*1000 )	return 
 				window.dispatchEvent(new Event('resize'));
 				setTimeout(tick, 1000/60)
 			}
@@ -616,18 +754,39 @@ AFRAME.registerSystem('artoolkit', {
 		// initialize it
 		arToolkitContext.init(function onCompleted(){
 			// // copy projection matrix to camera
-                        // var projectionMatrix = arToolkitContext.arController.getCameraMatrix();
-                        // _this.sceneEl.camera.projectionMatrix.fromArray(projectionMatrix);
+                        // var projectionMatrixArr = arToolkitContext.arController.getCameraMatrix();
+                        // _this.sceneEl.camera.projectionMatrix.fromArray(projprojectionMatrixArrectionMatrix);
 		})
 	},
 	
         tick : function(now, delta){
 		if( this.arToolkitSource.ready === false )	return
-// console.log('tick')
+
+                var projectionMatrixArr = this.arToolkitContext.arController.getCameraMatrix();
+                _this.sceneEl.camera.projectionMatrix.fromArray(projprojectionMatrixArrectionMatrix);
+
+if( false ){
+	
 		// update projectionMatrix
 		// NOTE: is it because the projectionMatrix is set in arToolkitContext.init is overwritten by a-frames
-                var projectionMatrix = this.arToolkitContext.arController.getCameraMatrix();
-                this.sceneEl.camera.projectionMatrix.fromArray(projectionMatrix);
+                var projectionMatrixArr = this.arToolkitContext.arController.getCameraMatrix();
+		
+		var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)
+		
+
+		var transformMatrix = new THREE.Matrix4()
+		// transformMatrix.multiply(new THREE.Matrix4().makeRotationX(Math.PI))
+		// transformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
+		// transformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
+
+
+		// transformMatrix.multiply(projectionMatrix)
+		// this.sceneEl.camera.projectionMatrix.copy(transformMatrix)
+
+		projectionMatrix.multiply(transformMatrix)
+		this.sceneEl.camera.projectionMatrix.copy(projectionMatrix)
+}
+		
 
 		this.arToolkitContext.update( this.arToolkitSource.domElement )
 	},

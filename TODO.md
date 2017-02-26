@@ -4,6 +4,16 @@
   - fix javascript exception
   - find a new name e.g. parameters.html
   - check you got all the parameters
+  
+# webvr-polyfill
+- GOAL: works well using only the positional tracking, not the stereo display
+  - thus it works well with all three.js examples
+- handle resize - currently the canvas isnt using the css it should
+  - canvas is sent to the webvr with .requestPresent(layer)
+- webvr polyfill to present in single screen - like smus/webvr-polyfill
+  - look at his tuning and do the same
+- issue with the projection matrix being inverse in y and z
+- LATER: make it work with a-frame
 
 # Profile
 - do a threex-artoolkitprofile.js with various performance profile

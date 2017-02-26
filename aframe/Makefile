@@ -1,5 +1,5 @@
 watch: build
-	fswatch -0 *.js | xargs -0 -n 1 -I {} make build
+	fswatch -0 *.js ../three.js/*.js | xargs -0 -n 1 -I {} make build
 	
 .PHONY: build
 build:

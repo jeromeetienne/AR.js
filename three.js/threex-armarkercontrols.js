@@ -92,6 +92,14 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 			// data.matrix is the model view matrix
 			var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
 
+		// var transformMatrix = new THREE.Matrix4()
+		// // transformMatrix.multiply(new THREE.Matrix4().makeRotationX(Math.PI))
+		// transformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
+		// transformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
+		// transformMatrix.multiply(modelViewMatrix)
+		// modelViewMatrix.copy(transformMatrix)
+
+
 			// change markerObject3D.matrix based on parameters.changeMatrixMode
 			if( _this.parameters.changeMatrixMode === 'modelViewMatrix' ){
 				markerObject3D.matrix.copy(modelViewMatrix)
