@@ -97,7 +97,8 @@ THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
 	domElement.muted = true
 
 	// trick to trigger the video on android
-	document.body.addEventListener('click', function(){
+	document.body.addEventListener('click', function onClick(){
+		document.body.removeEventListener(onClick);
 		domElement.play()
 	})
 
