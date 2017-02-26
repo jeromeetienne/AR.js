@@ -98,7 +98,7 @@ THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
 
 	// trick to trigger the video on android
 	document.body.addEventListener('click', function onClick(){
-		document.body.removeEventListener(onClick);
+		document.body.removeEventListener('click', onClick);
 		domElement.play()
 	})
 
