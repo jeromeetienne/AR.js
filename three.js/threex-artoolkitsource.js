@@ -13,245 +13,162 @@
     root.THREEx.ArToolkitSource = factory();
   }
 }(this, function() {
-  var ArToolkitSource = function(parameters) {
-    // handle default parameters
-    this.parameters = {
-      // type of source - ['webcam', 'image', 'video']
-      sourceType: parameters.sourceType !== undefined ? parameters.sourceType : 'webcam',
-      // url of the source - valid if sourceType = image|video
-      sourceUrl: parameters.sourceUrl !== undefined ? parameters.sourceUrl : null,
+  var ArToolkitContext = function(parameters){
+  	var _this = this
 
-      // resolution of at which we detect pose in the source image
-      sourceWidth: parameters.sourceWidth !== undefined ? parameters.sourceWidth : 640,
-      sourceHeight: parameters.sourceHeight !== undefined ? parameters.sourceHeight : 480,
-      // resolution displayed for the source
-      displayWidth: parameters.displayWidth !== undefined ? parameters.displayWidth : 640,
-      displayHeight: parameters.displayHeight !== undefined ? parameters.displayHeight : 480,
-    }
+  	_this._updatedAt = null
 
-    this.ready = false
-    this.domElement = null
+  	// handle default parameters
+  	this.parameters = {
+  		// debug - true if one should display artoolkit debug canvas, false otherwise
+  		debug: parameters.debug !== undefined ? parameters.debug : false,
+  		// the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
+  		detectionMode: parameters.detectionMode !== undefined ? parameters.detectionMode : 'color_and_matrix',
+  		// type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
+  		matrixCodeType: parameters.matrixCodeType !== undefined ? parameters.matrixCodeType : '3x3',
+
+  		// url of the camera parameters
+  		cameraParametersUrl: parameters.cameraParametersUrl !== undefined ? parameters.cameraParametersUrl : ArToolkitContext.baseURL + 'parameters/camera_para.dat',
+
+  		// tune the maximum rate of pose detection in the source image
+  		maxDetectionRate: parameters.maxDetectionRate !== undefined ? parameters.maxDetectionRate : 60,
+  		// resolution of at which we detect pose in the source image
+  		sourceWidth: parameters.sourceWidth !== undefined ? parameters.sourceWidth : 640,
+  		sourceHeight: parameters.sourceHeight !== undefined ? parameters.sourceHeight : 480,
+
+  		// enable image smoothing or not for canvas copy - default to true
+  		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
+  		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : false,
+  	}
+
+          this.arController = null;
+          this._cameraParameters = null
+  	this._arMarkersControls = []
   }
+
+  ArToolkitContext.baseURL = '../'
+  ArToolkitContext.REVISION = '1.0.1-dev'
 
   //////////////////////////////////////////////////////////////////////////////
   //		Code Separator
   //////////////////////////////////////////////////////////////////////////////
-  ArToolkitSource.prototype.init = function(onReady) {
-    var _this = this
+  ArToolkitContext.prototype.init = function(onCompleted){
+          var _this = this
+  	var sourceWidth = this.parameters.sourceWidth
+  	var sourceHeight = this.parameters.sourceHeight
 
-    if (this.parameters.sourceType === 'image') {
-      var domElement = this._initSourceImage(onSourceReady)
-    } else if (this.parameters.sourceType === 'video') {
-      var domElement = this._initSourceVideo(onSourceReady)
-    } else if (this.parameters.sourceType === 'webcam') {
-      var domElement = this._initSourceWebcam(onSourceReady)
-    } else {
-      console.assert(false)
-    }
+          // console.log('ArToolkitContext: _onSourceReady width', sourceWidth, 'height', sourceHeight)
+          _this._cameraParameters = new ARCameraParam(_this.parameters.cameraParametersUrl, function() {
+          	// init controller
+                  var arController = new ARController(sourceWidth, sourceHeight, _this._cameraParameters);
+                  _this.arController = arController
 
-    // attach
-    this.domElement = domElement
-    this.domElement.style.position = 'absolute'
-    this.domElement.style.top = '0px'
-    this.domElement.style.zIndex = '-2'
-    this.domElement.style.zIndex = '-2'
+  		arController.ctx.mozImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+  		arController.ctx.webkitImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+  		arController.ctx.msImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+  		arController.ctx.imageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
 
-    return this
+  		// honor this.parameters.debug
+                  if( _this.parameters.debug === true ){
+  			arController.debugSetup();
+  			arController.canvas.style.position = 'absolute'
+  			arController.canvas.style.top = '0px'
+  			arController.canvas.style.opacity = '0.6'
+  			arController.canvas.style.pointerEvents = 'none'
+  			arController.canvas.style.zIndex = '-1'
+  		}
 
-    function onSourceReady() {
-      document.body.appendChild(_this.domElement);
+  		// setPatternDetectionMode
+  		var detectionModes = {
+  			'color'			: artoolkit.AR_TEMPLATE_MATCHING_COLOR,
+  			'color_and_matrix'	: artoolkit.AR_TEMPLATE_MATCHING_COLOR_AND_MATRIX,
+  			'mono'			: artoolkit.AR_TEMPLATE_MATCHING_MONO,
+  			'mono_and_matrix'	: artoolkit.AR_TEMPLATE_MATCHING_MONO_AND_MATRIX,
+  		}
+  		var detectionMode = detectionModes[_this.parameters.detectionMode]
+  		console.assert(detectionMode !== undefined)
+  		arController.setPatternDetectionMode(detectionMode);
 
-      _this.ready = true
-      console.log('completed')
-      onReady && onReady()
-    }
+  		// setMatrixCodeType
+  		var matrixCodeTypes = {
+  			'3x3'		: artoolkit.AR_MATRIX_CODE_3x3,
+  			'3x3_HAMMING63'	: artoolkit.AR_MATRIX_CODE_3x3_HAMMING63,
+  			'3x3_PARITY65'	: artoolkit.AR_MATRIX_CODE_3x3_PARITY65,
+  			'4x4'		: artoolkit.AR_MATRIX_CODE_4x4,
+  			'4x4_BCH_13_9_3': artoolkit.AR_MATRIX_CODE_4x4_BCH_13_9_3,
+  			'4x4_BCH_13_5_5': artoolkit.AR_MATRIX_CODE_4x4_BCH_13_5_5,
+  		}
+  		var matrixCodeType = matrixCodeTypes[_this.parameters.matrixCodeType]
+  		console.assert(matrixCodeType !== undefined)
+  		arController.setMatrixCodeType(matrixCodeType);
+
+  		// console.warn('arController fully initialized')
+
+  		// notify
+                  onCompleted && onCompleted()
+          })
+  	return this
   }
 
   ////////////////////////////////////////////////////////////////////////////////
-  //          init image source
+  //          Code Separator
   ////////////////////////////////////////////////////////////////////////////////
+  ArToolkitContext.prototype.update = function(srcElement){
+  	// be sure arController is fully initialized
+          var arController = this.arController
+          if (!arController) return false;
+
+  	// honor this.parameters.maxDetectionRate
+  	var present = performance.now()
+  	if( this._updatedAt !== null && present - this._updatedAt < 1000/this.parameters.maxDetectionRate ){
+  		return false
+  	}
+  	this._updatedAt = present
+
+  	// TODO put this in arToolkitContext
+  	// var video = arToolkitContext.srcElement
+  	// if( video.currentTime === lastTime ){
+  	// 	console.log('skip this frame')
+  	// 	return
+  	// }
+  	// lastTime = video.currentTime
+
+  	// if( video.readyState < video.HAVE_CURRENT_DATA ) {
+  	// 	console.log('skip this frame')
+  	// 	return
+  	// }
+
+  	// arToolkitContext.srcElement.addEventListener('timeupdate', function(){
+  	// 	console.log('timeupdate', arguments, Date())
+  	// })
 
 
-  ArToolkitSource.prototype._initSourceImage = function(onReady) {
-    // TODO make it static
-    var domElement = document.createElement('img')
-    domElement.src = this.parameters.sourceUrl
+  	// mark all markers to invisible before processing this frame
+  	this._arMarkersControls.forEach(function(markerControls){
+  		markerControls.object3d.visible = false
+  	})
 
-    domElement.width = this.parameters.sourceWidth
-    domElement.height = this.parameters.sourceHeight
-    domElement.style.width = this.parameters.displayWidth + 'px'
-    domElement.style.height = this.parameters.displayHeight + 'px'
+  	// process this frame
+  	arController.process(srcElement)
 
-    // wait until the video stream is ready
-    var interval = setInterval(function() {
-      if (!domElement.naturalWidth) return;
-      onReady()
-      clearInterval(interval)
-    }, 1000 / 50);
-
-    return domElement
+  	// return true as we processed the frame
+  	return true;
   }
 
   ////////////////////////////////////////////////////////////////////////////////
-  //          init video source
+  //          Code Separator
   ////////////////////////////////////////////////////////////////////////////////
-
-
-  ArToolkitSource.prototype._initSourceVideo = function(onReady) {
-    // TODO make it static
-    var domElement = document.createElement('video');
-    domElement.src = this.parameters.sourceUrl
-
-    domElement.style.objectFit = 'initial'
-
-    domElement.autoplay = true;
-    domElement.webkitPlaysinline = true;
-    domElement.controls = false;
-    domElement.loop = true;
-    domElement.muted = true
-
-    // trick to trigger the video on android
-    document.body.addEventListener('click', function() {
-      domElement.play()
-    })
-
-    domElement.width = this.parameters.sourceWidth
-    domElement.height = this.parameters.sourceHeight
-    domElement.style.width = this.parameters.displayWidth + 'px'
-    domElement.style.height = this.parameters.displayHeight + 'px'
-
-    // wait until the video stream is ready
-    var interval = setInterval(function() {
-      if (!domElement.videoWidth) return;
-      onReady()
-      clearInterval(interval)
-    }, 1000 / 50);
-    return domElement
+  ArToolkitContext.prototype.addMarker = function(arMarkerControls){
+  	// console.assert(arMarkerControls instanceof ArMarkerControls)
+  	this._arMarkersControls.push(arMarkerControls)
   }
 
-  ////////////////////////////////////////////////////////////////////////////////
-  //          handle webcam source
-  ////////////////////////////////////////////////////////////////////////////////
-
-
-  ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
-    var _this = this
-    // TODO make it static
-    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-
-    var domElement = document.createElement('video');
-    domElement.style.width = this.parameters.displayWidth + 'px'
-    domElement.style.height = this.parameters.displayHeight + 'px'
-
-
-    if (navigator.getUserMedia == false) console.log("navigator.getUserMedia not present in your browser");
-
-    navigator.mediaDevices.enumerateDevices().then(function(devices) {
-      // define getUserMedia() constraints
-      var constraints = {
-        audio: false,
-        video: {
-          mandatory: {
-            maxWidth: _this.parameters.sourceWidth,
-            maxHeight: _this.parameters.sourceHeight
-          }
-        }
-      }
-
-      devices.forEach(function(device) {
-        if (device.kind !== 'videoinput') return
-        constraints.video.optional = [{
-          sourceId: device.deviceId
-        }]
-      });
-
-      // OLD API
-      // it it finds the videoSource 'environment', modify constraints.video
-      // for (var i = 0; i != sourceInfos.length; ++i) {
-      //         var sourceInfo = sourceInfos[i];
-      //         if(sourceInfo.kind == "video" && sourceInfo.facing == "environment") {
-      //                 constraints.video.optional = [{sourceId: sourceInfo.id}]
-      //         }
-      // }
-
-      navigator.getUserMedia(constraints, function success(stream) {
-        console.log('success', stream);
-        domElement.src = window.URL.createObjectURL(stream);
-        // to start the video, when it is possible to start it only on userevent. like in android
-        document.body.addEventListener('click', function() {
-          domElement.play();
-        })
-        domElement.play();
-
-        // wait until the video stream is ready
-        var interval = setInterval(function() {
-          if (!domElement.videoWidth) return;
-          onReady()
-          clearInterval(interval)
-        }, 1000 / 50);
-      }, function(error) {
-        console.log("Can't access user media", error);
-        alert("Can't access user media :()");
-      });
-    }).catch(function(err) {
-      console.log(err.name + ": " + err.message);
-    });
-
-    return domElement
-  }
-
-  ////////////////////////////////////////////////////////////////////////////////
-  //          handle resize
-  ////////////////////////////////////////////////////////////////////////////////
-
-  ArToolkitSource.prototype.onResize = function(rendererDomElement) {
-    var screenWidth = window.innerWidth
-    var screenHeight = window.innerHeight
-
-    // compute sourceWidth, sourceHeight
-    if (this.domElement.nodeName === "IMG") {
-      var sourceWidth = this.domElement.naturalWidth
-      var sourceHeight = this.domElement.naturalHeight
-    } else if (this.domElement.nodeName === "VIDEO") {
-      var sourceWidth = this.domElement.videoWidth
-      var sourceHeight = this.domElement.videoHeight
-    } else {
-      console.assert(false)
-    }
-
-    // compute sourceAspect
-    var sourceAspect = sourceWidth / sourceHeight
-    // compute screenAspect
-    var screenAspect = screenWidth / screenHeight
-
-    // if screenAspect < sourceAspect, then change the width, else change the height
-    if (screenAspect < sourceAspect) {
-      // compute newWidth and set .width/.marginLeft
-      var newWidth = sourceAspect * screenHeight
-      this.domElement.style.width = newWidth + 'px'
-      this.domElement.style.marginLeft = -(newWidth - screenWidth) / 2 + 'px'
-
-      // init style.height/.marginTop to normal value
-      this.domElement.style.height = screenHeight + 'px'
-      this.domElement.style.marginTop = '0px'
-    } else {
-      // compute newHeight and set .height/.marginTop
-      var newHeight = 1 / (sourceAspect / screenWidth)
-      this.domElement.style.height = newHeight + 'px'
-      this.domElement.style.marginTop = -(newHeight - screenHeight) / 2 + 'px'
-
-      // init style.width/.marginLeft to normal value
-      this.domElement.style.width = screenWidth + 'px'
-      this.domElement.style.marginLeft = '0px'
-    }
-
-    if (rendererDomElement !== undefined) {
-      // copy arToolkitSource.domElement position to renderer.domElement
-      rendererDomElement.style.width = this.domElement.style.width
-      rendererDomElement.style.height = this.domElement.style.height
-      rendererDomElement.style.marginLeft = this.domElement.style.marginLeft
-      rendererDomElement.style.marginTop = this.domElement.style.marginTop
-    }
+  ArToolkitContext.prototype.removeMarker = function(arMarkerControls){
+  	// console.assert(arMarkerControls instanceof ArMarkerControls)
+  	// console.log('remove marker for', arMarkerControls)
+  	var index = this.arMarkerControlss.indexOf(artoolkitMarker);
+  	console.assert(index !== index )
+  	this._arMarkersControls.splice(index, 1)
   }
 
   return ArToolkitSource;
