@@ -1,9 +1,8 @@
-<!DOCTYPE html>
 <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
-<script src="https://rawgit.com/jeromeetienne/WebAR/master/aframe/build/aframe-ar.js"></script>
+<script src="https://rawgit.com/jeromeetienne/ar.js/master/aframe/build/aframe-ar.js"></script>
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
 	<!-- enable artoolkit on this scene -->
-	<a-scene embedded artoolkit='sourceType: webcam; cameraParametersUrl: https://rawgit.com/jeromeetienne/WebAR/master/data/data/camera_para.dat'>
+	<a-scene embedded artoolkit='sourceType: webcam; cameraParametersUrl: https://rawgit.com/jeromeetienne/ar.js/master/data/data/camera_para.dat'>
 		<!-- define a marker -->
 		<a-marker type='pattern' url='../../data/data/patt.hiro' size='1'>
 			<!-- define the object which gonna be put on this marker  -->

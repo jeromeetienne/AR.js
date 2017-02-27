@@ -530,7 +530,8 @@ THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
 	domElement.muted = true
 
 	// trick to trigger the video on android
-	document.body.addEventListener('click', function(){
+	document.body.addEventListener('click', function onClick(){
+		document.body.removeEventListener('click', onClick);
 		domElement.play()
 	})
 
@@ -786,7 +787,9 @@ AFRAME.registerSystem('artoolkit', {
                 // this.sceneEl.camera.projectionMatrix.fromArray(projectionMatrixArr);
 
 		// copy projection matrix to camera
-		this.sceneEl.camera.projectionMatrix.copy( this.arToolkitContext.getProjectionMatrix() );
+		if( this.arToolkitContext.arController !== null ){
+			this.sceneEl.camera.projectionMatrix.copy( this.arToolkitContext.getProjectionMatrix() );
+		}
 
 // if( true ){
 // 	

@@ -114,7 +114,9 @@ AFRAME.registerSystem('artoolkit', {
                 // this.sceneEl.camera.projectionMatrix.fromArray(projectionMatrixArr);
 
 		// copy projection matrix to camera
-		this.sceneEl.camera.projectionMatrix.copy( this.arToolkitContext.getProjectionMatrix() );
+		if( this.arToolkitContext.arController !== null ){
+			this.sceneEl.camera.projectionMatrix.copy( this.arToolkitContext.getProjectionMatrix() );
+		}
 
 // if( true ){
 // 	
