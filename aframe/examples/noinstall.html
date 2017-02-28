@@ -1,17 +1,28 @@
+<!-- include aframe -->
 <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+<!-- include ar.js -->
 <script src="https://rawgit.com/jeromeetienne/ar.js/master/aframe/build/aframe-ar.js"></script>
-<body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
-	<!-- enable artoolkit on this scene -->
+<script>THREEx.ArToolkitContext.baseURL = 'https://rawgit.com/jeromeetienne/ar.js/master/three.js****/*/'</script>
+
+<body style='margin : 0px; overflow: hidden;'>
+
+	<!-- define the scene - enable artoolkit webcam -->
 	<a-scene embedded artoolkit='sourceType: webcam; cameraParametersUrl: https://rawgit.com/jeromeetienne/ar.js/master/data/data/camera_para.dat'>
-		<!-- define a marker -->
-		<a-marker type='pattern' url='../../data/data/patt.hiro' size='1'>
-			<!-- define the object which gonna be put on this marker  -->
+
+		<!-- define a marker with a hiro -->
+		<a-marker type='pattern' url='https://rawgit.com/jeromeetienne/ar.js/master/data/data/patt.hiro'>
+
+			<!-- define the object which gonna appears on this marker  -->
 			<a-box depth="1" height="1" width="1" position='0 0 0.5' material='opacity: 0.5; side:double'></a-box>
 			<a-entity geometry="primitive: torusKnot; radius: 0.3; radiusTubular: 0.05" position='0 0 0.5'>
 				<a-animation attribute="rotation" from="0 0 0" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
 			</a-entity>
+
 		</a-marker>
+
 		<!-- define a simple camera -->
 		<a-entity camera></a-entity>
+
 	</a-scene>
+
 </body>

@@ -7,22 +7,26 @@ Stuff are still moving fast, We reached a good status tho.
 So I wanted to publish thus people can try it and have fun with it :)
 
 - **Very Fast** : it runs efficiently even on phones. [60 fps on my 2 year-old phone](https://twitter.com/jerome_etienne/status/831333879810236421)!
-- **Very Webby** : It is a pure web solution, so no installation required. Full javascript based on three.js + jsartoolkit5
-- **Free and Open** : It is completely open source and free of charge!
-- **Pure Standards** : It works on any phone with [webgl](http://caniuse.com/#feat=webgl) and [webrtc](http://caniuse.com/#feat=stream)
+- **Fully Web-based** : It is a pure web solution, so no installation required. Full javascript based on three.js + jsartoolkit5
+- **Open Source** : It is completely open source and free of charge!
+- **Based on Standards** : It works on any phone with [webgl](http://caniuse.com/#feat=webgl) and [webrtc](http://caniuse.com/#feat=stream)
 
 ![screenshot](https://cloud.githubusercontent.com/assets/252962/23068128/40343608-f51a-11e6-8cb3-900e37a7f658.jpg)
 
 # Try it on Mobile
-It is done in 2 easy steps :)
 
-1. Direct your android browser to [this url](https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html).
-2. Point your phone at a hiro marker.
+It works on **any browser with WebGL and WebRTC**. This is the principle.
+Now the specifics: android works, window mobile works, IOS doesnt work unfortunately.
+IOS safari doesn't support WebRTC at the moment. 
+Apple is [currently working on it](https://webkit.org/status/#specification-webrtc) tho. 
 
-You are done! It will open a webpage which read the phone webcam, localize a hiro marker 
-and add 3d on top of it.
-Here is an example of [hiro marker](http://wibiwardhono.lecture.ub.ac.id/files/2015/01/HIRO.jpg).
-You can print the marker too or you can just display it on your desktop screen, like below.
+To try on your phone is only 2 easy steps, check it out!
+
+1. Open this [hiro marker image](https://jeromeetienne.github.io/AR.js/data/images/HIRO.jpg) in your desktop browser.
+1. Open this [augmented reality webapps](https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html) in your phone browser, and point it 
+to your screen.
+
+**You are done!** It will open a webpage which read the phone webcam, localize a hiro marker and add 3d on top of it, as you can see below.
 
 ![screenshot](https://cloud.githubusercontent.com/assets/252962/23072106/73a0656c-f528-11e6-9fcd-3c900d1d47d3.jpg)
 
@@ -48,23 +52,20 @@ Now, a lot of people got a phone powerful enough to do web AR in their pocket.
 I think this performance improvement make web AR a reality.
 i am all exited by what people are gonna with it :)
 
-# Phone Support
+# Performance
 
-It works on **any browser with WebGL and WebRTC**. This is the principle.
-Now the specifics: android works, window mobile works, IOS doesnt work unfortunately.
-IOS safari doesn't support WebRTC at the moment. 
-Apple is [currently working on it](https://webkit.org/status/#specification-webrtc) tho. 
+The performance you get will depend on 3 things: 
+- How heavy your 3D is.
+- How you tune your parameters. 
+- The hardware that you are using.
 
-It is the beginning of this project. 
-Here are some initial performance numbers just to give an idea. 
-It highly depends on how heavy your 3d is and what are your tuning of AR.js, so you milage may vary. 
-That said they give a rough idea. 
+Here are some initial numbers to give you an idea.
 
 - I got 60fps stable on nexus6p
 - Some reports [Sony Xperia Z2 (2.5 years old) runs around 50fps](https://twitter.com/leinadkalpot/status/834121238087925763) - this is a 170euro phone
 - Some reports [~50fps on a old nexus5, and ~60fps on nexus 9](https://twitter.com/Ellyll/status/834312442926751744) - nexus5 is 3.5 years old!
 - Some reports it working on windows phone edge!! [13fps on Lumia 950](https://twitter.com/leinadkalpot/status/834299384510763012) for some.
-  [40-45fps still on lumia 930](https://twitter.com/fastclemmy/status/834817155665391616) for others.
+  [40-45fps on lumia 930](https://twitter.com/fastclemmy/status/834817155665391616) for others.
   i am still amazed it run on window phone :)
 
 # Status
@@ -150,6 +151,7 @@ and [AR.js license](https://github.com/jeromeetienne/AR.js/blob/master/LICENSE.t
   - The person first acquire the qr-code with his phone, and then it goes to a webpage which is a webar application.
   - thus the publisher only has to publish this on its ads, likely on paper ads in magazine or in the street.
   - and the user can use his phone to immediatly see the related augmented reality
+  - https://techcrunch.com/2017/02/02/google-chrome-gets-its-own-qr-code-barcode-scanner/
 
 # How To Release ?
 
