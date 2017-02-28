@@ -95,7 +95,7 @@
 		cameraParametersUrl: '../../data/data/camera_para.dat',
 		detectionMode: 'mono',
 		imageSmoothingEnabled: false,
-		maxDetectionRate: 30,
+		maxDetectionRate: 20,
 		sourceWidth: arToolkitSource.parameters.sourceWidth,
 		sourceHeight: arToolkitSource.parameters.sourceHeight,
 	})
@@ -130,7 +130,7 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 	var group = new THREE.Group
-	group.scale.set(1,1,1).multiplyScalar(3)
+	group.scale.set(1,1,1).multiplyScalar(1.2)
 	markerRoot.add(group)
 
 	// add a torus knot	
