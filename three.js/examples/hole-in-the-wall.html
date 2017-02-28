@@ -70,6 +70,8 @@
 		// to read from a video
 		// sourceType : 'video',
 		// sourceUrl : '../../data/videos/headtracking.mp4',		
+		sourceWidth: 80*3,
+		sourceHeight: 60*3,
 	})
 
 	arToolkitSource.init(function onReady(){
@@ -92,6 +94,8 @@
 	var arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: '../../data/data/camera_para.dat',
 		detectionMode: 'mono',
+		imageSmoothingEnabled: false,
+		maxDetectionRate: 30,
 		sourceWidth: arToolkitSource.parameters.sourceWidth,
 		sourceHeight: arToolkitSource.parameters.sourceHeight,
 	})
@@ -156,8 +160,8 @@
 	var geometry	= new THREE.PlaneGeometry(width + 0.04,height + 0.04);
 	var material   = new THREE.MeshBasicMaterial();
 	material.color.set('black')
-	// material.opacity   = 0;
-	// material.blending  = THREE.NoBlending;	
+	material.opacity   = 0;
+	material.blending  = THREE.NoBlending;	
 
 	var margin = 0.02
 
