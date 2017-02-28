@@ -130,6 +130,7 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 	var group = new THREE.Group
+	group.scale.set(1,1,1).multiplyScalar(2)
 	markerRoot.add(group)
 
 	// add a torus knot	
@@ -143,11 +144,11 @@
 	mesh.position.z	= -geometry.parameters.height/2
 	group.add( mesh );
 	
-	var geometry	= new THREE.TorusKnotGeometry(0.28,0.1,32,32);
+	var geometry	= new THREE.TorusKnotGeometry(0.25,0.1,32,32);
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.z	= -0.5
-	markerRoot.add( mesh );
+	group.add( mesh );
 	
 	onRenderFcts.push(function(){
 		mesh.rotation.x += 0.1
