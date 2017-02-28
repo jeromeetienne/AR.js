@@ -162,17 +162,18 @@ You could do it with AR.js, so opensource and running on normal phones, no need 
 Augmented reality on phone have applications in many fields:
 [history education](https://www.youtube.com/watch?v=gyp8ZYtyu_M)
 , [science](https://www.youtube.com/watch?v=gMxdBdLpVgc)
-or
-[gaming](https://www.youtube.com/watch?v=kEMDgvfFUcI).
+or [gaming](https://www.youtube.com/watch?v=kEMDgvfFUcI).
 I exited to see what people will do with AR.js :)
-
-
 
 
 # Futures
 - add webworkers
 - add the nft
 - handle sensor fusion with the IMU ?
+
+# Ideas
+- AR Gaming - https://www.youtube.com/watch?v=EmGGGzibGok
+- AR Business Card - https://vimeo.com/4979525
 - IDEA: produce a single image able to do qr-code and pattern marker. https://twitter.com/nlehuen/status/834115970641829888
   - about having an image able to do qr-code and pattern marker at the same time. If we have such image, we skip one step. 
   - The person first acquire the qr-code with his phone, and then it goes to a webpage which is a webar application.
