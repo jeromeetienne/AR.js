@@ -15,9 +15,8 @@ So I wanted to publish thus people can try it and have fun with it :)
 
 # Try it on Mobile
 
-It works on **any browser with WebGL and WebRTC**. This is the principle.
-Now the specifics: android works, window mobile works, IOS doesnt work unfortunately.
-IOS safari doesn't support WebRTC at the moment. 
+It works on **any browser with WebGL and WebRTC**. So android works. Window mobile works.
+IOS doesnt work unfortunately. IOS safari doesn't support WebRTC at the moment. 
 Apple is [currently working on it](https://webkit.org/status/#specification-webrtc) tho. 
 
 To try on your phone is only 2 easy steps, check it out!
@@ -45,10 +44,9 @@ So i would like to thanks :
 Only thanks to all of them, i could do my part : Optimizing performance from 5fps on high-end
 phone, to 60fps on 2years old phone.
 
-After all this work done by a lot of people, we have it! 
-We have a web-based augmented reality library fast enough for mobile.
+After all this work done by a lot of people, we have a *web-based augmented reality solution fast enough for mobile*!
 
-Now, a lot of people got a phone powerful enough to do web AR in their pocket.
+Now, many people got a phone powerful enough to do web AR in their pocket.
 I think this performance improvement makes web AR a reality.
 i am all exited by what people are gonna with it :)
 
@@ -64,6 +62,14 @@ We are still early in the project but here are some initial numbers to give you 
 
 Obviously you mileage may vary. The performance you get will depend on 3 things: How heavy your 3D is, How you tune your parameters
 and the hardware that you are using.
+
+# Full Featured Marker based
+With this project, we bring more performance to artoolkit. 
+artoolkit is a software with years of experience doing augmented reality. It is able to do a lot!
+
+It is marker based. It supports a wide range of markers: multiple types of markers [pattern](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_training)/[barcode](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_barcode)
+multiple independant markers at the same time, or [multiple markers acting as a single marker](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_multi)
+up to you to choose.
 
 # Status
 - At the three.js level is the main one. It is working well and efficiently
@@ -138,6 +144,30 @@ and [AR.js license](https://github.com/jeromeetienne/AR.js/blob/master/LICENSE.t
 
 # Change Log
 [CHANGELOG.md](https://github.com/jeromeetienne/AR.js/blob/master/CHANGELOG.md)
+
+# What's Next ?
+
+We did good on performance, but there are still a lot of room for optimisation.
+Using [webworkers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) 
+would increase cpu usage. Compiling in [webassembly](https://webassembly.org) instead 
+of [asm.js](http://asmjs.org/) should improve loading time and likely cpu performance.
+And obviously, we can still do more parameters tweaking :)
+
+
+I would like people start experience augmented reality and play with it.
+This is highly creative! Just look at this [puzzle game in #AR playing with mirror and laser beam](https://www.youtube.com/watch?v=OzLJb7HitvA). 
+You could do it with AR.js, so opensource and running on normal phones, no need to buy a new device. isn't that great!
+
+
+Augmented reality on phone have applications in many fields:
+[history education](https://www.youtube.com/watch?v=gyp8ZYtyu_M)
+, [science](https://www.youtube.com/watch?v=gMxdBdLpVgc)
+or
+[gaming](https://www.youtube.com/watch?v=kEMDgvfFUcI).
+I exited to see what people will do with AR.js :)
+
+
+
 
 # Futures
 - add webworkers
