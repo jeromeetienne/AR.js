@@ -154,6 +154,8 @@
 	group.add(mesh)
 })()
 
+;(function(){
+return
 	// add the inner box
 	var geometry	= new THREE.BoxGeometry(1,1,1);
 	var material	= new THREE.MeshNormalMaterial({
@@ -170,7 +172,47 @@
 	
 	onRenderFcts.push(function(){
 		mesh.rotation.x += 0.1
+	})	
+})()
+
+;(function(){
+	// return
+	// todo: should build geometry explicitly instead,
+	// more like a hat, i.e including a brim around the top
+
+	var innerGeom = new THREE.BoxGeometry(1,1,1);
+	innerGeom.faces.splice(8, 2); // remove top (though this is a backside material)
+	innerGeom.elementsNeedUpdate = true;
+	var mesh = new THREE.Mesh(innerGeom, new THREE.MeshPhongMaterial({
+		side: THREE.BackSide,
+		map: new THREE.TextureLoader().load('images/mosaic-256x256.jpg')
+	}));
+	group.add(mesh)
+
+	var geometry = new THREE.PlaneGeometry(1, 1)
+	var material = new THREE.MeshPhongMaterial({
+		transparent: true,
+		opacity: 0.35,
+		map: new THREE.TextureLoader().load('images/water.jpg')
 	})
+	var mesh = new THREE.Mesh(geometry, material);
+	mesh.position.z = 0.4;
+	group.add(mesh)
+
+
+	var geometry	= new THREE.SphereGeometry(0.1)
+	var texture	= THREE.ImageUtils.loadTexture('images/BeachBallColor.jpg')
+	var material	= new THREE.MeshBasicMaterial({
+		map	: texture,
+		bumpMap	: texture,
+		bumpScale: 0.01,
+	})
+	var material = new THREE.MeshNormalMaterial()
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.z = 0.35;
+	mesh.position.x = innerGeom.parameters.height*0.12;
+	group.add(mesh);
+})()
 
 
 	//////////////////////////////////////////////////////////////////////////////////
