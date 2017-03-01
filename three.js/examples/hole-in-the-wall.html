@@ -25,7 +25,7 @@
 
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
-		// antialias	: true,
+		antialias	: true,
 		alpha: true
 	});
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
@@ -72,8 +72,8 @@
 		// to read from a video
 		// sourceType : 'video',
 		// sourceUrl : '../../data/videos/headtracking.mp4',		
-		sourceWidth: 80*3,
-		sourceHeight: 60*3,
+		sourceWidth: 80*4,
+		sourceHeight: 60*4,
 	})
 
 	arToolkitSource.init(function onReady(){
@@ -187,12 +187,13 @@ return
 		side: THREE.BackSide,
 		map: new THREE.TextureLoader().load('images/mosaic-256x256.jpg')
 	}));
+	// TODO fix uv
 	group.add(mesh)
 
 	var geometry = new THREE.PlaneGeometry(1, 1)
 	var material = new THREE.MeshPhongMaterial({
 		transparent: true,
-		opacity: 0.35,
+		opacity: 0.5,
 		map: new THREE.TextureLoader().load('images/water.jpg')
 	})
 	var mesh = new THREE.Mesh(geometry, material);
