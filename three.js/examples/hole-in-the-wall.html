@@ -154,7 +154,12 @@
 		mesh.rotation.x += 0.1
 	})
 
-
+	// var outerGeom = new THREE.BoxGeometry(1,1,1);
+	// outerGeom.faces.splice(8, 2); // make hole by removing top two triangles (is this assumption stable?)
+	// outerGeom.elementsNeedUpdate = true;
+	// var outerMesh = new THREE.Mesh( outerGeom, new THREE.MeshBasicMaterial({
+	// 	colorWrite: false // only write to z-buf
+	// }));
 ;(function(){
 	var width = 1
 	var height = 1

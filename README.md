@@ -11,7 +11,7 @@ So I wanted to publish thus people can try it and have fun with it :)
 - **Open Source** : It is completely open source and free of charge!
 - **Standards** : It works on any phone with [webgl](http://caniuse.com/#feat=webgl) and [webrtc](http://caniuse.com/#feat=stream)
 
-![screenshot](https://cloud.githubusercontent.com/assets/252962/23068128/40343608-f51a-11e6-8cb3-900e37a7f658.jpg)
+[![AR.js 1.0 Video](https://cloud.githubusercontent.com/assets/252962/23068128/40343608-f51a-11e6-8cb3-900e37a7f658.jpg)](https://youtu.be/0MtvjFg7tik)
 
 # Try it on Mobile
 
@@ -62,6 +62,8 @@ We are still early in the project but here are some initial numbers to give you 
 
 Obviously you mileage may vary. The performance you get will depend on 3 things: How heavy your 3D is, How you tune your parameters
 and the hardware that you are using.
+
+![screenshot](https://cloud.githubusercontent.com/assets/252962/23068128/40343608-f51a-11e6-8cb3-900e37a7f658.jpg)
 
 # Full Featured Marker based
 With this project, we bring more performance to artoolkit. 
