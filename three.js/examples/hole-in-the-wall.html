@@ -13,10 +13,13 @@
 <script src="../threex-armarkercontrols.js"></script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - "hole in the wall" effect - Invention by 
-	<a href="https://twitter.com/Saqoosha" target='_blank'>@Saqoosha</a>
+	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> 
+	- "hole in the wall" effect 
+	- <a href='#simple' onclick='location.reload()'>simple</a>
+	or <a href='#pool' onclick='location.reload()'>pool</a>
 	<br/>
-	Coded by <a href="https://twitter.com/snigelpaogat" target='_blank'>Fredrik Blomqvist</a> and 
+	Concept by <a href="https://twitter.com/Saqoosha" target='_blank'>@Saqoosha</a> - 
+	Code by <a href="https://twitter.com/snigelpaogat" target='_blank'>Fredrik Blomqvist</a> and 
 	<a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div><script>
 	//////////////////////////////////////////////////////////////////////////////////
@@ -45,7 +48,8 @@
 	var ambient = new THREE.AmbientLight( 0x666666 );
 	scene.add( ambient );
 
-	var directionalLight = new THREE.DirectionalLight( 0x887766 );
+	var directionalLight = new THREE.DirectionalLight( 'white' );
+	directionalLight.intensity = 2
 	directionalLight.position.set( -1, 1, 1 ).normalize();
 	scene.add( directionalLight );
 	
@@ -137,13 +141,17 @@
 
 	markerRoot.add(group)
 
-;(function(){
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		init invisibility cloak
+	//////////////////////////////////////////////////////////////////////////////
 	// add outter cube - invisibility cloak
 	var geometry = new THREE.BoxGeometry(1,1,1);
 	geometry.faces.splice(8, 2); // make hole by removing top two triangles (is this assumption stable?)
 	var material = new THREE.MeshBasicMaterial({
 		colorWrite: false // only write to z-buf
 	})
+	// an alternative to reach the same visual - this one seems way slower tho. My guess is it is hitting a slow-path in gpu
 	// var material   = new THREE.MeshBasicMaterial();
 	// material.color.set('black')
 	// material.opacity   = 0;
@@ -152,68 +160,75 @@
 	var mesh = new THREE.Mesh( geometry, material);
 	mesh.scale.set(1,1,1).multiplyScalar(1.02)
 	group.add(mesh)
-})()
 
-;(function(){
-return
-	// add the inner box
-	var geometry	= new THREE.BoxGeometry(1,1,1);
-	var material	= new THREE.MeshNormalMaterial({
-		side: THREE.BackSide
-	}); 
-	var mesh	= new THREE.Mesh( geometry, material );
-	group.add( mesh );
-
-	// add the torus knot
-	var geometry	= new THREE.TorusKnotGeometry(0.25,0.1,32,32);
-	var material	= new THREE.MeshNormalMaterial(); 
-	var mesh	= new THREE.Mesh( geometry, material );
-	group.add( mesh );
 	
-	onRenderFcts.push(function(){
-		mesh.rotation.x += 0.1
-	})	
-})()
-
-;(function(){
-	// return
-	// todo: should build geometry explicitly instead,
-	// more like a hat, i.e including a brim around the top
-
-	var innerGeom = new THREE.BoxGeometry(1,1,1);
-	innerGeom.faces.splice(8, 2); // remove top (though this is a backside material)
-	innerGeom.elementsNeedUpdate = true;
-	var mesh = new THREE.Mesh(innerGeom, new THREE.MeshPhongMaterial({
-		side: THREE.BackSide,
-		map: new THREE.TextureLoader().load('images/mosaic-256x256.jpg')
-	}));
-	// TODO fix uv
-	group.add(mesh)
-
-	var geometry = new THREE.PlaneGeometry(1, 1)
-	var material = new THREE.MeshPhongMaterial({
-		transparent: true,
-		opacity: 0.5,
-		map: new THREE.TextureLoader().load('images/water.jpg')
-	})
-	var mesh = new THREE.Mesh(geometry, material);
-	mesh.position.z = 0.4;
-	group.add(mesh)
+	var label = location.hash.substring(1) || 'simple'
+	if( label === 'simple' ){
+		initInnerCubeSimple()
+	}else if( label === 'pool' ){
+		initInnerCubePool()
+	}else{
+		console.assert(false)
+	}
 
 
-	var geometry	= new THREE.SphereGeometry(0.1)
-	var texture	= THREE.ImageUtils.loadTexture('images/BeachBallColor.jpg')
-	var material	= new THREE.MeshBasicMaterial({
-		map	: texture,
-		bumpMap	: texture,
-		bumpScale: 0.01,
-	})
-	var material = new THREE.MeshNormalMaterial()
-	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.z = 0.35;
-	mesh.position.x = innerGeom.parameters.height*0.12;
-	group.add(mesh);
-})()
+	function initInnerCubeSimple(){
+		// add the inner box
+		var geometry	= new THREE.BoxGeometry(1,1,1);
+		var material	= new THREE.MeshNormalMaterial({
+			side: THREE.BackSide
+		}); 
+		var mesh	= new THREE.Mesh( geometry, material );
+		group.add( mesh );
+
+		// add the torus knot
+		var geometry	= new THREE.TorusKnotGeometry(0.25,0.1,32,32);
+		var material	= new THREE.MeshNormalMaterial(); 
+		var mesh	= new THREE.Mesh( geometry, material );
+		group.add( mesh );
+		
+		onRenderFcts.push(function(){
+			mesh.rotation.x += 0.1
+		})	
+	}
+
+	function initInnerCubePool(){
+		// todo: should build geometry explicitly instead,
+		// more like a hat, i.e including a brim around the top
+		var innerGeom = new THREE.BoxGeometry(1,1,1);
+		innerGeom.faces.splice(8, 2); // remove top (though this is a backside material)
+		innerGeom.elementsNeedUpdate = true;
+		var mesh = new THREE.Mesh(innerGeom, new THREE.MeshPhongMaterial({
+			side: THREE.BackSide,
+			map: new THREE.TextureLoader().load('images/mosaic-256x256.jpg')
+		}));
+		// TODO fix uv
+		group.add(mesh)
+
+		var geometry = new THREE.PlaneGeometry(1, 1)
+		var material = new THREE.MeshPhongMaterial({
+			transparent: true,
+			opacity: 0.5,
+			map: new THREE.TextureLoader().load('images/water.jpg')
+		})
+		var mesh = new THREE.Mesh(geometry, material);
+		mesh.position.z = 0.4;
+		group.add(mesh)
+
+
+		var geometry	= new THREE.SphereGeometry(0.1)
+		var texture	= THREE.ImageUtils.loadTexture('images/BeachBallColor.jpg')
+		var material	= new THREE.MeshBasicMaterial({
+			map	: texture,
+			bumpMap	: texture,
+			bumpScale: 0.01,
+		})
+		var material = new THREE.MeshNormalMaterial()
+		var mesh	= new THREE.Mesh( geometry, material );
+		mesh.position.z = 0.35;
+		mesh.position.x = innerGeom.parameters.height*0.12;
+		group.add(mesh);
+	}
 
 
 	//////////////////////////////////////////////////////////////////////////////////
