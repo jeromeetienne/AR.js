@@ -15,7 +15,7 @@
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
 	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> 
 	- "hole in the wall" effect 
-	- <a href='#simple' onclick='location.reload()'>simple</a>
+	- <a href='#torus' onclick='location.reload()'>torus</a>
 	or <a href='#pool' onclick='location.reload()'>pool</a>
 	<br/>
 	Concept by <a href="https://twitter.com/Saqoosha" target='_blank'>@Saqoosha</a> - 
@@ -163,8 +163,8 @@
 
 	
 	var label = location.hash.substring(1) || 'pool'
-	if( label === 'simple' ){
-		initInnerCubeSimple()
+	if( label === 'torus' ){
+		initInnerCubeTorus()
 	}else if( label === 'pool' ){
 		initInnerCubePool()
 	}else{
@@ -172,7 +172,7 @@
 	}
 
 
-	function initInnerCubeSimple(){
+	function initInnerCubeTorus(){
 		// add the inner box
 		var geometry	= new THREE.BoxGeometry(1,1,1);
 		var material	= new THREE.MeshNormalMaterial({
