@@ -136,9 +136,9 @@
 	markerRoot.add(group)
 
 ;(function(){
+	// add outter cube - invisibility cloak
 	var geometry = new THREE.BoxGeometry(1,1,1);
 	geometry.faces.splice(8, 2); // make hole by removing top two triangles (is this assumption stable?)
-	// geometry.elementsNeedUpdate = true;
 	var material = new THREE.MeshBasicMaterial({
 		colorWrite: false // only write to z-buf
 	})
@@ -151,14 +151,16 @@
 	mesh.scale.set(1,1,1).multiplyScalar(1.02)
 	group.add(mesh)
 })()
-	// add a torus knot	
+
+	// add the inner box
 	var geometry	= new THREE.BoxGeometry(1,1,1);
 	var material	= new THREE.MeshNormalMaterial({
 		side: THREE.BackSide
 	}); 
 	var mesh	= new THREE.Mesh( geometry, material );
 	group.add( mesh );
-	
+
+	// add the torus knot
 	var geometry	= new THREE.TorusKnotGeometry(0.25,0.1,32,32);
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
@@ -168,55 +170,6 @@
 		mesh.rotation.x += 0.1
 	})
 
-
-;(function(){
-return
-	var width = 1
-	var height = 1
-	var geometry	= new THREE.PlaneGeometry(width + 0.04,height + 0.04);
-	var material   = new THREE.MeshBasicMaterial();
-	material.color.set('black')
-	material.opacity   = 0;
-	material.blending  = THREE.NoBlending;	
-
-	var margin = 0.02
-
-	// +x
-	var mesh = createPlane()
-	mesh.rotateY( Math.PI/2)
-	mesh.position.x	= +width/2 + margin
-	group.add( mesh );	
-
-	// -x
-	var mesh = createPlane()
-	mesh.rotateY(-Math.PI/2)
-	mesh.position.x	= -width/2 - margin
-	group.add( mesh );	
-
-	// +y
-	var mesh = createPlane()
-	mesh.rotateX(-Math.PI/2)
-	mesh.position.y	= +height/2 + margin
-	group.add( mesh );	
-
-	// -y
-	var mesh = createPlane()
-	mesh.rotateX(+Math.PI/2)
-	mesh.position.y	= -height/2 - margin
-	group.add( mesh );	
-
-	// -z
-	var mesh = createPlane()
-	mesh.rotateX(-Math.PI)
-	mesh.position.z	= -height - margin
-	group.add( mesh );	
-
-	function createPlane(){
-		var mesh	= new THREE.Mesh( geometry, material );
-		mesh.position.z	= -geometry.parameters.height/2
-		return mesh
-	}
-})()
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
