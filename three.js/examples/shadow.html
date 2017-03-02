@@ -45,7 +45,7 @@
 	scene.add( ambient );
 
 	var directionalLight = new THREE.DirectionalLight( 0x887766 );
-	directionalLight.position.set( 1, 0.3, .5 ).normalize();
+	directionalLight.position.set( 1, 0.3, 1 ).normalize();
 	directionalLight.castShadow = true;
 	scene.add( directionalLight );
 
@@ -158,7 +158,7 @@
 	var shadowMaterial = new THREE.ShadowMaterial({
 		// opacity: 0.15
 	});
-	shadowMaterial.opacity = 0.35; //! bug in threejs. can't set in constructor
+	shadowMaterial.opacity = 0.9; //! bug in threejs. can't set in constructor
 
 	var groundMesh = new THREE.Mesh( new THREE.PlaneGeometry(8, 8), shadowMaterial);
 	groundMesh.receiveShadow = true;
