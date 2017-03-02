@@ -52,7 +52,7 @@ renderer.shadowMap.enabled = true;
 
 	var light = new THREE.DirectionalLight( 'white' );
 	light.position.set( 1, 0.3, 2 ).setLength(2)
-	light.shadow.mapSize.set(256,256)
+	light.shadow.mapSize.set(128,128)
 	light.shadow.camera.bottom = -0.6
 	light.shadow.camera.top = 0.6
 	light.shadow.camera.right = 0.6
