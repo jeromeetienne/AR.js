@@ -54,8 +54,7 @@
 	scene.add( light );
 	
 	scene.add(new THREE.CameraHelper( light.shadow.camera ))
-// var lightHelper = new THREE.DirectionalLightHelper(directionalLight, 20);
-//     scene.add(lightHelper);
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
@@ -80,8 +79,8 @@
 		// sourceType : 'video',
 		// sourceUrl : '../../data/videos/headtracking.mp4',
 
-		sourceWidth: 80*3,
-		sourceHeight: 60*3,
+		sourceWidth: 80*4,
+		sourceHeight: 60*4,
 	})
 
 	arToolkitSource.init(function onReady(){
