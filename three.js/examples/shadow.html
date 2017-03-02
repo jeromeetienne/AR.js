@@ -32,7 +32,7 @@ renderer.shadowMap.type = THREE.BasicShadowMap
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
 	// renderer.setPixelRatio( 1/2 );
 	renderer.setSize( window.innerWidth, window.innerHeight );
-	renderer.shadowMap.enabled = true;
+	// renderer.shadowMap.enabled = true;
 
 	renderer.domElement.style.position = 'absolute'
 	renderer.domElement.style.top = '0px'
@@ -48,7 +48,7 @@ renderer.shadowMap.type = THREE.BasicShadowMap
 	var ambient = new THREE.AmbientLight( 0x666666 );
 	scene.add( ambient );
 
-	var light = new THREE.DirectionalLight( 0xffffff );
+	var light = new THREE.DirectionalLight( 'white' );
 	light.position.set( 1, 0.3, 2 ).setLength(2)
 	light.shadow.mapSize.set(256,256)
 	light.shadow.camera.bottom = -0.6
