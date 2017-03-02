@@ -62,7 +62,6 @@
 	})
 
 	arToolkitSource.init(function onReady(){
-		console.log('source is ready')
 		// handle resize of renderer
 		arToolkitSource.onResize(renderer.domElement)		
 	})
@@ -110,7 +109,7 @@
 		type : 'pattern',
 		patternUrl : '../../data/data/patt.hiro',
 		// patternUrl : '../../data/data/patt.kanji',
-		// as we controls the camera 
+		// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
 		changeMatrixMode: 'cameraTransformMatrix'
 	})
 	// as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene

@@ -22,7 +22,7 @@
 
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
-		antialias	: true,
+		// antialias	: true,
 		alpha: true
 	});
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
@@ -44,18 +44,11 @@
 	var ambient = new THREE.AmbientLight( 0x666666 );
 	scene.add( ambient );
 
-	var light = new THREE.DirectionalLight( 0x887766 );
-	light.position.set( 1, 0.3, 2 ).setLength(2)
-	light.shadow.camera.bottom = -1
-	light.shadow.camera.top = 1
-	light.shadow.camera.right = 1
-	light.shadow.camera.left = -1
-	light.castShadow = true;
-	scene.add( light );
-	
-	scene.add(new THREE.CameraHelper( light.shadow.camera ))
-// var lightHelper = new THREE.DirectionalLightHelper(directionalLight, 20);
-//     scene.add(lightHelper);
+	var directionalLight = new THREE.DirectionalLight( 0x887766 );
+	directionalLight.position.set( 1, 0.3, 2 ).normalize();
+	directionalLight.castShadow = true;
+	scene.add( directionalLight );
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
@@ -119,9 +112,6 @@
 		if( arToolkitSource.ready === false )	return
 
 		arToolkitContext.update( arToolkitSource.domElement )
-		
-		// update scene.visible if the marker is seen
-		scene.visible = camera.visible
 	})
 
 
@@ -129,23 +119,18 @@
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
 
-	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
+	var markerRoot = new THREE.Group
+	scene.add(markerRoot)
+	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
-		patternUrl : '../../data/data/patt.hiro',
-		// patternUrl : '../../data/data/patt.kanji',
-		// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
-		changeMatrixMode: 'cameraTransformMatrix'
+		patternUrl : '../../data/data/patt.hiro'
+		// patternUrl : '../../data/data/patt.kanji'
 	})
-	// as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
-	scene.visible = false
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
-	var markerRoot = new THREE.Group
-	scene.add(markerRoot)
-	
 	// add a torus knot
 	// var geometry	= new THREE.CubeGeometry(1,1,1);
 	// var material	= new THREE.MeshNormalMaterial({
@@ -157,32 +142,30 @@
 	// mesh.position.z	= geometry.parameters.height/2
 	// markerRoot.add( mesh );
 
-	;(function(){
-		var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32); // make it slightly larger for better view
-		var material	= new THREE.MeshPhongMaterial();
-		var mesh	= new THREE.Mesh( geometry, material );
-		mesh.castShadow = true;
-		mesh.receiveShadow = true;
-		mesh.position.z	= 0.9
-		markerRoot.add( mesh );
+;(function(){
+	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32); // make it slightly larger for better view
+	var material	= new THREE.MeshPhongMaterial();
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.castShadow = true;
+	mesh.receiveShadow = true;
+	mesh.position.z	= 0.9
+	markerRoot.add( mesh );
 
-		onRenderFcts.push(function(){
-			mesh.rotation.x += 0.04;
-		})
+	onRenderFcts.push(function(){
+		mesh.rotation.x += 0.04;
+	})
+})()
 
-		// add a transparent ground-plane shadow-receiver
-		var material = new THREE.ShadowMaterial({
-			// opacity: 0.15
-		});
-		material.opacity = 0.7; //! bug in threejs. can't set in constructor
-		var geometry = new THREE.PlaneGeometry(80, 80)
-		var planeMesh = new THREE.Mesh( geometry, material);
-		planeMesh.receiveShadow = true;
-		planeMesh.depthWrite = false;
-		markerRoot.add(planeMesh);
-	})()
-
-
+	// add a transparent ground-plane shadow-receiver
+	var material = new THREE.ShadowMaterial({
+		// opacity: 0.15
+	});
+	material.opacity = 0.7; //! bug in threejs. can't set in constructor
+	var geometry = new THREE.PlaneGeometry(80, 80)
+	var mesh = new THREE.Mesh( geometry, material);
+	mesh.receiveShadow = true;
+	mesh.depthWrite = false;
+	markerRoot.add(mesh);
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
