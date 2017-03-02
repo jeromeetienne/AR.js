@@ -28,11 +28,10 @@
 renderer.shadowMap.type = THREE.BasicShadowMap
 // renderer.shadowMap.type = THREE.PCFShadowMap;
 // renderer.shadowMap.type = THREE.PCFSoftShadowMap
+// renderer.shadowMap.enabled = true;
 
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
 	// renderer.setPixelRatio( 1/2 );
-	renderer.setSize( window.innerWidth, window.innerHeight );
-	// renderer.shadowMap.enabled = true;
 
 	renderer.domElement.style.position = 'absolute'
 	renderer.domElement.style.top = '0px'
@@ -55,7 +54,7 @@ renderer.shadowMap.type = THREE.BasicShadowMap
 	light.shadow.camera.top = 0.6
 	light.shadow.camera.right = 0.6
 	light.shadow.camera.left = -0.6
-	light.castShadow = true;
+	// light.castShadow = true;
 	// scene.add(new THREE.CameraHelper( light.shadow.camera ))
 	scene.add( light );
 	
