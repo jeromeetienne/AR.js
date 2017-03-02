@@ -99,6 +99,9 @@ Three.js Examples:
 - [hole-in-the-wall](https://jeromeetienne.github.io/AR.js/three.js/examples/hole-in-the-wall.html) : 
   three.js example for hole-in-the-wall
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/hole-in-the-wall.html))
+- [shadow](https://jeromeetienne.github.io/AR.js/three.js/examples/shadow.html) : 
+  three.js example for shadow
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/shadow.html))
 
 a-frame Examples: 
 
