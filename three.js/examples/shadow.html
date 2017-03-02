@@ -165,10 +165,10 @@ window.directionalLight = light
 
 	;(function(){
 		var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32); // make it slightly larger for better view
-		var material	= new THREE.MeshLambertMaterial();
+		var material	= new THREE.MeshNormalMaterial();
 		var mesh	= new THREE.Mesh( geometry, material );
 		mesh.castShadow = true;
-		mesh.receiveShadow = true;
+		// mesh.receiveShadow = true;
 		mesh.position.z	= 0.7
 		markerRoot.add( mesh );
 directionalLight.target = mesh
