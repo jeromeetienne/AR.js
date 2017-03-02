@@ -25,7 +25,7 @@
 		// antialias	: true,
 		alpha: true
 	});
-renderer.shadowMap.type = THREE.BasicShadowMap
+// renderer.shadowMap.type = THREE.BasicShadowMap
 // renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 renderer.shadowMap.enabled = true;
@@ -166,6 +166,7 @@ window.directionalLight = light
 	;(function(){
 		var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32); // make it slightly larger for better view
 		var material	= new THREE.MeshNormalMaterial();
+		var material	= new THREE.MeshLambertMaterial();
 		var mesh	= new THREE.Mesh( geometry, material );
 		mesh.castShadow = true;
 		mesh.receiveShadow = true;
