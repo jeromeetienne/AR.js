@@ -33,6 +33,7 @@ renderer.shadowMap.type = THREE.BasicShadowMap
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
 	// renderer.setPixelRatio( 1/2 );
 
+	renderer.setSize( window.innerWidth, window.innerHeight );
 	renderer.domElement.style.position = 'absolute'
 	renderer.domElement.style.top = '0px'
 	renderer.domElement.style.left = '0px'
@@ -177,9 +178,7 @@ directionalLight.target = mesh
 		})
 
 		// add a transparent ground-plane shadow-receiver
-		var material = new THREE.ShadowMaterial({
-			opacity: 0.15
-		});
+		var material = new THREE.ShadowMaterial();
 		material.opacity = 0.7; //! bug in threejs. can't set in constructor
 
 		var geometry = new THREE.PlaneGeometry(80, 80)
