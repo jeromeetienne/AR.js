@@ -44,16 +44,19 @@
 	var ambient = new THREE.AmbientLight( 0x666666 );
 	scene.add( ambient );
 
-	var light = new THREE.DirectionalLight( 0x887766 );
+	var light = new THREE.DirectionalLight( 0xffffff );
 	light.position.set( 1, 0.3, 2 ).setLength(2)
-	light.shadow.camera.bottom = -1
-	light.shadow.camera.top = 1
-	light.shadow.camera.right = 1
-	light.shadow.camera.left = -1
+	light.shadow.mapSize.set(128,128)
+	light.shadow.camera.bottom = -0.6
+	light.shadow.camera.top = 0.6
+	light.shadow.camera.right = 0.6
+	light.shadow.camera.left = -0.6
 	light.castShadow = true;
+	scene.add(new THREE.CameraHelper( light.shadow.camera ))
 	scene.add( light );
 	
-	scene.add(new THREE.CameraHelper( light.shadow.camera ))
+
+window.directionalLight = light
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
@@ -162,8 +165,9 @@
 		var mesh	= new THREE.Mesh( geometry, material );
 		mesh.castShadow = true;
 		mesh.receiveShadow = true;
-		mesh.position.z	= 0.9
+		mesh.position.z	= 0.7
 		markerRoot.add( mesh );
+directionalLight.target = mesh
 
 		onRenderFcts.push(function(){
 			mesh.rotation.x += 0.04;
@@ -171,7 +175,7 @@
 
 		// add a transparent ground-plane shadow-receiver
 		var material = new THREE.ShadowMaterial({
-			// opacity: 0.15
+			opacity: 0.15
 		});
 		material.opacity = 0.7; //! bug in threejs. can't set in constructor
 		var geometry = new THREE.PlaneGeometry(80, 80)
