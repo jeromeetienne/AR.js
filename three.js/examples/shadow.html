@@ -28,7 +28,7 @@
 renderer.shadowMap.type = THREE.BasicShadowMap
 // renderer.shadowMap.type = THREE.PCFShadowMap;
 // renderer.shadowMap.type = THREE.PCFSoftShadowMap
-// renderer.shadowMap.enabled = true;
+renderer.shadowMap.enabled = true;
 
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
 	// renderer.setPixelRatio( 1/2 );
@@ -55,7 +55,7 @@ renderer.shadowMap.type = THREE.BasicShadowMap
 	light.shadow.camera.top = 0.6
 	light.shadow.camera.right = 0.6
 	light.shadow.camera.left = -0.6
-	// light.castShadow = true;
+	light.castShadow = true;
 	// scene.add(new THREE.CameraHelper( light.shadow.camera ))
 	scene.add( light );
 	
@@ -168,7 +168,7 @@ window.directionalLight = light
 		var material	= new THREE.MeshNormalMaterial();
 		var mesh	= new THREE.Mesh( geometry, material );
 		mesh.castShadow = true;
-		// mesh.receiveShadow = true;
+		mesh.receiveShadow = true;
 		mesh.position.z	= 0.7
 		markerRoot.add( mesh );
 directionalLight.target = mesh
@@ -181,7 +181,7 @@ directionalLight.target = mesh
 		var material = new THREE.ShadowMaterial();
 		material.opacity = 0.7; //! bug in threejs. can't set in constructor
 
-		var geometry = new THREE.PlaneGeometry(80, 80)
+		var geometry = new THREE.PlaneGeometry(3, 3)
 		var planeMesh = new THREE.Mesh( geometry, material);
 		planeMesh.receiveShadow = true;
 		planeMesh.depthWrite = false;
