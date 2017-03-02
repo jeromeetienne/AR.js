@@ -22,9 +22,13 @@
 
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
-		antialias	: true,
+		// antialias	: true,
 		alpha: true
 	});
+renderer.shadowMap.type = THREE.BasicShadowMap
+// renderer.shadowMap.type = THREE.PCFShadowMap;
+// renderer.shadowMap.type = THREE.PCFSoftShadowMap
+
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
 	// renderer.setPixelRatio( 1/2 );
 	renderer.setSize( window.innerWidth, window.innerHeight );
@@ -46,7 +50,7 @@
 
 	var light = new THREE.DirectionalLight( 0xffffff );
 	light.position.set( 1, 0.3, 2 ).setLength(2)
-	light.shadow.mapSize.set(128,128)
+	light.shadow.mapSize.set(256,256)
 	light.shadow.camera.bottom = -0.6
 	light.shadow.camera.top = 0.6
 	light.shadow.camera.right = 0.6
@@ -178,11 +182,13 @@ directionalLight.target = mesh
 			opacity: 0.15
 		});
 		material.opacity = 0.7; //! bug in threejs. can't set in constructor
+
 		var geometry = new THREE.PlaneGeometry(80, 80)
 		var planeMesh = new THREE.Mesh( geometry, material);
 		planeMesh.receiveShadow = true;
 		planeMesh.depthWrite = false;
 		markerRoot.add(planeMesh);
+window.planeMesh = planeMesh		
 	})()
 
 
