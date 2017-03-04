@@ -156,6 +156,7 @@
 
 	function initScenePortal(){
 		var group = new THREE.Group
+		group.scale.set(1,1,1).multiplyScalar(3)
 		markerRoot.add(group)
 
 		group.add( buildSquareCache() )
