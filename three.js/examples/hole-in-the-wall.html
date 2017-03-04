@@ -156,10 +156,11 @@
 
 	function initScenePortal(){
 		var group = new THREE.Group
-		group.scale.set(1,1,1).multiplyScalar(1)
+		group.scale.set(1,1,1).multiplyScalar(1.5)
 		markerRoot.add(group)
 
-		group.add( buildSquareCache() )
+		// group.add( buildSquareCache() )
+		group.add( buildCircleCache() )
 
 		var geometry = new THREE.SphereGeometry( 3, 60, 40, 0, Math.PI, Math.PI, Math.PI);
 		// var geometry = new THREE.SphereGeometry( 1, 60, 40);
@@ -169,7 +170,7 @@
 			map: new THREE.TextureLoader().load( 'images/2294472375_24a3b8ef46_o.jpg' ),
 		});
 		mesh = new THREE.Mesh( geometry, material );
-		mesh.position.z = -0.03
+		mesh.position.z = -0.05
 		group.add( mesh );		
 	}
 	function buildSquareCache(){
@@ -185,27 +186,46 @@
 		// material.opacity   = 0;
 		// material.blending  = THREE.NoBlending;	
 
+
 		var mesh = new THREE.Mesh( geometry, material);
 		mesh.position.x =  geometry.parameters.width/2 + 0.5
 		mesh.position.y = -geometry.parameters.height/2 + 0.5
 		container.add(mesh)
-
+		
 		var mesh = new THREE.Mesh( geometry, material);
 		mesh.position.x = -geometry.parameters.width/2 + 0.5
 		mesh.position.y = -geometry.parameters.height/2 - 0.5
 		container.add(mesh)
-
+		
 		var mesh = new THREE.Mesh( geometry, material);
 		mesh.position.x = -geometry.parameters.width/2 - 0.5
 		mesh.position.y =  geometry.parameters.height/2 - 0.5
 		container.add(mesh)
-
+		
 		var mesh = new THREE.Mesh( geometry, material);
 		mesh.position.x = +geometry.parameters.width/2 - 0.5
 		mesh.position.y =  geometry.parameters.height/2 + 0.5
 		container.add(mesh)
 
 		return container
+	}
+
+	function buildCircleCache(){
+		var container = new THREE.Group
+		// add outter cube - invisibility cloak
+		var geometry = new THREE.RingGeometry( 0.5, 5, 32 );	
+		var material = new THREE.MeshBasicMaterial({
+			colorWrite: false // only write to z-buf
+		})
+		// an alternative to reach the same visual - this one seems way slower tho. My guess is it is hitting a slow-path in gpu
+		// var material   = new THREE.MeshBasicMaterial();
+		// material.color.set('black')
+		// material.opacity   = 0;
+		// material.blending  = THREE.NoBlending;	
+		
+		var mesh = new THREE.Mesh( geometry, material);
+
+		return mesh
 	}
 
 	function initSceneCubeTorus(){
