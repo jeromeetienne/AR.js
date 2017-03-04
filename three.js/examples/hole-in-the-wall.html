@@ -164,10 +164,13 @@
 
 		var geometry = new THREE.SphereGeometry( 3, 60, 40, 0, Math.PI, Math.PI, Math.PI);
 		// var geometry = new THREE.SphereGeometry( 1, 60, 40);
-		// geometry.scale( - 1, 1, 1 );
+		geometry.scale( 1, -1, 1 );
 		var material = new THREE.MeshBasicMaterial( {
 			// wireframe: true
-			map: new THREE.TextureLoader().load( 'images/2294472375_24a3b8ef46_o.jpg' ),
+			// map: new THREE.TextureLoader().load( 'images/2294472375_24a3b8ef46_o.jpg' ),
+			map: new THREE.TextureLoader().load( 'images/32211336474_380b67d014_k.jpg' ),
+			// 32211336474_5404d9ab70_z.jpg,
+			side: THREE.DoubleSide
 		});
 		mesh = new THREE.Mesh( geometry, material );
 		mesh.position.z = -0.05
