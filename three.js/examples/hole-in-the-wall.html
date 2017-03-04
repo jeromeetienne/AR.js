@@ -156,13 +156,13 @@
 
 	function initScenePortal(){
 		var group = new THREE.Group
-		group.scale.set(1,1,1).multiplyScalar(3)
+		group.scale.set(1,1,1).multiplyScalar(1.5)
 		markerRoot.add(group)
 
 		group.add( buildSquareCache() )
 
-		var geometry = new THREE.SphereGeometry( 3, 60, 40, 0, Math.PI, Math.PI, Math.PI);
-		// var geometry = new THREE.SphereGeometry( 1, 60, 40);
+		// var geometry = new THREE.SphereGeometry( 3, 60, 40, 0, Math.PI, Math.PI, Math.PI);
+		var geometry = new THREE.SphereGeometry( 0.5, 60, 40);
 		// geometry.scale( - 1, 1, 1 );
 		var material = new THREE.MeshBasicMaterial( {
 			// wireframe: true
