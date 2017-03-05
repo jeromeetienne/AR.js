@@ -136,7 +136,58 @@
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
+	
+	function buildSquareCache(){
+		var container = new THREE.Group
+		// add outter cube - invisibility cloak
+		var geometry = new THREE.PlaneGeometry(50,50);
+		var material = buildTransparentMaterial()
 
+		var mesh = new THREE.Mesh( geometry, material);
+		mesh.position.x =  geometry.parameters.width/2 + 0.5
+		mesh.position.y = -geometry.parameters.height/2 + 0.5
+		container.add(mesh)
+		
+		var mesh = new THREE.Mesh( geometry, material);
+		mesh.position.x = -geometry.parameters.width/2 + 0.5
+		mesh.position.y = -geometry.parameters.height/2 - 0.5
+		container.add(mesh)
+		
+		var mesh = new THREE.Mesh( geometry, material);
+		mesh.position.x = -geometry.parameters.width/2 - 0.5
+		mesh.position.y =  geometry.parameters.height/2 - 0.5
+		container.add(mesh)
+		
+		var mesh = new THREE.Mesh( geometry, material);
+		mesh.position.x = +geometry.parameters.width/2 - 0.5
+		mesh.position.y =  geometry.parameters.height/2 + 0.5
+		container.add(mesh)
+
+		return container
+	}
+
+	function buildCircleCache(){
+		var container = new THREE.Group
+		// add outter cube - invisibility cloak
+		var geometry = new THREE.RingGeometry( 0.5, 5, 32 );	
+		var material = buildTransparentMaterial()
+		
+		var mesh = new THREE.Mesh( geometry, material);
+
+		return mesh
+	}
+
+	function buildTransparentMaterial(){
+		var material = new THREE.MeshBasicMaterial({
+			colorWrite: false // only write to z-buf
+		})
+		// an alternative to reach the same visual - this one seems way slower tho. My guess is it is hitting a slow-path in gpu
+		// var material   = new THREE.MeshBasicMaterial();
+		// material.color.set('black')
+		// material.opacity   = 0;
+		// material.blending  = THREE.NoBlending;
+		return material		
+	}
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		init invisibility cloak
@@ -186,61 +237,7 @@
 		mesh.position.z = -0.05
 		group.add( mesh );		
 	}
-	
-	function buildSquareCache(){
-		var container = new THREE.Group
-		// add outter cube - invisibility cloak
-		var geometry = new THREE.PlaneGeometry(50,50);
-		var material = new THREE.MeshBasicMaterial({
-			colorWrite: false // only write to z-buf
-		})
-		// an alternative to reach the same visual - this one seems way slower tho. My guess is it is hitting a slow-path in gpu
-		// var material   = new THREE.MeshBasicMaterial();
-		// material.color.set('black')
-		// material.opacity   = 0;
-		// material.blending  = THREE.NoBlending;	
 
-
-		var mesh = new THREE.Mesh( geometry, material);
-		mesh.position.x =  geometry.parameters.width/2 + 0.5
-		mesh.position.y = -geometry.parameters.height/2 + 0.5
-		container.add(mesh)
-		
-		var mesh = new THREE.Mesh( geometry, material);
-		mesh.position.x = -geometry.parameters.width/2 + 0.5
-		mesh.position.y = -geometry.parameters.height/2 - 0.5
-		container.add(mesh)
-		
-		var mesh = new THREE.Mesh( geometry, material);
-		mesh.position.x = -geometry.parameters.width/2 - 0.5
-		mesh.position.y =  geometry.parameters.height/2 - 0.5
-		container.add(mesh)
-		
-		var mesh = new THREE.Mesh( geometry, material);
-		mesh.position.x = +geometry.parameters.width/2 - 0.5
-		mesh.position.y =  geometry.parameters.height/2 + 0.5
-		container.add(mesh)
-
-		return container
-	}
-
-	function buildCircleCache(){
-		var container = new THREE.Group
-		// add outter cube - invisibility cloak
-		var geometry = new THREE.RingGeometry( 0.5, 5, 32 );	
-		var material = new THREE.MeshBasicMaterial({
-			colorWrite: false // only write to z-buf
-		})
-		// an alternative to reach the same visual - this one seems way slower tho. My guess is it is hitting a slow-path in gpu
-		// var material   = new THREE.MeshBasicMaterial();
-		// material.color.set('black')
-		// material.opacity   = 0;
-		// material.blending  = THREE.NoBlending;	
-		
-		var mesh = new THREE.Mesh( geometry, material);
-
-		return mesh
-	}
 
 	function initSceneCubeTorus(){
 		var group = new THREE.Group
@@ -251,14 +248,7 @@
 		// add outter cube - invisibility cloak
 		var geometry = new THREE.BoxGeometry(1,1,1);
 		geometry.faces.splice(8, 2); // make hole by removing top two triangles (is this assumption stable?)
-		var material = new THREE.MeshBasicMaterial({
-			colorWrite: false // only write to z-buf
-		})
-		// an alternative to reach the same visual - this one seems way slower tho. My guess is it is hitting a slow-path in gpu
-		// var material   = new THREE.MeshBasicMaterial();
-		// material.color.set('black')
-		// material.opacity   = 0;
-		// material.blending  = THREE.NoBlending;	
+		var material = buildTransparentMaterial()	
 
 		var mesh = new THREE.Mesh( geometry, material);
 		mesh.scale.set(1,1,1).multiplyScalar(1.02)
@@ -292,14 +282,7 @@
 		// add outter cube - invisibility cloak
 		var geometry = new THREE.BoxGeometry(1,1,1);
 		geometry.faces.splice(8, 2); // make hole by removing top two triangles (is this assumption stable?)
-		var material = new THREE.MeshBasicMaterial({
-			colorWrite: false // only write to z-buf
-		})
-		// an alternative to reach the same visual - this one seems way slower tho. My guess is it is hitting a slow-path in gpu
-		// var material   = new THREE.MeshBasicMaterial();
-		// material.color.set('black')
-		// material.opacity   = 0;
-		// material.blending  = THREE.NoBlending;	
+		var material = buildTransparentMaterial()	
 
 		var mesh = new THREE.Mesh( geometry, material);
 		mesh.scale.set(1,1,1).multiplyScalar(1.02)
