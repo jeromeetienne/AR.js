@@ -9,9 +9,7 @@
   - support <a-marker preset='hiro'> to be equal to type='pattern' url='https://rawgit.com/jeromeetienne/ar.js/master/data/data/patt.hiro'
   - same for kanji
 
-# fixing projectionMatrix
-- got something working in a-frame
-- understand it and port it directly in the threex
+- DONE fixing projectionMatrix
 
 # webvr-polyfill
 - GOAL: works well using only the positional tracking, not the stereo display

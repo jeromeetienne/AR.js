@@ -77,8 +77,8 @@
 		// to read from a video
 		// sourceType : 'video',
 		// sourceUrl : '../../data/videos/headtracking.mp4',		
-		// sourceWidth: 80*4,
-		// sourceHeight: 60*4,
+		sourceWidth: 80*4,
+		sourceHeight: 60*4,
 	})
 
 	arToolkitSource.init(function onReady(){
@@ -102,7 +102,7 @@
 		cameraParametersUrl: '../../data/data/camera_para.dat',
 		detectionMode: 'mono',
 		imageSmoothingEnabled: false,
-		maxDetectionRate: 15,
+		maxDetectionRate: 30,
 		sourceWidth: arToolkitSource.parameters.sourceWidth,
 		sourceHeight: arToolkitSource.parameters.sourceHeight,
 	})
@@ -156,18 +156,29 @@
 
 	function initScenePortal(){
 		var group = new THREE.Group
-		group.scale.set(1,1,1).multiplyScalar(2)
+		group.scale.set(1,1,1).multiplyScalar(1)
 		markerRoot.add(group)
 
 		// group.add( buildSquareCache() )
 		group.add( buildCircleCache() )
-
-		var geometry = new THREE.SphereGeometry( 3, 60, 40, 0, Math.PI, Math.PI, Math.PI);
-		// var geometry = new THREE.SphereGeometry( 1, 60, 40);
+		
+		// radiusTop, radiusBottom, height
+		var geometry = new THREE.CylinderGeometry(0.5, 0.5, 0.05, 32, 1, true)
+		var material = new THREE.MeshLambertMaterial( {
+			side: THREE.BackSide,
+			// wireframe: true,
+			color: 'lightgrey'
+			
+		})
+		mesh = new THREE.Mesh( geometry, material );
+		mesh.rotateX(Math.PI/2)
+		mesh.position.z = -geometry.parameters.height/2
+		group.add( mesh );		
+		
+		// add bounding sphere
+		var geometry = new THREE.SphereGeometry( 3, 32, 16, 0, Math.PI, Math.PI, Math.PI);
 		geometry.scale( 1, -1, 1 );
 		var material = new THREE.MeshBasicMaterial( {
-			// wireframe: true
-			// map: new THREE.TextureLoader().load( 'images/2294472375_24a3b8ef46_o.jpg' ),
 			map: new THREE.TextureLoader().load( 'images/32211336474_380b67d014_k.jpg' ),
 			side: THREE.DoubleSide
 		});
@@ -175,6 +186,7 @@
 		mesh.position.z = -0.05
 		group.add( mesh );		
 	}
+	
 	function buildSquareCache(){
 		var container = new THREE.Group
 		// add outter cube - invisibility cloak
