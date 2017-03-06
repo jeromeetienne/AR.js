@@ -169,9 +169,12 @@ void main(void) {
 	//////////////////////////////////////////////////////////////////////////////////
 
 ;(function(){
-	var refractMaterial = new THREE.ShaderMaterial( {
+	var texture = new THREE.VideoTexture(arToolkitSource.domElement)
+	texture.minFilter =  THREE.NearestFilter
+
+	var material = new THREE.ShaderMaterial( {
 		uniforms: {
-			texture: { type: 't', value: new THREE.VideoTexture(arToolkitSource.domElement) },
+			texture: { type: 't', value: texture },
 			// pull to see the throshold: 0.7-ish solid glass/water ("upsidevdown"), 0.8+ thinner glass ("magnifying glass")
 			refractionRatio: { type: 'f', value: 0.9 },
 			// experiment to adjust offset to video-plane. set to 1 for no effect
@@ -180,13 +183,13 @@ void main(void) {
 		vertexShader: document.getElementById( 'refract-vs' ).textContent,
 		fragmentShader: document.getElementById( 'refract-fs' ).textContent
 	});
-	refractMaterial.uniforms.texture.value.wrapS = refractMaterial.uniforms.texture.value.wrapT = THREE.ClampToEdgeWrapping;
+	material.uniforms.texture.value.wrapS = material.uniforms.texture.value.wrapT = THREE.ClampToEdgeWrapping;
 
-	var geometry = new THREE.SphereGeometry( 0.6, 30, 30 );
+	// var geometry = new THREE.SphereGeometry( 0.6, 30, 30 );
 	// var geometry = new THREE.ConeGeometry( 0.6, 0.9 , 8 ); // "diamond". ugly
-	var geometry = new THREE.TorusKnotGeometry(0.6,0.2,50,50);
+	// var geometry = new THREE.TorusKnotGeometry(0.6,0.2,50,50);
 	var geometry = new THREE.TorusGeometry(0.5,0.3,20,30);
-	var mesh = new THREE.Mesh(geometry, refractMaterial);
+	var mesh = new THREE.Mesh(geometry, material);
 	mesh.position.z = 0.9; // raise a bit to not only get rays from the marker..
  	mesh.rotation.x = Math.PI/2; // standing
 	// mesh.scale.x = 0.4
@@ -194,7 +197,8 @@ void main(void) {
 	markerRoot.add( mesh );
 
 	onRenderFcts.push(function(){
-		mesh.rotation.z += 0.02;
+		console.log('dd')
+		mesh.rotation.y += 0.02;
 	})
 	
 })()
