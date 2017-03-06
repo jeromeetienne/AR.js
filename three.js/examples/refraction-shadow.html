@@ -167,15 +167,15 @@ void main(void) {
 
 
 	var directionalLight = new THREE.DirectionalLight( 0x887766 );
-	scene.add( directionalLight );
+	markerRoot.add( directionalLight );
 	directionalLight.position.set( 1, 0.3, 2 ).setLength(2)
-	directionalLight.shadow.mapSize.set(128,128)
-	directionalLight.shadow.camera.bottom = -3
-	directionalLight.shadow.camera.top = 3
-	directionalLight.shadow.camera.right = 3
-	directionalLight.shadow.camera.left = -3
+	directionalLight.shadow.mapSize.set(256,256)
+	directionalLight.shadow.camera.bottom = -4
+	directionalLight.shadow.camera.top = 4
+	directionalLight.shadow.camera.right = 4
+	directionalLight.shadow.camera.left = -4
 	directionalLight.castShadow = true;
-	scene.add(new THREE.CameraHelper( directionalLight.shadow.camera ))
+	markerRoot.add(new THREE.CameraHelper( directionalLight.shadow.camera ))
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
@@ -208,12 +208,11 @@ void main(void) {
  	mesh.rotation.x = Math.PI/2; // standing
 
 	// point the directionalLight to the marker
-	directionalLight.target = mesh
+	// directionalLight.target = mesh
 
 	markerRoot.add( mesh );
 
 	onRenderFcts.push(function(){
-		console.log('dd')
 		mesh.rotation.y += 0.02;
 	})
 
