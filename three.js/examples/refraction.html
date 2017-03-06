@@ -184,7 +184,7 @@ void main(void) {
 	var geometry = new THREE.SphereGeometry( 0.6, 30, 30 );
 	// var geometry = new THREE.ConeGeometry( 0.6, 0.9 , 8 ); // "diamond". ugly
 	var geometry = new THREE.TorusKnotGeometry(0.6,0.2,50,50);
-	// var geometry = new THREE.TorusGeometry(0.5,0.3,20,30);
+	var geometry = new THREE.TorusGeometry(0.5,0.3,20,30);
 	var mesh = new THREE.Mesh(geometry, refractMaterial);
 	mesh.position.z = 0.9; // raise a bit to not only get rays from the marker..
  	mesh.rotation.x = Math.PI/2; // standing
