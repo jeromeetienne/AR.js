@@ -49,19 +49,16 @@ renderer.shadowMap.enabled = true;
 	var ambient = new THREE.AmbientLight( 0x666666 );
 	scene.add( ambient );
 
-	var light = new THREE.DirectionalLight( 'white' );
-	light.position.set( 1, 0.3, 2 ).setLength(2)
-	light.shadow.mapSize.set(128,128)
-	light.shadow.camera.bottom = -0.6
-	light.shadow.camera.top = 0.6
-	light.shadow.camera.right = 0.6
-	light.shadow.camera.left = -0.6
-	light.castShadow = true;
-	// scene.add(new THREE.CameraHelper( light.shadow.camera ))
-	scene.add( light );
-	
-
-window.directionalLight = light
+	var directionalLight = new THREE.DirectionalLight( 'white' );
+	directionalLight.position.set( 1, 0.3, 2 ).setLength(2)
+	directionalLight.shadow.mapSize.set(128,128)
+	directionalLight.shadow.camera.bottom = -0.6
+	directionalLight.shadow.camera.top = 0.6
+	directionalLight.shadow.camera.right = 0.6
+	directionalLight.shadow.camera.left = -0.6
+	directionalLight.castShadow = true;
+	// scene.add(new THREE.CameraHelper( directionalLight.shadow.camera ))
+	scene.add( directionalLight );
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
@@ -173,7 +170,8 @@ window.directionalLight = light
 		mesh.receiveShadow = true;
 		mesh.position.z	= 0.7
 		markerRoot.add( mesh );
-directionalLight.target = mesh
+		// point the directionalLight to the marker
+		directionalLight.target = mesh
 
 		onRenderFcts.push(function(){
 			mesh.rotation.x += 0.04;
@@ -188,7 +186,6 @@ directionalLight.target = mesh
 		planeMesh.receiveShadow = true;
 		planeMesh.depthWrite = false;
 		markerRoot.add(planeMesh);
-window.planeMesh = planeMesh		
 	})()
 
 

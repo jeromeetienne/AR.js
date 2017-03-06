@@ -181,6 +181,8 @@ I exited to see what people will do with AR.js :)
 - add webworkers
 - add the nft
 - handle sensor fusion with the IMU ?
+- marker removal in the video - https://twitter.com/jerome_etienne/status/838584931009835009
+- dynamic multiple markers
 
 # Ideas
 - AR Gaming - https://www.youtube.com/watch?v=EmGGGzibGok

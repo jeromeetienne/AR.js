@@ -8,7 +8,12 @@
   - remove that by using baseURL - cameraParametersUrl: https://rawgit.com/jeromeetienne/ar.js/master/data/data/camera_para.dat
   - support <a-marker preset='hiro'> to be equal to type='pattern' url='https://rawgit.com/jeromeetienne/ar.js/master/data/data/patt.hiro'
   - same for kanji
-
+- for refraction, use shaddow and remove shaddow.html
+- for refraction, use a skull, aka crustal skull
+  - http://tf3dm.com/download-page.php?url=cranio-11055
+  - https://www.yobi3d.com/q/skull
+- do something with ps vita AR cards
+  - http://ie.playstation.com/media/8DokiOUp/AR%20Play%20Cards.pdf
 - DONE fixing projectionMatrix
 
 # webvr-polyfill
