@@ -102,6 +102,9 @@ Three.js Examples:
 - [shadow](https://jeromeetienne.github.io/AR.js/three.js/examples/shadow.html) : 
   three.js example for shadow
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/shadow.html))
+- [refraction](https://jeromeetienne.github.io/AR.js/three.js/examples/refraction.html) : 
+  three.js example for refraction
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/refraction.html))
 
 a-frame Examples: 
 
