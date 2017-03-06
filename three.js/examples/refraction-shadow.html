@@ -14,10 +14,9 @@
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
 	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - three.js mobile performance
 	<br/>
-	Code by <a href="https://twitter.com/snigelpaogat" target='_blank'>Fredrik Blomqvist</a> and
+	Code by <a href="https://twitter.com/snigelpaogat" target='_blank'>Fredrik Blomqvist</a> and 
 	<a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div>
-
 <!--
 	Refraction shader
 	http://http.developer.nvidia.com/CgTutorial/cg_tutorial_chapter07.html
@@ -53,8 +52,6 @@ void main(void) {
 	gl_FragColor = vec4( color, 1.0 );
 }
 </script>
-
-
 <script>
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
@@ -62,20 +59,22 @@ void main(void) {
 
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
-		antialias	: true,
+		// antialias	: true,
 		alpha: true
 	});
+// renderer.shadowMap.type = THREE.BasicShadowMap
+// renderer.shadowMap.type = THREE.PCFShadowMap;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap
+renderer.shadowMap.enabled = true;
+
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
 	// renderer.setPixelRatio( 1/2 );
+
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	renderer.domElement.style.position = 'absolute'
 	renderer.domElement.style.top = '0px'
 	renderer.domElement.style.left = '0px'
 	document.body.appendChild( renderer.domElement );
-
-
-	renderer.shadowMap.type = THREE.PCFSoftShadowMap
-	renderer.shadowMap.enabled = true;
 
 	// array of functions for the rendering loop
 	var onRenderFcts= [];
@@ -86,6 +85,16 @@ void main(void) {
 	var ambient = new THREE.AmbientLight( 0x666666 );
 	scene.add( ambient );
 
+	var directionalLight = new THREE.DirectionalLight( 'white' );
+	directionalLight.position.set( 1, 0.3, 2 ).setLength(2)
+	directionalLight.shadow.mapSize.set(128,128)
+	directionalLight.shadow.camera.bottom = -0.8
+	directionalLight.shadow.camera.top = 0.8
+	directionalLight.shadow.camera.right = 0.8
+	directionalLight.shadow.camera.left = -0.8
+	directionalLight.castShadow = true;
+	// scene.add(new THREE.CameraHelper( directionalLight.shadow.camera ))
+	scene.add( directionalLight );
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
@@ -150,6 +159,9 @@ void main(void) {
 		if( arToolkitSource.ready === false )	return
 
 		arToolkitContext.update( arToolkitSource.domElement )
+		
+		// update scene.visible if the marker is seen
+		scene.visible = camera.visible
 	})
 
 
@@ -157,75 +169,98 @@ void main(void) {
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
 
-	var markerRoot = new THREE.Group
-	scene.add(markerRoot)
-	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
+	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
 		type : 'pattern',
-		patternUrl : '../../data/data/patt.hiro'
-		// patternUrl : '../../data/data/patt.kanji'
+		patternUrl : '../../data/data/patt.hiro',
+		// patternUrl : '../../data/data/patt.kanji',
+		// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
+		changeMatrixMode: 'cameraTransformMatrix'
 	})
+	// as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
+	scene.visible = false
 
-
-	var directionalLight = new THREE.DirectionalLight( 0x887766 );
-	markerRoot.add( directionalLight );
-	directionalLight.position.set( 1, 0.3, 2 ).setLength(2)
-	directionalLight.shadow.mapSize.set(256,256)
-	directionalLight.shadow.camera.bottom = -4
-	directionalLight.shadow.camera.top = 4
-	directionalLight.shadow.camera.right = 4
-	directionalLight.shadow.camera.left = -4
-	directionalLight.castShadow = true;
-	markerRoot.add(new THREE.CameraHelper( directionalLight.shadow.camera ))
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
-;(function(){
-	var texture = new THREE.VideoTexture(arToolkitSource.domElement)
-	texture.minFilter =  THREE.NearestFilter
+	var markerRoot = new THREE.Group
+	scene.add(markerRoot)
+	
+	// add a torus knot
+	// var geometry	= new THREE.CubeGeometry(1,1,1);
+	// var material	= new THREE.MeshNormalMaterial({
+	// 	transparent : true,
+	// 	opacity: 0.5,
+	// 	side: THREE.DoubleSide
+	// });
+	// var mesh	= new THREE.Mesh( geometry, material );
+	// mesh.position.z	= geometry.parameters.height/2
+	// markerRoot.add( mesh );
 
-	var material = new THREE.ShaderMaterial( {
-		uniforms: {
-			texture: { type: 't', value: texture },
-			// pull to see the throshold: 0.7-ish solid glass/water ("upsidevdown"), 0.8+ thinner glass ("magnifying glass")
-			refractionRatio: { type: 'f', value: 0.9 },
-			// experiment to adjust offset to video-plane. set to 1 for no effect
-			distance: { type: 'f', value: 1 }
-		},
-		vertexShader: document.getElementById( 'refract-vs' ).textContent,
-		fragmentShader: document.getElementById( 'refract-fs' ).textContent
-	});
-	material.uniforms.texture.value.wrapS = material.uniforms.texture.value.wrapT = THREE.ClampToEdgeWrapping;
+	;(function(){
+		// var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32); // make it slightly larger for better view
+		// var material	= new THREE.MeshNormalMaterial();
+		// var material	= new THREE.MeshLambertMaterial();
+		// var mesh	= new THREE.Mesh( geometry, material );
+		// mesh.castShadow = true;
+		// mesh.receiveShadow = true;
+		// mesh.position.z	= 0.7
+		// markerRoot.add( mesh );
+		// // point the directionalLight to the marker
+		// directionalLight.target = mesh
+		// 
+		// onRenderFcts.push(function(){
+		// 	mesh.rotation.x += 0.04;
+		// })
+		
+		var texture = new THREE.VideoTexture(arToolkitSource.domElement)
+		texture.minFilter =  THREE.NearestFilter
 
-	// var geometry = new THREE.SphereGeometry( 0.6, 30, 30 );
-	// var geometry = new THREE.ConeGeometry( 0.6, 0.9 , 8 ); // "diamond". ugly
-	// var geometry = new THREE.TorusKnotGeometry(0.6,0.2,50,50);
-	var geometry = new THREE.TorusGeometry(0.5,0.3,20,30);
-	var mesh = new THREE.Mesh(geometry, material);
-	mesh.castShadow = true;
-	mesh.receiveShadow = true;
-	mesh.position.z = 0.9; // raise a bit to not only get rays from the marker..
- 	mesh.rotation.x = Math.PI/2; // standing
+		var material = new THREE.ShaderMaterial( {
+			uniforms: {
+				texture: { type: 't', value: texture },
+				// pull to see the throshold: 0.7-ish solid glass/water ("upsidevdown"), 0.8+ thinner glass ("magnifying glass")
+				refractionRatio: { type: 'f', value: 0.9 },
+				// experiment to adjust offset to video-plane. set to 1 for no effect
+				distance: { type: 'f', value: 1 }
+			},
+			vertexShader: document.getElementById( 'refract-vs' ).textContent,
+			fragmentShader: document.getElementById( 'refract-fs' ).textContent
+		});
+		material.uniforms.texture.value.wrapS = material.uniforms.texture.value.wrapT = THREE.ClampToEdgeWrapping;
+		// var material	= new THREE.MeshNormalMaterial();
 
-	// point the directionalLight to the marker
-	// directionalLight.target = mesh
+		// var geometry = new THREE.SphereGeometry( 0.6, 30, 30 );
+		// var geometry = new THREE.ConeGeometry( 0.6, 0.9 , 8 ); // "diamond". ugly
+		// var geometry = new THREE.TorusKnotGeometry(0.6,0.2,50,50);
+		var geometry = new THREE.TorusGeometry(0.5,0.3,20,30);
+		var mesh = new THREE.Mesh(geometry, material);
+		mesh.position.z = 0.9; // raise a bit to not only get rays from the marker..
+	 	mesh.rotation.x = Math.PI/2; // standing
+		// mesh.scale.x = 0.4
+		mesh.castShadow = true;
 
-	markerRoot.add( mesh );
+		markerRoot.add( mesh );
+		// point the directionalLight to the marker
+		directionalLight.target = mesh
 
-	onRenderFcts.push(function(){
-		mesh.rotation.y += 0.02;
-	})
+		onRenderFcts.push(function(){
+			console.log('dd')
+			mesh.rotation.y += 0.02;
+		})
+
+		// add a transparent ground-plane shadow-receiver
+		var material = new THREE.ShadowMaterial();
+		material.opacity = 0.7; //! bug in threejs. can't set in constructor
+
+		var geometry = new THREE.PlaneGeometry(10, 10)
+		var planeMesh = new THREE.Mesh( geometry, material);
+		planeMesh.receiveShadow = true;
+		planeMesh.depthWrite = false;
+		markerRoot.add(planeMesh);
+	})()
 
 
-	// add a transparent ground-plane shadow-receiver
-	var geometry = new THREE.PlaneGeometry(3, 3)
-	var material = new THREE.ShadowMaterial();
-	material.opacity = 0.7; //! bug in threejs. can't set in constructor
-	var planeMesh = new THREE.Mesh( geometry, material);
-	planeMesh.receiveShadow = true;
-	planeMesh.depthWrite = false;
-	markerRoot.add(planeMesh);
-})()
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
