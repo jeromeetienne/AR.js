@@ -168,6 +168,7 @@ void main(void) {
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
+;(function(){
 	var refractMaterial = new THREE.ShaderMaterial( {
 		uniforms: {
 			texture: { type: 't', value: new THREE.VideoTexture(arToolkitSource.domElement) },
@@ -192,9 +193,11 @@ void main(void) {
 
 	markerRoot.add( mesh );
 
-	// onRenderFcts.push(function(){
-	// 	mesh.rotation.x += 0.02;
-	// })
+	onRenderFcts.push(function(){
+		mesh.rotation.z += 0.02;
+	})
+	
+})()
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
