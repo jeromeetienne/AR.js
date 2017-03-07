@@ -120,6 +120,9 @@ a-frame Examples:
 - [hatsune](https://jeromeetienne.github.io/AR.js/aframe/examples/hatsune.html) : 
   a-frame example for hatsune
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/hatsune.html))
+- [full-hatsune](https://jeromeetienne.github.io/AR.js/aframe/examples/full-hatsune.html) : 
+  a-frame example for full-hatsune
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/full-hatsune.html))
 - [minecraft](https://jeromeetienne.github.io/AR.js/aframe/examples/minecraft.html) : 
   a-frame example for minecraft
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/minecraft.html))

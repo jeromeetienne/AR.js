@@ -12,8 +12,14 @@
 - for refraction, use a skull, aka crustal skull
   - http://tf3dm.com/download-page.php?url=cranio-11055
   - https://www.yobi3d.com/q/skull
+  - good model - see if you can get this one https://www.yobi3d.com/i/ieAvsKA6d2
+  
 - do something with ps vita AR cards
   - http://ie.playstation.com/media/8DokiOUp/AR%20Play%20Cards.pdf
+  - print it on hard papers
+  - find the kind of matrix it is.
+  - just put each marker in front of the camera - using image / photo of screen
+  - and go thru each and every matrix type detection
 - DONE fixing projectionMatrix
 
 # webvr-polyfill
