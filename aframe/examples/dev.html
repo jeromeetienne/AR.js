@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- <script src="vendor/aframe.min.js"></script> -->
-<script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+<script src="vendor/aframe.min.js"></script>
 <!-- jsartookit -->
 <script src="../../three.js/vendor/jsartoolkit5/build/artoolkit.min.js"></script>
 <script src="../../three.js/vendor/jsartoolkit5/js/artoolkit.api.js"></script>
@@ -20,15 +20,14 @@
 	<br/>
 	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div>
-	<!-- <a-scene embedded artoolkit='sourceType: video; sourceUrl:../../data/videos/headtracking.mp4;'> -->
+	<a-scene embedded artoolkit='sourceType: video; sourceUrl:../../data/videos/headtracking.mp4;'>
 	<!-- <a-scene embedded artoolkit='sourceType: image; sourceUrl:../../data/images/armchair.jpg;'> -->
-	<a-scene embedded artoolkit='sourceType: webcam;'>
+	<!-- <a-scene embedded artoolkit='sourceType: webcam;'> -->
 	<!-- <a-scene artoolkit='sourceType: image; sourceUrl:../../data/images/screenshot.png'> -->
 	<!-- <a-scene artoolkit='sourceType: image; sourceUrl:../../data/images/img.jpg'> -->
 	<!-- <a-scene artoolkit='sourceType: webcam'> -->
 
-		<!-- <a-marker type='unknown'> -->
-		<a-marker type='pattern' url='../../data/data/patt.hiro'>
+		<a-marker preset='hiro'>
 			<a-box depth="1" height="1" width="1" position='0 0 0.5' material='opacity: 0.5; side:double; color:blue;'></a-box>
 		</a-marker>
 

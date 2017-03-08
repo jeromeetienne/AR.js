@@ -8,19 +8,13 @@
   - remove that by using baseURL - cameraParametersUrl: https://rawgit.com/jeromeetienne/ar.js/master/data/data/camera_para.dat
   - support <a-marker preset='hiro'> to be equal to type='pattern' url='https://rawgit.com/jeromeetienne/ar.js/master/data/data/patt.hiro'
   - same for kanji
+
 - for refraction, use shaddow and remove shaddow.html
 - for refraction, use a skull, aka crustal skull
   - http://tf3dm.com/download-page.php?url=cranio-11055
   - https://www.yobi3d.com/q/skull
   - good model - see if you can get this one https://www.yobi3d.com/i/ieAvsKA6d2
   
-- do something with ps vita AR cards
-  - http://ie.playstation.com/media/8DokiOUp/AR%20Play%20Cards.pdf
-  - print it on hard papers
-  - find the kind of matrix it is.
-  - just put each marker in front of the camera - using image / photo of screen
-  - and go thru each and every matrix type detection
-- DONE fixing projectionMatrix
 
 # webvr-polyfill
 - GOAL: works well using only the positional tracking, not the stereo display
@@ -48,7 +42,7 @@
   - in ctor, if there is a local storage use this
 
 # TODO
-- fix projection camera which inversing y axis, and looking toward positive z
+- DONE fix projection camera which inversing y axis, and looking toward positive z
   - this affect webvr polyfill in three.js demo
 - currently the source image ratio is always in 640x480 :(
   - the aspect of the webcam should depends on the screens
@@ -65,4 +59,3 @@
   - http://kapadia.github.io/emscripten/2013/09/13/emscripten-pointers-and-pointers.html
   - this explains how to pass a pointer from a typearray to c++ 
   - this would avoid the dataHeap.set() - 43%
-  

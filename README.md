@@ -196,6 +196,12 @@ I exited to see what people will do with AR.js :)
   - thus the publisher only has to publish this on its ads, likely on paper ads in magazine or in the street.
   - and the user can use his phone to immediatly see the related augmented reality
   - https://techcrunch.com/2017/02/02/google-chrome-gets-its-own-qr-code-barcode-scanner/
+- do something with ps vita AR cards
+  - http://ie.playstation.com/media/8DokiOUp/AR%20Play%20Cards.pdf
+  - print it on hard papers
+  - find the kind of matrix it is.
+  - just put each marker in front of the camera - using image / photo of screen
+  - and go thru each and every matrix type detection
 
 # How To Release ?
 

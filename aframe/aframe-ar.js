@@ -168,9 +168,23 @@ AFRAME.registerComponent('artoolkitmarker', {
 		changeMatrixMode: {
 			type: 'string',
 			default : 'modelViewMatrix',
+		},
+		preset: {
+			type: 'string',
 		}
 	},
 	init: function () {
+		// honor this.data.preset
+		if( this.data.preset === 'hiro' ){
+			this.data.type = 'pattern'
+			this.data.patternUrl = THREEx.ArToolkitContext.baseURL+'../data/data/patt.hiro'
+		}else if( this.data.preset === 'kanji' ){
+			this.data.type = 'pattern'
+			this.data.patternUrl = THREEx.ArToolkitContext.baseURL+'../data/data/patt.kanji'			
+		}else {
+			console.assert( this.data.preset === '', 'illegal preset value '+this.data.preset)
+		}
+		// actually init arMarkerControls
 		var artoolkitContext = this.el.sceneEl.systems.artoolkit.arToolkitContext
 		this.arMarkerControls = new THREEx.ArMarkerControls(artoolkitContext, this.el.object3D, this.data)
 	},
@@ -197,6 +211,7 @@ AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitiv
                 'size': 'artoolkitmarker.size',
                 'url': 'artoolkitmarker.patternUrl',
                 'value': 'artoolkitmarker.barcodeValue',
+                'preset': 'artoolkitmarker.preset',
         }
 }));
 
