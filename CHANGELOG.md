@@ -6,6 +6,7 @@
 - added a profile discovery. It helps choose the performance tradeoff which fit your case - [profile](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/profile.html)
 - fixed artoolkit projection matrix to be more webgl - [projection matrix](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/WebGL_model_view_projection)
   - it was looking to positive-z and y was upside down compared to the usual webgl one
+- support preset in a-frame a-marker - preset = ["hiro" | "kanji"]
 
 # 1.0.0 - AR.js has landed
 

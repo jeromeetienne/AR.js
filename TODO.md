@@ -14,7 +14,39 @@
   - http://tf3dm.com/download-page.php?url=cranio-11055
   - https://www.yobi3d.com/q/skull
   - good model - see if you can get this one https://www.yobi3d.com/i/ieAvsKA6d2
-  
+
+# Multimarker
+- how to say 'those markers will start as one'
+- actually print 6 cards with matrix markers on simple papers, and play with them
+- you need to ensure this is working as a setup
+- multipattern seems to work on old version... not on new version
+  - git checkout 8510249f1d3c20d24bcce2350b95b67c28495971
+  - make it work on new version too
+- first integrate the multi pattern in ar.js
+- then do it dynamically
+- multiple pattern
+- multiple matrix - this one seems bogus even on a old one
+- algo: 
+  1. the user put all the marker on the table
+  2. this is deemed the stable positional
+  3. from all those positions, build a Multimarker
+  4. init artoolkit with this multimarker
+- this is all about programmation, no subtle algo
+
+# Marker removal
+- take the video as texture
+- push the matrix of the marker in shader
+- put a plane over the whole marker (white borders included)
+- for this plane, use video texture + set UV cleverly around the marker plane
+- LATER: maybe some blending between the 4 borders of the full markers to make it more robuste
+- needs to convert the UV thru the marker matrix
+- https://www.youtube.com/watch?time_continue=172&v=-mFBraJzbZU video showing it
+- https://twitter.com/jerome_etienne/status/838586924361187328 good screenshot
+- first version on a picture, with uv computed in javascript
+  - much easier to debug
+- do that in a single html. markercache.html 
+  - threex.markercache.js - this is just the plane with the special shader
+  - attached to the markerRoot, provide a texture where to take the pixels
 
 # webvr-polyfill
 - GOAL: works well using only the positional tracking, not the stereo display
