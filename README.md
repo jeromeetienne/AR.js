@@ -105,6 +105,9 @@ Three.js Examples:
 - [refraction](https://jeromeetienne.github.io/AR.js/three.js/examples/refraction.html) : 
   three.js example for refraction
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/refraction.html))
+- [markercache](https://jeromeetienne.github.io/AR.js/three.js/examples/markercache.html) : 
+  three.js example for markercache
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/markercache.html))
 
 a-frame Examples: 
 
