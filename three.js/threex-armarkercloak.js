@@ -11,7 +11,7 @@ THREEx.ArMarkerCache = function(videoTexture){
         var orthoMesh = new THREE.Mesh(geometry, material);
 	this.orthoMesh = orthoMesh
 
-	var geometry	= new THREE.PlaneGeometry(1.3+0.2,1.85+0.2, 1, 8);
+	var geometry	= new THREE.PlaneGeometry(1.3+0.5,1.85+0.5, 1, 8);
 	var material	= new THREE.MeshBasicMaterial({
 		// transparent : true,
 		// opacity: 0.5,
@@ -28,8 +28,8 @@ THREEx.ArMarkerCache = function(videoTexture){
 
 	var xMin = -0.65
 	var xMax =  0.65
-	var yMin =  0.75
-	var yMax =  1.05
+	var yMin =  0.65 +0.1
+	var yMax =  0.95 +0.1
 
 	var originalUvs = []
 	originalUvs.push( new THREE.Vector3(xMin, yMax, 0))
