@@ -155,7 +155,7 @@
 	        var orthoMesh = new THREE.Mesh(geometry, material);
 	        orthoScene.add(orthoMesh);
 
-		var geometry	= new THREE.PlaneGeometry(1.3,1.85);
+		var geometry	= new THREE.PlaneGeometry(1.3,1.85, 1, 8);
 		var material	= new THREE.MeshBasicMaterial({
 			// transparent : true,
 			// opacity: 0.5,
@@ -205,22 +205,29 @@ window.cacheMesh = cacheMesh
 			orthoMesh.geometry.verticesNeedUpdate = true
 			
 			// change cacheMesh UVs
-			cacheMesh.geometry.faceVertexUvs[0][0][0].copy( buildUvs(0, 1) )
-			cacheMesh.geometry.faceVertexUvs[0][0][1].copy( buildUvs(0, 0) )
-			cacheMesh.geometry.faceVertexUvs[0][0][2].copy( buildUvs(1, 1) )
-			
-			cacheMesh.geometry.faceVertexUvs[0][1][0].copy( buildUvs(0, 0) )
-			cacheMesh.geometry.faceVertexUvs[0][1][1].copy( buildUvs(1, 0) )
-			cacheMesh.geometry.faceVertexUvs[0][1][2].copy( buildUvs(1, 1) )
+			for(var i = 0; i < cacheMesh.geometry.parameters.heightSegments/2; i ++ ){
+				// normale orientation
+				cacheMesh.geometry.faceVertexUvs[0][i*4+0][0].copy( convertUvs(0, 1) )
+				cacheMesh.geometry.faceVertexUvs[0][i*4+0][1].copy( convertUvs(0, 0) )
+				cacheMesh.geometry.faceVertexUvs[0][i*4+0][2].copy( convertUvs(1, 1) )
+				
+				cacheMesh.geometry.faceVertexUvs[0][i*4+1][0].copy( convertUvs(0, 0) )
+				cacheMesh.geometry.faceVertexUvs[0][i*4+1][1].copy( convertUvs(1, 0) )
+				cacheMesh.geometry.faceVertexUvs[0][i*4+1][2].copy( convertUvs(1, 1) )
+
+				// swapy orientation
+				cacheMesh.geometry.faceVertexUvs[0][i*4+2][0].copy( convertUvs(0, 0) )
+				cacheMesh.geometry.faceVertexUvs[0][i*4+2][1].copy( convertUvs(0, 1) )
+				cacheMesh.geometry.faceVertexUvs[0][i*4+2][2].copy( convertUvs(1, 0) )
+				
+				cacheMesh.geometry.faceVertexUvs[0][i*4+3][0].copy( convertUvs(0, 1) )
+				cacheMesh.geometry.faceVertexUvs[0][i*4+3][1].copy( convertUvs(1, 1) )
+				cacheMesh.geometry.faceVertexUvs[0][i*4+3][2].copy( convertUvs(1, 0) )
+			}
 
 			cacheMesh.geometry.uvsNeedUpdate = true
-			function buildUvs(x, y){
-				var Uv = new THREE.Vector2()
-						// originalUvs.push( new THREE.Vector3(xMin, yMax, 0))
-						// originalUvs.push( new THREE.Vector3(xMax, yMax, 0))
-						// originalUvs.push( new THREE.Vector3(xMin, yMin, 0))
-						// originalUvs.push( new THREE.Vector3(xMax, yMin, 0))
 
+			function convertUvs(x, y){
 				if( x === 0 && y === 0 ){
 					var transformedUv = transformedUvs[2]
 				}else if( x === 0 && y === 1 ){
@@ -236,8 +243,6 @@ window.cacheMesh = cacheMesh
 				var Uv = new THREE.Vector2()
 				Uv.x = transformedUv.x / 2 + 0.5
 				Uv.y = transformedUv.y / 2 + 0.5
-
-				// Uv.y *= 5
 				
 				return Uv
 			}
@@ -248,26 +253,26 @@ window.cacheMesh = cacheMesh
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
-	// add a torus knot	
-	var geometry	= new THREE.CubeGeometry(1,1,1);
-	var material	= new THREE.MeshNormalMaterial({
-		transparent : true,
-		opacity: 0.5,
-		side: THREE.DoubleSide
-	}); 
-	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.z	= geometry.parameters.height/2
-	markerRoot.add( mesh );
-	
-	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
-	var material	= new THREE.MeshNormalMaterial(); 
-	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.z	= 0.5
-	markerRoot.add( mesh );
-	
-	onRenderFcts.push(function(){
-		mesh.rotation.x += 0.1
-	})
+	// // add a torus knot	
+	// var geometry	= new THREE.CubeGeometry(1,1,1);
+	// var material	= new THREE.MeshNormalMaterial({
+	// 	transparent : true,
+	// 	opacity: 0.5,
+	// 	side: THREE.DoubleSide
+	// }); 
+	// var mesh	= new THREE.Mesh( geometry, material );
+	// mesh.position.z	= geometry.parameters.height/2
+	// markerRoot.add( mesh );
+	// 
+	// var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
+	// var material	= new THREE.MeshNormalMaterial(); 
+	// var mesh	= new THREE.Mesh( geometry, material );
+	// mesh.position.z	= 0.5
+	// markerRoot.add( mesh );
+	// 
+	// onRenderFcts.push(function(){
+	// 	mesh.rotation.x += 0.1
+	// })
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
@@ -281,8 +286,7 @@ window.cacheMesh = cacheMesh
 		
 		renderer.render( scene, camera );
 		
-        	// renderer.render( orthoScene, camera );
-        	renderer.render( orthoScene, orthoCamera );
+        	// renderer.render( orthoScene, orthoCamera );
 
 		stats.update();
 	})
