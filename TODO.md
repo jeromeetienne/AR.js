@@ -15,6 +15,8 @@
   - https://www.yobi3d.com/q/skull
   - good model - see if you can get this one https://www.yobi3d.com/i/ieAvsKA6d2
 
+
+
 # Multimarker
 - how to say 'those markers will start as one'
 - actually print 6 cards with matrix markers on simple papers, and play with them
@@ -34,6 +36,9 @@
 - this is all about programmation, no subtle algo
 
 # Marker removal
+- put it in treex.markercache.js
+
+
 - take the video as texture
 - push the matrix of the marker in shader
 - put a plane over the whole marker (white borders included)

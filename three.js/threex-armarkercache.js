@@ -1,12 +1,104 @@
 var THREEx = THREEx || {}
 
 THREEx.ArMarkerCache = function(videoTexture){
-	var geometry	= new THREE.PlaneGeometry(1.3,1.85);
-	var material	= new THREE.MeshNormalMaterial({
+        var material = new THREE.MeshNormalMaterial({
 		transparent : true,
 		opacity: 0.5,
 		side: THREE.DoubleSide
+	});
+        var geometry = new THREE.PlaneGeometry(1,1);
+        var orthoMesh = new THREE.Mesh(geometry, material);
+	this.orthoMesh = orthoMesh
+
+	var geometry	= new THREE.PlaneGeometry(1.3+0.2,1.85+0.2, 1, 8);
+	var material	= new THREE.MeshBasicMaterial({
+		transparent : true,
+		opacity: 0.5,
+		side: THREE.DoubleSide,
+		map: videoTexture,
 	}); 
-	this.object3d = new THREE.Mesh( geometry, material );
-	this.object3d.position.y = -0.3
+	var cacheMesh = new THREE.Mesh( geometry, material );
+	cacheMesh.position.y = -0.3
+	this.cacheMesh = cacheMesh
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+
+	var xMin = -0.65
+	var xMax =  0.65
+	var yMin =  0.75
+	var yMax =  1.05
+
+	var originalUvs = []
+	originalUvs.push( new THREE.Vector3(xMin, yMax, 0))
+	originalUvs.push( new THREE.Vector3(xMax, yMax, 0))
+	originalUvs.push( new THREE.Vector3(xMin, yMin, 0))
+	originalUvs.push( new THREE.Vector3(xMax, yMin, 0))
+
+	this.update = function(modelViewMatrix, cameraProjectionMatrix){
+		var transformedUvs = []
+		originalUvs.forEach(function(originalUvs, index){
+			var transformedUv = originalUvs.clone()
+			// apply modelViewMatrix and projectionMatrix
+			transformedUv.applyMatrix4( modelViewMatrix )
+			transformedUv.applyMatrix4( cameraProjectionMatrix )
+
+			// apply perspective
+			transformedUv.x /= transformedUv.z
+			transformedUv.y /= transformedUv.z
+			// store it
+			transformedUvs.push(transformedUv)
+		})
+
+		// change orthoMesh vertices
+		for(var i = 0; i < transformedUvs.length; i++){
+			orthoMesh.geometry.vertices[i].copy(transformedUvs[i])
+		}
+		orthoMesh.geometry.computeBoundingSphere()
+		orthoMesh.geometry.verticesNeedUpdate = true
+		
+		// change cacheMesh UVs
+		for(var i = 0; i < cacheMesh.geometry.parameters.heightSegments/2; i ++ ){
+			// normale orientation
+			cacheMesh.geometry.faceVertexUvs[0][i*4+0][0].copy( convertUvs(0, 1) )
+			cacheMesh.geometry.faceVertexUvs[0][i*4+0][1].copy( convertUvs(0, 0) )
+			cacheMesh.geometry.faceVertexUvs[0][i*4+0][2].copy( convertUvs(1, 1) )
+			
+			cacheMesh.geometry.faceVertexUvs[0][i*4+1][0].copy( convertUvs(0, 0) )
+			cacheMesh.geometry.faceVertexUvs[0][i*4+1][1].copy( convertUvs(1, 0) )
+			cacheMesh.geometry.faceVertexUvs[0][i*4+1][2].copy( convertUvs(1, 1) )
+
+			// swapy orientation
+			cacheMesh.geometry.faceVertexUvs[0][i*4+2][0].copy( convertUvs(0, 0) )
+			cacheMesh.geometry.faceVertexUvs[0][i*4+2][1].copy( convertUvs(0, 1) )
+			cacheMesh.geometry.faceVertexUvs[0][i*4+2][2].copy( convertUvs(1, 0) )
+			
+			cacheMesh.geometry.faceVertexUvs[0][i*4+3][0].copy( convertUvs(0, 1) )
+			cacheMesh.geometry.faceVertexUvs[0][i*4+3][1].copy( convertUvs(1, 1) )
+			cacheMesh.geometry.faceVertexUvs[0][i*4+3][2].copy( convertUvs(1, 0) )
+		}
+
+		cacheMesh.geometry.uvsNeedUpdate = true
+
+		function convertUvs(x, y){
+			if( x === 0 && y === 0 ){
+				var transformedUv = transformedUvs[2]
+			}else if( x === 0 && y === 1 ){
+				var transformedUv = transformedUvs[0]
+			}else if( x === 1 && y === 1 ){
+				var transformedUv = transformedUvs[1]
+			}else if( x === 1 && y === 0 ){
+				var transformedUv = transformedUvs[3]
+			}else {
+				console.assert(false)
+			}
+
+			var Uv = new THREE.Vector2()
+			Uv.x = transformedUv.x / 2 + 0.5
+			Uv.y = transformedUv.y / 2 + 0.5
+			
+			return Uv
+		}
+	}
 }

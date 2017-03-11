@@ -139,18 +139,116 @@
 
 	// arToolkitSource.domElement.pause()
 	var videoTexture = new THREE.VideoTexture(arToolkitSource.domElement)
-	// TODO to remove if webgl2
 	videoTexture.minFilter =  THREE.NearestFilter
+	// videoTexture.wrapS = videoTexture.wrapT = THREE.RepeatWrapping;	
+	// videoTexture.repeat.set( 1, 5 )
 
-	var markerCache =  new THREEx.ArMarkerCache(videoTexture);
-	markerRoot.add(markerCache.cacheMesh)
-	orthoScene.add(markerCache.orthoMesh)
-
-	onRenderFcts.push(function(){
-		markerCache.update(markerRoot.matrix, camera.projectionMatrix)
-	})
-
+	// var markerCache =  new THREEx.ArMarkerCache(videoTexture);
+	// markerRoot.add(markerCache.object3d)
 	
+	
+	;(function(){
+	        var material = new THREE.MeshNormalMaterial({
+			transparent : true,
+			opacity: 0.5,
+			side: THREE.DoubleSide
+		});
+	        var geometry = new THREE.PlaneGeometry(1,1);
+	        var orthoMesh = new THREE.Mesh(geometry, material);
+	        orthoScene.add(orthoMesh);
+
+		var geometry	= new THREE.PlaneGeometry(1.4,1.95, 1, 8);
+		var material	= new THREE.MeshBasicMaterial({
+			// transparent : true,
+			// opacity: 0.5,
+			side: THREE.DoubleSide,
+			map: videoTexture,
+		}); 
+		var cacheMesh = new THREE.Mesh( geometry, material );
+		cacheMesh.position.y = -0.3
+		markerRoot.add(cacheMesh)
+window.cacheMesh = cacheMesh
+		//////////////////////////////////////////////////////////////////////////////
+		//		Code Separator
+		//////////////////////////////////////////////////////////////////////////////
+
+		var xMin = -0.65
+		var xMax =  0.65
+		var yMin =  0.65
+		var yMax =  0.95
+
+		var originalUvs = []
+		originalUvs.push( new THREE.Vector3(xMin, yMax, 0))
+		originalUvs.push( new THREE.Vector3(xMax, yMax, 0))
+		originalUvs.push( new THREE.Vector3(xMin, yMin, 0))
+		originalUvs.push( new THREE.Vector3(xMax, yMin, 0))
+
+		onRenderFcts.push(function(){
+			var transformedUvs = []
+			originalUvs.forEach(function(originalUvs, index){
+				var transformedUv = originalUvs.clone()
+				// apply modelViewMatrix and projectionMatrix
+				transformedUv.applyMatrix4( markerRoot.matrix )
+				transformedUv.applyMatrix4( camera.projectionMatrix )
+
+				// apply perspective
+				transformedUv.x /= transformedUv.z
+				transformedUv.y /= transformedUv.z
+				// store it
+				transformedUvs.push(transformedUv)
+			})
+
+			// change orthoMesh vertices
+			for(var i = 0; i < transformedUvs.length; i++){
+				orthoMesh.geometry.vertices[i].copy(transformedUvs[i])
+			}
+			orthoMesh.geometry.computeBoundingSphere()
+			orthoMesh.geometry.verticesNeedUpdate = true
+			
+			// change cacheMesh UVs
+			for(var i = 0; i < cacheMesh.geometry.parameters.heightSegments/2; i ++ ){
+				// normale orientation
+				cacheMesh.geometry.faceVertexUvs[0][i*4+0][0].copy( convertUvs(0, 1) )
+				cacheMesh.geometry.faceVertexUvs[0][i*4+0][1].copy( convertUvs(0, 0) )
+				cacheMesh.geometry.faceVertexUvs[0][i*4+0][2].copy( convertUvs(1, 1) )
+				
+				cacheMesh.geometry.faceVertexUvs[0][i*4+1][0].copy( convertUvs(0, 0) )
+				cacheMesh.geometry.faceVertexUvs[0][i*4+1][1].copy( convertUvs(1, 0) )
+				cacheMesh.geometry.faceVertexUvs[0][i*4+1][2].copy( convertUvs(1, 1) )
+
+				// swapy orientation
+				cacheMesh.geometry.faceVertexUvs[0][i*4+2][0].copy( convertUvs(0, 0) )
+				cacheMesh.geometry.faceVertexUvs[0][i*4+2][1].copy( convertUvs(0, 1) )
+				cacheMesh.geometry.faceVertexUvs[0][i*4+2][2].copy( convertUvs(1, 0) )
+				
+				cacheMesh.geometry.faceVertexUvs[0][i*4+3][0].copy( convertUvs(0, 1) )
+				cacheMesh.geometry.faceVertexUvs[0][i*4+3][1].copy( convertUvs(1, 1) )
+				cacheMesh.geometry.faceVertexUvs[0][i*4+3][2].copy( convertUvs(1, 0) )
+			}
+
+			cacheMesh.geometry.uvsNeedUpdate = true
+
+			function convertUvs(x, y){
+				if( x === 0 && y === 0 ){
+					var transformedUv = transformedUvs[2]
+				}else if( x === 0 && y === 1 ){
+					var transformedUv = transformedUvs[0]
+				}else if( x === 1 && y === 1 ){
+					var transformedUv = transformedUvs[1]
+				}else if( x === 1 && y === 0 ){
+					var transformedUv = transformedUvs[3]
+				}else {
+					console.assert(false)
+				}
+
+				var Uv = new THREE.Vector2()
+				Uv.x = transformedUv.x / 2 + 0.5
+				Uv.y = transformedUv.y / 2 + 0.5
+				
+				return Uv
+			}
+		})
+	})()
 	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
@@ -189,9 +287,9 @@
 		
 		renderer.render( scene, camera );
 		
-        	renderer.render( orthoScene, orthoCamera );
+        	// renderer.render( orthoScene, orthoCamera );
 
-		stats.update();
+		// stats.update();
 	})
 
 	// run the rendering loop
