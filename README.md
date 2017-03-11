@@ -183,9 +183,10 @@ I exited to see what people will do with AR.js :)
 # Futures
 - add webworkers
 - add the nft
-- handle sensor fusion with the IMU ?
+- handle sensor fusion with the IMU ? Assume that the marker is fixed in space
 - marker removal in the video - https://twitter.com/jerome_etienne/status/838584931009835009
 - dynamic multiple markers
+- put the video in the webgl (and not the dom), as an options
 
 # Ideas
 - AR Gaming - https://www.youtube.com/watch?v=EmGGGzibGok
@@ -202,6 +203,7 @@ I exited to see what people will do with AR.js :)
   - find the kind of matrix it is.
   - just put each marker in front of the camera - using image / photo of screen
   - and go thru each and every matrix type detection
+- Nice effect with video texture - https://www.youtube.com/watch?v=Y9HMn6bd-v8&feature=youtu.be&t=172
 
 # How To Release ?
 

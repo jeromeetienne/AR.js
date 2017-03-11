@@ -47,6 +47,13 @@
 - do that in a single html. markercache.html 
   - threex.markercache.js - this is just the plane with the special shader
   - attached to the markerRoot, provide a texture where to take the pixels
+- apply the model view matrix on the UV, then the projection matrix
+  - do that first in javascript, manually
+  - clone markerCache.object3d.geometry.faceVertexUvs
+  - change the UV on every fps
+  - take the 2d vectors, convert it in 3d, apply the matrices
+  - set markerCache.object3d.geometry.uvsNeedUpdate = true
+  - test the matrices on the vertices - so require to have orthogonal camera and render vertices on it
 
 # webvr-polyfill
 - GOAL: works well using only the positional tracking, not the stereo display
