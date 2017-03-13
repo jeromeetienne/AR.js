@@ -177,6 +177,7 @@ THREEx.ArMarkerCache.vertexShader = `
                 transformedUv.x = transformedUv.x / 2.0 + 0.5;
                 transformedUv.y = transformedUv.y / 2.0 + 0.5;
                 
+                // return it as uv1
                 return transformedUv.xy;
         }
         
