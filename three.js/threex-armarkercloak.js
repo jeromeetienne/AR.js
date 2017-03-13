@@ -25,7 +25,7 @@ THREEx.ArMarkerCache = function(videoTexture){
 	var cacheMesh = new THREE.Mesh( geometry, material );
 	cacheMesh.position.y = -0.3
 	this.object3d = cacheMesh
-// window.cacheMesh = cacheMesh
+window.cacheMesh = cacheMesh
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
@@ -112,7 +112,7 @@ THREEx.ArMarkerCache = function(videoTexture){
                                 transformedUv.x = originalUv.x * 2.0 - 1.0;
                                 transformedUv.y = originalUv.y * 2.0 - 1.0;
                                 transformedUv.z = 0
-        			// apply modelViewMatrix and projectionMatrix to transformedUv
+        			// apply modelViewMatrix and projectionMatrix
         			transformedUv.applyMatrix4( modelViewMatrix )
         			transformedUv.applyMatrix4( cameraProjectionMatrix )
         			// apply perspective
@@ -158,7 +158,7 @@ THREEx.ArMarkerCache = function(videoTexture){
 
 THREEx.ArMarkerCache.vertexShader = `    
 	varying vec2 vUv;
-        
+
         vec2 applyUvTransform(vec2 originalUv){
                 vec3 transformedUv;
                 // set transformedUv - from UV coord to clip coord
@@ -166,8 +166,9 @@ THREEx.ArMarkerCache.vertexShader = `
                 transformedUv.y = originalUv.y * 2.0 - 1.0;
                 transformedUv.z = 0.0;
 
-		// apply modelViewMatrix and projectionMatrix to transformedUv
-		transformedUv = projectionMatrix * modelViewMatrix * vec4( transformedUv, 1.0 );;
+		vec4 mvPosition = modelViewMatrix * vec4( transformedUv, 1.0 );
+		vec4 tmp = projectionMatrix * mvPosition;
+                transformedUv = tmp.xyz;
 
 		// apply perspective
 		transformedUv.x /= transformedUv.z;
@@ -177,11 +178,11 @@ THREEx.ArMarkerCache.vertexShader = `
                 transformedUv.x = transformedUv.x / 2.0 + 0.5;
                 transformedUv.y = transformedUv.y / 2.0 + 0.5;
                 
-                // return it as uv1
                 return transformedUv.xy;
         }
         
 	void main(){
+
                 // pass the UV to the fragment
 		vUv = applyUvTransform(uv);
 
@@ -191,7 +192,7 @@ THREEx.ArMarkerCache.vertexShader = `
 	}
 `;
 
-THREEx.ArMarkerCache.fragmentShader = `
+THREEx.ArMarkerCache.fragmentShader = `        
 	varying vec2 vUv;
 	uniform sampler2D texture;
 
