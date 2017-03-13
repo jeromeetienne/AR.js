@@ -69,6 +69,8 @@ window.cacheMesh = cacheMesh
 		originalsFaceVertexUvs[0][i*4+3][1].set( xMax/2+0.5, yMax/2+0.5 )
 		originalsFaceVertexUvs[0][i*4+3][2].set( xMax/2+0.5, yMin/2+0.5 )
 	}
+        // cacheMesh.geometry.faceVertexUvs = originalsFaceVertexUvs
+        // cacheMesh.geometry.uvsNeedUpdate = true
         
         //////////////////////////////////////////////////////////////////////////////
         //                init orthoMesh
@@ -98,7 +100,7 @@ window.cacheMesh = cacheMesh
 	this.update = function(modelViewMatrix, cameraProjectionMatrix){
                 updateOrtho(modelViewMatrix, cameraProjectionMatrix)
                 
-                // updateUvs(modelViewMatrix, cameraProjectionMatrix)
+                updateUvs(modelViewMatrix, cameraProjectionMatrix)
 	}
         return 
 
@@ -166,13 +168,13 @@ THREEx.ArMarkerCache.vertexShader = `
                 transformedUv.y = originalUv.y * 2.0 - 1.0;
                 transformedUv.z = 0.0;
 
-		vec4 mvPosition = modelViewMatrix * vec4( transformedUv, 1.0 );
-		vec4 tmp = projectionMatrix * mvPosition;
-                transformedUv = tmp.xyz;
-
-		// apply perspective
-		transformedUv.x /= transformedUv.z;
-		transformedUv.y /= transformedUv.z;
+		// vec4 mvPosition = modelViewMatrix * vec4( transformedUv, 1.0 );
+		// vec4 tmp = projectionMatrix * mvPosition;
+                // transformedUv = tmp.xyz;
+                // 
+		// // apply perspective
+		// transformedUv.x /= transformedUv.z;
+		// transformedUv.y /= transformedUv.z;
 
                 // set back from clip coord to Uv coord
                 transformedUv.x = transformedUv.x / 2.0 + 0.5;
