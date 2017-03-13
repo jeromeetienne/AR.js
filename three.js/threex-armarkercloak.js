@@ -94,6 +94,7 @@ return
 	originalUvs.push( new THREE.Vector3(xMax, yMin, 0))
 
 	this.update = function(modelViewMatrix, cameraProjectionMatrix){
+                this._updateOrtho(modelViewMatrix, cameraProjectionMatrix)
 // return
 		// compute transformedUvs
 		var transformedUvs = []
@@ -109,13 +110,6 @@ return
 			transformedUvs.push(transformedUv)
 		})
 
-		// change orthoMesh vertices
-		for(var i = 0; i < transformedUvs.length; i++){
-			orthoMesh.geometry.vertices[i].copy(transformedUvs[i])
-		}
-		orthoMesh.geometry.computeBoundingSphere()
-		orthoMesh.geometry.verticesNeedUpdate = true
-		
 		// change cacheMesh UVs
 		for(var i = 0; i < cacheMesh.geometry.parameters.heightSegments/2; i ++ ){
 			// normale orientation
@@ -158,6 +152,29 @@ return
 		}
 	}
 
+        // update orthoMesh
+	this._updateOrtho = function(modelViewMatrix, cameraProjectionMatrix){
+		// compute transformedUvs
+		var transformedUvs = []
+		originalUvs.forEach(function(originalUvs, index){
+			var transformedUv = originalUvs.clone()
+			// apply modelViewMatrix and projectionMatrix
+			transformedUv.applyMatrix4( modelViewMatrix )
+			transformedUv.applyMatrix4( cameraProjectionMatrix )
+			// apply perspective
+			transformedUv.x /= transformedUv.z
+			transformedUv.y /= transformedUv.z
+			// store it
+			transformedUvs.push(transformedUv)
+		})
+
+		// change orthoMesh vertices
+		for(var i = 0; i < transformedUvs.length; i++){
+			orthoMesh.geometry.vertices[i].copy(transformedUvs[i])
+		}
+		orthoMesh.geometry.computeBoundingSphere()
+		orthoMesh.geometry.verticesNeedUpdate = true
+        }
 
 }
 
