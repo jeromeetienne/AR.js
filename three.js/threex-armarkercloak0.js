@@ -12,13 +12,13 @@ THREEx.ArMarkerCache = function(videoTexture){
 	this.orthoMesh = orthoMesh
 
         // build cacheMesh
-	var geometry	= new THREE.PlaneGeometry(1.3+0.5,1.85+0.5, 1, 8);
+	var geometry	= new THREE.PlaneGeometry(1.3+0.5,1.85+0.5, 1, 4);
 	// var material	= new THREE.MeshBasicMaterial({
 	// 	// transparent : true,
 	// 	// opacity: 0.5,
 	// 	// side: THREE.DoubleSide,
 	// 	map: videoTexture,
-	// });
+	// }); 
 	var material = new THREE.ShaderMaterial( {
 		vertexShader: THREEx.ArMarkerCache.vertexShader,
 		fragmentShader: THREEx.ArMarkerCache.fragmentShader,
@@ -42,51 +42,6 @@ window.cacheMesh = cacheMesh
 	var yMin =  0.65 + 0.1
 	var yMax =  0.95 + 0.1
 
-	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
-	//////////////////////////////////////////////////////////////////////////////
-        var originalsFaceVertexUvs = null
-;(function(){
-return
-        // build faceVertexUvs array
-        var faceVertexUvs = [[]]
-	for(var faceIndex = 0; faceIndex < cacheMesh.geometry.parameters.heightSegments*2; faceIndex ++ ){
-		faceVertexUvs[0][faceIndex] = []
-		faceVertexUvs[0][faceIndex][0] = new THREE.Vector2()
-		faceVertexUvs[0][faceIndex][1] = new THREE.Vector2()
-		faceVertexUvs[0][faceIndex][2] = new THREE.Vector2()
-        }
-
-	// set values in faceVertexUvs
-	for(var i = 0; i < cacheMesh.geometry.parameters.heightSegments/2; i ++ ){
-		// one segment height - even row - normale orientation
-		faceVertexUvs[0][i*4+0][0].set( xMin/2+0.5, yMax/2+0.5 )
-		faceVertexUvs[0][i*4+0][1].set( xMin/2+0.5, yMin/2+0.5 )
-		faceVertexUvs[0][i*4+0][2].set( xMax/2+0.5, yMax/2+0.5 )
-		
-		faceVertexUvs[0][i*4+1][0].set( xMin/2+0.5, yMin/2+0.5 )
-		faceVertexUvs[0][i*4+1][1].set( xMax/2+0.5, yMin/2+0.5 )
-		faceVertexUvs[0][i*4+1][2].set( xMax/2+0.5, yMax/2+0.5 )
-
-		// one segment height - odd row - mirror-y orientation
-		faceVertexUvs[0][i*4+2][0].set( xMin/2+0.5, yMin/2+0.5 )
-		faceVertexUvs[0][i*4+2][1].set( xMin/2+0.5, yMax/2+0.5 )
-		faceVertexUvs[0][i*4+2][2].set( xMax/2+0.5, yMin/2+0.5 )
-		
-		faceVertexUvs[0][i*4+3][0].set( xMin/2+0.5, yMax/2+0.5 )
-		faceVertexUvs[0][i*4+3][1].set( xMax/2+0.5, yMax/2+0.5 )
-		faceVertexUvs[0][i*4+3][2].set( xMax/2+0.5, yMin/2+0.5 )
-	}
-        
-        originalsFaceVertexUvs = faceVertexUvs
-
-        cacheMesh.geometry.faceVertexUvs = faceVertexUvs
-	cacheMesh.geometry.uvsNeedUpdate = true
-})()
-	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
-	//////////////////////////////////////////////////////////////////////////////
-
 	var originalUvs = []
 	originalUvs.push( new THREE.Vector3(xMin, yMax, 0))
 	originalUvs.push( new THREE.Vector3(xMax, yMax, 0))
@@ -94,7 +49,6 @@ return
 	originalUvs.push( new THREE.Vector3(xMax, yMin, 0))
 
 	this.update = function(modelViewMatrix, cameraProjectionMatrix){
-// return
 		// compute transformedUvs
 		var transformedUvs = []
 		originalUvs.forEach(function(originalUvs, index){
