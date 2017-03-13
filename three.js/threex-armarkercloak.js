@@ -5,7 +5,7 @@ THREEx.ArMarkerCache = function(videoTexture){
 
         // build cacheMesh
         // TODO if webgl2 use repeat warp, and not multi segment, this will reduce the geometry to draw
-	var geometry	= new THREE.PlaneGeometry(1.3+0.5,1.85+0.5, 1, 8);
+	var geometry	= new THREE.PlaneGeometry(1.3+0.0,1.85+0.0, 1, 8);
 	// var material	= new THREE.MeshBasicMaterial({
 	// 	// transparent : true,
 	// 	// opacity: 0.5,
@@ -69,8 +69,12 @@ window.cacheMesh = cacheMesh
 		originalsFaceVertexUvs[0][i*4+3][1].set( xMax/2+0.5, yMax/2+0.5 )
 		originalsFaceVertexUvs[0][i*4+3][2].set( xMax/2+0.5, yMin/2+0.5 )
 	}
-        // cacheMesh.geometry.faceVertexUvs = originalsFaceVertexUvs
-        // cacheMesh.geometry.uvsNeedUpdate = true
+        
+        var updateInShaderEnabled = true
+        if( updateInShaderEnabled === false ){
+                cacheMesh.geometry.faceVertexUvs = originalsFaceVertexUvs
+                cacheMesh.geometry.uvsNeedUpdate = true                
+        }
         
         //////////////////////////////////////////////////////////////////////////////
         //                init orthoMesh
@@ -99,8 +103,10 @@ window.cacheMesh = cacheMesh
 
 	this.update = function(modelViewMatrix, cameraProjectionMatrix){
                 updateOrtho(modelViewMatrix, cameraProjectionMatrix)
-                
-                updateUvs(modelViewMatrix, cameraProjectionMatrix)
+
+                if( updateInShaderEnabled === false ){
+                        updateUvs(modelViewMatrix, cameraProjectionMatrix)
+                }
 	}
         return 
 
