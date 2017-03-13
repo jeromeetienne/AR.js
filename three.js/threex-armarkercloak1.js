@@ -81,8 +81,8 @@ window.cacheMesh = cacheMesh
         
         originalsFaceVertexUvs = faceVertexUvs
 
-        // cacheMesh.geometry.faceVertexUvs = faceVertexUvs
-	// cacheMesh.geometry.uvsNeedUpdate = true
+        cacheMesh.geometry.faceVertexUvs = faceVertexUvs
+	cacheMesh.geometry.uvsNeedUpdate = true
 })()
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
@@ -94,26 +94,8 @@ window.cacheMesh = cacheMesh
 	originalUvs.push( new THREE.Vector3(xMin, yMin, 0))
 	originalUvs.push( new THREE.Vector3(xMax, yMin, 0))
 
-        // update orthoMesh
-	this._updateUvs = function(modelViewMatrix, cameraProjectionMatrix){
-                originalsFaceVertexUvs[0].forEach(function(faceVertexUvs, faceIndex){
-                        faceVertexUvs.forEach(function(uv, uvIndex){
-                                cacheMesh.geometry.faceVertexUvs[0][faceIndex][uvIndex].copy(uv)
-                        })
-                })
-
-
-                // cacheMesh.geometry.faceVertexUvs = faceVertexUvs
-                cacheMesh.geometry.uvsNeedUpdate = true
-        }
-
 	this.update = function(modelViewMatrix, cameraProjectionMatrix){
                 this._updateOrtho(modelViewMatrix, cameraProjectionMatrix)
-                
-                this._updateUvs(modelViewMatrix, cameraProjectionMatrix)
-                
-                
-                
 return
 		// compute transformedUvs
 		var transformedUvs = []
@@ -170,7 +152,6 @@ return
 			return Uv
 		}
 	}
-
 
         // update orthoMesh
 	this._updateOrtho = function(modelViewMatrix, cameraProjectionMatrix){

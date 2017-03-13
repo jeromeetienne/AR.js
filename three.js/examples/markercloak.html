@@ -150,10 +150,14 @@
 
 	var markerCache =  new THREEx.ArMarkerCache(videoTexture);
 	markerRoot.add(markerCache.object3d)
-	orthoScene.add(markerCache.orthoMesh)
 
 	onRenderFcts.push(function(){
 		markerCache.update(markerRoot.matrix, camera.projectionMatrix)
+	})
+
+	orthoScene.add(markerCache.orthoMesh)
+	onRenderFcts.push(function(){
+		markerCache.orthoMesh.visible = markerRoot.visible
 	})
 
 
