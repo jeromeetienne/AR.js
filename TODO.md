@@ -36,7 +36,11 @@
 - this is all about programmation, no subtle algo
 
 # Marker removal
-- put it in treex.markercache.js
+- how to switch it to vertex shader
+  - the UV is what is transformed on the fly
+  - set it up in the geometry, and then do the change
+  - change the js to match this model first
+  - see about the coordinate conversion from [0, 1] uv to [-1,1] for orthographic
 
 
 - take the video as texture

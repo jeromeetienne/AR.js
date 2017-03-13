@@ -81,12 +81,11 @@
 		// to read from a video
 		// sourceType : 'video',
 		// sourceUrl : '../../data/videos/headtracking.mp4',		
-		sourceWidth: 80*3,
-		sourceHeight: 60*3,
+		// sourceWidth: 80*3,
+		// sourceHeight: 60*3,
 	})
 
 	arToolkitSource.init(function onReady(){
-		console.log('source is ready')
 		// handle resize of renderer
 		arToolkitSource.onResize(renderer.domElement)		
 	})
@@ -137,10 +136,16 @@
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
-
-	// arToolkitSource.domElement.pause()
-	var videoTexture = new THREE.VideoTexture(arToolkitSource.domElement)
-	// TODO to remove if webgl2
+	
+	// get videoTexture
+	if( arToolkitSource.domElement.nodeName === 'VIDEO' ){
+		var videoTexture = new THREE.VideoTexture(arToolkitSource.domElement)
+		// arToolkitSource.domElement.pause()
+	}else if( arToolkitSource.domElement.nodeName === 'IMG' ){
+		var videoTexture = new THREE.Texture(arToolkitSource.domElement)
+		videoTexture.needsUpdate = true		
+	}else console.assert(false)
+	// TODO to remove if webgl2 - better visual ?
 	videoTexture.minFilter =  THREE.NearestFilter
 
 	var markerCache =  new THREEx.ArMarkerCache(videoTexture);
@@ -151,6 +156,26 @@
 		markerCache.update(markerRoot.matrix, camera.projectionMatrix)
 	})
 
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+	// var geometry	= new THREE.PlaneGeometry(1,1)
+	// var material = new THREE.ShaderMaterial( {
+	// 
+	// 	uniforms:  {
+	// 		texture: {
+	// 			value: videoTexture
+	// 		}
+	// 	},
+	// 
+	// 	vertexShader: document.getElementById( 'vertexShader' ).textContent,
+	// 	fragmentShader: document.getElementById( 'fragmentShader' ).textContent
+	// 
+	// } );
+	// 
+	// var mesh = new THREE.Mesh( geometry, material );
+	// markerRoot.add(mesh)
 	
 	
 	//////////////////////////////////////////////////////////////////////////////////
@@ -182,7 +207,7 @@
 	//		render the whole thing on the page
 	//////////////////////////////////////////////////////////////////////////////////
 	var stats = new Stats();
-	// document.body.appendChild( stats.dom );
+	document.body.appendChild( stats.dom );
 	// render the scene
 	onRenderFcts.push(function(){
 		
@@ -190,7 +215,7 @@
 		
 		renderer.render( scene, camera );
 		
-        	// renderer.render( orthoScene, orthoCamera );
+        	renderer.render( orthoScene, orthoCamera );
 
 		stats.update();
 	})

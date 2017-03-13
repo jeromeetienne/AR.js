@@ -11,25 +11,36 @@ THREEx.ArMarkerCache = function(videoTexture){
         var orthoMesh = new THREE.Mesh(geometry, material);
 	this.orthoMesh = orthoMesh
 
-	var geometry	= new THREE.PlaneGeometry(1.3+0.5,1.85+0.5, 1, 8);
-	var material	= new THREE.MeshBasicMaterial({
-		// transparent : true,
-		// opacity: 0.5,
-		// side: THREE.DoubleSide,
-		map: videoTexture,
-	}); 
+        // build cacheMesh
+	var geometry	= new THREE.PlaneGeometry(1.3+0.5,1.85+0.5, 1, 4);
+	// var material	= new THREE.MeshBasicMaterial({
+	// 	// transparent : true,
+	// 	// opacity: 0.5,
+	// 	// side: THREE.DoubleSide,
+	// 	map: videoTexture,
+	// }); 
+	var material = new THREE.ShaderMaterial( {
+		vertexShader: THREEx.ArMarkerCache.vertexShader,
+		fragmentShader: THREEx.ArMarkerCache.fragmentShader,
+		uniforms: {
+			texture: {
+				value: videoTexture
+			}
+		},
+	} );
+
 	var cacheMesh = new THREE.Mesh( geometry, material );
 	cacheMesh.position.y = -0.3
 	this.object3d = cacheMesh
-
+window.cacheMesh = cacheMesh
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
 
 	var xMin = -0.65
 	var xMax =  0.65
-	var yMin =  0.65 +0.1
-	var yMax =  0.95 +0.1
+	var yMin =  0.65 + 0.1
+	var yMax =  0.95 + 0.1
 
 	var originalUvs = []
 	originalUvs.push( new THREE.Vector3(xMin, yMax, 0))
@@ -103,3 +114,31 @@ THREEx.ArMarkerCache = function(videoTexture){
 
 
 }
+
+//////////////////////////////////////////////////////////////////////////////
+//                Shaders
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.ArMarkerCache.vertexShader = `    
+	varying vec2 vUv;
+	void main(){
+
+                // pass the UV to the fragment
+		vUv = uv;
+
+                // compute gl_Position
+		vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+		gl_Position = projectionMatrix * mvPosition;
+	}
+`;
+
+THREEx.ArMarkerCache.fragmentShader = `        
+	varying vec2 vUv;
+	uniform sampler2D texture;
+
+	void main(void){
+		vec3 color = texture2D( texture, vUv ).rgb;
+
+		gl_FragColor = vec4( color, 1.0);
+	}
+`;
