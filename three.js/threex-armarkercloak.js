@@ -181,7 +181,6 @@ THREEx.ArMarkerCache.vertexShader = `
         }
         
 	void main(){
-
                 // pass the UV to the fragment
 		vUv = applyUvTransform(uv);
 
@@ -191,7 +190,7 @@ THREEx.ArMarkerCache.vertexShader = `
 	}
 `;
 
-THREEx.ArMarkerCache.fragmentShader = `        
+THREEx.ArMarkerCache.fragmentShader = `
 	varying vec2 vUv;
 	uniform sampler2D texture;
 
