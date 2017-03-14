@@ -48,7 +48,7 @@ THREEx.ArToolkitSource.prototype.init = function(onReady){
 		document.body.appendChild(_this.domElement);
 
 		_this.ready = true
-                console.log('completed')
+
 		onReady && onReady()
         }
 } 
@@ -160,7 +160,7 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
                 // }
 
 		navigator.getUserMedia(constraints, function success(stream) {
-			console.log('success', stream);
+			// console.log('success', stream);
 			domElement.src = window.URL.createObjectURL(stream);
 			// to start the video, when it is possible to start it only on userevent. like in android
 			document.body.addEventListener('click', function(){
