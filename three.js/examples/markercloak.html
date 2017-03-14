@@ -206,7 +206,7 @@
 	//		render the whole thing on the page
 	//////////////////////////////////////////////////////////////////////////////////
 	var stats = new Stats();
-	document.body.appendChild( stats.dom );
+	// document.body.appendChild( stats.dom );
 	// render the scene
 	onRenderFcts.push(function(){
 		
@@ -218,7 +218,7 @@
         		renderer.render( orthoScene, orthoCamera );
 		}
 
-		stats.update();
+		// stats.update();
 	})
 
 	// run the rendering loop
