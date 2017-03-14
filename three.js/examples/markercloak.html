@@ -198,8 +198,8 @@
 	mesh.position.z	= 0.5
 	markerRoot.add( mesh );
 	
-	onRenderFcts.push(function(){
-		mesh.rotation.x += 0.1
+	onRenderFcts.push(function(delta){
+		mesh.rotation.x += Math.PI*delta
 	})
 
 	//////////////////////////////////////////////////////////////////////////////////
