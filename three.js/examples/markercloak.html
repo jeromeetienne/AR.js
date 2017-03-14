@@ -13,8 +13,8 @@
 <script src="../threex-armarkercontrols.js"></script>
 <script src="../threex-armarkercloak.js"></script>
 
-<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - Marker Invisibility Cloack
+<body style='margin : 0px; overflow: hidden; font-family: Monospace; user-select: none;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
+	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - Marker Invisibility Cloak - Click to toggle it.
 	<br/>
 	Code by <a href="https://twitter.com/snigelpaogat" target='_blank'>Fredrik Blomqvist</a> and
 	<a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
@@ -59,12 +59,16 @@
 	var camera = new THREE.Camera();
 	scene.add(camera);
 	
+	var debugEnabled = false
+	
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
 
-        var orthoCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, -100, +100);
-        var orthoScene = new THREE.Scene();
+	if( debugEnabled === true ){
+	        var orthoCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, -100, +100);
+	        var orthoScene = new THREE.Scene();		
+	}
 
 	////////////////////////////////////////////////////////////////////////////////
 	//          handle arToolkitSource
@@ -150,15 +154,26 @@
 
 	var markerCache =  new THREEx.ArMarkerCache(videoTexture);
 	markerRoot.add(markerCache.object3d)
+	function toggleCache(){
+		if( markerCache.object3d.parent ){
+			markerRoot.remove(markerCache.object3d)
+		}else{
+			markerRoot.add(markerCache.object3d)
+		}
+	}
+	document.body.addEventListener('click', toggleCache)
+	
 
 	onRenderFcts.push(function(){
 		markerCache.update(markerRoot.matrix, camera.projectionMatrix)
 	})
 
-	orthoScene.add(markerCache.orthoMesh)
-	onRenderFcts.push(function(){
-		markerCache.orthoMesh.visible = markerRoot.visible
-	})
+	if( debugEnabled === true ){
+		orthoScene.add(markerCache.orthoMesh)
+		onRenderFcts.push(function(){
+			markerCache.orthoMesh.visible = markerRoot.visible
+		})
+	}
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
@@ -196,8 +211,10 @@
 		renderer.clear();
 		
 		renderer.render( scene, camera );
-		
-        	renderer.render( orthoScene, orthoCamera );
+
+		if( debugEnabled === true ){
+        		renderer.render( orthoScene, orthoCamera );
+		}
 
 		stats.update();
 	})

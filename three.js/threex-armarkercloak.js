@@ -5,9 +5,7 @@ THREEx.ArMarkerCache = function(videoTexture){
 
         // build cacheMesh
         // TODO if webgl2 use repeat warp, and not multi segment, this will reduce the geometry to draw
-	var geometry	= new THREE.PlaneGeometry(1.3+0.25,1.85+0.25, 1, 8);
-	geometry.translate(0,-0.3,0)
-	// var geometry	= new THREE.PlaneGeometry(1.3+0.25,1.85+0.25, 1, 8);
+	var geometry	= new THREE.PlaneGeometry(1.3+0.25,1.85+0.25, 1, 8).translate(0,-0.3,0)
 	var material = new THREE.ShaderMaterial( {
 		vertexShader: THREEx.ArMarkerCache.vertexShader,
 		fragmentShader: THREEx.ArMarkerCache.fragmentShader,

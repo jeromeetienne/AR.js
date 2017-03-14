@@ -41,7 +41,8 @@
   - set it up in the geometry, and then do the change
   - change the js to match this model first
   - see about the coordinate conversion from [0, 1] uv to [-1,1] for orthographic
-
+- test if it works
+- the video is like switch it on/on depending on clicking the screen
 
 - take the video as texture
 - push the matrix of the marker in shader
