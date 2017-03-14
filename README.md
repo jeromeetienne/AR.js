@@ -188,7 +188,7 @@ I exited to see what people will do with AR.js :)
 - add the nft
 - handle sensor fusion with the IMU ? Assume that the marker is fixed in space
 - marker removal in the video - https://twitter.com/jerome_etienne/status/838584931009835009
-- dynamic multiple markers
+- dynamic multiple markers - https://github.com/artoolkit/jsartoolkit5/issues/34
 - put the video in the webgl (and not the dom), as an options
 
 # Ideas

@@ -5,7 +5,7 @@ THREEx.ArMarkerCache = function(videoTexture){
 
         // build cacheMesh
         // TODO if webgl2 use repeat warp, and not multi segment, this will reduce the geometry to draw
-	var geometry	= new THREE.PlaneGeometry(1.3+0.25,1.85+0.25, 1, 8).translate(0,-0.3,0)
+	var geometry = new THREE.PlaneGeometry(1.3+0.25,1.85+0.25, 1, 8).translate(0,-0.3,0)
 	var material = new THREE.ShaderMaterial( {
 		vertexShader: THREEx.ArMarkerCache.vertexShader,
 		fragmentShader: THREEx.ArMarkerCache.fragmentShader,
@@ -104,7 +104,7 @@ window.cacheMesh = cacheMesh
         
         return
 
-        // update orthoMesh
+        // update cacheMesh
 	function updateUvs(modelViewMatrix, cameraProjectionMatrix){
 		var transformedUv = new THREE.Vector3()
                 originalsFaceVertexUvs[0].forEach(function(faceVertexUvs, faceIndex){
@@ -123,8 +123,6 @@ window.cacheMesh = cacheMesh
                                 transformedUv.x = transformedUv.x / 2.0 + 0.5;
                                 transformedUv.y = transformedUv.y / 2.0 + 0.5;
                                 // copy the trasnformedUv into the geometry
-                                // console.log('uvIndex', uvIndex, transformedUv.x, transformedUv.y)
-                                // console.log('uvIndex', uvIndex, originalUv.x, originalUv.y)
                                 cacheMesh.geometry.faceVertexUvs[0][faceIndex][uvIndex].set(transformedUv.x, transformedUv.y)
                         })
                 })
@@ -163,12 +161,8 @@ window.cacheMesh = cacheMesh
 //                Shaders
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArMarkerCache.vertexShader = `    
-	varying vec2 vUv;
-        uniform mat4 myProjectionMatrix;
-        uniform mat4 myModelViewMatrix;
-
-        vec2 applyUvTransform(vec2 originalUv){
+THREEx.ArMarkerCache.markerSpaceShaderFunction = `    
+        vec2 transformUvToMarkerSpace(vec2 originalUv){
                 vec3 transformedUv;
                 // set transformedUv - from UV coord to clip coord
                 transformedUv.x = originalUv.x * 2.0 - 1.0;
@@ -189,12 +183,15 @@ THREEx.ArMarkerCache.vertexShader = `
                 // return the result
                 return transformedUv.xy;
         }
+`
+
+THREEx.ArMarkerCache.vertexShader = THREEx.ArMarkerCache.markerSpaceShaderFunction + `
+	varying vec2 vUv;
 
 	void main(){
-
                 // pass the UV to the fragment
                 #if (updateInShaderEnabled == 1)
-		        vUv = applyUvTransform(uv);
+		        vUv = transformUvToMarkerSpace(uv);
                 #else
 		        vUv = uv;
                 #endif
