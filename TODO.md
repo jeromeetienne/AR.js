@@ -16,12 +16,12 @@
   - good model - see if you can get this one https://www.yobi3d.com/i/ieAvsKA6d2
 
 - Discussion with fredrick - open the webcam with the displayWidth, not the sourceWidth
-  - this.parameters.displayWidth+'px'
-  - maxWidth: _this.parameters.sourceWidth,
+  - this.parameters.displayWidth
+  - maxWidth: this.parameters.sourceWidth
 
 
 # Multimarker
-- how to say 'those markers will start as one'
+- how to say 'those markers will start act as one'
 - actually print 6 cards with matrix markers on simple papers, and play with them
 - you need to ensure this is working as a setup
 - multipattern seems to work on old version... not on new version
