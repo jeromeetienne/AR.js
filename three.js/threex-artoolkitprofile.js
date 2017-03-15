@@ -13,6 +13,22 @@ THREEx.ArToolkitProfile = function(){
 	this.performance('default')
 }
 
+
+THREEx.ArToolkitProfile.prototype._guessPerformanceLabel = function() {
+	var isMobile = navigator.userAgent.match(/Android/i)
+			|| navigator.userAgent.match(/webOS/i)
+			|| navigator.userAgent.match(/iPhone/i)
+			|| navigator.userAgent.match(/iPad/i)
+			|| navigator.userAgent.match(/iPod/i)
+			|| navigator.userAgent.match(/BlackBerry/i)
+			|| navigator.userAgent.match(/Windows Phone/i)
+			? true : false 
+	if( isMobile === true ){
+		return 'phone-normal'
+	}
+	return 'desktop-normal'
+}
+
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
@@ -41,20 +57,7 @@ THREEx.ArToolkitProfile.prototype.reset = function () {
 //		Performance
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArToolkitProfile.prototype._guessPerformanceLabel = function() {
-	var isMobile = navigator.userAgent.match(/Android/i)
-			|| navigator.userAgent.match(/webOS/i)
-			|| navigator.userAgent.match(/iPhone/i)
-			|| navigator.userAgent.match(/iPad/i)
-			|| navigator.userAgent.match(/iPod/i)
-			|| navigator.userAgent.match(/BlackBerry/i)
-			|| navigator.userAgent.match(/Windows Phone/i)
-			? true : false 
-	if( isMobile === true ){
-		return 'phone-normal'
-	}
-	return 'desktop-normal'
-}
+
 
 THREEx.ArToolkitProfile.prototype.performance = function(label) {
 	if( label === 'default' ){
@@ -62,30 +65,28 @@ THREEx.ArToolkitProfile.prototype.performance = function(label) {
 	}
 
 	if( label === 'desktop-fast' ){
-		this.sourceParameters.sourceWidth = 640*2
-		this.sourceParameters.sourceWidth = 480*2
+		this.contextParameters.sourceWidth = 640*2
+		this.contextParameters.sourceHeight = 480*2
 
 		this.contextParameters.maxDetectionRate = 60
 	}else if( label === 'desktop-normal' ){
-		this.sourceParameters.sourceWidth = 640
-		this.sourceParameters.sourceWidth = 480
+		this.contextParameters.sourceWidth = 640
+		this.contextParameters.sourceHeight = 480
 
 		this.contextParameters.maxDetectionRate = 60
 	}else if( label === 'phone-normal' ){
-		this.sourceParameters.sourceWidth = 240
-		this.sourceParameters.sourceWidth = 180
+		this.contextParameters.sourceWidth = 80*4
+		this.contextParameters.sourceHeight = 60*4
 
-		this.contextParameters.maxDetectionRate = 30	
+		this.contextParameters.maxDetectionRate = 30
 	}else if( label === 'phone-slow' ){
-		this.sourceParameters.sourceWidth = 240
-		this.sourceParameters.sourceWidth = 180
+		this.contextParameters.sourceWidth = 80*3
+		this.contextParameters.sourceHeight = 60*3
 
 		this.contextParameters.maxDetectionRate = 15		
 	}else {
 		console.assert(false, 'unknonwn label '+label)
 	}
-	this.contextParameters.sourceWidth = this.sourceParameters.sourceWidth	
-	this.contextParameters.sourceHeight = this.sourceParameters.sourceHeight	
 }
 
 //////////////////////////////////////////////////////////////////////////////

@@ -83,9 +83,6 @@ renderer.shadowMap.enabled = true;
 		// to read from a video
 		// sourceType : 'video',
 		// sourceUrl : '../../data/videos/headtracking.mp4',
-
-		sourceWidth: 80*3,
-		sourceHeight: 60*3,
 	})
 
 	arToolkitSource.init(function onReady(){
@@ -109,8 +106,8 @@ renderer.shadowMap.enabled = true;
 		detectionMode: 'mono',
 		imageSmoothingEnabled: false,
 		maxDetectionRate: 30,
-		sourceWidth: arToolkitSource.parameters.sourceWidth,
-		sourceHeight: arToolkitSource.parameters.sourceHeight,
+		sourceWidth: 80*3,
+		sourceHeight: 60*3,
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){

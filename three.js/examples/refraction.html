@@ -111,9 +111,6 @@ void main(void) {
 		// to read from a video
 		// sourceType : 'video',
 		// sourceUrl : '../../data/videos/headtracking.mp4',
-
-		sourceWidth: 80*4,
-		sourceHeight: 60*4,
 	})
 
 	arToolkitSource.init(function onReady(){
@@ -137,8 +134,8 @@ void main(void) {
 		detectionMode: 'mono',
 		imageSmoothingEnabled: false,
 		maxDetectionRate: 30,
-		sourceWidth: arToolkitSource.parameters.sourceWidth,
-		sourceHeight: arToolkitSource.parameters.sourceHeight,
+		sourceWidth: 80*4,
+		sourceHeight: 60*4,
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
