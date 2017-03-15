@@ -18,7 +18,7 @@
 - Discussion with fredrick - open the webcam with the displayWidth, not the sourceWidth
   - this.parameters.displayWidth
   - maxWidth: this.parameters.sourceWidth
-
+  - source is influence resolution/performance of videoTexture (e.g. refraction, marker cloak)
 
 # Multimarker
 - how to say 'those markers will start act as one'
