@@ -1,3 +1,6 @@
+- TO tweet Thinking about how the virtual fades in the reality while doing #AR. Important to be as immersive as possible in this key moment 🤔
+
+
 - pack the TODO.md and all, then switch to webvr-polyfill until it works for three.js demo, then for a-frame demo
 - aframe/examples/demo.html is buggy
   - TODO handle resize
@@ -9,12 +12,12 @@
   - support <a-marker preset='hiro'> to be equal to type='pattern' url='https://rawgit.com/jeromeetienne/ar.js/master/data/data/patt.hiro'
   - same for kanji
 
-- for refraction, use shaddow and remove shaddow.html
-- for refraction, use a skull, aka crustal skull
+- for refraction example, use shaddow and remove shaddow.html
+- for refraction example, use a skull, aka crustal skull
   - http://tf3dm.com/download-page.php?url=cranio-11055
   - https://www.yobi3d.com/q/skull
   - good model - see if you can get this one https://www.yobi3d.com/i/ieAvsKA6d2
-
+- better appearance animation for markercloak ? just a tweening on opacity would do it
 - Discussion with fredrick - open the webcam with the displayWidth, not the sourceWidth
   - this.parameters.displayWidth
   - maxWidth: this.parameters.sourceWidth
