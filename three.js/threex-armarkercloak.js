@@ -1,9 +1,15 @@
 var THREEx = THREEx || {}
-
+/**
+ * - videoTexture
+ * - cloakWidth
+ * - cloakHeight
+ * - cloakSegmentsHeight
+ * - remove all mentions of cache, for cloak
+ */
 THREEx.ArMarkerCache = function(videoTexture){
         var updateInShaderEnabled = true
 
-        // build cacheMesh
+        // build cloakMesh
         // TODO if webgl2 use repeat warp, and not multi segment, this will reduce the geometry to draw
 	var geometry = new THREE.PlaneGeometry(1.3+0.25,1.85+0.25, 1, 8).translate(0,-0.3,0)
 	var material = new THREE.ShaderMaterial( {
@@ -17,11 +23,11 @@ THREEx.ArMarkerCache = function(videoTexture){
 		defines: {
 			updateInShaderEnabled: updateInShaderEnabled ? 1 : 0,
 		}
-	} );
+	});
 
-	var cacheMesh = new THREE.Mesh( geometry, material );
-	this.object3d = cacheMesh
-window.cacheMesh = cacheMesh
+	var cloakMesh = new THREE.Mesh( geometry, material );
+	this.object3d = cloakMesh
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
@@ -37,7 +43,7 @@ window.cacheMesh = cacheMesh
         var originalsFaceVertexUvs = [[]]
 
         // build originalsFaceVertexUvs array
-	for(var faceIndex = 0; faceIndex < cacheMesh.geometry.faces.length; faceIndex ++ ){
+	for(var faceIndex = 0; faceIndex < cloakMesh.geometry.faces.length; faceIndex ++ ){
 		originalsFaceVertexUvs[0][faceIndex] = []
 		originalsFaceVertexUvs[0][faceIndex][0] = new THREE.Vector2()
 		originalsFaceVertexUvs[0][faceIndex][1] = new THREE.Vector2()
@@ -45,7 +51,7 @@ window.cacheMesh = cacheMesh
         }
 
 	// set values in originalsFaceVertexUvs
-	for(var i = 0; i < cacheMesh.geometry.parameters.heightSegments/2; i ++ ){
+	for(var i = 0; i < cloakMesh.geometry.parameters.heightSegments/2; i ++ ){
 		// one segment height - even row - normale orientation
 		originalsFaceVertexUvs[0][i*4+0][0].set( xMin/2+0.5, yMax/2+0.5 )
 		originalsFaceVertexUvs[0][i*4+0][1].set( xMin/2+0.5, yMin/2+0.5 )
@@ -66,8 +72,8 @@ window.cacheMesh = cacheMesh
 	}
 
         if( updateInShaderEnabled === true ){
-                cacheMesh.geometry.faceVertexUvs = originalsFaceVertexUvs
-                cacheMesh.geometry.uvsNeedUpdate = true                
+                cloakMesh.geometry.faceVertexUvs = originalsFaceVertexUvs
+                cloakMesh.geometry.uvsNeedUpdate = true                
         }
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -104,7 +110,7 @@ window.cacheMesh = cacheMesh
         
         return
 
-        // update cacheMesh
+        // update cloakMesh
 	function updateUvs(modelViewMatrix, cameraProjectionMatrix){
 		var transformedUv = new THREE.Vector3()
                 originalsFaceVertexUvs[0].forEach(function(faceVertexUvs, faceIndex){
@@ -123,12 +129,12 @@ window.cacheMesh = cacheMesh
                                 transformedUv.x = transformedUv.x / 2.0 + 0.5;
                                 transformedUv.y = transformedUv.y / 2.0 + 0.5;
                                 // copy the trasnformedUv into the geometry
-                                cacheMesh.geometry.faceVertexUvs[0][faceIndex][uvIndex].set(transformedUv.x, transformedUv.y)
+                                cloakMesh.geometry.faceVertexUvs[0][faceIndex][uvIndex].set(transformedUv.x, transformedUv.y)
                         })
                 })
         
-                // cacheMesh.geometry.faceVertexUvs = faceVertexUvs
-                cacheMesh.geometry.uvsNeedUpdate = true
+                // cloakMesh.geometry.faceVertexUvs = faceVertexUvs
+                cloakMesh.geometry.uvsNeedUpdate = true
         }
 
         // update orthoMesh

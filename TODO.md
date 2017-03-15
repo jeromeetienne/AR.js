@@ -15,6 +15,9 @@
   - https://www.yobi3d.com/q/skull
   - good model - see if you can get this one https://www.yobi3d.com/i/ieAvsKA6d2
 
+- Discussion with fredrick - open the webcam with the displayWidth, not the sourceWidth
+  - this.parameters.displayWidth+'px'
+  - maxWidth: _this.parameters.sourceWidth,
 
 
 # Multimarker
