@@ -154,26 +154,29 @@
 	// TODO to remove if webgl2 - better visual ?
 	videoTexture.minFilter =  THREE.NearestFilter
 
-	var markerCache =  new THREEx.ArMarkerCache(videoTexture);
-	markerRoot.add(markerCache.object3d)
-	function toggleCache(){
-		if( markerCache.object3d.parent ){
-			markerRoot.remove(markerCache.object3d)
+	var markerCloak =  new THREEx.ArMarkerCloak(videoTexture);
+	markerRoot.add(markerCloak.object3d)
+	
+	// toggleCloak on click/keypress
+	function toggleCloak(){
+		if( markerCloak.object3d.parent ){
+			markerRoot.remove(markerCloak.object3d)
 		}else{
-			markerRoot.add(markerCache.object3d)
+			markerRoot.add(markerCloak.object3d)
 		}
 	}
-	document.body.addEventListener('click', toggleCache)
+	document.body.addEventListener('click', toggleCloak)
+	document.body.addEventListener('keypress', toggleCloak)
 	
 
 	onRenderFcts.push(function(){
-		markerCache.update(markerRoot.matrix, camera.projectionMatrix)
+		markerCloak.update(markerRoot.matrix, camera.projectionMatrix)
 	})
 
 	if( debugEnabled === true ){
-		orthoScene.add(markerCache.orthoMesh)
+		orthoScene.add(markerCloak.orthoMesh)
 		onRenderFcts.push(function(){
-			markerCache.orthoMesh.visible = markerRoot.visible
+			markerCloak.orthoMesh.visible = markerRoot.visible
 		})
 	}
 

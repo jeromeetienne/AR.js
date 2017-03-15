@@ -6,15 +6,15 @@ var THREEx = THREEx || {}
  * - cloakSegmentsHeight
  * - remove all mentions of cache, for cloak
  */
-THREEx.ArMarkerCache = function(videoTexture){
+THREEx.ArMarkerCloak = function(videoTexture){
         var updateInShaderEnabled = true
 
         // build cloakMesh
         // TODO if webgl2 use repeat warp, and not multi segment, this will reduce the geometry to draw
 	var geometry = new THREE.PlaneGeometry(1.3+0.25,1.85+0.25, 1, 8).translate(0,-0.3,0)
 	var material = new THREE.ShaderMaterial( {
-		vertexShader: THREEx.ArMarkerCache.vertexShader,
-		fragmentShader: THREEx.ArMarkerCache.fragmentShader,
+		vertexShader: THREEx.ArMarkerCloak.vertexShader,
+		fragmentShader: THREEx.ArMarkerCloak.fragmentShader,
 		uniforms: {
 			texture: {
 				value: videoTexture
@@ -167,7 +167,7 @@ THREEx.ArMarkerCache = function(videoTexture){
 //                Shaders
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArMarkerCache.markerSpaceShaderFunction = `    
+THREEx.ArMarkerCloak.markerSpaceShaderFunction = `    
         vec2 transformUvToMarkerSpace(vec2 originalUv){
                 vec3 transformedUv;
                 // set transformedUv - from UV coord to clip coord
@@ -191,7 +191,7 @@ THREEx.ArMarkerCache.markerSpaceShaderFunction = `
         }
 `
 
-THREEx.ArMarkerCache.vertexShader = THREEx.ArMarkerCache.markerSpaceShaderFunction + `
+THREEx.ArMarkerCloak.vertexShader = THREEx.ArMarkerCloak.markerSpaceShaderFunction + `
 	varying vec2 vUv;
 
 	void main(){
@@ -208,7 +208,7 @@ THREEx.ArMarkerCache.vertexShader = THREEx.ArMarkerCache.markerSpaceShaderFuncti
 	}
 `;
 
-THREEx.ArMarkerCache.fragmentShader = `        
+THREEx.ArMarkerCloak.fragmentShader = `        
 	varying vec2 vUv;
 	uniform sampler2D texture;
 
