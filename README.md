@@ -190,6 +190,14 @@ I exited to see what people will do with AR.js :)
 - marker removal in the video - https://twitter.com/jerome_etienne/status/838584931009835009
 - dynamic multiple markers - https://github.com/artoolkit/jsartoolkit5/issues/34
 - put the video in the webgl (and not the dom), as an options
+- stabilizer for marker orientation and/or position
+  - some tweening/smoothing on marker orientation
+  - it would help the shakyness especially when the source resolution is low
+- stabilizer using gravity ?
+  - using gravity it is possible to know if the marker is on a wall or on a table
+  - once we flag the marker as on a wall, we can reduce shakyness from video detection
+  - by using gravity sensor
+
 
 # Ideas
 - AR Gaming - https://www.youtube.com/watch?v=EmGGGzibGok
