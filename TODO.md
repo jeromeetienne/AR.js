@@ -5,7 +5,7 @@
   - find a new name e.g. parameters.html
   - check you got all the parameters
 - option simplification in a-frame
-  - remove that by using baseURL - cameraParametersUrl: https://rawgit.com/jeromeetienne/ar.js/master/data/data/camera_para.dat
+  - remove that by using baseURL - important for boilerplate cleanness - cameraParametersUrl: https://rawgit.com/jeromeetienne/ar.js/master/data/data/camera_para.dat
   - support <a-marker preset='hiro'> to be equal to type='pattern' url='https://rawgit.com/jeromeetienne/ar.js/master/data/data/patt.hiro'
   - same for kanji
 
