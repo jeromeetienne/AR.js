@@ -224,6 +224,7 @@ I exited to see what people will do with AR.js :)
 # Ideas
 - AR Gaming - https://www.youtube.com/watch?v=EmGGGzibGok
 - AR Business Card - https://vimeo.com/4979525
+- multi user AR world : much easier to code than you think - https://twitter.com/jerome_etienne/status/842219346030149632
 - IDEA: produce a single image able to do qr-code and pattern marker. https://twitter.com/nlehuen/status/834115970641829888
   - about having an image able to do qr-code and pattern marker at the same time. If we have such image, we skip one step. 
   - The person first acquire the qr-code with his phone, and then it goes to a webpage which is a webar application.

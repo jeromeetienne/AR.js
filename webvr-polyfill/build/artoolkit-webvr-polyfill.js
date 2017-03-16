@@ -1614,6 +1614,221 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 
 })();
 var THREEx = THREEx || {}
+/**
+ * - videoTexture
+ * - cloakWidth
+ * - cloakHeight
+ * - cloakSegmentsHeight
+ * - remove all mentions of cache, for cloak
+ */
+THREEx.ArMarkerCloak = function(videoTexture){
+        var updateInShaderEnabled = true
+
+        // build cloakMesh
+        // TODO if webgl2 use repeat warp, and not multi segment, this will reduce the geometry to draw
+	var geometry = new THREE.PlaneGeometry(1.3+0.25,1.85+0.25, 1, 8).translate(0,-0.3,0)
+	var material = new THREE.ShaderMaterial( {
+		vertexShader: THREEx.ArMarkerCloak.vertexShader,
+		fragmentShader: THREEx.ArMarkerCloak.fragmentShader,
+		uniforms: {
+			texture: {
+				value: videoTexture
+			},
+		},
+		defines: {
+			updateInShaderEnabled: updateInShaderEnabled ? 1 : 0,
+		}
+	});
+
+	var cloakMesh = new THREE.Mesh( geometry, material );
+	this.object3d = cloakMesh
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+
+	var xMin = -0.65
+	var xMax =  0.65
+	var yMin =  0.65 + 0.1
+	var yMax =  0.95 + 0.1
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		originalsFaceVertexUvs
+	//////////////////////////////////////////////////////////////////////////////
+        var originalsFaceVertexUvs = [[]]
+
+        // build originalsFaceVertexUvs array
+	for(var faceIndex = 0; faceIndex < cloakMesh.geometry.faces.length; faceIndex ++ ){
+		originalsFaceVertexUvs[0][faceIndex] = []
+		originalsFaceVertexUvs[0][faceIndex][0] = new THREE.Vector2()
+		originalsFaceVertexUvs[0][faceIndex][1] = new THREE.Vector2()
+		originalsFaceVertexUvs[0][faceIndex][2] = new THREE.Vector2()
+        }
+
+	// set values in originalsFaceVertexUvs
+	for(var i = 0; i < cloakMesh.geometry.parameters.heightSegments/2; i ++ ){
+		// one segment height - even row - normale orientation
+		originalsFaceVertexUvs[0][i*4+0][0].set( xMin/2+0.5, yMax/2+0.5 )
+		originalsFaceVertexUvs[0][i*4+0][1].set( xMin/2+0.5, yMin/2+0.5 )
+		originalsFaceVertexUvs[0][i*4+0][2].set( xMax/2+0.5, yMax/2+0.5 )
+		
+		originalsFaceVertexUvs[0][i*4+1][0].set( xMin/2+0.5, yMin/2+0.5 )
+		originalsFaceVertexUvs[0][i*4+1][1].set( xMax/2+0.5, yMin/2+0.5 )
+		originalsFaceVertexUvs[0][i*4+1][2].set( xMax/2+0.5, yMax/2+0.5 )
+
+		// one segment height - odd row - mirror-y orientation
+		originalsFaceVertexUvs[0][i*4+2][0].set( xMin/2+0.5, yMin/2+0.5 )
+		originalsFaceVertexUvs[0][i*4+2][1].set( xMin/2+0.5, yMax/2+0.5 )
+		originalsFaceVertexUvs[0][i*4+2][2].set( xMax/2+0.5, yMin/2+0.5 )
+		
+		originalsFaceVertexUvs[0][i*4+3][0].set( xMin/2+0.5, yMax/2+0.5 )
+		originalsFaceVertexUvs[0][i*4+3][1].set( xMax/2+0.5, yMax/2+0.5 )
+		originalsFaceVertexUvs[0][i*4+3][2].set( xMax/2+0.5, yMin/2+0.5 )
+	}
+
+        if( updateInShaderEnabled === true ){
+                cloakMesh.geometry.faceVertexUvs = originalsFaceVertexUvs
+                cloakMesh.geometry.uvsNeedUpdate = true                
+        }
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+
+	var originalOrthoVertices = []
+	originalOrthoVertices.push( new THREE.Vector3(xMin, yMax, 0))
+	originalOrthoVertices.push( new THREE.Vector3(xMax, yMax, 0))
+	originalOrthoVertices.push( new THREE.Vector3(xMin, yMin, 0))
+	originalOrthoVertices.push( new THREE.Vector3(xMax, yMin, 0))
+
+	// build debugMesh
+        var material = new THREE.MeshNormalMaterial({
+		transparent : true,
+		opacity: 0.5,
+		side: THREE.DoubleSide
+	});
+        var geometry = new THREE.PlaneGeometry(1,1);
+        var orthoMesh = new THREE.Mesh(geometry, material);
+	this.orthoMesh = orthoMesh
+
+        //////////////////////////////////////////////////////////////////////////////
+        //                Code Separator
+        //////////////////////////////////////////////////////////////////////////////
+
+	this.update = function(modelViewMatrix, cameraProjectionMatrix){
+                updateOrtho(modelViewMatrix, cameraProjectionMatrix)
+
+                if( updateInShaderEnabled === false ){
+                        updateUvs(modelViewMatrix, cameraProjectionMatrix)
+                }
+	}
+        
+        return
+
+        // update cloakMesh
+	function updateUvs(modelViewMatrix, cameraProjectionMatrix){
+		var transformedUv = new THREE.Vector3()
+                originalsFaceVertexUvs[0].forEach(function(faceVertexUvs, faceIndex){
+                        faceVertexUvs.forEach(function(originalUv, uvIndex){
+                                // set transformedUv - from UV coord to clip coord
+                                transformedUv.x = originalUv.x * 2.0 - 1.0;
+                                transformedUv.y = originalUv.y * 2.0 - 1.0;
+                                transformedUv.z = 0
+        			// apply modelViewMatrix and projectionMatrix
+        			transformedUv.applyMatrix4( modelViewMatrix )
+        			transformedUv.applyMatrix4( cameraProjectionMatrix )
+        			// apply perspective
+        			transformedUv.x /= transformedUv.z
+        			transformedUv.y /= transformedUv.z
+                                // set back from clip coord to Uv coord
+                                transformedUv.x = transformedUv.x / 2.0 + 0.5;
+                                transformedUv.y = transformedUv.y / 2.0 + 0.5;
+                                // copy the trasnformedUv into the geometry
+                                cloakMesh.geometry.faceVertexUvs[0][faceIndex][uvIndex].set(transformedUv.x, transformedUv.y)
+                        })
+                })
+        
+                // cloakMesh.geometry.faceVertexUvs = faceVertexUvs
+                cloakMesh.geometry.uvsNeedUpdate = true
+        }
+
+        // update orthoMesh
+	function updateOrtho(modelViewMatrix, cameraProjectionMatrix){
+		// compute transformedUvs
+		var transformedUvs = []
+		originalOrthoVertices.forEach(function(originalOrthoVertices, index){
+			var transformedUv = originalOrthoVertices.clone()
+			// apply modelViewMatrix and projectionMatrix
+			transformedUv.applyMatrix4( modelViewMatrix )
+			transformedUv.applyMatrix4( cameraProjectionMatrix )
+			// apply perspective
+			transformedUv.x /= transformedUv.z
+			transformedUv.y /= transformedUv.z
+			// store it
+			transformedUvs.push(transformedUv)
+		})
+
+		// change orthoMesh vertices
+		for(var i = 0; i < transformedUvs.length; i++){
+			orthoMesh.geometry.vertices[i].copy(transformedUvs[i])
+		}
+		orthoMesh.geometry.computeBoundingSphere()
+		orthoMesh.geometry.verticesNeedUpdate = true
+        }
+
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//                Shaders
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.ArMarkerCloak.markerSpaceShaderFunction = '' +
+'                // set transformedUv - from UV coord to clip coord'+
+'                transformedUv.x = originalUv.x * 2.0 - 1.0;'+
+'                transformedUv.y = originalUv.y * 2.0 - 1.0;'+
+'                transformedUv.z = 0.0;'+
+''+
+'		// apply modelViewMatrix and projectionMatrix'+
+'                transformedUv = (projectionMatrix * modelViewMatrix * vec4( transformedUv, 1.0 ) ).xyz;'+
+''+
+'		// apply perspective'+
+'		transformedUv.x /= transformedUv.z;'+
+'		transformedUv.y /= transformedUv.z;'+
+''+
+'                // set back from clip coord to Uv coord'+
+'                transformedUv.x = transformedUv.x / 2.0 + 0.5;'+
+'                transformedUv.y = transformedUv.y / 2.0 + 0.5;'+
+''+
+'                // return the result'+
+'                return transformedUv.xy;'+
+'        }'
+
+THREEx.ArMarkerCloak.vertexShader = THREEx.ArMarkerCloak.markerSpaceShaderFunction +
+'	varying vec2 vUv;'+
+''+
+'	void main(){'+
+'                // pass the UV to the fragment'+
+'                #if (updateInShaderEnabled == 1)'+
+'		        vUv = transformUvToMarkerSpace(uv);'+
+'                #else'+
+'		        vUv = uv;'+
+'                #endif'+
+''+
+'                // compute gl_Position'+
+'		vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );'+
+'		gl_Position = projectionMatrix * mvPosition;'+
+'	}';
+
+THREEx.ArMarkerCloak.fragmentShader = ''+
+'	varying vec2 vUv;'+
+'	uniform sampler2D texture;'+
+''+
+'	void main(void){'+
+'		vec3 color = texture2D( texture, vUv ).rgb;'+
+''+
+'		gl_FragColor = vec4( color, 1.0);'+
+'	}'
+var THREEx = THREEx || {}
 
 THREEx.ArMarkerControls = function(context, object3d, parameters){
 	var _this = this
@@ -1707,6 +1922,12 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 			// data.matrix is the model view matrix
 			var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
 
+			// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
+			var tmpMatrix = new THREE.Matrix4().copy(_this.context._axistransformMatrix)
+			tmpMatrix.multiply(modelViewMatrix)
+			modelViewMatrix.copy(tmpMatrix)
+
+
 			// change markerObject3D.matrix based on parameters.changeMatrixMode
 			if( _this.parameters.changeMatrixMode === 'modelViewMatrix' ){
 				markerObject3D.matrix.copy(modelViewMatrix)
@@ -1756,8 +1977,14 @@ THREEx.ArToolkitContext = function(parameters){
 		
 		// enable image smoothing or not for canvas copy - default to true
 		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
-		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : true,
+		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : false,
 	}
+	
+	this._axistransformMatrix = new THREE.Matrix4()
+	// this._axistransformMatrix.multiply(new THREE.Matrix4().makeRotationX(Math.PI))
+	this._axistransformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
+	this._axistransformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
+
 	
         this.arController = null;
         this._cameraParameters = null
@@ -1767,6 +1994,22 @@ THREEx.ArToolkitContext = function(parameters){
 THREEx.ArToolkitContext.baseURL = '../'
 THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 
+/**
+ * return the projection matrix
+ */
+THREEx.ArToolkitContext.prototype.getProjectionMatrix = function(srcElement){
+	console.assert(this.arController, 'arController MUST be initialized to call this function')
+	// get projectionMatrixArr from artoolkit
+	var projectionMatrixArr = this.arController.getCameraMatrix();
+	var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)
+		
+	// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
+	projectionMatrix.multiply(this._axistransformMatrix)
+	
+	// return the result
+	return projectionMatrix
+}
+
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
@@ -1775,7 +2018,7 @@ THREEx.ArToolkitContext.prototype.init = function(onCompleted){
 	var sourceWidth = this.parameters.sourceWidth
 	var sourceHeight = this.parameters.sourceHeight
 
-        console.log('ArToolkitContext: _onSourceReady width', sourceWidth, 'height', sourceHeight)
+        // console.log('ArToolkitContext: _onSourceReady width', sourceWidth, 'height', sourceHeight)
         _this._cameraParameters = new ARCameraParam(_this.parameters.cameraParametersUrl, function() {
         	// init controller
                 var arController = new ARController(sourceWidth, sourceHeight, _this._cameraParameters);
@@ -1890,6 +2133,137 @@ THREEx.ArToolkitContext.prototype.removeMarker = function(arMarkerControls){
 }
 var THREEx = THREEx || {}
 
+/**
+ * ArToolkitProfile helps you build parameters for artoolkit
+ * - it is fully independant of the rest of the code
+ * - all the other classes are still expecting normal parameters
+ * - you can use this class to understand how to tune your specific usecase
+ * - it is made to help people to build parameters without understanding all the underlying details.
+ */
+THREEx.ArToolkitProfile = function(){
+	this.reset()
+
+	this.performance('default')
+}
+
+
+THREEx.ArToolkitProfile.prototype._guessPerformanceLabel = function() {
+	var isMobile = navigator.userAgent.match(/Android/i)
+			|| navigator.userAgent.match(/webOS/i)
+			|| navigator.userAgent.match(/iPhone/i)
+			|| navigator.userAgent.match(/iPad/i)
+			|| navigator.userAgent.match(/iPod/i)
+			|| navigator.userAgent.match(/BlackBerry/i)
+			|| navigator.userAgent.match(/Windows Phone/i)
+			? true : false 
+	if( isMobile === true ){
+		return 'phone-normal'
+	}
+	return 'desktop-normal'
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+
+/**
+ * reset all parameters
+ */
+THREEx.ArToolkitProfile.prototype.reset = function () {
+	this.sourceParameters = {
+		// to read from the webcam 
+		sourceType : 'webcam',
+	}
+
+	this.contextParameters = {
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
+		detectionMode: 'mono',
+	}
+	this.defaultMarkerParameters = {
+		type : 'pattern',
+		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+	}
+	return this
+};
+
+//////////////////////////////////////////////////////////////////////////////
+//		Performance
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+THREEx.ArToolkitProfile.prototype.performance = function(label) {
+	if( label === 'default' ){
+		label = this._guessPerformanceLabel()
+	}
+
+	if( label === 'desktop-fast' ){
+		this.contextParameters.sourceWidth = 640*2
+		this.contextParameters.sourceHeight = 480*2
+
+		this.contextParameters.maxDetectionRate = 60
+	}else if( label === 'desktop-normal' ){
+		this.contextParameters.sourceWidth = 640
+		this.contextParameters.sourceHeight = 480
+
+		this.contextParameters.maxDetectionRate = 60
+	}else if( label === 'phone-normal' ){
+		this.contextParameters.sourceWidth = 80*4
+		this.contextParameters.sourceHeight = 60*4
+
+		this.contextParameters.maxDetectionRate = 30
+	}else if( label === 'phone-slow' ){
+		this.contextParameters.sourceWidth = 80*3
+		this.contextParameters.sourceHeight = 60*3
+
+		this.contextParameters.maxDetectionRate = 15		
+	}else {
+		console.assert(false, 'unknonwn label '+label)
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Marker
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArToolkitProfile.prototype.kanjiMarker = function () {
+	this.contextParameters.detectionMode = 'mono'
+
+	this.defaultMarkerParameters.type = 'pattern'
+	this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji'
+	return this
+}
+
+THREEx.ArToolkitProfile.prototype.hiroMarker = function () {
+	this.contextParameters.detectionMode = 'mono'
+
+	this.defaultMarkerParameters.type = 'pattern'
+	this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+	return this
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Source
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArToolkitProfile.prototype.sourceWebcam = function () {
+	this.sourceParameters.sourceType = 'webcam'
+	delete this.sourceParameters.sourceUrl
+	return this
+}
+
+
+THREEx.ArToolkitProfile.prototype.sourceVideo = function (url) {
+	this.sourceParameters.sourceType = 'video'
+	this.sourceParameters.sourceUrl = url
+	return this
+}
+
+THREEx.ArToolkitProfile.prototype.sourceImage = function (url) {
+	this.sourceParameters.sourceType = 'image'
+	this.sourceParameters.sourceUrl = url
+	return this
+}
+var THREEx = THREEx || {}
+
 THREEx.ArToolkitSource = function(parameters){	
 	// handle default parameters
 	this.parameters = {
@@ -1938,7 +2312,7 @@ THREEx.ArToolkitSource.prototype.init = function(onReady){
 		document.body.appendChild(_this.domElement);
 
 		_this.ready = true
-                console.log('completed')
+
 		onReady && onReady()
         }
 } 
@@ -1987,7 +2361,8 @@ THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
 	domElement.muted = true
 
 	// trick to trigger the video on android
-	document.body.addEventListener('click', function(){
+	document.body.addEventListener('click', function onClick(){
+		document.body.removeEventListener('click', onClick);
 		domElement.play()
 	})
 
@@ -2049,7 +2424,7 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
                 // }
 
 		navigator.getUserMedia(constraints, function success(stream) {
-			console.log('success', stream);
+			// console.log('success', stream);
 			domElement.src = window.URL.createObjectURL(stream);
 			// to start the video, when it is possible to start it only on userevent. like in android
 			document.body.addEventListener('click', function(){
@@ -2162,7 +2537,7 @@ _this._camera = camera
                 camera.position.toArray(dstFrameData.pose.position)
                 camera.quaternion.toArray(dstFrameData.pose.orientation)
         }
-	
+
 	////////////////////////////////////////////////////////////////////////////////
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
@@ -2423,11 +2798,11 @@ WebVRPolyfill.prototype.install = function(){
 	var webvrPolyfill = new WebVRPolyfill().install()
 	webvrPolyfill.setFrameDataProvider(arToolKitFrameData)	
 	
-	// handle resize
-	window.addEventListener('resize', function(){
-		// handle arToolkitSource resize
-		arToolkitSource.onResize(renderer.domElement)		
-	})
+	// // handle resize
+	// window.addEventListener('resize', function(){
+	// 	// handle arToolkitSource resize
+	// 	arToolkitSource.onResize(renderer.domElement)		
+	// })
 	
 	// TODO find a better way to handle the camera
 	// it should simply be in the webvr data
