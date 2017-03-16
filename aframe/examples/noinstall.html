@@ -1,23 +1,9 @@
-<!-- include aframe -->
 <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
-<!-- include ar.js -->
 <script src="https://rawgit.com/jeromeetienne/ar.js/master/aframe/build/aframe-ar.js"></script>
 <script>THREEx.ArToolkitContext.baseURL = 'https://rawgit.com/jeromeetienne/ar.js/master/three.js/'</script>
-
 <body style='margin : 0px; overflow: hidden;'>
-
-	<!-- define the scene - enable artoolkit webcam -->
 	<a-scene embedded artoolkit='sourceType: webcam;'>
-
-		<a-box position='0 0 0.5' material='opacity: 0.5; side: double'>
-			<a-torus-knot radius='0.27' radius-tubular='0.05'>
-				<a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
-			</a-torus-knot>
-		</a-box>
-
-		<!-- define a simple camera to move according to the marker position -->
+		<a-box position='0 0 0.5' material='opacity: 0.5;'></a-box>
 		<a-marker-camera preset='hiro'></a-marker-camera>
-
 	</a-scene>
-
 </body>

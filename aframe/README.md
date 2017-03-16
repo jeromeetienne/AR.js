@@ -54,6 +54,7 @@ Here are the attributes for this entity
 | size | size of the marker in meter | artoolkitmarker.size |
 | url | url of the pattern - IIF type='pattern' | artoolkitmarker.patternUrl |
 | value | value of the barcode - IIF type='barcode' | artoolkitmarker.barcodeValue |
+| preset | parameters preset - ['hiro', 'kanji'] | artoolkitmarker.preset |
 
 
 # \<a-marker-camera\>
@@ -73,9 +74,7 @@ modelView is able to provide multiple *independant* markers.
         <!-- define your scene as usual -->
         <a-cube>
         <!-- define a camera inside the <a-marker-camera> -->
-        <a-marker-camera>
-                <a-entity camera></a-entity>
-        <a-marker-camera>
+        <a-marker-camera preset='hiro'><a-marker-camera>
 </a-scene>
 ```
 
