@@ -156,9 +156,10 @@ a-frame Examples:
 - [multiple-independent-markers](https://jeromeetienne.github.io/AR.js/aframe/examples/multiple-independant-markers.html) : 
   a-frame example for multiple-independent-markers
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/multiple-independant-markers.html))
-- [noinstall](https://jeromeetienne.github.io/AR.js/aframe/examples/noinstall.html) : 
-  a-frame example for noinstall
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/noinstall.html))
+- [minimal](https://jeromeetienne.github.io/AR.js/aframe/examples/minimal.html) : 
+  Want to do Augmented Reality on the web ? You can do it [in less than 10 lines of html now](https://twitter.com/jerome_etienne/status/842192608256512000) :)
+  minimal.html is the shortest html file you need if you want to do ar.js with a-frame
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/minimal.html))
 
 WebVR-polyfill Examples: 
 - [aframe](https://jeromeetienne.github.io/AR.js/webvr-polyfill/examples/aframe.html) : 
