@@ -4,6 +4,7 @@ I am focusing hard on making AR for the web a reality.
 This repository is where I publish the code.
 Contact me anytime [@jerome_etienne](https://twitter.com/jerome_etienne).
 Stuff are still moving fast, We reached a good status tho.
+An article has been published on [uploadvr](https://uploadvr.com/ar-js-efficient-augmented-reality-for-the-web/).
 So I wanted to publish thus people can try it and have fun with it :)
 
 - **Very Fast** : it runs efficiently even on phones. [60 fps on my 2 year-old phone](https://twitter.com/jerome_etienne/status/831333879810236421)!
@@ -12,6 +13,7 @@ So I wanted to publish thus people can try it and have fun with it :)
 - **Standards** : It works on any phone with [webgl](http://caniuse.com/#feat=webgl) and [webrtc](http://caniuse.com/#feat=stream)
 
 [![AR.js 1.0 Video](https://cloud.githubusercontent.com/assets/252962/23441016/ab6900ce-fe17-11e6-971b-24614fb8ac0e.png)](https://youtu.be/0MtvjFg7tik)
+
 
 # Try it on Mobile
 
@@ -79,6 +81,24 @@ up to you to choose.
   It allows the things three.js extension does. Here are some slides 
   [aframe-artoolkit](http://jeromeetienne.github.io/slides/artoolkit-aframe/)
 - webvr-polyfill: it is kind of working - still a work-in-progress
+
+
+# Augmented reality for the web in less than 10 lines of html
+
+a-frame magic :)
+
+```html
+<script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+<script src="https://rawgit.com/jeromeetienne/ar.js/master/aframe/build/aframe-ar.js"></script>
+<script>THREEx.ArToolkitContext.baseURL = 'https://rawgit.com/jeromeetienne/ar.js/master/three.js/'</script>
+<body style='margin : 0px; overflow: hidden;'>
+	<a-scene embedded artoolkit='sourceType: webcam;'>
+		<a-box position='0 0 0.5' material='opacity: 0.5;'></a-box>
+		<a-marker-camera preset='hiro'></a-marker-camera>
+	</a-scene>
+</body>
+```
+
 
 # Examples
 

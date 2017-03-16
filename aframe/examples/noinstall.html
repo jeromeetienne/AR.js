@@ -9,19 +9,14 @@
 	<!-- define the scene - enable artoolkit webcam -->
 	<a-scene embedded artoolkit='sourceType: webcam;'>
 
-		<!-- define a marker with a hiro -->
-		<a-marker preset='hiro'>
+		<a-box position='0 0 0.5' material='opacity: 0.5; side: double'>
+			<a-torus-knot radius='0.27' radius-tubular='0.05'>
+				<a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
+			</a-torus-knot>
+		</a-box>
 
-			<!-- define the object which gonna appears on this marker  -->
-			<a-box depth="1" height="1" width="1" position='0 0 0.5' material='opacity: 0.5; side:double'></a-box>
-			<a-entity geometry="primitive: torusKnot; radius: 0.3; radiusTubular: 0.05" position='0 0 0.5'>
-				<a-animation attribute="rotation" from="0 0 0" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
-			</a-entity>
-
-		</a-marker>
-
-		<!-- define a simple camera -->
-		<a-entity camera></a-entity>
+		<!-- define a simple camera to move according to the marker position -->
+		<a-marker-camera preset='hiro'></a-marker-camera>
 
 	</a-scene>
 

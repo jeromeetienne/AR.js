@@ -1,7 +1,10 @@
 # 1.0.1-dev - Current
 
-- marker invisible cloak are in! TODO put link on relevant tweet
+- marker invisible cloak are in! [first tweet](https://twitter.com/jerome_etienne/status/840563600091688962)
+- noinstall.html just got a little bit cleaner
+  - aka the simplest way to do AR on the web - or webar in 15lines on codepen
 - support preset in a-frame a-marker - preset = ["hiro" | "kanji"]
+- better handling of .baseUrl in aframe default parameters
 - fixed artoolkit projection matrix to be more webgl - [projection matrix](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/WebGL_model_view_projection)
   - it was looking to positive-z and y was upside down compared to the usual webgl one
 - Added logo by @tentone - [AR.js logo](https://github.com/jeromeetienne/AR.js/blob/master/data/logo/logo-black-transparent-1280x512.png)

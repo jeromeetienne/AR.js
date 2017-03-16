@@ -224,11 +224,13 @@ AFRAME.registerPrimitive('a-marker-camera', AFRAME.utils.extendDeep({}, AFRAME.p
                 artoolkitmarker: {
 			changeMatrixMode: 'cameraTransformMatrix'
 		},
+		camera: true,
         },
         mappings: {
                 'type': 'artoolkitmarker.type',
                 'size': 'artoolkitmarker.size',
                 'url': 'artoolkitmarker.patternUrl',
                 'value': 'artoolkitmarker.barcodeValue',
+                'preset': 'artoolkitmarker.preset',
         }
 }));
