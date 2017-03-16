@@ -18,7 +18,6 @@ AFRAME.registerSystem('artoolkit', {
 		},
 		cameraParametersUrl : {
 			type: 'string',
-			default: THREEx.ArToolkitContext.baseURL+'../data/data/camera_para.dat'
 		},
 		maxDetectionRate : {
 			type: 'number',
@@ -56,6 +55,11 @@ AFRAME.registerSystem('artoolkit', {
 
 	init: function () {
 		var _this = this
+		
+		if( this.data.cameraParametersUrl === '' ){			
+			this.data.cameraParametersUrl = THREEx.ArToolkitContext.baseURL+'../data/data/camera_para.dat'
+		}
+
 		////////////////////////////////////////////////////////////////////////////////
 		//          handle arToolkitSource
 		////////////////////////////////////////////////////////////////////////////////
