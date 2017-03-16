@@ -1,6 +1,3 @@
-- TO tweet Thinking about how the virtual fades in the reality while doing #AR. Important to be as immersive as possible in this key moment 🤔
-
-
 - pack the TODO.md and all, then switch to webvr-polyfill until it works for three.js demo, then for a-frame demo
 - aframe/examples/demo.html is buggy
   - TODO handle resize
@@ -13,15 +10,26 @@
   - same for kanji
 
 - for refraction example, use shaddow and remove shaddow.html
+- super nice refraction example - https://youtu.be/fhFzStkoE50?t=35
 - for refraction example, use a skull, aka crustal skull
   - http://tf3dm.com/download-page.php?url=cranio-11055
   - https://www.yobi3d.com/q/skull
   - good model - see if you can get this one https://www.yobi3d.com/i/ieAvsKA6d2
+  
 - better appearance animation for markercloak ? just a tweening on opacity would do it
 - Discussion with fredrick - open the webcam with the displayWidth, not the sourceWidth
   - this.parameters.displayWidth
   - maxWidth: this.parameters.sourceWidth
   - source is influence resolution/performance of videoTexture (e.g. refraction, marker cloak)
+  - so full screen for normal demo, but when performance related (aka when using video as texture) then tune down the resolution
+
+- using video in webgl
+  - get object in proper position
+  - handle resize
+  - keep the plane in front of the camera
+  - i got that in webvr experiments
+  - allow webvr - so i would get stereo and get a phone-in-hmd - google cardboard ar
+
 
 # Multimarker
 - how to say 'those markers will start act as one'
