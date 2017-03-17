@@ -29,7 +29,7 @@
   - keep the plane in front of the camera
   - i got that in webvr experiments
   - allow webvr - so i would get stereo and get a phone-in-hmd - google cardboard ar
-
+  - https://github.com/jeromeetienne/webvr-experiments/blob/master/seethru.html
 
 # Multimarker
 - how to say 'those markers will start act as one'
