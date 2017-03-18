@@ -40,14 +40,14 @@
 
 		gl_FragColor = texture2D( tDiffuse, vUv );
 
-		if( gl_FragColor.g > 0.5 ){
+		if( gl_FragColor.r < 0.5 && gl_FragColor.g > 0.5 && gl_FragColor.b < 0.5 ){
 			discard;
 		}
 
 		// compute level of gray
 		float grayLevel = dot(gl_FragColor.rgb, vec3(0.299, 0.587, 0.114));
 		gl_FragColor.rgb = vec3(grayLevel, grayLevel, grayLevel);
-
+		
 		// pass grayLevel-ish into cyan-ish
 		gl_FragColor.rgb *= vec3(0.0, 1.0, 1.0);
 
@@ -189,8 +189,9 @@
 
 	// create videoTexture	
 	var video = document.createElement( 'video' );
-	video.src = '../../data/videos/headtracking.mp4'
-	// video.autoplay = true;
+	// video.src = '../../data/videos/headtracking.mp4'
+	video.src = '../../data/videos/bird_greenscreen.mp4'
+	video.autoplay = true;
 	video.webkitPlaysinline = true;
 	video.controls = false;
 	video.loop = true;
@@ -203,7 +204,6 @@
 		document.body.removeEventListener('click', onClick);
 		video.play()
 	})
-
 	var geometry	= new THREE.PlaneGeometry(1,1);
 	var material = new THREE.ShaderMaterial( {
 		uniforms: {
@@ -230,6 +230,8 @@
 	videoMesh.position.z = 0.8
 	videoMesh.rotation.x = Math.PI/2
 
+	videoMesh.scale.set(1,1,1).multiplyScalar(1.5)
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
@@ -244,7 +246,6 @@
 	context.lineWidth = canvas.width * 0.1;
 	context.strokeStyle = '#ffffff';
 
-	context.beginPath();
 	var nChunks = 3
 	var chunkAngle = 2*Math.PI/nChunks
 	var chunkMargin = Math.PI/8
