@@ -168,6 +168,8 @@ THREEx.ArMarkerCloak = function(videoTexture){
 //////////////////////////////////////////////////////////////////////////////
 
 THREEx.ArMarkerCloak.markerSpaceShaderFunction = '' +
+'        vec2 transformUvToMarkerSpace(vec2 originalUv){'+
+'                vec3 transformedUv;'+
 '                // set transformedUv - from UV coord to clip coord'+
 '                transformedUv.x = originalUv.x * 2.0 - 1.0;'+
 '                transformedUv.y = originalUv.y * 2.0 - 1.0;'+

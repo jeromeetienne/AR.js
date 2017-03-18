@@ -122,28 +122,6 @@ AFRAME.registerSystem('artoolkit', {
 			this.sceneEl.camera.projectionMatrix.copy( this.arToolkitContext.getProjectionMatrix() );
 		}
 
-// if( true ){
-// 	
-// 		// update projectionMatrix
-// 		// NOTE: is it because the projectionMatrix is set in arToolkitContext.init is overwritten by a-frames
-//                 var projectionMatrixArr = this.arToolkitContext.arController.getCameraMatrix();
-// 		
-// 		var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)
-// 		
-// 
-// 		var transformMatrix = new THREE.Matrix4()
-// 		// transformMatrix.multiply(new THREE.Matrix4().makeRotationX(Math.PI))
-// 		transformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
-// 		transformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
-// 
-// 		// transformMatrix.multiply(projectionMatrix)
-// 		// this.sceneEl.camera.projectionMatrix.copy(transformMatrix)
-// 
-// 		projectionMatrix.multiply(transformMatrix)
-// 		this.sceneEl.camera.projectionMatrix.copy(projectionMatrix)
-// }
-		
-
 		this.arToolkitContext.update( this.arToolkitSource.domElement )
 	},
 });

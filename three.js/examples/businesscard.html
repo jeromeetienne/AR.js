@@ -13,7 +13,46 @@
 	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - three.js camera transform
 	<br/>
 	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
-</div><script>
+</div>
+
+<script id="fragmentShader" type="x-shader/x-fragment">
+
+	varying vec2 vUv;
+	uniform sampler2D tDiffuse;
+	uniform float opacity;
+
+	void main() {
+
+		gl_FragColor = texture2D( tDiffuse, vUv );
+
+		if( gl_FragColor.g > 0.5 ){
+			discard;
+		}
+
+		float gray = dot(gl_FragColor.rgb, vec3(0.299, 0.587, 0.114));
+		gl_FragColor.rgb = vec3(gray, gray, gray);
+
+		gl_FragColor.rgb = gl_FragColor.rgb * vec3(0.0, 1.0, 1.0);
+
+		gl_FragColor.rgb = gl_FragColor.rgb * 2.0;
+
+		gl_FragColor.a = 0.5;
+	}
+
+</script>
+<script id="vertexShader" type="x-shader/x-vertex">
+
+	varying vec2 vUv;
+
+	void main() {
+
+		vUv = uv;
+		gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+	}
+
+</script>
+<script>
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////
@@ -53,8 +92,8 @@
 		sourceType : 'webcam',
 		
 		// to read from an image
-		sourceType : 'image',
-		sourceUrl : '../../data/images/img.jpg',		
+		// sourceType : 'image',
+		// sourceUrl : '../../data/images/img.jpg',		
 
 		// to read from a video
 		// sourceType : 'video',
@@ -119,27 +158,45 @@
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
-	// add a torus knot	
-	var geometry	= new THREE.CubeGeometry(1,1,1);
-	var material	= new THREE.MeshNormalMaterial({
-		transparent : true,
-		opacity: 0.5,
-		side: THREE.DoubleSide
-	}); 
-	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.z	= geometry.parameters.height/2
-	scene.add( mesh );
+	// create videoTexture	
+	var video = document.createElement( 'video' );
+	video.src = '../../data/videos/headtracking.mp4'
+	video.autoplay = true;
+	video.webkitPlaysinline = true;
+	video.controls = false;
+	video.loop = true;
+	video.muted = true
+	var videoTexture = new THREE.VideoTexture(video)
+	videoTexture.needsUpdate = true		
+	videoTexture.minFilter =  THREE.NearestFilter
 	
-	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
-	var material	= new THREE.MeshNormalMaterial(); 
-	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.z	= 0.5
-	scene.add( mesh );
-	
-	onRenderFcts.push(function(){
-		mesh.rotation.x += 0.1
-	})
+	var geometry	= new THREE.PlaneGeometry(1,1);
+	// var material	= new THREE.MeshBasicMaterial({
+	// 	map: videoTexture,
+	// 	transparent : true,
+	// 	opacity: 0.5,
+	// 	side: THREE.DoubleSide
+	// }); 
+	var material = new THREE.ShaderMaterial( {
+		uniforms: {
+			opacity: { value: 0.0 },
+			tDiffuse: {value: videoTexture},
+		},
+		vertexShader: document.querySelector( '#vertexShader' ).textContent,
+		fragmentShader: document.querySelector( '#fragmentShader' ).textContent,
+		side: THREE.DoubleSide,
 
+	} );
+	var videoMesh	= new THREE.Mesh( geometry, material );
+	
+	
+	var containerMesh = new THREE.Group
+	containerMesh.add(videoMesh)
+	containerMesh.position.z = 0.5
+	containerMesh.rotation.x = Math.PI/2
+	scene.add( containerMesh );
+	
+	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
 	//////////////////////////////////////////////////////////////////////////////////

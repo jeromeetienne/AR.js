@@ -93,7 +93,6 @@ Other crazy ideas we’ve been working on include a [hole in the wall](https://t
   [aframe-artoolkit](http://jeromeetienne.github.io/slides/artoolkit-aframe/)
 - webvr-polyfill: it is kind of working - still a work-in-progress
 
-
 # Augmented reality for the web in less than 10 lines of html
 
 a-frame magic :)
@@ -224,7 +223,7 @@ I exited to see what people will do with AR.js :)
 - dynamic multiple markers - https://github.com/artoolkit/jsartoolkit5/issues/34
 - put the video in the webgl (and not the dom), as an options
 - stabilizer for marker orientation and/or position
-  - some tweening/smoothing on marker orientation
+  - some tweening/smoothing on marker orientation - maybe just a lerp ?
   - it would help the shakyness especially when the source resolution is low
 - stabilizer using gravity ?
   - using gravity it is possible to know if the marker is on a wall or on a table

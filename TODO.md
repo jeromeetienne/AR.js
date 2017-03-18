@@ -17,11 +17,32 @@
   - good model - see if you can get this one https://www.yobi3d.com/i/ieAvsKA6d2
   
 - better appearance animation for markercloak ? just a tweening on opacity would do it
+
 - Discussion with fredrick - open the webcam with the displayWidth, not the sourceWidth
   - this.parameters.displayWidth
   - maxWidth: this.parameters.sourceWidth
   - source is influence resolution/performance of videoTexture (e.g. refraction, marker cloak)
   - so full screen for normal demo, but when performance related (aka when using video as texture) then tune down the resolution
+
+- business card ala star war - https://www.youtube.com/watch?v=DSOj0fUIM4o
+  - some ghosts, some smokes, try stuff to find out
+  - shader for greenscreen
+  - then add the effect in fragment shader
+  - then add the volumetric light below
+  - crowd replication https://www.youtube.com/watch?v=bmxszcAfcRo
+  - first get a video with greenscreen
+  - then the video on a plane on the markers
+  - then the fragment shader for greenscreen
+  - then some basic blueish + noise effect
+  - then the cradle of light
+  - message: should be fun, not a resume, more like im creative, im assertive, i make stuff happen, 
+    'i come from out of space. i want to augment reality'
+    - some innovative way to reach out
+    - maybe start by playing a role 'This is a message from a galaxy far, far away' being dead serious like it is an emergency message
+    - and you play this role for a bit, then you switch to normal alexandra
+    - there you explain 'looking for a new gig in AR/VR. i was trying for a good way to reach people involved in AR/VR'
+    - what about a AR demo ? it will certainly reach people involved in AR/VR!
+    - so here we are :) 
 
 - using video in webgl
   - get object in proper position
