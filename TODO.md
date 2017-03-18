@@ -24,25 +24,6 @@
   - source is influence resolution/performance of videoTexture (e.g. refraction, marker cloak)
   - so full screen for normal demo, but when performance related (aka when using video as texture) then tune down the resolution
 
-- business card ala star war - https://www.youtube.com/watch?v=DSOj0fUIM4o
-  - some ghosts, some smokes, try stuff to find out
-  - shader for greenscreen
-  - then add the effect in fragment shader
-  - then add the volumetric light below
-  - crowd replication https://www.youtube.com/watch?v=bmxszcAfcRo
-  - first get a video with greenscreen
-  - then the video on a plane on the markers
-  - then the fragment shader for greenscreen
-  - then some basic blueish + noise effect
-  - then the cradle of light
-  - message: should be fun, not a resume, more like im creative, im assertive, i make stuff happen, 
-    'i come from out of space. i want to augment reality'
-    - some innovative way to reach out
-    - maybe start by playing a role 'This is a message from a galaxy far, far away' being dead serious like it is an emergency message
-    - and you play this role for a bit, then you switch to normal alexandra
-    - there you explain 'looking for a new gig in AR/VR. i was trying for a good way to reach people involved in AR/VR'
-    - what about a AR demo ? it will certainly reach people involved in AR/VR!
-    - so here we are :) 
 
 - using video in webgl
   - get object in proper position
@@ -51,6 +32,25 @@
   - i got that in webvr experiments
   - allow webvr - so i would get stereo and get a phone-in-hmd - google cardboard ar
   - https://github.com/jeromeetienne/webvr-experiments/blob/master/seethru.html
+
+# star war hologram
+- business card ala star war 
+- greenscreen stuff https://www.youtube.com/watch?v=DSOj0fUIM4o
+  - some ghosts, some smokes, try stuff to find out
+  - shader for greenscreen 
+  - crowd replication https://www.youtube.com/watch?v=bmxszcAfcRo
+
+
+- message: should be fun, not a resume, not a list of things, more like im creative, im assertive, i make stuff happen, 
+'i come from out of space. i want to augment reality'
+- some innovative way to reach out
+- maybe start by playing a role 'This is a message from a galaxy far, far away' being dead serious like it is an emergency message
+- and you play this role for a bit, then you switch to normal alexandra
+- there you explain 'looking for a new gig in AR/VR. i was looking for a good way to reach people involved in AR/VR'
+- and i thought what about a AR demo ? this is creative, this is to the point. super super mega plus plus
+- it will certainly reach people involved in AR/VR!
+- so here we are :) 
+
 
 # Multimarker
 - how to say 'those markers will start act as one'

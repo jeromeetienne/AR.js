@@ -10,18 +10,33 @@
 <script src="../threex-artoolkitcontext.js"></script>
 <script src="../threex-armarkercontrols.js"></script>
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - three.js camera transform
+	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - Augmented Reality Business Card for <a href="https://twitter.com/AndraConnect" target="_blank">@AndraConnect</a>
 	<br/>
-	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+	Click to start playing the video.
 </div>
 
+<script id="vertexShader" type="x-shader/x-vertex">
+	varying vec2 vUv;
+	void main() {
+
+		vUv = uv;
+		gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+	}
+</script>
 <script id="fragmentShader" type="x-shader/x-fragment">
 
 	varying vec2 vUv;
 	uniform sampler2D tDiffuse;
 	uniform float opacity;
+	uniform float time;
+
+	float rand(float n){return fract(sin(n) * 43758.5453123);}
 
 	void main() {
+		
+		// noise point by point
+		// interlace effect
 
 		gl_FragColor = texture2D( tDiffuse, vUv );
 
@@ -29,26 +44,32 @@
 			discard;
 		}
 
-		float gray = dot(gl_FragColor.rgb, vec3(0.299, 0.587, 0.114));
-		gl_FragColor.rgb = vec3(gray, gray, gray);
+		// compute level of gray
+		float grayLevel = dot(gl_FragColor.rgb, vec3(0.299, 0.587, 0.114));
+		gl_FragColor.rgb = vec3(grayLevel, grayLevel, grayLevel);
 
-		gl_FragColor.rgb = gl_FragColor.rgb * vec3(0.0, 1.0, 1.0);
+		// pass grayLevel-ish into cyan-ish
+		gl_FragColor.rgb *= vec3(0.0, 1.0, 1.0);
 
-		gl_FragColor.rgb = gl_FragColor.rgb * 2.0;
+		// silly glow
+		gl_FragColor.rgb *= 2.0;
 
-		gl_FragColor.a = 0.5;
-	}
+		// float offset = mod(time/50.0, 1.0);
+		float offset = sin(time/3.0);
+		if( mod( (vUv.y+offset) * 96.0, 2.0) < 0.5 ){
+			gl_FragColor.rgb *= 1.1;
+		}else{
+			gl_FragColor.rgb *= (1.0/1.1);			
+		}
 
-</script>
-<script id="vertexShader" type="x-shader/x-vertex">
+		gl_FragColor.rgb *= (1.0 + (rand(time+vUv.x + vUv.y)-0.5)*0.3);			
 
-	varying vec2 vUv;
+		// honor opacity
+		gl_FragColor.a = opacity;
 
-	void main() {
-
-		vUv = uv;
-		gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-
+		if( gl_FragColor.a == 0.0 ){
+			discard;
+		}
 	}
 
 </script>
@@ -161,10 +182,15 @@
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
+	var containerMesh = new THREE.Group
+	scene.add( containerMesh );
+
+
+
 	// create videoTexture	
 	var video = document.createElement( 'video' );
 	video.src = '../../data/videos/headtracking.mp4'
-	video.autoplay = true;
+	// video.autoplay = true;
 	video.webkitPlaysinline = true;
 	video.controls = false;
 	video.loop = true;
@@ -179,31 +205,95 @@
 	})
 
 	var geometry	= new THREE.PlaneGeometry(1,1);
-	// var material	= new THREE.MeshBasicMaterial({
-	// 	map: videoTexture,
-	// 	transparent : true,
-	// 	opacity: 0.5,
-	// 	side: THREE.DoubleSide
-	// }); 
 	var material = new THREE.ShaderMaterial( {
 		uniforms: {
-			opacity: { value: 0.0 },
-			tDiffuse: {value: videoTexture},
+			time: {
+				value: 0.0
+			},
+			opacity: {
+				value: 1.0
+			},
+			tDiffuse: {
+				value: videoTexture
+			},
 		},
 		vertexShader: document.querySelector( '#vertexShader' ).textContent,
 		fragmentShader: document.querySelector( '#fragmentShader' ).textContent,
 		side: THREE.DoubleSide,
-
+		// TODO try other blending
 	} );
+	onRenderFcts.push(function(delta){
+		videoMesh.material.uniforms.time.value += delta
+	})
 	var videoMesh	= new THREE.Mesh( geometry, material );
+	containerMesh.add(videoMesh)	
+	videoMesh.position.z = 0.8
+	videoMesh.rotation.x = Math.PI/2
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+	var canvas = document.createElement( 'canvas' );
+	canvas.width = 256;
+	canvas.height = 256;
+
+	var context = canvas.getContext( '2d' );
+	var centerX = canvas.width / 2;
+	var centerY = canvas.height / 2;
+	var radius = canvas.width / 2 * 0.7;
+	context.lineWidth = canvas.width * 0.1;
+	context.strokeStyle = '#ffffff';
+
+	context.beginPath();
+	var nChunks = 3
+	var chunkAngle = 2*Math.PI/nChunks
+	var chunkMargin = Math.PI/8
 	
+	context.beginPath();
+	context.arc(centerX, centerY, radius, 0, chunkAngle - chunkMargin, false);
+	context.stroke();
+
+	context.beginPath();
+	context.arc(centerX, centerY, radius, chunkAngle, 2*chunkAngle - chunkMargin, false);
+	context.stroke();
+
+	context.beginPath();
+	context.arc(centerX, centerY, radius, 2*chunkAngle, 3*chunkAngle - chunkMargin, false);
+	context.stroke();
+
+	// context.fillStyle = 'rgb( 200, 200, 200 )';
+	// context.fillRect( 0, 0, canvas.width, canvas.height );
+				 
+	var texture = new THREE.Texture( canvas );
+	texture.needsUpdate = true
+
+	var geometry	= new THREE.PlaneGeometry(1,1);
+	var material	= new THREE.MeshBasicMaterial({
+		map: texture,
+		transparent : true,
+		opacity: 0.5,
+		color: 'cyan',
+		side: THREE.DoubleSide
+	}); 
+	var ringLowMesh	= new THREE.Mesh( geometry, material );
+	containerMesh.add(ringLowMesh)	
+	ringLowMesh.position.z = +0.05
+	ringLowMesh.scale.set(1,1,1).multiplyScalar(1.2)
 	
-	var containerMesh = new THREE.Group
-	containerMesh.add(videoMesh)
-	containerMesh.position.z = 0.5
-	containerMesh.rotation.x = Math.PI/2
-	scene.add( containerMesh );
+	ringLowMesh.rotation.z = Math.random()*2*Math.PI
+	onRenderFcts.push(function(delta){
+		ringLowMesh.rotation.z += 2*Math.PI*delta / 5
+	})
 	
+	var ringHighMesh	= new THREE.Mesh( geometry, material );
+	ringHighMesh.scale.set(1,1,1).multiplyScalar(1.4)
+	ringHighMesh.position.z = +0.2
+	containerMesh.add(ringHighMesh)	
+	
+	ringHighMesh.rotation.z = Math.random()*2*Math.PI
+	onRenderFcts.push(function(delta){
+		ringHighMesh.rotation.z += 2*Math.PI*delta / 5
+	})
 	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
