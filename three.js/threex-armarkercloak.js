@@ -167,51 +167,51 @@ THREEx.ArMarkerCloak = function(videoTexture){
 //                Shaders
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArMarkerCloak.markerSpaceShaderFunction = '' +
-'        vec2 transformUvToMarkerSpace(vec2 originalUv){'+
-'                vec3 transformedUv;'+
-'                // set transformedUv - from UV coord to clip coord'+
-'                transformedUv.x = originalUv.x * 2.0 - 1.0;'+
-'                transformedUv.y = originalUv.y * 2.0 - 1.0;'+
-'                transformedUv.z = 0.0;'+
-''+
-'		// apply modelViewMatrix and projectionMatrix'+
-'                transformedUv = (projectionMatrix * modelViewMatrix * vec4( transformedUv, 1.0 ) ).xyz;'+
-''+
-'		// apply perspective'+
-'		transformedUv.x /= transformedUv.z;'+
-'		transformedUv.y /= transformedUv.z;'+
-''+
-'                // set back from clip coord to Uv coord'+
-'                transformedUv.x = transformedUv.x / 2.0 + 0.5;'+
-'                transformedUv.y = transformedUv.y / 2.0 + 0.5;'+
-''+
-'                // return the result'+
-'                return transformedUv.xy;'+
+THREEx.ArMarkerCloak.markerSpaceShaderFunction = '\n'+
+'        vec2 transformUvToMarkerSpace(vec2 originalUv){\n'+
+'                vec3 transformedUv;\n'+
+'                // set transformedUv - from UV coord to clip coord\n'+
+'                transformedUv.x = originalUv.x * 2.0 - 1.0;\n'+
+'                transformedUv.y = originalUv.y * 2.0 - 1.0;\n'+
+'                transformedUv.z = 0.0;\n'+
+'\n'+
+'		// apply modelViewMatrix and projectionMatrix\n'+
+'                transformedUv = (projectionMatrix * modelViewMatrix * vec4( transformedUv, 1.0 ) ).xyz;\n'+
+'\n'+
+'		// apply perspective\n'+
+'		transformedUv.x /= transformedUv.z;\n'+
+'		transformedUv.y /= transformedUv.z;\n'+
+'\n'+
+'                // set back from clip coord to Uv coord\n'+
+'                transformedUv.x = transformedUv.x / 2.0 + 0.5;\n'+
+'                transformedUv.y = transformedUv.y / 2.0 + 0.5;\n'+
+'\n'+
+'                // return the result\n'+
+'                return transformedUv.xy;\n'+
 '        }'
 
 THREEx.ArMarkerCloak.vertexShader = THREEx.ArMarkerCloak.markerSpaceShaderFunction +
-'	varying vec2 vUv;'+
-''+
-'	void main(){'+
-'                // pass the UV to the fragment'+
-'                #if (updateInShaderEnabled == 1)'+
-'		        vUv = transformUvToMarkerSpace(uv);'+
-'                #else'+
-'		        vUv = uv;'+
-'                #endif'+
-''+
-'                // compute gl_Position'+
-'		vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );'+
-'		gl_Position = projectionMatrix * mvPosition;'+
+'	varying vec2 vUv;\n'+
+'\n'+
+'	void main(){\n'+
+'                // pass the UV to the fragment\n'+
+'                #if (updateInShaderEnabled == 1)\n'+
+'		        vUv = transformUvToMarkerSpace(uv);\n'+
+'                #else\n'+
+'		        vUv = uv;\n'+
+'                #endif\n'+
+'\n'+
+'                // compute gl_Position\n'+
+'		vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );\n'+
+'		gl_Position = projectionMatrix * mvPosition;\n'+
 '	}';
 
-THREEx.ArMarkerCloak.fragmentShader = ''+
-'	varying vec2 vUv;'+
-'	uniform sampler2D texture;'+
-''+
-'	void main(void){'+
-'		vec3 color = texture2D( texture, vUv ).rgb;'+
-''+
-'		gl_FragColor = vec4( color, 1.0);'+
+THREEx.ArMarkerCloak.fragmentShader = '\n'+
+'	varying vec2 vUv;\n'+
+'	uniform sampler2D texture;\n'+
+'\n'+
+'	void main(void){\n'+
+'		vec3 color = texture2D( texture, vUv ).rgb;\n'+
+'\n'+
+'		gl_FragColor = vec4( color, 1.0);\n'+
 '	}'
