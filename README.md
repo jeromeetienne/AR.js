@@ -232,7 +232,12 @@ I exited to see what people will do with AR.js :)
   - using gravity it is possible to know if the marker is on a wall or on a table
   - once we flag the marker as on a wall, we can reduce shakyness from video detection
   - by using gravity sensor
-
+- cloud computing to get better rendering
+  - fancy name for easy tech - 
+  [Capture a MediaStream From a Canvas, Video or Audio Element](https://developers.google.com/web/updates/2016/10/capture-stream)
+  - have a browser on server to produce high quality 3d - aka pbs and to stream that to a phone
+  - so when the phone is moving a lot, we do the local rendering
+  - when the phone is stable, we do the server rendering
 
 # Ideas
 - AR Gaming - https://www.youtube.com/watch?v=EmGGGzibGok

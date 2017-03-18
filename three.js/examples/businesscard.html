@@ -18,10 +18,8 @@
 <script id="vertexShader" type="x-shader/x-vertex">
 	varying vec2 vUv;
 	void main() {
-
 		vUv = uv;
 		gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-
 	}
 </script>
 <script id="fragmentShader" type="x-shader/x-fragment">
@@ -185,8 +183,6 @@
 	var containerMesh = new THREE.Group
 	scene.add( containerMesh );
 
-
-
 	// create videoTexture	
 	var video = document.createElement( 'video' );
 	// video.src = '../../data/videos/headtracking.mp4'
@@ -222,6 +218,16 @@
 		side: THREE.DoubleSide,
 		// TODO try other blending
 	} );
+
+
+	onRenderFcts.push(function(delta){
+		var x = new THREE.Vector3();
+		var y = new THREE.Vector3();
+		var z = new THREE.Vector3();
+		containerMesh.matrixWorld.extractBasis(x, y, z);
+		videoMesh.up = z;
+		videoMesh.lookAt(camera.position);
+	})
 	onRenderFcts.push(function(delta){
 		videoMesh.material.uniforms.time.value += delta
 	})
