@@ -172,7 +172,12 @@
 	var videoTexture = new THREE.VideoTexture(video)
 	videoTexture.needsUpdate = true		
 	videoTexture.minFilter =  THREE.NearestFilter
-	
+	// trick to trigger the video on android
+	document.body.addEventListener('click', function onClick(){
+		document.body.removeEventListener('click', onClick);
+		video.play()
+	})
+
 	var geometry	= new THREE.PlaneGeometry(1,1);
 	// var material	= new THREE.MeshBasicMaterial({
 	// 	map: videoTexture,
