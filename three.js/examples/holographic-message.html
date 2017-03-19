@@ -37,7 +37,8 @@
 		gl_FragColor = texture2D( tDiffuse, vUv );
 
 		// discard anything too green
-		if( gl_FragColor.r < 0.5 && gl_FragColor.g > 0.5 && gl_FragColor.b < 0.5 ){
+		if( gl_FragColor.r < 0.5 && gl_FragColor.g > 0.2 ){
+		// if( gl_FragColor.r < 0.5 && gl_FragColor.g > 0.2 && gl_FragColor.b < 0.5 ){
 			discard;
 		}
 
@@ -185,12 +186,13 @@
 	// create videoTexture	
 	var video = document.createElement( 'video' );
 	// video.src = '../../data/videos/headtracking.mp4'
-	video.src = '../../data/videos/bird_greenscreen.mp4'
+	// video.src = '../../data/videos/bird_greenscreen.mp4'
+	video.src = '../../data/videos/Star\ wars\ demo\ Alex.mp4'
 	video.autoplay = true;
 	video.webkitPlaysinline = true;
 	video.controls = false;
 	video.loop = true;
-	video.muted = true
+	// video.muted = true
 	var videoTexture = new THREE.VideoTexture(video)
 	videoTexture.needsUpdate = true		
 	videoTexture.minFilter =  THREE.NearestFilter
@@ -199,7 +201,7 @@
 		document.body.removeEventListener('click', onClick);
 		video.play()
 	})
-	var geometry	= new THREE.PlaneGeometry(1,1);
+	var geometry	= new THREE.PlaneGeometry(2,2/ (16/9));
 	var material = new THREE.ShaderMaterial( {
 		uniforms: {
 			time: {
@@ -232,7 +234,7 @@
 	})
 	var videoMesh	= new THREE.Mesh( geometry, material );
 	containerMesh.add(videoMesh)	
-	videoMesh.position.z = 0.8
+	videoMesh.position.z = 1.2
 	videoMesh.rotation.x = Math.PI/2
 
 	videoMesh.scale.set(1,1,1).multiplyScalar(1.5)
