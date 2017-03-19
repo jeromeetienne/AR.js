@@ -49,7 +49,7 @@
 		gl_FragColor.rgb *= vec3(0.0, 1.0, 1.0);
 
 		// silly glow
-		gl_FragColor.rgb *= 2.0;
+		gl_FragColor.rgb *= 1.0;
 
 		// do a interlace effect
 		float offset = sin(time/3.0);
@@ -206,7 +206,7 @@
 				value: 0.0
 			},
 			opacity: {
-				value: 1.0
+				value: 0.5
 			},
 			tDiffuse: {
 				value: videoTexture
@@ -240,6 +240,8 @@
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
+
+;(function(){
 	var canvas = document.createElement( 'canvas' );
 	canvas.width = 256;
 	canvas.height = 256;
@@ -274,7 +276,7 @@
 	var material	= new THREE.MeshBasicMaterial({
 		map: texture,
 		transparent : true,
-		opacity: 0.5,
+		opacity: 0.75,
 		color: 'cyan',
 		side: THREE.DoubleSide
 	}); 
@@ -297,7 +299,38 @@
 	onRenderFcts.push(function(delta){
 		ringHighMesh.rotation.z -= 2*Math.PI*delta / 5
 	})
+})()
 	
+	//////////////////////////////////////////////////////////////////////////////
+	//		opacity animation
+	//////////////////////////////////////////////////////////////////////////////
+	
+	// animation opacity
+	var minScale = 0.001
+	var targetScale = new THREE.Vector3(minScale, minScale, minScale)
+	onRenderFcts.push(function(delta){
+		var ratio = 0.2
+		containerMesh.scale.x = containerMesh.scale.x * (1-ratio) + targetScale.x * ratio
+		containerMesh.scale.y = containerMesh.scale.y * (1-ratio) + targetScale.y * ratio
+		containerMesh.scale.z = containerMesh.scale.z * (1-ratio) + targetScale.z * ratio
+		
+		if( Math.abs(containerMesh.scale.x - minScale) <= 0.001 ){
+			containerMesh.visible = false
+		}else{
+			containerMesh.visible = true			
+		}
+	})
+
+	// toggleCloak on click/keypress
+	function toggleCloak(){
+		if( targetScale.x === 1.0 ){
+			targetScale.set(minScale, minScale, minScale)
+		}else{
+			targetScale.set(1, 1, 1)
+		}
+	}
+	document.body.addEventListener('click', toggleCloak)
+	document.body.addEventListener('keypress', toggleCloak)
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
 	//////////////////////////////////////////////////////////////////////////////////
