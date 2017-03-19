@@ -50,7 +50,7 @@
 		gl_FragColor.rgb *= vec3(0.0, 1.0, 1.0);
 
 		// silly glow
-		gl_FragColor.rgb *= 1.0;
+		gl_FragColor.rgb *= 1.3;
 
 		// do a interlace effect
 		float offset = sin(time/3.0);
@@ -201,14 +201,14 @@
 		document.body.removeEventListener('click', onClick);
 		video.play()
 	})
-	var geometry	= new THREE.PlaneGeometry(2,2/ (16/9));
+	var geometry	= new THREE.PlaneGeometry(1,9/16);
 	var material = new THREE.ShaderMaterial( {
 		uniforms: {
 			time: {
 				value: 0.0
 			},
 			opacity: {
-				value: 0.5
+				value: 0.7
 			},
 			tDiffuse: {
 				value: videoTexture
@@ -233,6 +233,7 @@
 		videoMesh.material.uniforms.time.value += delta
 	})
 	var videoMesh	= new THREE.Mesh( geometry, material );
+	videoMesh.scale.multiplyScalar(1.5)
 	containerMesh.add(videoMesh)	
 	videoMesh.position.z = 1.2
 	videoMesh.rotation.x = Math.PI/2
