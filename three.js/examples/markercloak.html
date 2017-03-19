@@ -157,16 +157,6 @@
 	var markerCloak =  new THREEx.ArMarkerCloak(videoTexture);
 	markerRoot.add(markerCloak.object3d)
 	
-	// toggleCloak on click/keypress
-	function toggleCloak(){
-		if( markerCloak.object3d.parent ){
-			markerRoot.remove(markerCloak.object3d)
-		}else{
-			markerRoot.add(markerCloak.object3d)
-		}
-	}
-	document.body.addEventListener('click', toggleCloak)
-	document.body.addEventListener('keypress', toggleCloak)
 	
 
 	onRenderFcts.push(function(){
@@ -179,6 +169,37 @@
 			markerCloak.orthoMesh.visible = markerRoot.visible
 		})
 	}
+	
+	// animation opacity
+	var targetOpacity = 0.0
+	onRenderFcts.push(function(delta){
+		var opacity = markerCloak.object3d.material.uniforms.opacity
+		var speed = delta * 3
+		if( opacity.value > targetOpacity ){
+			opacity.value -= speed
+			if( opacity.value < targetOpacity ){
+				opacity.value = targetOpacity
+			}
+		}
+
+		if( opacity.value < targetOpacity ){
+			opacity.value += speed
+			if( opacity.value > targetOpacity ){
+				opacity.value = targetOpacity
+			}
+		}
+	})
+
+	// toggleCloak on click/keypress
+	function toggleCloak(){
+		if( targetOpacity === 1.0 ){
+			targetOpacity = 0.0
+		}else{
+			targetOpacity = 1.0
+		}
+	}
+	document.body.addEventListener('click', toggleCloak)
+	document.body.addEventListener('keypress', toggleCloak)
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
