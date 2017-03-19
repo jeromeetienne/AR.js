@@ -233,12 +233,11 @@
 		videoMesh.material.uniforms.time.value += delta
 	})
 	var videoMesh	= new THREE.Mesh( geometry, material );
-	videoMesh.scale.multiplyScalar(1.5)
 	containerMesh.add(videoMesh)	
-	videoMesh.position.z = 1.2
+	videoMesh.position.z = 1.0
 	videoMesh.rotation.x = Math.PI/2
 
-	videoMesh.scale.set(1,1,1).multiplyScalar(1.5)
+	videoMesh.scale.set(1,1,1).multiplyScalar(2.5)
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
@@ -310,7 +309,7 @@
 	
 	// animation opacity
 	var minScale = 0.001
-	var targetScale = new THREE.Vector3(1, 1, 1)
+	var targetScale = new THREE.Vector3(minScale, minScale, minScale)
 	onRenderFcts.push(function(delta){
 		var ratio = 0.2
 		containerMesh.scale.x = containerMesh.scale.x * (1-ratio) + targetScale.x * ratio
