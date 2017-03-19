@@ -33,11 +33,10 @@
 
 	void main() {
 		
-		// noise point by point
-		// interlace effect
-
+		// read the texture
 		gl_FragColor = texture2D( tDiffuse, vUv );
 
+		// discard anything too green
 		if( gl_FragColor.r < 0.5 && gl_FragColor.g > 0.5 && gl_FragColor.b < 0.5 ){
 			discard;
 		}
@@ -52,14 +51,15 @@
 		// silly glow
 		gl_FragColor.rgb *= 2.0;
 
-		// float offset = mod(time/50.0, 1.0);
+		// do a interlace effect
 		float offset = sin(time/3.0);
 		if( mod( (vUv.y+offset) * 96.0, 2.0) < 0.5 ){
 			gl_FragColor.rgb *= 1.1;
 		}else{
-			gl_FragColor.rgb *= (1.0/1.1);			
+			gl_FragColor.rgb *= (1.0/1.1);	
 		}
 
+		// add a white noise
 		gl_FragColor.rgb *= (1.0 + (rand(time+vUv.x + vUv.y)-0.5)*0.3);			
 
 		// honor opacity
@@ -69,7 +69,6 @@
 			discard;
 		}
 	}
-
 </script>
 <script>
 	//////////////////////////////////////////////////////////////////////////////////
@@ -219,7 +218,7 @@
 		// TODO try other blending
 	} );
 
-
+	// bill boarding by @blq
 	onRenderFcts.push(function(delta){
 		var x = new THREE.Vector3();
 		var y = new THREE.Vector3();
@@ -268,9 +267,6 @@
 	context.arc(centerX, centerY, radius, 2*chunkAngle, 3*chunkAngle - chunkMargin, false);
 	context.stroke();
 
-	// context.fillStyle = 'rgb( 200, 200, 200 )';
-	// context.fillRect( 0, 0, canvas.width, canvas.height );
-				 
 	var texture = new THREE.Texture( canvas );
 	texture.needsUpdate = true
 
