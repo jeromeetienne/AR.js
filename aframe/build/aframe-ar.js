@@ -1088,6 +1088,11 @@ AFRAME.registerComponent('artoolkitmarker', {
         	// var markerRoot = this.el.object3D;
         	// markerRoot.userData.size = this.data.size;
 	},
+	tick: function(){
+		if( this.data.changeMatrixMode === 'cameraTransformMatrix' ){
+			this.el.sceneEl.object3D.visible = this.el.object3D.visible;
+		}
+	}
 });
 
 //////////////////////////////////////////////////////////////////////////////
