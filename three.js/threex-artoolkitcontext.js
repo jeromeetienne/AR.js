@@ -29,7 +29,6 @@ THREEx.ArToolkitContext = function(parameters){
 	}
 	
 	this._axistransformMatrix = new THREE.Matrix4()
-	// this._axistransformMatrix.multiply(new THREE.Matrix4().makeRotationX(Math.PI))
 	this._axistransformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
 	this._axistransformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
 

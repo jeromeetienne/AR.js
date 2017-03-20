@@ -15,10 +15,14 @@ THREEx.ArMarkerCloak = function(videoTexture){
 	var material = new THREE.ShaderMaterial( {
 		vertexShader: THREEx.ArMarkerCloak.vertexShader,
 		fragmentShader: THREEx.ArMarkerCloak.fragmentShader,
+                transparent: true,
 		uniforms: {
 			texture: {
 				value: videoTexture
 			},
+                        opacity: {
+                                value: 0.5
+                        }
 		},
 		defines: {
 			updateInShaderEnabled: updateInShaderEnabled ? 1 : 0,
@@ -209,11 +213,12 @@ THREEx.ArMarkerCloak.vertexShader = THREEx.ArMarkerCloak.markerSpaceShaderFuncti
 THREEx.ArMarkerCloak.fragmentShader = '\n'+
 '	varying vec2 vUv;\n'+
 '	uniform sampler2D texture;\n'+
+'	uniform float opacity;\n'+
 '\n'+
 '	void main(void){\n'+
 '		vec3 color = texture2D( texture, vUv ).rgb;\n'+
 '\n'+
-'		gl_FragColor = vec4( color, 1.0);\n'+
+'		gl_FragColor = vec4( color, opacity);\n'+
 '	}'
 var THREEx = THREEx || {}
 
@@ -305,7 +310,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 		function onMarkerFound(){
 			// mark object as visible
 			markerObject3D.visible = true
-
+// console.log('onMarkerFound')
 			// data.matrix is the model view matrix
 			var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
 
@@ -327,6 +332,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 
 			// decompose the matrix into .position, .quaternion, .scale
 			markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
+
 		}
 	})
 }
@@ -368,7 +374,6 @@ THREEx.ArToolkitContext = function(parameters){
 	}
 	
 	this._axistransformMatrix = new THREE.Matrix4()
-	// this._axistransformMatrix.multiply(new THREE.Matrix4().makeRotationX(Math.PI))
 	this._axistransformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
 	this._axistransformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
 
@@ -978,9 +983,13 @@ AFRAME.registerSystem('artoolkit', {
 			// var rendererDomElement = _this.sceneEl.renderer ? _this.sceneEl.renderer.domElement : undefined
 			// arToolkitSource.onResize(rendererDomElement)	
 
+			// var rendererDomElement = _this.sceneEl.renderer ? _this.sceneEl.renderer.domElement : undefined
+			// console.log('dd', _this.sceneEl.renderer.domElement)
+
 			// ugly kludge to get resize on aframe... not even sure it works
 			arToolkitSource.onResize(document.body)		
 			arToolkitSource.domElement.style.marginLeft = '0px'
+
 			
 			var buttonElement = document.querySelector('.a-enter-vr')
 			if( buttonElement ){

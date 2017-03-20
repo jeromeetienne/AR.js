@@ -1,0 +1,19 @@
+<!-- include a-frame -->
+<script src="vendor/aframe.js"></script>
+<!-- include aframe-artoolkit -->
+<script src="../build/aframe-ar.js"></script>
+<!-- include minecraft -->
+<script src='vendor/threex.minecraft/a-frame/build/aframe-minecraft.min.js'></script>
+<script>THREEx.MinecraftChar.baseUrl = 'vendor/threex.minecraft/'</script>
+
+<body style='margin: 0px; overflow: hidden;'>
+	<a-scene stats embedded artoolkit='detectionMode: mono;matrixCodeType: 3x3; sourceType: image; sourceUrl:../../data/images/img.jpg; debug: false'>
+		<a-marker type='pattern' url='../../data/data/patt.hiro'>
+			<a-box position='0 0 0.5' material='opacity: 0.5; side:double'></a-box>
+			<a-entity geometry="primitive: torusKnot; radius: 0.3; radiusTubular: 0.05" position='0 0 0.5'>
+				<a-animation attribute="rotation" from="0 0 0" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
+			</a-entity>
+		</a-marker>
+		<a-entity camera></a-entity>
+	</a-scene>
+</body>

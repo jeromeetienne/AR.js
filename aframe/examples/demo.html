@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- include a-frame -->
-<script src="vendor/aframe.min.js"></script>
+<script src="vendor/aframe.js"></script>
 <!-- include aframe-artoolkit -->
 <script src="../build/aframe-ar.js"></script>
 <!-- include minecraft -->
@@ -185,13 +185,13 @@
 
 		// honor options.markerType
 		if( options.markerType === 'unknown' )	sceneHtml += "<a-marker type='unknown'>"
-		if( options.markerType === 'hiro' )	sceneHtml += "<a-marker type='pattern' url='data/patt.hiro'>"
-		if( options.markerType === 'kanji' )	sceneHtml += "<a-marker type='pattern' url='data/patt.kanji'>"
+		if( options.markerType === 'hiro' )	sceneHtml += "<a-marker type='pattern' url='../../data/data/patt.hiro'>"
+		if( options.markerType === 'kanji' )	sceneHtml += "<a-marker type='pattern' url='../../data/data/patt.kanji'>"
 		if( options.markerType === 'barcode_3x3_20' )	sceneHtml += "<a-marker type='barcode' value=20>"
 			  
 		// honor options.markerContent
 		if( options.markerContent === 'cube' ){
-			sceneHtml += `<a-box depth="1" height="1" width="1" position='0 0 0.5' material='opacity: 0.5; side:double'></a-box>
+			sceneHtml += `<a-box position='0 0 0.5' material='opacity: 0.5; side:double'></a-box>
 			<a-entity geometry="primitive: torusKnot; radius: 0.3; radiusTubular: 0.05" position='0 0 0.5'>
 				<a-animation attribute="rotation" from="0 0 0" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
 			</a-entity>`			

@@ -87,9 +87,13 @@ AFRAME.registerSystem('artoolkit', {
 			// var rendererDomElement = _this.sceneEl.renderer ? _this.sceneEl.renderer.domElement : undefined
 			// arToolkitSource.onResize(rendererDomElement)	
 
+			// var rendererDomElement = _this.sceneEl.renderer ? _this.sceneEl.renderer.domElement : undefined
+			// console.log('dd', _this.sceneEl.renderer.domElement)
+
 			// ugly kludge to get resize on aframe... not even sure it works
 			arToolkitSource.onResize(document.body)		
 			arToolkitSource.domElement.style.marginLeft = '0px'
+
 			
 			var buttonElement = document.querySelector('.a-enter-vr')
 			if( buttonElement ){

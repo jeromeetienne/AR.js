@@ -1,39 +1,11 @@
 - pack the TODO.md and all, then switch to webvr-polyfill until it works for three.js demo, then for a-frame demo
-- aframe/examples/demo.html is buggy
-  - TODO handle resize
-  - fix javascript exception
-  - find a new name e.g. parameters.html
-  - check you got all the parameters
-- option simplification in a-frame
-  - remove that by using baseURL - important for boilerplate cleanness - cameraParametersUrl: https://rawgit.com/jeromeetienne/ar.js/master/data/data/camera_para.dat
-  - support <a-marker preset='hiro'> to be equal to type='pattern' url='https://rawgit.com/jeromeetienne/ar.js/master/data/data/patt.hiro'
-  - same for kanji
-
-- for refraction example, use shaddow and remove shaddow.html
-- super nice refraction example - https://youtu.be/fhFzStkoE50?t=35
-- for refraction example, use a skull, aka crustal skull
-  - http://tf3dm.com/download-page.php?url=cranio-11055
-  - https://www.yobi3d.com/q/skull
-  - good model - see if you can get this one https://www.yobi3d.com/i/ieAvsKA6d2
-  
-- better appearance animation for markercloak ? just a tweening on opacity would do it
-
-- Discussion with fredrick - open the webcam with the displayWidth, not the sourceWidth
-  - this.parameters.displayWidth
-  - maxWidth: this.parameters.sourceWidth
-  - source is influence resolution/performance of videoTexture (e.g. refraction, marker cloak)
-  - so full screen for normal demo, but when performance related (aka when using video as texture) then tune down the resolution
-
-
-- using video in webgl
-  - get object in proper position
-  - handle resize
-  - keep the plane in front of the camera
-  - i got that in webvr experiments
-  - allow webvr - so i would get stereo and get a phone-in-hmd - google cardboard ar
-  - https://github.com/jeromeetienne/webvr-experiments/blob/master/seethru.html
 
 # star war hologram
+- mvp DONE
+- improve visual 
+  - inspire from http://jeromeetienne.github.io/threex.badtvpproc/examples/demo.html
+  - maybe some particules
+  
 - business card ala star war 
 - greenscreen stuff https://www.youtube.com/watch?v=DSOj0fUIM4o
   - some ghosts, some smokes, try stuff to find out
@@ -69,36 +41,7 @@
   3. from all those positions, build a Multimarker
   4. init artoolkit with this multimarker
 - this is all about programmation, no subtle algo
-
-# Marker removal
-- how to switch it to vertex shader
-  - the UV is what is transformed on the fly
-  - set it up in the geometry, and then do the change
-  - change the js to match this model first
-  - see about the coordinate conversion from [0, 1] uv to [-1,1] for orthographic
-- test if it works
-- the video is like switch it on/on depending on clicking the screen
-
-- take the video as texture
-- push the matrix of the marker in shader
-- put a plane over the whole marker (white borders included)
-- for this plane, use video texture + set UV cleverly around the marker plane
-- LATER: maybe some blending between the 4 borders of the full markers to make it more robuste
-- needs to convert the UV thru the marker matrix
-- https://www.youtube.com/watch?time_continue=172&v=-mFBraJzbZU video showing it
-- https://twitter.com/jerome_etienne/status/838586924361187328 good screenshot
-- first version on a picture, with uv computed in javascript
-  - much easier to debug
-- do that in a single html. markercache.html 
-  - threex.markercache.js - this is just the plane with the special shader
-  - attached to the markerRoot, provide a texture where to take the pixels
-- apply the model view matrix on the UV, then the projection matrix
-  - do that first in javascript, manually
-  - clone markerCache.object3d.geometry.faceVertexUvs
-  - change the UV on every fps
-  - take the 2d vectors, convert it in 3d, apply the matrices
-  - set markerCache.object3d.geometry.uvsNeedUpdate = true
-  - test the matrices on the vertices - so require to have orthogonal camera and render vertices on it
+- see https://github.com/artoolkit/jsartoolkit5/issues/34
 
 # webvr-polyfill
 - GOAL: works well using only the positional tracking, not the stereo display

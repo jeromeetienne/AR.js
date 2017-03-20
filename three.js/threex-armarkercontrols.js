@@ -88,7 +88,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 		function onMarkerFound(){
 			// mark object as visible
 			markerObject3D.visible = true
-
+// console.log('onMarkerFound')
 			// data.matrix is the model view matrix
 			var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
 
@@ -110,6 +110,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 
 			// decompose the matrix into .position, .quaternion, .scale
 			markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
+
 		}
 	})
 }
