@@ -142,6 +142,9 @@ Three.js Examples:
 - [holographic-message](https://jeromeetienne.github.io/AR.js/three.js/examples/holographic-message.html) : 
   A holographic-message in Augmented reality. Part of a business card for [@AndraConnect](https://twitter.com/AndraConnect)
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/holographic-message.html))
+- [video-in-webgl](https://jeromeetienne.github.io/AR.js/three.js/examples/video-in-webgl.html) : 
+  three.js example for video-in-webgl
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/video-in-webgl.html))
 
 a-frame Examples: 
 

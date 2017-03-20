@@ -11,13 +11,11 @@
 <script src="../threex-artoolkitcontext.js"></script>
 <script src="../threex-artoolkitprofile.js"></script>
 <script src="../threex-armarkercontrols.js"></script>
-<script src="../threex-armarkercloak.js"></script>
 
-<body style='margin : 0px; overflow: hidden; font-family: Monospace; user-select: none;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - Marker Invisibility Cloak - Click to toggle the cloak.
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
+	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - developement playground
 	<br/>
-	Code by <a href="https://twitter.com/snigelpaogat" target='_blank'>Fredrik Blomqvist</a> and
-	<a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div><script>
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
@@ -35,8 +33,6 @@
 	renderer.domElement.style.top = '0px'
 	renderer.domElement.style.left = '0px'
 	document.body.appendChild( renderer.domElement );
-
-	renderer.autoClear = false;
 
 	// array of functions for the rendering loop
 	var onRenderFcts= [];
@@ -58,17 +54,6 @@
 	// Create a camera
 	var camera = new THREE.Camera();
 	scene.add(camera);
-	
-	var debugEnabled = false
-	
-	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
-	//////////////////////////////////////////////////////////////////////////////
-
-	if( debugEnabled === true ){
-	        var orthoCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, -100, +100);
-	        var orthoScene = new THREE.Scene();		
-	}
 
 	////////////////////////////////////////////////////////////////////////////////
 	//          handle arToolkitSource
@@ -82,7 +67,7 @@
 		// sourceType : 'image',
 		// sourceUrl : '../../data/images/img.jpg',		
 
-		// to read from a video
+		// // to read from a video
 		// sourceType : 'video',
 		// sourceUrl : '../../data/videos/headtracking.mp4',		
 	})
@@ -106,10 +91,8 @@
 	var arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: '../../data/data/camera_para.dat',
 		detectionMode: 'mono',
-		imageSmoothingEnabled: false,
-		maxDetectionRate: 30,
-		canvasWidth: 80*4,
-		canvasHeight: 60*4,
+		canvasWidth: 80*3,
+		canvasHeight: 60*3,
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
@@ -154,58 +137,90 @@
 
 
 	//////////////////////////////////////////////////////////////////////////////
-	//		add markerCloak
+	//	plane always in front of the camera, exactly as big as the viewport
 	//////////////////////////////////////////////////////////////////////////////
-	var markerCloak =  new THREEx.ArMarkerCloak(videoTexture);
-	markerRoot.add(markerCloak.object3d)
+	var geometry = new THREE.PlaneGeometry(2, 2);
+	var material = new THREE.MeshBasicMaterial({
+		// map : new THREE.TextureLoader().load('images/water.jpg'),
+		map : videoTexture,
+		// side: THREE.DoubleSide,
+		opacity: 0.5,
+		// color: 'pink',
+		// transparent: true,
+	});
+	var seethruPlane = new THREE.Mesh(geometry, material);
+	scene.add(seethruPlane);
 	
-	
+	arToolkitSource.domElement.style.visibility = 'hidden'
 
-	onRenderFcts.push(function(){
-		markerCloak.update(markerRoot.matrix, camera.projectionMatrix)
-	})
-
-	if( debugEnabled === true ){
-		orthoScene.add(markerCloak.orthoMesh)
-		onRenderFcts.push(function(){
-			markerCloak.orthoMesh.visible = markerRoot.visible
-		})
-	}
-	
-	//////////////////////////////////////////////////////////////////////////////
-	//		opacity animation
-	//////////////////////////////////////////////////////////////////////////////
-	
-	// animation opacity
-	var targetOpacity = 0.0
+	// TODO extract the fov from the projectionMatrix
+	camera.fov = 43.1
+	// camera.fov = 42
 	onRenderFcts.push(function(delta){
-		var opacity = markerCloak.object3d.material.uniforms.opacity
-		var speed = delta * 3
-		if( opacity.value > targetOpacity ){
-			opacity.value -= speed
-			if( opacity.value < targetOpacity ){
-				opacity.value = targetOpacity
-			}
-		}
-
-		if( opacity.value < targetOpacity ){
-			opacity.value += speed
-			if( opacity.value > targetOpacity ){
-				opacity.value = targetOpacity
-			}
-		}
+		camera.updateMatrixWorld(true)
+		
+		// get seethruPlane position
+		var position = new THREE.Vector3(-0.15,0,-20)	// TODO how come you got that offset on x ???
+		seethruPlane.position.copy(position)
+		camera.localToWorld(seethruPlane.position)
+		
+		// get seethruPlane quaternion
+		camera.matrixWorld.decompose( camera.position, camera.quaternion, camera.scale );	
+		seethruPlane.quaternion.copy( camera.quaternion )
+		
+		// TODO extract the fov from the projectionMatrix
+		// camera.fov = 42
+		camera.aspect = window.innerWidth / window.innerHeight
+		// get seethruPlane height relative to fov
+		seethruPlane.scale.y = Math.tan(THREE.Math.DEG2RAD * camera.fov/2)*position.length()
+		// get seethruPlane aspect
+		seethruPlane.scale.x = seethruPlane.scale.y * camera.aspect
 	})
 
-	// toggleCloak on click/keypress
-	function toggleCloak(){
-		if( targetOpacity === 1.0 ){
-			targetOpacity = 0.0
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+	var video = arToolkitSource.domElement;
+
+	window.addEventListener('resize', function(){
+		updateSeeThruAspectUv(seethruPlane)	
+	})
+	video.addEventListener('canplaythrough', function(){
+		updateSeeThruAspectUv(seethruPlane)
+	})
+	function updateSeeThruAspectUv(plane){
+		// if video isnt yet ready to play
+		if( video.videoWidth === 0 || video.videoHeight === 0 )	return
+
+		var faceVertexUvs = plane.geometry.faceVertexUvs[0]
+		var screenAspect = window.innerWidth / window.innerHeight
+		var videoAspect = video.videoWidth / video.videoHeight
+		
+		plane.geometry.uvsNeedUpdate = true
+		if( screenAspect >= videoAspect ){
+			var actualHeight = videoAspect / screenAspect;
+			// faceVertexUvs y 0
+			faceVertexUvs[0][1].y = 0.5 - actualHeight/2
+			faceVertexUvs[1][0].y = 0.5 - actualHeight/2
+			faceVertexUvs[1][1].y = 0.5 - actualHeight/2
+			// faceVertexUvs y 1
+			faceVertexUvs[0][0].y = 0.5 + actualHeight/2
+			faceVertexUvs[0][2].y = 0.5 + actualHeight/2
+			faceVertexUvs[1][2].y = 0.5 + actualHeight/2
 		}else{
-			targetOpacity = 1.0
+			var actualWidth = screenAspect / videoAspect;
+			// faceVertexUvs x 0
+			faceVertexUvs[0][0].x = 0.5 - actualWidth/2
+			faceVertexUvs[0][1].x = 0.5 - actualWidth/2
+			faceVertexUvs[1][0].x = 0.5 - actualWidth/2
+			
+			// faceVertexUvs x 1
+			faceVertexUvs[0][2].x = 0.5 + actualWidth/2
+			faceVertexUvs[1][1].x = 0.5 + actualWidth/2
+			faceVertexUvs[1][2].x = 0.5 + actualWidth/2
 		}
 	}
-	document.body.addEventListener('click', toggleCloak)
-	document.body.addEventListener('keypress', toggleCloak)
+
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
@@ -228,27 +243,19 @@
 	mesh.position.z	= 0.5
 	markerRoot.add( mesh );
 	
-	onRenderFcts.push(function(delta){
-		mesh.rotation.x += Math.PI*delta
+	onRenderFcts.push(function(){
+		mesh.rotation.x += 0.1
 	})
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
 	//////////////////////////////////////////////////////////////////////////////////
 	var stats = new Stats();
-	// document.body.appendChild( stats.dom );
+	document.body.appendChild( stats.dom );
 	// render the scene
 	onRenderFcts.push(function(){
-		
-		renderer.clear();
-		
 		renderer.render( scene, camera );
-
-		if( debugEnabled === true ){
-        		renderer.render( orthoScene, orthoCamera );
-		}
-
-		// stats.update();
+		stats.update();
 	})
 
 	// run the rendering loop
