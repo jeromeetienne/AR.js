@@ -46,6 +46,14 @@ AFRAME.registerSystem('artoolkit', {
 			type: 'number',
 			default: 480
 		},
+		canvasWidth : {
+			type: 'number',
+			default: 640
+		},
+		canvasHeight : {
+			type: 'number',
+			default: 480
+		},
 	},
 
 	//////////////////////////////////////////////////////////////////////////////

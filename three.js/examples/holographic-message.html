@@ -138,11 +138,9 @@
 	var arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: '../../data/data/camera_para.dat',
 		detectionMode: 'mono',
-		sourceWidth: arToolkitSource.parameters.sourceWidth,
-		sourceHeight: arToolkitSource.parameters.sourceHeight,
 		maxDetectionRate: 30,
-		sourceWidth: 80*3,
-		sourceHeight: 60*3,
+		canvasWidth: 80*3,
+		canvasHeight: 60*3,
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
@@ -188,7 +186,7 @@
 	// video.src = '../../data/videos/headtracking.mp4'
 	// video.src = '../../data/videos/bird_greenscreen.mp4'
 	video.src = '../../data/videos/Star\ wars\ demo\ Alex.mp4'
-	video.autoplay = true;
+	// video.autoplay = true;
 	video.webkitPlaysinline = true;
 	video.controls = false;
 	video.loop = true;

@@ -50,8 +50,8 @@ var parameters = {
 	// tune the maximum rate of pose detection in the source image
 	maxDetectionRate: 60,
 	// resolution of at which we detect pose in the source image
-	sourceWidth: 640,
-	sourceHeight: 480,
+	canvasWidth: 640,
+	canvasHeight: 480,
 	
 	// enable image smoothing or not for canvas copy - default to true
 	// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
@@ -68,7 +68,7 @@ var parameters = {
 	// url of the source - valid if sourceType = image|video
 	sourceUrl : null,
 	
-	// resolution of at which we detect pose in the source image
+	// resolution of at which we initialize the source image
 	sourceWidth: 640,
 	sourceHeight: 480,
 	// resolution displayed for the source 

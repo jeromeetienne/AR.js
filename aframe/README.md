@@ -39,10 +39,12 @@ include a hatsune miku or minecraft avatar on the marker
 | maxDetectionRate | tune the maximum rate of pose detection in the source image |
 | sourceType | type of source - ['webcam', 'image', 'video'] |
 | sourceUrl | url of the source - valid if sourceType = image|video |
-| sourceWidth | resolution of at which we detect pose in the source image |
-| sourceHeight | resolution of at which we detect pose in the source image |
+| sourceWidth | resolution of at which we initialize the source image |
+| sourceHeight | resolution of at which we initialize the source image |
 | displayWidth | resolution displayed for the source  |
 | displayHeight | resolution displayed for the source  |
+| canvasWidth | resolution of at which we detect pose in the source image |
+| canvasHeight | resolution of at which we detect pose in the source image |
 
 # \<a-marker\>
 

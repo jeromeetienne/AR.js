@@ -365,13 +365,15 @@ THREEx.ArToolkitContext = function(parameters){
 		// tune the maximum rate of pose detection in the source image
 		maxDetectionRate: parameters.maxDetectionRate !== undefined ? parameters.maxDetectionRate : 60,
 		// resolution of at which we detect pose in the source image
-		sourceWidth: parameters.sourceWidth !== undefined ? parameters.sourceWidth : 640,
-		sourceHeight: parameters.sourceHeight !== undefined ? parameters.sourceHeight : 480,
+		canvasWidth: parameters.canvasWidth !== undefined ? parameters.canvasWidth : 640,
+		canvasHeight: parameters.canvasHeight !== undefined ? parameters.canvasHeight : 480,
 		
 		// enable image smoothing or not for canvas copy - default to true
 		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
 		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : false,
 	}
+	
+// debugger	
 	
 	this._axistransformMatrix = new THREE.Matrix4()
 	this._axistransformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
@@ -407,13 +409,13 @@ THREEx.ArToolkitContext.prototype.getProjectionMatrix = function(srcElement){
 //////////////////////////////////////////////////////////////////////////////
 THREEx.ArToolkitContext.prototype.init = function(onCompleted){
         var _this = this
-	var sourceWidth = this.parameters.sourceWidth
-	var sourceHeight = this.parameters.sourceHeight
+	var canvasWidth = this.parameters.canvasWidth
+	var canvasHeight = this.parameters.canvasHeight
 
-        // console.log('ArToolkitContext: _onSourceReady width', sourceWidth, 'height', sourceHeight)
+        // console.log('ArToolkitContext: _onSourceReady width', canvasWidth, 'height', canvasHeight)
         _this._cameraParameters = new ARCameraParam(_this.parameters.cameraParametersUrl, function() {
         	// init controller
-                var arController = new ARController(sourceWidth, sourceHeight, _this._cameraParameters);
+                var arController = new ARController(canvasWidth, canvasHeight, _this._cameraParameters);
                 _this.arController = arController
                 
 		arController.ctx.mozImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
@@ -664,7 +666,7 @@ THREEx.ArToolkitSource = function(parameters){
 		// url of the source - valid if sourceType = image|video
 		sourceUrl : parameters.sourceUrl !== undefined ? parameters.sourceUrl : null,
 		
-		// resolution of at which we detect pose in the source image
+		// resolution of at which we initialize in the source image
 		sourceWidth: parameters.sourceWidth !== undefined ? parameters.sourceWidth : 640,
 		sourceHeight: parameters.sourceHeight !== undefined ? parameters.sourceHeight : 480,
 		// resolution displayed for the source 
@@ -939,6 +941,14 @@ AFRAME.registerSystem('artoolkit', {
 			default: 640
 		},
 		displayHeight : {
+			type: 'number',
+			default: 480
+		},
+		canvasWidth : {
+			type: 'number',
+			default: 640
+		},
+		canvasHeight : {
 			type: 'number',
 			default: 480
 		},

@@ -8,7 +8,7 @@ THREEx.ArToolkitSource = function(parameters){
 		// url of the source - valid if sourceType = image|video
 		sourceUrl : parameters.sourceUrl !== undefined ? parameters.sourceUrl : null,
 		
-		// resolution of at which we detect pose in the source image
+		// resolution of at which we initialize in the source image
 		sourceWidth: parameters.sourceWidth !== undefined ? parameters.sourceWidth : 640,
 		sourceHeight: parameters.sourceHeight !== undefined ? parameters.sourceHeight : 480,
 		// resolution displayed for the source 
