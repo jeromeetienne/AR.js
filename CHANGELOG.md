@@ -1,8 +1,10 @@
 # 1.0.1-dev - Current
 
-- marker invisible cloak are in! with tweening and all :) [first tweet](https://twitter.com/jerome_etienne/status/840563600091688962)
+- marker invisible cloak are in! with tweening and all :)
+  [first tweet](https://twitter.com/jerome_etienne/status/840563600091688962)
 - minimal.html just got a little bit cleaner
-  - aka the simplest way to do AR on the web - or webar in less than 10 lines of html! on codepen
+  - aka the simplest way to do AR on the web
+  - or webar in less than 10 lines of html! on codepen
 - support preset in a-frame a-marker - preset = ["hiro" | "kanji"]
 - better handling of .baseUrl in aframe default parameters
 - fixed artoolkit projection matrix to be more webgl - [projection matrix](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/WebGL_model_view_projection)

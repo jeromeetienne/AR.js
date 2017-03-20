@@ -199,8 +199,8 @@
 		document.body.removeEventListener('click', onClick);
 		video.play()
 	})
-	var geometry	= new THREE.PlaneGeometry(1,9/16);
-	var material = new THREE.ShaderMaterial( {
+	var geometry = new THREE.PlaneGeometry(1,9/16);
+	var material = new THREE.ShaderMaterial({
 		uniforms: {
 			time: {
 				value: 0.0
@@ -216,7 +216,7 @@
 		fragmentShader: document.querySelector( '#fragmentShader' ).textContent,
 		side: THREE.DoubleSide,
 		// TODO try other blending
-	} );
+	})
 
 	// bill boarding by @blq
 	onRenderFcts.push(function(delta){
