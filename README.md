@@ -244,6 +244,7 @@ I exited to see what people will do with AR.js :)
   - have a browser on server to produce high quality 3d - aka pbs and to stream that to a phone
   - so when the phone is moving a lot, we do the local rendering
   - when the phone is stable, we do the server rendering
+- social AR - https://github.com/haydenjameslee/networked-aframe/blob/master/docs/Tutorial:%20Create%20your%20first%20Networked-Aframe%20experience.md
 
 # Ideas
 - AR Gaming - https://www.youtube.com/watch?v=EmGGGzibGok

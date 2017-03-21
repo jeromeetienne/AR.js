@@ -30,9 +30,10 @@ THREEx.ArToolkitContext = function(parameters){
 	
 // debugger	
 	
-	this._axistransformMatrix = new THREE.Matrix4()
-	this._axistransformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
-	this._axistransformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
+	// set this._projectionAxisTransformMatrix to change artoolkit projection matrix axis to match usual webgl one
+	this._projectionAxisTransformMatrix = new THREE.Matrix4()
+	this._projectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
+	this._projectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
 
 	
         this.arController = null;
@@ -53,7 +54,7 @@ THREEx.ArToolkitContext.prototype.getProjectionMatrix = function(srcElement){
 	var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)
 		
 	// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-	projectionMatrix.multiply(this._axistransformMatrix)
+	projectionMatrix.multiply(this._projectionAxisTransformMatrix)
 	
 	// return the result
 	return projectionMatrix

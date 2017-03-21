@@ -64,12 +64,12 @@
 		sourceType : 'webcam',
 		
 		// to read from an image
-		// sourceType : 'image',
-		// sourceUrl : '../../data/images/img.jpg',		
+		sourceType : 'image',
+		sourceUrl : '../../data/images/img.jpg',		
 
 		// to read from a video
-		sourceType : 'video',
-		sourceUrl : '../../data/videos/headtracking.mp4',		
+		// sourceType : 'video',
+		// sourceUrl : '../../data/videos/headtracking.mp4',		
 	})
 
 	arToolkitSource.init(function onReady(){
@@ -116,13 +116,17 @@
 	scene.add(markerRoot)
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
-		// patternUrl : '../../data/data/patt.hiro',
-		patternUrl : '../../data/data/patt.kanji',
+		patternUrl : '../../data/data/patt.hiro',
+		// patternUrl : '../../data/data/patt.kanji',
 	})
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
+
+
+	var mesh = new THREE.AxisHelper()
+	markerRoot.add(mesh)
 
 	// add a torus knot	
 	var geometry	= new THREE.CubeGeometry(1,1,1);
@@ -133,13 +137,13 @@
 	}); 
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.z	= geometry.parameters.height/2
-	markerRoot.add( mesh );
+	// markerRoot.add( mesh );
 	
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.z	= 0.5
-	markerRoot.add( mesh );
+	// markerRoot.add( mesh );
 	
 	onRenderFcts.push(function(){
 		mesh.rotation.x += 0.1

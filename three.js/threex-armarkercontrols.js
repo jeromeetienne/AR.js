@@ -92,9 +92,15 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 			// data.matrix is the model view matrix
 			var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
 
+
 			// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-			var tmpMatrix = new THREE.Matrix4().copy(_this.context._axistransformMatrix)
+			var tmpMatrix = new THREE.Matrix4().copy(_this.context._projectionAxisTransformMatrix)
 			tmpMatrix.multiply(modelViewMatrix)
+
+			// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
+			var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
+			tmpMatrix.multiply(markerAxisTransformMatrix)
+
 			modelViewMatrix.copy(tmpMatrix)
 
 

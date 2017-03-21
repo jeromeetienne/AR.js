@@ -1,4 +1,4 @@
-- pack the TODO.md and all, then switch to webvr-polyfill until it works for three.js demo, then for a-frame demo
+
 
 # star war hologram
 - mvp DONE
