@@ -9,6 +9,7 @@
 - better handling of .baseUrl in aframe default parameters
 - fixed artoolkit projection matrix to be more webgl - [projection matrix](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/WebGL_model_view_projection)
   - it was looking to positive-z and y was upside down compared to the usual webgl one
+- Change marker axis - now positive-y is normal to the marker
 - Added logo by @tentone - [AR.js logo](https://github.com/jeromeetienne/AR.js/blob/master/data/logo/logo-black-transparent-1280x512.png)
 Nice and slick! thanks @tentone
 - Added a-frame logo in AR - [aframe-logo.html](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/aframe-logo.html)

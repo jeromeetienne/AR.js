@@ -205,6 +205,7 @@
 
 	function initScenePortal(){
 		var group = new THREE.Group
+		group.rotation.x = -Math.PI/2
 		group.scale.set(1,1,1).multiplyScalar(1)
 		markerRoot.add(group)
 
@@ -240,7 +241,8 @@
 	function initSceneCubeTorus(){
 		var group = new THREE.Group
 		group.scale.set(1,1,1).multiplyScalar(1.2)
-		group.position.z	= -0.5 * group.scale.x
+		group.rotation.x = -Math.PI/2
+		group.position.y = -0.5 * group.scale.x
 		markerRoot.add(group)
 
 		// add outter cube - invisibility cloak
@@ -274,7 +276,8 @@
 	function initScenePool(){
 		var group = new THREE.Group
 		group.scale.set(1,1,1).multiplyScalar(1.2)
-		group.position.z	= -0.5 * group.scale.x
+		group.rotation.x = -Math.PI/2
+		group.position.y = -0.5 * group.scale.x
 		markerRoot.add(group)
 
 		// add outter cube - invisibility cloak

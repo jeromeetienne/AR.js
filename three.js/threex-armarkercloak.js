@@ -30,6 +30,7 @@ THREEx.ArMarkerCloak = function(videoTexture){
 	});
 
 	var cloakMesh = new THREE.Mesh( geometry, material );
+        cloakMesh.rotation.x = -Math.PI/2
 	this.object3d = cloakMesh
 
 	//////////////////////////////////////////////////////////////////////////////

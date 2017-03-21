@@ -50,14 +50,14 @@ renderer.shadowMap.enabled = true;
 	scene.add( ambient );
 
 	var directionalLight = new THREE.DirectionalLight( 'white' );
-	directionalLight.position.set( 1, 0.3, 2 ).setLength(2)
+	directionalLight.position.set( 1, 2, 0.3 ).setLength(2)
 	directionalLight.shadow.mapSize.set(128,128)
 	directionalLight.shadow.camera.bottom = -0.6
 	directionalLight.shadow.camera.top = 0.6
 	directionalLight.shadow.camera.right = 0.6
 	directionalLight.shadow.camera.left = -0.6
 	directionalLight.castShadow = true;
-	// scene.add(new THREE.CameraHelper( directionalLight.shadow.camera ))
+	scene.add(new THREE.CameraHelper( directionalLight.shadow.camera ))
 	scene.add( directionalLight );
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -155,7 +155,7 @@ renderer.shadowMap.enabled = true;
 	// 	side: THREE.DoubleSide
 	// });
 	// var mesh	= new THREE.Mesh( geometry, material );
-	// mesh.position.z	= geometry.parameters.height/2
+	// mesh.position.y	= geometry.parameters.height/2
 	// markerRoot.add( mesh );
 
 	;(function(){
@@ -165,7 +165,7 @@ renderer.shadowMap.enabled = true;
 		var mesh	= new THREE.Mesh( geometry, material );
 		mesh.castShadow = true;
 		mesh.receiveShadow = true;
-		mesh.position.z	= 0.7
+		mesh.position.y	= 0.7
 		markerRoot.add( mesh );
 		// point the directionalLight to the marker
 		directionalLight.target = mesh
@@ -182,6 +182,7 @@ renderer.shadowMap.enabled = true;
 		var planeMesh = new THREE.Mesh( geometry, material);
 		planeMesh.receiveShadow = true;
 		planeMesh.depthWrite = false;
+		planeMesh.rotation.x = -Math.PI/2
 		markerRoot.add(planeMesh);
 	})()
 

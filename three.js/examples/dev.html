@@ -136,17 +136,17 @@
 		side: THREE.DoubleSide
 	}); 
 	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.z	= geometry.parameters.height/2
-	// markerRoot.add( mesh );
+	mesh.position.y	= geometry.parameters.height/2
+	markerRoot.add( mesh );
 	
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.z	= 0.5
-	// markerRoot.add( mesh );
-	
-	onRenderFcts.push(function(){
-		mesh.rotation.x += 0.1
+	mesh.position.y	= 0.5
+	markerRoot.add( mesh );
+
+	onRenderFcts.push(function(delta){
+		mesh.rotation.x += delta * Math.PI
 	})
 
 	//////////////////////////////////////////////////////////////////////////////////

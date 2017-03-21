@@ -6,7 +6,7 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 	// handle default parameters
 	this.parameters = {
 		// size of the marker in meter
-		size : parameters.debug !== undefined ? parameters.debug : 1,
+		size : parameters.size !== undefined ? parameters.size : 1,
 		// type of marker - ['pattern', 'barcode', 'unknown' ]
 		type : parameters.type !== undefined ? parameters.type : 'unknown',
 		// url of the pattern - IIF type='pattern'

@@ -189,14 +189,14 @@ void main(void) {
 	// var geometry = new THREE.TorusKnotGeometry(0.6,0.2,50,50);
 	var geometry = new THREE.TorusGeometry(0.5,0.3,20,30);
 	var mesh = new THREE.Mesh(geometry, material);
-	mesh.position.z = 0.9; // raise a bit to not only get rays from the marker..
- 	mesh.rotation.x = Math.PI/2; // standing
+	mesh.position.y = 0.9; // raise a bit to not only get rays from the marker..
+ 	mesh.rotation.z = Math.PI/2; // standing
 	// mesh.scale.x = 0.4
 
 	markerRoot.add( mesh );
 
-	onRenderFcts.push(function(){
-		mesh.rotation.y += 0.02;
+	onRenderFcts.push(function(delta){
+		mesh.rotation.y += delta*Math.PI/4;
 	})
 })()
 

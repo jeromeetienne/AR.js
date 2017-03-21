@@ -224,7 +224,7 @@
 		var y = new THREE.Vector3();
 		var z = new THREE.Vector3();
 		containerMesh.matrixWorld.extractBasis(x, y, z);
-		videoMesh.up.copy(z);
+		videoMesh.up.copy(y);
 		videoMesh.lookAt(camera.position);
 	})
 	onRenderFcts.push(function(delta){
@@ -232,7 +232,7 @@
 	})
 	var videoMesh	= new THREE.Mesh( geometry, material );
 	containerMesh.add(videoMesh)	
-	videoMesh.position.z = 1.0
+	videoMesh.position.y = 1.0
 	videoMesh.rotation.x = Math.PI/2
 
 	videoMesh.scale.set(1,1,1).multiplyScalar(2.5)
@@ -282,7 +282,8 @@
 	}); 
 	var ringLowMesh	= new THREE.Mesh( geometry, material );
 	containerMesh.add(ringLowMesh)	
-	ringLowMesh.position.z = +0.05
+	ringLowMesh.rotation.x = Math.PI/2
+	ringLowMesh.position.y = +0.05
 	ringLowMesh.scale.set(1,1,1).multiplyScalar(1.2)
 	
 	ringLowMesh.rotation.z = Math.random()*2*Math.PI
@@ -292,7 +293,8 @@
 	
 	var ringHighMesh	= new THREE.Mesh( geometry, material );
 	ringHighMesh.scale.set(1,1,1).multiplyScalar(1.4)
-	ringHighMesh.position.z = +0.2
+	ringHighMesh.rotation.x = Math.PI/2
+	ringHighMesh.position.y = +0.2
 	containerMesh.add(ringHighMesh)	
 	
 	ringHighMesh.rotation.z = Math.random()*2*Math.PI
