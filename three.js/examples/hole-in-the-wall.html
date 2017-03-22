@@ -313,17 +313,27 @@
 
 
 		var geometry	= new THREE.SphereGeometry(0.1)
-		var texture	= THREE.ImageUtils.loadTexture('images/BeachBallColor.jpg')
-		var material	= new THREE.MeshBasicMaterial({
-			map	: texture,
-			bumpMap	: texture,
-			bumpScale: 0.01,
-		})
+		// var texture	= new THREE.TextureLoader().load('images/BeachBallColor.jpg')
+		// var material	= new THREE.MeshPhongMaterial({
+		// 	map	: texture,
+		// 	bumpMap	: texture,
+		// 	bumpScale: 0.001,
+		// })
 		var material = new THREE.MeshNormalMaterial()
 		var mesh	= new THREE.Mesh( geometry, material );
 		mesh.position.z = 0.35;
 		mesh.position.x = innerGeom.parameters.height*0.12;
 		group.add(mesh);
+
+		// add the torus knot
+		var geometry	= new THREE.TorusKnotGeometry(0.25,0.1,32,32);
+		var material	= new THREE.MeshNormalMaterial(); 
+		var mesh	= new THREE.Mesh( geometry, material );
+		group.add( mesh );
+		
+		onRenderFcts.push(function(){
+			mesh.rotation.x += 0.1
+		})	
 	}
 
 

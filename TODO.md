@@ -1,4 +1,10 @@
-
+- liquid-table.html
+  - video texture + animation of sin 
+  - center of finger click is the center of the wave
+  - it can be water wave
+  - it can be fluild real 
+  - integrate physics from real finger
+  - it can be like the finger in matrix - https://www.youtube.com/watch?v=b2MSF35IxVE&feature=youtu.be&t=98
 
 # star war hologram
 - mvp DONE
