@@ -197,6 +197,7 @@
 			varying vec3 vPosition;
 			uniform sampler2D texture;
 			uniform float opacity;
+			uniform float waveHeight;
 			uniform float time;
 		
 			void main(void){
@@ -244,6 +245,7 @@
 	markerRoot.add(mesh)
         var startedAt = performance.now()/1000
 	onRenderFcts.push(function(){
+		mesh.material.uniforms.waveHeight.value = liquidMarker.object3d.material.uniforms.waveHeight.value
 		mesh.material.uniforms.time.value = performance.now()/1000 - startedAt
 	})	
 })()
@@ -252,37 +254,37 @@
 	//		opacity animation
 	//////////////////////////////////////////////////////////////////////////////
 	
-	// // animation opacity
-	// var targetWaveHeight = 0.0
-	// onRenderFcts.push(function(delta){
-	// 	var waveHeight = liquidMarker.object3d.material.uniforms.waveHeight
-	// 	var speed = delta * 2
-	// 	if( waveHeight.value > targetWaveHeight ){
-	// 		waveHeight.value -= speed
-	// 		if( waveHeight.value < targetWaveHeight ){
-	// 			waveHeight.value = targetWaveHeight
-	// 		}
-	// 	}
-	// 
-	// 	if( waveHeight.value < targetWaveHeight ){
-	// 		waveHeight.value += speed
-	// 		if( waveHeight.value > targetWaveHeight ){
-	// 			waveHeight.value = targetWaveHeight
-	// 		}
-	// 	}
-	// 	// console.log(waveHeight.value)
-	// })
-	// 
-	// // toggleCloak on click/keypress
-	// function toggleCloak(){
-	// 	if( targetWaveHeight === 1.0 ){
-	// 		targetWaveHeight = 0.0
-	// 	}else{
-	// 		targetWaveHeight = 1.0
-	// 	}
-	// }
-	// document.body.addEventListener('click', toggleCloak)
-	// document.body.addEventListener('keypress', toggleCloak)
+	// animation opacity
+	var targetWaveHeight = 0.0
+	onRenderFcts.push(function(delta){
+		var waveHeight = liquidMarker.object3d.material.uniforms.waveHeight
+		var speed = delta * 2
+		if( waveHeight.value > targetWaveHeight ){
+			waveHeight.value -= speed
+			if( waveHeight.value < targetWaveHeight ){
+				waveHeight.value = targetWaveHeight
+			}
+		}
+	
+		if( waveHeight.value < targetWaveHeight ){
+			waveHeight.value += speed
+			if( waveHeight.value > targetWaveHeight ){
+				waveHeight.value = targetWaveHeight
+			}
+		}
+		// console.log(waveHeight.value)
+	})
+	
+	// toggleCloak on click/keypress
+	function toggleCloak(){
+		if( targetWaveHeight === 1.0 ){
+			targetWaveHeight = 0.0
+		}else{
+			targetWaveHeight = 1.0
+		}
+	}
+	document.body.addEventListener('click', toggleCloak)
+	document.body.addEventListener('keypress', toggleCloak)
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
