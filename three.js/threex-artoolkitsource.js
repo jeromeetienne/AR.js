@@ -131,7 +131,12 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 	domElement.style.height = this.parameters.displayHeight+'px'
 
 
-	if (navigator.getUserMedia == false )	console.log("navigator.getUserMedia not present in your browser");
+	if (navigator.getUserMedia === undefined ){
+		alert("WebRTC issue! navigator.getUserMedia not present in your browser");		
+	}
+	if (navigator.mediaDevices === undefined || navigator.mediaDevices.enumerateDevices === undefined ){
+		alert("WebRTC issue! navigator.mediaDevices.enumerateDevices not present in your browser");		
+	}
 
 	navigator.mediaDevices.enumerateDevices().then(function(devices) {
                 // define getUserMedia() constraints

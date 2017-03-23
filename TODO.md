@@ -20,17 +20,6 @@
   - crowd replication https://www.youtube.com/watch?v=bmxszcAfcRo
 
 
-- message: should be fun, not a resume, not a list of things, more like im creative, im assertive, i make stuff happen, 
-'i come from out of space. i want to augment reality'
-- some innovative way to reach out
-- maybe start by playing a role 'This is a message from a galaxy far, far away' being dead serious like it is an emergency message
-- and you play this role for a bit, then you switch to normal alexandra
-- there you explain 'looking for a new gig in AR/VR. i was looking for a good way to reach people involved in AR/VR'
-- and i thought what about a AR demo ? this is creative, this is to the point. super super mega plus plus
-- it will certainly reach people involved in AR/VR!
-- so here we are :) 
-
-
 # Multimarker
 - how to say 'those markers will start act as one'
 - actually print 6 cards with matrix markers on simple papers, and play with them
