@@ -139,6 +139,9 @@ Three.js Examples:
 - [markercloak](https://jeromeetienne.github.io/AR.js/three.js/examples/markercloak.html) : 
   three.js example for markercloak
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/markercloak.html))
+- [liquidmarker](https://jeromeetienne.github.io/AR.js/three.js/examples/liquidmarker.html) : 
+  three.js example for liquidmarker
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/liquidmarker.html))
 - [holographic-message](https://jeromeetienne.github.io/AR.js/three.js/examples/holographic-message.html) : 
   A holographic-message in Augmented reality. Part of a business card for [@AndraConnect](https://twitter.com/AndraConnect)
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/holographic-message.html))

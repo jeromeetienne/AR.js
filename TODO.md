@@ -5,6 +5,7 @@
   - it can be fluild real 
   - integrate physics from real finger
   - it can be like the finger in matrix - https://www.youtube.com/watch?v=b2MSF35IxVE&feature=youtu.be&t=98
+  - http://mrdoob.com/lab/javascript/webgl/voxels_liquid/index.html
 
 # star war hologram
 - mvp DONE
