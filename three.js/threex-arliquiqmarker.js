@@ -26,7 +26,7 @@ THREEx.ArLiquidMarker = function(videoTexture){
                         opacity: {
                                 value: 1
                         },
-                        waveHeight: {
+                        intensity: {
                                 value: 1.0                            
                         },
                         time: {
@@ -234,7 +234,7 @@ THREEx.ArLiquidMarker.vertexShader = THREEx.ArLiquidMarker.markerSpaceShaderFunc
 '	varying vec2 vUv;\n'+
 '	varying vec3 vPosition;\n'+
 '	uniform float time;\n'+
-'	uniform float waveHeight;\n'+
+'	uniform float intensity;\n'+
 '\n'+
 `
 // https://github.com/dsheets/gloc/blob/master/stdlib/math.glsl
@@ -266,7 +266,7 @@ TANH(vec4)
 
                 vec4 mvPosition = vec4( position, 1.0 );
 
-                mvPosition.z = 1.0 * waveHeight;
+                mvPosition.z = 1.0 * intensity;
 
                 float radius = length(position);
                 float height0 = tanh(radius*3.0 - 2.0)-1.0;

@@ -79,8 +79,8 @@
 		sourceType : 'webcam',
 		// 
 		// to read from an image
-		// sourceType : 'image',
-		// sourceUrl : '../../data/images/img.jpg',		
+		sourceType : 'image',
+		sourceUrl : '../../data/images/img.jpg',		
 
 		// to read from a video
 		// sourceType : 'video',
@@ -107,9 +107,9 @@
 		cameraParametersUrl: '../../data/data/camera_para.dat',
 		detectionMode: 'mono',
 		imageSmoothingEnabled: false,
-		maxDetectionRate: 30,
-		canvasWidth: 80*4,
-		canvasHeight: 60*4,
+		// maxDetectionRate: 30,
+		// canvasWidth: 80*4,
+		// canvasHeight: 60*4,
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
@@ -197,24 +197,24 @@
 			varying vec3 vPosition;
 			uniform sampler2D texture;
 			uniform float opacity;
-			uniform float waveHeight;
+			uniform float intensity;
 			uniform float time;
 		
 			void main(void){
 				vec2 repeat = vec2(30.0);
 				vec4 color = texture2D( texture, vUv*repeat ).rgba;
-				color.a = 0.8;
+				color.a += 0.5;
 				// vec4 color = vec4(1.0);
 
 				float radius = length(vPosition);
-				color *= 1.0-radius*1.5;
-				color.rgb *= 4.0;
-
+				color *= 1.0-radius*1.6;
+				color.rgb *= 5.0;
+				// 
 				// // float circleWidth
 				// if( mod(radius-time/5.0, 0.1) < 0.01 ){
-				// 	color.rgb *= 10.0;
+				// 	color *= 10.0 * intensity + 1.0;
 				// }else{
-				// 	color.rgb *= 0.0;
+				// 	color.rgb *= 1.0;
 				// }
 
 				gl_FragColor = color;
@@ -224,7 +224,7 @@
 			texture: {
 				value: texture
 			},
-                        waveHeight: {
+                        intensity: {
                                 value: 1.0                            
                         },
                         time: {
@@ -235,7 +235,7 @@
 			updateInShaderEnabled: 0,
 		},
 		transparent: true,
-                side: THREE.DoubleSide,
+                side: THREE.FrontSide,
 	});
 
 	var mesh = new THREE.Mesh( geometry, material );
@@ -245,7 +245,7 @@
 	markerRoot.add(mesh)
         var startedAt = performance.now()/1000
 	onRenderFcts.push(function(){
-		mesh.material.uniforms.waveHeight.value = liquidMarker.object3d.material.uniforms.waveHeight.value
+		mesh.material.uniforms.intensity.value = liquidMarker.object3d.material.uniforms.intensity.value
 		mesh.material.uniforms.time.value = performance.now()/1000 - startedAt
 	})	
 })()
@@ -255,24 +255,24 @@
 	//////////////////////////////////////////////////////////////////////////////
 	
 	// animation opacity
-	var targetWaveHeight = 0.0
+	var targetWaveHeight = 1.0
 	onRenderFcts.push(function(delta){
-		var waveHeight = liquidMarker.object3d.material.uniforms.waveHeight
+		var intensity = liquidMarker.object3d.material.uniforms.intensity
 		var speed = delta * 2
-		if( waveHeight.value > targetWaveHeight ){
-			waveHeight.value -= speed
-			if( waveHeight.value < targetWaveHeight ){
-				waveHeight.value = targetWaveHeight
+		if( intensity.value > targetWaveHeight ){
+			intensity.value -= speed
+			if( intensity.value < targetWaveHeight ){
+				intensity.value = targetWaveHeight
 			}
 		}
 	
-		if( waveHeight.value < targetWaveHeight ){
-			waveHeight.value += speed
-			if( waveHeight.value > targetWaveHeight ){
-				waveHeight.value = targetWaveHeight
+		if( intensity.value < targetWaveHeight ){
+			intensity.value += speed
+			if( intensity.value > targetWaveHeight ){
+				intensity.value = targetWaveHeight
 			}
 		}
-		// console.log(waveHeight.value)
+		// console.log(intensity.value)
 	})
 	
 	// toggleCloak on click/keypress
@@ -285,30 +285,6 @@
 	}
 	document.body.addEventListener('click', toggleCloak)
 	document.body.addEventListener('keypress', toggleCloak)
-	//////////////////////////////////////////////////////////////////////////////////
-	//		add an object in the scene
-	//////////////////////////////////////////////////////////////////////////////////
-
-	// // add a torus knot	
-	// var geometry	= new THREE.CubeGeometry(1,1,1);
-	// var material	= new THREE.MeshNormalMaterial({
-	// 	transparent : true,
-	// 	opacity: 0.5,
-	// 	side: THREE.DoubleSide
-	// }); 
-	// var mesh	= new THREE.Mesh( geometry, material );
-	// mesh.position.y	= geometry.parameters.height/2
-	// markerRoot.add( mesh );
-	// 
-	// var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
-	// var material	= new THREE.MeshNormalMaterial(); 
-	// var mesh	= new THREE.Mesh( geometry, material );
-	// mesh.position.y	= 0.5
-	// markerRoot.add( mesh );
-	// 
-	// onRenderFcts.push(function(delta){
-	// 	mesh.rotation.x += Math.PI*delta
-	// })
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
