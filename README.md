@@ -248,6 +248,9 @@ I exited to see what people will do with AR.js :)
   - so when the phone is moving a lot, we do the local rendering
   - when the phone is stable, we do the server rendering
 - social AR - https://github.com/haydenjameslee/networked-aframe/blob/master/docs/Tutorial:%20Create%20your%20first%20Networked-Aframe%20experience.md
+- use a pingpong ball or a metallic ball to estimate the reality lighting
+  - https://www.youtube.com/watch?v=fhFzStkoE50&feature=youtu.be&t=59 for ping pong ball
+  - https://www.researchgate.net/publication/220222173_Image_Based_Shadowing_in_Real-Time_Augmented_Reality for metallic ball
 
 # Ideas
 - AR Gaming - https://www.youtube.com/watch?v=EmGGGzibGok

@@ -162,48 +162,127 @@
 	onRenderFcts.push(function(){
 		liquidMarker.update(markerRoot.matrix, camera.projectionMatrix)
 	})
-
+	
 	if( debugEnabled === true ){
 		orthoScene.add(liquidMarker.orthoMesh)
 		onRenderFcts.push(function(){
 			liquidMarker.orthoMesh.visible = markerRoot.visible
 		})
 	}
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+
+;(function(){
+        var geometry = new THREE.PlaneGeometry(2,2,16-1,32-1)
+	var texture = new THREE.TextureLoader().load('../../data/images/25P1geh.png')
+	texture.anisotropy = renderer.getMaxAnisotropy()
+        texture.repeat.set(50,50)
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;	
+	
+        var material = new THREE.MeshBasicMaterial({
+                map: texture,
+		color: 0x01BE00,
+		opacity: 4,
+		transparent: true,
+                side: THREE.DoubleSide,
+        })
+
+	var material = new THREE.ShaderMaterial( {
+		vertexShader: THREEx.ArLiquidMarker.vertexShader,
+		fragmentShader: `
+			varying vec2 vUv;
+			varying vec3 vPosition;
+			uniform sampler2D texture;
+			uniform float opacity;
+			uniform float time;
+		
+			void main(void){
+				vec2 repeat = vec2(30.0);
+				vec4 color = texture2D( texture, vUv*repeat ).rgba;
+				color.a = 0.8;
+				// vec4 color = vec4(1.0);
+
+				float radius = length(vPosition);
+				color *= 1.0-radius*1.5;
+				color.rgb *= 4.0;
+
+				// // float circleWidth
+				// if( mod(radius-time/5.0, 0.1) < 0.01 ){
+				// 	color.rgb *= 10.0;
+				// }else{
+				// 	color.rgb *= 0.0;
+				// }
+
+				gl_FragColor = color;
+			}
+		`,
+		uniforms: {
+			texture: {
+				value: texture
+			},
+                        waveHeight: {
+                                value: 1.0                            
+                        },
+                        time: {
+                                value: 0
+                        },
+		},
+		defines: {
+			updateInShaderEnabled: 0,
+		},
+		transparent: true,
+                side: THREE.DoubleSide,
+	});
+
+	var mesh = new THREE.Mesh( geometry, material );
+	mesh.rotation.x = -Math.PI/2
+	mesh.position.y = 0.02
+	// mesh.position.y = 0.2
+	markerRoot.add(mesh)
+        var startedAt = performance.now()/1000
+	onRenderFcts.push(function(){
+		mesh.material.uniforms.time.value = performance.now()/1000 - startedAt
+	})	
+})()
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		opacity animation
 	//////////////////////////////////////////////////////////////////////////////
 	
-	// animation opacity
-	var targetWaveHeight = 0.0
-	onRenderFcts.push(function(delta){
-		var waveHeight = liquidMarker.object3d.material.uniforms.waveHeight
-		var speed = delta * 2
-		if( waveHeight.value > targetWaveHeight ){
-			waveHeight.value -= speed
-			if( waveHeight.value < targetWaveHeight ){
-				waveHeight.value = targetWaveHeight
-			}
-		}
-	
-		if( waveHeight.value < targetWaveHeight ){
-			waveHeight.value += speed
-			if( waveHeight.value > targetWaveHeight ){
-				waveHeight.value = targetWaveHeight
-			}
-		}
-		// console.log(waveHeight.value)
-	})
-	
-	// toggleCloak on click/keypress
-	function toggleCloak(){
-		if( targetWaveHeight === 1.0 ){
-			targetWaveHeight = 0.0
-		}else{
-			targetWaveHeight = 1.0
-		}
-	}
-	document.body.addEventListener('click', toggleCloak)
-	document.body.addEventListener('keypress', toggleCloak)
+	// // animation opacity
+	// var targetWaveHeight = 0.0
+	// onRenderFcts.push(function(delta){
+	// 	var waveHeight = liquidMarker.object3d.material.uniforms.waveHeight
+	// 	var speed = delta * 2
+	// 	if( waveHeight.value > targetWaveHeight ){
+	// 		waveHeight.value -= speed
+	// 		if( waveHeight.value < targetWaveHeight ){
+	// 			waveHeight.value = targetWaveHeight
+	// 		}
+	// 	}
+	// 
+	// 	if( waveHeight.value < targetWaveHeight ){
+	// 		waveHeight.value += speed
+	// 		if( waveHeight.value > targetWaveHeight ){
+	// 			waveHeight.value = targetWaveHeight
+	// 		}
+	// 	}
+	// 	// console.log(waveHeight.value)
+	// })
+	// 
+	// // toggleCloak on click/keypress
+	// function toggleCloak(){
+	// 	if( targetWaveHeight === 1.0 ){
+	// 		targetWaveHeight = 0.0
+	// 	}else{
+	// 		targetWaveHeight = 1.0
+	// 	}
+	// }
+	// document.body.addEventListener('click', toggleCloak)
+	// document.body.addEventListener('keypress', toggleCloak)
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////

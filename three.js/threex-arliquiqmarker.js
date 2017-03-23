@@ -37,36 +37,12 @@ THREEx.ArLiquidMarker = function(videoTexture){
 			updateInShaderEnabled: updateInShaderEnabled ? 1 : 0,
 		}
 	});
+        // material.wireframe = true
+        // material.uniforms.texture.value = null
+
 	var cloakMesh = new THREE.Mesh( geometry, material );
         cloakMesh.rotation.x = -Math.PI/2
 	this.object3d = cloakMesh
-
-	// var material = new THREE.ShaderMaterial( {
-	// 	vertexShader: THREEx.ArLiquidMarker.vertexShader,
-	// 	fragmentShader: THREEx.ArLiquidMarker.fragmentShader,
-	// 	uniforms: {
-	// 		texture: {
-	// 			value: videoTexture
-	// 		},
-        //                 opacity: {
-        //                         value: 1
-        //                 },
-        //                 waveHeight: {
-        //                         value: 1.0                            
-        //                 },
-        //                 time: {
-        //                         value: 0
-        //                 },
-	// 	},
-	// 	defines: {
-	// 		updateInShaderEnabled: updateInShaderEnabled ? 1 : 0,
-	// 	}
-	// });
-        // var geometry = new THREE.PlaneGeometry(2,2,16-1,32-1)
-	// var debugMesh = new THREE.Mesh( geometry, material );
-        // // cloakMesh.add(debugMesh)
-        // debugMesh.material.wireframe = true
-        // debugMesh.material.uniforms.texture.value = null
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
@@ -164,7 +140,6 @@ THREEx.ArLiquidMarker = function(videoTexture){
 	this.update = function(modelViewMatrix, cameraProjectionMatrix){
                 
                 cloakMesh.material.uniforms.time.value = performance.now()/1000 - startedAt
-                // debugMesh.material.uniforms.time.value = performance.now()/1000 - startedAt
                 
                 updateOrtho(modelViewMatrix, cameraProjectionMatrix)
 
@@ -257,6 +232,7 @@ THREEx.ArLiquidMarker.markerSpaceShaderFunction = '\n'+
 
 THREEx.ArLiquidMarker.vertexShader = THREEx.ArLiquidMarker.markerSpaceShaderFunction +
 '	varying vec2 vUv;\n'+
+'	varying vec3 vPosition;\n'+
 '	uniform float time;\n'+
 '	uniform float waveHeight;\n'+
 '\n'+
@@ -286,6 +262,7 @@ TANH(vec4)
 '\n'+
 `
 
+                vPosition = position;
 
                 vec4 mvPosition = vec4( position, 1.0 );
 
