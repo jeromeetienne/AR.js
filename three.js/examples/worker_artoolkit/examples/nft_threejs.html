@@ -36,7 +36,7 @@ html,body {
 
 window.ARThreeOnLoad = function() {
 
-	ARController.getUserMediaThreeScene({maxARVideoSize: 320, cameraParam: '../../../../../../data/data/camera_para.dat', 
+	ARController.getUserMediaThreeScene({maxARVideoSize: 320, cameraParam: '../../../../data/data/camera_para.dat',
 	onSuccess: function(arScene, arController, arCamera) {
 
 		document.body.className = arController.orientation;
@@ -84,13 +84,13 @@ window.ARThreeOnLoad = function() {
 		torus.position.z = 0.5;
 		torus.rotation.x = Math.PI/2;
 
-		arController.loadNFTMarker('../../../../../../data/dataNFT/pinball', function(markerId) {
+		arController.loadNFTMarker('../../../../data/dataNFT/pinball', function(markerId) {
 			var markerRoot = arController.createThreeNFTMarker(markerId);
 			markerRoot.add(sphere);
 			arScene.scene.add(markerRoot);
 		});
 
-		arController.loadMarker('../../../../../../data/data/patt.kanji', function(markerId) {
+		arController.loadMarker('../../../../data/data/patt.kanji', function(markerId) {
 			var markerRoot = arController.createThreeMarker(markerId);
 			markerRoot.add(torus);
 			arScene.scene.add(markerRoot);
