@@ -251,7 +251,7 @@ THREEx.ArToolkitContext.prototype._onSourceReady = function(onCompleted){
                 var arController = new ARController(width, height, _this.cameraParameters);
                 _this.arController = arController
 		
-		_this._proxy = new ARProxy(arController, '../../../../../../data/data/camera_para.dat', function() { console.log("got new", arguments); });
+		_this._proxy = new ARProxy(arController, '../../../data/data/camera_para.dat', function() { console.log("got new", arguments); });
 		// _this._proxy.processingDone = true;
 		_this._proxy.addEventListener('load', function(ev) {
 			console.log('ARController loaded', ev);
