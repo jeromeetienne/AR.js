@@ -22,7 +22,7 @@
 	<a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div>
 	<style>
-		.controls {
+		#controls {
 			position: fixed;
 			top: 0px;
 			right: 0px;
@@ -30,19 +30,19 @@
 			margin:10px auto;
 			z-index: 2;
 		}
-		.controls > div {
+		#controls > div {
 			border-bottom:1px solid #EEE;
 			padding:5px 0;
 		}
-		.controls label {
+		#controls label {
 			width:200px;
 			display:inline-block;
 		}
-		.controls input {
+		#controls input {
 			vertical-align:middle;
 		}
 	</style>
-	<div class="controls">
+	<div id="controls" style='display:none'>
 		<div>
 			<label>Stiffness (<span id="k_slider_label">-20</span> kg / s<sup>2</sup>)</label> 
 			<input id="k_slider" type="range" min=0 max=100 value=20></input>
@@ -258,6 +258,7 @@
 	})
 	
 	// bind event for parameters tuning
+	// document.querySelector('#controls').style.display = ''
 	document.getElementById('k_slider').onchange = function() {
 		this.innerHTML = this.value;
 		k = -1 * parseInt(this.value);
