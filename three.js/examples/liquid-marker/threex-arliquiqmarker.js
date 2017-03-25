@@ -10,7 +10,7 @@ var THREEx = THREEx || {}
  */
 THREEx.ArLiquidMarker = function(videoTexture){
         // build mesh
-	var geometry = new THREE.PlaneGeometry(2,2,16-1,32*2-1)
+	var geometry = new THREE.PlaneGeometry(2,2,16*2-1,16*2-1)
 	var material = new THREE.ShaderMaterial( {
 		vertexShader: THREEx.ArLiquidMarker.vertexShader,
 		fragmentShader: THREEx.ArLiquidMarker.fragmentShader,
@@ -21,7 +21,7 @@ THREEx.ArLiquidMarker = function(videoTexture){
                         opacity: {
                                 value: 1
                         },
-                        intensity: {
+                        globalIntensity: {
                                 value: 1.0                       
                         },
                         time: {
@@ -29,7 +29,7 @@ THREEx.ArLiquidMarker = function(videoTexture){
                         },
 		},
 		defines: {
-			updateInShaderEnabled: 1,
+			uvToMarkerSpaceEnabled: 1,
 		},
 	});
 	var object3d = new THREE.Mesh( geometry, material );
@@ -37,8 +37,12 @@ THREEx.ArLiquidMarker = function(videoTexture){
 	this.object3d = object3d
 
         // to get wireframe - it helps visualising the curve during debug
-        // object3d.material.wireframe = true
-        // object3d.material.uniforms.texture.value = null
+        var debugMaterial = false
+        // var debugMaterial = true
+        if( debugMaterial ){
+                object3d.material.wireframe = true
+                object3d.material.uniforms.texture.value = null
+        }
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		originalsFaceVertexUvs
@@ -98,11 +102,11 @@ THREEx.ArLiquidMarker.vertexShader = THREEx.ArMarkerCloak.markerSpaceShaderFunct
 	varying vec2 vUv;
 	varying vec3 vPosition;
 	uniform float time;
-	uniform float intensity;
+	uniform float globalIntensity;
 
 	void main(){
                 // pass the UV to the fragment
-                #if (updateInShaderEnabled == 1)
+                #if (uvToMarkerSpaceEnabled == 1)
 		        vUv = transformUvToMarkerSpace(uv);
                 #else
 		        vUv = uv;
@@ -112,15 +116,30 @@ THREEx.ArLiquidMarker.vertexShader = THREEx.ArMarkerCloak.markerSpaceShaderFunct
 
                 vec4 mvPosition = vec4( position, 1.0 );
 
-                mvPosition.z = 1.0 * intensity;
+		// honor globalIntensity
+                mvPosition.z = globalIntensity;
 
-                float radius = length(position)*5.0;
-                float height0 = tanh(radius - 2.0)-1.0;
-                mvPosition.z *= height0;
+		// make a maxHeight depending on position
+                float radius = pow(length(position)*2.5, 2.0);
+                float maxHeight = tanh(radius - 2.0)-1.0;
+                mvPosition.z *= maxHeight/3.5;
+		// 
+                // // mvPosition.z *= sin( time*8.0 );
+                // mvPosition.z *= cos( mod(time,1.0)*8.0 );
 
-                float length = length(position)*15.0;
-                float height = 0.1 * 2.0 / sqrt(length*10.0);
-                mvPosition.z *= sin( time*8.0 + length ) * height;
+		// // add a sinusoid
+                // float length = length(position)*15.0;
+                // float sinAmplitude = 1.0 * 2.0 / sqrt(length*10.0);
+                // mvPosition.z *= sin( time*8.0 + length*1.5) * sinAmplitude;
+
+                // float radius = length(position);
+		// if( radius <= 0.5 ){
+                // 	mvPosition.z = 1.0;
+		// }else{
+                // 	mvPosition.z = 0.0;	
+		// }
+        	// mvPosition.z *= 0.1;
+
 
                 // compute gl_Position
 		mvPosition = modelViewMatrix * mvPosition;
