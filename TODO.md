@@ -1,3 +1,6 @@
+- put liquid marker as a single html
+  - or a directory, no need to be dirty
+
 - liquid-table.html
   - video texture + animation of sin 
   - center of finger click is the center of the wave

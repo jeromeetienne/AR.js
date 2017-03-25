@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
 <!-- three.js library -->
-<script src='vendor/three.js/build/three.js'></script>
-<script src="vendor/three.js/examples/js/libs/stats.min.js"></script>
+<script src='../vendor/three.js/build/three.js'></script>
+<script src='../vendor/three.js/examples/js/libs/stats.min.js'></script>
 <!-- jsartookit -->
-<script src="../vendor/jsartoolkit5/build/artoolkit.min.js"></script>
-<script src="../vendor/jsartoolkit5/js/artoolkit.api.js"></script>
+<script src='../../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
+<script src='../../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
 <!-- include threex.artoolkit -->
-<script src="../threex-artoolkitsource.js"></script>
-<script src="../threex-artoolkitcontext.js"></script>
-<script src="../threex-artoolkitprofile.js"></script>
-<script src="../threex-armarkercontrols.js"></script>
-<script src="../threex-arliquiqmarker.js"></script>
+<script src='../../threex-artoolkitsource.js'></script>
+<script src='../../threex-artoolkitcontext.js'></script>
+<script src='../../threex-artoolkitprofile.js'></script>
+<script src='../../threex-armarkercontrols.js'></script>
+<script src='../../threex-armarkercloak.js'></script>
+<script src='./threex-arliquiqmarker.js'></script>
+<script>THREEx.ArToolkitContext.baseURL = '../../'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace; user-select: none;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - Liquid Marker - Click to touch the liquid.
+	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Liquid Marker - Click to touch the liquid.
 	<br/>
-	Code by <a href="https://twitter.com/snigelpaogat" target='_blank'>Fredrik Blomqvist</a> and
+	Code by <a href='https://twitter.com/snigelpaogat' target='_blank'>Fredrik Blomqvist</a> and
 	<a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div><script>
 	//////////////////////////////////////////////////////////////////////////////////
@@ -104,7 +106,7 @@
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
-		cameraParametersUrl: '../../data/data/camera_para.dat',
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
 		detectionMode: 'mono',
 		imageSmoothingEnabled: false,
 		maxDetectionRate: 15,
@@ -133,7 +135,7 @@
 	scene.add(markerRoot)
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
-		patternUrl : '../../data/data/patt.hiro',
+		patternUrl : THREEx.ArToolkitContext.baseURL+'../data/data/patt.hiro',
 		// patternUrl : '../../data/data/patt.kanji',
 	})
 
@@ -176,7 +178,7 @@
 
 ;(function(){
         var geometry = new THREE.PlaneGeometry(2,2,16-1,32-1)
-	var texture = new THREE.TextureLoader().load('../../data/images/25P1geh.png')
+	var texture = new THREE.TextureLoader().load(THREEx.ArToolkitContext.baseURL+'../data/images/25P1geh.png')
 	texture.anisotropy = renderer.getMaxAnisotropy()
         texture.repeat.set(50,50)
         texture.wrapS = THREE.RepeatWrapping;
