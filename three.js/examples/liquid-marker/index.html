@@ -20,7 +20,49 @@
 	<br/>
 	Code by <a href='https://twitter.com/snigelpaogat' target='_blank'>Fredrik Blomqvist</a> and
 	<a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
-</div><script>
+</div>
+	<style>
+		.controls {
+			position: fixed;
+			top: 0px;
+			right: 0px;
+			width:400px;
+			margin:10px auto;
+			z-index: 2;
+		}
+		.controls > div {
+			border-bottom:1px solid #EEE;
+			padding:5px 0;
+		}
+		.controls label {
+			width:200px;
+			display:inline-block;
+		}
+		.controls input {
+			vertical-align:middle;
+		}
+	</style>
+	<div class="controls">
+		<div>
+			<label>Stiffness (<span id="k_slider_label">-20</span> kg / s<sup>2</sup>)</label> 
+			<input id="k_slider" type="range" min=0 max=100 value=20></input>
+		</div>
+		<div>
+			<label>Damping (<span id="b_slider_label">-0.5</span> kg / s)</label> 
+			<input id="b_slider" type="range" min=0 max=10 value=0.5 step=0.1></input>
+		</div>
+		<div>
+			<label>Frequency (<span id="f_slider_label">0</span>) Hz</label> 
+			<input id="f_slider" type="range" min=0 max=10 value=0 step=0.1></input>
+		</div>
+		<div>
+			<label>Mass (<span id="m_slider_label">0.5</span>) kg</label> 
+			<input id="m_slider" type="range" min=0.1 max=5 value=0.5 step=0.1></input>
+		</div>
+		
+	</div>
+	
+<script>
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////
@@ -61,6 +103,18 @@
 	var camera = new THREE.Camera();
 	scene.add(camera);
 	
+	var listener = new THREE.AudioListener();
+	camera.add( listener );
+
+	var boingSound = new THREE.Audio( listener );
+
+	var audioLoader = new THREE.AudioLoader();
+	audioLoader.load( 'sounds/140867__juskiddink__boing.wav', function( buffer ) {
+		boingSound.setBuffer( buffer );
+		// boingSound.setLoop(true);
+		boingSound.setVolume(0.5);
+	});
+					
 	////////////////////////////////////////////////////////////////////////////////
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
@@ -200,7 +254,34 @@
 	
 	document.body.addEventListener('click', function(){
 		block.x -= 200
+		boingSound.play()
 	})
+	
+	// bind event for parameters tuning
+	document.getElementById('k_slider').onchange = function() {
+		this.innerHTML = this.value;
+		k = -1 * parseInt(this.value);
+		document.getElementById('k_slider_label').innerHTML = k;
+	};
+	
+	document.getElementById('b_slider').onchange = function() {
+		this.innerHTML = this.value;
+		b = -1 * parseFloat(this.value);
+		document.getElementById('b_slider_label').innerHTML = b;
+	};
+	
+	document.getElementById('f_slider').onchange = function() {
+		this.innerHTML = this.value;
+		wall.frequency = parseFloat(this.value);
+		document.getElementById('f_slider_label').innerHTML = wall.frequency;
+	};
+	
+	document.getElementById('m_slider').onchange = function() {
+		this.innerHTML = this.value;
+		block.mass = parseFloat(this.value);
+		document.getElementById('m_slider_label').innerHTML = block.mass;
+	};
+	
 })()
 
 ;(function(){
