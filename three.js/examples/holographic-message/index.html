@@ -46,7 +46,7 @@
 	uniform float distortion;
 	uniform float distortion2;
 	uniform float speed;
-	uniform float rollSpeed;
+	uniform float rollHeight;
 	uniform float randomSeed;
 	
 	// Start Ashima 2D Simplex Noise
@@ -98,10 +98,9 @@
 		return 130.0 * dot(m, g);
 	}
 
-	vec2 badTvShaderUv(void){
-		vec2 p = vUv;
+	vec2 badTvShaderUv(vec2 uv){
 		float ty = time*speed;
-		float yt = p.y - ty + randomSeed;
+		float yt = uv.y - ty + randomSeed;
 
 		// smooth distortion
 		float offset = snoise(vec2(yt*3.0,0.0))*0.2;
@@ -110,7 +109,7 @@
 		//add fine grain distortion
 		offset += snoise(vec2(yt*50.0,0.0))*distortion2*0.001;
 		//combine distortion on X with roll on Y
-		return vec2(fract(p.x + offset),fract(p.y-time*rollSpeed) );		
+		return vec2( fract(uv.x + offset), fract(uv.y-rollHeight) );		
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -121,10 +120,11 @@
 
 	void main() {
 		
-		// read the texture
-		// gl_FragColor = texture2D( tDiffuse, vUv );
+		// read the texture raw
+		// vec2 uv = vUv;
+		vec2 uv = badTvShaderUv(vUv);
 
-		gl_FragColor = texture2D( tDiffuse, badTvShaderUv() );
+		gl_FragColor = texture2D( tDiffuse, uv );
 
 		// discard anything too green
 		if( gl_FragColor.r < 0.5 && gl_FragColor.g > 0.2 ){
@@ -295,7 +295,7 @@
 			distortion: { value: 4 },
 			distortion2: { value: 2 },
 			speed: { value: 0.2 },
-			rollSpeed: { value: 0.0 },
+			rollHeight: { value: 0.0 },
 			randomSeed: { value: Math.random()*1000 },
 		},
 		vertexShader: document.querySelector( '#vertexShader' ).textContent,
@@ -390,7 +390,7 @@
 })()
 	
 	//////////////////////////////////////////////////////////////////////////////
-	//		opacity animation
+	//		scale animation
 	//////////////////////////////////////////////////////////////////////////////
 	
 	// animation opacity
@@ -418,7 +418,49 @@
 		}
 	}
 	document.body.addEventListener('click', toggleCloak)
-	document.body.addEventListener('keypress', toggleCloak)
+	// document.body.addEventListener('keypress', toggleCloak)
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+
+
+	// animation opacity
+	var targetValuesLo = {
+		distortion: 0,
+		distortion2: 0,
+		speed: 0,
+		rollHeight: 0,		
+	}
+	var targetValuesHi = {
+		distortion: 3,
+		distortion2: 2,
+		speed: 0.2,
+		rollHeight: 0.4,		
+	}
+	var targetValues = targetValuesLo
+	onRenderFcts.push(function(delta){
+		
+		Object.keys(targetValues).forEach(function(uniformName){
+			var factor = 0.1
+			videoMesh.material.uniforms[uniformName].value *= (1-factor)
+			videoMesh.material.uniforms[uniformName].value += factor * targetValues[uniformName]
+			// console.log(uniformName, '=', videoMesh.material.uniforms[uniformName].value)
+		})
+	})
+	
+	// toggleTvGlitch on click/keypress
+	function toggleTvGlitch(){
+		// debugger
+		if( targetValues === targetValuesLo ){
+			targetValues = targetValuesHi
+		}else{
+			targetValues = targetValuesLo
+		}
+	}
+	// document.body.addEventListener('click', toggleTvGlitch)
+	document.body.addEventListener('keypress', toggleTvGlitch)
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
 	//////////////////////////////////////////////////////////////////////////////////
