@@ -1,3 +1,7 @@
+- re-integrate dead reckoning
+  - rename motion prediction into deadreakoningcontrols - more precise
+  
+
 - put liquid marker as a single html
   - or a directory, no need to be dirty
 

@@ -12,6 +12,7 @@
 <script src="../threex-artoolkitprofile.js"></script>
 <script src="../threex-armarkercontrols.js"></script>
 <script src="../threex-armarkercontrols.js"></script>
+<script src="motionprediction/threex-motionpredictioncontrols.js"></script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
 	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - developement playground
@@ -65,8 +66,8 @@
 		sourceType : 'webcam',
 		
 		// to read from an image
-		sourceType : 'image',
-		sourceUrl : '../../data/images/img.jpg',		
+		// sourceType : 'image',
+		// sourceUrl : '../../data/images/img.jpg',		
 
 		// to read from a video
 		// sourceType : 'video',
@@ -92,8 +93,9 @@
 	var arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: '../../data/data/camera_para.dat',
 		detectionMode: 'mono',
-		canvasWidth: 80*3,
-		canvasHeight: 60*3,
+		canvasWidth: 80*4,
+		canvasHeight: 60*4,
+		maxDetectionRate: 15,
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
@@ -115,12 +117,36 @@
 	
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
+
+if( false ){
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
 		patternUrl : '../../data/data/patt.hiro',
 		// patternUrl : '../../data/data/patt.kanji',
 	})
+}else{	
+	var motionPredictionControls = new THREEx.MotionPredictionControls(markerRoot)
+	onRenderFcts.push(function(){
+		motionPredictionControls.update()
+	})
 
+	var knownPositionMesh	= new THREE.Object3D();
+	scene.add( knownPositionMesh );
+
+	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, knownPositionMesh, {
+		type : 'pattern',
+		patternUrl : '../../data/data/patt.hiro',
+		// patternUrl : '../../data/data/patt.kanji',
+	})
+	
+	artoolkitMarker.addEventListener('markerFound', function(event){
+		motionPredictionControls.setKnownPose(knownPositionMesh.position, knownPositionMesh.quaternion, knownPositionMesh.scale)
+	})
+	onRenderFcts.push(function(delta){
+		markerRoot.visible = knownPositionMesh.visible
+		motionPredictionControls.enabled = knownPositionMesh.visible
+	})
+}
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
