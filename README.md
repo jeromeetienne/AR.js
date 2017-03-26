@@ -142,9 +142,9 @@ Three.js Examples:
 - [liquid-marker](https://jeromeetienne.github.io/AR.js/three.js/examples/liquid-marker/) : 
   demo transforming table and wall as liquid
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/liquid-marker/index.html))
-- [holographic-message](https://jeromeetienne.github.io/AR.js/three.js/examples/holographic-message.html) : 
+- [holographic-message](https://jeromeetienne.github.io/AR.js/three.js/examples/holographic-message/) : 
   A holographic-message in Augmented reality. Part of a business card for [@AndraConnect](https://twitter.com/AndraConnect)
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/holographic-message.html))
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/holographic-message/index.html))
 - [videoinwebgl](https://jeromeetienne.github.io/AR.js/three.js/examples/videoinwebgl.html) : 
   three.js example for videoinwebgl
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/videoinwebgl.html))

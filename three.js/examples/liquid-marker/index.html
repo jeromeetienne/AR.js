@@ -252,10 +252,12 @@
 		globalIntensity.value = (block.x - 210)/210		
 	}, 1000*period)
 	
-	document.body.addEventListener('click', function(){
+	function triggerBoing(){
 		block.x -= 200
-		boingSound.play()
-	})
+		boingSound.play()		
+	}
+	document.body.addEventListener('click', triggerBoing)
+	document.body.addEventListener('keypress', triggerBoing)
 	
 	// bind event for parameters tuning
 	// document.querySelector('#controls').style.display = ''
