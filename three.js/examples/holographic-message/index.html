@@ -121,8 +121,11 @@
 	void main() {
 		
 		// read the texture raw
-		// vec2 uv = vUv;
-		vec2 uv = badTvShaderUv(vUv);
+		#if (badTvShaderEnabled == 0)
+			vec2 uv = vUv;
+		#else
+			vec2 uv = badTvShaderUv(vUv);
+		#endif
 
 		gl_FragColor = texture2D( tDiffuse, uv );
 
@@ -224,8 +227,8 @@
 		cameraParametersUrl: THREEx.ArToolkitContext.baseURL +'../data/data/camera_para.dat',
 		detectionMode: 'mono',
 		maxDetectionRate: 30,
-		canvasWidth: 80*3,
-		canvasHeight: 60*3,
+		canvasWidth: 80*4,
+		canvasHeight: 60*4,
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
@@ -273,11 +276,11 @@
 	// video.src = 'videos/Star\ wars\ demo\ Alex.mp4'
 	video.src = 'videos/AndraConnect business\ card.mp4'
 
-	// video.autoplay = true;
+	video.autoplay = true;
 	video.webkitPlaysinline = true;
 	video.controls = false;
 	video.loop = true;
-	// video.muted = true
+	video.muted = true
 	var videoTexture = new THREE.VideoTexture(video)
 	videoTexture.needsUpdate = true		
 	videoTexture.minFilter =  THREE.NearestFilter
@@ -292,11 +295,14 @@
 			time: { value: 0.0 },
 			opacity: { value: 0.7 },
 			tDiffuse: { value: videoTexture },
-			distortion: { value: 4 },
-			distortion2: { value: 2 },
-			speed: { value: 0.2 },
+			distortion: { value: 0 },
+			distortion2: { value: 0 },
+			speed: { value: 0.0 },
 			rollHeight: { value: 0.0 },
 			randomSeed: { value: Math.random()*1000 },
+		},
+		defines: {
+			badTvShaderEnabled : 0
 		},
 		vertexShader: document.querySelector( '#vertexShader' ).textContent,
 		fragmentShader: document.querySelector( '#fragmentShader' ).textContent,

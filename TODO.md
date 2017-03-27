@@ -16,17 +16,12 @@
 
 # star war hologram
 - mvp DONE
-- improve visual 
-  - inspire from http://jeromeetienne.github.io/threex.badtvpproc/examples/demo.html
-  - maybe some particules
+- DONE imported shader from badtvpproc - http://jeromeetienne.github.io/threex.badtvpproc/examples/demo.html
+- take sound some badtvpproc
+- maybe some particules
+- get video: (i) write text (ii) record it (iii) minimal editing
+- do business card
   
-- business card ala star war 
-- greenscreen stuff https://www.youtube.com/watch?v=DSOj0fUIM4o
-  - some ghosts, some smokes, try stuff to find out
-  - shader for greenscreen 
-  - crowd replication https://www.youtube.com/watch?v=bmxszcAfcRo
-
-
 # Multimarker
 - how to say 'those markers will start act as one'
 - actually print 6 cards with matrix markers on simple papers, and play with them
