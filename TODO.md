@@ -1,11 +1,11 @@
+- put THREEx.ArToolkitContext.baseURL = '../' in all demo
 - re-integrate dead reckoning
   - rename motion prediction into deadreakoningcontrols - more precise
   
 
-- put liquid marker as a single html
+- DONE put liquid marker as a single html
   - or a directory, no need to be dirty
-
-- liquid-table.html
+- DONE liquid-table.html
   - video texture + animation of sin 
   - center of finger click is the center of the wave
   - it can be water wave
