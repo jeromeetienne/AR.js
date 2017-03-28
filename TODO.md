@@ -1,8 +1,11 @@
-- put THREEx.ArToolkitContext.baseURL = '../' in all demo
+- see about an example of videoinwebgl + vreffect
 - re-integrate dead reckoning
   - rename motion prediction into deadreakoningcontrols - more precise
-  
 
+
+- DONE put THREEx.ArToolkitContext.baseURL = '../' in all demo
+- DONE add fish in pool hole-in-the-wall
+  - https://blog.int3ractive.com/2012/05/fish-boids-threejs-demo.html
 - DONE put liquid marker as a single html
   - or a directory, no need to be dirty
 - DONE liquid-table.html
