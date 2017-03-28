@@ -350,8 +350,7 @@
 		;(function(){
 			var geometry	= new THREE.PlaneGeometry(1,0.5);
 			var material	= new THREE.MeshBasicMaterial({
-				transparent: true,
-				// opacity: 0.5,
+				alphaTest: 0.1,
 				map: new THREE.TextureLoader().load('images/fish-texture.png'),
 				side: THREE.DoubleSide
 			}); 
