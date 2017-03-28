@@ -52,6 +52,19 @@
 	var directionalLight = new THREE.DirectionalLight( 0x887766 );
 	directionalLight.position.set( -1, 1, 1 ).normalize();
 	scene.add( directionalLight );
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Initialize a basic camera
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// Create a camera
+	// var camera = new THREE.Camera();
+	// scene.add(camera);
+	
+
+	// Create a three.js camera.
+	var camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 10000);	
+	scene.add(camera);
 	
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
@@ -91,14 +104,6 @@
 		if( event.key === 'p' )	togglePresent()
 	})
 
-	//////////////////////////////////////////////////////////////////////////////////
-	//		Initialize a basic camera
-	//////////////////////////////////////////////////////////////////////////////////
-
-	// Create a camera
-	var camera = new THREE.Camera();
-	scene.add(camera);
-
 	////////////////////////////////////////////////////////////////////////////////
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
@@ -112,8 +117,8 @@
 		// sourceUrl : '../../data/images/img.jpg',		
 
 		// // to read from a video
-		sourceType : 'video',
-		sourceUrl : '../../data/videos/headtracking.mp4',		
+		// sourceType : 'video',
+		// sourceUrl : '../../data/videos/headtracking.mp4',		
 	})
 
 	arToolkitSource.init(function onReady(){
@@ -141,7 +146,7 @@
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
 		// copy projection matrix to camera
-		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+		// camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
 	})
 
 	// update artoolkit on every frame
@@ -161,43 +166,29 @@
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
 		patternUrl : '../../data/data/patt.hiro',
-		patternUrl : '../../data/data/patt.kanji',
+		// patternUrl : '../../data/data/patt.kanji',
 	})
 
-// Add a repeating grid as a skybox.
-var boxWidth = 3;
-var loader = new THREE.TextureLoader();
-loader.load('../../data/images/HIRO.jpg', function onTextureLoaded(texture) {
-	texture.wrapS = THREE.RepeatWrapping;
-	texture.wrapT = THREE.RepeatWrapping;
-	texture.repeat.set(boxWidth, boxWidth);
-	
-	var geometry = new THREE.BoxGeometry(boxWidth, boxWidth, boxWidth);
-	var material = new THREE.MeshBasicMaterial({
-		map: texture,
-		color: 0x01BE00,
-		side: THREE.BackSide
-	});
-	
-	var mesh = new THREE.Mesh(geometry, material);
-	scene.add(mesh);
-})
-
-	// var texture = new THREE.TextureLoader().load('../../data/images/box.png')
-	// texture.wrapS = THREE.RepeatWrapping;
-	// texture.wrapT = THREE.RepeatWrapping;
-	// texture.repeat.set(50, 50);	
-	// var geometry = new THREE.PlaneGeometry(50,50)
-	// var material = new THREE.MeshBasicMaterial({
-	// 	map: texture,
-	// 	// color: 0x01BE00,
-	// 	// side: THREE.DoubleSide,
+	// // Add a repeating grid as a skybox.
+	// var boxWidth = 3;
+	// var loader = new THREE.TextureLoader();
+	// loader.load('../../data/images/HIRO.jpg', function onTextureLoaded(texture) {
+	// 	texture.wrapS = THREE.RepeatWrapping;
+	// 	texture.wrapT = THREE.RepeatWrapping;
+	// 	texture.repeat.set(boxWidth, boxWidth);
+	// 	
+	// 	var geometry = new THREE.BoxGeometry(boxWidth, boxWidth, boxWidth);
+	// 	var material = new THREE.MeshBasicMaterial({
+	// 		map: texture,
+	// 		color: 0x01BE00,
+	// 		transparent: true,
+	// 		opacity: 0.5,
+	// 		side: THREE.BackSide
+	// 	});
+	// 	
+	// 	var mesh = new THREE.Mesh(geometry, material);
+	// 	scene.add(mesh);
 	// })
-	// var mesh = new THREE.Mesh(geometry, material)
-	// mesh.rotation.x = -Math.PI/2
-	// mesh.position.y = -1
-	// scene.add(mesh)
-
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		build videoTexture
