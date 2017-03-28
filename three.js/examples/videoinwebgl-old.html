@@ -11,13 +11,13 @@
 <script src="../threex-artoolkitcontext.js"></script>
 <script src="../threex-artoolkitprofile.js"></script>
 <script src="../threex-armarkercontrols.js"></script>
-<script src="../threex-arliquiqmarker.js"></script>
+<script src="../threex-arvideoinwebgl.js"></script>
+<script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
-<body style='margin : 0px; overflow: hidden; font-family: Monospace; user-select: none;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - Liquid Marker - Click to touch the liquid.
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
+	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - developement playground
 	<br/>
-	Code by <a href="https://twitter.com/snigelpaogat" target='_blank'>Fredrik Blomqvist</a> and
-	<a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div><script>
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
@@ -25,7 +25,7 @@
 
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
-		antialias	: true,
+		// antialias	: true,
 		alpha: true
 	});
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
@@ -35,8 +35,6 @@
 	renderer.domElement.style.top = '0px'
 	renderer.domElement.style.left = '0px'
 	document.body.appendChild( renderer.domElement );
-
-	renderer.autoClear = false;
 
 	// array of functions for the rendering loop
 	var onRenderFcts= [];
@@ -58,17 +56,6 @@
 	// Create a camera
 	var camera = new THREE.Camera();
 	scene.add(camera);
-	
-	var debugEnabled = false
-	
-	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
-	//////////////////////////////////////////////////////////////////////////////
-
-	if( debugEnabled === true ){
-	        var orthoCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, -100, +100);
-	        var orthoScene = new THREE.Scene();		
-	}
 
 	////////////////////////////////////////////////////////////////////////////////
 	//          handle arToolkitSource
@@ -77,14 +64,14 @@
 	var arToolkitSource = new THREEx.ArToolkitSource({
 		// to read from the webcam 
 		sourceType : 'webcam',
-		// 
+		
 		// to read from an image
 		// sourceType : 'image',
 		// sourceUrl : '../../data/images/img.jpg',		
 
-		// to read from a video
-		// sourceType : 'video',
-		// sourceUrl : '../../data/videos/headtracking.mp4',		
+		// // to read from a video
+		sourceType : 'video',
+		sourceUrl : '../../data/videos/headtracking.mp4',		
 	})
 
 	arToolkitSource.init(function onReady(){
@@ -106,10 +93,8 @@
 	var arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: '../../data/data/camera_para.dat',
 		detectionMode: 'mono',
-		imageSmoothingEnabled: false,
-		maxDetectionRate: 15,
-		canvasWidth: 80*4,
-		canvasHeight: 60*4,
+		canvasWidth: 80*3,
+		canvasHeight: 60*3,
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
@@ -134,7 +119,7 @@
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
 		patternUrl : '../../data/data/patt.hiro',
-		// patternUrl : '../../data/data/patt.kanji',
+		patternUrl : '../../data/data/patt.kanji',
 	})
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -154,154 +139,99 @@
 
 
 	//////////////////////////////////////////////////////////////////////////////
-	//		add liquidMarker
+	//	plane always in front of the camera, exactly as big as the viewport
 	//////////////////////////////////////////////////////////////////////////////
-	var liquidMarker =  new THREEx.ArLiquidMarker(videoTexture);
-	markerRoot.add(liquidMarker.object3d)
-	
+	var videoInWebgl = new THREEx.ArVideoInWebgl(videoTexture)
+	scene.add(videoInWebgl.object3d);	
+	arToolkitSource.domElement.style.visibility = 'hidden'
+
+	// TODO extract the fov from the projectionMatrix
+	// camera.fov = 43.1
+	// camera.fov = 42
 	onRenderFcts.push(function(){
-		liquidMarker.update(markerRoot.matrix, camera.projectionMatrix)
+		videoInWebgl.update(camera)
 	})
-	
-	if( debugEnabled === true ){
-		orthoScene.add(liquidMarker.orthoMesh)
-		onRenderFcts.push(function(){
-			liquidMarker.orthoMesh.visible = markerRoot.visible
-		})
-	}
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
+	// var video = arToolkitSource.domElement;
+	// 
+	// window.addEventListener('resize', function(){
+	// 	updateSeeThruAspectUv(seethruPlane)	
+	// })
+	// video.addEventListener('canplaythrough', function(){
+	// 	updateSeeThruAspectUv(seethruPlane)
+	// })
+	// function updateSeeThruAspectUv(plane){
+	// 
+	// 	// if video isnt yet ready to play
+	// 	if( video.videoWidth === 0 || video.videoHeight === 0 )	return
+	// 
+	// 	var faceVertexUvs = plane.geometry.faceVertexUvs[0]
+	// 	var screenAspect = window.innerWidth / window.innerHeight
+	// 	var videoAspect = video.videoWidth / video.videoHeight
+	// 	
+	// 	plane.geometry.uvsNeedUpdate = true
+	// 	if( screenAspect >= videoAspect ){
+	// 		var actualHeight = videoAspect / screenAspect;
+	// 		// faceVertexUvs y 0
+	// 		faceVertexUvs[0][1].y = 0.5 - actualHeight/2
+	// 		faceVertexUvs[1][0].y = 0.5 - actualHeight/2
+	// 		faceVertexUvs[1][1].y = 0.5 - actualHeight/2
+	// 		// faceVertexUvs y 1
+	// 		faceVertexUvs[0][0].y = 0.5 + actualHeight/2
+	// 		faceVertexUvs[0][2].y = 0.5 + actualHeight/2
+	// 		faceVertexUvs[1][2].y = 0.5 + actualHeight/2
+	// 	}else{
+	// 		var actualWidth = screenAspect / videoAspect;
+	// 		// faceVertexUvs x 0
+	// 		faceVertexUvs[0][0].x = 0.5 - actualWidth/2
+	// 		faceVertexUvs[0][1].x = 0.5 - actualWidth/2
+	// 		faceVertexUvs[1][0].x = 0.5 - actualWidth/2
+	// 		
+	// 		// faceVertexUvs x 1
+	// 		faceVertexUvs[0][2].x = 0.5 + actualWidth/2
+	// 		faceVertexUvs[1][1].x = 0.5 + actualWidth/2
+	// 		faceVertexUvs[1][2].x = 0.5 + actualWidth/2
+	// 	}
+	// }
 
-;(function(){
-        var geometry = new THREE.PlaneGeometry(2,2,16-1,32-1)
-	var texture = new THREE.TextureLoader().load('../../data/images/25P1geh.png')
-	texture.anisotropy = renderer.getMaxAnisotropy()
-        texture.repeat.set(50,50)
-        texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.RepeatWrapping;	
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		add an object in the scene
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// add a torus knot	
+	var geometry	= new THREE.CubeGeometry(1,1,1);
+	var material	= new THREE.MeshNormalMaterial({
+		transparent : true,
+		opacity: 0.5,
+		side: THREE.DoubleSide
+	}); 
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.y	= geometry.parameters.height/2
+	markerRoot.add( mesh );
 	
-        var material = new THREE.MeshBasicMaterial({
-                map: texture,
-		color: 0x01BE00,
-		opacity: 4,
-		transparent: true,
-                side: THREE.DoubleSide,
-        })
-	var material = new THREE.ShaderMaterial( {
-		vertexShader: THREEx.ArLiquidMarker.vertexShader,
-		fragmentShader: `
-			varying vec2 vUv;
-			varying vec3 vPosition;
-			uniform sampler2D texture;
-			uniform float opacity;
-			uniform float intensity;
-			uniform float time;
-		
-			void main(void){
-				vec2 repeat = vec2(30.0);
-				vec4 color = texture2D( texture, vUv*repeat ).rgba;
-				color.a += 0.5;
-				// vec4 color = vec4(1.0);
-
-				float radius = length(vPosition);
-				color *= 1.0-radius*1.6;
-				color.rgb *= 5.0;
-				// 
-				// // float circleWidth
-				// if( mod(radius-time/5.0, 0.1) < 0.01 ){
-				// 	color *= 10.0 * intensity + 1.0;
-				// }else{
-				// 	color.rgb *= 1.0;
-				// }
-
-				gl_FragColor = color;
-			}
-		`,
-		uniforms: {
-			texture: {
-				value: texture
-			},
-                        intensity: {
-                                value: 1.0                            
-                        },
-                        time: {
-                                value: 0
-                        },
-		},
-		defines: {
-			updateInShaderEnabled: 0,
-		},
-		transparent: true,
-                side: THREE.FrontSide,
-	});
-
-	var mesh = new THREE.Mesh( geometry, material );
-	mesh.rotation.x = -Math.PI/2
-	mesh.position.y = 0.05
-	// mesh.position.y = 0.2
-	markerRoot.add(mesh)
-        var startedAt = performance.now()/1000
+	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
+	var material	= new THREE.MeshNormalMaterial(); 
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.y	= 0.5
+	markerRoot.add( mesh );
+	
 	onRenderFcts.push(function(){
-		mesh.material.uniforms.intensity.value = liquidMarker.object3d.material.uniforms.intensity.value
-		mesh.material.uniforms.time.value = performance.now()/1000 - startedAt
-	})	
-})()
-
-	//////////////////////////////////////////////////////////////////////////////
-	//		opacity animation
-	//////////////////////////////////////////////////////////////////////////////
-	
-	// animation opacity
-	var targetWaveHeight = 1.0
-	onRenderFcts.push(function(delta){
-		var intensity = liquidMarker.object3d.material.uniforms.intensity
-		var speed = delta * 2
-		if( intensity.value > targetWaveHeight ){
-			intensity.value -= speed
-			if( intensity.value < targetWaveHeight ){
-				intensity.value = targetWaveHeight
-			}
-		}
-	
-		if( intensity.value < targetWaveHeight ){
-			intensity.value += speed
-			if( intensity.value > targetWaveHeight ){
-				intensity.value = targetWaveHeight
-			}
-		}
-		// console.log(intensity.value)
+		mesh.rotation.x += 0.1
 	})
-	
-	// toggleCloak on click/keypress
-	function toggleCloak(){
-		if( targetWaveHeight === 1.0 ){
-			targetWaveHeight = 0.0
-		}else{
-			targetWaveHeight = 1.0
-		}
-	}
-	document.body.addEventListener('click', toggleCloak)
-	document.body.addEventListener('keypress', toggleCloak)
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
 	//////////////////////////////////////////////////////////////////////////////////
 	var stats = new Stats();
-	// document.body.appendChild( stats.dom );
+	document.body.appendChild( stats.dom );
 	// render the scene
 	onRenderFcts.push(function(){
-		
-		renderer.clear();
-		
 		renderer.render( scene, camera );
-
-		if( debugEnabled === true ){
-        		renderer.render( orthoScene, orthoCamera );
-		}
-
-		// stats.update();
+		stats.update();
 	})
 
 	// run the rendering loop

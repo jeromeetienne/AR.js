@@ -1,0 +1,46 @@
+<body>
+	<canvas id="canvas" width=400 height=200></canvas>
+	<script>
+	/* Spring stiffness, in kg / s^2 */
+	var k = -20;
+	var spring_length = 180;
+	
+	/* Damping constant, in kg / s */
+	var b = -0.5;
+	
+	/* Block position and velocity. */
+	var block = {x: 50, v: 0, mass: 0.5};
+	var wall  = {x: 30,  lx: 30, v: 0, t: 0, frequency: 0};
+	
+	var frameRate  = 1/30;
+	var frameDelay = frameRate * 1000;
+		
+	
+	var loop = function() {
+		
+		/* Move the wall. */
+		wall.t += frameRate;
+		wall.lx = wall.x;
+		wall.x = 30 + 70 * Math.sin(2 * Math.PI * wall.frequency * wall.t);
+		wall.v = (wall.x - wall.lx) / frameRate;
+		
+		
+		/* Move the block. */
+		
+		if ( true )
+		{
+			var F_spring = k * ( (block.x - wall.x) - spring_length );
+			var F_damper = b * ( block.v - wall.v );
+			
+			var a = ( F_spring + F_damper ) / block.mass;
+			block.v += a * frameRate;
+			block.x += block.v * frameRate;
+			console.log(block.x)
+		}
+	};
+	
+		
+	setInterval(loop, frameDelay);
+	
+	</script>
+</body>

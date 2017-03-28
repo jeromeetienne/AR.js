@@ -127,6 +127,9 @@ Three.js Examples:
 - [profile](https://jeromeetienne.github.io/AR.js/three.js/examples/profile.html) : 
   three.js example for profile
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/profile.html))
+- [motionprediction](https://jeromeetienne.github.io/AR.js/three.js/examples/motionprediction.html) : 
+  three.js example for motionprediction
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/motionprediction.html))
 - [hole-in-the-wall](https://jeromeetienne.github.io/AR.js/three.js/examples/hole-in-the-wall.html) : 
   three.js example for hole-in-the-wall
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/hole-in-the-wall.html))
@@ -139,12 +142,12 @@ Three.js Examples:
 - [markercloak](https://jeromeetienne.github.io/AR.js/three.js/examples/markercloak.html) : 
   three.js example for markercloak
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/markercloak.html))
-- [liquidmarker](https://jeromeetienne.github.io/AR.js/three.js/examples/liquidmarker.html) : 
-  three.js example for liquidmarker
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/liquidmarker.html))
-- [holographic-message](https://jeromeetienne.github.io/AR.js/three.js/examples/holographic-message.html) : 
+- [liquid-marker](https://jeromeetienne.github.io/AR.js/three.js/examples/liquid-marker/) : 
+  demo transforming table and wall as liquid
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/liquid-marker/index.html))
+- [holographic-message](https://jeromeetienne.github.io/AR.js/three.js/examples/holographic-message/) : 
   A holographic-message in Augmented reality. Part of a business card for [@AndraConnect](https://twitter.com/AndraConnect)
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/holographic-message.html))
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/holographic-message/index.html))
 - [videoinwebgl](https://jeromeetienne.github.io/AR.js/three.js/examples/videoinwebgl.html) : 
   three.js example for videoinwebgl
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/videoinwebgl.html))
@@ -178,7 +181,7 @@ a-frame Examples:
 - [minimal](https://jeromeetienne.github.io/AR.js/aframe/examples/minimal.html) : 
   Want to do Augmented Reality on the web ? You can do it [in less than 10 lines of html now](https://twitter.com/jerome_etienne/status/842192608256512000) :)
   minimal.html is the shortest html file you need if you want to do ar.js with a-frame
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/minimal.html))
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/minimal.html))0
 - [mobile-performance](https://jeromeetienne.github.io/AR.js/aframe/examples/mobile-performance.html) : 
   a-frame example for mobile-performance
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/mobile-performance.html))

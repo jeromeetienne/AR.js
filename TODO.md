@@ -1,4 +1,14 @@
-- liquid-table.html
+- see about an example of videoinwebgl + vreffect
+- re-integrate dead reckoning
+  - rename motion prediction into deadreakoningcontrols - more precise
+
+
+- DONE put THREEx.ArToolkitContext.baseURL = '../' in all demo
+- DONE add fish in pool hole-in-the-wall
+  - https://blog.int3ractive.com/2012/05/fish-boids-threejs-demo.html
+- DONE put liquid marker as a single html
+  - or a directory, no need to be dirty
+- DONE liquid-table.html
   - video texture + animation of sin 
   - center of finger click is the center of the wave
   - it can be water wave
@@ -9,17 +19,12 @@
 
 # star war hologram
 - mvp DONE
-- improve visual 
-  - inspire from http://jeromeetienne.github.io/threex.badtvpproc/examples/demo.html
-  - maybe some particules
+- DONE imported shader from badtvpproc - http://jeromeetienne.github.io/threex.badtvpproc/examples/demo.html
+- take sound some badtvpproc
+- maybe some particules
+- get video: (i) write text (ii) record it (iii) minimal editing
+- do business card
   
-- business card ala star war 
-- greenscreen stuff https://www.youtube.com/watch?v=DSOj0fUIM4o
-  - some ghosts, some smokes, try stuff to find out
-  - shader for greenscreen 
-  - crowd replication https://www.youtube.com/watch?v=bmxszcAfcRo
-
-
 # Multimarker
 - how to say 'those markers will start act as one'
 - actually print 6 cards with matrix markers on simple papers, and play with them

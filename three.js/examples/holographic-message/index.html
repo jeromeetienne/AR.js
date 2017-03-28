@@ -1,44 +1,136 @@
 <!DOCTYPE html>
-<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
 <!-- three.js library -->
-<script src='vendor/three.js/build/three.js'></script>
+<script src='../vendor/three.js/build/three.js'></script>
 <!-- jsartookit -->
-<script src="../vendor/jsartoolkit5/build/artoolkit.min.js"></script>
-<script src="../vendor/jsartoolkit5/js/artoolkit.api.js"></script>
+<script src='../../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
+<script src='../../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
 <!-- include threex.artoolkit -->
-<script src="../threex-artoolkitsource.js"></script>
-<script src="../threex-artoolkitcontext.js"></script>
-<script src="../threex-armarkercontrols.js"></script>
+<script src='../../threex-artoolkitsource.js'></script>
+<script src='../../threex-artoolkitcontext.js'></script>
+<script src='../../threex-armarkercontrols.js'></script>
+<script>THREEx.ArToolkitContext.baseURL = '../../'</script>
+
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - Augmented Reality Business Card for <a href="https://twitter.com/AndraConnect" target="_blank">@AndraConnect</a>
+	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Augmented Reality Business Card for <a href='https://twitter.com/AndraConnect' target='_blank'>@AndraConnect</a>
 	<br/>
 	Click to start playing the video.
 </div>
 
-<script id="vertexShader" type="x-shader/x-vertex">
+<script id='vertexShader' type='x-shader/x-vertex'>
 	varying vec2 vUv;
 	void main() {
 		vUv = uv;
 		gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 	}
 </script>
-<script id="fragmentShader" type="x-shader/x-fragment">
+<script id='fragmentShader' type='x-shader/x-fragment'>
 
 	varying vec2 vUv;
 	uniform sampler2D tDiffuse;
 	uniform float opacity;
 	uniform float time;
 
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+	/* @author Felix Turner / www.airtight.cc / @felixturner
+	 *
+	 * Bad TV Shader
+	 * Simulates a bad TV via horizontal distortion and vertical roll
+	 * Uses Ashima WebGl Noise: https://github.com/ashima/webgl-noise
+ 	 * under The MIT License
+ 	 */
+
+	uniform float distortion;
+	uniform float distortion2;
+	uniform float speed;
+	uniform float rollHeight;
+	uniform float randomSeed;
+	
+	// Start Ashima 2D Simplex Noise
+	
+	vec3 mod289(vec3 x) {
+		return x - floor(x * (1.0 / 289.0)) * 289.0;
+	}
+	
+	vec2 mod289(vec2 x) {
+		return x - floor(x * (1.0 / 289.0)) * 289.0;
+	}
+	
+	vec3 permute(vec3 x) {
+		return mod289(((x*34.0)+1.0)*x);
+	}
+	
+	float snoise(vec2 v)
+	{
+		const vec4 C = vec4(0.211324865405187,  // (3.0-sqrt(3.0))/6.0
+		0.366025403784439,  // 0.5*(sqrt(3.0)-1.0)
+		-0.577350269189626,  // -1.0 + 2.0 * C.x
+		0.024390243902439); // 1.0 / 41.0
+		vec2 i  = floor(v + dot(v, C.yy) );
+		vec2 x0 = v -   i + dot(i, C.xx);
+		
+		vec2 i1;
+		i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+		vec4 x12 = x0.xyxy + C.xxzz;
+		x12.xy -= i1;
+		
+		i = mod289(i); // Avoid truncation effects in permutation
+		vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+		+ i.x + vec3(0.0, i1.x, 1.0 ));
+		
+		vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+		m = m*m ;
+		m = m*m ;
+		
+		vec3 x = 2.0 * fract(p * C.www) - 1.0;
+		vec3 h = abs(x) - 0.5;
+		vec3 ox = floor(x + 0.5);
+		vec3 a0 = x - ox;
+		
+		m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+		
+		vec3 g;
+		g.x  = a0.x  * x0.x  + h.x  * x0.y;
+		g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+		return 130.0 * dot(m, g);
+	}
+
+	vec2 badTvShaderUv(vec2 uv){
+		float ty = time*speed;
+		float yt = uv.y - ty + randomSeed;
+
+		// smooth distortion
+		float offset = snoise(vec2(yt*3.0,0.0))*0.2;
+		// boost distortion
+		offset = pow( offset*distortion,3.0)/distortion;
+		//add fine grain distortion
+		offset += snoise(vec2(yt*50.0,0.0))*distortion2*0.001;
+		//combine distortion on X with roll on Y
+		return vec2( fract(uv.x + offset), fract(uv.y-rollHeight) );		
+	}
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+
 	float rand(float n){return fract(sin(n) * 43758.5453123);}
 
 	void main() {
 		
-		// read the texture
-		gl_FragColor = texture2D( tDiffuse, vUv );
+		// read the texture raw
+		#if (badTvShaderEnabled == 0)
+			vec2 uv = vUv;
+		#else
+			vec2 uv = badTvShaderUv(vUv);
+		#endif
+
+		gl_FragColor = texture2D( tDiffuse, uv );
 
 		// discard anything too green
 		if( gl_FragColor.r < 0.5 && gl_FragColor.g > 0.2 ){
-		// if( gl_FragColor.r < 0.5 && gl_FragColor.g > 0.2 && gl_FragColor.b < 0.5 ){
 			discard;
 		}
 
@@ -48,10 +140,10 @@
 		
 		// pass grayLevel-ish into cyan-ish
 		gl_FragColor.rgb *= vec3(0.0, 1.0, 1.0);
-
+		
 		// silly glow
 		gl_FragColor.rgb *= 1.3;
-
+		
 		// do a interlace effect
 		float offset = sin(time/3.0);
 		if( mod( (vUv.y+offset) * 96.0, 2.0) < 0.5 ){
@@ -59,16 +151,12 @@
 		}else{
 			gl_FragColor.rgb *= (1.0/1.1);	
 		}
-
+		
 		// add a white noise
 		gl_FragColor.rgb *= (1.0 + (rand(time+vUv.x + vUv.y)-0.5)*0.3);			
-
+	
 		// honor opacity
 		gl_FragColor.a = opacity;
-
-		if( gl_FragColor.a == 0.0 ){
-			discard;
-		}
 	}
 </script>
 <script>
@@ -136,11 +224,11 @@
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
-		cameraParametersUrl: '../../data/data/camera_para.dat',
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL +'../data/data/camera_para.dat',
 		detectionMode: 'mono',
 		maxDetectionRate: 30,
-		canvasWidth: 80*3,
-		canvasHeight: 60*3,
+		canvasWidth: 80*4,
+		canvasHeight: 60*4,
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
@@ -166,7 +254,7 @@
 	// init controls for camera
 	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
 		type : 'pattern',
-		patternUrl : '../../data/data/patt.hiro',
+		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
 		// patternUrl : '../../data/data/patt.kanji',
 		// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
 		changeMatrixMode: 'cameraTransformMatrix'
@@ -183,16 +271,16 @@
 
 	// create videoTexture	
 	var video = document.createElement( 'video' );
-	// video.src = '../../data/videos/headtracking.mp4'
-	// video.src = '../../data/videos/bird_greenscreen.mp4'
-	video.src = '../../data/videos/Star\ wars\ demo\ Alex.mp4'
-	video.src = '../../data/videos/AndraConnect business\ card.mp4'
+	// video.src = 'videos/headtracking.mp4'
+	// video.src = 'videos/bird_greenscreen.mp4'
+	// video.src = 'videos/Star\ wars\ demo\ Alex.mp4'
+	video.src = 'videos/AndraConnect business\ card.mp4'
 
-	// video.autoplay = true;
+	video.autoplay = true;
 	video.webkitPlaysinline = true;
 	video.controls = false;
 	video.loop = true;
-	// video.muted = true
+	video.muted = true
 	var videoTexture = new THREE.VideoTexture(video)
 	videoTexture.needsUpdate = true		
 	videoTexture.minFilter =  THREE.NearestFilter
@@ -204,15 +292,17 @@
 	var geometry = new THREE.PlaneGeometry(1,9/16);
 	var material = new THREE.ShaderMaterial({
 		uniforms: {
-			time: {
-				value: 0.0
-			},
-			opacity: {
-				value: 0.7
-			},
-			tDiffuse: {
-				value: videoTexture
-			},
+			time: { value: 0.0 },
+			opacity: { value: 0.7 },
+			tDiffuse: { value: videoTexture },
+			distortion: { value: 0 },
+			distortion2: { value: 0 },
+			speed: { value: 0.0 },
+			rollHeight: { value: 0.0 },
+			randomSeed: { value: Math.random()*1000 },
+		},
+		defines: {
+			badTvShaderEnabled : 0
 		},
 		vertexShader: document.querySelector( '#vertexShader' ).textContent,
 		fragmentShader: document.querySelector( '#fragmentShader' ).textContent,
@@ -306,12 +396,13 @@
 })()
 	
 	//////////////////////////////////////////////////////////////////////////////
-	//		opacity animation
+	//		scale animation
 	//////////////////////////////////////////////////////////////////////////////
 	
 	// animation opacity
 	var minScale = 0.001
-	var targetScale = new THREE.Vector3(1,1,1)
+	var targetScale = new THREE.Vector3(minScale,minScale,minScale)
+	// var targetScale = new THREE.Vector3(1,1,1)
 	onRenderFcts.push(function(delta){
 		var ratio = 0.2
 		containerMesh.scale.x = containerMesh.scale.x * (1-ratio) + targetScale.x * ratio
@@ -334,7 +425,49 @@
 		}
 	}
 	document.body.addEventListener('click', toggleCloak)
-	document.body.addEventListener('keypress', toggleCloak)
+	// document.body.addEventListener('keypress', toggleCloak)
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+
+
+	// animation opacity
+	var targetValuesLo = {
+		distortion: 0,
+		distortion2: 0,
+		speed: 0,
+		rollHeight: 0,		
+	}
+	var targetValuesHi = {
+		distortion: 3,
+		distortion2: 2,
+		speed: 0.2,
+		rollHeight: 0.4,		
+	}
+	var targetValues = targetValuesLo
+	onRenderFcts.push(function(delta){
+		
+		Object.keys(targetValues).forEach(function(uniformName){
+			var factor = 0.1
+			videoMesh.material.uniforms[uniformName].value *= (1-factor)
+			videoMesh.material.uniforms[uniformName].value += factor * targetValues[uniformName]
+			// console.log(uniformName, '=', videoMesh.material.uniforms[uniformName].value)
+		})
+	})
+	
+	// toggleTvGlitch on click/keypress
+	function toggleTvGlitch(){
+		// debugger
+		if( targetValues === targetValuesLo ){
+			targetValues = targetValuesHi
+		}else{
+			targetValues = targetValuesLo
+		}
+	}
+	// document.body.addEventListener('click', toggleTvGlitch)
+	document.body.addEventListener('keypress', toggleTvGlitch)
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
 	//////////////////////////////////////////////////////////////////////////////////

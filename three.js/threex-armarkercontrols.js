@@ -116,12 +116,16 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 
 			// decompose the matrix into .position, .quaternion, .scale
 			markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
-
+			
+			// dispatchEvent
+			_this.dispatchEvent( { type: 'markerFound' } );
 		}
 	})
 }
 
-THREEx.ArMarkerControls.dispose = function(){
+Object.assign( THREEx.ArMarkerControls.prototype, THREE.EventDispatcher.prototype );
+
+THREEx.ArMarkerControls.prototype.dispose = function(){
 	this.context.removeMarker(this)
 
 	// TODO remove the event listener if needed
