@@ -1,6 +1,9 @@
 var THREEx = THREEx || {}
 
 THREEx.ArVideoInWebgl = function(videoTexture){	
+	var _this = this
+	
+	this.stereo = false
 	//////////////////////////////////////////////////////////////////////////////
 	//	plane always in front of the camera, exactly as big as the viewport
 	//////////////////////////////////////////////////////////////////////////////
@@ -36,6 +39,11 @@ THREEx.ArVideoInWebgl = function(videoTexture){
 		
 		// extract the fov from the projectionMatrix
 		var fov = THREE.Math.radToDeg(Math.atan(1/camera.projectionMatrix.elements[5])) *2;
+		
+		// TODO accessible global yuck
+		if( _this.stereo === true ){
+			fov *= 2
+		}
 		
 		var aspect = parseFloat(arToolkitSource.domElement.style.width.replace(/px$/,''))
 			/

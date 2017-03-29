@@ -66,12 +66,12 @@
 		sourceType : 'webcam',
 		
 		// to read from an image
-		// sourceType : 'image',
-		// sourceUrl : '../../data/images/img.jpg',		
+		sourceType : 'image',
+		sourceUrl : '../../data/images/img.jpg',		
 
 		// // to read from a video
-		sourceType : 'video',
-		sourceUrl : '../../data/videos/headtracking.mp4',		
+		// sourceType : 'video',
+		// sourceUrl : '../../data/videos/headtracking.mp4',		
 	})
 
 	arToolkitSource.init(function onReady(){
@@ -119,7 +119,7 @@
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
 		patternUrl : '../../data/data/patt.hiro',
-		patternUrl : '../../data/data/patt.kanji',
+		// patternUrl : '../../data/data/patt.kanji',
 	})
 
 	//////////////////////////////////////////////////////////////////////////////////

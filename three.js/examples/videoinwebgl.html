@@ -71,8 +71,8 @@
 	//////////////////////////////////////////////////////////////////////////////
 
 	// Apply VR stereo rendering to renderer.
-	var effect = new THREE.VREffect(renderer);
-	effect.setSize(window.innerWidth, window.innerHeight);
+	var vrEffect = new THREE.VREffect(renderer);
+	vrEffect.setSize(window.innerWidth, window.innerHeight);
 
 	// Get the VRDisplay and save it for later.
 	var vrDisplay = null;
@@ -83,25 +83,34 @@
 	});
 
 	function onResize() {
+		console.log('onResize')
 		// handle arToolkitSource resize
 		arToolkitSource.onResize(renderer.domElement)		
 
-		effect.setSize(window.innerWidth, window.innerHeight);
+		vrEffect.setSize(window.innerWidth, window.innerHeight);
+		
+		if( camera instanceof THREE.PerspectiveCamera === true ){
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();			
+		}
 	}
-	// Resize the WebGL canvas when we resize and also when we change modes.
-	window.addEventListener('resize', onResize);
-	window.addEventListener('vrdisplaypresentchange', function onVRDisplayPresentChange() {
-		onResize();
-	});
 	
 	
 	function togglePresent(){
 		if( vrDisplay.isPresenting ){
 			vrDisplay.exitPresent()
+			videoInWebgl.stereo = false
 		}else{
 			vrDisplay.requestPresent([{source: renderer.domElement}]);
+			videoInWebgl.stereo = true
 		}
 	}
+
+	// Resize the WebGL canvas when we resize and also when we change modes.
+	window.addEventListener('resize', onResize);
+	window.addEventListener('vrdisplaypresentchange', function onVRDisplayPresentChange() {
+		onResize();
+	});
 	// vrDisplay.resetPose();
 	document.body.addEventListener('keypress', function(event){
 		if( event.key === 'p' )	togglePresent()
@@ -119,17 +128,19 @@
 		sourceType : 'webcam',
 		
 		// to read from an image
-		// sourceType : 'image',
-		// sourceUrl : '../../data/images/img.jpg',		
+		sourceType : 'image',
+		sourceUrl : '../../data/images/img.jpg',		
 
 		// // to read from a video
 		// sourceType : 'video',
-		// sourceUrl : '../../data/videos/headtracking.mp4',		
+		// sourceUrl : '../../data/videos/headtracking.mp4',
 	})
 
 	arToolkitSource.init(function onReady(){
 		// handle resize of renderer
-		arToolkitSource.onResize(renderer.domElement)		
+		arToolkitSource.onResize(renderer.domElement)	
+		
+		videoTexture.needsUpdate = true	
 	})
 	
 	// handle resize
@@ -171,8 +182,8 @@
 	scene.add(markerRoot)
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
-		patternUrl : '../../data/data/patt.hiro',
-		// patternUrl : '../../data/data/patt.kanji',
+		// patternUrl : '../../data/data/patt.hiro',
+		patternUrl : '../../data/data/patt.kanji',
 	})
 
 	// // Add a repeating grid as a skybox.
@@ -305,7 +316,7 @@
 	// render the scene
 	onRenderFcts.push(function(){
 		// Render the scene.
-		effect.render(scene, camera);
+		vrEffect.render(scene, camera);
 		// renderer.render( scene, camera );
 		stats.update();
 	})
