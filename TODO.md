@@ -1,5 +1,5 @@
 - see about an example of videoinwebgl + vreffect
-- re-integrate dead reckoning
+- DONE re-integrate dead reckoning
   - rename motion prediction into deadreckoningcontrols - more precise
 
 

@@ -1,11 +1,20 @@
 # 1.0.1-dev - Current
 
+- liquid markers are in!
+  [water tweet](https://twitter.com/jerome_etienne/status/844681159112036356) -
+  [boing tweet](https://twitter.com/jerome_etienne/status/845646514814947328)
 - marker invisible cloak are in! with tweening and all :)
-  [first tweet](https://twitter.com/jerome_etienne/status/840563600091688962)
+  [first tweet](https://twitter.com/jerome_etienne/status/840563600091688962) -
+  [video tweet](https://twitter.com/jerome_etienne/status/843757199436472320)
 - minimal.html just got a little bit cleaner
   - aka the simplest way to do AR on the web
   - or webar in less than 10 lines of html! on codepen
+- finished hole-in-the-wall demo - 
+  [duck on my desk tweet](https://twitter.com/jerome_etienne/status/846751371185541121)
 - support preset in a-frame a-marker - preset = ["hiro" | "kanji"]
+- experiementation in dead-reckoning ... not conclusive
+- early work about videoInWebgl - a important componant of phone-in-hmd usecase
+  [first tweet](https://twitter.com/jerome_etienne/status/846805050118864897)
 - better handling of .baseUrl in aframe default parameters
 - fixed artoolkit projection matrix to be more webgl - [projection matrix](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/WebGL_model_view_projection)
   - it was looking to positive-z and y was upside down compared to the usual webgl one
