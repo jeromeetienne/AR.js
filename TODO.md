@@ -1,4 +1,8 @@
 - see about an example of videoinwebgl + vreffect
+- redo parameters-tuning.html
+  - all parameters exposed as button - stored as json in url
+  - to replace the demo.html in a-frame - which is super broken anyway
+
 - DONE re-integrate dead reckoning
   - rename motion prediction into deadreckoningcontrols - more precise
 

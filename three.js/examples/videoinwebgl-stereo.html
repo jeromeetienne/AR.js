@@ -112,12 +112,9 @@
 		// handle arToolkitSource resize
 		arToolkitSource.onResize(renderer.domElement)		
 		
-		// var elementWidth = window.innerWidth;
-		// var elementHeight = window.innerHeight;
-
 		// get width/height from arToolkitSource.domElement
-		var elementWidth = parseInt( arToolkitSource.domElement.style.width.replace(/px$/,''), 10 )
-		var elementHeight = parseInt( arToolkitSource.domElement.style.height.replace(/px$/,''), 10 )
+		var elementWidth = parseFloat( arToolkitSource.domElement.style.width.replace(/px$/,''), 10 )
+		var elementHeight = parseFloat( arToolkitSource.domElement.style.height.replace(/px$/,''), 10 )
 		
 		if( vrEffect !== null ){
 			vrEffect.setSize(elementWidth, elementHeight);
