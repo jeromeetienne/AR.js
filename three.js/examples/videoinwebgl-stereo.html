@@ -88,6 +88,10 @@
 	});
 	
 	function togglePresent(){
+		if( vrDisplay.capabilities.canPresent === false ){
+			alert('You vr display can not present!')
+			return
+		}
 		if( vrDisplay.isPresenting ){
 			vrDisplay.exitPresent()
 		}else{
