@@ -39,9 +39,17 @@ THREEx.ArVideoInWebgl = function(videoTexture){
 		// extract the fov from the projectionMatrix
 		var fov = THREE.Math.radToDeg(Math.atan(1/camera.projectionMatrix.elements[5])) *2;
 		
-		var aspect = parseFloat(arToolkitSource.domElement.style.width.replace(/px$/,''))
-			/
-			parseFloat(arToolkitSource.domElement.style.height.replace(/px$/,''))
+		
+		var elementWidth = parseFloat( arToolkitSource.domElement.style.width.replace(/px$/,''), 10 )
+		var elementHeight = parseFloat( arToolkitSource.domElement.style.height.replace(/px$/,''), 10 )
+		
+		var aspect = elementWidth / elementHeight
+		
+		// camera.fov = fov
+		// if( vrDisplay.isPresenting ){
+		// 	fov *= 2
+		// 	aspect *= 2
+		// }
 		
 		// get seethruPlane height relative to fov
 		seethruPlane.scale.y = Math.tan(THREE.Math.DEG2RAD * fov/2)*position.length() 
