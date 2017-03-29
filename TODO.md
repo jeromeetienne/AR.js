@@ -1,6 +1,6 @@
 - see about an example of videoinwebgl + vreffect
 - re-integrate dead reckoning
-  - rename motion prediction into deadreakoningcontrols - more precise
+  - rename motion prediction into deadreckoningcontrols - more precise
 
 
 - DONE put THREEx.ArToolkitContext.baseURL = '../' in all demo

@@ -12,7 +12,7 @@
 <script src="../threex-artoolkitprofile.js"></script>
 <script src="../threex-armarkercontrols.js"></script>
 <script src="../threex-armarkercontrols.js"></script>
-<script src="motionprediction/threex-motionpredictioncontrols.js"></script>
+<script src="deadreckoning/threex-deadreckoningcontrols.js"></script>
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
@@ -126,9 +126,9 @@ if( false ){
 		// patternUrl : '../../data/data/patt.kanji',
 	})
 }else{	
-	var motionPredictionControls = new THREEx.MotionPredictionControls(markerRoot)
+	var deadReckoningControls = new THREEx.DeadReckoningControls(markerRoot)
 	onRenderFcts.push(function(){
-		motionPredictionControls.update()
+		deadReckoningControls.update()
 	})
 
 	var knownPositionMesh	= new THREE.Object3D();
@@ -141,13 +141,14 @@ if( false ){
 	})
 	
 	artoolkitMarker.addEventListener('markerFound', function(event){
-		motionPredictionControls.setKnownPose(knownPositionMesh.position, knownPositionMesh.quaternion, knownPositionMesh.scale)
+		deadReckoningControls.setKnownPose(knownPositionMesh.position, knownPositionMesh.quaternion, knownPositionMesh.scale)
 	})
 	onRenderFcts.push(function(delta){
 		markerRoot.visible = knownPositionMesh.visible
-		motionPredictionControls.enabled = knownPositionMesh.visible
+		deadReckoningControls.enabled = knownPositionMesh.visible
 	})
 }
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
