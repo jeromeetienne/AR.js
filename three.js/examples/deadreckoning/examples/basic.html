@@ -3,13 +3,13 @@
 <!-- three.js library -->
 <script src='../../vendor/three.js/build/three.js'></script>
 
-<script src="../threex-motionpredictioncontrols.js"></script>
+<script src="../threex-deadreckoningcontrols.js"></script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
 <div style='position: absolute; width: 100%; padding: 5px; font-family:Monospace; text-align:center;'>
-	threex.motionpredictioncontrols - a three.js controls to do motion prediction
+	threex.deadreckoningcontrols - a three.js controls to do dead reckoning
 	<br/>
-	The <b>Cube</b> is using motion predictions, based on the <b>torus</b>.
+	The <b>Cube</b> is using dead reckoning, based on the <b>torus</b>.
 	<br/>
 	The <b>Cube</b> is updated at every frame. The <b>torus</b> is updated 10 time per seconds
 </div><script>
@@ -60,7 +60,7 @@
 	var predictedMesh = new THREE.Mesh( geometry, material );
 	predictedMesh.position.z = -3
 	scene.add( predictedMesh );
-	var cubeControls = new THREEx.MotionPredictionControls(predictedMesh)
+	var cubeControls = new THREEx.DeadReckoningControls(predictedMesh)
 	onRenderFcts.push(function(){
 		cubeControls.update()
 	})

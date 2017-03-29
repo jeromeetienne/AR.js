@@ -3,8 +3,8 @@
  * 
  * # Description
  * - Model = setKnownPose Object is the object controlled by ArMarkerControls,  markerDetected
- * - markerRoot is controlled by THREEx.MotionPredictionControls
- * - motionPredictionControls = new THREEx.MotionPredictionControls(markerRoot)
+ * - markerRoot is controlled by THREEx.DeadReckoningControls
+ * - motionPredictionControls = new THREEx.DeadReckoningControls(markerRoot)
  * - markerDetected is controlled by THREEx.ArMarkerControls
  * - var hasBeenUpdated = arToolkitContext.update() - modification to do
  * - if( hasBeenUpdated ) motionPredictionControls.setKnownPose(markerDetected)
@@ -13,7 +13,7 @@
 
 var THREEx = THREEx || {}
 
-THREEx.MotionPredictionControls = function(object){
+THREEx.DeadReckoningControls = function(object){
 	this.object = object
 	this.enabled = true
 
@@ -33,7 +33,7 @@ THREEx.MotionPredictionControls = function(object){
 	}
 }
 
-THREEx.MotionPredictionControls.prototype.update = function(){
+THREEx.DeadReckoningControls.prototype.update = function(){
 	var lastPose = this._lastPose
 	
 	// honor this.enabled
@@ -65,7 +65,7 @@ THREEx.MotionPredictionControls.prototype.update = function(){
 		.multiply(deltaQuaternion.normalize())
 }
 
-THREEx.MotionPredictionControls.prototype.setKnownPose = function (newPosition, newQuaternion, newScale) {
+THREEx.DeadReckoningControls.prototype.setKnownPose = function (newPosition, newQuaternion, newScale) {
 	var lastPose = this._lastPose
 	var present = performance.now()
 	var deltaTime = present - lastPose.createdAt

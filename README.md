@@ -127,9 +127,9 @@ Three.js Examples:
 - [profile](https://jeromeetienne.github.io/AR.js/three.js/examples/profile.html) : 
   three.js example for profile
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/profile.html))
-- [motionprediction](https://jeromeetienne.github.io/AR.js/three.js/examples/motionprediction.html) : 
-  three.js example for motionprediction
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/motionprediction.html))
+- [deadreckoning](https://jeromeetienne.github.io/AR.js/three.js/examples/deadreckoning.html) : 
+  Experiment with dead reckoning - not conclusive :(
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/deadreckoning.html))
 - [hole-in-the-wall](https://jeromeetienne.github.io/AR.js/three.js/examples/hole-in-the-wall.html) : 
   three.js example for hole-in-the-wall
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/hole-in-the-wall.html))
@@ -149,8 +149,11 @@ Three.js Examples:
   A holographic-message in Augmented reality. Part of a business card for [@AndraConnect](https://twitter.com/AndraConnect)
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/holographic-message/index.html))
 - [videoinwebgl](https://jeromeetienne.github.io/AR.js/three.js/examples/videoinwebgl.html) : 
-  three.js example for videoinwebgl
+  Add video in webgl - useful for phone-in-hmd usecase - work in progress
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/videoinwebgl.html))
+- [videoinwebgl-stereo](https://jeromeetienne.github.io/AR.js/three.js/examples/videoinwebgl-stereo.html) : 
+  Add video in webgl - useful for phone-in-hmd usecase - adding stereo - work in progress
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/videoinwebgl-stereo.html))
 
 a-frame Examples: 
 

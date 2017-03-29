@@ -2,6 +2,9 @@
 <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 <!-- three.js library -->
 <script src='vendor/three.js/build/three.js'></script>
+<script src='vendor/three.js/examples/js/controls/VRControls.js'></script>
+<script src='vendor/three.js/examples/js/effects/VREffect.js'></script>
+<script src='vendor/webvr-polyfill.js'></script>
 <script src="vendor/three.js/examples/js/libs/stats.min.js"></script>
 <!-- jsartookit -->
 <script src="../vendor/jsartoolkit5/build/artoolkit.min.js"></script>
@@ -55,9 +58,72 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// Create a camera
-	var camera = new THREE.Camera();
+	// var camera = new THREE.Camera();
+	// scene.add(camera);
+
+	// Create a three.js camera.
+	var camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);	
 	scene.add(camera);
 
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+
+	// Apply VR stereo rendering to renderer.
+	var vrEffect = null
+	if( true ){
+		vrEffect = new THREE.VREffect(renderer);
+		vrEffect.setSize(window.innerWidth, window.innerHeight);
+	}
+
+	// Get the VRDisplay and save it for later.
+	var vrDisplay = null;
+	navigator.getVRDisplays().then(function(displays){
+		if (displays.length > 0) {
+			vrDisplay = displays[0];
+		}
+	});
+	window.addEventListener('vrdisplaypresentchange', function onVRDisplayPresentChange() {
+		onResize();
+	});
+	
+	function togglePresent(){
+		if( vrDisplay.isPresenting ){
+			vrDisplay.exitPresent()
+		}else{
+			vrDisplay.requestPresent([{source: renderer.domElement}]);
+		}
+	}
+	document.body.addEventListener('keypress', function(event){
+		if( event.key === 'p' )	togglePresent()
+	})
+	document.body.addEventListener('click', function(event){
+		togglePresent()
+	})
+
+	// Resize the WebGL canvas when we resize and also when we change modes.
+	window.addEventListener('resize', onResize);
+
+	function onResize() {
+		// handle arToolkitSource resize
+		arToolkitSource.onResize(renderer.domElement)		
+		
+		// var elementWidth = window.innerWidth;
+		// var elementHeight = window.innerHeight;
+
+		// get width/height from arToolkitSource.domElement
+		var elementWidth = parseInt( arToolkitSource.domElement.style.width.replace(/px$/,''), 10 )
+		var elementHeight = parseInt( arToolkitSource.domElement.style.height.replace(/px$/,''), 10 )
+		
+		if( vrEffect !== null ){
+			vrEffect.setSize(elementWidth, elementHeight);
+		}
+		
+		if( camera instanceof THREE.PerspectiveCamera === true ){
+			camera.aspect = elementWidth / elementHeight;
+			camera.updateProjectionMatrix();			
+		}
+	}
 	////////////////////////////////////////////////////////////////////////////////
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
@@ -66,9 +132,9 @@
 		// to read from the webcam 
 		sourceType : 'webcam',
 		
-		// to read from an image
-		sourceType : 'image',
-		sourceUrl : '../../data/images/img.jpg',		
+		// // to read from an image
+		// sourceType : 'image',
+		// sourceUrl : '../../data/images/img.jpg',		
 
 		// // to read from a video
 		// sourceType : 'video',
@@ -76,16 +142,9 @@
 	})
 
 	arToolkitSource.init(function onReady(){
-		// handle resize of renderer
-		arToolkitSource.onResize(renderer.domElement)		
+		onResize()
 	})
 	
-	// handle resize
-	window.addEventListener('resize', function(){
-		// handle arToolkitSource resize
-		arToolkitSource.onResize(renderer.domElement)		
-	})
-
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
 	////////////////////////////////////////////////////////////////////////////////	
@@ -100,8 +159,10 @@
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
-		// copy projection matrix to camera
-		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+		if( camera instanceof THREE.PerspectiveCamera === false ){
+			// copy projection matrix to camera
+			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
+		}
 	})
 
 	// update artoolkit on every frame
@@ -232,7 +293,12 @@
 	document.body.appendChild( stats.dom );
 	// render the scene
 	onRenderFcts.push(function(){
-		renderer.render( scene, camera );
+		// Render the scene.
+		if( vrEffect !== null ){
+			vrEffect.render(scene, camera);
+		}else{
+			renderer.render( scene, camera );
+		}
 		stats.update();
 	})
 
