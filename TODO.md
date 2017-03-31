@@ -1,7 +1,13 @@
-- see about an example of videoinwebgl + vreffect
 - redo parameters-tuning.html
   - all parameters exposed as button - stored as json in url
   - to replace the demo.html in a-frame - which is super broken anyway
+- see about an example of videoinwebgl + vreffect
+- for refraction, do some deforming mirror effect
+  - various shape which will act as mirrors
+  - add fresnel
+  - http://filmicworlds.com/blog/everything-has-fresnel/
+  - http://kylehalladay.com/blog/tutorial/2014/02/18/Fresnel-Shaders-From-The-Ground-Up.html
+  - http://www.tingting-wu.com/webgl_projects/ttwu_shaders.html
 
 - DONE re-integrate dead reckoning
   - rename motion prediction into deadreckoningcontrols - more precise
@@ -21,13 +27,6 @@
   - it can be like the finger in matrix - https://www.youtube.com/watch?v=b2MSF35IxVE&feature=youtu.be&t=98
   - http://mrdoob.com/lab/javascript/webgl/voxels_liquid/index.html
 
-# star war hologram
-- mvp DONE
-- DONE imported shader from badtvpproc - http://jeromeetienne.github.io/threex.badtvpproc/examples/demo.html
-- take sound some badtvpproc
-- maybe some particules
-- get video: (i) write text (ii) record it (iii) minimal editing
-- do business card
   
 # Multimarker
 - how to say 'those markers will start act as one'
