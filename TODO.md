@@ -1,13 +1,23 @@
 - redo parameters-tuning.html
   - all parameters exposed as button - stored as json in url
   - to replace the demo.html in a-frame - which is super broken anyway
-- see about an example of videoinwebgl + vreffect
 - for refraction, do some deforming mirror effect
+  - put dat.gui in it
   - various shape which will act as mirrors
-  - add fresnel
+  - cylinder with shrinked middle, dilated middle
+  - animated geometry ?
+- do a jelwery examples
+  - get a model or ring, one model of diamond
+  - https://www.transpacific-software.com/webgl/ring.html?tPage=7
+  - https://www.shadertoy.com/view/ltfXDM
+  - a refraction
+  - one ruby, one gold
+  
+- add fresnel with buble - even with fake envmap
   - http://filmicworlds.com/blog/everything-has-fresnel/
   - http://kylehalladay.com/blog/tutorial/2014/02/18/Fresnel-Shaders-From-The-Ground-Up.html
   - http://www.tingting-wu.com/webgl_projects/ttwu_shaders.html
+- see about an example of videoinwebgl + vreffect
 
 - DONE re-integrate dead reckoning
   - rename motion prediction into deadreckoningcontrols - more precise
