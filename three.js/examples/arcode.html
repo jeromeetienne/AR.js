@@ -15,10 +15,14 @@
 </head>
 
 <body>
-        <div class="row" >
-                <h1>AR-Code</h1>
 
-                <div class="row col s12">
+        <div class="row" id='row-ui' >
+                <div class="col s12">
+                        <a class="waves-effect waves-light btn" onclick='hideUI()'><i class="material-icons right">info</i>Hide</a>
+                        <h1 class='center-align'>AR-Code</h1>
+                </div>
+
+                <div class="col s12">
                         <input id="urlQrCode" type="text">
                 </div>
 
@@ -27,8 +31,19 @@
                         <label for="saveInUrl">Save in url</label>
                 </div>                
 
-                <div class="input-field col s2 offset-s4">
+                <div class="input-field col s4 offset-s4">
                         <a class="waves-effect waves-light btn-large">Generate</a>
+                </div>                
+        </div>
+        <div class="row">
+                <div class="col s2">
+                        <a class="waves-effect waves-light btn" onclick='showUI()' id='btnShowUI' style='display:none;'><i class="material-icons right">info</i>Show</a>
+                </div>                
+                <div class="col s10"></div>
+                <div class="col s12">
+                        <div class="valign-wrapper">
+                                <div class="valign center" style="width: 100%;" id='arcode-container' ></div>
+                        </div>
                 </div>                
         </div>
         
@@ -47,7 +62,18 @@
         </script>
 
 <script>
-        
+
+
+function hideUI(){
+        document.querySelector('#row-ui').style.display = 'none'
+        document.querySelector('#btnShowUI').style.display = 'block'
+}
+
+function showUI(){
+        document.querySelector('#row-ui').style.display = 'block'
+        document.querySelector('#btnShowUI').style.display = 'none'
+}
+
 /**
  * - add input - generate
  * - add download image
@@ -59,7 +85,7 @@ document.querySelector('#urlQrCode').addEventListener('change', update)
 document.querySelector('#saveInUrl').addEventListener('change', update)
 
 var canvas = document.createElement('canvas');
-document.body.appendChild(canvas)
+document.querySelector('#arcode-container').appendChild(canvas)
 canvas.width  = 1024;
 canvas.height = 1024;
 canvas.style.width  = '512px';
@@ -80,7 +106,6 @@ hiroImage.onload = function() {
 
         update()
 }
-hiroImage.src = '../../data/images/HIRO.jpg';
 hiroImage.src = '../../data/images/hiro.png';
 
 function update(){
