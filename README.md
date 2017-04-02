@@ -86,6 +86,10 @@ Other crazy ideas we’ve been working on include a [hole in the wall](https://t
 ![screen shot 2017-03-12 at 15 19 51](https://cloud.githubusercontent.com/assets/6317076/23833024/b2e045be-0737-11e7-9ef0-8e1ac9e49ba8.png)
 ![screen shot 2017-03-07 at 10 08 39](https://cloud.githubusercontent.com/assets/6317076/23833015/947f6abe-0737-11e7-9a0d-1ea919f6ffbe.png)
 
+# principles
+- "Shared #ar is a lot more real than solo #AR." - Augmented reality principle [tweet](https://twitter.com/jerome_etienne/status/847889867296124933)
+- "The marker must be a portal from where the virtual emerges." by @AndraConnect - #AR principles at dinner 😏 [tweet](https://twitter.com/jerome_etienne/status/842112692211056640)
+
 # Status
 - At the three.js level is the main one. It is working well and efficiently
 - a-frame component - it export ```<a-marker>``` tag. It becomes real easy to use.
@@ -151,10 +155,13 @@ Three.js Examples:
 - [videoinwebgl](https://jeromeetienne.github.io/AR.js/three.js/examples/videoinwebgl.html) :
   Add video in webgl - useful for phone-in-hmd usecase - work in progress
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/videoinwebgl.html))
-- [videoinwebgl-stereo](https://jeromeetienne.github.io/AR.js/three.js/examples/videoinwebgl-stereo.html) :
-  Add video in webgl - useful for phone-in-hmd usecase - adding stereo - work in progress
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/videoinwebgl-stereo.html))
-
+- [ar-in-webvr](https://jeromeetienne.github.io/AR.js/three.js/examples/ar-in-webvr.html) :
+  Displaying AR in WebVR - work in progress
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/ar-in-webvr.html))
+- [arcode](https://jeromeetienne.github.io/AR.js/three.js/examples/arcode.html) :
+  generator of AR-Code
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arcode.html))
+  
 a-frame Examples:
 
 - [basic](https://jeromeetienne.github.io/AR.js/aframe/examples/basic.html) :
@@ -247,6 +254,14 @@ I exited to see what people will do with AR.js :)
   - using gravity it is possible to know if the marker is on a wall or on a table
   - once we flag the marker as on a wall, we can reduce shakyness from video detection
   - by using gravity sensor
+- discover marker absolute orientation by comparing that to the phone gravity
+  - can be used to know if the marker is on a table, or on a wall
+- area learning with markers 
+  - auto generation of multimarkers pattern
+  - the phone is in a mode acquisition
+  - the user walks around the room
+  - the phone takes statistic on markers location
+  - the actual area will be the average of those statistics.
 - cloud computing to get better rendering
   - fancy name for easy tech -
   [Capture a MediaStream From a Canvas, Video or Audio Element](https://developers.google.com/web/updates/2016/10/capture-stream)
@@ -257,6 +272,7 @@ I exited to see what people will do with AR.js :)
 - use a pingpong ball or a metallic ball to estimate the reality lighting
   - https://www.youtube.com/watch?v=fhFzStkoE50&feature=youtu.be&t=59 for ping pong ball
   - https://www.researchgate.net/publication/220222173_Image_Based_Shadowing_in_Real-Time_Augmented_Reality for metallic ball  
+- 
 
 # Browser Support
 Demo tested on the following browser setups:
@@ -273,6 +289,11 @@ Credits: @HelloDeadline, @sorianog
 # Ideas
 - AR Gaming - https://www.youtube.com/watch?v=EmGGGzibGok
 - AR Business Card - https://vimeo.com/4979525
+- plug ar.js into sketchfab 
+  - do a mockup with the monkey script
+  - add a AR button on sketchfab, it pops up on marker on the screen with the instruction to connect to it
+  - then you display the model in 3d on top of the screen
+  - some simple user content
 - multi user AR world : much easier to code than you think - https://twitter.com/jerome_etienne/status/842219346030149632
 - IDEA: produce a single image able to do qr-code and pattern marker. https://twitter.com/nlehuen/status/834115970641829888
   - about having an image able to do qr-code and pattern marker at the same time. If we have such image, we skip one step.
@@ -288,6 +309,13 @@ Credits: @HelloDeadline, @sorianog
   - just put each marker in front of the camera - using image / photo of screen
   - and go thru each and every matrix type detection
 - Nice effect with video texture - https://www.youtube.com/watch?v=Y9HMn6bd-v8&feature=youtu.be&t=172
+
+# FAQ
+
+## How small can we print the markers ?
+There is no absolute. It is a ratio between the physical size of the marker, and the resolution of the camera image.
+It is a tradeoff: the larger the camera image, the slower it is running.
+The larger the camera image, the smaller the marker can be.
 
 # How To Release ?
 

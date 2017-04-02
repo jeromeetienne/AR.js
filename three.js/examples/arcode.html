@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <!--Import Google Icon Font-->
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css"  media="screen,projection"/>
+        
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <!-- https://davidshimjs.github.io/qrcodejs/ -->
+        <script src='http://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js'></script>
+</head>
+
+<body>
+        <div class="row" >
+                <h1>AR-Code</h1>
+
+                <div class="row col s12">
+                        <input id="urlQrCode" type="text">
+                </div>
+
+                <div class="input-field col s3">
+                        <input type="checkbox" id="saveInUrl" />
+                        <label for="saveInUrl">Save in url</label>
+                </div>                
+
+                <div class="input-field col s2 offset-s4">
+                        <a class="waves-effect waves-light btn-large">Generate</a>
+                </div>                
+        </div>
+        
+</div>
+
+
+        
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
+
+        <script type="text/javascript">
+        $(document).ready(function() {
+                Materialize.updateTextFields();
+        });
+        </script>
+
+<script>
+        
+/**
+ * - add input - generate
+ * - add download image
+ * - add instruction on how to use it
+ */
+
+
+document.querySelector('#urlQrCode').addEventListener('change', update)
+document.querySelector('#saveInUrl').addEventListener('change', update)
+
+var canvas = document.createElement('canvas');
+document.body.appendChild(canvas)
+canvas.width  = 1024;
+canvas.height = 1024;
+canvas.style.width  = '512px';
+canvas.style.height = '512px';
+
+var context = canvas.getContext('2d')
+
+var hiroImage = new Image;
+hiroImage.onload = function() {
+        console.log('hiro image loaded')
+        
+        if( location.hash.substr(1) !== '' ){
+                var url = decodeURIComponent(location.hash.substr(1))
+                document.querySelector('#urlQrCode').value = url
+        }else{
+                document.querySelector('#urlQrCode').value = 'https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html'
+        }
+
+        update()
+}
+hiroImage.src = '../../data/images/HIRO.jpg';
+hiroImage.src = '../../data/images/hiro.png';
+
+function update(){
+        var url = document.querySelector('#urlQrCode').value
+        
+        generateArCode(url, function(){
+                console.log('ar-code generated for', url)
+        })
+        
+        var url = document.querySelector('#urlQrCode').value
+        var domElement = document.querySelector('#saveInUrl')
+        if( domElement.checked === true ){
+                location.hash = '#' + encodeURIComponent(url)
+        }else{
+                history.pushState("", document.title, location.pathname + location.search);
+        }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//                Code Separator
+//////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Generate AR-Code
+ */
+function generateArCode(url, onLoad){
+        var context = canvas.getContext('2d')
+        
+        context.drawImage(hiroImage, 0, 0, canvas.width, canvas.height);
+
+        generateQrCodeImage(url, function onLoaded(qrCodeImage){
+                console.log('qrcode generated')
+                context.drawImage(qrCodeImage,canvas.width*0.5,canvas.height*0.3,canvas.width*0.2, canvas.height*0.2);      
+                
+                onLoad && onLoad()          
+        })
+}
+
+/**
+ * Generate AR-Code
+ */
+function generateQrCodeImage(url, onLoaded){
+        var container = document.createElement('div')
+
+        var qrcode = new QRCode(container, {
+                text: url,
+                width: 256,
+                height: 256,
+                colorDark : '#000000',
+                colorLight : '#ffffff',
+                // correctLevel : QRCode.CorrectLevel.H
+        });
+
+        var qrCodeImage = container.querySelector('img')
+        qrCodeImage.addEventListener('load', function(){
+                onLoaded(qrCodeImage)
+        })
+        
+}
+                
+</script></body></html>

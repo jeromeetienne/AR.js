@@ -1,6 +1,10 @@
+- moving three.js/ at the root ?
+- qrcode-in-marker generator: you give an url, i return a hiro with a qrcode in it
+  - add async await function to load asset
 - redo parameters-tuning.html
   - all parameters exposed as button - stored as json in url
   - to replace the demo.html in a-frame - which is super broken anyway
+  
 - for refraction, do some deforming mirror effect
   - put dat.gui in it
   - various shape which will act as mirrors
