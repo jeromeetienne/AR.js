@@ -1,9 +1,13 @@
 - moving three.js/ at the root ?
-- qrcode-in-marker generator: you give an url, i return a hiro with a qrcode in it
-  - add async await function to load asset
+- add show/hide into arcode.html url
 - redo parameters-tuning.html
   - all parameters exposed as button - stored as json in url
   - to replace the demo.html in a-frame - which is super broken anyway
+- come back on the multi marker
+  - find a working version - git checkout 7cc3bedc54fdb4fe9f92138792c36164a3c5c81a
+  - and slowly come back to understand why it doesnt work
+  - https://github.com/artoolkit/jsartoolkit5/issues/34
+  - work on old compile of .min.js - what changed in the new version ? is that the same artoolkit version ? is that the new compilation ?
   
 - for refraction, do some deforming mirror effect
   - put dat.gui in it
@@ -16,7 +20,6 @@
   - https://www.shadertoy.com/view/ltfXDM
   - a refraction
   - one ruby, one gold
-  
 - add fresnel with buble - even with fake envmap
   - http://filmicworlds.com/blog/everything-has-fresnel/
   - http://kylehalladay.com/blog/tutorial/2014/02/18/Fresnel-Shaders-From-The-Ground-Up.html

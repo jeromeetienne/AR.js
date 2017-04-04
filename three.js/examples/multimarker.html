@@ -4,7 +4,7 @@
 <script src='vendor/three.js/build/three.js'></script>
 <script src="vendor/three.js/examples/js/libs/stats.min.js"></script>
 <!-- jsartookit -->
-<script src="../vendor/jsartoolkit5/build/artoolkit.min.js"></script>
+<script src="../vendor/jsartoolkit-symlink/build/artoolkit.min.js"></script>
 <script src="../vendor/jsartoolkit5/js/artoolkit.api.js"></script>
 <!-- include threex.artoolkit -->
 <script src="../threex-artoolkitsource.js"></script>
@@ -93,8 +93,6 @@
 	var arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: '../../data/data/camera_para.dat',
 		detectionMode: 'mono',
-		canvasWidth: 80*3,
-		canvasHeight: 60*3,
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
@@ -120,6 +118,10 @@
 		type : 'pattern',
 		patternUrl : '../../data/data/patt.hiro',
 		// patternUrl : '../../data/data/patt.kanji',
+
+		type : 'multiMarker',
+		patternUrl : '../../data/multi/marker-small.dat',
+		// patternUrl : '../../data/multi-barcode-4x3.dat',
 	})
 
 	//////////////////////////////////////////////////////////////////////////////////
