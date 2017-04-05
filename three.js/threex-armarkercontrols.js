@@ -130,7 +130,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 
 		// decompose the matrix into .position, .quaternion, .scale
 		markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
-console.log('markerObject3D.position', markerObject3D.position)
+
 		// dispatchEvent
 		_this.dispatchEvent( { type: 'markerFound' } );
 	}

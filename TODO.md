@@ -1,13 +1,22 @@
-- moving three.js/ at the root ?
 - add show/hide into arcode.html url
+
 - redo parameters-tuning.html
   - all parameters exposed as button - stored as json in url
   - to replace the demo.html in a-frame - which is super broken anyway
+
 - come back on the multi marker
   - find a working version - git checkout 7cc3bedc54fdb4fe9f92138792c36164a3c5c81a
   - and slowly come back to understand why it doesnt work
   - https://github.com/artoolkit/jsartoolkit5/issues/34
   - work on old compile of .min.js - what changed in the new version ? is that the same artoolkit version ? is that the new compilation ?
+  - generation of multimarker file on the fly and load it in - blob url
+  - http://stackoverflow.com/questions/30864573/what-is-blob-url-why-it-is-used-explain
+
+- independant marker demo: do the multi marker track stuff - like track on ps4 vita
+  - take it from the roller coaster thing
+  - it is a independant marker think
+
+- moving three.js/ at the root ?
   
 - for refraction, do some deforming mirror effect
   - put dat.gui in it
