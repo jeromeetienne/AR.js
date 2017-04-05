@@ -1,8 +1,4 @@
-- add show/hide into arcode.html url
 
-- redo parameters-tuning.html
-  - all parameters exposed as button - stored as json in url
-  - to replace the demo.html in a-frame - which is super broken anyway
 
 - come back on the multi marker
   - find a working version - git checkout 7cc3bedc54fdb4fe9f92138792c36164a3c5c81a
@@ -12,12 +8,26 @@
   - generation of multimarker file on the fly and load it in - blob url
   - http://stackoverflow.com/questions/30864573/what-is-blob-url-why-it-is-used-explain
 
-- independant marker demo: do the multi marker track stuff - like track on ps4 vita
-  - take it from the roller coaster thing
-  - it is a independant marker think
+# Multimarker psvita workflow
+- PS vita workflow : the user put the card on the table, the way it likes
+  then we locate each marker and build a multimarker description file
+  we start to track this multimarker.
 
-- moving three.js/ at the root ?
-  
+- start printing barcode markers.
+  - each is a number barcode - 1 2 3 4 5
+- better would be to actually use ps vita card
+  - find out which barcode it is
+  - try each possible barcode encoding
+- just take known barcode images from artoolkit repository
+  - print them in a pdf
+
+# Misc
+- add show/hide into arcode.html url
+  - thus the apps workflow is finished
+- redo parameters-tuning.html
+  - all parameters exposed as button - stored as json in url
+  - to replace the demo.html in a-frame - which is super broken anyway
+- moving three.js/ at the root ?  
 - for refraction, do some deforming mirror effect
   - put dat.gui in it
   - various shape which will act as mirrors
