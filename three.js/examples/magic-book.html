@@ -49,7 +49,12 @@
 
 	// init scene and camera
 	var scene	= new THREE.Scene();
+	var ambient = new THREE.AmbientLight( 0x666666 );
+	scene.add( ambient );
 
+	var directionalLight = new THREE.DirectionalLight( 0x887766 );
+	directionalLight.position.set( -1, 1, 1 ).normalize();
+	scene.add( directionalLight );
 	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
@@ -149,19 +154,22 @@
 			wireframeLinewidth: 4
 		})
 	);
+	glyph.position.y = 0.5
 	parent.add( glyph );
 
 	// GLYPH2 (CORE)
 	var glyph2 = new THREE.Mesh( 
 		new THREE.IcosahedronGeometry(1, 1),
 		new THREE.MeshPhongMaterial({
-			color: COLOR1,
+			color: 'black',
 			specular: COLOR1,
 			shading: THREE.FlatShading,
-			opacity: 0.9,
-			ambient: 0x202830
+			transparent : true,
+			// opacity: 0.9,
+			// ambient: 0x202830
 		})
 	);
+	glyph2.position.y = 0.5
 	parent.add( glyph2 );
 	
 
@@ -172,12 +180,19 @@
 			color: COLOR2,
 			wireframe: true,
 			opacity: 1,
-			wireframeLinewidth: 4
+			wireframeLinewidth: 4,
+					blending	: THREE.AdditiveBlending, 
+					opacity		: 01,
+					// depthTest: false, 
+					transparent : true,
 		})
 	);
+	glyph2wf.position.copy( glyph2.position )
+	glyph2wf.rotation.copy( glyph2.rotation )
+
 	glyph2wf.position = glyph2.position;
 	glyph2wf.rotation = glyph2.rotation;
-	glyph2wf.scale.copy(glyph2.scale).multiplyScalar(1.01)
+	glyph2wf.scale.copy(glyph2.scale).multiplyScalar(1.00)
 	parent.add( glyph2wf );	
 	
 	// GLYPHE2 GLOW OCCLUDER
@@ -191,10 +206,10 @@
 			// ambient: 0x000000
 		})
 	);
-	glyph2oc.position = glyph2.position;
-	glyph2oc.rotation = glyph2.rotation;
-	glyph2oc.scale.copy(glyph2.scale).multiplyScalar(0.93)
-	parent.add( glyph2oc );
+	glyph2oc.position.copy( glyph2.position )
+	glyph2oc.rotation.copy( glyph2.rotation )
+	glyph2oc.scale.copy(glyph2.scale).multiplyScalar(0.9)
+	// parent.add( glyph2oc );
 
 	onRenderFcts.push(function(delta, now){
 		glyph.rotation.x += 0.004;
@@ -202,6 +217,12 @@
 		
 		glyph2.rotation.x -= 0.004;
 		glyph2.rotation.z += 0.003;	
+
+		glyph2wf.rotation.x -= 0.004;
+		glyph2wf.rotation.z += 0.003;	
+
+		glyph2oc.rotation.x -= 0.004;
+		glyph2oc.rotation.z += 0.003;	
 	})
 })()
 
@@ -210,6 +231,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 ;(function(){
+	// return
 	var COLOR1 = new THREE.Color(0x77bbff);
 	var COLOR2 = new THREE.Color(0x8ec5e5);
 	var COLOR3 = new THREE.Color(0x97a8ba);
