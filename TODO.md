@@ -1,14 +1,17 @@
-
-
-- come back on the multi marker
-  - find a working version - git checkout 7cc3bedc54fdb4fe9f92138792c36164a3c5c81a
+# Multimarker
+- find a working version - git checkout 7cc3bedc54fdb4fe9f92138792c36164a3c5c81a
   - and slowly come back to understand why it doesnt work
   - https://github.com/artoolkit/jsartoolkit5/issues/34
   - work on old compile of .min.js - what changed in the new version ? is that the same artoolkit version ? is that the new compilation ?
-  - generation of multimarker file on the fly and load it in - blob url
+- generation of multimarker file on the fly and load it in - blob url
   - http://stackoverflow.com/questions/30864573/what-is-blob-url-why-it-is-used-explain
+- multiple-indepandent-markers in three.js
+- take a picture with kanji and hiro
+  - recognize them independantly
+  - build a multimarker file with them
 
-# Multimarker psvita workflow
+### PS vita workflow
+- perfect for desk augmented reality
 - PS vita workflow : the user put the card on the table, the way it likes
   then we locate each marker and build a multimarker description file
   we start to track this multimarker.
@@ -19,7 +22,10 @@
   - find out which barcode it is
   - try each possible barcode encoding
 - just take known barcode images from artoolkit repository
+  - https://github.com/artoolkit/artoolkit5/tree/master/doc/patterns/Matrix%20code%203x3%20(72dpi)
   - print them in a pdf
+  - google draw
+
 
 # Misc
 - add show/hide into arcode.html url
