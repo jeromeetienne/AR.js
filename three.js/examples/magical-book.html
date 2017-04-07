@@ -2,6 +2,9 @@
 <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 <!-- three.js library -->
 <script src='vendor/three.js/build/three.js'></script>
+<script src="vendor/three.js/examples/js/modifiers/ExplodeModifier.js"></script>
+<script src="vendor/three.js/examples/js/modifiers/TessellateModifier.js"></script>
+
 <script src="vendor/three.js/examples/js/libs/stats.min.js"></script>
 <!-- jsartookit -->
 <script src="../vendor/jsartoolkit5/build/artoolkit.min.js"></script>
@@ -13,6 +16,32 @@
 <script src="../threex-armarkercontrols.js"></script>
 <script src="../threex-armarkercontrols.js"></script>
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
+
+<script type="x-shader/x-vertex" id="vertexshader">
+	uniform float amplitude;
+	attribute vec3 customColor;
+	attribute vec3 displacement;
+	varying vec3 vNormal;
+	varying vec3 vColor;
+	void main() {
+		vNormal = normal;
+		vColor = customColor;
+		vec3 newPosition = position + normal * amplitude * displacement;
+		gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+	}
+</script>
+
+<script type="x-shader/x-fragment" id="fragmentshader">
+	varying vec3 vNormal;
+	varying vec3 vColor;
+	void main() {
+		const float ambient = 0.4;
+		vec3 light = vec3( 1.0 );
+		light = normalize( light );
+		float directional = max( dot( vNormal, light ), 0.0 );
+		gl_FragColor = vec4( ( directional + ambient ) * vColor, 1.0 );
+	}
+</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
 	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - developement playground
@@ -132,9 +161,64 @@
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
 
+;(function(){
+return
+	var geometry = new THREE.IcosahedronGeometry(0.5, 2)
+
+	var explodeModifier = new THREE.ExplodeModifier();
+	explodeModifier.modify( geometry );
+	var numFaces = geometry.faces.length;
+	//
+	geometry = new THREE.BufferGeometry().fromGeometry( geometry );
+	var colors = new Float32Array( numFaces * 3 * 3 );
+	var displacement = new Float32Array( numFaces * 3 * 3 );
+	var color = new THREE.Color();
+	for ( var f = 0; f < numFaces; f ++ ) {
+		var index = 9 * f;
+
+		var h = 0.2 * Math.random();
+		var s = 0.5 + 0.5 * Math.random();
+		var l = 0.5 + 0.5 * Math.random();
+		color.setHSL( h, s, l );
+		color.set('cyan')
+
+		var d = 1 * ( Math.random() );
+		// var d = 10;
+		for ( var i = 0; i < 3; i ++ ) {
+			colors[ index + ( 3 * i )     ] = color.r;
+			colors[ index + ( 3 * i ) + 1 ] = color.g;
+			colors[ index + ( 3 * i ) + 2 ] = color.b;
+			displacement[ index + ( 3 * i )     ] = d;
+			displacement[ index + ( 3 * i ) + 1 ] = d;
+			displacement[ index + ( 3 * i ) + 2 ] = d;
+		}
+	}
+	geometry.addAttribute( 'customColor', new THREE.BufferAttribute( colors, 3 ) );
+	geometry.addAttribute( 'displacement', new THREE.BufferAttribute( displacement, 3 ) );
+	//
+	uniforms = {
+		amplitude: { value: 0.0 }
+	};
+	var shaderMaterial = new THREE.ShaderMaterial( {
+		uniforms:       uniforms,
+		vertexShader:   document.getElementById( 'vertexshader' ).textContent,
+		fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
+		side: THREE.DoubleSide
+	});
+	//
+	mesh = new THREE.Mesh( geometry, shaderMaterial );
+
+	markerRoot.add( mesh );
+
+	onRenderFcts.push(function(){
+		var time = Date.now() / 1000;
+		uniforms.amplitude.value = 0.1 * (Math.sin( time * 5 )+1);
+	})
+})()
+
 
 ;(function(){
-//return
+// return
 	var parent	= new THREE.Object3D();
 	markerRoot.add(parent)
 	parent.scale.set(1,1,1).multiplyScalar(0.4)
@@ -163,11 +247,12 @@
 	var glyph2 = new THREE.Mesh( 
 		new THREE.IcosahedronGeometry(1, 1),
 		new THREE.MeshPhongMaterial({
-			color: 'black',
-			specular: COLOR1,
+			color: '#000',
+			specular: COLOR2,
 			shading: THREE.FlatShading,
 			transparent : true,
-			// opacity: 0.9,
+			opacity: 1.0,
+			// specular: 70,
 			// ambient: 0x202830
 		})
 	);
@@ -181,19 +266,15 @@
 		new THREE.MeshBasicMaterial({
 			color: COLOR2,
 			wireframe: true,
-			opacity: 1,
 			wireframeLinewidth: 4,
-					blending	: THREE.AdditiveBlending, 
-					opacity		: 01,
-					// depthTest: false, 
-					transparent : true,
+			blending	: THREE.AdditiveBlending, 
+			// depthTest: false, 
+			opacity: 1,
+			transparent : true,
 		})
 	);
 	glyph2wf.position.copy( glyph2.position )
 	glyph2wf.rotation.copy( glyph2.rotation )
-
-	glyph2wf.position = glyph2.position;
-	glyph2wf.rotation = glyph2.rotation;
 	glyph2wf.scale.copy(glyph2.scale).multiplyScalar(1.00)
 	parent.add( glyph2wf );	
 	
@@ -205,6 +286,7 @@
 			specular: 0x000000,
 			shading: THREE.FlatShading,
 			opacity: 0.9,
+			transparent: true,
 			// ambient: 0x000000
 		})
 	);
@@ -233,21 +315,20 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 ;(function(){
-	// return
+// return
 	var COLOR1 = new THREE.Color(0x77bbff);
 	var COLOR2 = new THREE.Color(0x8ec5e5);
 	var COLOR3 = new THREE.Color(0x97a8ba);
 	
 	// CUBE PARTICLES
 	var material = new THREE.PointsMaterial({
-		// color		: COLOR1,
-		map		: THREE.ImageUtils.loadTexture( "images/pixel.png" ), 
-		blending	: THREE.AdditiveBlending, 
-		opacity		: 1,
+		map : THREE.ImageUtils.loadTexture( "images/pixel.png" ), 
+		blending : THREE.AdditiveBlending, 
 		depthTest: false, 
 		transparent : true,
 		color: COLOR1, 
-		size: 0.9
+		size: 0.4,
+		opacity	: 2,
 	});
 
 	var geometry	= new THREE.Geometry();
@@ -269,7 +350,7 @@
 	
 	var speeds	= [];
 	for( i = 0; i < vertices.length; i++ ){		
-		speeds[i]	= Math.random()*0.08+0.02;
+		speeds[i]	= Math.random()*0.2+0.02;
 	}
 
 	onRenderFcts.push(function(delta, now){
@@ -281,40 +362,6 @@
 		geometry.verticesNeedUpdate = true;
 	})
 })()
-
-	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
-	//////////////////////////////////////////////////////////////////////////////
-
-
-	//////////////////////////////////////////////////////////////////////////////////
-	//		add an object in the scene
-	//////////////////////////////////////////////////////////////////////////////////
-
-	// 
-	// var mesh = new THREE.AxisHelper()
-	// markerRoot.add(mesh)
-	// 
-	// // add a torus knot	
-	// var geometry	= new THREE.CubeGeometry(1,1,1);
-	// var material	= new THREE.MeshNormalMaterial({
-	// 	transparent : true,
-	// 	opacity: 0.5,
-	// 	side: THREE.DoubleSide
-	// }); 
-	// var mesh	= new THREE.Mesh( geometry, material );
-	// mesh.position.y	= geometry.parameters.height/2
-	// markerRoot.add( mesh );
-	// 
-	// var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
-	// var material	= new THREE.MeshNormalMaterial(); 
-	// var mesh	= new THREE.Mesh( geometry, material );
-	// mesh.position.y	= 0.5
-	// markerRoot.add( mesh );
-	// 
-	// onRenderFcts.push(function(delta){
-	// 	mesh.rotation.x += delta * Math.PI
-	// })
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page

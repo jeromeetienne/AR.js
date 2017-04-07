@@ -19,17 +19,27 @@
 body {
 	font-family: Monospace;
 }
-#demoUITop {
+#demoUISource {
+	    z-index: 3;
 	position: absolute;
 	top: 0;
 	left: 0;
 	background-color: rgba(255,255,255,0.4);
 	padding: 10px;
 }
-#demoUIBottom {
+#demoUIContext {
+	    z-index: 3;
 	position: absolute;
 	bottom: 0;
 	left: 0;
+	background-color: rgba(255,255,255,0.4);
+	padding: 10px;
+}
+#demoUIControls {
+	    z-index: 3;
+	position: absolute;
+	bottom: 0;
+	right: 0;
 	background-color: rgba(255,255,255,0.4);
 	padding: 10px;
 }
@@ -38,37 +48,32 @@ body {
 	right: 20px;
 }
 </style>
-<div id='demoUITop'>
+<div id='demoUISource'>
+	<h3>Source Parameters</h3>
 	<label title='the video source used by artoolkit'>Video Source :
 		<select id='videoSource'>
 		  <option value="webcam">webcam</option> 
-		  <option value="video_headtracking">video_headtracking</option>
-		  <option value="video_output_4">video_output_4</option>
-		  <option value="image_armchair">image_armchair</option>
-		  <option value="image_chalk_multi">image_chalk_multi</option>
-		  <option value="image_chalk">image_chalk</option>
-		  <option value="image_img">image_img</option>
-		  <option value="image_kuva">image_kuva</option>
+		  <option value="video_headtracking.mp4">video_headtracking</option>
+		  <option value="video_output_4.mp4">video_output_4</option>
+		  <option value="image_armchair.jpg">image_armchair</option>
+		  <option value="image_chalk_multi.jpg">image_chalk_multi</option>
+		  <option value="image_chalk.jpg">image_chalk</option>
+		  <option value="image_img.jpg">image_img</option>
+		  <option value="image_kuva.jpg">image_kuva</option>
 		</select>
 	</label>
 	<br/>
-	<label title='the content to add on top of the marker'>Marker Content :
-		<select id='markerContent'>
-		  <option value="cube">cube</option> 
-		  <option value="minecraft">minecraft</option>
+	<label title='the video source used by artoolkit'>Source Width x Height :
+		<select id='videoSource'>
+		  <option value="640x480">640x480</option> 
+		  <option value="320x240">320x240</option>
+		  <option value="240x180">240x180</option>
 		</select>
 	</label>
 </div>		
-<div id='demoUIBottom'>
-	<label title='The type of marker detected'>Marker Type :
-		<select id='markerType'>
-		  <option value="hiro">hiro</option> 
-		  <option value="kanji">kanji</option>
-		  <option value="unknown">unknown</option>
-		  <option value="barcode_3x3_20">barcode_3x3_20</option>
-		</select>
-	</label>
-	<br/>
+<div id='demoUIContext'>
+	<h3>Context Parameters</h3>
+
 	<label title='enabled debug in artoolkit'>debug :
 		<select id='debug'>
 		  <option value="true">true</option> 
@@ -82,6 +87,17 @@ body {
 		  <option value="color_and_matrix">color_and_matrix</option> 
 		  <option value="mono">mono</option> 
 		  <option value="mono_and_matrix">mono_and_matrix</option> 
+		</select>
+	</label>
+</div>
+<div id='demoUIControls'>
+	<h3>Controls Parameters</h3>
+	<label title='The type of marker detected'>Marker Type :
+		<select id='markerType'>
+		  <option value="hiro">hiro</option> 
+		  <option value="kanji">kanji</option>
+		  <option value="unknown">unknown</option>
+		  <option value="barcode_3x3_20">barcode_3x3_20</option>
 		</select>
 	</label>
 	<br/>
@@ -144,19 +160,62 @@ body {
 	////////////////////////////////////////////////////////////////////////////////
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
+	function buildSourceParameters(){
+		var sourceParameters = {}
 
-	var arToolkitSource = new THREEx.ArToolkitSource({
-		// to read from the webcam 
-		sourceType : 'webcam',
+		// handle #videoSource
+		var value = document.querySelector('#videoSource').value
+		var sourceType = value.split('_')[0]
+		var sourceUrl = value.split('_')[1]
+		if( sourceType === 'webcam' ){
+			sourceParameters.sourceType = sourceType
+		}else if( sourceType === 'image' ){
+			sourceParameters.sourceType = sourceType
+			sourceParameters.sourceUrl = THREEx.ArToolkitContext.baseURL + '../data/images/' + sourceUrl
+		}else if( sourceType === 'video' ){
+			sourceParameters.sourceType = sourceType
+			sourceParameters.sourceUrl = THREEx.ArToolkitContext.baseURL + '../data/videos/' + sourceUrl
+		}
 		
-		// // to read from an image
-		// sourceType : 'image',
-		// sourceUrl : '../../data/images/img.jpg',		
+		return sourceParameters
+	}
+	
+	function onParametersChange(){
+		var parameters = {
+			sourceParameters : buildSourceParameters()
+		}
 
-		// to read from a video
-		// sourceType : 'video',
-		// sourceUrl : '../../data/videos/headtracking.mp4',		
-	})
+		location.hash = '#' + encodeURIComponent( JSON.stringify(parameters) )
+		location.reload()		
+	}
+	
+	document.querySelector('#videoSource').addEventListener('change', onParametersChange)
+	
+	var sourceParameters = {
+		sourceType : 'webcam'
+	}
+
+	if( location.hash.substring(1) ){
+		var data = JSON.parse( decodeURIComponent( location.hash.substring(1) ) )
+		sourceParameters = data.sourceParameters
+
+		console.log('there is a hash param,eters', data)
+	}
+
+
+	var arToolkitSource = new THREEx.ArToolkitSource(sourceParameters)
+	// var arToolkitSource = new THREEx.ArToolkitSource({
+	// 	// to read from the webcam 
+	// 	sourceType : 'webcam',
+	// 	
+	// 	// // to read from an image
+	// 	// sourceType : 'image',
+	// 	// sourceUrl : '../../data/images/img.jpg',		
+	// 
+	// 	// to read from a video
+	// 	// sourceType : 'video',
+	// 	// sourceUrl : '../../data/videos/headtracking.mp4',		
+	// })
 
 	arToolkitSource.init(function onReady(){
 		// handle resize of renderer

@@ -192,9 +192,9 @@ a-frame Examples:
   Want to do Augmented Reality on the web ? You can do it [in less than 10 lines of html now](https://twitter.com/jerome_etienne/status/842192608256512000) :)
   minimal.html is the shortest html file you need if you want to do ar.js with a-frame
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/minimal.html))
-- [magic-book](https://jeromeetienne.github.io/AR.js/aframe/examples/magic-book.html) :
-  a-frame example for magic-book
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/magic-book.html))
+- [magical-book](https://jeromeetienne.github.io/AR.js/aframe/examples/magical-book.html) :
+  a-frame example for magical-book
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/magical-book.html))
 - [parameters-tunning](https://jeromeetienne.github.io/AR.js/aframe/examples/parameters-tunning.html) :
   a-frame example for parameters-tunning
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/parameters-tunning.html))

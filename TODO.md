@@ -1,4 +1,16 @@
+- redo parameters-tuning.html
+  - all parameters exposed as button - stored as json in url
+  - to replace the demo.html in a-frame - which is super broken anyway
+  - 3 groups of parameters : source, context, controls. make it 3 group on screen too
+
+
 # Multimarker
+
+- hide part of the markers
+- i should be able to build my own markers
+  - what is the good API for that
+
+
 - find a working version - git checkout 7cc3bedc54fdb4fe9f92138792c36164a3c5c81a
   - and slowly come back to understand why it doesnt work
   - https://github.com/artoolkit/jsartoolkit5/issues/34
@@ -30,9 +42,6 @@
 # Misc
 - add show/hide into arcode.html url
   - thus the apps workflow is finished
-- redo parameters-tuning.html
-  - all parameters exposed as button - stored as json in url
-  - to replace the demo.html in a-frame - which is super broken anyway
 - moving three.js/ at the root ?  
 - for refraction, do some deforming mirror effect
   - put dat.gui in it
