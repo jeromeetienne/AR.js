@@ -380,7 +380,7 @@
 	ARController.prototype.loadMultiMarker = function(markerURL, onSuccess, onError) {
 		return artoolkit.addMultiMarker(this.id, markerURL, onSuccess, onError);
 	};
-
+	
 	/**
 	 * Populates the provided float array with the current transformation for the specified marker. After 
 	 * a call to detectMarker, all marker information will be current. Marker transformations can then be 
@@ -1364,7 +1364,7 @@
 		loadCamera: loadCamera,
 
 		addMarker: addMarker,
-		addMultiMarker: addMultiMarker
+		addMultiMarker: addMultiMarker,
 
 	};
 
@@ -1504,9 +1504,14 @@
 
 			var path = url.split('/').slice(0, -1).join('/')
 			files = files.map(function(file) {
+				// debugger
+				if( file === 'patt.hiro' || file === 'patt.kanji' ){
+					// debugger
+					return ['http://127.0.0.1:8080/data/data/' + file, file]
+				}
 				return [path + '/' + file, file]
 			})
-
+console.log(files)
 			ajaxDependencies(files, ok);
 		});
 	}
@@ -1558,6 +1563,7 @@
 			// console.log('ajax done for ', url);
 			var arrayBuffer = oReq.response;
 			var byteArray = new Uint8Array(arrayBuffer);
+	console.log('writeByteArrayToFS', target, byteArray.length, 'byte. url', url)
 			writeByteArrayToFS(target, byteArray, callback);
 		};
 

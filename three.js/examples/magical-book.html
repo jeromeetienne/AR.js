@@ -162,8 +162,8 @@
 	//////////////////////////////////////////////////////////////////////////////
 
 ;(function(){
-return
-	var geometry = new THREE.IcosahedronGeometry(0.5, 2)
+// return
+	var geometry = new THREE.IcosahedronGeometry(0.5, 1)
 
 	var explodeModifier = new THREE.ExplodeModifier();
 	explodeModifier.modify( geometry );
@@ -203,11 +203,12 @@ return
 		uniforms:       uniforms,
 		vertexShader:   document.getElementById( 'vertexshader' ).textContent,
 		fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
-		side: THREE.DoubleSide
+		side: THREE.DoubleSide,
+		wireframe: true
 	});
 	//
 	mesh = new THREE.Mesh( geometry, shaderMaterial );
-
+	mesh.position.y = 1.5
 	markerRoot.add( mesh );
 
 	onRenderFcts.push(function(){
@@ -229,50 +230,48 @@ return
 	var COLOR2 = new THREE.Color(0x8ec5e5);
 	var COLOR3 = new THREE.Color(0x97a8ba);
 	var size	= 1;
-	// GLYPH (BIG ONE)
 
-	var glyph = new THREE.Mesh( 
-		new THREE.IcosahedronGeometry(1.4, 2),
-		new THREE.MeshBasicMaterial({
-			color: COLOR1,
-			opacity: 1,
-			wireframe: true,
-			wireframeLinewidth: 4
-		})
-	);
+	// GLYPH (BIG ONE)
+	var geometry = new THREE.IcosahedronGeometry(1.4, 2)
+	var material = new THREE.MeshBasicMaterial({
+		color: COLOR1,
+		opacity: 1,
+		wireframe: true,
+		wireframeLinewidth: 4
+	})
+	var glyph = new THREE.Mesh( geometry, material )
 	glyph.position.y = 0.5
 	parent.add( glyph );
 
 	// GLYPH2 (CORE)
-	var glyph2 = new THREE.Mesh( 
-		new THREE.IcosahedronGeometry(1, 1),
-		new THREE.MeshPhongMaterial({
-			color: '#000',
-			specular: COLOR2,
-			shading: THREE.FlatShading,
-			transparent : true,
-			opacity: 1.0,
-			// specular: 70,
-			// ambient: 0x202830
-		})
-	);
+	var geometry = new THREE.IcosahedronGeometry(1,1)
+	// var geometry = new THREE.CylinderGeometry( 0.5, 0.5, 2, 6, 12, true, 0, Math.PI );
+	var material = new THREE.MeshPhongMaterial({
+		color: COLOR1,
+		specular: COLOR2,
+		shading: THREE.FlatShading,
+		transparent : true,
+		opacity: 1.0,
+		// specular: 70,
+		// ambient: 0x202830
+	})
+	var glyph2 = new THREE.Mesh( geometry, material )
 	glyph2.position.y = 0.5
 	parent.add( glyph2 );
 	
 
 	// GLYPHE2 WIREFRAME
-	var glyph2wf = new THREE.Mesh( 
-		glyph2.geometry.clone(),
-		new THREE.MeshBasicMaterial({
-			color: COLOR2,
-			wireframe: true,
-			wireframeLinewidth: 4,
-			blending	: THREE.AdditiveBlending, 
-			// depthTest: false, 
-			opacity: 1,
-			transparent : true,
-		})
-	);
+	var material = new THREE.MeshBasicMaterial({
+		color: COLOR2,
+		wireframe: true,
+		wireframeLinewidth: 4,
+		blending	: THREE.AdditiveBlending, 
+		// depthTest: false, 
+		opacity: 1,
+		transparent : true,
+	})
+	var glyph2wf = new THREE.Mesh( glyph2.geometry, material)
+
 	glyph2wf.position.copy( glyph2.position )
 	glyph2wf.rotation.copy( glyph2.rotation )
 	glyph2wf.scale.copy(glyph2.scale).multiplyScalar(1.00)
@@ -301,7 +300,7 @@ return
 		
 		glyph2.rotation.x -= 0.004;
 		glyph2.rotation.z += 0.003;	
-
+		
 		glyph2wf.rotation.x -= 0.004;
 		glyph2wf.rotation.z += 0.003;	
 
@@ -333,20 +332,19 @@ return
 
 	var geometry	= new THREE.Geometry();
 	var vertices	= geometry.vertices
-	for(var i = 0; i < 1000; i++ ) {
+	for(var i = 0; i < 400; i++ ) {
 		var vector3	= new THREE.Vector3()
 		var angle	= Math.random() * Math.PI*2
 		vector3.x	= Math.cos(angle)
 		vector3.z	= Math.sin(angle)
-		vector3.setLength(0.5 + 0.1*(Math.random()-0.5) )
+		vector3.setLength(0.7 + 0.1*(Math.random()-0.5) )
 		vector3.y	= (Math.random()-0.5)
 		vertices.push( vector3 )
 	}
 
 	var cube = new THREE.Points( geometry, material );
-	cube.position.y = 1
+	cube.position.y = 0.5
 	markerRoot.add( cube );
-	cube.scale.set(1,1,1).multiplyScalar(2)
 	
 	var speeds	= [];
 	for( i = 0; i < vertices.length; i++ ){		
