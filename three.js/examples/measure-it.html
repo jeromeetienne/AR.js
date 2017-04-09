@@ -12,10 +12,14 @@
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - three.js marker root
+	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - Measure the distance between 2 markers - hiro and kanji
 	<br/>
 	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
-</div><script>
+</div>
+<div id='scanning' style='position: absolute; bottom: 10px; right:0px;'>
+	Scanning...
+</div>
+<script>
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////
@@ -97,144 +101,121 @@
 		arToolkitContext.update( arToolkitSource.domElement )
 	})
 	
-	
-	////////////////////////////////////////////////////////////////////////////////
-	//          Create a ArMarkerControls
-	////////////////////////////////////////////////////////////////////////////////
-;(function(){
-	var markerRoot = new THREE.Group
-	markerRoot.name = 'marker1'
-	scene.add(markerRoot)
-	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
+	//////////////////////////////////////////////////////////////////////////////
+	//		markerRoot1
+	//////////////////////////////////////////////////////////////////////////////
+
+	// build markerControls
+	var markerRoot1 = new THREE.Group
+	markerRoot1.name = 'marker1'
+	scene.add(markerRoot1)
+	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
 		type : 'pattern',
 		patternUrl : '../../data/data/patt.hiro',
 		// patternUrl : '../../data/data/patt.kanji',
 	})
-// debugger
-	//////////////////////////////////////////////////////////////////////////////////
-	//		add an object in the scene
-	//////////////////////////////////////////////////////////////////////////////////
 
-	// add a torus knot	
-	var geometry	= new THREE.CubeGeometry(1,1,1);
-	var material	= new THREE.MeshBasicMaterial({
-		color: 'red',
-		transparent : true,
-		opacity: 0.5,
-		side: THREE.DoubleSide
+	// add a gizmo in the center of the marker
+	var geometry	= new THREE.OctahedronGeometry( 0.1, 0 )
+	var material	= new THREE.MeshNormalMaterial({
+		wireframe: true
 	}); 
 	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= geometry.parameters.height/2
-	// markerRoot.add( mesh );
-	
-	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
-	var material	= new THREE.MeshNormalMaterial(); 
-	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= 0.5
-	markerRoot.add( mesh );
-	
-	onRenderFcts.push(function(){
-		mesh.rotation.x += 0.1
-	})	
-})()
+	markerRoot1.add( mesh );
 
+	//////////////////////////////////////////////////////////////////////////////
+	//		markerRoot2
+	//////////////////////////////////////////////////////////////////////////////
 
-;(function(){
-	var markerRoot = new THREE.Group
-	markerRoot.name = 'marker2'
-	scene.add(markerRoot)
-	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
+	// build markerControls
+	var markerRoot2 = new THREE.Group
+	markerRoot2.name = 'marker2'
+	scene.add(markerRoot2)
+	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot2, {
 		type : 'pattern',
 		// patternUrl : '../../data/data/patt.hiro',
 		patternUrl : '../../data/data/patt.kanji',
 	})
 
-	//////////////////////////////////////////////////////////////////////////////////
-	//		add an object in the scene
-	//////////////////////////////////////////////////////////////////////////////////
-
-	// add a torus knot	
-	var geometry	= new THREE.CubeGeometry(1,1,1);
-	var material	= new THREE.MeshBasicMaterial({
-		color: 'blue',
-		transparent : true,
-		opacity: 0.5,
-		side: THREE.DoubleSide
+	// add a gizmo in the center of the marker
+	var geometry	= new THREE.OctahedronGeometry( 0.1, 0 )
+	var material	= new THREE.MeshNormalMaterial({
+		wireframe: true
 	}); 
 	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= geometry.parameters.height/2
-	// markerRoot.add( mesh );
-	
-	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
-	var material	= new THREE.MeshNormalMaterial(); 
-	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= 0.5
-	markerRoot.add( mesh );
-	
-	onRenderFcts.push(function(){
-		mesh.rotation.x += 0.1
-	})	
-})()
-/**
- * do a line between them
- * - graduation on the line ?
- * - cylinder maybe, thus it got thickness
- * - and a text in a texture, with a sprite
- */
+	markerRoot2.add( mesh );
+
+
 ;(function(){
 	var markerRoot1 = scene.getObjectByName('marker1')
 	var markerRoot2 = scene.getObjectByName('marker2')
 	
+	var container = new THREE.Group
+	scene.add(container)
+
+	// update container.visible and spinner visibility
+	onRenderFcts.push(function(){
+		if( markerRoot1.visible === true && markerRoot2.visible === true ){
+			container.visible = true
+			document.querySelector('.spinner').style.display = 'none'
+		}else{
+			container.visible = false
+			document.querySelector('.spinner').style.display = ''
+		}
+	})
 	
-	var material = new THREE.LineBasicMaterial({ color: 0x0000ff });
+	//////////////////////////////////////////////////////////////////////////////
+	//		build lineMesh
+	//////////////////////////////////////////////////////////////////////////////
+	var material = new THREE.LineDashedMaterial( {
+		dashSize: 1,
+		gapSize: 1,
+	} );
 	var geometry = new THREE.Geometry();
 	geometry.vertices.push(new THREE.Vector3(1, 0, -3));
 	geometry.vertices.push(new THREE.Vector3(-1, 0, -3));
-	var line = new THREE.Line(geometry, material);
-	scene.add(line)
+	var lineMesh = new THREE.Line(geometry, material);
+	container.add(lineMesh)
+
+	// update lineMesh
 	onRenderFcts.push(function(){
-		// console.log('markerRoot2', markerRoot2.position)
-		
+		var geometry = lineMesh.geometry
 		geometry.vertices[0].copy(markerRoot1.position)
 		geometry.vertices[1].copy(markerRoot2.position)
 		geometry.verticesNeedUpdate = true
 
 		geometry.computeBoundingSphere();
-	})
-	// 
-	// var arrowHelper = new THREE.ArrowHelper(direction, markerRoot1.position, )
-
-	var material = new THREE.LineBasicMaterial({ color: 0x0000ff });
-	var geometry = new THREE.Geometry();
-	geometry.vertices.push(new THREE.Vector3(1, 0, -3));
-	geometry.vertices.push(new THREE.Vector3(-1, 0, -3));
-	var line = new THREE.Line(geometry, material);
-	scene.add(line)
-	onRenderFcts.push(function(){
-		// console.log('markerRoot2', markerRoot2.position)
+		geometry.computeLineDistances();
 		
-		geometry.vertices[0].copy(markerRoot1.position)
-		geometry.vertices[1].copy(markerRoot2.position)
-		geometry.verticesNeedUpdate = true
-
-		geometry.computeBoundingSphere();
+		var length = markerRoot1.position.distanceTo(markerRoot2.position)
+		lineMesh.material.scale = length * 10
+		lineMesh.material.needsUpdate = true
 	})
 
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		display the distance between the 2 markers
+	//////////////////////////////////////////////////////////////////////////////
+
+	// build texture
 	var canvas = document.createElement( 'canvas' );
-	canvas.width = 256;
+	canvas.width = 128;
 	canvas.height = 64;
-
 	var context = canvas.getContext( '2d' );
 	var texture = new THREE.CanvasTexture( canvas );
+
+	// build sprite
 	var material = new THREE.SpriteMaterial({
 		map: texture, 
 		color: 0xffffff, 
 	});
 	var sprite = new THREE.Sprite( material );
-	scene.add(sprite)
-window.sprite = sprite
+	sprite.scale.multiplyScalar(0.5)
+	container.add(sprite)
 
+	// upload measure
 	onRenderFcts.push(function(){
+		// update sprite position
 		sprite.position.addVectors(markerRoot1.position, markerRoot2.position).multiplyScalar(1/2)
 
 		// get the text to display
@@ -242,10 +223,10 @@ window.sprite = sprite
 		var text = length.toFixed(2)
 		
 		// put the text in the sprite
-		context.font = '48px monospace';
+		context.font = '40px monospace';
 		context.clearRect( 0, 0, canvas.width, canvas.height );
 		context.fillStyle = '#fff';
-		context.fillText(text, canvas.width/2, canvas.height/2 )
+		context.fillText(text, canvas.width/4, 3*canvas.height/4 )
 		sprite.material.map.needsUpdate = true
 	})
 	
@@ -273,4 +254,63 @@ window.sprite = sprite
 			onRenderFct(deltaMsec/1000, nowMsec/1000)
 		})
 	})
-</script></body>
+</script>
+
+
+<div class="spinner">
+  <label>
+  	Scanning
+</label>
+  <div class="rect1"></div>
+  <div class="rect2"></div>
+  <div class="rect3"></div>
+</div>
+<style>
+.spinner {
+  margin: 100px auto;
+  height: 40px;
+  text-align: center;
+}
+
+.spinner label {
+	display: block;
+	color: #333;
+	font-size: 200%;
+}
+
+.spinner > div {
+  background-color: #333;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+  
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.spinner .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+.spinner .rect3 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+  20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes sk-stretchdelay {
+  0%, 40%, 100% { 
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }  20% { 
+    transform: scaleY(1.0);
+    -webkit-transform: scaleY(1.0);
+  }
+}
+</style>
+</body>

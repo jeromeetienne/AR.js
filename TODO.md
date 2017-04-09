@@ -5,6 +5,8 @@
 
 
 # Multimarker
+- park multi marker in its own directory
+
 - have a multimarker-learning.js
   - you give it 2 markers
   - and it outputs the multi marker file

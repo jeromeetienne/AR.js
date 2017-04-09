@@ -114,28 +114,38 @@
 
 
 
-	var request = new XMLHttpRequest();
-	request.addEventListener("load", function(){
-		var blob = new Blob([this.responseText], {type: 'text/plain'});
-
-		var blobUrl = URL.createObjectURL(blob);
-
-		var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
-			type : 'pattern',
-			patternUrl : '../../data/data/patt.hiro',
-			// patternUrl : '../../data/data/patt.kanji',
-
-			type : 'multiMarker',
-			// patternUrl : '../../data/multimarkers/multi-abcdef/marker-small.dat',
-			// patternUrl : '../../data/data/multi-marker-hirokanji.dat',
-			patternUrl : '../../data/data/multi-marker-deleteme.dat',
-			// patternUrl : blobUrl,
-			// patternUrl : '../../data/multi-barcode-4x3.dat',
-		})
-	});
-	request.open("GET", '../../data/data/multi-marker-hirokanji.dat');
-	request.send();
+	// var request = new XMLHttpRequest();
+	// request.addEventListener("load", function(){
+	// 	var blob = new Blob([this.responseText], {type: 'text/plain'});
+	// 
+	// 	var blobUrl = URL.createObjectURL(blob);
+	// 
+	// 	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
+	// 		type : 'pattern',
+	// 		patternUrl : '../../data/data/patt.hiro',
+	// 		// patternUrl : '../../data/data/patt.kanji',
+	// 
+	// 		type : 'multiMarker',
+	// 		patternUrl : '../../data/multimarkers/multi-abcdef/marker-small.dat',
+	// 		// patternUrl : '../../data/data/multi-marker-hirokanji.dat',
+	// 		// patternUrl : '../../data/data/multi-marker-deleteme.dat',
+	// 		// patternUrl : blobUrl,
+	// 		// patternUrl : '../../data/multi-barcode-4x3.dat',
+	// 	})
+	// });
+	// request.open("GET", '../../data/data/multi-marker-hirokanji.dat');
+	// request.send();
 	
+
+	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
+		type : 'multiMarker',
+		patternUrl : '../../data/multimarkers/multi-abcdef/marker-small.dat',
+		// patternUrl : '../../data/data/multi-marker-hirokanji.dat',
+		// patternUrl : '../../data/data/multi-marker-deleteme.dat',
+		// patternUrl : blobUrl,
+		// patternUrl : '../../data/multi-barcode-4x3.dat',
+	})
+
 
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
