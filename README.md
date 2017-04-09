@@ -162,8 +162,11 @@ Three.js Examples:
   generator of AR-Code
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arcode.html))
 - [magical-book](https://jeromeetienne.github.io/AR.js/three.js/examples/magical-book.html) :
-  a-frame example for magical-book
+  Experimentation around magical book to open a secret door in [upload.io office](http://upload.io)
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/magical-book.html))
+- [measure-it](https://jeromeetienne.github.io/AR.js/three.js/examples/measure-it.html) :
+  a-frame example for measure-it
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/measure-it.html))
 - [parameters-tunning](https://jeromeetienne.github.io/AR.js/three.js/examples/parameters-tunning.html) :
   a-frame example for parameters-tunning
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/parameters-tunning.html))

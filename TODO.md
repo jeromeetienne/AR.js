@@ -5,6 +5,20 @@
 
 
 # Multimarker
+- have a multimarker-learning.js
+  - you give it 2 markers
+  - and it outputs the multi marker file
+- to load the marker, make a global with translation table
+  - ARTOOLKIT_MULTIMARKER_FILENAME2URL = {
+          filename : url
+  }
+  - currently it is hardcoded
+- now how to generate the marker
+  - threex.ararealearning.js
+  - i give it the controls parameters for each marker
+  - it recognize the marker independantly
+  - when it see them together, it stores their relative position
+
 
 - hide part of the markers
 - i should be able to build my own markers

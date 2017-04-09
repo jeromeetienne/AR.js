@@ -27,7 +27,6 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 
         // create the marker Root
 	this.object3d = object3d
-	this.object3d.name = 'Marker Root'
 	this.object3d.matrixAutoUpdate = false;
 	this.object3d.visible = false
 
@@ -73,6 +72,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
                         // arController.trackPatternMarkerId(_this.markerId, _this.parameters.size);
                 });
 		arController.addEventListener('getMultiMarker', function(event) {
+			console.log('getMultiMarker')
 			if( event.data.multiMarkerId === _this.markerId ){
 				onMarkerFound(event)
 			} 
@@ -103,7 +103,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 	function onMarkerFound(event){
 		// mark object as visible
 		markerObject3D.visible = true
-// console.log('onMarkerFound')
+
 		// data.matrix is the model view matrix
 		var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
 
@@ -123,8 +123,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 		if( _this.parameters.changeMatrixMode === 'modelViewMatrix' ){
 			markerObject3D.matrix.copy(modelViewMatrix)
 		}else if( _this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
-			var cameraTransformMatrix = new THREE.Matrix4().getInverse( modelViewMatrix )
-			markerObject3D.matrix.copy(cameraTransformMatrix)
+			markerObject3D.matrix.getInverse( modelViewMatrix )
 		}else {
 			console.assert(false)
 		}

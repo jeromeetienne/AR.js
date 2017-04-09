@@ -182,7 +182,6 @@
 
 			artoolkit.getTransMatMultiSquareRobust(this.id, i);
 			this.transMatToGLMat(this.marker_transform_mat, this.transform_mat);
-
 			for (var j=0; j<subMarkerCount; j++) {
 				var multiEachMarkerInfo = this.getMultiEachMarker(i, j);
 				if (multiEachMarkerInfo.visible >= 0) {
@@ -1504,14 +1503,14 @@
 
 			var path = url.split('/').slice(0, -1).join('/')
 			files = files.map(function(file) {
-				// debugger
-				if( file === 'patt.hiro' || file === 'patt.kanji' ){
+				// FIXME super kludge - remove it
+				// console.assert(file !== '')
+				if( file === 'patt.hiro' || file === 'patt.kanji' || file === 'patt2.hiro' || file === 'patt2.kanji' ){
 					// debugger
 					return ['http://127.0.0.1:8080/data/data/' + file, file]
 				}
 				return [path + '/' + file, file]
 			})
-console.log(files)
 			ajaxDependencies(files, ok);
 		});
 	}
