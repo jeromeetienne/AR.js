@@ -410,7 +410,8 @@ THREEx.ArToolkitContext = function(parameters){
 
 Object.assign( THREEx.ArToolkitContext.prototype, THREE.EventDispatcher.prototype );
 
-THREEx.ArToolkitContext.baseURL = '../'
+// THREEx.ArToolkitContext.baseURL = '../'
+THREEx.ArToolkitContext.baseURL = 'https://raw.githubusercontent.com/jeromeetienne/ar.js/master/'
 THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 
 /**
