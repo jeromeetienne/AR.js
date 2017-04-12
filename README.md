@@ -172,8 +172,7 @@ Three.js Examples:
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/parameters-tunning.html))
 - [multimarker](https://jeromeetienne.github.io/AR.js/three.js/examples/multimarker/multimarker.html) :
   a-frame example for multimarker
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multimarker/
-        multimarker.html))
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multimarker/multimarker.html))
   
 a-frame Examples:
 

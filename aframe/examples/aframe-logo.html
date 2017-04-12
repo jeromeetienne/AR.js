@@ -29,12 +29,10 @@
 			<a-asset-item id="assetAframe" src="models/aframe.ply"></a-asset-item>
 		</a-assets>
 
-		<a-marker type='pattern' url='../../data/data/patt.hiro'>
 		<!-- <a-marker type='unknown'> -->
-      			<a-entity ply-model="src: #assetAframe" rotation="0 0 90" scale='0.02 0.02 0.02'></a-entity>
-		</a-marker>
+		<a-entity ply-model="src: #assetAframe" rotation='-90 0 0'scale='0.02 0.02 0.02'></a-entity>
 
-		<a-entity camera></a-entity>
+		<a-marker-camera preset='hiro'></a-marker-camera>
 	</a-scene>
 </body>
 </html>
