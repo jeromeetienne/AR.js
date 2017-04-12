@@ -115,6 +115,17 @@ a-frame magic :)
 
 See on [codepen](https://codepen.io/jeromeetienne/pen/mRqqzb) or [bl.ocks.org](https://bl.ocks.org/jeromeetienne/feeb69257803e69f18dc3ea5f4fc6d71)
 
+# Posts on medium
+We started a [AR.js blog](https://medium.com/arjs), thus we can write about
+all the crazy ideas related to AR.js.
+
+- ["Server Rendering for Augmented Reality - Cloud Rendering with Web Standards"](https://medium.com/arjs/server-rendering-for-augmented-reality-2de0a71aae04)
+  by [@jerome_etienne](https://twitter.com/jerome_etienne)
+- ["AR-Code:a Fast Path to Augmented Reality - From qrcode to AR.js content"](https://medium.com/arjs/ar-code-a-fast-path-to-augmented-reality-60e51be3cbdf)
+  by [@jerome_etienne](https://twitter.com/jerome_etienne)
+- ["Augmented Reality in 10 Lines of HTML - AR.js with a-frame magic"](https://medium.com/arjs/augmented-reality-in-10-lines-of-html-4e193ea9fdbf)
+  by [@AndraConnect](https://twitter.com/AndraConnect)
+
 # Examples
 
 Three.js Examples:

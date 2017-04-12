@@ -29,11 +29,14 @@
                 <div class="input-field col s3">
                         <input type="checkbox" id="saveInUrl" />
                         <label for="saveInUrl">Save in url</label>
+                        <input type="checkbox" id="hideUiEnabled" type="hidden"/>
                 </div>                
+
 
                 <div class="input-field col s4 offset-s4">
                         <a class="waves-effect waves-light btn-large">Generate</a>
                 </div>                
+
         </div>
         <div class="row">
                 <div class="col s2">
@@ -65,25 +68,22 @@
 
 
 function hideUI(){
-        document.querySelector('#row-ui').style.display = 'none'
-        document.querySelector('#btnShowUI').style.display = 'block'
+        document.querySelector('#hideUiEnabled').checked = true
+        update()
 }
 
 function showUI(){
-        document.querySelector('#row-ui').style.display = 'block'
-        document.querySelector('#btnShowUI').style.display = 'none'
+        document.querySelector('#hideUiEnabled').checked = false
+        update()
 }
-
-/**
- * - add input - generate
- * - add download image
- * - add instruction on how to use it
- */
-
 
 document.querySelector('#urlQrCode').addEventListener('change', update)
 document.querySelector('#saveInUrl').addEventListener('change', update)
 
+
+//////////////////////////////////////////////////////////////////////////////
+//                build canvas 
+//////////////////////////////////////////////////////////////////////////////
 var canvas = document.createElement('canvas');
 document.querySelector('#arcode-container').appendChild(canvas)
 canvas.width  = 1024;
@@ -98,8 +98,11 @@ hiroImage.onload = function() {
         console.log('hiro image loaded')
         
         if( location.hash.substr(1) !== '' ){
-                var url = decodeURIComponent(location.hash.substr(1))
-                document.querySelector('#urlQrCode').value = url
+                var parameters = JSON.parse(decodeURIComponent(location.hash.substr(1)))
+                document.querySelector('#urlQrCode').value = parameters.urlQrCode
+                document.querySelector('#hideUiEnabled').checked = parameters.hideUiEnabled
+                document.querySelector('#saveInUrl').checked = true
+// debugger;
         }else{
                 document.querySelector('#urlQrCode').value = 'https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html'
         }
@@ -109,17 +112,34 @@ hiroImage.onload = function() {
 hiroImage.src = '../../data/images/hiro.png';
 
 function update(){
-        var url = document.querySelector('#urlQrCode').value
+        var urlQrCode = document.querySelector('#urlQrCode').value
+        var hideUiEnabled = document.querySelector('#hideUiEnabled').checked
+        var saveInUrl = document.querySelector('#saveInUrl').checked
+        var parameters = {
+                urlQrCode : urlQrCode,
+                hideUiEnabled: hideUiEnabled,
+        }
         
-        generateArCode(url, function(){
-                console.log('ar-code generated for', url)
+        // generate the ar-code canvas
+        generateArCodeCanvas(canvas, urlQrCode, function onReady(){
+                console.log('ar-code generated for', urlQrCode)
         })
-        
-        var url = document.querySelector('#urlQrCode').value
-        var domElement = document.querySelector('#saveInUrl')
-        if( domElement.checked === true ){
-                location.hash = '#' + encodeURIComponent(url)
+
+        if( hideUiEnabled === true ){
+                document.querySelector('#row-ui').style.display = 'none'
+                document.querySelector('#btnShowUI').style.display = 'block'
         }else{
+                document.querySelector('#row-ui').style.display = 'block'
+                document.querySelector('#btnShowUI').style.display = 'none'                
+        }
+        
+        //////////////////////////////////////////////////////////////////////////////
+        //                update location.hash if suitable
+        //////////////////////////////////////////////////////////////////////////////
+        if( saveInUrl === true ){
+                location.hash = '#' + encodeURIComponent(JSON.stringify(parameters))
+        }else{
+                // magic to remove the old location.hash
                 history.pushState("", document.title, location.pathname + location.search);
         }
 }
@@ -131,12 +151,12 @@ function update(){
 /**
  * Generate AR-Code
  */
-function generateArCode(url, onLoad){
+function generateArCodeCanvas(canvas, text, onLoad){
         var context = canvas.getContext('2d')
         
         context.drawImage(hiroImage, 0, 0, canvas.width, canvas.height);
 
-        generateQrCodeImage(url, function onLoaded(qrCodeImage){
+        generateQrCodeImage(text, function onLoaded(qrCodeImage){
                 console.log('qrcode generated')
                 context.drawImage(qrCodeImage,canvas.width*0.5,canvas.height*0.3,canvas.width*0.2, canvas.height*0.2);      
                 
@@ -147,11 +167,11 @@ function generateArCode(url, onLoad){
 /**
  * Generate AR-Code
  */
-function generateQrCodeImage(url, onLoaded){
+function generateQrCodeImage(text, onLoaded){
         var container = document.createElement('div')
 
         var qrcode = new QRCode(container, {
-                text: url,
+                text: text,
                 width: 256,
                 height: 256,
                 colorDark : '#000000',

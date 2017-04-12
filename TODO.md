@@ -12,12 +12,14 @@
   - read more about it
   - how do they handle multiple versions ?
 
+- about.me in ar - augmented.club - augmented.whoswho - augmented.cat - augmented.fans - ar.codes
+  - multiple link
+  - twitter, avatar, linkedin, facebook
+  - all stored in the url. so all the states is in the network
+
 - release ar.js
   - start working in dev branch
   - more frequent release.
-
-- add show/hide into arcode.html url
-  - thus the apps workflow is finished
 
 - moving three.js/ at the root ?
   - it seems more natural. But there is no emergency
@@ -40,7 +42,12 @@
   - by default, the setting should be the most common one. 
   - aka the one of a phone
 
+- "Augmented Reality in WebVR" as WebVR experiments... It has a nice twist that 
+  i like :)  http://www.blog.google/products/google-vr/come-play-webvr-experiments/
+
 - DONE fix the multimarker and the symlink - it prevents updating ar.js gh-pages
+- DONE add show/hide into arcode.html url
+  - thus the apps workflow is finished
 - DONE do a build file
   threejs/build/ar.js
   threejs/build/ar.min.js
