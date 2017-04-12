@@ -119,9 +119,9 @@ See on [codepen](https://codepen.io/jeromeetienne/pen/mRqqzb) or [bl.ocks.org](h
 
 Three.js Examples:
 
-- [cameratransform](https://jeromeetienne.github.io/AR.js/three.js/examples/cameratransform.html) :
-  three.js example for cameratransform
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/cameratransform.html))
+- [basic](https://jeromeetienne.github.io/AR.js/three.js/examples/basic.html) :
+  three.js example for basic
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/basic.html))
 - [markerroot](https://jeromeetienne.github.io/AR.js/three.js/examples/markerroot.html) :
   three.js example for markerroot
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/markerroot.html))
@@ -284,7 +284,16 @@ I exited to see what people will do with AR.js :)
 - use a pingpong ball or a metallic ball to estimate the reality lighting
   - https://www.youtube.com/watch?v=fhFzStkoE50&feature=youtu.be&t=59 for ping pong ball
   - https://www.researchgate.net/publication/220222173_Image_Based_Shadowing_in_Real-Time_Augmented_Reality for metallic ball  
-- 
+- do a jelwery examples
+  - get a model or ring, one model of diamond
+  - https://www.transpacific-software.com/webgl/ring.html?tPage=7
+  - https://www.shadertoy.com/view/ltfXDM
+  - a refraction
+  - one ruby, one gold
+- add fresnel with bubble - even with fake envmap
+  - http://filmicworlds.com/blog/everything-has-fresnel/
+  - http://kylehalladay.com/blog/tutorial/2014/02/18/Fresnel-Shaders-From-The-Ground-Up.html
+  - http://www.tingting-wu.com/webgl_projects/ttwu_shaders.html
 
 # Browser Support
 Demo tested on the following browser setups:
