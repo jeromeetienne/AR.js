@@ -2,6 +2,12 @@
   - all parameters exposed as button - stored as json in url
   - to replace the demo.html in a-frame - which is super broken anyway
   - 3 groups of parameters : source, context, controls. make it 3 group on screen too
+- fix the multimarker and the symlink - it prevents updating ar.js gh-pages
+- work on the stereo thing - make the webvr stuff
+  - suddently your demo would work on any webvr device
+- do a build file
+  build/ar.js
+  build/ar.min.js
 
 
 # Multimarker

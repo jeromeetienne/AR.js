@@ -241,7 +241,7 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 	}
 
 	// sanity check
-	var possibleValues = ['pattern', 'barcode', 'unknown' ]
+	var possibleValues = ['pattern', 'barcode', 'multiMarker', 'unknown' ]
 	console.assert(possibleValues.indexOf(this.parameters.type) !== -1, 'illegal value', this.parameters.type)
 	var possibleValues = ['modelViewMatrix', 'cameraTransformMatrix' ]
 	console.assert(possibleValues.indexOf(this.parameters.changeMatrixMode) !== -1, 'illegal value', this.parameters.changeMatrixMode)
@@ -250,7 +250,6 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 
         // create the marker Root
 	this.object3d = object3d
-	this.object3d.name = 'Marker Root'
 	this.object3d.matrixAutoUpdate = false;
 	this.object3d.visible = false
 
@@ -288,62 +287,76 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 	}else if( _this.parameters.type === 'barcode' ){
 		_this.markerId = _this.parameters.barcodeValue
 		arController.trackBarcodeMarkerId(_this.markerId, _this.parameters.size);
+	}else if( _this.parameters.type === 'multiMarker' ){
+// TODO rename patternUrl into .url - as it is used in multiple parameters
+// debugger
+                arController.loadMultiMarker(_this.parameters.patternUrl, function(markerId, markerNum) {
+			_this.markerId = markerId
+                        // arController.trackPatternMarkerId(_this.markerId, _this.parameters.size);
+                });
+		arController.addEventListener('getMultiMarker', function(event) {
+			console.log('getMultiMarker')
+			if( event.data.multiMarkerId === _this.markerId ){
+				onMarkerFound(event)
+			} 
+		});
 	}else if( _this.parameters.type === 'unknown' ){
 		_this.markerId = null
 	}else{
 		console.log(false, 'invalid marker type', _this.parameters.type)
 	}
+	
 
 	// listen to the event
 	arController.addEventListener('getMarker', function(event){
 
 		if( event.data.type === artoolkit.PATTERN_MARKER && _this.parameters.type === 'pattern' ){
 			if( _this.markerId === null )	return
-			if( event.data.marker.idPatt === _this.markerId ) onMarkerFound()
+			if( event.data.marker.idPatt === _this.markerId ) onMarkerFound(event)
 		}else if( event.data.type === artoolkit.BARCODE_MARKER && _this.parameters.type === 'barcode' ){
 			// console.log('BARCODE_MARKER idMatrix', event.data.marker.idMatrix, _this.markerId )
 			if( _this.markerId === null )	return
-			if( event.data.marker.idMatrix === _this.markerId )  onMarkerFound()
+			if( event.data.marker.idMatrix === _this.markerId )  onMarkerFound(event)
 		}else if( event.data.type === artoolkit.UNKNOWN_MARKER && _this.parameters.type === 'unknown'){
-			onMarkerFound()
-		}
-
-		function onMarkerFound(){
-			// mark object as visible
-			markerObject3D.visible = true
-// console.log('onMarkerFound')
-			// data.matrix is the model view matrix
-			var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
-
-
-			// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-			var tmpMatrix = new THREE.Matrix4().copy(_this.context._projectionAxisTransformMatrix)
-			tmpMatrix.multiply(modelViewMatrix)
-
-			// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
-			var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
-			tmpMatrix.multiply(markerAxisTransformMatrix)
-
-			modelViewMatrix.copy(tmpMatrix)
-
-
-			// change markerObject3D.matrix based on parameters.changeMatrixMode
-			if( _this.parameters.changeMatrixMode === 'modelViewMatrix' ){
-				markerObject3D.matrix.copy(modelViewMatrix)
-			}else if( _this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
-				var cameraTransformMatrix = new THREE.Matrix4().getInverse( modelViewMatrix )
-				markerObject3D.matrix.copy(cameraTransformMatrix)
-			}else {
-				console.assert(false)
-			}
-
-			// decompose the matrix into .position, .quaternion, .scale
-			markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
-			
-			// dispatchEvent
-			_this.dispatchEvent( { type: 'markerFound' } );
+			onMarkerFound(event)
 		}
 	})
+
+	return
+	function onMarkerFound(event){
+		// mark object as visible
+		markerObject3D.visible = true
+
+		// data.matrix is the model view matrix
+		var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
+
+
+		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
+		var tmpMatrix = new THREE.Matrix4().copy(_this.context._projectionAxisTransformMatrix)
+		tmpMatrix.multiply(modelViewMatrix)
+
+		// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
+		var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
+		tmpMatrix.multiply(markerAxisTransformMatrix)
+
+		modelViewMatrix.copy(tmpMatrix)
+
+
+		// change markerObject3D.matrix based on parameters.changeMatrixMode
+		if( _this.parameters.changeMatrixMode === 'modelViewMatrix' ){
+			markerObject3D.matrix.copy(modelViewMatrix)
+		}else if( _this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
+			markerObject3D.matrix.getInverse( modelViewMatrix )
+		}else {
+			console.assert(false)
+		}
+
+		// decompose the matrix into .position, .quaternion, .scale
+		markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
+
+		// dispatchEvent
+		_this.dispatchEvent( { type: 'markerFound' } );
+	}
 }
 
 Object.assign( THREEx.ArMarkerControls.prototype, THREE.EventDispatcher.prototype );
@@ -384,8 +397,6 @@ THREEx.ArToolkitContext = function(parameters){
 		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : false,
 	}
 	
-// debugger	
-	
 	// set this._projectionAxisTransformMatrix to change artoolkit projection matrix axis to match usual webgl one
 	this._projectionAxisTransformMatrix = new THREE.Matrix4()
 	this._projectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
@@ -396,6 +407,8 @@ THREEx.ArToolkitContext = function(parameters){
         this._cameraParameters = null
 	this._arMarkersControls = []
 }
+
+Object.assign( THREEx.ArToolkitContext.prototype, THREE.EventDispatcher.prototype );
 
 THREEx.ArToolkitContext.baseURL = '../'
 THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
@@ -518,9 +531,16 @@ THREEx.ArToolkitContext.prototype.update = function(srcElement){
 	// process this frame
 	arController.process(srcElement)
 
+	// dispatch event
+	this.dispatchEvent({
+		type: 'sourceProcessed'
+	});
+
+
 	// return true as we processed the frame
 	return true;
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 //          Code Separator
@@ -1455,7 +1475,6 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 
 			artoolkit.getTransMatMultiSquareRobust(this.id, i);
 			this.transMatToGLMat(this.marker_transform_mat, this.transform_mat);
-
 			for (var j=0; j<subMarkerCount; j++) {
 				var multiEachMarkerInfo = this.getMultiEachMarker(i, j);
 				if (multiEachMarkerInfo.visible >= 0) {
@@ -1653,7 +1672,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 	ARController.prototype.loadMultiMarker = function(markerURL, onSuccess, onError) {
 		return artoolkit.addMultiMarker(this.id, markerURL, onSuccess, onError);
 	};
-
+	
 	/**
 	 * Populates the provided float array with the current transformation for the specified marker. After 
 	 * a call to detectMarker, all marker information will be current. Marker transformations can then be 
@@ -2637,7 +2656,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 		loadCamera: loadCamera,
 
 		addMarker: addMarker,
-		addMultiMarker: addMultiMarker
+		addMultiMarker: addMultiMarker,
 
 	};
 
@@ -2777,9 +2796,14 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 
 			var path = url.split('/').slice(0, -1).join('/')
 			files = files.map(function(file) {
+				// FIXME super kludge - remove it
+				// console.assert(file !== '')
+				if( file === 'patt.hiro' || file === 'patt.kanji' || file === 'patt2.hiro' || file === 'patt2.kanji' ){
+					// debugger
+					return ['http://127.0.0.1:8080/data/data/' + file, file]
+				}
 				return [path + '/' + file, file]
 			})
-
 			ajaxDependencies(files, ok);
 		});
 	}
@@ -2831,6 +2855,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 			// console.log('ajax done for ', url);
 			var arrayBuffer = oReq.response;
 			var byteArray = new Uint8Array(arrayBuffer);
+	console.log('writeByteArrayToFS', target, byteArray.length, 'byte. url', url)
 			writeByteArrayToFS(target, byteArray, callback);
 		};
 
