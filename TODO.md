@@ -5,6 +5,7 @@
 - fix the multimarker and the symlink - it prevents updating ar.js gh-pages
 - work on the stereo thing - make the webvr stuff
   - suddently your demo would work on any webvr device
+
 - DONE do a build file
   threejs/build/ar.js
   threejs/build/ar.min.js
