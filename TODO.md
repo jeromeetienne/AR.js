@@ -6,9 +6,9 @@
 - work on the stereo thing - make the webvr stuff
   - suddently your demo would work on any webvr device
 - DONE do a build file
-  build/ar.js
-  build/ar.min.js
-- 
+  threejs/build/ar.js
+  threejs/build/ar.min.js
+- put github as the default location
 
 # Multimarker
 - park multi marker in its own directory
