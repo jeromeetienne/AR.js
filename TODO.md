@@ -6,20 +6,30 @@
 
 # Multimarker
 - park multi marker in its own directory
-
-- have a multimarker-learning.js
-  - you give it 2 markers
-  - and it outputs the multi marker file
+- workflow
+  - one pass to generate the marker file
+  - store that in a local storage
+  - then another page to use the multi markers
 - to load the marker, make a global with translation table
   - ARTOOLKIT_MULTIMARKER_FILENAME2URL = {
           filename : url
   }
   - currently it is hardcoded
-- now how to generate the marker
+- jsartoolkit - find a working version - git checkout 7cc3bedc54fdb4fe9f92138792c36164a3c5c81a
+  - and slowly come back to understand why it doesnt work
+  - https://github.com/artoolkit/jsartoolkit5/issues/34
+  - work on old compile of .min.js - what changed in the new version ? is that the same artoolkit version ? is that the new compilation ?
+
+- DONE have a multimarker-learning.js
+  - you give it 2 markers
+  - and it outputs the multi marker file
+- DONE now how to generate the marker
   - threex.ararealearning.js
   - i give it the controls parameters for each marker
   - it recognize the marker independantly
   - when it see them together, it stores their relative position
+- generation of multimarker file on the fly and load it in - blob url
+  - http://stackoverflow.com/questions/30864573/what-is-blob-url-why-it-is-used-explain
 
 
 - hide part of the markers
@@ -27,16 +37,6 @@
   - what is the good API for that
 
 
-- find a working version - git checkout 7cc3bedc54fdb4fe9f92138792c36164a3c5c81a
-  - and slowly come back to understand why it doesnt work
-  - https://github.com/artoolkit/jsartoolkit5/issues/34
-  - work on old compile of .min.js - what changed in the new version ? is that the same artoolkit version ? is that the new compilation ?
-- generation of multimarker file on the fly and load it in - blob url
-  - http://stackoverflow.com/questions/30864573/what-is-blob-url-why-it-is-used-explain
-- multiple-indepandent-markers in three.js
-- take a picture with kanji and hiro
-  - recognize them independantly
-  - build a multimarker file with them
 
 ### PS vita workflow
 - perfect for desk augmented reality
