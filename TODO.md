@@ -11,6 +11,7 @@
   - warn the cdnjs guys
   - read more about it
   - how do they handle multiple versions ?
+
 - release ar.js
   - start working in dev branch
   - more frequent release.
