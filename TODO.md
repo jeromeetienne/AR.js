@@ -3,6 +3,12 @@
   - to replace the demo.html in a-frame - which is super broken anyway
   - 3 groups of parameters : source, context, controls. make it 3 group on screen too
 
+- do a threex.armarkershelper.js something which display info on the marker
+  - which pattern, etc...
+  - an axis too
+  - like you did in threex.arealearning.js
+  - if controls.parameters.helperEnabled: true, then the controls will add the helper automatically
+
 - do the initial tunning of camera resolution to have the same aspect as the screen resolution
   - better precision for my cpu
   - currently it is doing 640x480 by default
@@ -16,6 +22,12 @@
   - multiple link
   - twitter, avatar, linkedin, facebook
   - all stored in the url. so all the states is in the network
+  - avatar at the center, each link graviting around, with exploding entrance like in https://vimeo.com/6264709
+  - minimal: twitter avatar, username, twitter logo
+  - twitter logo model - https://sketchfab.com/models/60aedf8d974d481995e196225fb0bd2e
+  - logo in voxel ? https://sketchfab.com/models/8da01234347a4193b06f0b2f07113d40
+  - sketchfab logo - https://sketchfab.com/models/585ace7e32b44d93bb1cecb456488934
+  - gravatar from the email - http://en.gravatar.com/site/implement/hash/
 
 - release ar.js
   - start working in dev branch

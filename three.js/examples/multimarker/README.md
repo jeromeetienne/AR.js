@@ -1,3 +1,8 @@
+- document the issue with multi marker and specific version of jsartoolkit5
+- document the bug in the writing of file inside jsartoolkit5.api.js
+- learner/player - simple to understand
+
+---
 - park multi marker in its own directory
 - workflow
   - one pass to generate the marker file

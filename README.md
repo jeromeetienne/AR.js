@@ -99,7 +99,10 @@ Other crazy ideas we’ve been working on include a [hole in the wall](https://t
 
 # Augmented reality for the web in less than 10 lines of html
 
-a-frame magic :)
+A-Frame magic :) All details are explained in this super post
+["Augmented Reality in 10 Lines of HTML - AR.js with a-frame magic"](https://medium.com/arjs/augmented-reality-in-10-lines-of-html-4e193ea9fdbf)
+by
+[@AndraConnect](https://twitter.com/AndraConnect).
 
 ```html
 <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
