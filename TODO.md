@@ -2,8 +2,10 @@
   - all parameters exposed as button - stored as json in url
   - to replace the demo.html in a-frame - which is super broken anyway
   - 3 groups of parameters : source, context, controls. make it 3 group on screen too
+- bug in resize + debug in context
 
-- do a threex.armarkershelper.js something which display info on the marker
+- put armarkerhelper else where
+- DONE do a threex.armarkershelper.js something which display info on the marker
   - which pattern, etc...
   - an axis too
   - like you did in threex.arealearning.js
@@ -12,6 +14,8 @@
 - do the initial tunning of camera resolution to have the same aspect as the screen resolution
   - better precision for my cpu
   - currently it is doing 640x480 by default
+  - as it is supposed to be fullscreen, get the screen resolution, instead of the window resolution
+    - thus no resize being late issue
 
 - put github as the default location
   - warn the cdnjs guys

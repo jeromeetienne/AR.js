@@ -1,5 +1,6 @@
 # 1.0.1-dev - Current
 
+- did THREEx.ArMarkerHelper to help visualize marker
 - AR-Code generator - see [AR-Code Generator](https://jeromeetienne.github.io/AR.js/three.js/examples/arcode.html)
 - liquid markers are in!
   [water tweet](https://twitter.com/jerome_etienne/status/844681159112036356) -

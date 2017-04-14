@@ -2,6 +2,7 @@ var THREEx = THREEx || {}
 
 THREEx.ArMarkerControls = function(context, object3d, parameters){
 	var _this = this
+	this.id = THREEx.ArMarkerControls.id++
 	this.context = context
 	// handle default parameters
 	this.parameters = {
@@ -47,6 +48,8 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 	return
 
 }
+
+THREEx.ArMarkerControls.id = 0
 
 THREEx.ArMarkerControls.prototype._postInit = function(){
 	var _this = this
@@ -101,12 +104,15 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 
 	return
 	function onMarkerFound(event){
+// console.log('markerFound')
+// console.log(event.data.marker.cf)
+// if( event.data.marker.cf < 0.7 )	return
+// 
 		// mark object as visible
 		markerObject3D.visible = true
 
 		// data.matrix is the model view matrix
 		var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
-
 
 		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
 		var tmpMatrix = new THREE.Matrix4().copy(_this.context._projectionAxisTransformMatrix)

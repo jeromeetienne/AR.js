@@ -160,6 +160,7 @@
 			} else {
 				this.getTransMatSquare(i, visible.markerWidth, visible.matrix);
 			}
+// this.getTransMatSquare(i, visible.markerWidth, visible.matrix);
 
 			visible.inCurrent = true;
 			this.transMatToGLMat(visible.matrix, this.transform_mat);
