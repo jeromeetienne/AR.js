@@ -24,25 +24,33 @@ THREEx.ArMultiMakersLearning = function(markersControls){
 
 THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 	var data = {
+		meta : {
+			createdBy : "AR.js "+THREEx.ArToolkitContext.REVISION,
+			createdAt : new Date().toJSON(),
+			
+		},
 		markersControls : []
 	}
+	var firstMatrixInverse = new THREE.Matrix4().getInverse(this.markersControls[0].object3d.matrix)
 
 	this.markersControls.forEach(function(markerControls){
 		
 		var matrix = markerControls.object3d.matrix.clone()
+		matrix.multiply(firstMatrixInverse)
 		// TODO here compute the matrix based on the statistic you got
 		
-		data.markerControls.push({
+		data.markersControls.push({
 			parameters : {
 				// TODO here be more generic, what about bar code
 				type: markerControls.parameters.type,
 				patternUrl: markerControls.parameters.patternUrl,
 			},
-			pose : matrix,
+			poseMatrix : matrix.toArray(),
 		})
 	})
 
-	return data
+	var str = JSON.stringify(data, null, '\t');
+	return str;	
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -63,7 +71,6 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 
 	var countVisible = visibleMarkerControls.length
 
-	console.log('countVisible', countVisible)
 	for(var i = 0; i < visibleMarkerControls.length-1; i++){
 		var markerControls1 = visibleMarkerControls[i]
 		for(var j = i+1; j < visibleMarkerControls.length; j++){
@@ -78,10 +85,10 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 			markerControls2.object3d.matrix.decompose(position2, new THREE.Quaternion(), new THREE.Vector3)
 			
 			var relativePosition1to2 = position2.sub(position1)
-			console.log('relativePosition1to2', relativePosition1to2)
+			// console.log('relativePosition1to2', relativePosition1to2)
 			
 			
-			console.log('couple', i, j)
+			// console.log('couple', i, j)
 		}
 	}
 }

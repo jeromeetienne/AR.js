@@ -18,11 +18,13 @@ THREEx.ArMultiMarkerControls = function(object3d, markersControls, markersPose){
 	})
 }
 
+Object.assign( THREEx.ArMultiMarkerControls.prototype, THREE.EventDispatcher.prototype );
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, scene, markerRoot, multiMarkerFile){
+THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, scene, markerRoot, jsonData){
+	var multiMarkerFile = JSON.parse(jsonData)
 	// declare the parameters
 	var markersControls = []
 	var markerPoses = []
@@ -44,9 +46,8 @@ THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, scene, marker
 		
 		// store it in the parameters
 		markersControls.push(markerControls)
-		markerPoses.push(item.poseMatrix)
+		markerPoses.push(new THREE.Matrix4().fromArray(item.poseMatrix))
 	})
-
 	// create a new THREEx.ArMultiMarkerControls
 	var multiMarkerControls = new THREEx.ArMultiMarkerControls(markerRoot, markersControls, markerPoses)
 
@@ -65,6 +66,7 @@ THREEx.ArMultiMarkerControls.prototype._onSourceProcessed = function(){
 	var _this = this
 	var positionsSum = new THREE.Vector3
 	var quaternionSum = new THREE.Quaternion(0,0,0,0)
+	var scalesSum = new THREE.Vector3
 	var countVisible = 0
 
 	this.markersControls.forEach(function(markerControls, markerIndex){
@@ -87,6 +89,7 @@ THREEx.ArMultiMarkerControls.prototype._onSourceProcessed = function(){
 		// http://wiki.unity3d.com/index.php/Averaging_Quaternions_and_Vectors
 		countVisible++
 		positionsSum.add(position)
+		scalesSum.add(scale)
 
 		// from http://wiki.unity3d.com/index.php/Averaging_Quaternions_and_Vectors
 		if( _this.markersControls[0].object3d.quaternion.dot(quaternion) > 0 ){
@@ -101,21 +104,39 @@ THREEx.ArMultiMarkerControls.prototype._onSourceProcessed = function(){
 
 	// if at least one sub-marker has been detected, make the average of all detected markers
 	if( countVisible > 0 ){
-		// average and update the postion
-		var position = new THREE.Vector3().copy( positionsSum ).multiplyScalar( 1/countVisible )
-		_this.object3d.position.copy(position)
 
-		// average and update the quaternion
-		quaternionSum.x /= countVisible
-		quaternionSum.y /= countVisible
-		quaternionSum.z /= countVisible
-		quaternionSum.w /= countVisible
-		_this.object3d.quaternion.copy(quaternionSum)
+		// average position
+		var targetPosition = new THREE.Vector3().copy( positionsSum ).multiplyScalar( 1/countVisible )
+		// average quaternion
+		var targetQuaternion = new THREE.Quaternion().copy(quaternionSum)
+		targetQuaternion.x /= countVisible
+		targetQuaternion.y /= countVisible
+		targetQuaternion.z /= countVisible
+		targetQuaternion.w /= countVisible
+		// average scale
+		var targetScale = new THREE.Vector3().copy( scalesSum ).multiplyScalar( 1/countVisible )
+
+
+		var lerpPosition = 0.3
+		var lerpQuaternion = 0.6
+		var lerpScale = 0.6
+		var position = _this.object3d.position.clone().lerp(targetPosition, lerpPosition)
+		var quaternion = _this.object3d.quaternion.clone().slerp(targetQuaternion, lerpQuaternion)
+		var scale = _this.object3d.scale.clone().lerp(targetScale, lerpScale)
+		_this.object3d.position.copy(position)
+		_this.object3d.scale.copy(scale)
+		_this.object3d.quaternion.copy(quaternion)
+
+		// _this.object3d.position.copy(targetPosition)
+		// _this.object3d.quaternion.copy(targetQuaternion)
+		// _this.object3d.scale.copy(targetScale)
 	}
 	
 	// honor _this.object3d.visible
 	if( countVisible > 0 ){
 		_this.object3d.visible = true
+		// dispatchEvent
+		_this.dispatchEvent( { type: 'markerFound' } );		
 	}else{
 		_this.object3d.visible = false			
 	}
