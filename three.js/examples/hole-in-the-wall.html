@@ -167,13 +167,9 @@
 	}
 
 	function buildCircleCache(){
-		var container = new THREE.Group
-		// add outter cube - invisibility cloak
 		var geometry = new THREE.RingGeometry( 0.5, 5, 32 );	
 		var material = buildTransparentMaterial()
-		
 		var mesh = new THREE.Mesh( geometry, material);
-
 		return mesh
 	}
 

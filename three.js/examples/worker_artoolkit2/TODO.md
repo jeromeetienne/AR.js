@@ -1,3 +1,6 @@
-- how come you init twice the artoolkitcontrollers
-  - waste memory
-- how come the worker is running detectNFT - see cpu profile
+# Steps
+- recompile with nft 
+  - test performance if not nft - we dont want to loose performance
+  - create a nft examples
+- understand how it works with workers 
+  - make examples with non-nft marker in workers

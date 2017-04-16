@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
+<!-- three.js library -->
+<script src='../vendor/three.js/build/three.js'></script>
+<script src='../vendor/three.js/examples/js/libs/stats.min.js'></script>
+<!-- jsartookit -->
+<script src='vendor/jsartoolkit5/build/artoolkit.min.js'></script>
+<script src='../../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
+<!-- include threex.artoolkit -->
+<script src='../../threex-artoolkitsource.js'></script>
+<script src='../../threex-artoolkitcontext.js'></script>
+<script src='../../threex-artoolkitprofile.js'></script>
+<script src='../../threex-armarkercontrols.js'></script>
+<script src='js/threex-ararealearning.js'></script>
+<script>THREEx.ArToolkitContext.baseURL = '../../'</script>
+
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
+	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - developement playground
+	<br/>
+	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+</div><script>
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Init
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// init renderer
+	var renderer	= new THREE.WebGLRenderer({
+		// antialias	: true,
+		alpha: true
+	});
+	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+	// renderer.setPixelRatio( 2 );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.domElement.style.position = 'absolute'
+	renderer.domElement.style.top = '0px'
+	renderer.domElement.style.left = '0px'
+	document.body.appendChild( renderer.domElement );
+
+	// array of functions for the rendering loop
+	var onRenderFcts= [];
+
+	// init scene and camera
+	var scene	= new THREE.Scene();
+
+	var ambient = new THREE.AmbientLight( 0x666666 );
+	scene.add( ambient );
+
+	var directionalLight = new THREE.DirectionalLight( 0x887766 );
+	directionalLight.position.set( -1, 1, 1 ).normalize();
+	scene.add( directionalLight );
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Initialize a basic camera
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// Create a camera
+	var camera = new THREE.Camera();
+	scene.add(camera);
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          handle arToolkitSource
+	////////////////////////////////////////////////////////////////////////////////
+
+	var arToolkitSource = new THREEx.ArToolkitSource({
+		// to read from the webcam 
+		sourceType : 'webcam',
+		
+		// // to read from an image
+		// sourceType : 'image',
+		// sourceUrl : '../../../data/images/multimarker.jpg',		
+
+		// to read from a video
+		// sourceType : 'video',
+		// sourceUrl : '../../../data/videos/headtracking.mp4',		
+	})
+
+	arToolkitSource.init(function onReady(){
+		// handle resize of renderer
+		arToolkitSource.onResize(renderer.domElement)		
+	})
+	
+	// handle resize
+	window.addEventListener('resize', function(){
+		// handle arToolkitSource resize
+		arToolkitSource.onResize(renderer.domElement)		
+	})
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          initialize arToolkitContext
+	////////////////////////////////////////////////////////////////////////////////	
+
+	// create atToolkitContext
+	var arToolkitContext = new THREEx.ArToolkitContext({
+		cameraParametersUrl: '../../../data/data/camera_para.dat',
+		detectionMode: 'mono',
+	})
+	// initialize it
+	arToolkitContext.init(function onCompleted(){
+		// copy projection matrix to camera
+		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+	})
+
+	// update artoolkit on every frame
+	onRenderFcts.push(function(){
+		if( arToolkitSource.ready === false )	return
+
+		arToolkitContext.update( arToolkitSource.domElement )
+	})
+	
+	
+	////////////////////////////////////////////////////////////////////////////////
+	//          Create a ArMarkerControls
+	////////////////////////////////////////////////////////////////////////////////
+
+
+
+	// var request = new XMLHttpRequest();
+	// request.addEventListener('load', function(){
+	// 	var blob = new Blob([this.responseText], {type: 'text/plain'});
+	// 
+	// 	var blobUrl = URL.createObjectURL(blob);
+	// 
+	// 	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
+	// 		type : 'pattern',
+	// 		patternUrl : '../../../data/data/patt.hiro',
+	// 		// patternUrl : '../../../data/data/patt.kanji',
+	// 
+	// 		type : 'multiMarker',
+	// 		patternUrl : '../../../data/multimarkers/multi-abcdef/marker-small.dat',
+	// 		// patternUrl : '../../../data/data/multi-marker-hirokanji.dat',
+	// 		// patternUrl : '../../../data/data/multi-marker-deleteme.dat',
+	// 		// patternUrl : blobUrl,
+	// 		// patternUrl : '../../../data/multi-barcode-4x3.dat',
+	// 	})
+	// });
+	// request.open('GET', '../../../data/data/multi-marker-hirokanji.dat');
+	// request.send();
+	
+
+
+
+	var markerRoot = new THREE.Group
+	scene.add(markerRoot)
+
+	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
+		type : 'multiMarker',
+		patternUrl : '../../../data/multimarkers/multi-abcdef/marker-small.dat',
+		// patternUrl : '../../../data/data/multi-marker-hirokanji.dat',
+		// patternUrl : '../../../data/data/multi-marker-deleteme.dat',
+		// patternUrl : blobUrl,
+		// patternUrl : '../../../data/multi-barcode-4x3.dat',
+	})
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		add an object in the scene
+	//////////////////////////////////////////////////////////////////////////////////
+
+	
+
+	var mesh = new THREE.AxisHelper()
+	markerRoot.add(mesh)
+
+	// add a torus knot	
+	var geometry	= new THREE.CubeGeometry(1,1,1);
+	var material	= new THREE.MeshNormalMaterial({
+		transparent : true,
+		opacity: 0.5,
+		side: THREE.DoubleSide
+	}); 
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.y	= geometry.parameters.height/2
+	markerRoot.add( mesh );
+	
+	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
+	var material	= new THREE.MeshNormalMaterial(); 
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.y	= 0.5
+	markerRoot.add( mesh );
+
+	onRenderFcts.push(function(delta){
+		mesh.rotation.x += delta * Math.PI
+	})
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		render the whole thing on the page
+	//////////////////////////////////////////////////////////////////////////////////
+	var stats = new Stats();
+	document.body.appendChild( stats.dom );
+	// render the scene
+	onRenderFcts.push(function(){
+		renderer.render( scene, camera );
+		stats.update();
+	})
+
+	// run the rendering loop
+	var lastTimeMsec= null
+	requestAnimationFrame(function animate(nowMsec){
+		// keep looping
+		requestAnimationFrame( animate );
+		// measure time
+		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+		lastTimeMsec	= nowMsec
+		// call each update function
+		onRenderFcts.forEach(function(onRenderFct){
+			onRenderFct(deltaMsec/1000, nowMsec/1000)
+		})
+	})
+</script></body>
