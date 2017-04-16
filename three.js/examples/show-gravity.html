@@ -1,5 +1,18 @@
 <!DOCTYPE html>
 <body>
+
+
+accelerationIncludingGravityX: <span id='accelerationIncludingGravityX'></span><br/>	
+accelerationIncludingGravityY: <span id='accelerationIncludingGravityY'></span><br/>	
+accelerationIncludingGravityZ: <span id='accelerationIncludingGravityZ'></span><br/>
+
+<hr>
+
+accelerationX: <span id='accelerationX'></span><br/>	
+accelerationY: <span id='accelerationY'></span><br/>	
+accelerationZ: <span id='accelerationZ'></span><br/>
+
+<hr>
 	
 Absolute: <span id='orientationAbsolute'></span><br/>
 Alpha: <span id='orientationAlpha'></span><br/>	
@@ -17,7 +30,14 @@ function onDeviceMotion(event) {
 	var x = event.accelerationIncludingGravity.x;
 	var y = event.accelerationIncludingGravity.y;
 	var z = event.accelerationIncludingGravity.z;
-	
+
+	document.querySelector('#accelerationIncludingGravityX').innerHTML = event.accelerationIncludingGravity.x.toFixed(2)
+	document.querySelector('#accelerationIncludingGravityY').innerHTML = event.accelerationIncludingGravity.y.toFixed(2)
+	document.querySelector('#accelerationIncludingGravityZ').innerHTML = event.accelerationIncludingGravity.z.toFixed(2)
+
+	document.querySelector('#accelerationX').innerHTML = event.acceleration.x.toFixed(2)
+	document.querySelector('#accelerationY').innerHTML = event.acceleration.y.toFixed(2)
+	document.querySelector('#accelerationZ').innerHTML = event.acceleration.z.toFixed(2)
 	// Do something awesome.
 }
 
