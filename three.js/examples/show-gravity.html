@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<body>
+	
+Absolute: <span id='orientationAbsolute'></span><br/>
+Alpha: <span id='orientationAlpha'></span><br/>	
+Beta: <span id='orientationBeta'></span><br/>	
+Gamma: <span id='orientationGamma'></span><br/>	
+<script>
+
+// README
+// - https://developer.mozilla.org/en-US/docs/Web/API/Detecting_device_orientation
+// - https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Orientation_and_motion_data_explained
+
+
+function onDeviceMotion(event) {
+	console.log('deviceMotion', event)
+	var x = event.accelerationIncludingGravity.x;
+	var y = event.accelerationIncludingGravity.y;
+	var z = event.accelerationIncludingGravity.z;
+	
+	// Do something awesome.
+}
+
+window.addEventListener("devicemotion", onDeviceMotion, true);
+
+
+
+function onDeviceOrientation(event) {
+	console.log('deviceOrientation', event)
+	var absolute = event.absolute;
+	var alpha    = event.alpha;
+	var beta     = event.beta;
+	var gamma    = event.gamma;
+	
+	// Do stuff with the new orientation data
+	document.querySelector('#orientationAbsolute').innerHTML = event.absolute
+	document.querySelector('#orientationAlpha').innerHTML = event.alpha.toFixed(2)
+	document.querySelector('#orientationBeta').innerHTML = event.beta.toFixed(2)
+	document.querySelector('#orientationGamma').innerHTML = event.gamma.toFixed(2)
+}
+
+window.addEventListener("deviceorientation", onDeviceOrientation, true);
+</script></body>

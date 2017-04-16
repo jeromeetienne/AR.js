@@ -1,5 +1,6 @@
 # 1.0.1-dev - Current
 
+- added a LERP for position/quaternion/scale for each marker controls
 - did THREEx.ArMarkerHelper to help visualize marker
 - AR-Code generator - see [AR-Code Generator](https://jeromeetienne.github.io/AR.js/three.js/examples/arcode.html)
 - liquid markers are in!
