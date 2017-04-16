@@ -12,6 +12,13 @@ accelerationX: <span id='accelerationX'></span><br/>
 accelerationY: <span id='accelerationY'></span><br/>	
 accelerationZ: <span id='accelerationZ'></span><br/>
 
+
+<hr>
+
+gravityX: <span id='gravityX'></span><br/>	
+gravityY: <span id='gravityY'></span><br/>	
+gravityZ: <span id='gravityZ'></span><br/>
+
 <hr>
 	
 Absolute: <span id='orientationAbsolute'></span><br/>
@@ -26,11 +33,6 @@ Gamma: <span id='orientationGamma'></span><br/>
 
 
 function onDeviceMotion(event) {
-	console.log('deviceMotion', event)
-	var x = event.accelerationIncludingGravity.x;
-	var y = event.accelerationIncludingGravity.y;
-	var z = event.accelerationIncludingGravity.z;
-
 	document.querySelector('#accelerationIncludingGravityX').innerHTML = event.accelerationIncludingGravity.x.toFixed(2)
 	document.querySelector('#accelerationIncludingGravityY').innerHTML = event.accelerationIncludingGravity.y.toFixed(2)
 	document.querySelector('#accelerationIncludingGravityZ').innerHTML = event.accelerationIncludingGravity.z.toFixed(2)
@@ -38,21 +40,16 @@ function onDeviceMotion(event) {
 	document.querySelector('#accelerationX').innerHTML = event.acceleration.x.toFixed(2)
 	document.querySelector('#accelerationY').innerHTML = event.acceleration.y.toFixed(2)
 	document.querySelector('#accelerationZ').innerHTML = event.acceleration.z.toFixed(2)
-	// Do something awesome.
-}
 
+	document.querySelector('#gravityX').innerHTML = (event.accelerationIncludingGravity.x - event.acceleration.x).toFixed(2)
+	document.querySelector('#gravityY').innerHTML = (event.accelerationIncludingGravity.y - event.acceleration.y).toFixed(2)
+	document.querySelector('#gravityZ').innerHTML = (event.accelerationIncludingGravity.z - event.acceleration.z).toFixed(2)
+}
 window.addEventListener("devicemotion", onDeviceMotion, true);
 
 
 
 function onDeviceOrientation(event) {
-	console.log('deviceOrientation', event)
-	var absolute = event.absolute;
-	var alpha    = event.alpha;
-	var beta     = event.beta;
-	var gamma    = event.gamma;
-	
-	// Do stuff with the new orientation data
 	document.querySelector('#orientationAbsolute').innerHTML = event.absolute
 	document.querySelector('#orientationAlpha').innerHTML = event.alpha.toFixed(2)
 	document.querySelector('#orientationBeta').innerHTML = event.beta.toFixed(2)
