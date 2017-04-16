@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<!-- three.js library -->
+<script src='vendor/three.js/build/three.js'></script>
 <body>
 
 
@@ -18,6 +20,7 @@ accelerationZ: <span id='accelerationZ'></span><br/>
 gravityX: <span id='gravityX'></span><br/>	
 gravityY: <span id='gravityY'></span><br/>	
 gravityZ: <span id='gravityZ'></span><br/>
+gravityLength: <span id='gravityLength'></span><br/>
 
 <hr>
 	
@@ -44,6 +47,14 @@ function onDeviceMotion(event) {
 	document.querySelector('#gravityX').innerHTML = (event.accelerationIncludingGravity.x - event.acceleration.x).toFixed(2)
 	document.querySelector('#gravityY').innerHTML = (event.accelerationIncludingGravity.y - event.acceleration.y).toFixed(2)
 	document.querySelector('#gravityZ').innerHTML = (event.accelerationIncludingGravity.z - event.acceleration.z).toFixed(2)
+	
+	var gravity = new THREE.Vector3()
+	gravity.x = event.accelerationIncludingGravity.x - event.acceleration.x
+	gravity.y = event.accelerationIncludingGravity.y - event.acceleration.y
+	gravity.z = event.accelerationIncludingGravity.z - event.acceleration.z
+	document.querySelector('#gravityLength').innerHTML = gravity.length().toFixed(2)
+	
+
 }
 window.addEventListener("devicemotion", onDeviceMotion, true);
 
