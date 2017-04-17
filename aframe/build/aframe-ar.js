@@ -225,6 +225,7 @@ var THREEx = THREEx || {}
 
 THREEx.ArMarkerControls = function(context, object3d, parameters){
 	var _this = this
+	this.id = THREEx.ArMarkerControls.id++
 	this.context = context
 	// handle default parameters
 	this.parameters = {
@@ -238,6 +239,8 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 		barcodeValue : parameters.barcodeValue !== undefined ? parameters.barcodeValue : null,
 		// change matrix mode - [modelViewMatrix, cameraTransformMatrix]
 		changeMatrixMode : parameters.changeMatrixMode !== undefined ? parameters.changeMatrixMode : 'modelViewMatrix',
+		// minimal confidence in the marke recognition - between [0, 1] - default to 1
+		minConfidence: parameters.minConfidence !== undefined ? parameters.minConfidence : 0.6,
 	}
 
 	// sanity check
@@ -270,6 +273,8 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 	return
 
 }
+
+THREEx.ArMarkerControls.id = 0
 
 THREEx.ArMarkerControls.prototype._postInit = function(){
 	var _this = this
@@ -324,12 +329,15 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 
 	return
 	function onMarkerFound(event){
+
+		// honor his.parameters.minConfidence
+		if( event.data.marker.cf < _this.parameters.minConfidence )	return
+
 		// mark object as visible
 		markerObject3D.visible = true
 
 		// data.matrix is the model view matrix
 		var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
-
 
 		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
 		var tmpMatrix = new THREE.Matrix4().copy(_this.context._projectionAxisTransformMatrix)
@@ -351,7 +359,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 			console.assert(false)
 		}
 
-		// decompose the matrix into .position, .quaternion, .scale
+		// decompose - the matrix into .position, .quaternion, .scale
 		markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
 
 		// dispatchEvent
@@ -366,6 +374,45 @@ THREEx.ArMarkerControls.prototype.dispose = function(){
 
 	// TODO remove the event listener if needed
 	// unloadMaker ???
+}
+var THREEx = THREEx || {}
+
+THREEx.ArMarkerHelper = function(markerControls){
+	this.object3d = new THREE.Group
+
+	var mesh = new THREE.AxisHelper()
+	this.object3d.add(mesh)
+
+	// var text = markerControls.id
+	// debugger
+	var text = markerControls.parameters.patternUrl.slice(-1).toUpperCase();
+
+	var canvas = document.createElement( 'canvas' );
+	canvas.width =  64;
+	canvas.height = 64;
+
+	var context = canvas.getContext( '2d' );
+	var texture = new THREE.CanvasTexture( canvas );
+
+	// put the text in the sprite
+	context.font = '48px monospace';
+	context.fillStyle = 'rgba(192,192,255, 0.5)';
+	context.fillRect( 0, 0, canvas.width, canvas.height );
+	context.fillStyle = 'darkblue';
+	context.fillText(text, canvas.width/4, 3*canvas.height/4 )
+	texture.needsUpdate = true
+
+	// var geometry = new THREE.CubeGeometry(1, 1, 1)
+	var geometry = new THREE.PlaneGeometry(1, 1)
+	var material = new THREE.MeshBasicMaterial({
+		map: texture, 
+		transparent: true
+	});
+	var mesh = new THREE.Mesh(geometry, material)
+	mesh.rotation.x = -Math.PI/2
+
+	this.object3d.add(mesh)
+	
 }
 var THREEx = THREEx || {}
 
@@ -411,7 +458,8 @@ THREEx.ArToolkitContext = function(parameters){
 Object.assign( THREEx.ArToolkitContext.prototype, THREE.EventDispatcher.prototype );
 
 // THREEx.ArToolkitContext.baseURL = '../'
-THREEx.ArToolkitContext.baseURL = 'https://raw.githubusercontent.com/jeromeetienne/ar.js/master/'
+// default to github page
+THREEx.ArToolkitContext.baseURL = 'https://jeromeetienne.github.io/AR.js/'
 THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 
 /**
@@ -1454,6 +1502,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 			} else {
 				this.getTransMatSquare(i, visible.markerWidth, visible.matrix);
 			}
+// this.getTransMatSquare(i, visible.markerWidth, visible.matrix);
 
 			visible.inCurrent = true;
 			this.transMatToGLMat(visible.matrix, this.transform_mat);

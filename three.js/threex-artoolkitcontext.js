@@ -41,9 +41,9 @@ THREEx.ArToolkitContext = function(parameters){
 
 Object.assign( THREEx.ArToolkitContext.prototype, THREE.EventDispatcher.prototype );
 
-THREEx.ArToolkitContext.baseURL = '../'
+// THREEx.ArToolkitContext.baseURL = '../'
 // default to github page
-// THREEx.ArToolkitContext.baseURL = 'https://raw.githubusercontent.com/jeromeetienne/ar.js/master/three.js/'
+THREEx.ArToolkitContext.baseURL = 'https://jeromeetienne.github.io/AR.js/'
 THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 
 /**
