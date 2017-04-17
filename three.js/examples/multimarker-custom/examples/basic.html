@@ -224,9 +224,11 @@
 	//////////////////////////////////////////////////////////////////////////////
 	
 	function multiMarkerPlay(multiMarkerFile){	
+		// build a markerRoot
 		var markerRoot = new THREE.Group()
 		scene.add(markerRoot)
-
+		
+		// build a multiMarkerControls
 		var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arToolkitContext, scene, markerRoot, multiMarkerFile)
 
 		// build a smootherControls
