@@ -22,7 +22,7 @@
 
         <div class="row" id='row-ui' >
                 <div class="col s12">
-                        <a class="waves-effect waves-light btn" onclick='hideUI()'><i class="material-icons right">info</i>Hide</a>
+                        <a class="waves-effect waves-light btn" onclick='hideUI()'><i class="material-icons right">reorder</i>Hide</a>
                         <h1 class='center-align'>AR-Code Generator</h1>
                 </div>
 
@@ -38,13 +38,17 @@
 
 
                 <div class="input-field col s4 offset-s4">
-                        <a onclick='generatePdf()' class="waves-effect waves-light btn-large">Pdf</a>
+                        <a href='https://medium.com/arjs/ar-code-a-fast-path-to-augmented-reality-60e51be3cbdf' target='_blank' class="waves-effect waves-light btn-large">
+                                <i class="material-icons right">info</i>
+                                Info
+                        </a>
+                        <a onclick='generatePdf()' class="waves-effect waves-light btn-large" title='Generate a PDF instruction page'>Pdf</a>
                 </div>                
 
         </div>
         <div class="row">
                 <div class="col s2">
-                        <a class="waves-effect waves-light btn" onclick='showUI()' id='btnShowUI' style='display:none;'><i class="material-icons right">info</i>Show</a>
+                        <a class="waves-effect waves-light btn" onclick='showUI()' id='btnShowUI' style='display:none;'><i class="material-icons right">reorder</i>Show</a>
                 </div>                
                 <div class="col s10"></div>
                 <div class="col s12">
@@ -73,23 +77,25 @@
 
 function hideUI(){
         document.querySelector('#hideUiEnabled').checked = true
-        update()
+        updateARCode()
 }
 
 function showUI(){
         document.querySelector('#hideUiEnabled').checked = false
-        update()
+        updateARCode()
 }
 
-document.querySelector('#urlQrCode').addEventListener('change', update)
-document.querySelector('#saveInUrl').addEventListener('change', update)
+document.querySelector('#urlQrCode').addEventListener('change', updateARCode)
+document.querySelector('#saveInUrl').addEventListener('change', updateARCode)
 
+//////////////////////////////////////////////////////////////////////////////
+//                PDF Generation
+//////////////////////////////////////////////////////////////////////////////
 
 function generatePdf(){
         console.log('generate PDF')
         
         var urlQrCode = document.querySelector('#urlQrCode').value
-        // canvas
         
         var docDefinition = {
                 header: [
@@ -129,7 +135,7 @@ function generatePdf(){
                                 margin: [0, 10],
                         },
                         {
-                                text: 'How to use an AR-Code ?',
+                                text: 'How to Use an AR-Code ?',
         			fontSize: 24,
                                 margin: [0, 20],
                         },
@@ -145,7 +151,7 @@ function generatePdf(){
                                         ' Apple is currently working on it tho. Let\'s hope they join the party soon!'
                                 ],
                                 margin: [0, 10, 0 , 30],
-        		},        
+        		},
                         {
                                 text: 'Step 2 - Scan the QR-Code',
         			bold: true,
@@ -206,11 +212,11 @@ hiroImage.onload = function() {
                 document.querySelector('#urlQrCode').value = 'https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html'
         }
 
-        update()
+        updateARCode()
 }
 hiroImage.src = '../../data/images/hiro.png';
 
-function update(){
+function updateARCode(){
         var urlQrCode = document.querySelector('#urlQrCode').value
         var hideUiEnabled = document.querySelector('#hideUiEnabled').checked
         var saveInUrl = document.querySelector('#saveInUrl').checked
