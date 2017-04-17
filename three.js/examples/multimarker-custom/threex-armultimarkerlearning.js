@@ -33,8 +33,16 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 	}
 	var firstMatrixInverse = new THREE.Matrix4().getInverse(this.markersControls[0].object3d.matrix)
 
-	this.markersControls.forEach(function(markerControls){
+	this.markersControls.forEach(function(markerControls, index){
 		
+		// if( index === 0 ){
+		// 	var matrix = new THREE.Matrix4
+		// }else{
+		// 	var matrix = firstMatrixInverse.clone()
+		// 	matrix.multiply(markerControls.object3d.matrix)
+		// 	
+		// }
+
 		var matrix = markerControls.object3d.matrix.clone()
 		matrix.multiply(firstMatrixInverse)
 		// TODO here compute the matrix based on the statistic you got
@@ -49,8 +57,21 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 		})
 	})
 
-	var str = JSON.stringify(data, null, '\t');
-	return str;	
+	var strJSON = JSON.stringify(data, null, '\t');
+	
+	
+	if( true ){
+		var tmp = JSON.parse(strJSON)
+		tmp.markersControls.forEach(function(markerControls){
+			markerControls.poseMatrix = markerControls.poseMatrix.map(function(value){
+				var roundingFactor = 1000
+				return Math.floor(value*roundingFactor)/roundingFactor
+			})
+		})
+		strJSON = JSON.stringify(tmp, null, '\t');
+	}
+	
+	return strJSON;	
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -70,9 +91,14 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 	var countVisible = visibleMarkerControls.length
 
 	var position1 = new THREE.Vector3()
-	var quaternion1 = new THREE.Vector3()
+	var quaternion1 = new THREE.Quaternion()
 	var scale1 = new THREE.Vector3()
 
+
+	var position2 = new THREE.Vector3()
+	var quaternion2 = new THREE.Quaternion()
+	var scale2 = new THREE.Vector3()
+	
 	for(var i = 0; i < visibleMarkerControls.length-1; i++){
 		var markerControls1 = visibleMarkerControls[i]
 		for(var j = 0; j < visibleMarkerControls.length; j++){
@@ -85,7 +111,7 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 			markerControls2.object3d.matrix.decompose(position2, quaternion2, scale2)
 			
 			var position = position2.sub(position1)
-			var quaternion = quaternion1.multiply( quaternion2.getInverse() )
+			var quaternion = quaternion1.multiply( quaternion2.inverse() )
 			var scale = scale2.sub(scale1)
 
 			//////////////////////////////////////////////////////////////////////////////
@@ -95,7 +121,7 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 			if( markerControls1.object3d.userData.multiMarkerStats === undefined ){
 				markerControls1.object3d.userData.multiMarkerStats = []	
 			}
-			var multiMarkerStats = markerControls.object3d.userData.multiMarkerStats
+			var multiMarkerStats = markerControls1.object3d.userData.multiMarkerStats
 			// create the multiMarkerPosition average if needed`
 			if( multiMarkerStats[markerControls2.id] === undefined ){
 				multiMarkerStats[markerControls2.id] = {

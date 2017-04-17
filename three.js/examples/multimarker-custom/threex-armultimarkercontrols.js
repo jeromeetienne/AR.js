@@ -118,6 +118,21 @@ THREEx.ArMultiMarkerControls.prototype._onSourceProcessed = function(){
 	var scaleAverage = new THREE.Vector3
 	var countVisible = 0
 
+	// var data = {
+	// 	countVisible: 0,
+	// 	position : {
+	// 		sum: new THREE.Vector3(0,0,0),
+	// 		average: new THREE.Vector3(0,0,0),
+	// 	},
+	// 	quaternion : {
+	// 		sum: new THREE.Quaternion(0,0,0,0),
+	// 		average: new THREE.Quaternion(0,0,0,0),
+	// 	},
+	// 	scale : {
+	// 		sum: new THREE.Vector3(0,0,0),
+	// 		average: new THREE.Vector3(0,0,0),
+	// 	},
+	// }
 
 	var firstQuaternion = _this.markersControls[0].object3d.quaternion
 
