@@ -63,32 +63,69 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 	// here collect the statistic on relative positioning 
 
-	var positionsSum = new THREE.Vector3
-
 	var visibleMarkerControls = this.markersControls.filter(function(markerControls){
 		return markerControls.object3d.visible === true
 	})
 
 	var countVisible = visibleMarkerControls.length
 
+	var position1 = new THREE.Vector3()
+	var quaternion1 = new THREE.Vector3()
+	var scale1 = new THREE.Vector3()
+
 	for(var i = 0; i < visibleMarkerControls.length-1; i++){
 		var markerControls1 = visibleMarkerControls[i]
-		for(var j = i+1; j < visibleMarkerControls.length; j++){
+		for(var j = 0; j < visibleMarkerControls.length; j++){
 			var markerControls2 = visibleMarkerControls[j]
 
 			// decompose the matrix1 into .position, .quaternion, .scale
-			var position1 = new THREE.Vector3()
-			markerControls1.object3d.matrix.decompose(position1, new THREE.Quaternion(), new THREE.Vector3)
+			markerControls1.object3d.matrix.decompose(position1, quaternion1, scale1)
 
 			// decompose the matrix1 into .position, .quaternion, .scale
-			var position2 = new THREE.Vector3()
-			markerControls2.object3d.matrix.decompose(position2, new THREE.Quaternion(), new THREE.Vector3)
+			markerControls2.object3d.matrix.decompose(position2, quaternion2, scale2)
 			
-			var relativePosition1to2 = position2.sub(position1)
-			// console.log('relativePosition1to2', relativePosition1to2)
+			var position = position2.sub(position1)
+			var quaternion = quaternion1.multiply( quaternion2.getInverse() )
+			var scale = scale2.sub(scale1)
+
+			//////////////////////////////////////////////////////////////////////////////
+			//		create data in markerControls1.object3d.userData
+			//////////////////////////////////////////////////////////////////////////////
+			// create multiMarkerStats for markerControls1 if needed
+			if( markerControls1.object3d.userData.multiMarkerStats === undefined ){
+				markerControls1.object3d.userData.multiMarkerStats = []	
+			}
+			var multiMarkerStats = markerControls.object3d.userData.multiMarkerStats
+			// create the multiMarkerPosition average if needed`
+			if( multiMarkerStats[markerControls2.id] === undefined ){
+				multiMarkerStats[markerControls2.id] = {
+					count : 0,
+					position : {
+						sum: new THREE.Vector3(0,0,0),
+						average: new THREE.Vector3(0,0,0),						
+					},
+					quaternion : {
+						sum: new THREE.Quaternion(0,0,0,0),
+						average: new THREE.Quaternion(0,0,0,0),						
+					},
+					scale : {
+						sum: new THREE.Vector3(0,0,0),
+						average: new THREE.Vector3(0,0,0),						
+					},
+				}
+			}
 			
-			
-			// console.log('couple', i, j)
+			//////////////////////////////////////////////////////////////////////////////
+			//		update statistics
+			//////////////////////////////////////////////////////////////////////////////
+			var stats = multiMarkerStats[markerControls2.id]
+			// update the count
+			stats.count ++
+
+			// update the average of position/rotation/scale
+			THREEx.ArMultiMarkerControls.averageVector3(stats.position.sum, position , stats.count, stats.position.average)
+			THREEx.ArMultiMarkerControls.averageQuaternion(stats.quaternion.sum, quaternion , stats.count, stats.quaternion.average)
+			THREEx.ArMultiMarkerControls.averageVector3(stats.scale.sum, scale , stats.count, stats.scale.average)
 		}
 	}
 }

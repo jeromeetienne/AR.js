@@ -15,6 +15,7 @@
 
 <script src='../threex-armultimarkercontrols.js'></script>
 <script src='../threex-armultimarkerlearning.js'></script>
+<script src='../threex-arsmoothercontrols.js'></script>
 <script src='../../../threex-armarkerhelper.js'></script>
 <script src='threex.tweencontrols/threex.tweencontrols.js'></script>
 
@@ -98,10 +99,9 @@
 	var arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: '../../../../data/data/camera_para.dat',
 		detectionMode: 'mono',
-		// maxDetectionRate: 30,
-		// canvasWidth: 80*4,
-		// canvasHeight: 60*4,
-		// debug: true,
+		maxDetectionRate: 25,
+		canvasWidth: 80*4,
+		canvasHeight: 60*4,
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
@@ -226,58 +226,24 @@
 	function multiMarkerPlay(multiMarkerFile){	
 		var markerRoot = new THREE.Group()
 		scene.add(markerRoot)
-	// debugger
+
 		var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arToolkitContext, scene, markerRoot, multiMarkerFile)
 
+		// build a smootherControls
+		var smootherRoot = new THREE.Group()
+		scene.add(smootherRoot)
+		var smootherControls = new THREEx.ArSmootherControls(smootherRoot)
+		onRenderFcts.push(function(delta){
+			smootherControls.update(markerRoot)
+		})	
+
+
 		
-		var smoothedRoot = new THREE.Group()
-		scene.add(smoothedRoot)
-
-		onRenderFcts.push(function(){
-			smoothedRoot.visible = markerRoot.visible
-
-			// TODO include this in all marker controls
-			// var lerpPosition = 0.3
-			// var lerpQuaternion = 0.6
-			// var lerpScale = 0.6
-			// var position = smoothedRoot.position.clone().lerp(markerRoot.position, lerpPosition)
-			// smoothedRoot.position.copy(position)
-			// var quaternion = smoothedRoot.quaternion.clone().slerp(markerRoot.quaternion, lerpQuaternion)
-			// smoothedRoot.quaternion.copy(quaternion)
-			// var scale = smoothedRoot.scale.clone().lerp(markerRoot.scale, lerpScale)
-			// smoothedRoot.scale.copy(scale)
-		
-			// smoothedRoot.position.copy(markerRoot.position)
-			// smoothedRoot.quaternion.copy(markerRoot.quaternion)
-			// smoothedRoot.scale.copy(markerRoot.scale)
-		})
-
-
-		// var tweenControls = new THREEx.TweenControls(smoothedRoot)
-		// tweenControls.tweenDelay	= 1/100
-		// tweenControls.tweenFunction	=  THREEx.TweenControls.Easing.Quintic.Out
-		// 
-		// multiMarkerControls.addEventListener('markerFound', function(){
-		// 	tweenControls.setTargetFromObject3D(markerRoot)
-		// })
-		// onRenderFcts.push(function(){
-		// 	// mirror markerRoot.visible
-		// 	// smoothedRoot.visible = markerRoot.visible
-		// 	
-		// 	tweenControls.update()
-		// })
-		
-		
-
-
-
-
 		var myScene = new THREE.Scene
 		myScene.position.x = interMarkerWidth
 		myScene.position.z = interMarkerWidth/2
 		myScene.scale.set(1,1,1).multiplyScalar(2)
 		markerRoot.add(myScene)
-		// smoothedRoot.add(myScene)
 		
 		//////////////////////////////////////////////////////////////////////////////////
 		//		add an object in the scene
