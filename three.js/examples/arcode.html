@@ -12,13 +12,17 @@
 
         <!-- https://davidshimjs.github.io/qrcodejs/ -->
         <script src='https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js'></script>
+
+        <!-- Include pdfMake - http://pdfmake.org/ -->
+ 	<script src='vendor/pdfMake/pdfmake.min.js'></script>
+ 	<script src='vendor/pdfMake/vfs_fonts.js'></script>
 </head>
 
 <body>
 
         <div class="row" id='row-ui' >
                 <div class="col s12">
-                        <a class="waves-effect waves-light btn" onclick='hideUI()'><i class="material-icons right">info</i>Hide</a>
+                        <a class="waves-effect waves-light btn" onclick='hideUI()'><i class="material-icons right">reorder</i>Hide</a>
                         <h1 class='center-align'>AR-Code Generator</h1>
                 </div>
 
@@ -34,13 +38,17 @@
 
 
                 <div class="input-field col s4 offset-s4">
-                        <a class="waves-effect waves-light btn-large">Generate</a>
+                        <a href='https://medium.com/arjs/ar-code-a-fast-path-to-augmented-reality-60e51be3cbdf' target='_blank' class="waves-effect waves-light btn-large">
+                                <i class="material-icons right">info</i>
+                                Info
+                        </a>
+                        <a onclick='generatePdf()' class="waves-effect waves-light btn-large" title='Generate a PDF instruction page'>Pdf</a>
                 </div>                
 
         </div>
         <div class="row">
                 <div class="col s2">
-                        <a class="waves-effect waves-light btn" onclick='showUI()' id='btnShowUI' style='display:none;'><i class="material-icons right">info</i>Show</a>
+                        <a class="waves-effect waves-light btn" onclick='showUI()' id='btnShowUI' style='display:none;'><i class="material-icons right">reorder</i>Show</a>
                 </div>                
                 <div class="col s10"></div>
                 <div class="col s12">
@@ -69,16 +77,113 @@
 
 function hideUI(){
         document.querySelector('#hideUiEnabled').checked = true
-        update()
+        updateARCode()
 }
 
 function showUI(){
         document.querySelector('#hideUiEnabled').checked = false
-        update()
+        updateARCode()
 }
 
-document.querySelector('#urlQrCode').addEventListener('change', update)
-document.querySelector('#saveInUrl').addEventListener('change', update)
+document.querySelector('#urlQrCode').addEventListener('change', updateARCode)
+document.querySelector('#saveInUrl').addEventListener('change', updateARCode)
+
+//////////////////////////////////////////////////////////////////////////////
+//                PDF Generation
+//////////////////////////////////////////////////////////////////////////////
+
+function generatePdf(){
+        console.log('generate PDF')
+        
+        var urlQrCode = document.querySelector('#urlQrCode').value
+        
+        var docDefinition = {
+                header: [
+                        {
+                                text: 'AR.js by @jerome_etienne - https://github.com/jeromeetienne/ar.js',
+                                margin: [0, 20],
+                                alignment: 'center',
+                        },                        
+                ],
+                content: [
+                        {
+                                image: canvas.toDataURL(),
+                                width: 300,
+                                alignment: 'center',
+                        },
+                        {
+                                text: [                                        
+                                        {
+                                                text: '\nAR-CODE ',
+                        			fontSize: 36,
+                        			bold: true,
+                                        },
+                                        {
+                                                text: 'for',
+                        			fontSize: 24,
+        			                bold: false,
+                                        }
+                                ],
+                                alignment: 'center',
+        			fontSize: 36,
+        			bold: true,
+                                margin: [0, 10],
+                        },
+                        {
+                                text: urlQrCode,
+                                alignment: 'center',
+                                margin: [0, 10],
+                        },
+                        {
+                                text: 'How to Use an AR-Code ?',
+        			fontSize: 24,
+                                margin: [0, 20],
+                        },
+                        {
+                                text: 'Step 1 - Get a Phone',
+        			bold: true,
+        			fontSize: 15,
+                        },
+                        {
+                                text: [
+                                        'It works on any browser with WebGL and WebRTC. So android works. Windows mobile works. ',
+                                        'IOS doesn\'t work unfortunately. IOS safari doesn\'t support WebRTC at the moment.',
+                                        ' Apple is currently working on it tho. Let\'s hope they join the party soon!'
+                                ],
+                                margin: [0, 10, 0 , 30],
+        		},
+                        {
+                                text: 'Step 2 - Scan the QR-Code',
+        			bold: true,
+        			fontSize: 15,
+                        },
+                        {
+                                text: [
+                                        'It will open your web browser to an augmented reality page. ',
+                                        'It will open the url from the qr-code to some AR.js content. ',
+                                        'Then your phone will use the camera to find out the position ',
+                                        'of the marker and display 3d content on top of it. ',
+                                ],
+                                margin: [0, 10, 0 , 30],
+        		},        
+                        {
+                                text: 'Step 3 - Point the Phone at the Hiro Marker',
+        			bold: true,
+        			fontSize: 15,
+                        },
+                        {
+                                text: [
+                                        'You are ',
+                                        { text: 'DONE', bold: true, },
+                                        '! Enjoy the Augmented Reality :)',                                        
+                                ],
+                                margin: [0, 10, 0 , 30],
+        		},        
+                ],
+        }
+        pdfMake.createPdf(docDefinition).open();
+        // pdfMake.createPdf(docDefinition).download('optionalName.pdf');
+}
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -107,11 +212,11 @@ hiroImage.onload = function() {
                 document.querySelector('#urlQrCode').value = 'https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html'
         }
 
-        update()
+        updateARCode()
 }
 hiroImage.src = '../../data/images/hiro.png';
 
-function update(){
+function updateARCode(){
         var urlQrCode = document.querySelector('#urlQrCode').value
         var hideUiEnabled = document.querySelector('#hideUiEnabled').checked
         var saveInUrl = document.querySelector('#saveInUrl').checked

@@ -1,8 +1,12 @@
+- bug in resize + debug in context
+
+- do the tweening + disapearance with timeout in threex-armarkersmoother.js
+  - this is a controls which read a armarkercontrols and output a new smoothed root
+
 - redo parameters-tuning.html
   - all parameters exposed as button - stored as json in url
   - to replace the demo.html in a-frame - which is super broken anyway
   - 3 groups of parameters : source, context, controls. make it 3 group on screen too
-- bug in resize + debug in context
 
 - put armarkerhelper else where
 - DONE do a threex.armarkershelper.js something which display info on the marker

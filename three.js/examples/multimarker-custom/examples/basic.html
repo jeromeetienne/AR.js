@@ -15,6 +15,7 @@
 
 <script src='../threex-armultimarkercontrols.js'></script>
 <script src='../threex-armultimarkerlearning.js'></script>
+<script src='../threex-arsmoothercontrols.js'></script>
 <script src='../../../threex-armarkerhelper.js'></script>
 <script src='threex.tweencontrols/threex.tweencontrols.js'></script>
 
@@ -98,10 +99,9 @@
 	var arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: '../../../../data/data/camera_para.dat',
 		detectionMode: 'mono',
-		// maxDetectionRate: 30,
-		// canvasWidth: 80*4,
-		// canvasHeight: 60*4,
-		// debug: true,
+		maxDetectionRate: 25,
+		canvasWidth: 80*4,
+		canvasHeight: 60*4,
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
@@ -122,20 +122,20 @@
 	var interMarkerWidth = 2.7
 	var multiMarkerFile = {
 		markersControls : [
-			// {
-			// 	parameters: {
-			// 		type : 'pattern',
-			// 		patternUrl : '../../../../data/multimarkers/multi-abcdef/patt.a',
-			// 	},
-			// 	poseMatrix: new THREE.Matrix4().makeTranslation(0,0, 0).toArray()
-			// },
-			// {
-			// 	parameters: {
-			// 		type : 'pattern',
-			// 		patternUrl : '../../../../data/multimarkers/multi-abcdef/patt.b',
-			// 	},
-			// 	poseMatrix: new THREE.Matrix4().makeTranslation(-interMarkerWidth,0, 0).toArray()
-			// },
+			{
+				parameters: {
+					type : 'pattern',
+					patternUrl : '../../../../data/multimarkers/multi-abcdef/patt.a',
+				},
+				poseMatrix: new THREE.Matrix4().makeTranslation(0,0, 0).toArray()
+			},
+			{
+				parameters: {
+					type : 'pattern',
+					patternUrl : '../../../../data/multimarkers/multi-abcdef/patt.b',
+				},
+				poseMatrix: new THREE.Matrix4().makeTranslation(-interMarkerWidth,0, 0).toArray()
+			},
 			// {
 			// 	parameters: {
 			// 		type : 'pattern',
@@ -143,27 +143,27 @@
 			// 	},
 			// 	poseMatrix: new THREE.Matrix4().makeTranslation(-interMarkerWidth*2, 0, 0).toArray()
 			// },
-			{
-				parameters: {
-					type : 'pattern',
-					patternUrl : '../../../../data/multimarkers/multi-abcdef/patt.d',
-				},
-				poseMatrix: new THREE.Matrix4().makeTranslation(0,0,-interMarkerWidth).toArray()
-			},
-			{
-				parameters: {
-					type : 'pattern',
-					patternUrl : '../../../../data/multimarkers/multi-abcdef/patt.g',
-				},
-				poseMatrix: new THREE.Matrix4().makeTranslation(-interMarkerWidth,0,-interMarkerWidth).toArray()
-			},
-			{
-				parameters: {
-					type : 'pattern',
-					patternUrl : '../../../../data/multimarkers/multi-abcdef/patt.f',
-				},
-				poseMatrix: new THREE.Matrix4().makeTranslation(-interMarkerWidth*2, 0,-interMarkerWidth).toArray()
-			},
+			// {
+			// 	parameters: {
+			// 		type : 'pattern',
+			// 		patternUrl : '../../../../data/multimarkers/multi-abcdef/patt.d',
+			// 	},
+			// 	poseMatrix: new THREE.Matrix4().makeTranslation(0,0,-interMarkerWidth).toArray()
+			// },
+			// {
+			// 	parameters: {
+			// 		type : 'pattern',
+			// 		patternUrl : '../../../../data/multimarkers/multi-abcdef/patt.g',
+			// 	},
+			// 	poseMatrix: new THREE.Matrix4().makeTranslation(-interMarkerWidth,0,-interMarkerWidth).toArray()
+			// },
+			// {
+			// 	parameters: {
+			// 		type : 'pattern',
+			// 		patternUrl : '../../../../data/multimarkers/multi-abcdef/patt.f',
+			// 	},
+			// 	poseMatrix: new THREE.Matrix4().makeTranslation(-interMarkerWidth*2, 0,-interMarkerWidth).toArray()
+			// },
 		]
 	}
 	////////////////////////////////////////////////////////////////////////////////
@@ -174,13 +174,13 @@
 		multiMarkerLearn()
 	}else{
 
-		// if( localStorage.getItem('sampleMultiMarkerFile') !== null ){
-		// 	multiMarkerPlay(localStorage.getItem('sampleMultiMarkerFile'))
-		// }else{
-		// 	multiMarkerPlay(JSON.stringify(multiMarkerFile))
-		// }
+		if( localStorage.getItem('sampleMultiMarkerFile') !== null ){
+			multiMarkerPlay(localStorage.getItem('sampleMultiMarkerFile'))
+		}else{
+			multiMarkerPlay(JSON.stringify(multiMarkerFile))
+		}
 
-		multiMarkerPlay(JSON.stringify(multiMarkerFile))
+		// multiMarkerPlay(JSON.stringify(multiMarkerFile))
 	}
 	
 	function multiMarkerLearn(){
@@ -224,67 +224,35 @@
 	//////////////////////////////////////////////////////////////////////////////
 	
 	function multiMarkerPlay(multiMarkerFile){	
+		// build a markerRoot
 		var markerRoot = new THREE.Group()
 		scene.add(markerRoot)
-	// debugger
+		
+		// build a multiMarkerControls
 		var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arToolkitContext, scene, markerRoot, multiMarkerFile)
 
+		// build a smootherControls
+		var smootherRoot = new THREE.Group()
+		scene.add(smootherRoot)
+		var smootherControls = new THREEx.ArSmootherControls(smootherRoot)
+		onRenderFcts.push(function(delta){
+			smootherControls.update(markerRoot)
+		})	
+
+
 		
-		var smoothedRoot = new THREE.Group()
-		scene.add(smoothedRoot)
-
-		onRenderFcts.push(function(){
-			smoothedRoot.visible = markerRoot.visible
-
-			// TODO include this in all marker controls
-			// var lerpPosition = 0.3
-			// var lerpQuaternion = 0.6
-			// var lerpScale = 0.6
-			// var position = smoothedRoot.position.clone().lerp(markerRoot.position, lerpPosition)
-			// smoothedRoot.position.copy(position)
-			// var quaternion = smoothedRoot.quaternion.clone().slerp(markerRoot.quaternion, lerpQuaternion)
-			// smoothedRoot.quaternion.copy(quaternion)
-			// var scale = smoothedRoot.scale.clone().lerp(markerRoot.scale, lerpScale)
-			// smoothedRoot.scale.copy(scale)
-		
-			// smoothedRoot.position.copy(markerRoot.position)
-			// smoothedRoot.quaternion.copy(markerRoot.quaternion)
-			// smoothedRoot.scale.copy(markerRoot.scale)
-		})
-
-
-		// var tweenControls = new THREEx.TweenControls(smoothedRoot)
-		// tweenControls.tweenDelay	= 1/100
-		// tweenControls.tweenFunction	=  THREEx.TweenControls.Easing.Quintic.Out
-		// 
-		// multiMarkerControls.addEventListener('markerFound', function(){
-		// 	tweenControls.setTargetFromObject3D(markerRoot)
-		// })
-		// onRenderFcts.push(function(){
-		// 	// mirror markerRoot.visible
-		// 	// smoothedRoot.visible = markerRoot.visible
-		// 	
-		// 	tweenControls.update()
-		// })
-		
-		
-
-
-
-
-		var myScene = new THREE.Scene
-		myScene.position.x = interMarkerWidth
-		myScene.position.z = interMarkerWidth/2
-		myScene.scale.set(1,1,1).multiplyScalar(2)
-		markerRoot.add(myScene)
-		// smoothedRoot.add(myScene)
-		
+		var markerScene = new THREE.Scene
+		markerScene.position.x = interMarkerWidth
+		markerScene.position.z = interMarkerWidth/2
+		markerScene.scale.set(1,1,1).multiplyScalar(2)
+		// markerRoot.add(markerScene)
+		smootherRoot.add(markerScene)
 		//////////////////////////////////////////////////////////////////////////////////
 		//		add an object in the scene
 		//////////////////////////////////////////////////////////////////////////////////
 
 		var mesh = new THREE.AxisHelper()
-		myScene.add(mesh)
+		markerScene.add(mesh)
 
 		// add a torus knot	
 		var geometry	= new THREE.CubeGeometry(1,1,1);
@@ -295,13 +263,13 @@
 		}); 
 		var mesh	= new THREE.Mesh( geometry, material );
 		mesh.position.y	= geometry.parameters.height/2
-		myScene.add( mesh );
+		markerScene.add( mesh );
 		
 		var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
 		var material	= new THREE.MeshNormalMaterial(); 
 		var mesh	= new THREE.Mesh( geometry, material );
 		mesh.position.y	= 0.5
-		myScene.add( mesh );
+		markerScene.add( mesh );
 		
 		onRenderFcts.push(function(delta){
 			mesh.rotation.x += delta * Math.PI

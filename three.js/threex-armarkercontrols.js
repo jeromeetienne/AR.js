@@ -18,12 +18,6 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 		changeMatrixMode : parameters.changeMatrixMode !== undefined ? parameters.changeMatrixMode : 'modelViewMatrix',
 		// minimal confidence in the marke recognition - between [0, 1] - default to 1
 		minConfidence: parameters.minConfidence !== undefined ? parameters.minConfidence : 0.6,
-		// lerp coeficient for the position - between [0,1] - default to 1
-		lerpPosition: parameters.lerpPosition !== undefined ? parameters.lerpPosition : 1,
-		// lerp coeficient for the quaternion - between [0,1] - default to 1
-		lerpQuaternion: parameters.lerpQuaternion !== undefined ? parameters.lerpQuaternion : 1,
-		// lerp coeficient for the scale - between [0,1] - default to 1
-		lerpScale: parameters.lerpScale !== undefined ? parameters.lerpScale : 1,
 	}
 
 	// sanity check
@@ -141,19 +135,9 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 		}else {
 			console.assert(false)
 		}
-		
-		// decompose matrix in position/quaternion/scale and apply lerp
-		var targetPosition = new THREE.Vector3
-		var targetQuaternion = new THREE.Quaternion()
-		var targetScale = new THREE.Vector3()
-		markerObject3D.matrix.decompose(targetPosition, targetQuaternion, targetScale)
-		markerObject3D.position.lerp(targetPosition, _this.parameters.lerpPosition)
-		markerObject3D.quaternion.slerp(targetQuaternion, _this.parameters.lerpQuaternion)
-		markerObject3D.scale.lerp(targetScale, _this.parameters.lerpScale)
-		markerObject3D.updateMatrix()
 
 		// decompose - the matrix into .position, .quaternion, .scale
-		// markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
+		markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
 
 		// dispatchEvent
 		_this.dispatchEvent( { type: 'markerFound' } );

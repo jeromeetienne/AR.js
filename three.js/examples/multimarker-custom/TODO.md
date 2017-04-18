@@ -1,5 +1,11 @@
 - merge the tweencontrols 
 
+- do a accumulator API for vector3 and quaternion
+  - use it in the learner and in the player
+  - just copy the unity function from the link
+  - accumulator function = keep maintaining the average as you update it
+  - accVector3(averageVector3, newVector3, nValues)
+
 # MVP
 - we need a way to learn an area
 - we need to be able to play content in this area

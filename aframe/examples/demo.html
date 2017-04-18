@@ -191,8 +191,8 @@ body {
 			  
 		// honor options.markerContent
 		if( options.markerContent === 'cube' ){
-			sceneHtml += `<a-box position='0 0 0.5' material='opacity: 0.5; side:double'></a-box>
-			<a-entity geometry="primitive: torusKnot; radius: 0.3; radiusTubular: 0.05" position='0 0 0.5'>
+			sceneHtml += `<a-box position='0 0.5 0' material='opacity: 0.5; side:double'></a-box>
+			<a-entity geometry="primitive: torusKnot; radius: 0.3; radiusTubular: 0.05" position='0 0.5 0'>
 				<a-animation attribute="rotation" from="0 0 0" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
 			</a-entity>`			
 		}else if( options.markerContent === 'minecraft' ){
