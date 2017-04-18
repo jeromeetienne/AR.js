@@ -10,7 +10,7 @@ AFRAME.registerSystem('artoolkit', {
                 },
 		detectionMode : {
 			type: 'string',
-			default: 'color_and_matrix',
+			default: 'mono',
 		},
 		matrixCodeType : {
 			type: 'string',
