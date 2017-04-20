@@ -71,16 +71,12 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 		arController.trackBarcodeMarkerId(_this.markerId, _this.parameters.size);
 	}else if( _this.parameters.type === 'multiMarker' ){
 // TODO rename patternUrl into .url - as it is used in multiple parameters
-// debugger
                 arController.loadMultiMarker(_this.parameters.patternUrl, function(markerId, markerNum) {
 			_this.markerId = markerId
-                        // arController.trackPatternMarkerId(_this.markerId, _this.parameters.size);
                 });
 		arController.addEventListener('getMultiMarker', function(event) {
-			console.log('getMultiMarker')
-			if( event.data.multiMarkerId === _this.markerId ){
-				onMarkerFound(event)
-			} 
+			if( event.data.multiMarkerId !== _this.markerId )	return
+			onMarkerFound(event)
 		});
 	}else if( _this.parameters.type === 'unknown' ){
 		_this.markerId = null

@@ -27,7 +27,7 @@ Thus even if only one sub-marker is visible, multi-marker position will still be
 
 # Motivation 
 
-	there was to many bugs in artoolkit 
+	there was too many bugs in artoolkit 
 
 - issue in the file parsing - TODO get github issue
 - in jsartoolkit5, it has several issue in the multimarker file loading. It is

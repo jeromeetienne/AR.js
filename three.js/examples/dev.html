@@ -11,6 +11,7 @@
 <script src='../threex-artoolkitcontext.js'></script>
 <script src='../threex-artoolkitprofile.js'></script>
 <script src='../threex-armarkercontrols.js'></script>
+<script src='../threex-arsmoothedcontrols.js'></script>
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
@@ -123,13 +124,32 @@
 		// lerpQuaternion: 0.3,
 	})
 
+
+	// build a smoothedControls
+	var smoothedRoot = new THREE.Group()
+	scene.add(smoothedRoot)
+	var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
+		minVisibleDelay: 1,
+		minUnvisibleDelay: 1,
+	})
+	onRenderFcts.push(function(delta){
+		smoothedControls.update(markerRoot)
+	})	
+	
+	smoothedControls.addEventListener('becameVisible', function(){
+		console.log('becameVisible event notified')
+	})
+	smoothedControls.addEventListener('becameUnVisible', function(){
+		console.log('becameUnVisible event notified')
+	})
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
 
 	var mesh = new THREE.AxisHelper()
-	markerRoot.add(mesh)
+	// markerRoot.add(mesh)
+	smoothedRoot.add(mesh)
 
 	// add a torus knot	
 	var geometry	= new THREE.CubeGeometry(1,1,1);
@@ -140,13 +160,15 @@
 	}); 
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= geometry.parameters.height/2
-	markerRoot.add( mesh );
+	// markerRoot.add( mesh );
+	smoothedRoot.add(mesh)
 	
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= 0.5
-	markerRoot.add( mesh );
+	// markerRoot.add( mesh );
+	smoothedRoot.add( mesh );
 
 	onRenderFcts.push(function(delta){
 		mesh.rotation.x += delta * Math.PI

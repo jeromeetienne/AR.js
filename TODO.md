@@ -2,6 +2,7 @@
 
 - do the tweening + disapearance with timeout in threex-armarkersmoother.js
   - this is a controls which read a armarkercontrols and output a new smoothed root
+  - make a possible delay in the appearance and disapearance
 
 - redo parameters-tuning.html
   - all parameters exposed as button - stored as json in url
