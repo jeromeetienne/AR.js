@@ -76,13 +76,13 @@
 
 	arToolkitSource.init(function onReady(){
 		// handle resize of renderer
-		arToolkitSource.onResize(renderer.domElement)		
+		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])		
 	})
 	
 	// handle resize
 	window.addEventListener('resize', function(){
 		// handle arToolkitSource resize
-		arToolkitSource.onResize(renderer.domElement)		
+		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])
 	})
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -95,6 +95,8 @@
 		detectionMode: 'mono',
 		canvasWidth: 80*3,
 		canvasHeight: 60*3,
+
+		debug: true,
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
@@ -120,8 +122,6 @@
 		type : 'pattern',
 		patternUrl : '../../data/data/patt.hiro',
 		// patternUrl : '../../data/data/patt.kanji',
-		// lerpPosition: 0.3,
-		// lerpQuaternion: 0.3,
 	})
 
 
@@ -129,8 +129,8 @@
 	var smoothedRoot = new THREE.Group()
 	scene.add(smoothedRoot)
 	var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
-		minVisibleDelay: 1,
-		minUnvisibleDelay: 1,
+		// minVisibleDelay: 1,
+		// minUnvisibleDelay: 1,
 	})
 	onRenderFcts.push(function(delta){
 		smoothedControls.update(markerRoot)
@@ -142,6 +142,7 @@
 	smoothedControls.addEventListener('becameUnVisible', function(){
 		console.log('becameUnVisible event notified')
 	})
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
@@ -150,7 +151,7 @@
 	var mesh = new THREE.AxisHelper()
 	// markerRoot.add(mesh)
 	smoothedRoot.add(mesh)
-
+	
 	// add a torus knot	
 	var geometry	= new THREE.CubeGeometry(1,1,1);
 	var material	= new THREE.MeshNormalMaterial({
@@ -169,7 +170,7 @@
 	mesh.position.y	= 0.5
 	// markerRoot.add( mesh );
 	smoothedRoot.add( mesh );
-
+	
 	onRenderFcts.push(function(delta){
 		mesh.rotation.x += delta * Math.PI
 	})

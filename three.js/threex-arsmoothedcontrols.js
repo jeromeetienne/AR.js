@@ -4,7 +4,6 @@ var THREEx = THREEx || {}
  * - lerp position/quaternino/scale
  * - minDelayDetected
  * - minDelayUndetected
- * - fixStepDelay
  * @param {[type]} object3d   [description]
  * @param {[type]} parameters [description]
  */

@@ -1,6 +1,9 @@
 # 1.0.1-dev - Current
 
-- added a LERP for position/quaternion/scale for each marker controls
+- added smoothedControls - everything tunable via parameters
+  - it applies LERP for position/quaternion/scale on sub-controls
+  - if display controls object3d when sub-controls has been visible for minVisibleDelay
+  - if display controls object3d when sub-controls has been unvisible for minUnvisibleDelay
 - did THREEx.ArMarkerHelper to help visualize marker
 - AR-Code generator - see [AR-Code Generator](https://jeromeetienne.github.io/AR.js/three.js/examples/arcode.html)
 - liquid markers are in!
