@@ -1,10 +1,11 @@
-- DONE bug in resize + debug in context
+- do a webvr demo with a hole in the ground.
 
 - redo parameters-tuning.html
   - all parameters exposed as button - stored as json in url
   - to replace the demo.html in a-frame - which is super broken anyway
   - 3 groups of parameters : source, context, controls. make it 3 group on screen too
 
+- DONE bug in resize + debug in context
 - DONE do the tweening + disapearance with timeout in threex-armarkersmoother.js
   - this is a controls which read a armarkercontrols and output a new smoothed root
   - make a possible delay in the appearance and disapearance

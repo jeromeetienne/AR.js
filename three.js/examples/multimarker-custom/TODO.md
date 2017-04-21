@@ -1,3 +1,16 @@
+# TODO
+- the matrix position outputted by THREEx.ArMultiMakersLearning.prototype.toJSON 
+  isnt the good one. the position is the negative it should be
+- THREEx.ArMultiMakersLearning.prototype.toJSON should output result from statistic
+- clean up THREEx.ArMultiMarkerControls.prototype.onSourceProcessed
+
+
+- how to know if it works
+
+
+---
+
+
 - DONE merge the tweencontrols 
 
 - do a accumulator API for vector3 and quaternion
