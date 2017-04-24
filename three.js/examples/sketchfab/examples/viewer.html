@@ -43,13 +43,26 @@
 
 	// init scene and camera
 	var scene	= new THREE.Scene();
-
-	var ambient = new THREE.AmbientLight( 0x666666 );
-	scene.add( ambient );
-
-	var directionalLight = new THREE.DirectionalLight( 0x887766 );
-	directionalLight.position.set( -1, 1, 1 ).normalize();
-	scene.add( directionalLight );
+	//////////////////////////////////////////////////////////////////////////////////
+	//		set 3 point lighting						//
+	//////////////////////////////////////////////////////////////////////////////////
+	;(function(){
+		var object3d	= new THREE.AmbientLight(0x101010)
+		object3d.name	= 'Ambient light'
+		scene.add(object3d)
+		var object3d	= new THREE.DirectionalLight('white', 0.225)
+		object3d.position.set(2.6,1,3)
+		object3d.name	= 'Back light'
+		scene.add(object3d)
+		var object3d	= new THREE.DirectionalLight('white', 0.375)
+		object3d.position.set(-2, -1, 0)
+		object3d.name 	= 'Key light'
+		scene.add(object3d)
+		var object3d	= new THREE.DirectionalLight('white', 0.5*1)
+		object3d.position.set(3, 3, 2)
+		object3d.name	= 'Fill light'
+		scene.add(object3d)		
+	})()
 	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
@@ -181,12 +194,19 @@
 		window.model = model
 		model.position.y = 0.5
 
-		model.rotation.x = 3*Math.PI/2
-		model.rotation.y = Math.PI
+		// model.rotation.x = 3*Math.PI/2
+		// model.rotation.y = Math.PI
+
+		var material = model.children[0].material
+		material.shading = THREE.SmoothShading
+		material.color.set('#444')
+		material.needsUpdate = true
 
 		model.scale.set(1,1,1).multiplyScalar(0.005)
 
-		smoothedRoot.add( model )
+		// markerRoot.add( model )
+		scene.add( model )
+		model.position.z = -4
 	});
 
 	//////////////////////////////////////////////////////////////////////////////////
