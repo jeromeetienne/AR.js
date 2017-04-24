@@ -27,7 +27,7 @@
 
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
-		// antialias	: true,
+		antialias	: true,
 		alpha: true
 	});
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
@@ -108,8 +108,9 @@
 	var arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
 		detectionMode: 'mono',
-		canvasWidth: 80*3,
-		canvasHeight: 60*3,
+		maxDetectionRate: 30,
+		canvasWidth: 80*4,
+		canvasHeight: 60*4,
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
