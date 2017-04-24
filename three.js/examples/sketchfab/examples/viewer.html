@@ -148,40 +148,44 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 
-	var mesh = new THREE.AxisHelper()
-	// markerRoot.add(mesh)
-	smoothedRoot.add(mesh)
+	// var mesh = new THREE.AxisHelper()
+	// // markerRoot.add(mesh)
+	// smoothedRoot.add(mesh)
 	
-	// add a torus knot	
-	var geometry	= new THREE.CubeGeometry(1,1,1);
-	var material	= new THREE.MeshNormalMaterial({
-		transparent : true,
-		opacity: 0.5,
-		side: THREE.DoubleSide
-	}); 
-	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= geometry.parameters.height/2
-	// markerRoot.add( mesh );
-	smoothedRoot.add(mesh)
-	
-	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
-	var material	= new THREE.MeshNormalMaterial(); 
-	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= 0.5
-	// markerRoot.add( mesh );
-	smoothedRoot.add( mesh );
-	
-	onRenderFcts.push(function(delta){
-		mesh.rotation.x += delta * Math.PI
-	})
+	// // add a torus knot	
+	// var geometry	= new THREE.CubeGeometry(1,1,1);
+	// var material	= new THREE.MeshNormalMaterial({
+	// 	transparent : true,
+	// 	opacity: 0.5,
+	// 	side: THREE.DoubleSide
+	// }); 
+	// var mesh	= new THREE.Mesh( geometry, material );
+	// mesh.position.y	= geometry.parameters.height/2
+	// // markerRoot.add( mesh );
+	// smoothedRoot.add(mesh)
+	// 
+	// var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
+	// var material	= new THREE.MeshNormalMaterial(); 
+	// var mesh	= new THREE.Mesh( geometry, material );
+	// mesh.position.y	= 0.5
+	// // markerRoot.add( mesh );
+	// smoothedRoot.add( mesh );
+	// 
+	// onRenderFcts.push(function(delta){
+	// 	mesh.rotation.x += delta * Math.PI
+	// })
 
 	var url = '../models/HTC-Vive-Controller/HTC_Vive_controller.obj'
 	var loader = new THREE.OBJLoader();
 	loader.load( url, function ( model ) {
 		window.model = model
+		model.position.y = 0.5
+
 		model.rotation.x = 3*Math.PI/2
 		model.rotation.y = Math.PI
-		model.scale.set(1,1,1).multiplyScalar(0.01)
+
+		model.scale.set(1,1,1).multiplyScalar(0.005)
+
 		smoothedRoot.add( model )
 	});
 
