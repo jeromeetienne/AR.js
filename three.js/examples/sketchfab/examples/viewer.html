@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
 <!-- three.js library -->
-<script src='vendor/three.js/build/three.js'></script>
-<script src='vendor/three.js/examples/js/libs/stats.min.js'></script>
+<script src='../../vendor/three.js/build/three.js'></script>
+<script src='../../vendor/three.js/examples/js/libs/stats.min.js'></script>
+<script src='../../vendor/three.js/examples/js/loaders/OBJLoader.js'></script>
+<script src='../../vendor/three.js/examples/js/loaders/MTLLoader.js'></script>
 <!-- jsartookit -->
-<script src='../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
-<script src='../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
+<script src='../../../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
+<script src='../../../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
 <!-- include threex.artoolkit -->
-<script src='../threex-artoolkitsource.js'></script>
-<script src='../threex-artoolkitcontext.js'></script>
-<script src='../threex-artoolkitprofile.js'></script>
-<script src='../threex-armarkercontrols.js'></script>
-<script src='../threex-arsmoothedcontrols.js'></script>
-<script>THREEx.ArToolkitContext.baseURL = '../'</script>
+<script src='../../../threex-artoolkitsource.js'></script>
+<script src='../../../threex-artoolkitcontext.js'></script>
+<script src='../../../threex-artoolkitprofile.js'></script>
+<script src='../../../threex-armarkercontrols.js'></script>
+<script src='../../../threex-arsmoothedcontrols.js'></script>
+<script>THREEx.ArToolkitContext.baseURL = '../../../'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
 	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - developement playground
@@ -134,12 +136,12 @@
 		smoothedControls.update(markerRoot)
 	})	
 	
-	smoothedControls.addEventListener('becameVisible', function(){
-		console.log('becameVisible event notified')
-	})
-	smoothedControls.addEventListener('becameUnVisible', function(){
-		console.log('becameUnVisible event notified')
-	})
+	// smoothedControls.addEventListener('becameVisible', function(){
+	// 	console.log('becameVisible event notified')
+	// })
+	// smoothedControls.addEventListener('becameUnVisible', function(){
+	// 	console.log('becameUnVisible event notified')
+	// })
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
@@ -172,6 +174,16 @@
 	onRenderFcts.push(function(delta){
 		mesh.rotation.x += delta * Math.PI
 	})
+
+	var url = '../models/HTC-Vive-Controller/HTC_Vive_controller.obj'
+	var loader = new THREE.OBJLoader();
+	loader.load( url, function ( model ) {
+		window.model = model
+		model.rotation.x = 3*Math.PI/2
+		model.rotation.y = Math.PI
+		model.scale.set(1,1,1).multiplyScalar(0.01)
+		smoothedRoot.add( model )
+	});
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
