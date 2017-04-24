@@ -194,8 +194,8 @@
 		window.model = model
 		model.position.y = 0.5
 
-		// model.rotation.x = 3*Math.PI/2
-		// model.rotation.y = Math.PI
+		model.rotation.x = 3*Math.PI/2
+		model.rotation.y = Math.PI
 
 		var material = model.children[0].material
 		material.shading = THREE.SmoothShading
@@ -204,9 +204,9 @@
 
 		model.scale.set(1,1,1).multiplyScalar(0.005)
 
-		// markerRoot.add( model )
-		scene.add( model )
-		model.position.z = -4
+		markerRoot.add( model )
+		// scene.add( model )
+		// model.position.z = -4
 	});
 
 	//////////////////////////////////////////////////////////////////////////////////
