@@ -27,7 +27,7 @@ THREEx.ArVideoInWebgl = function(videoTexture){
 		camera.updateMatrixWorld(true)
 		
 		// get seethruPlane position
-		var position = new THREE.Vector3(-0.15,0,-20)	// TODO how come you got that offset on x ???
+		var position = new THREE.Vector3(-0,0,-20)	// TODO how come you got that offset on x ???
 		var position = new THREE.Vector3(-0,0,-20)	// TODO how come you got that offset on x ???
 		seethruPlane.position.copy(position)
 		camera.localToWorld(seethruPlane.position)
@@ -37,7 +37,7 @@ THREEx.ArVideoInWebgl = function(videoTexture){
 		seethruPlane.quaternion.copy( camera.quaternion )
 		
 		// extract the fov from the projectionMatrix
-		var fov = THREE.Math.radToDeg(Math.atan(1/camera.projectionMatrix.elements[5])) *2;
+		var fov = THREE.Math.radToDeg(Math.atan(1/camera.projectionMatrix.elements[5]))*2;
 		
 		
 		var elementWidth = parseFloat( arToolkitSource.domElement.style.width.replace(/px$/,''), 10 )
