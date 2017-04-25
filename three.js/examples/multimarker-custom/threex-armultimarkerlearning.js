@@ -35,17 +35,8 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 
 	this.markersControls.forEach(function(markerControls, index){
 		
-		// if( index === 0 ){
-		// 	var matrix = new THREE.Matrix4
-		// }else{
-		// 	var matrix = firstMatrixInverse.clone()
-		// 	matrix.multiply(markerControls.object3d.matrix)
-		// 	
-		// }
-
-		var matrix = markerControls.object3d.matrix.clone()
-		matrix.multiply(firstMatrixInverse)
-		// TODO here compute the matrix based on the statistic you got
+		var matrix = firstMatrixInverse.clone()
+		matrix.multiply(markerControls.object3d.matrix)
 		
 		data.markersControls.push({
 			parameters : {
@@ -60,12 +51,15 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 	var strJSON = JSON.stringify(data, null, '\t');
 	
 	
+	//////////////////////////////////////////////////////////////////////////////
+	//		round matrix elements to ease readability - for debug
+	//////////////////////////////////////////////////////////////////////////////
 	if( true ){
 		var tmp = JSON.parse(strJSON)
 		tmp.markersControls.forEach(function(markerControls){
 			markerControls.poseMatrix = markerControls.poseMatrix.map(function(value){
 				var roundingFactor = 1000
-				return Math.floor(value*roundingFactor)/roundingFactor
+				return Math.round(value*roundingFactor)/roundingFactor
 			})
 		})
 		strJSON = JSON.stringify(tmp, null, '\t');
@@ -83,26 +77,31 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
  */
 THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 	// here collect the statistic on relative positioning 
-
+	
+	// keep only the visible markers
 	var visibleMarkerControls = this.markersControls.filter(function(markerControls){
 		return markerControls.object3d.visible === true
 	})
 
 	var countVisible = visibleMarkerControls.length
 
+	// object1
 	var position1 = new THREE.Vector3()
 	var quaternion1 = new THREE.Quaternion()
 	var scale1 = new THREE.Vector3()
-
-
+	
+	// object2
 	var position2 = new THREE.Vector3()
 	var quaternion2 = new THREE.Quaternion()
 	var scale2 = new THREE.Vector3()
 	
-	for(var i = 0; i < visibleMarkerControls.length-1; i++){
+	for(var i = 0; i < visibleMarkerControls.length; i++){
 		var markerControls1 = visibleMarkerControls[i]
 		for(var j = 0; j < visibleMarkerControls.length; j++){
 			var markerControls2 = visibleMarkerControls[j]
+
+			// if markerControls1 is markerControls2, then skip it
+			if( i === j )	return
 
 			// decompose the matrix1 into .position, .quaternion, .scale
 			markerControls1.object3d.matrix.decompose(position1, quaternion1, scale1)
@@ -110,9 +109,9 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 			// decompose the matrix1 into .position, .quaternion, .scale
 			markerControls2.object3d.matrix.decompose(position2, quaternion2, scale2)
 			
-			var position = position2.sub(position1)
-			var quaternion = quaternion1.multiply( quaternion2.inverse() )
-			var scale = scale2.sub(scale1)
+			var positionDelta = position2.sub(position1)
+			var quaternionDelta = quaternion1.multiply( quaternion2.inverse() )
+			var scaleDelta = scale2.sub(scale1)
 
 			//////////////////////////////////////////////////////////////////////////////
 			//		create data in markerControls1.object3d.userData
@@ -149,9 +148,9 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 			stats.count ++
 
 			// update the average of position/rotation/scale
-			THREEx.ArMultiMarkerControls.averageVector3(stats.position.sum, position , stats.count, stats.position.average)
-			THREEx.ArMultiMarkerControls.averageQuaternion(stats.quaternion.sum, quaternion , stats.count, stats.quaternion.average)
-			THREEx.ArMultiMarkerControls.averageVector3(stats.scale.sum, scale , stats.count, stats.scale.average)
+			THREEx.ArMultiMarkerControls.averageVector3(stats.position.sum, positionDelta, stats.count, stats.position.average)
+			THREEx.ArMultiMarkerControls.averageQuaternion(stats.quaternion.sum, quaternionDelta, stats.count, stats.quaternion.average)
+			THREEx.ArMultiMarkerControls.averageVector3(stats.scale.sum, scaleDelta, stats.count, stats.scale.average)
 		}
 	}
 }

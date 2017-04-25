@@ -22,20 +22,29 @@ domElement.classList.add('tooltip')
 domElement.dataset.title = 'Switch to AR'
 container.insertBefore(domElement, container.firstChild);
 
-
-
 domElement.addEventListener('click', function(){
-	// alert('jerome etienne, c\'est mieux que james bond')	
-	// TODO add an image AR-Code inside the player
-	// three.js/examples/sketchfab/images/ar-code.png
+
+	// push the css 
+	var styleData = `
+	#myArCode {
+		position: absolute;
+		transform: translateY(-50%) translateX(-50%);
+		margin-left: 0;
+		top: 50%;
+		max-width: 90%;
+		max-height: 90%;
+		margin-top: 0;
+		left: 50%;
+	}
+	`
+	var domElement = document.createElement('style');
+	domElement.innerHTML = styleData;
+	document.body.appendChild(domElement);
 
 
 	var domElement = document.createElement('img')
 	domElement.src = 'http://127.0.0.1:8080/three.js/examples/sketchfab/images/ar-code.png'
-	domElement.style.width = 'auto'
-	domElement.style.height = 'auto'
-	domElement.style.maxWidth = '80%'
-	domElement.style.maxHeight = '80%'
+	domElement.setAttribute('id', 'myArCode')
 	
 
 	var container = document.querySelector('.gui.enabled')

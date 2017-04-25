@@ -20,9 +20,15 @@
 <script src='threex.tweencontrols/threex.tweencontrols.js'></script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
-	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - developement playground
+	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Multi marker
+	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 	<br/>
-	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+	appMode : 
+	<a href='#areaLearning' onclick='location.reload()'>Area Learning</a>
+	/
+	<a href='#areaUsing' onclick='location.reload()'>Area Using</a>
+	/
+	<a href='#areaHardcoded' onclick='location.reload()'>Area Hardcoded</a>
 </div><script>
 ;(function(){
 	//////////////////////////////////////////////////////////////////////////////////
@@ -170,17 +176,17 @@
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
 
-	if( false ){
+	
+	var appMode = location.hash.substring(1) || 'areaHardcoded'
+	if( appMode === 'areaLearning' ){
 		multiMarkerLearn()
-	}else{
-
-		// if( localStorage.getItem('sampleMultiMarkerFile') !== null ){
-		// 	multiMarkerPlay(localStorage.getItem('sampleMultiMarkerFile'))
-		// }else{
-		// 	multiMarkerPlay(JSON.stringify(multiMarkerFile))
-		// }
-
+	}else if( appMode === 'areaUsing' ){
+		console.assert( localStorage.getItem('sampleMultiMarkerFile') !== null )
+		multiMarkerPlay(localStorage.getItem('sampleMultiMarkerFile'))
+	}else if( appMode === 'areaHardcoded' ){
 		multiMarkerPlay(JSON.stringify(multiMarkerFile))
+	}else{
+		console.assert('unknown appMode', appMode)
 	}
 	
 	function multiMarkerLearn(){

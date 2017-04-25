@@ -344,6 +344,7 @@ Credits: @HelloDeadline, @sorianog
   - just put each marker in front of the camera - using image / photo of screen
   - and go thru each and every matrix type detection
 - Nice effect with video texture - https://www.youtube.com/watch?v=Y9HMn6bd-v8&feature=youtu.be&t=172
+- Nice snowball effect - http://www.spacegoo.com/bubbles/
 
 # FAQ
 
