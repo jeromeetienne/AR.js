@@ -26,16 +26,16 @@ domElement.addEventListener('click', function(){
 
 	// push the css 
 	var styleData = `
-	#myArCode {
-		position: absolute;
-		transform: translateY(-50%) translateX(-50%);
-		margin-left: 0;
-		top: 50%;
-		max-width: 90%;
-		max-height: 90%;
-		margin-top: 0;
-		left: 50%;
-	}
+		#myArCode {
+			position: absolute;
+			transform: translateY(-50%) translateX(-50%);
+			margin-left: 0;
+			top: 50%;
+			max-width: 90%;
+			max-height: 90%;
+			margin-top: 0;
+			left: 50%;
+		}
 	`
 	var domElement = document.createElement('style');
 	domElement.innerHTML = styleData;
