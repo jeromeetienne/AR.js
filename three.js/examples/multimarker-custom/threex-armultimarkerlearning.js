@@ -41,6 +41,7 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 		data.markersControls.push({
 			parameters : {
 				// TODO here be more generic, what about bar code
+				// - depends on the 
 				type: markerControls.parameters.type,
 				patternUrl: markerControls.parameters.patternUrl,
 			},
@@ -145,7 +146,7 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 			//////////////////////////////////////////////////////////////////////////////
 			var stats = multiMarkerStats[markerControls2.id]
 			// update the count
-			stats.count ++
+			stats.count++
 
 			// update the average of position/rotation/scale
 			THREEx.ArMultiMarkerControls.averageVector3(stats.position.sum, positionDelta, stats.count, stats.position.average)
