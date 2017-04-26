@@ -7,7 +7,40 @@
   - to replace the demo.html in a-frame - which is super broken anyway
   - 3 groups of parameters : source, context, controls. make it 3 group on screen too
 
+---
+
+# How to run it locally
+
+First you have to copy the repository locally (using git clone). After that,
+just serve the files on a static http server. Personnaly, i use a simple command
+line http server called ```http-server```. You can install it via ```npm install -g http-server```.
+
+### About WebRTC and https
+WebRTC requires to have a [Secure Contexts](https://w3c.github.io/webappsec-secure-contexts/), 
+So in short, you need to [serve your application over https](http://stackoverflow.com/questions/34197653/getusermedia-in-chrome-47-without-using-https).
+Webrtc records video/audio and it is really sensitive information.
+Without https, an attacker to easily know what is recorded by your webcam, or even insert audio and makes you say anything he want to.
+Clearly not something desirable :)
+
+So, in short, you need to serve your application over https to use the webcam. 
+
+### But it is hard :(
+This is always a pain to setup https unfortunatly. generating certificates is harder that it should be.
+but it is the prize to pay for security.
+
+Note 1 : [github pages](https://pages.github.com/) are served over https by default. 
+So if you deploy on github, it is super easy
+
+Note 2 : During developement, there is a trick to avoid https, 
+[localhost is assumed secured](https://w3c.github.io/webappsec-secure-contexts/#localhost).
+So if you serve your file over localhost, you don't need to have https.
+
+
+
+---
+
 - DONE bug in resize + debug in context
+  - API is still crap tho
 - DONE do the tweening + disapearance with timeout in threex-armarkersmoother.js
   - this is a controls which read a armarkercontrols and output a new smoothed root
   - make a possible delay in the appearance and disapearance

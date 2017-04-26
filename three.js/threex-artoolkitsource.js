@@ -199,10 +199,6 @@ THREEx.ArToolkitSource.prototype.onResize = function(mirrorDomElements){
 	var screenWidth = window.innerWidth
 	var screenHeight = window.innerHeight
 
-	// honor default parameters
-	if( mirrorDomElements === undefined )	mirrorDomElements = []
-	if( mirrorDomElements instanceof Array === false )	mirrorDomElements = [mirrorDomElements]	
-
 	// compute sourceWidth, sourceHeight
 	if( this.domElement.nodeName === "IMG" ){
 		var sourceWidth = this.domElement.naturalWidth
@@ -240,6 +236,10 @@ THREEx.ArToolkitSource.prototype.onResize = function(mirrorDomElements){
 		this.domElement.style.marginLeft = '0px'
 	}
 	
+	// honor default parameters
+	if( mirrorDomElements === undefined )	mirrorDomElements = []
+	if( mirrorDomElements instanceof Array === false )	mirrorDomElements = [mirrorDomElements]	
+
 	// Mirror _this.domElement.style to mirrorDomElements
 	mirrorDomElements.forEach(function(domElement){
 		domElement.style.width = _this.domElement.style.width

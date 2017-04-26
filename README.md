@@ -353,6 +353,34 @@ There is no absolute. It is a ratio between the physical size of the marker, and
 It is a tradeoff: the larger the camera image, the slower it is running.
 The larger the camera image, the smaller the marker can be.
 
+# How to run it locally
+First you have to copy the repository locally (using git clone).
+After that, just serve the files on a static http server. 
+Personnaly, i use a simple command line http server called ```http-server```.
+You can install it via ```npm install -g http-server```.
+
+
+### About WebRTC and https
+WebRTC requires to have a [Secure Contexts](https://w3c.github.io/webappsec-secure-contexts/), 
+So in short, you need to [serve your application over https](http://stackoverflow.com/questions/34197653/getusermedia-in-chrome-47-without-using-https).
+Webrtc records video/audio and it is really sensitive information.
+Without https, an attacker to easily know what is recorded by your webcam, or even insert audio and makes you say anything he want to.
+Clearly not something desirable :)
+
+So, in short, you need to serve your application over https to use the webcam. 
+
+### But it is hard :(
+This is always a pain to setup https unfortunatly. generating certificates is harder that it should be.
+but it is the prize to pay for security.
+
+Note 1 : [github pages](https://pages.github.com/) are served over https by default. 
+So if you deploy on github, it is super easy
+
+Note 2 : During developement, there is a trick to avoid https, 
+[localhost is assumed secured](https://w3c.github.io/webappsec-secure-contexts/#localhost).
+So if you serve your file over localhost, you don't need to have https.
+
+
 # How To Release ?
 
 ```bash
