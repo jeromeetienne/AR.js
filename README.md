@@ -360,26 +360,21 @@ Personnaly, i use a simple command line http server called ```http-server```.
 You can install it via ```npm install -g http-server```.
 
 
-#### About WebRTC and https
+## About WebRTC and https
 WebRTC requires to have a [Secure Contexts](https://w3c.github.io/webappsec-secure-contexts/), 
 So in short, you need to [serve your application over https](http://stackoverflow.com/questions/34197653/getusermedia-in-chrome-47-without-using-https).
 Webrtc records video/audio and it is really sensitive information.
 Without https, an attacker to easily know what is recorded by your webcam, or even insert audio and makes you say anything he want to.
 Clearly not something desirable :)
 
-So, in short, you need to serve your application over https to use the webcam. 
+So, in short, you need to **serve your application over https** to use the webcam. 
 
-#### But it is hard :(
-This is always a pain to setup https unfortunatly. generating certificates is harder that it should be.
-but it is the prize to pay for security.
-
-Note 1 : [github pages](https://pages.github.com/) are served over https by default. 
-So if you deploy on github, it is super easy
-
-Note 2 : During developement, there is a trick to avoid https, 
+Unfortunatly, this is always a pain to setup https, but it is the prize to pay for security.
+Let's note that [github pages](https://pages.github.com/) are served over https by default. 
+So if you deploy on github, it is easier. 
+During developement, there is a trick, 
 [localhost is assumed secured](https://w3c.github.io/webappsec-secure-contexts/#localhost).
 So if you serve your file over localhost, you don't need to have https.
-
 
 # How To Release ?
 
