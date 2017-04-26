@@ -1,6 +1,5 @@
 This is my own version of the multi markers. 
 
-
 Definition of multi marker.
 
 	a multi marker is a group of marker acting as one.
@@ -26,9 +25,7 @@ Thus even if only one sub-marker is visible, multi-marker position will still be
 - When the learning process is considered done, output a file containing a description of this multi-marker
 
 # Motivation 
-
-	there was too many bugs in artoolkit 
-
+- tl;dr; there was too many bugs in artoolkit 
 - issue in the file parsing - TODO get github issue
 - in jsartoolkit5, it has several issue in the multimarker file loading. It is
   impossible to use twice the same marker filename.

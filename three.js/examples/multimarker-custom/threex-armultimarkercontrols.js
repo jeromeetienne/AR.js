@@ -53,48 +53,6 @@ THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, scene, marker
 	return multiMarkerControls	
 }
 
-/**
- * from http://wiki.unity3d.com/index.php/Averaging_Quaternions_and_Vectors
- */
-THREEx.ArMultiMarkerControls.averageQuaternion = function(quaternionSum, newQuaternion, firstQuaternion, count, quaternionAverage){
-	quaternionAverage = quaternionAverage || new THREE.Quaternion()
-	
-	// from http://wiki.unity3d.com/index.php/Averaging_Quaternions_and_Vectors
-	if( newQuaternion.dot(firstQuaternion) > 0 ){
-		newQuaternion = new THREE.Quaternion(-newQuaternion.x, -newQuaternion.y, -newQuaternion.z, -newQuaternion.w)
-	}
-
-	quaternionSum.x += newQuaternion.x
-	quaternionSum.y += newQuaternion.y
-	quaternionSum.z += newQuaternion.z
-	quaternionSum.w += newQuaternion.w
-	
-	quaternionAverage.x = quaternionSum.x/count
-	quaternionAverage.y = quaternionSum.y/count
-	quaternionAverage.z = quaternionSum.z/count
-	quaternionAverage.w = quaternionSum.w/count
-	
-	quaternionAverage.normalize()
-
-	return quaternionAverage
-}
-
-
-THREEx.ArMultiMarkerControls.averageVector3 = function(vector3Sum, vector3, count, vector3Average){
-	vector3Average = vector3Average || new THREE.Vector3()
-	
-	vector3Sum.x += vector3.x
-	vector3Sum.y += vector3.y
-	vector3Sum.z += vector3.z
-	vector3Sum.w += vector3.w
-	
-	vector3Average.x = vector3Sum.x / count
-	vector3Average.y = vector3Sum.y / count
-	vector3Average.z = vector3Sum.z / count
-	vector3Average.w = vector3Sum.w / count
-	
-	return vector3Average
-}
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
@@ -163,4 +121,51 @@ THREEx.ArMultiMarkerControls.prototype._onSourceProcessed = function(){
 	}else{
 		_this.object3d.visible = false			
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Utility functions
+//////////////////////////////////////////////////////////////////////////////
+
+/**
+ * from http://wiki.unity3d.com/index.php/Averaging_Quaternions_and_Vectors
+ */
+THREEx.ArMultiMarkerControls.averageQuaternion = function(quaternionSum, newQuaternion, firstQuaternion, count, quaternionAverage){
+	quaternionAverage = quaternionAverage || new THREE.Quaternion()
+	
+	// from http://wiki.unity3d.com/index.php/Averaging_Quaternions_and_Vectors
+	if( newQuaternion.dot(firstQuaternion) > 0 ){
+		newQuaternion = new THREE.Quaternion(-newQuaternion.x, -newQuaternion.y, -newQuaternion.z, -newQuaternion.w)
+	}
+
+	quaternionSum.x += newQuaternion.x
+	quaternionSum.y += newQuaternion.y
+	quaternionSum.z += newQuaternion.z
+	quaternionSum.w += newQuaternion.w
+	
+	quaternionAverage.x = quaternionSum.x/count
+	quaternionAverage.y = quaternionSum.y/count
+	quaternionAverage.z = quaternionSum.z/count
+	quaternionAverage.w = quaternionSum.w/count
+	
+	quaternionAverage.normalize()
+
+	return quaternionAverage
+}
+
+
+THREEx.ArMultiMarkerControls.averageVector3 = function(vector3Sum, vector3, count, vector3Average){
+	vector3Average = vector3Average || new THREE.Vector3()
+	
+	vector3Sum.x += vector3.x
+	vector3Sum.y += vector3.y
+	vector3Sum.z += vector3.z
+	vector3Sum.w += vector3.w
+	
+	vector3Average.x = vector3Sum.x / count
+	vector3Average.y = vector3Sum.y / count
+	vector3Average.z = vector3Sum.z / count
+	vector3Average.w = vector3Sum.w / count
+	
+	return vector3Average
 }
