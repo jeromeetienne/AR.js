@@ -370,7 +370,8 @@ Clearly not something desirable :)
 So, in short, you need to **serve your application over https** to use the webcam. 
 
 Unfortunatly, this is always a pain to setup https, but it is the prize to pay for security.
-@mritzco posted a great [description on https configuration for ar.js](https://gist.github.com/mritzco/18dfe13096294592d5eb53e7e1a5f63c)
+[@mritzco](https://gist.github.com/mritzco) posted a great
+[description on https configuration for ar.js](https://gist.github.com/mritzco/18dfe13096294592d5eb53e7e1a5f63c)
 on gist.
 
 Let's note that [github pages](https://pages.github.com/) are served over https by default. So if you deploy on github, it is easier. 
