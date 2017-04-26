@@ -353,7 +353,7 @@ There is no absolute. It is a ratio between the physical size of the marker, and
 It is a tradeoff: the larger the camera image, the slower it is running.
 The larger the camera image, the smaller the marker can be.
 
-## How to run it locally
+## How to Run it Locally
 First you have to copy the repository locally (using git clone).
 After that, just serve the files on a static http server. 
 Personnaly, i use a simple command line http server called ```http-server```.
@@ -370,10 +370,11 @@ Clearly not something desirable :)
 So, in short, you need to **serve your application over https** to use the webcam. 
 
 Unfortunatly, this is always a pain to setup https, but it is the prize to pay for security.
-Let's note that [github pages](https://pages.github.com/) are served over https by default. 
-So if you deploy on github, it is easier. 
-During developement, there is a trick, 
-[localhost is assumed secured](https://w3c.github.io/webappsec-secure-contexts/#localhost).
+@mritzco posted a great [description on https configuration for ar.js](https://gist.github.com/mritzco/18dfe13096294592d5eb53e7e1a5f63c)
+on gist.
+
+Let's note that [github pages](https://pages.github.com/) are served over https by default. So if you deploy on github, it is easier. 
+During developement, there is a trick, [localhost is assumed secured](https://w3c.github.io/webappsec-secure-contexts/#localhost).
 So if you serve your file over localhost, you don't need to have https.
 
 # How To Release ?
