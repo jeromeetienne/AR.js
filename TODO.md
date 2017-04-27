@@ -1,6 +1,10 @@
 - do a webvr demo with a hole in the ground. - good for tango
   - possible demo: hole in the wall, refraction, liquid marker but on all the wall
 - release soon and start doing dev/master
+  - create a dev branch
+  - release AR.js as 1.2
+  - what about the communication ?
+  - make a post on what is new in AR.js
 
 - redo parameters-tuning.html
   - all parameters exposed as button - stored as json in url
@@ -8,7 +12,6 @@
   - 3 groups of parameters : source, context, controls. make it 3 group on screen too
 
 ---
-
 
 - do the initial tunning of camera resolution to have the same aspect as the screen resolution
   - better precision for my cpu

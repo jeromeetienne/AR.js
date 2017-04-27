@@ -263,7 +263,7 @@ function generateArCodeCanvas(canvas, text, onLoad){
 
         generateQrCodeImage(text, function onLoaded(qrCodeImage){
                 console.log('qrcode generated')
-                context.drawImage(qrCodeImage,canvas.width*0.5,canvas.height*0.3,canvas.width*0.2, canvas.height*0.2);      
+                context.drawImage(qrCodeImage,canvas.width*0.55,canvas.height*0.3,canvas.width*0.15, canvas.height*0.15);      
                 
                 onLoad && onLoad()          
         })
