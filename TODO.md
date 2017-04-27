@@ -10,6 +10,16 @@
 ---
 
 
+- do the initial tunning of camera resolution to have the same aspect as the screen resolution
+  - better precision for my cpu
+  - currently it is doing 640x480 by default
+  - as it is supposed to be fullscreen, get the screen resolution, instead of the window resolution
+    - thus no resize being late issue
+
+- put github as the default location
+  - warn the cdnjs guys
+  - read more about it
+  - how do they handle multiple versions ?
 
 ---
 
@@ -25,16 +35,6 @@
   - like you did in threex.arealearning.js
   - if controls.parameters.helperEnabled: true, then the controls will add the helper automatically
 
-- do the initial tunning of camera resolution to have the same aspect as the screen resolution
-  - better precision for my cpu
-  - currently it is doing 640x480 by default
-  - as it is supposed to be fullscreen, get the screen resolution, instead of the window resolution
-    - thus no resize being late issue
-
-- put github as the default location
-  - warn the cdnjs guys
-  - read more about it
-  - how do they handle multiple versions ?
 
 - about.me in ar - augmented.club - augmented.whoswho - augmented.cat - augmented.fans - ar.codes
   - multiple link
