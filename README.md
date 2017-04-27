@@ -175,9 +175,9 @@ Three.js Examples:
 - [arcode](https://jeromeetienne.github.io/AR.js/three.js/examples/arcode.html) :
   generator of AR-Code
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arcode.html))
-- [magical-book](https://jeromeetienne.github.io/AR.js/three.js/examples/magical-book.html) :
+- [magic-book](https://jeromeetienne.github.io/AR.js/three.js/examples/magic-book/index.html) :
   Experimentation around magical book to open a secret door in [upload.io office](http://upload.io)
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/magical-book.html))
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/magic-book/index.html))
 - [measure-it](https://jeromeetienne.github.io/AR.js/three.js/examples/measure-it.html) :
   a-frame example for measure-it
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/measure-it.html))
