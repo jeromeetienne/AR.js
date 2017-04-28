@@ -52,23 +52,40 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 			if( i === j )	continue
 
 			// decompose the matrix1 into .position, .quaternion, .scale
-			markerControls1.object3d.matrix.decompose(position1, quaternion1, scale1)
-
-			// decompose the matrix1 into .position, .quaternion, .scale
 if( false ){
+			// decompose the matrix1 into .position, .quaternion, .scale
+			markerControls1.object3d.matrix.decompose(position1, quaternion1, scale1)
 			markerControls2.object3d.matrix.decompose(position2, quaternion2, scale2)
-}else{
-			var matrix = new THREE.Matrix4().getInverse(markerControls1.object3d.matrix.clone())
-			matrix.multiply(markerControls2.object3d.matrix.clone())
-			matrix.decompose(position2, quaternion2, scale2)
-			// console.log(i,j,position2)
-}
-
 			
 			var positionDelta = position2.sub(position1)
-			var positionDelta = position2.clone()
 			var quaternionDelta = quaternion1.multiply( quaternion2.inverse() )
 			var scaleDelta = scale2.sub(scale1)
+
+}else{
+
+			var tmpMatrix = new THREE.Matrix4().getInverse(markerControls1.object3d.matrix)
+			tmpMatrix.multiply(markerControls2.object3d.matrix.clone())
+			tmpMatrix.decompose(position2, quaternion2, scale2)
+			var positionDelta = position2
+			var quaternionDelta = quaternion2
+			var scaleDelta = scale2
+
+			// console.log(i,j,positionDelta)
+
+			// var matrixPosition2 = new THREE.Vector3()
+			// matrix.decompose(matrixPosition2, new THREE.Quaternion(), new THREE.Vector3())
+			// console.log(i,j,matrixPosition2)
+
+			// matrix.decompose(position2, quaternion2, scale2)
+			// // console.log(i,j,position2)
+			// markerControls2.object3d.matrix.decompose(position2, quaternion2, scale2)
+			
+			// markerControls2.object3d.matrix.decompose(position2, quaternion2, scale2)
+			// var localPosition2 = markerControls1.object3d.worldToLocal(position2.clone())
+			// console.log(i,j,localPosition2)
+}
+
+
 
 			//////////////////////////////////////////////////////////////////////////////
 			//		create data in markerControls1.object3d.userData
@@ -116,7 +133,7 @@ if( false ){
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArMultiMakersLearning.prototype._computeMatrix = function(){
+THREEx.ArMultiMakersLearning.prototype._computeAverageMatrix = function(){
 	var _this = this
 	var originSubControls = this.subMarkersControls[0]
 	var originSeenCouples = originSubControls.object3d.userData.seenCouples || {}
@@ -136,26 +153,16 @@ THREEx.ArMultiMakersLearning.prototype._computeMatrix = function(){
 		var otherSubControls = getSubControlsByID(otherSubControlsID)
 		console.assert(otherSubControls !== null)
 		
-		console.log(seenCoupleStats.position.average.x)
+		// console.log(seenCoupleStats.position.average)
 		
 		// console.log(originSubControls.id, 'with', otherSubControlsID)
 		// // var 
 		// console.log(otherSubControlsID, seenCoupleStats)
 		// 
-		// var otherAverageMatrix = new THREE.Matrix4()
-		// otherAverageMatrix.compose(seenCoupleStats.position.average, seenCoupleStats.quaternion.average, seenCoupleStats.scale.average)
+		var otherAverageMatrix = new THREE.Matrix4()
+		otherAverageMatrix.compose(seenCoupleStats.position.average, seenCoupleStats.quaternion.average, seenCoupleStats.scale.average)
 
-		// var matrix = originMatrixInverse.clone().multiply(otherAverageMatrix)
-		// var matrix = otherAverageMatrix.clone().multiply(originMatrixInverse)
-		// var matrix = otherAverageMatrix.clone()
-		
-		// var tmpPosition = new THREE.Vector3
-		// matrix.decompose(tmpPosition, new THREE.Quaternion, new THREE.Vector3)
-		// console.log('tmpPosition', tmpPosition)
-
-		// otherSubControls.object3d.userData.averageMatrix = matrix
-
-
+		otherSubControls.object3d.userData.averageMatrix = otherAverageMatrix
 	})
 	
 	return
@@ -172,7 +179,14 @@ THREEx.ArMultiMakersLearning.prototype._computeMatrix = function(){
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+
 THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
+	
+	this._computeAverageMatrix()
+	
 	var data = {
 		meta : {
 			createdBy : "AR.js "+THREEx.ArToolkitContext.REVISION,
@@ -186,8 +200,10 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 
 	this.subMarkersControls.forEach(function(markerControls, index){
 		
-		var matrix = originMatrixInverse.clone()
-		matrix.multiply(markerControls.object3d.matrix)
+		var poseMatrix = originMatrixInverse.clone()
+		poseMatrix.multiply(markerControls.object3d.matrix)
+
+		var poseMatrix = markerControls.object3d.userData.averageMatrix
 		
 		data.subMarkersControls.push({
 			parameters : {
@@ -197,7 +213,7 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 				type: markerControls.parameters.type,
 				patternUrl: markerControls.parameters.patternUrl,
 			},
-			poseMatrix : matrix.toArray(),
+			poseMatrix : poseMatrix.toArray(),
 		})
 	})
 

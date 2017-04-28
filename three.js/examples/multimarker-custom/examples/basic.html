@@ -13,7 +13,7 @@
 <script src='../../../threex-armarkercontrols.js'></script>
 <script src='../../../threex-armarkerhelper.js'></script>
 <script src='../../../threex-arsmoothedcontrols.js'></script>
-<script>THREEx.ArToolkitContext.baseURL = '../'</script>
+<script>THREEx.ArToolkitContext.baseURL = '../../../'</script>
 
 <script src='../threex-armultimarkercontrols.js'></script>
 <script src='../threex-armultimarkerlearning.js'></script>
@@ -83,7 +83,7 @@
 
 		// to read from a video
 		// sourceType : 'video',
-		// sourceUrl : '../../../../data/videos/headtracking.mp4',		
+		// sourceUrl : '../../../../data/videos/headtracking.mp4',	
 	})
 
 
@@ -106,9 +106,9 @@
 	var arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: '../../../../data/data/camera_para.dat',
 		detectionMode: 'mono',
-		// maxDetectionRate: 30,
-		// canvasWidth: 80*4,
-		// canvasHeight: 60*4,
+		maxDetectionRate: 30,
+		canvasWidth: 80*4,
+		canvasHeight: 60*4,
 		// debug: true,
 	})
 	// initialize it
@@ -126,10 +126,11 @@
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
-	
-	var interMarkerWidth = 2.7
+
+
+	var interMarkerWidth = 2.61
 	var multiMarkerFile = {
-		markersControls : [
+		subMarkersControls : [
 			{
 				parameters: {
 					type : 'pattern',
@@ -142,15 +143,15 @@
 					type : 'pattern',
 					patternUrl : '../../../../data/multimarkers/multi-abcdef/patt.b',
 				},
-				poseMatrix: new THREE.Matrix4().makeTranslation(-interMarkerWidth,0, 0).toArray()
+				poseMatrix: new THREE.Matrix4().makeTranslation(interMarkerWidth,0, 0).toArray()
 			},
-			// {
-			// 	parameters: {
-			// 		type : 'pattern',
-			// 		patternUrl : '../../../../data/multimarkers/multi-abcdef/patt.c',
-			// 	},
-			// 	poseMatrix: new THREE.Matrix4().makeTranslation(-interMarkerWidth*2, 0, 0).toArray()
-			// },
+			{
+				parameters: {
+					type : 'pattern',
+					patternUrl : '../../../../data/multimarkers/multi-abcdef/patt.c',
+				},
+				poseMatrix: new THREE.Matrix4().makeTranslation(interMarkerWidth*2, 0, 0).toArray()
+			},
 			// {
 			// 	parameters: {
 			// 		type : 'pattern',
@@ -196,16 +197,31 @@
 	//////////////////////////////////////////////////////////////////////////////
 	
 	function multiMarkerLearn(){
-		var markersControls = []
+		var subMarkersControls = []
+		
+		var markersControlsParameters = multiMarkerFile.subMarkersControls.map(function(item){
+			return item.parameters
+		})
+		
+		// var markersControlsParameters = [
+		// 	{
+		// 		type : 'pattern',
+		// 		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+		// 	},
+		// 	{
+		// 		type : 'pattern',
+		// 		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
+		// 	},
+		// ]
 
 		// prepare the parameters
-		multiMarkerFile.markersControls.forEach(function(item){
+		markersControlsParameters.forEach(function(markerControlsParameters){
 			// create a markerRoot
 			var object3d = new THREE.Object3D()
 			scene.add(object3d)
 
 			// create markerControls for our object3d
-			var markerControls = new THREEx.ArMarkerControls(arToolkitContext, object3d, item.parameters)
+			var markerControls = new THREEx.ArMarkerControls(arToolkitContext, object3d, markerControlsParameters)
 
 			if( true ){
 				// add an helper to visuable each sub-marker
@@ -214,16 +230,11 @@
 			}
 			
 			// store it in the parameters
-			markersControls.push(markerControls)
+			subMarkersControls.push(markerControls)
 		})
 		
-		var multiMarkerLearning = new THREEx.ArMultiMakersLearning(markersControls)
+		var multiMarkerLearning = new THREEx.ArMultiMakersLearning(subMarkersControls)
 window.multiMarkerLearning = multiMarkerLearning
-
-
-		// onRenderFcts.push(function(){
-		// 	multiMarkerLearning._computeMatrix()
-		// })
 
 		window.addEventListener('keydown', function(event){
 			if( event.key !== 's' )	return

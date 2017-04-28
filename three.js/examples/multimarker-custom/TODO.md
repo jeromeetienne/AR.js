@@ -1,3 +1,5 @@
+- TODO put a smoother while learning
+
 # How to compute the result of the learning
 - we got statistics on the position/orientation/scale between each marker seen simultaneously
 - we want a transposition matrix relative to the origin markersControls

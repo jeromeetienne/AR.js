@@ -18,40 +18,6 @@ THREEx.ArMultiMarkerControls = function(object3d, markersControls, markersPose){
 
 Object.assign( THREEx.ArMultiMarkerControls.prototype, THREE.EventDispatcher.prototype );
 
-//////////////////////////////////////////////////////////////////////////////
-//		Code Separator
-//////////////////////////////////////////////////////////////////////////////
-THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, scene, markerRoot, jsonData){
-	var multiMarkerFile = JSON.parse(jsonData)
-	// declare the parameters
-	var markersControls = []
-	var markerPoses = []
-
-	// prepare the parameters
-	multiMarkerFile.markersControls.forEach(function(item){
-		// create a markerRoot
-		var object3d = new THREE.Object3D()
-		scene.add(object3d)
-
-		// create markerControls for our object3d
-		var markerControls = new THREEx.ArMarkerControls(arToolkitContext, object3d, item.parameters)
-
-		if( true ){
-			// add an helper to visuable each sub-marker
-			var markerHelper = new THREEx.ArMarkerHelper(markerControls)
-			markerControls.object3d.add( markerHelper.object3d )			
-		}
-		
-		// store it in the parameters
-		markersControls.push(markerControls)
-		markerPoses.push(new THREE.Matrix4().fromArray(item.poseMatrix))
-	})
-	// create a new THREEx.ArMultiMarkerControls
-	var multiMarkerControls = new THREEx.ArMultiMarkerControls(markerRoot, markersControls, markerPoses)
-
-	// return it
-	return multiMarkerControls	
-}
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -90,7 +56,7 @@ THREEx.ArMultiMarkerControls.prototype._onSourceProcessed = function(){
 		// transformation matrix of this.object3d according to this sub-markers
 		var matrix = markerObject3d.matrix.clone()
 		var markerPose = _this.markersPose[markerIndex]
-		matrix.multiply(markerPose)
+		matrix.multiply(new THREE.Matrix4().getInverse(markerPose))
 
 		// decompose the matrix into .position, .quaternion, .scale
 		var position = new THREE.Vector3
@@ -168,4 +134,39 @@ THREEx.ArMultiMarkerControls.averageVector3 = function(vector3Sum, vector3, coun
 	vector3Average.z = vector3Sum.z / count
 	
 	return vector3Average
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, scene, markerRoot, jsonData){
+	var multiMarkerFile = JSON.parse(jsonData)
+	// declare the parameters
+	var markersControls = []
+	var markerPoses = []
+
+	// prepare the parameters
+	multiMarkerFile.subMarkersControls.forEach(function(item){
+		// create a markerRoot
+		var object3d = new THREE.Object3D()
+		scene.add(object3d)
+
+		// create markerControls for our object3d
+		var subMarkerControls = new THREEx.ArMarkerControls(arToolkitContext, object3d, item.parameters)
+
+		if( true ){
+			// add an helper to visuable each sub-marker
+			var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
+			subMarkerControls.object3d.add( markerHelper.object3d )			
+		}
+		
+		// store it in the parameters
+		markersControls.push(subMarkerControls)
+		markerPoses.push(new THREE.Matrix4().fromArray(item.poseMatrix))
+	})
+	// create a new THREEx.ArMultiMarkerControls
+	var multiMarkerControls = new THREEx.ArMultiMarkerControls(markerRoot, markersControls, markerPoses)
+
+	// return it
+	return multiMarkerControls	
 }
