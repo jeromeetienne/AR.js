@@ -33,15 +33,10 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 
 	var countVisible = Object.keys(visibleMarkerControls).length
 
-	// object1
-	var position1 = new THREE.Vector3()
-	var quaternion1 = new THREE.Quaternion()
-	var scale1 = new THREE.Vector3()
-	
-	// object2
-	var position2 = new THREE.Vector3()
-	var quaternion2 = new THREE.Quaternion()
-	var scale2 = new THREE.Vector3()
+	var positionDelta = new THREE.Vector3()
+	var quaternionDelta = new THREE.Quaternion()
+	var scaleDelta = new THREE.Vector3()
+	var tmpMatrix = new THREE.Matrix4()
 	
 	for(var i = 0; i < countVisible; i++){
 		var markerControls1 = visibleMarkerControls[i]
@@ -50,41 +45,6 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 
 			// if markerControls1 is markerControls2, then skip it
 			if( i === j )	continue
-
-			// decompose the matrix1 into .position, .quaternion, .scale
-if( false ){
-			// decompose the matrix1 into .position, .quaternion, .scale
-			markerControls1.object3d.matrix.decompose(position1, quaternion1, scale1)
-			markerControls2.object3d.matrix.decompose(position2, quaternion2, scale2)
-			
-			var positionDelta = position2.sub(position1)
-			var quaternionDelta = quaternion1.multiply( quaternion2.inverse() )
-			var scaleDelta = scale2.sub(scale1)
-
-}else{
-
-			var tmpMatrix = new THREE.Matrix4().getInverse(markerControls1.object3d.matrix)
-			tmpMatrix.multiply(markerControls2.object3d.matrix.clone())
-			tmpMatrix.decompose(position2, quaternion2, scale2)
-			var positionDelta = position2
-			var quaternionDelta = quaternion2
-			var scaleDelta = scale2
-
-			// console.log(i,j,positionDelta)
-
-			// var matrixPosition2 = new THREE.Vector3()
-			// matrix.decompose(matrixPosition2, new THREE.Quaternion(), new THREE.Vector3())
-			// console.log(i,j,matrixPosition2)
-
-			// matrix.decompose(position2, quaternion2, scale2)
-			// // console.log(i,j,position2)
-			// markerControls2.object3d.matrix.decompose(position2, quaternion2, scale2)
-			
-			// markerControls2.object3d.matrix.decompose(position2, quaternion2, scale2)
-			// var localPosition2 = markerControls1.object3d.worldToLocal(position2.clone())
-			// console.log(i,j,localPosition2)
-}
-
 
 
 			//////////////////////////////////////////////////////////////////////////////
@@ -113,6 +73,16 @@ if( false ){
 					},
 				}
 			}
+
+			
+			//////////////////////////////////////////////////////////////////////////////
+			//		Compute markerControls2 position relative to markerControls1
+			//////////////////////////////////////////////////////////////////////////////
+			
+			// compute markerControls2 position/quaternion/scale in relation with markerControls1
+			tmpMatrix.getInverse(markerControls1.object3d.matrix)
+			tmpMatrix.multiply(markerControls2.object3d.matrix)
+			tmpMatrix.decompose(positionDelta, quaternionDelta, scaleDelta)
 			
 			//////////////////////////////////////////////////////////////////////////////
 			//		update statistics
