@@ -1,3 +1,5 @@
+- learner - support a ?url=balbal to return to it
+
 - TODO put a smoother on sub-marker while learning ? as a way to remove noise ?
 - while learning apps
   - have a start record button
@@ -5,6 +7,7 @@
 - it is useless for everybody to have its own recorder
   - do a learner.html page with UI and localStorage
 - do an apps which does something with it
+
 
 
 # How to compute the result of the learning
