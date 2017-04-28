@@ -4,6 +4,7 @@ THREEx.ArMultiMakersLearning = function(subMarkersControls){
 	var _this = this
 
 	this.subMarkersControls = subMarkersControls
+	this.enabled = true
 		
 	// listen to arToolkitContext event 'sourceProcessed'
 	// - after we fully processed one image, aka when we know all detected poses in it
@@ -25,6 +26,9 @@ THREEx.ArMultiMakersLearning = function(subMarkersControls){
 THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 	var originQuaternion = this.subMarkersControls[0].object3d.quaternion
 	// here collect the statistic on relative positioning 
+	
+	// honor this.enabled
+	if( this.enabled === false )	return
 
 	// keep only the visible markers
 	var visibleMarkerControls = this.subMarkersControls.filter(function(markerControls){
@@ -193,7 +197,7 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 	//////////////////////////////////////////////////////////////////////////////
 	//		round matrix elements to ease readability - for debug
 	//////////////////////////////////////////////////////////////////////////////
-	var humanReadable = true
+	var humanReadable = false
 	if( humanReadable === true ){
 		var tmp = JSON.parse(strJSON)
 		tmp.subMarkersControls.forEach(function(markerControls){

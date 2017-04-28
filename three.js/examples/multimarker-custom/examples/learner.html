@@ -24,10 +24,10 @@
 	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 	<br/>
 	Status:
-	<span id='learnStatus'>stopped</a>
+	<span id='appStatus'>stopped</span>
 	- 
 	Data:
-	<span id='learnStatus'>saved from XXXX</a>
+	<span id='dataStatus'>none</span>
 	<br/>
 	Area learner : 
 	<a href='javascript:void(0)' onclick='onRecordClear()'>clear</a>
@@ -183,30 +183,62 @@
 		
 	var multiMarkerLearning = new THREEx.ArMultiMakersLearning(subMarkersControls)
 window.multiMarkerLearning = multiMarkerLearning
+	multiMarkerLearning.enabled = false
 
-	window.addEventListener('keydown', function(event){
-		if( event.key !== 's' )	return
-		saveMultiMarkerFile(multiMarkerLearning)
-	})
-	
-	function saveMultiMarkerFile(multiMarkerLearning){
-		var jsonString = multiMarkerLearning.toJSON()
-		console.log('Writing multiMarkerFile', jsonString)
-		localStorage.setItem('sampleMultiMarkerFile', jsonString);
-	}
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
 	
 	function onRecordStart(){
+		if( multiMarkerLearning.enabled === true ){
+			console.log('already started')
+			return
+		}
+
+		// multiMarkerLearning.statsReset()
 		
+		multiMarkerLearning.enabled = true
+		updateAppStatus()
 	}
 	function onRecordStop(){
+		if( multiMarkerLearning.enabled === false ){
+			console.log('already stopped')
+			return
+		}
+
+		multiMarkerLearning.enabled = false
+
 		var jsonString = multiMarkerLearning.toJSON()
 		console.log('Writing multiMarkerFile', jsonString)
-		localStorage.setItem('sampleMultiMarkerFile', jsonString);		
+		localStorage.setItem('sampleMultiMarkerFile', jsonString);	
+		
+		updateAppStatus()
 	}
 	function onRecordClear(){
 		localStorage.removeItem('sampleMultiMarkerFile')
+		updateAppStatus()
 	}
 
+	function updateAppStatus(){
+		var multiMarkerFile = localStorage.getItem('sampleMultiMarkerFile');
+		if( multiMarkerFile === null ){
+			document.querySelector('#dataStatus').innerHTML = 'none'
+		}else{
+			document.querySelector('#dataStatus').innerHTML = 'present'			
+		}
+		
+		if( multiMarkerLearning.enabled === true ){
+			document.querySelector('#appStatus').innerHTML = 'running'			
+		}else{
+			document.querySelector('#appStatus').innerHTML = 'stopped'			
+		}
+	}
+
+	window.onRecordStart = onRecordStart
+	window.onRecordStop = onRecordStop
+	window.onRecordClear = onRecordClear
+	updateAppStatus()
+	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
 	//////////////////////////////////////////////////////////////////////////////////
