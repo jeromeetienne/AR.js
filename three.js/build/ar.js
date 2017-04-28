@@ -182,6 +182,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 			} else {
 				this.getTransMatSquare(i, visible.markerWidth, visible.matrix);
 			}
+// this.getTransMatSquare(i, visible.markerWidth, visible.matrix);
 
 			visible.inCurrent = true;
 			this.transMatToGLMat(visible.matrix, this.transform_mat);
@@ -1845,6 +1846,7 @@ var THREEx = THREEx || {}
 
 THREEx.ArMarkerControls = function(context, object3d, parameters){
 	var _this = this
+	this.id = THREEx.ArMarkerControls.id++
 	this.context = context
 	// handle default parameters
 	this.parameters = {
@@ -1858,6 +1860,8 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 		barcodeValue : parameters.barcodeValue !== undefined ? parameters.barcodeValue : null,
 		// change matrix mode - [modelViewMatrix, cameraTransformMatrix]
 		changeMatrixMode : parameters.changeMatrixMode !== undefined ? parameters.changeMatrixMode : 'modelViewMatrix',
+		// minimal confidence in the marke recognition - between [0, 1] - default to 1
+		minConfidence: parameters.minConfidence !== undefined ? parameters.minConfidence : 0.6,
 	}
 
 	// sanity check
@@ -1891,6 +1895,8 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 
 }
 
+THREEx.ArMarkerControls.id = 0
+
 THREEx.ArMarkerControls.prototype._postInit = function(){
 	var _this = this
 	var markerObject3D = this.object3d;
@@ -1909,16 +1915,12 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 		arController.trackBarcodeMarkerId(_this.markerId, _this.parameters.size);
 	}else if( _this.parameters.type === 'multiMarker' ){
 // TODO rename patternUrl into .url - as it is used in multiple parameters
-// debugger
                 arController.loadMultiMarker(_this.parameters.patternUrl, function(markerId, markerNum) {
 			_this.markerId = markerId
-                        // arController.trackPatternMarkerId(_this.markerId, _this.parameters.size);
                 });
 		arController.addEventListener('getMultiMarker', function(event) {
-			console.log('getMultiMarker')
-			if( event.data.multiMarkerId === _this.markerId ){
-				onMarkerFound(event)
-			} 
+			if( event.data.multiMarkerId !== _this.markerId )	return
+			onMarkerFound(event)
 		});
 	}else if( _this.parameters.type === 'unknown' ){
 		_this.markerId = null
@@ -1944,12 +1946,15 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 
 	return
 	function onMarkerFound(event){
+
+		// honor his.parameters.minConfidence
+		if( event.data.marker.cf < _this.parameters.minConfidence )	return
+
 		// mark object as visible
 		markerObject3D.visible = true
 
 		// data.matrix is the model view matrix
 		var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
-
 
 		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
 		var tmpMatrix = new THREE.Matrix4().copy(_this.context._projectionAxisTransformMatrix)
@@ -1971,7 +1976,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 			console.assert(false)
 		}
 
-		// decompose the matrix into .position, .quaternion, .scale
+		// decompose - the matrix into .position, .quaternion, .scale
 		markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
 
 		// dispatchEvent
@@ -1986,6 +1991,170 @@ THREEx.ArMarkerControls.prototype.dispose = function(){
 
 	// TODO remove the event listener if needed
 	// unloadMaker ???
+}
+var THREEx = THREEx || {}
+
+THREEx.ArMarkerHelper = function(markerControls){
+	this.object3d = new THREE.Group
+
+	var mesh = new THREE.AxisHelper()
+	this.object3d.add(mesh)
+
+	// var text = markerControls.id
+	// debugger
+	var text = markerControls.parameters.patternUrl.slice(-1).toUpperCase();
+
+	var canvas = document.createElement( 'canvas' );
+	canvas.width =  64;
+	canvas.height = 64;
+
+	var context = canvas.getContext( '2d' );
+	var texture = new THREE.CanvasTexture( canvas );
+
+	// put the text in the sprite
+	context.font = '48px monospace';
+	context.fillStyle = 'rgba(192,192,255, 0.5)';
+	context.fillRect( 0, 0, canvas.width, canvas.height );
+	context.fillStyle = 'darkblue';
+	context.fillText(text, canvas.width/4, 3*canvas.height/4 )
+	texture.needsUpdate = true
+
+	// var geometry = new THREE.CubeGeometry(1, 1, 1)
+	var geometry = new THREE.PlaneGeometry(1, 1)
+	var material = new THREE.MeshBasicMaterial({
+		map: texture, 
+		transparent: true
+	});
+	var mesh = new THREE.Mesh(geometry, material)
+	mesh.rotation.x = -Math.PI/2
+
+	this.object3d.add(mesh)
+	
+}
+var THREEx = THREEx || {}
+
+/**
+ * - lerp position/quaternino/scale
+ * - minDelayDetected
+ * - minDelayUndetected
+ * @param {[type]} object3d   [description]
+ * @param {[type]} parameters [description]
+ */
+THREEx.ArSmoothedControls = function(object3d, parameters){
+	var _this = this
+
+	// copy parameters
+	this.object3d = object3d
+	this.object3d.visible = false
+	
+	this._lastLerpStepAt = null
+	this._visibleStartedAt = null
+	this._unvisibleStartedAt = null
+
+	// handle default parameters
+	parameters = parameters || {}
+	this.parameters = {
+		// lerp coeficient for the position - between [0,1] - default to 1
+		lerpPosition: parameters.lerpPosition !== undefined ? parameters.lerpPosition : 0.3,
+		// lerp coeficient for the quaternion - between [0,1] - default to 1
+		lerpQuaternion: parameters.lerpQuaternion !== undefined ? parameters.lerpQuaternion : 0.6,
+		// lerp coeficient for the scale - between [0,1] - default to 1
+		lerpScale: parameters.lerpScale !== undefined ? parameters.lerpScale : 0.6,
+		// delay for lerp fixed steps - in seconds - default to 1/120
+		lerpStepDelay: parameters.fixStepDelay !== undefined ? parameters.fixStepDelay : 1/60,
+		// minimum delay the sub-control must be visible before this controls become visible - default to 0 seconds
+		minVisibleDelay: parameters.minVisibleDelay !== undefined ? parameters.minVisibleDelay : 0.0,
+		// minimum delay the sub-control must be unvisible before this controls become unvisible - default to 0 seconds
+		minUnvisibleDelay: parameters.minUnvisibleDelay !== undefined ? parameters.minUnvisibleDelay : 0.0,
+	}
+}
+
+Object.assign( THREEx.ArSmoothedControls.prototype, THREE.EventDispatcher.prototype );
+
+//////////////////////////////////////////////////////////////////////////////
+//		update function
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
+	var object3d = this.object3d
+	var parameters = this.parameters
+	var wasVisible = object3d.visible
+	var present = performance.now()/1000
+
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		handle object3d.visible with minVisibleDelay/minUnvisibleDelay
+	//////////////////////////////////////////////////////////////////////////////
+	if( targetObject3d.visible === false )	this._visibleStartedAt = null
+	if( targetObject3d.visible === true )	this._unvisibleStartedAt = null
+
+	if( wasVisible === false && targetObject3d.visible === true ){
+		if( this._visibleStartedAt === null )		this._visibleStartedAt = present
+		var visibleFor = present - this._visibleStartedAt
+		if( visibleFor >= this.parameters.minVisibleDelay ){
+			object3d.visible = true			
+		}
+		// console.log('visibleFor', visibleFor)
+	}
+
+	if( wasVisible === true && targetObject3d.visible === false ){
+		if( this._unvisibleStartedAt === null )	this._unvisibleStartedAt = present
+		var unvisibleFor = present - this._unvisibleStartedAt
+		if( unvisibleFor >= this.parameters.minUnvisibleDelay ){
+			object3d.visible = false			
+		}
+		// console.log('unvisibleFor', unvisibleFor)
+	}
+	
+	// disabled minVisibleDelay+minUnvisibleDelay
+	// if( true ){		
+	// 	object3d.visible = targetObject3d.visible
+	// }
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		apply lerp on positon/quaternion/scale
+	//////////////////////////////////////////////////////////////////////////////
+
+	// apply lerp steps - require fix time steps to behave the same no matter the fps
+	if( this._lastLerpStepAt === null ){
+		applyOneSlepStep()
+		this._lastLerpStepAt = present
+	}else{
+		var nStepsToDo = Math.floor( (present - this._lastLerpStepAt)/this.parameters.lerpStepDelay )
+		for(var i = 0; i < nStepsToDo; i++){
+			applyOneSlepStep()
+			this._lastLerpStepAt += this.parameters.lerpStepDelay
+		}
+	}
+
+	// update the matrix
+	this.object3d.updateMatrix()
+
+	function applyOneSlepStep(){
+		object3d.position.lerp(targetObject3d.position, parameters.lerpPosition)
+		object3d.quaternion.slerp(targetObject3d.quaternion, parameters.lerpQuaternion)
+		object3d.scale.lerp(targetObject3d.scale, parameters.lerpScale)
+	}
+
+	// disabled the lerp by directly copying targetObject3d position/quaternion/scale
+	// if( false ){		
+	// 	this.object3d.position.copy( targetObject3d.position )
+	// 	this.object3d.quaternion.copy( targetObject3d.quaternion )
+	// 	this.object3d.scale.copy( targetObject3d.scale )
+	// 	this.object3d.updateMatrix()
+	// }
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		honor becameVisible/becameUnVisible event
+	//////////////////////////////////////////////////////////////////////////////
+	// honor becameVisible event
+	if( wasVisible === false && object3d.visible === true ){
+		this.dispatchEvent({ type: 'becameVisible' })
+	}
+	// honor becameUnVisible event
+	if( wasVisible === true && object3d.visible === false ){
+		this.dispatchEvent({ type: 'becameUnVisible' })
+	}
 }
 var THREEx = THREEx || {}
 
@@ -2030,9 +2199,9 @@ THREEx.ArToolkitContext = function(parameters){
 
 Object.assign( THREEx.ArToolkitContext.prototype, THREE.EventDispatcher.prototype );
 
-THREEx.ArToolkitContext.baseURL = '../'
+// THREEx.ArToolkitContext.baseURL = '../'
 // default to github page
-// THREEx.ArToolkitContext.baseURL = 'https://raw.githubusercontent.com/jeromeetienne/ar.js/master/three.js/'
+THREEx.ArToolkitContext.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
 THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 
 /**
@@ -2506,7 +2675,8 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 //          handle resize
 ////////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArToolkitSource.prototype.onResize = function(rendererDomElement){
+THREEx.ArToolkitSource.prototype.onResize = function(mirrorDomElements){
+	var _this = this
 	var screenWidth = window.innerWidth
 	var screenHeight = window.innerHeight
 
@@ -2547,13 +2717,17 @@ THREEx.ArToolkitSource.prototype.onResize = function(rendererDomElement){
 		this.domElement.style.marginLeft = '0px'
 	}
 	
-	if( rendererDomElement !== undefined ){
-		// copy arToolkitSource.domElement position to renderer.domElement
-		rendererDomElement.style.width = this.domElement.style.width
-		rendererDomElement.style.height = this.domElement.style.height	
-		rendererDomElement.style.marginLeft = this.domElement.style.marginLeft
-		rendererDomElement.style.marginTop = this.domElement.style.marginTop
-	}
+	// honor default parameters
+	if( mirrorDomElements === undefined )	mirrorDomElements = []
+	if( mirrorDomElements instanceof Array === false )	mirrorDomElements = [mirrorDomElements]	
+
+	// Mirror _this.domElement.style to mirrorDomElements
+	mirrorDomElements.forEach(function(domElement){
+		domElement.style.width = _this.domElement.style.width
+		domElement.style.height = _this.domElement.style.height	
+		domElement.style.marginLeft = _this.domElement.style.marginLeft
+		domElement.style.marginTop = _this.domElement.style.marginTop
+	})
 }
 var THREEx = THREEx || {}
 
@@ -2584,7 +2758,7 @@ THREEx.ArVideoInWebgl = function(videoTexture){
 		camera.updateMatrixWorld(true)
 		
 		// get seethruPlane position
-		var position = new THREE.Vector3(-0.15,0,-20)	// TODO how come you got that offset on x ???
+		var position = new THREE.Vector3(-0,0,-20)	// TODO how come you got that offset on x ???
 		var position = new THREE.Vector3(-0,0,-20)	// TODO how come you got that offset on x ???
 		seethruPlane.position.copy(position)
 		camera.localToWorld(seethruPlane.position)
@@ -2594,7 +2768,7 @@ THREEx.ArVideoInWebgl = function(videoTexture){
 		seethruPlane.quaternion.copy( camera.quaternion )
 		
 		// extract the fov from the projectionMatrix
-		var fov = THREE.Math.radToDeg(Math.atan(1/camera.projectionMatrix.elements[5])) *2;
+		var fov = THREE.Math.radToDeg(Math.atan(1/camera.projectionMatrix.elements[5]))*2;
 		
 		
 		var elementWidth = parseFloat( arToolkitSource.domElement.style.width.replace(/px$/,''), 10 )

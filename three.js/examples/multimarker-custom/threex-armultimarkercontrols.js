@@ -132,6 +132,8 @@ THREEx.ArMultiMarkerControls.prototype._onSourceProcessed = function(){
  */
 THREEx.ArMultiMarkerControls.averageQuaternion = function(quaternionSum, newQuaternion, firstQuaternion, count, quaternionAverage){
 	quaternionAverage = quaternionAverage || new THREE.Quaternion()
+	// sanity check
+	console.assert(firstQuaternion instanceof THREE.Quaternion === true)
 	
 	// from http://wiki.unity3d.com/index.php/Averaging_Quaternions_and_Vectors
 	if( newQuaternion.dot(firstQuaternion) > 0 ){
@@ -160,12 +162,10 @@ THREEx.ArMultiMarkerControls.averageVector3 = function(vector3Sum, vector3, coun
 	vector3Sum.x += vector3.x
 	vector3Sum.y += vector3.y
 	vector3Sum.z += vector3.z
-	vector3Sum.w += vector3.w
 	
 	vector3Average.x = vector3Sum.x / count
 	vector3Average.y = vector3Sum.y / count
 	vector3Average.z = vector3Sum.z / count
-	vector3Average.w = vector3Sum.w / count
 	
 	return vector3Average
 }

@@ -37,7 +37,7 @@
 
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
-		// antialias	: true,
+		antialias	: true,
 		alpha: true
 	});
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
@@ -78,8 +78,8 @@
 		sourceType : 'webcam',
 		
 		// // to read from an image
-		sourceType : 'image',
-		sourceUrl : '../../../../data/images/multimarker.jpg'		
+		// sourceType : 'image',
+		// sourceUrl : '../../../../data/images/multimarker.jpg'		
 
 		// to read from a video
 		// sourceType : 'video',
@@ -106,10 +106,10 @@
 	var arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: '../../../../data/data/camera_para.dat',
 		detectionMode: 'mono',
-		maxDetectionRate: 25,
-		canvasWidth: 80*4,
-		canvasHeight: 60*4,
-		debug: true,
+		// maxDetectionRate: 30,
+		// canvasWidth: 80*4,
+		// canvasHeight: 60*4,
+		// debug: true,
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
@@ -218,7 +218,13 @@
 		})
 		
 		var multiMarkerLearning = new THREEx.ArMultiMakersLearning(markersControls)
-		
+window.multiMarkerLearning = multiMarkerLearning
+
+
+		// onRenderFcts.push(function(){
+		// 	multiMarkerLearning._computeMatrix()
+		// })
+
 		window.addEventListener('keydown', function(event){
 			if( event.key !== 's' )	return
 			saveMultiMarkerFile(multiMarkerLearning)
