@@ -9,6 +9,10 @@
   - insert: more stable
   - insert: only one is visible? still works!
 
+- make a function in controls to compute the center of the multi markers
+  - it can be used as a default position for the origin
+  controls.computer
+
 - what to do with the official multimarker support
   - make an example for it, and keep supporting it
 

@@ -263,13 +263,10 @@ window.multiMarkerLearning = multiMarkerLearning
 		}
 	}
 
-	window.onRecordStart = onRecordStart
-	window.onRecordStop = onRecordStop
-	window.onRecordClear = onRecordClear
+window.onRecordStart = onRecordStart
+window.onRecordStop = onRecordStop
+window.onRecordClear = onRecordClear
 	
-	if( hasHash === true ){
-		onRecordStart()
-	}
 	updateAppStatus()
 	
 	// global click on renderer.domElement is doing a recordToggle
