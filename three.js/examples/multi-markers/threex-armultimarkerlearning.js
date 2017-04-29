@@ -3,6 +3,7 @@ var THREEx = THREEx || {}
 THREEx.ArMultiMakersLearning = function(subMarkersControls){
 	var _this = this
 
+	// Init variables
 	this.subMarkersControls = subMarkersControls
 	this.enabled = true
 		
@@ -42,6 +43,7 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 	var scaleDelta = new THREE.Vector3()
 	var tmpMatrix = new THREE.Matrix4()
 	
+	// go thru all the visibleMarkerControls
 	for(var i = 0; i < countVisible; i++){
 		var markerControls1 = visibleMarkerControls[i]
 		for(var j = 0; j < countVisible; j++){
@@ -52,7 +54,7 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 
 
 			//////////////////////////////////////////////////////////////////////////////
-			//		create data in markerControls1.object3d.userData
+			//		create data in markerControls1.object3d.userData if needed
 			//////////////////////////////////////////////////////////////////////////////
 			// create seenCouples for markerControls1 if needed
 			if( markerControls1.object3d.userData.seenCouples === undefined ){
@@ -61,7 +63,7 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 			var seenCouples = markerControls1.object3d.userData.seenCouples
 			// create the multiMarkerPosition average if needed`
 			if( seenCouples[markerControls2.id] === undefined ){
-				console.log('create seenCouples between', markerControls1.id, 'and', markerControls2.id)
+				// console.log('create seenCouples between', markerControls1.id, 'and', markerControls2.id)
 				seenCouples[markerControls2.id] = {
 					count : 0,
 					position : {
@@ -119,29 +121,26 @@ THREEx.ArMultiMakersLearning.prototype._computeAverageMatrix = function(){
 	// var originMatrixInverse = new THREE.Matrix4().getInverse(originSubControls.object3d.userData.averageMatrix)
 	var originMatrixInverse =  new THREE.Matrix4().getInverse(originSubControls.object3d.matrix)
 	
+	// go thru all the originSeenCouples
 	Object.keys(originSeenCouples).forEach(function(otherSubControlsID){
+		// otherSubControlsID are string here, as they are keys from objects, converting them to Number
 		otherSubControlsID = parseInt(otherSubControlsID)
 		
 		if( originSubControls.id === otherSubControlsID )	return
-		
+				
+		// build averageMatrix
 		var seenCoupleStats = originSeenCouples[otherSubControlsID]
-		var otherSubControls = getSubControlsByID(otherSubControlsID)
-		console.assert(otherSubControls !== null)
-		
-		// console.log(seenCoupleStats.position.average)
-		
-		// console.log(originSubControls.id, 'with', otherSubControlsID)
-		// // var 
-		// console.log(otherSubControlsID, seenCoupleStats)
-		// 
-		var otherAverageMatrix = new THREE.Matrix4()
-		otherAverageMatrix.compose(seenCoupleStats.position.average, seenCoupleStats.quaternion.average, seenCoupleStats.scale.average)
+		var averageMatrix = new THREE.Matrix4()
+		averageMatrix.compose(seenCoupleStats.position.average, seenCoupleStats.quaternion.average, seenCoupleStats.scale.average)
 
-		otherSubControls.object3d.userData.averageMatrix = otherAverageMatrix
+		// store averageMatrix in otherSubControls
+		var otherSubControls = getSubControlsByID(otherSubControlsID)
+		otherSubControls.object3d.userData.averageMatrix = averageMatrix
 	})
 	
 	return
 	
+	// get a _this.subMarkersControls based on markerControls.id
 	function getSubControlsByID(controlsID){
 		// debugger
 		for(var i = 0; i < _this.subMarkersControls.length; i++){
@@ -159,7 +158,8 @@ THREEx.ArMultiMakersLearning.prototype._computeAverageMatrix = function(){
 //////////////////////////////////////////////////////////////////////////////
 
 THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
-	// compute the average matrix
+
+	// compute the average matrix before generating the file
 	this._computeAverageMatrix()
 
 
@@ -174,9 +174,9 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 		},
 		subMarkersControls : []
 	}
+
 	var originSubControls = this.subMarkersControls[0]
 	var originMatrixInverse = new THREE.Matrix4().getInverse(originSubControls.object3d.matrix)
-
 	this.subMarkersControls.forEach(function(markerControls, index){
 		
 		var poseMatrix = originMatrixInverse.clone()
