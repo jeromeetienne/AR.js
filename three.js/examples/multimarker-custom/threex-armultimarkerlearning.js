@@ -61,6 +61,7 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 			var seenCouples = markerControls1.object3d.userData.seenCouples
 			// create the multiMarkerPosition average if needed`
 			if( seenCouples[markerControls2.id] === undefined ){
+				console.log('create seenCouples between', markerControls1.id, 'and', markerControls2.id)
 				seenCouples[markerControls2.id] = {
 					count : 0,
 					position : {
@@ -104,7 +105,7 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 }
 
 //////////////////////////////////////////////////////////////////////////////
-//		Code Separator
+//		Compute markers transformation matrix from current stats
 //////////////////////////////////////////////////////////////////////////////
 
 THREEx.ArMultiMakersLearning.prototype._computeAverageMatrix = function(){
@@ -154,13 +155,17 @@ THREEx.ArMultiMakersLearning.prototype._computeAverageMatrix = function(){
 }
 
 //////////////////////////////////////////////////////////////////////////////
-//		Code Separator
+//		JSON file building
 //////////////////////////////////////////////////////////////////////////////
 
 THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
-	
+	// compute the average matrix
 	this._computeAverageMatrix()
-	
+
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		actually build the json
+	//////////////////////////////////////////////////////////////////////////////
 	var data = {
 		meta : {
 			createdBy : "AR.js "+THREEx.ArToolkitContext.REVISION,
@@ -178,6 +183,7 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 		poseMatrix.multiply(markerControls.object3d.matrix)
 
 		var poseMatrix = markerControls.object3d.userData.averageMatrix
+		console.assert(poseMatrix instanceof THREE.Matrix4)
 		
 		data.subMarkersControls.push({
 			parameters : {
@@ -210,4 +216,17 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 	}
 	
 	return strJSON;	
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		utility function
+//////////////////////////////////////////////////////////////////////////////
+/**
+ * reset all collected statistics
+ */
+THREEx.ArMultiMakersLearning.prototype.resetStats = function(){
+	this.subMarkersControls.forEach(function(markerControls){
+		delete markerControls.object3d.userData.averageMatrix
+		delete markerControls.object3d.userData.seenCouples
+	})
 }

@@ -24,10 +24,10 @@
 	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 	<br/>
 	Status:
-	<span id='appStatus'>stopped</span>
+	<span id='appStatus' style='font-weight: bolder;'>stopped</span>
 	- 
-	Data:
-	<span id='dataStatus'>none</span>
+	File:
+	<span id='dataStatus' style='font-weight: bolder;'>none</span>
 	<br/>
 	Area learner : 
 	<a href='javascript:void(0)' onclick='onRecordClear()'>clear</a>
@@ -35,7 +35,12 @@
 	<a href='javascript:void(0)' onclick='onRecordStart()'>start</a>
 	-
 	<a href='javascript:void(0)' onclick='onRecordStop()'>stop</a>
-</div><script>
+</div>
+<div style='position: absolute; bottom: 16px; right: 16px; z-index:2';>
+	<img id='recordStartButton' src="images/record-start.png" width='64px'  height='64px' onclick='onRecordStart()'>
+	<img id='recordStopButton' src="images/record-stop.png" width='64px'  height='64px' onclick='onRecordStop()' style='display: none;'>
+</div>
+<script>
 ;(function(){
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
@@ -154,10 +159,10 @@
 			type : 'pattern',
 			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.b',
 		},
-		{
-			type : 'pattern',
-			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.c',
-		},
+		// {
+		// 	type : 'pattern',
+		// 	patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.c',
+		// },
 	]
 
 
@@ -190,30 +195,49 @@ window.multiMarkerLearning = multiMarkerLearning
 	//////////////////////////////////////////////////////////////////////////////
 	
 	function onRecordStart(){
+		// cant be started, if it is already started
 		if( multiMarkerLearning.enabled === true ){
 			console.log('already started')
 			return
 		}
-
-		// multiMarkerLearning.statsReset()
+		// reset previously collected statistics
+		multiMarkerLearning.resetStats()
 		
+		// enabled data collection
 		multiMarkerLearning.enabled = true
+		
+		// update application status
 		updateAppStatus()
 	}
 	function onRecordStop(){
+		// cant be stopped, if it is alread stopped
 		if( multiMarkerLearning.enabled === false ){
 			console.log('already stopped')
-			return
 		}
-
-		multiMarkerLearning.enabled = false
-
-		var jsonString = multiMarkerLearning.toJSON()
-		console.log('Writing multiMarkerFile', jsonString)
-		localStorage.setItem('sampleMultiMarkerFile', jsonString);	
 		
-		updateAppStatus()
+		// stop the application, if it is started
+		if( multiMarkerLearning.enabled === true ){
+			// stop data collection
+			multiMarkerLearning.enabled = false
+
+			// generate json file and store it
+			var jsonString = multiMarkerLearning.toJSON()
+			console.log('Writing multiMarkerFile', jsonString)
+			localStorage.setItem('sampleMultiMarkerFile', jsonString);	
+			
+			// update application status
+			updateAppStatus()			
+		}
+		
+		// honor ?url= if present
+		if( location.search !== '' ){
+			setTimeout(function(){
+				var url = location.search.replace(/\?url=/,'')
+				location.href = url				
+			}, 1)
+		}
 	}
+
 	function onRecordClear(){
 		localStorage.removeItem('sampleMultiMarkerFile')
 		updateAppStatus()
@@ -224,7 +248,21 @@ window.multiMarkerLearning = multiMarkerLearning
 		if( multiMarkerFile === null ){
 			document.querySelector('#dataStatus').innerHTML = 'none'
 		}else{
+			var json = JSON.parse(multiMarkerFile)
+			var fileAge = Date.now() - new Date(json.meta.createdAt).getTime()
 			document.querySelector('#dataStatus').innerHTML = 'present'			
+
+			var fileAge = (Date.now() - new Date(json.meta.createdAt).getTime())/1000
+			
+			var deltaMinutes = Math.floor(fileAge / 60)
+			var deltaSecond = Math.round(fileAge % 60)
+			
+			document.querySelector('#dataStatus').innerHTML = 'present since '
+				+ String(deltaMinutes).padStart(4)
+				+ 'm' 
+				+ String(deltaSecond).padStart(2, "0")
+				+ 's'
+
 		}
 		
 		if( multiMarkerLearning.enabled === true ){
@@ -232,12 +270,29 @@ window.multiMarkerLearning = multiMarkerLearning
 		}else{
 			document.querySelector('#appStatus').innerHTML = 'stopped'			
 		}
+
+		if( multiMarkerLearning.enabled === true ){
+			document.querySelector('#recordStartButton').style.display = 'none'
+			document.querySelector('#recordStopButton').style.display = 'inherit'
+		}else{
+			document.querySelector('#recordStartButton').style.display = 'inherit'
+			document.querySelector('#recordStopButton').style.display = 'none'			
+		}
 	}
 
 	window.onRecordStart = onRecordStart
 	window.onRecordStop = onRecordStop
 	window.onRecordClear = onRecordClear
 	updateAppStatus()
+	
+	// global click on renderer.domElement is doing a recordToggle
+	renderer.domElement.addEventListener('click', function(){
+		if( multiMarkerLearning.enabled === false ){
+			onRecordStart()
+		}else{
+			onRecordStop()
+		}		
+	})
 	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page

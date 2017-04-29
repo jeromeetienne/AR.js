@@ -154,7 +154,7 @@ THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, scene, marker
 		// create markerControls for our object3d
 		var subMarkerControls = new THREEx.ArMarkerControls(arToolkitContext, object3d, item.parameters)
 
-		if( true ){
+		if( false ){
 			// add an helper to visuable each sub-marker
 			var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
 			subMarkerControls.object3d.add( markerHelper.object3d )			
