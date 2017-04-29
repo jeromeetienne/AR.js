@@ -32,6 +32,6 @@ Thus even if only one sub-marker is visible, multi-marker position will still be
 - it handles poorly the url. It is forcing the user to put all the 
   files (multimarker file plus all the pattern file) at the root of the url.
   
-I tried a bit to workaround those issues, but it rapidely became a pain. 
-So i prefer to devote my energy at building a good version instead of working around
-silly bugs.
+I tried to workaround those issues, but it rapidely became a pain. 
+So i prefered to devote my energy at building a good version instead of
+working around those bugs.

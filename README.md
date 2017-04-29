@@ -179,14 +179,19 @@ Three.js Examples:
   Experimentation around magical book to open a secret door in [upload.io office](http://upload.io)
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/magic-book/index.html))
 - [measure-it](https://jeromeetienne.github.io/AR.js/three.js/examples/measure-it.html) :
-  a-frame example for measure-it
+  three.js example for measure-it
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/measure-it.html))
 - [parameters-tunning](https://jeromeetienne.github.io/AR.js/three.js/examples/parameters-tunning.html) :
-  a-frame example for parameters-tunning
+  three.js example for parameters-tunning
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/parameters-tunning.html))
-- [multimarker](https://jeromeetienne.github.io/AR.js/three.js/examples/multimarker/multimarker.html) :
-  a-frame example for multimarker
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multimarker/multimarker.html))
+- [multimarker](https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/player.html) :
+  multi markers examples - it shows how to dynamically learn a multi markers and then how to use it.
+  learner.html is a example of dynamic learning of a multi markers configuration. It has been designed
+  to be reusable.
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multi-markers/player.html))
+- [multimarker-artoolkit](https://jeromeetienne.github.io/AR.js/three.js/examples/multimarker-artoolkit/multimarker.html) :
+  three.js example for multimarker
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multimarker-artoolkit/multimarker.html))
   
 a-frame Examples:
 
