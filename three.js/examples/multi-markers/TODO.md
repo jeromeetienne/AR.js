@@ -1,3 +1,14 @@
+
+- make a video for it
+  - recorded on the phab2 - abcf
+  - Multi marker with AR.js
+  - insert: Designed for easy workflow
+  - Step 1: scan all markers with your phone
+  - Step 2: once done, you just use it!
+  - show what happen when you go close to the markers at low altitude
+  - insert: more stable
+  - insert: only one is visible? still works!
+
 - what to do with the official multimarker support
   - make an example for it, and keep supporting it
 
