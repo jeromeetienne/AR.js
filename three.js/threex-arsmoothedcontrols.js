@@ -103,7 +103,7 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 		object3d.scale.lerp(targetObject3d.scale, parameters.lerpScale)
 	}
 
-	// disabled the lerp by directly copying targetObject3d position/quaternion/scale
+	// disable the lerp by directly copying targetObject3d position/quaternion/scale
 	// if( false ){		
 	// 	this.object3d.position.copy( targetObject3d.position )
 	// 	this.object3d.quaternion.copy( targetObject3d.quaternion )

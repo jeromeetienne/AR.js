@@ -1,31 +1,25 @@
-- TODO put a smoother on sub-marker while learning ? as a way to remove noise ?
-
-- do an apps which does something with it
-  - a minecraft going from markers to markers
-
-- add a-frame support
-  - support for learning new area
-  - support of multi-marker description
-
-- do a post about multimarker
-  - how to use them, 
-  - workflow: learning then using
-  - pro: larger area can be coverded by 
-
 - what to do with the official multimarker support
   - make an example for it, and keep supporting it
 
+- make all markers children of a parent THREEx.ArBaseControls()
+  - GOAL: make it explicit what is expected from a AR controls
+  - emit event
+  - have id
+  - anything which is common
+
+- TODO put a smoother on sub-marker while learning ? as a way to remove noise ?
+  - do it and hide it behind a flags
+  - in relation with THREEx.ArBaseControls
+
+- do an apps which does something with it
+  - a minecraft going from submarkers to submarkers
+
+- add a-frame support
+  - support for learning new area - can i just use the area-learner.html
+  - support of multi-marker description
+
+- do a post about multimarker - https://medium.com/p/4bcafc785dfd/edit
 
 
-# How to compute the result of the learning
-- we got statistics on the position/orientation/scale between each marker seen simultaneously
-- we want a transposition matrix relative to the origin markersControls
 
-- step1 - build the transposition matrix relative the origin marker controls
-  - store it in the userData
-  - use similar format as local matrix
-- step2 - generate the file
- 
-
-
-- LATER: how to get more robust statistics?
+- DONE merge it all in the README.md

@@ -1,7 +1,6 @@
 - do a webvr demo with a hole in the ground. - good for tango
   - possible demo: hole in the wall, refraction, liquid marker but on all the wall
 
-
 - release soon and start doing dev/master
   - create a dev branch
   - release AR.js as 1.2
