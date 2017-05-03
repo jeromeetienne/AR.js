@@ -147,15 +147,15 @@ Three.js Examples:
 - [deadreckoning](https://jeromeetienne.github.io/AR.js/three.js/examples/deadreckoning.html) :
   Experiment with dead reckoning - not conclusive :(
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/deadreckoning.html))
-- [hole-in-the-wall](https://jeromeetienne.github.io/AR.js/three.js/examples/hole-in-the-wall.html) :
+- [hole-in-the-wall](https://jeromeetienne.github.io/AR.js/three.js/examples/hole-in-the-wall/hole-in-the-wall.html) :
   three.js example for hole-in-the-wall
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/hole-in-the-wall.html))
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/hole-in-the-wall/hole-in-the-wall.html))
 - [shadow](https://jeromeetienne.github.io/AR.js/three.js/examples/shadow.html) :
   three.js example for shadow
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/shadow.html))
-- [refraction](https://jeromeetienne.github.io/AR.js/three.js/examples/refraction.html) :
+- [refraction](https://jeromeetienne.github.io/AR.js/three.js/examples/refraction/refraction.html) :
   three.js example for refraction
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/refraction.html))
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/refraction/refraction.html))
 - [markercloak](https://jeromeetienne.github.io/AR.js/three.js/examples/markercloak.html) :
   three.js example for markercloak
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/markercloak.html))

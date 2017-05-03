@@ -9,9 +9,10 @@ var THREEx = THREEx || {}
  */
 THREEx.ArSmoothedControls = function(object3d, parameters){
 	var _this = this
-
+	
+	THREEx.ArBaseControls.call(this, object3d)
+	
 	// copy parameters
-	this.object3d = object3d
 	this.object3d.visible = false
 	
 	this._lastLerpStepAt = null
@@ -35,8 +36,9 @@ THREEx.ArSmoothedControls = function(object3d, parameters){
 		minUnvisibleDelay: parameters.minUnvisibleDelay !== undefined ? parameters.minUnvisibleDelay : 0.0,
 	}
 }
-
-Object.assign( THREEx.ArSmoothedControls.prototype, THREE.EventDispatcher.prototype );
+	
+THREEx.ArSmoothedControls.prototype = Object.create( THREEx.ArBaseControls.prototype );
+THREEx.ArSmoothedControls.prototype.constructor = THREEx.ArSmoothedControls;
 
 //////////////////////////////////////////////////////////////////////////////
 //		update function

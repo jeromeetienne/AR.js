@@ -10,6 +10,7 @@
 <script src='../../../threex-artoolkitsource.js'></script>
 <script src='../../../threex-artoolkitcontext.js'></script>
 <script src='../../../threex-artoolkitprofile.js'></script>
+<script src='../../../threex-arbasecontrols.js'></script>
 <script src='../../../threex-armarkercontrols.js'></script>
 <script src='../../../threex-armarkerhelper.js'></script>
 <script src='../../../threex-arsmoothedcontrols.js'></script>
@@ -85,8 +86,8 @@
 		sourceType : 'webcam',
 		
 		// // to read from an image
-		// sourceType : 'image',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/multimarker.jpg'		
+		sourceType : 'image',
+		sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/multimarker.jpg'		
 
 		// to read from a video
 		// sourceType : 'video',
@@ -129,12 +130,7 @@
 
 		arToolkitContext.update( arToolkitSource.domElement )
 	})
-	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
-	//////////////////////////////////////////////////////////////////////////////
 
-
-	var interMarkerWidth = 2.61
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
@@ -184,14 +180,14 @@
 			type : 'pattern',
 			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.b',
 		},
-		{
-			type : 'pattern',
-			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.c',
-		},
-		{
-			type : 'pattern',
-			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.f',
-		},
+		// {
+		// 	type : 'pattern',
+		// 	patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.c',
+		// },
+		// {
+		// 	type : 'pattern',
+		// 	patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.f',
+		// },
 	]
 	
 	//////////////////////////////////////////////////////////////////////////////
@@ -222,14 +218,14 @@
 			smoothedControls.update(markerRoot)
 		})	
 
-
 		
 		var markerScene = new THREE.Scene
-		markerScene.position.x = interMarkerWidth
-		markerScene.position.z = interMarkerWidth/2
-		markerScene.scale.set(1,1,1).multiplyScalar(2)
 		// markerRoot.add(markerScene)
 		smoothedRoot.add(markerScene)
+
+		// compute the average matrix of this markerFile
+		var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
+		averageMatrix.decompose(markerScene.position, markerScene.quaternion, markerScene.scale)
 
 		//////////////////////////////////////////////////////////////////////////////////
 		//		add an object in the scene
@@ -265,6 +261,9 @@
 	//////////////////////////////////////////////////////////////////////////////
 
 	function multiMarkerPlayHarcoded(){
+		
+		var interMarkerWidth = 2.61
+
 		var multiMarkerFile = {
 			subMarkersControls : [
 				{

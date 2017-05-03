@@ -1,71 +1,33 @@
 <!DOCTYPE html>
-<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
 <!-- three.js library -->
-<script src='vendor/three.js/build/three.js'></script>
-<script src="vendor/three.js/examples/js/libs/stats.min.js"></script>
-<script src="vendor/dat.gui.min.js"></script>
+<script src='../vendor/three.js/build/three.js'></script>
+<script src='../vendor/three.js/examples/js/libs/stats.min.js'></script>
+<script src='../vendor/dat.gui.min.js'></script>
 <!-- jsartookit -->
-<script src="../vendor/jsartoolkit5/build/artoolkit.min.js"></script>
-<script src="../vendor/jsartoolkit5/js/artoolkit.api.js"></script>
+<script src='../../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
+<script src='../../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
 <!-- include threex.artoolkit -->
-<script src="../threex-artoolkitsource.js"></script>
-<script src="../threex-artoolkitcontext.js"></script>
-<script src="../threex-armarkercontrols.js"></script>
-<script>THREEx.ArToolkitContext.baseURL = '../'</script>
+<script src='../../threex-artoolkitsource.js'></script>
+<script src='../../threex-artoolkitcontext.js'></script>
+<script src='../../threex-armarkercontrols.js'></script>
+<script>THREEx.ArToolkitContext.baseURL = '../../'</script>
 
-<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - three.js mobile performance
+<!-- include the material -->
+<script src='./threex.refractionmaterial.js'></script>
+
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; bottom: 10px; width:100%; text-align: center; z-index: 1;'>
+	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - three.js mobile performance
 	- <a href='#torus' onclick='location.reload()'>torus</a> /
 	<a href='#uglyDiamond' onclick='location.reload()'>ugly-diamond</a> /
 	<a href='#weirdo' onclick='location.reload()'>weirdo</a>
 	<br/>
-	Shader based on <a href="https://www.clicktorelease.com/code/streetViewReflectionMapping/#51.50700703827454,-0.12791916931155356" target='_blank'>@thespite's</a>
+	Shader based on <a href='https://www.clicktorelease.com/code/streetViewReflectionMapping/#51.50700703827454,-0.12791916931155356' target='_blank'>@thespite's</a>
 	-
-	Code by <a href="https://twitter.com/snigelpaogat" target='_blank'>Fredrik Blomqvist</a> and
+	Code by <a href='https://twitter.com/snigelpaogat' target='_blank'>Fredrik Blomqvist</a> and
 	<a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
-</div>
-
-<!--
-	Refraction shader
-	http://http.developer.nvidia.com/CgTutorial/cg_tutorial_chapter07.html
-	https://www.clicktorelease.com/code/streetViewReflectionMapping/#51.50700703827454,-0.12791916931155356
-	todo: fresnel effects etc.
-	todo: we know *more* than the typical shader, since we have the marker plane info! we could almost raytrace to geom-plane!
--->
-<script type="x-shader/x-vertex" id="refract-vs">
-varying vec3 vRefract;
-uniform float refractionRatio;
-
-void main() {
-	vec4 mPosition = modelMatrix * vec4( position, 1.0 );
-	vec3 nWorld = normalize( mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal );
-	vRefract = normalize( refract( normalize( mPosition.xyz - cameraPosition ), nWorld, refractionRatio ) );
-
-	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-}
-</script>
-
-<script type="x-shader/x-vertex" id="refract-fs">
-uniform sampler2D texture;
-varying vec3 vRefract;
-// experiment with distance to the video plane. should do real ray-plane-intersection!
-uniform float distance;
-uniform float opacity;
-uniform vec3 color;
-
-void main(void) {
-	// 2d video plane lookup
-	// todo: ! here we could raytrace the ray into the _markerplane_! we know this ("reasonable area around the marker")
-	vec2 p = vec2(vRefract.x*distance + 0.5, vRefract.y*distance + 0.5);
-
-	vec3 texel = texture2D( texture, p ).rgb;
-	texel *= color;
-	gl_FragColor = vec4( texel, opacity );
-}
-</script>
-
-
-<script>
+</div><script>
+;(function(){
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////
@@ -114,11 +76,11 @@ void main(void) {
 
 		// to read from an image
 		// sourceType : 'image',
-		// sourceUrl : '../../data/images/img.jpg',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',
 
 		// to read from a video
 		// sourceType : 'video',
-		// sourceUrl : '../../data/videos/headtracking.mp4',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',
 	})
 
 	arToolkitSource.init(function onReady(){
@@ -138,11 +100,8 @@ void main(void) {
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
-		cameraParametersUrl: '../../data/data/camera_para.dat',
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
 		detectionMode: 'mono',
-		// maxDetectionRate: 30,
-		// canvasWidth: 80*4,
-		// canvasHeight: 60*4,
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
@@ -166,8 +125,8 @@ void main(void) {
 	scene.add(markerRoot)
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
-		patternUrl : '../../data/data/patt.hiro'
-		// patternUrl : '../../data/data/patt.kanji'
+		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji'
 	})
 
 	
@@ -177,43 +136,19 @@ void main(void) {
 	//////////////////////////////////////////////////////////////////////////////////
 	var videoTexture = new THREE.VideoTexture(arToolkitSource.domElement)
 	videoTexture.minFilter =  THREE.NearestFilter
-
 	videoTexture.wrapS = videoTexture.wrapT = THREE.ClampToEdgeWrapping;
 
-	var material = new THREE.ShaderMaterial( {
-		uniforms: {
-			texture: { value: videoTexture },
-			// pull to see the throshold: 0.7-ish solid glass/water ("upsidevdown"), 0.8+ thinner glass ("magnifying glass")
-			refractionRatio: { value: 0.9 },
-			color: { value: new THREE.Color('red') },
-			// refractionRatio: { type: 'f', value: 0.8 },
-			// experiment to adjust offset to video-plane. set to 1 for no effect
-			distance: { value: 1 },
-			opacity: { value: 1 },
-		},
-		vertexShader: document.getElementById( 'refract-vs' ).textContent,
-		fragmentShader: document.getElementById( 'refract-fs' ).textContent,
-		transparent: true,
-		side: THREE.DoubleSide,
-	});
+	var refractionMaterial = new THREEx.RefractionMaterial(videoTexture)
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
 
 	var gui = new dat.GUI();
-	gui.domElement.parentNode.style.zIndex=3
+	// gui.domElement.style.zIndex=3
 	gui.close()
 
-	gui.addColor({
-		color : '#'+material.uniforms.color.value.getHexString()
-	}, 'color').onChange( function( colorValue  ){
-		colorValue = colorValue.replace( '#','0x' );
-		material.uniforms.color.value.setHex(colorValue);
-	});
-	gui.add(material.uniforms.refractionRatio, 'value', 0, 1).name('refractionRatio');
-	gui.add(material.uniforms.distance, 'value', 0, 4).name('distance');
-	gui.add(material.uniforms.opacity, 'value', 0, 1).name('opacity');
-
+	THREEx.RefractionMaterial.insertDatGUI(gui, refractionMaterial)
 	
 	//////////////////////////////////////////////////////////////////////////////
 	//		init invisibility cloak
@@ -233,7 +168,7 @@ void main(void) {
 
 	function initSceneTorus(){
 		var geometry = new THREE.TorusGeometry(0.5,0.3,20,30);
-		var mesh = new THREE.Mesh(geometry, material);
+		var mesh = new THREE.Mesh(geometry, refractionMaterial);
 		mesh.position.y = 0.9;
 		// mesh.scale.multiplyScalar(2)
 		markerRoot.add( mesh );
@@ -255,7 +190,7 @@ void main(void) {
 		geometry.merge(new THREE.ConeGeometry( radiusMiddle, heightBottom , 8 ).rotateX(Math.PI).translate(0, heightBottom/2, 0))
 
 		// create the mesh
-		var mesh = new THREE.Mesh(geometry, material);
+		var mesh = new THREE.Mesh(geometry, refractionMaterial);
 		mesh.scale.multiplyScalar(2)
 		markerRoot.add( mesh );
 
@@ -286,8 +221,8 @@ void main(void) {
 		// geometry.computeVertexNormals()
 		// geometry.normalsNeedUpdate = true
 
-		// var material = new THREE.MeshNormalMaterial
-		var mesh = new THREE.Mesh(geometry, material);
+		// var refractionMaterial = new THREE.MeshNormalMaterial
+		var mesh = new THREE.Mesh(geometry, refractionMaterial);
 		mesh.position.y = 1.2;
 		mesh.scale.multiplyScalar(2)
 		markerRoot.add( mesh );
@@ -344,4 +279,5 @@ void main(void) {
 			onRenderFct(deltaMsec/1000, nowMsec/1000)
 		})
 	})
+})()
 </script></body>

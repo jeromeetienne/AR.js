@@ -2,7 +2,9 @@ var THREEx = THREEx || {}
 
 THREEx.ArMarkerControls = function(context, object3d, parameters){
 	var _this = this
-	this.id = THREEx.ArMarkerControls.id++
+
+	THREEx.ArBaseControls.call(this, object3d)
+
 	this.context = context
 	// handle default parameters
 	this.parameters = {
@@ -51,8 +53,12 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 
 }
 
-THREEx.ArMarkerControls.id = 0
+THREEx.ArMarkerControls.prototype = Object.create( THREEx.ArBaseControls.prototype );
+THREEx.ArMarkerControls.prototype.constructor = THREEx.ArMarkerControls;
 
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
 THREEx.ArMarkerControls.prototype._postInit = function(){
 	var _this = this
 	var markerObject3D = this.object3d;

@@ -3,8 +3,9 @@ var THREEx = THREEx || {}
 THREEx.ArMultiMarkerControls = function(object3d, markersControls, markersPose){
 	var _this = this
 
+	THREEx.ArBaseControls.call(this, object3d)
+
 	// copy parameters
-	this.object3d = object3d
 	this.markersControls = markersControls
 	this.markersPose = markersPose
 
@@ -16,9 +17,8 @@ THREEx.ArMultiMarkerControls = function(object3d, markersControls, markersPose){
 	})
 }
 
-Object.assign( THREEx.ArMultiMarkerControls.prototype, THREE.EventDispatcher.prototype );
-
-
+THREEx.ArMultiMarkerControls.prototype = Object.create( THREEx.ArBaseControls.prototype );
+THREEx.ArMultiMarkerControls.prototype.constructor = THREEx.ArMultiMarkerControls;
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
@@ -154,7 +154,7 @@ THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, scene, marker
 		// create markerControls for our object3d
 		var subMarkerControls = new THREEx.ArMarkerControls(arToolkitContext, object3d, item.parameters)
 
-		if( false ){
+		if( true ){
 			// add an helper to visuable each sub-marker
 			var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
 			subMarkerControls.object3d.add( markerHelper.object3d )			
@@ -169,4 +169,52 @@ THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, scene, marker
 
 	// return it
 	return multiMarkerControls	
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+
+/**
+ * compute the center of this multimarker file
+ */
+THREEx.ArMultiMarkerControls.computeCenter = function(jsonData){
+	var multiMarkerFile = JSON.parse(jsonData)
+	var stats = {
+		count : 0,
+		position : {
+			sum: new THREE.Vector3(0,0,0),
+			average: new THREE.Vector3(0,0,0),						
+		},
+		quaternion : {
+			sum: new THREE.Quaternion(0,0,0,0),
+			average: new THREE.Quaternion(0,0,0,0),						
+		},
+		scale : {
+			sum: new THREE.Vector3(0,0,0),
+			average: new THREE.Vector3(0,0,0),						
+		},
+	}
+	var firstQuaternion = new THREE.Quaternion() // FIXME ???
+	
+	multiMarkerFile.subMarkersControls.forEach(function(item){
+		var poseMatrix = new THREE.Matrix4().fromArray(item.poseMatrix)
+		
+		var position = new THREE.Vector3
+		var quaternion = new THREE.Quaternion
+		var scale = new THREE.Vector3
+		poseMatrix.decompose(position, quaternion, scale)
+		
+		// http://wiki.unity3d.com/index.php/Averaging_Quaternions_and_Vectors
+		stats.count++
+
+		THREEx.ArMultiMarkerControls.averageVector3(stats.position.sum, position, stats.count, stats.position.average)
+		THREEx.ArMultiMarkerControls.averageQuaternion(stats.quaternion.sum, quaternion, firstQuaternion, stats.count, stats.quaternion.average)
+		THREEx.ArMultiMarkerControls.averageVector3(stats.scale.sum, scale, stats.count, stats.scale.average)
+	})
+	
+	var averageMatrix = new THREE.Matrix4()
+	averageMatrix.compose(stats.position.average, stats.quaternion.average, stats.scale.average)
+
+	return averageMatrix
 }

@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
 <!-- three.js library -->
-<script src='vendor/three.js/build/three.js'></script>
-<script src="vendor/three.js/examples/js/libs/stats.min.js"></script>
-<script src="vendor/three.js/examples/js/loaders/GLTFLoader.js"></script>
+<script src='../vendor/three.js/build/three.js'></script>
+<script src='../vendor/three.js/examples/js/libs/stats.min.js'></script>
+<script src='../vendor/three.js/examples/js/loaders/GLTFLoader.js'></script>
 <!-- jsartookit -->
-<script src="../vendor/jsartoolkit5/build/artoolkit.min.js"></script>
-<script src="../vendor/jsartoolkit5/js/artoolkit.api.js"></script>
+<script src='../../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
+<script src='../../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
 <!-- include threex.artoolkit -->
-<script src="../threex-artoolkitsource.js"></script>
-<script src="../threex-artoolkitcontext.js"></script>
-<script src="../threex-artoolkitprofile.js"></script>
-<script src="../threex-armarkercontrols.js"></script>
-<script>THREEx.ArToolkitContext.baseURL = '../'</script>
+<script src='../../threex-artoolkitsource.js'></script>
+<script src='../../threex-artoolkitcontext.js'></script>
+<script src='../../threex-artoolkitprofile.js'></script>
+<script src='../../threex-armarkercontrols.js'></script>
+<script>THREEx.ArToolkitContext.baseURL = '../../'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> 
-	- "hole in the wall" effect 
+	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> 
+	- 'hole in the wall' effect 
 	- <a href='#torus' onclick='location.reload()'>torus</a>,
 	<a href='#pool' onclick='location.reload()'>pool</a>
 	or <a href='#portal' onclick='location.reload()'>portal</a>
 	<br/>
-	Concept by <a href="https://twitter.com/Saqoosha" target='_blank'>@Saqoosha</a> - 
-	Code by <a href="https://twitter.com/snigelpaogat" target='_blank'>Fredrik Blomqvist</a> and 
+	Concept by <a href='https://twitter.com/Saqoosha' target='_blank'>@Saqoosha</a> - 
+	Code by <a href='https://twitter.com/snigelpaogat' target='_blank'>Fredrik Blomqvist</a> and 
 	<a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div><script>
 	//////////////////////////////////////////////////////////////////////////////////
@@ -31,8 +31,8 @@
 
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
-		antialias	: true,
-		alpha: true
+		antialias : true,
+		alpha : true
 	});
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
 	// renderer.setPixelRatio( 2 );
@@ -74,11 +74,11 @@
 		
 		// // to read from an image
 		// sourceType : 'image',
-		// sourceUrl : '../../data/images/img.jpg',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
 
 		// to read from a video
 		// sourceType : 'video',
-		// sourceUrl : '../../data/videos/headtracking.mp4',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
 	})
 
 	arToolkitSource.init(function onReady(){
@@ -99,7 +99,7 @@
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
-		cameraParametersUrl: '../../data/data/camera_para.dat',
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
 		detectionMode: 'mono',
 		imageSmoothingEnabled: false,
 		maxDetectionRate: 30,
@@ -128,8 +128,8 @@
 	scene.add(markerRoot)
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
-		patternUrl : '../../data/data/patt.hiro',
-		// patternUrl : '../../data/data/patt.kanji',
+		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
 	})
 
 	//////////////////////////////////////////////////////////////////////////////////

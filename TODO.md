@@ -1,8 +1,9 @@
-- do a webvr demo with a hole in the ground. - good for tango
-  - possible demo: hole in the wall, refraction, liquid marker but on all the wall
 - put refraction in a threex, same for hole-in-the-wall and liquid-markers
   - in examples/threex/
   - thus i can reuse them
+
+- do a webvr demo with a hole in the ground. - good for tango
+  - possible demo: hole in the wall, refraction, liquid marker but on all the wall
 
 - release soon and start doing dev/master
   - create a dev branch

@@ -1620,6 +1620,30 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 
 })();
 var THREEx = THREEx || {}
+
+THREEx.ArBaseControls = function(object3d){
+	this.id = THREEx.ArBaseControls.id++
+	this.object3d = object3d
+
+	// Events to honor
+	// this.dispatchEvent({ type: 'becameVisible' })
+	// this.dispatchEvent({ type: 'becameUnVisible' })
+}
+
+THREEx.ArBaseControls.id = 0
+
+Object.assign( THREEx.ArBaseControls.prototype, THREE.EventDispatcher.prototype );
+
+//////////////////////////////////////////////////////////////////////////////
+//		Functions
+//////////////////////////////////////////////////////////////////////////////
+/**
+ * error catching function for update()
+ */
+THREEx.ArBaseControls.prototype.update = function(){
+	console.assert(false, 'you need to implement your own update')
+}
+var THREEx = THREEx || {}
 /**
  * - videoTexture
  * - cloakWidth
@@ -1846,7 +1870,9 @@ var THREEx = THREEx || {}
 
 THREEx.ArMarkerControls = function(context, object3d, parameters){
 	var _this = this
-	this.id = THREEx.ArMarkerControls.id++
+
+	THREEx.ArBaseControls.call(this, object3d)
+
 	this.context = context
 	// handle default parameters
 	this.parameters = {
@@ -1895,8 +1921,12 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 
 }
 
-THREEx.ArMarkerControls.id = 0
+THREEx.ArMarkerControls.prototype = Object.create( THREEx.ArBaseControls.prototype );
+THREEx.ArMarkerControls.prototype.constructor = THREEx.ArMarkerControls;
 
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
 THREEx.ArMarkerControls.prototype._postInit = function(){
 	var _this = this
 	var markerObject3D = this.object3d;
@@ -2042,9 +2072,10 @@ var THREEx = THREEx || {}
  */
 THREEx.ArSmoothedControls = function(object3d, parameters){
 	var _this = this
-
+	
+	THREEx.ArBaseControls.call(this, object3d)
+	
 	// copy parameters
-	this.object3d = object3d
 	this.object3d.visible = false
 	
 	this._lastLerpStepAt = null
@@ -2068,8 +2099,9 @@ THREEx.ArSmoothedControls = function(object3d, parameters){
 		minUnvisibleDelay: parameters.minUnvisibleDelay !== undefined ? parameters.minUnvisibleDelay : 0.0,
 	}
 }
-
-Object.assign( THREEx.ArSmoothedControls.prototype, THREE.EventDispatcher.prototype );
+	
+THREEx.ArSmoothedControls.prototype = Object.create( THREEx.ArBaseControls.prototype );
+THREEx.ArSmoothedControls.prototype.constructor = THREEx.ArSmoothedControls;
 
 //////////////////////////////////////////////////////////////////////////////
 //		update function
@@ -2136,7 +2168,7 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 		object3d.scale.lerp(targetObject3d.scale, parameters.lerpScale)
 	}
 
-	// disabled the lerp by directly copying targetObject3d position/quaternion/scale
+	// disable the lerp by directly copying targetObject3d position/quaternion/scale
 	// if( false ){		
 	// 	this.object3d.position.copy( targetObject3d.position )
 	// 	this.object3d.quaternion.copy( targetObject3d.quaternion )
