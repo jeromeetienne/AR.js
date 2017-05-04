@@ -1,6 +1,6 @@
 var THREEx = THREEx || {}
 
-THREEx.ArMultiMakersLearning = function(subMarkersControls){
+THREEx.ArMultiMakersLearning = function(arToolkitContext, subMarkersControls){
 	var _this = this
 
 	// Init variables
@@ -9,8 +9,6 @@ THREEx.ArMultiMakersLearning = function(subMarkersControls){
 		
 	// listen to arToolkitContext event 'sourceProcessed'
 	// - after we fully processed one image, aka when we know all detected poses in it
-	var originSubControls = this.subMarkersControls[0]
-	var arToolkitContext = originSubControls.context
 	arToolkitContext.addEventListener('sourceProcessed', function(){
 		_this._onSourceProcessed()
 	})

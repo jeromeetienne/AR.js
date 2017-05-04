@@ -142,8 +142,8 @@ THREEx.ArMultiMarkerControls.averageVector3 = function(vector3Sum, vector3, coun
 THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, scene, markerRoot, jsonData){
 	var multiMarkerFile = JSON.parse(jsonData)
 	// declare the parameters
-	var markersControls = []
-	var markerPoses = []
+	var subMarkersControls = []
+	var subMarkerPoses = []
 
 	// prepare the parameters
 	multiMarkerFile.subMarkersControls.forEach(function(item){
@@ -154,18 +154,12 @@ THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, scene, marker
 		// create markerControls for our object3d
 		var subMarkerControls = new THREEx.ArMarkerControls(arToolkitContext, object3d, item.parameters)
 
-		if( true ){
-			// add an helper to visuable each sub-marker
-			var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
-			subMarkerControls.object3d.add( markerHelper.object3d )			
-		}
-		
 		// store it in the parameters
-		markersControls.push(subMarkerControls)
-		markerPoses.push(new THREE.Matrix4().fromArray(item.poseMatrix))
+		subMarkersControls.push(subMarkerControls)
+		subMarkerPoses.push(new THREE.Matrix4().fromArray(item.poseMatrix))
 	})
 	// create a new THREEx.ArMultiMarkerControls
-	var multiMarkerControls = new THREEx.ArMultiMarkerControls(markerRoot, markersControls, markerPoses)
+	var multiMarkerControls = new THREEx.ArMultiMarkerControls(markerRoot, subMarkersControls, subMarkerPoses)
 
 	// return it
 	return multiMarkerControls	

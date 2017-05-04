@@ -33,10 +33,14 @@
 	<br/>
 	<a id='recordButton' href='learner.html?url=player.html'>Record new area</a>
 	<br/>
+	Markers Helper : 
+		<a href='javascript:void(0)' onclick='urlOptions.markersHelper = true; reload()'>enable</a>
+		/
+		<a href='javascript:void(0)' onclick='urlOptions.markersHelper = false; reload()'>disable</a>
 	appMode : 
-	<a href='#areaUsing' onclick='location.reload()'>stored</a>
-	/
-	<a href='#areaHardcoded' onclick='location.reload()'>hardcoded</a>
+		<a href='javascript:void(0)' onclick='urlOptions.appMode = "areaUsing"; reload()'>stored</a>
+		/
+		<a href='javascript:void(0)' onclick='urlOptions.appMode = "areaHardcoded"; reload()'>hardcoded</a>
 </div><script>
 ;(function(){
 	//////////////////////////////////////////////////////////////////////////////////
@@ -48,6 +52,9 @@
 		antialias	: true,
 		alpha: true
 	});
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap
+	renderer.shadowMap.enabled = true;	
+
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
 	// renderer.setPixelRatio( 2 );
 	renderer.setSize( window.innerWidth, window.innerHeight );
@@ -65,10 +72,7 @@
 	var ambient = new THREE.AmbientLight( 0x666666 );
 	scene.add( ambient );
 
-	var directionalLight = new THREE.DirectionalLight( 0x887766 );
-	directionalLight.position.set( -1, 1, 1 ).normalize();
-	scene.add( directionalLight );
-	
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
@@ -135,20 +139,34 @@
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
 
+
+	var hasHash = location.hash.substring(1) !== '' ? true : false
+	if( hasHash === true ){
+		var urlOptions = JSON.parse(location.hash.substring(1))
+	}else{
+		var urlOptions = {
+			appMode : 'areaUsing',
+			markersHelper: true,
+		}
+	}
+	window.urlOptions = urlOptions
+	window.reload = function(){
+		location.hash = '#'+JSON.stringify(urlOptions)
+		location.reload()
+	}
+
+	if( location.hash.substring(1) === '' )	location.hash = '#'+JSON.stringify(urlOptions)
 	
-	var appMode = location.hash.substring(1) || 'areaUsing'
-	if( location.hash.substring(1) === '' )	location.hash = '#'+appMode
-	
-	if( appMode === 'areaUsing' && localStorage.getItem('sampleMultiMarkerFile') === null ){
+	if( urlOptions.appMode === 'areaUsing' && localStorage.getItem('ARjsMultiMarkerFile') === null ){
 		alert('cant find sample multimarker.')
-		appMode = 'areaHardcoded'
+		urlOptions.appMode = 'areaHardcoded'
 	}
 	
 	
-	if( appMode === 'areaUsing' ){
-		console.assert( localStorage.getItem('sampleMultiMarkerFile') !== null )
-		multiMarkerPlay(localStorage.getItem('sampleMultiMarkerFile'))
-	}else if( appMode === 'areaHardcoded' ){
+	if( urlOptions.appMode === 'areaUsing' ){
+		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
+		multiMarkerPlay(localStorage.getItem('ARjsMultiMarkerFile'))
+	}else if( urlOptions.appMode === 'areaHardcoded' ){
 		multiMarkerPlayHarcoded()
 	}else{
 		console.assert('unknown appMode', appMode)
@@ -210,6 +228,15 @@
 		// build a multiMarkerControls
 		var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arToolkitContext, scene, markerRoot, multiMarkerFile)
 
+
+		if( urlOptions.markersHelper === true ){
+			multiMarkerControls.markersControls.forEach(function(subMarkerControls){
+				// add an helper to visuable each sub-marker
+				var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
+				subMarkerControls.object3d.add( markerHelper.object3d )		
+			})			
+		}
+
 		// build a smoothedControls
 		var smoothedRoot = new THREE.Group()
 		scene.add(smoothedRoot)
@@ -226,11 +253,12 @@
 		// compute the average matrix of this markerFile
 		var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
 		averageMatrix.decompose(markerScene.position, markerScene.quaternion, markerScene.scale)
-		 markerScene.scale.multiplyScalar(3)
+		markerScene.scale.multiplyScalar(3)
+
 		//////////////////////////////////////////////////////////////////////////////////
 		//		add an object in the scene
 		//////////////////////////////////////////////////////////////////////////////////
-
+		
 		var mesh = new THREE.AxisHelper()
 		// markerScene.add(mesh)
 
@@ -253,7 +281,7 @@
 		
 		onRenderFcts.push(function(delta){
 			mesh.rotation.x += delta * Math.PI
-		})	
+		})
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
