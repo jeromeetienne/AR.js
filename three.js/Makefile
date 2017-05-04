@@ -4,7 +4,7 @@ watch: build
 .PHONY: build
 build: 
 	cat 	vendor/jsartoolkit5/build/artoolkit.min.js	\
-		vendor/jsartoolkit5/js/artoolkit.api.js	\
+		vendor/jsartoolkit5/js/artoolkit.api.js		\
 		threex-*.js 					\
 		> build/ar.js
 

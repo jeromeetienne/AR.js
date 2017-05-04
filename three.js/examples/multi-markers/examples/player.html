@@ -86,8 +86,8 @@
 		sourceType : 'webcam',
 		
 		// // to read from an image
-		sourceType : 'image',
-		sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/multimarker.jpg'		
+		// sourceType : 'image',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/multimarker.jpg'		
 
 		// to read from a video
 		// sourceType : 'video',
@@ -180,14 +180,14 @@
 			type : 'pattern',
 			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.b',
 		},
-		// {
-		// 	type : 'pattern',
-		// 	patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.c',
-		// },
-		// {
-		// 	type : 'pattern',
-		// 	patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.f',
-		// },
+		{
+			type : 'pattern',
+			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.c',
+		},
+		{
+			type : 'pattern',
+			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.f',
+		},
 	]
 	
 	//////////////////////////////////////////////////////////////////////////////
@@ -226,7 +226,7 @@
 		// compute the average matrix of this markerFile
 		var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
 		averageMatrix.decompose(markerScene.position, markerScene.quaternion, markerScene.scale)
-
+		 markerScene.scale.multiplyScalar(3)
 		//////////////////////////////////////////////////////////////////////////////////
 		//		add an object in the scene
 		//////////////////////////////////////////////////////////////////////////////////
