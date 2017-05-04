@@ -1,17 +1,16 @@
 var THREEx = THREEx || {}
 
-THREEx.ArMultiMarkerControls = function(object3d, markersControls, markersPose){
+THREEx.ArMultiMarkerControls = function(arToolkitContext, object3d, subMarkersControls, subMarkerPoses){
 	var _this = this
 
 	THREEx.ArBaseControls.call(this, object3d)
 
 	// copy parameters
-	this.markersControls = markersControls
-	this.markersPose = markersPose
+	this.subMarkersControls = subMarkersControls
+	this.subMarkerPoses = subMarkerPoses
 
 	// listen to arToolkitContext event 'sourceProcessed'
 	// - after we fully processed one image, aka when we know all detected poses in it
-	var arToolkitContext = markersControls[0].context
 	arToolkitContext.addEventListener('sourceProcessed', function(){
 		_this._onSourceProcessed()
 	})
@@ -45,9 +44,9 @@ THREEx.ArMultiMarkerControls.prototype._onSourceProcessed = function(){
 		},
 	}
 
-	var firstQuaternion = _this.markersControls[0].object3d.quaternion
+	var firstQuaternion = _this.subMarkersControls[0].object3d.quaternion
 
-	this.markersControls.forEach(function(markerControls, markerIndex){
+	this.subMarkersControls.forEach(function(markerControls, markerIndex){
 		
 		var markerObject3d = markerControls.object3d
 		// if this marker is not visible, ignore it
@@ -55,7 +54,7 @@ THREEx.ArMultiMarkerControls.prototype._onSourceProcessed = function(){
 
 		// transformation matrix of this.object3d according to this sub-markers
 		var matrix = markerObject3d.matrix.clone()
-		var markerPose = _this.markersPose[markerIndex]
+		var markerPose = _this.subMarkerPoses[markerIndex]
 		matrix.multiply(new THREE.Matrix4().getInverse(markerPose))
 
 		// decompose the matrix into .position, .quaternion, .scale
@@ -159,7 +158,7 @@ THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, scene, marker
 		subMarkerPoses.push(new THREE.Matrix4().fromArray(item.poseMatrix))
 	})
 	// create a new THREEx.ArMultiMarkerControls
-	var multiMarkerControls = new THREEx.ArMultiMarkerControls(markerRoot, subMarkersControls, subMarkerPoses)
+	var multiMarkerControls = new THREEx.ArMultiMarkerControls(arToolkitContext, markerRoot, subMarkersControls, subMarkerPoses)
 
 	// return it
 	return multiMarkerControls	

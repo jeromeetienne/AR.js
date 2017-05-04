@@ -1563,7 +1563,7 @@
 			// console.log('ajax done for ', url);
 			var arrayBuffer = oReq.response;
 			var byteArray = new Uint8Array(arrayBuffer);
-	console.log('writeByteArrayToFS', target, byteArray.length, 'byte. url', url)
+	// console.log('writeByteArrayToFS', target, byteArray.length, 'byte. url', url)
 			writeByteArrayToFS(target, byteArray, callback);
 		};
 

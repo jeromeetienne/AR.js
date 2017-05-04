@@ -55,7 +55,9 @@ uniform float refractionRatio;
 
 void main() {
 	vec4 mPosition = modelMatrix * vec4( position, 1.0 );
+
 	vec3 nWorld = normalize( mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal );
+
 	vRefract = normalize( refract( normalize( mPosition.xyz - cameraPosition ), nWorld, refractionRatio ) );
 
 	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
