@@ -142,7 +142,7 @@ THREEx.ArMultiMakersLearning.prototype.computeResult = function(){
 		result.averageMatrix = averageMatrix
 
 		// compute confidenceFactor
-		var requiredSamples = 200
+		var requiredSamples = 50
 		result.confidenceFactor = seenCoupleStats.count / requiredSamples
 	})
 	
