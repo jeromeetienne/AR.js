@@ -22,6 +22,13 @@
 <!-- include the material -->
 <script src='../../refraction/threex.refractionmaterial.js'></script>
 
+<!-- activate NoSleep.js to force mobile browser to stay awake -->
+<script src='../../vendor/NoSleep.min.js'></script>
+<script>
+	var noSleep = new NoSleep();
+	noSleep.enable();
+</script>
+
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
 	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Multi marker
 	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
@@ -44,9 +51,12 @@
 
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
-		// antialias	: true,
+		antialias	: true,
 		alpha: true
 	});
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap
+	renderer.shadowMap.enabled = true;	
+
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
 	// renderer.setPixelRatio( 2 );
 	renderer.setSize( window.innerWidth, window.innerHeight );
@@ -61,6 +71,10 @@
 	// init scene and camera
 	var scene	= new THREE.Scene();
 
+	var ambient = new THREE.AmbientLight( 0x666666 );
+	scene.add( ambient );
+
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
@@ -73,12 +87,19 @@
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
 
-	var artoolkitProfile = new THREEx.ArToolkitProfile()
-	artoolkitProfile.sourceWebcam()
-	// artoolkitProfile.sourceVideo(THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4').kanjiMarker();
-	// artoolkitProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg').hiroMarker()
+	var arToolkitSource = new THREEx.ArToolkitSource({
+		// to read from the webcam 
+		sourceType : 'webcam',
+		
+		// // to read from an image
+		// sourceType : 'image',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/multimarker.jpg'		
 
-	var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)
+		// to read from a video
+		// sourceType : 'video',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',	
+	})
+
 
 	arToolkitSource.init(function onReady(){
 		// handle resize of renderer
@@ -96,7 +117,13 @@
 	////////////////////////////////////////////////////////////////////////////////	
 
 	// create atToolkitContext
-	var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
+	var arToolkitContext = new THREEx.ArToolkitContext({
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
+		detectionMode: 'mono',
+		maxDetectionRate: 30,
+		canvasWidth: 80*4,
+		canvasHeight: 60*4,
+	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
 		// copy projection matrix to camera
@@ -109,7 +136,7 @@
 
 		arToolkitContext.update( arToolkitSource.domElement )
 	})
-	
+
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
@@ -146,7 +173,7 @@
 	}else{
 		console.assert('unknown appMode', appMode)
 	}
-
+	
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
@@ -192,7 +219,6 @@
 	}
 	// debugger
 	document.querySelector('#recordButton').href = 'learner.html#'+JSON.stringify(learnerParameters)
-
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
@@ -204,7 +230,7 @@
 		// build a multiMarkerControls
 		var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arToolkitContext, scene, markerRoot, multiMarkerFile)
 
-		// display THREEx.ArMarkerHelper if needed - useful to debug
+
 		if( urlOptions.markersHelper === true ){
 			multiMarkerControls.subMarkersControls.forEach(function(subMarkerControls){
 				// add an helper to visuable each sub-marker

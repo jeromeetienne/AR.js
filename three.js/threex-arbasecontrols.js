@@ -6,6 +6,7 @@ THREEx.ArBaseControls = function(object3d){
 
 	// Events to honor
 	// this.dispatchEvent({ type: 'becameVisible' })
+	// this.dispatchEvent({ type: 'markerVisible' })	// replace markerFound
 	// this.dispatchEvent({ type: 'becameUnVisible' })
 }
 
@@ -21,4 +22,12 @@ Object.assign( THREEx.ArBaseControls.prototype, THREE.EventDispatcher.prototype 
  */
 THREEx.ArBaseControls.prototype.update = function(){
 	console.assert(false, 'you need to implement your own update')
+}
+
+/**
+ * error catching function for name()
+ */
+THREEx.ArBaseControls.prototype.name = function(){
+	console.assert(false, 'you need to implement your own .name()')
+	return 'Not yet implemented - name()'
 }

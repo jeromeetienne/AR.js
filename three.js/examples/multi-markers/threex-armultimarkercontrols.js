@@ -81,8 +81,6 @@ THREEx.ArMultiMarkerControls.prototype._onSourceProcessed = function(){
 	// honor _this.object3d.visible
 	if( stats.countVisible > 0 ){
 		_this.object3d.visible = true
-		// dispatchEvent
-		_this.dispatchEvent( { type: 'markerFound' } );		
 	}else{
 		_this.object3d.visible = false			
 	}

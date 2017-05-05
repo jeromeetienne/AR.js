@@ -154,3 +154,17 @@ THREEx.ArMarkerControls.prototype.dispose = function(){
 	// TODO remove the event listener if needed
 	// unloadMaker ???
 }
+
+
+THREEx.ArMarkerControls.prototype.name = function(){
+	var name = ''
+	name += this.parameters.type;
+	if( this.parameters.type === 'pattern' ){
+		var url = this.parameters.patternUrl
+		var basename = url.replace(/^.*\//g, '')
+		name += ' - ' + basename
+	}else{
+		console.assert(false, 'no .name() implemented for this marker controls')
+	}
+	return name
+}

@@ -171,7 +171,7 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 			document.body.addEventListener('click', function(){
 				domElement.play();
 			})
-			domElement.play();
+			// domElement.play();
 		
 			// wait until the video stream is ready
 			var interval = setInterval(function() {

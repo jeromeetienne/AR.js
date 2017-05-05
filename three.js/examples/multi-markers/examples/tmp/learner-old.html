@@ -40,9 +40,6 @@
 	<img id='recordStartButton' src="images/record-start.png" width='64px'  height='64px' onclick='onRecordStart()'>
 	<img id='recordStopButton' src="images/record-stop.png" width='64px'  height='64px' onclick='onRecordStop()' style='display: none;'>
 </div>
-<div style='position: absolute; bottom: 16px; left: 16px; z-index:2' id='markersStatus';>
-	<ul></ul>
-</div>
 <script>
 ;(function(){
 	//////////////////////////////////////////////////////////////////////////////////
@@ -51,7 +48,7 @@
 
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
-		// antialias	: true,
+		antialias	: true,
 		alpha: true
 	});
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
@@ -68,6 +65,13 @@
 	// init scene and camera
 	var scene	= new THREE.Scene();
 
+	var ambient = new THREE.AmbientLight( 0x666666 );
+	scene.add( ambient );
+
+	var directionalLight = new THREE.DirectionalLight( 0x887766 );
+	directionalLight.position.set( -1, 1, 1 ).normalize();
+	scene.add( directionalLight );
+	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
@@ -80,12 +84,19 @@
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
 
-	var artoolkitProfile = new THREEx.ArToolkitProfile()
-	artoolkitProfile.sourceWebcam()
-	// artoolkitProfile.sourceVideo(THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4').kanjiMarker();
-	// artoolkitProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg').hiroMarker()
+	var arToolkitSource = new THREEx.ArToolkitSource({
+		// to read from the webcam 
+		sourceType : 'webcam',
+		
+		// // to read from an image
+		// sourceType : 'image',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/multimarker.jpg'		
 
-	var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)
+		// to read from a video
+		// sourceType : 'video',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',	
+	})
+
 
 	arToolkitSource.init(function onReady(){
 		// handle resize of renderer
@@ -103,7 +114,15 @@
 	////////////////////////////////////////////////////////////////////////////////	
 
 	// create atToolkitContext
-	var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
+	var arToolkitContext = new THREEx.ArToolkitContext({
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
+		detectionMode: 'mono',
+		maxDetectionRate: 30,
+		// high accuracy of detection on purpose - important during learning
+		// canvasWidth: 80*4,
+		// canvasHeight: 60*4,
+		// debug: true,
+	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
 		// copy projection matrix to camera
@@ -116,7 +135,6 @@
 
 		arToolkitContext.update( arToolkitSource.domElement )
 	})
-	
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		learn
@@ -130,7 +148,7 @@
 			backURL : null,
 			markerControlsParameters : [],
 		}
-		alert('no urlOption - should not happen')
+		alert('should not happen')
 	}
 	
 
@@ -144,7 +162,7 @@
 
 		// create markerControls for our markerRoot
 		var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, markerControlsParameters)
-		
+
 
 		// TODO here put a THREEx.ArSmoothedControls behind a flag - could be useful for tunning
 		var smoothedControls = null
@@ -175,8 +193,6 @@
 		}else {
 			subMarkersControls.push(markerControls)
 		}
-
-		initMarkerStatus(markerControls)
 	})
 		
 	var multiMarkerLearning = new THREEx.ArMultiMakersLearning(arToolkitContext, subMarkersControls)
@@ -272,9 +288,9 @@
 		}
 	}
 
-	window.onRecordStart = onRecordStart
-	window.onRecordStop = onRecordStop
-	window.onRecordClear = onRecordClear
+window.onRecordStart = onRecordStart
+window.onRecordStop = onRecordStop
+window.onRecordClear = onRecordClear
 	
 	updateAppStatus()
 	
@@ -286,42 +302,7 @@
 			onRecordStop()
 		}		
 	})
-
-	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
-	//////////////////////////////////////////////////////////////////////////////
-
-	function initMarkerStatus(markerControls){
-		var container = document.createElement('li')
-		container.id = 'markerStatus_'+markerControls.id
-		
-		var domElement = document.createElement('span')
-		domElement.classList.add('name')
-		domElement.innerHTML = markerControls.name() + ' : '
-		container.appendChild(domElement)
-
-		var domElement = document.createElement('span')
-		domElement.classList.add('status')
-		domElement.innerHTML = '0%'
-		container.appendChild(domElement)
-
-		document.querySelector('#markersStatus ul').appendChild(container)			
-		
-		updateMarkerStatus(markerControls)
-	}
-
- 	function updateMarkerStatus(markerControls){
- 		var container = document.querySelector('#markerStatus_'+markerControls.id+ ' .status')
-		var confidenceFactor = 0.5
-		
-		if( confidenceFactor >= 1 ){
-			container.style.color = 'green'
- 			container.innerHTML = "\u2713"
-		}else{
-			container.style.color = 'red'
- 			container.innerHTML = (confidenceFactor*100).toFixed(1) + '%'
-		}
- 	}
+	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
 	//////////////////////////////////////////////////////////////////////////////////
