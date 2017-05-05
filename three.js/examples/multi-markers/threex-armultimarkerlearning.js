@@ -108,16 +108,17 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 //		Compute markers transformation matrix from current stats
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArMultiMakersLearning.prototype._computeAverageMatrix = function(){
+THREEx.ArMultiMakersLearning.prototype.computeResult = function(){
 	var _this = this
 	var originSubControls = this.subMarkersControls[0]
 	var originSeenCouples = originSubControls.object3d.userData.seenCouples || {}
 	
 	// special case of originSubControls averageMatrix
-	originSubControls.object3d.userData.averageMatrix = new THREE.Matrix4()
-	
-	// var originMatrixInverse = new THREE.Matrix4().getInverse(originSubControls.object3d.userData.averageMatrix)
-	var originMatrixInverse =  new THREE.Matrix4().getInverse(originSubControls.object3d.matrix)
+	originSubControls.object3d.userData.result = {
+		averageMatrix : new THREE.Matrix4(),
+		confidenceFactor: 1,
+	}
+	// TODO here check if the originSubControls has been seen at least once!!
 	
 	// go thru all the originSeenCouples
 	Object.keys(originSeenCouples).forEach(function(otherSubControlsID){
@@ -125,15 +126,24 @@ THREEx.ArMultiMakersLearning.prototype._computeAverageMatrix = function(){
 		otherSubControlsID = parseInt(otherSubControlsID)
 		
 		if( originSubControls.id === otherSubControlsID )	return
-				
-		// build averageMatrix
-		var seenCoupleStats = originSeenCouples[otherSubControlsID]
-		var averageMatrix = new THREE.Matrix4()
-		averageMatrix.compose(seenCoupleStats.position.average, seenCoupleStats.quaternion.average, seenCoupleStats.scale.average)
 
 		// store averageMatrix in otherSubControls
 		var otherSubControls = getSubControlsByID(otherSubControlsID)
-		otherSubControls.object3d.userData.averageMatrix = averageMatrix
+		// init userData.result if needed
+		var result = otherSubControls.object3d.userData.result =  otherSubControls.object3d.userData.result || {
+			averageMatrix: null,
+			confidenceFactor: 0
+		}
+
+		// compute averageMatrix
+		var seenCoupleStats = originSeenCouples[otherSubControlsID]
+		var averageMatrix = new THREE.Matrix4()
+		averageMatrix.compose(seenCoupleStats.position.average, seenCoupleStats.quaternion.average, seenCoupleStats.scale.average)
+		result.averageMatrix = averageMatrix
+
+		// compute confidenceFactor
+		var requiredSamples = 200
+		result.confidenceFactor = seenCoupleStats.count / requiredSamples
 	})
 	
 	return
@@ -158,7 +168,7 @@ THREEx.ArMultiMakersLearning.prototype._computeAverageMatrix = function(){
 THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 
 	// compute the average matrix before generating the file
-	this._computeAverageMatrix()
+	this.computeResult()
 
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -180,7 +190,7 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 		var poseMatrix = originMatrixInverse.clone()
 		poseMatrix.multiply(markerControls.object3d.matrix)
 
-		var poseMatrix = markerControls.object3d.userData.averageMatrix
+		var poseMatrix = markerControls.object3d.userData.result.averageMatrix
 		console.assert(poseMatrix instanceof THREE.Matrix4)
 		
 		data.subMarkersControls.push({

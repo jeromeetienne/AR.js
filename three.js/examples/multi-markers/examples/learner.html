@@ -29,18 +29,16 @@
 	File:
 	<span id='dataStatus' style='font-weight: bolder;'>none</span>
 	<br/>
-	Area learner : 
-	<a href='javascript:void(0)' onclick='onRecordClear()'>clear</a>
-	-
-	<a href='javascript:void(0)' onclick='onRecordStart()'>start</a>
-	-
-	<a href='javascript:void(0)' onclick='onRecordStop()'>stop</a>
+	<a href='javascript:void(0)' onclick='onRecordClear()'>Clear File</a>
 </div>
 <div style='position: absolute; bottom: 16px; right: 16px; z-index:2';>
 	<img id='recordStartButton' src="images/record-start.png" width='64px'  height='64px' onclick='onRecordStart()'>
 	<img id='recordStopButton' src="images/record-stop.png" width='64px'  height='64px' onclick='onRecordStop()' style='display: none;'>
 </div>
 <div style='position: absolute; bottom: 16px; left: 16px; z-index:2' id='markersStatus';>
+	<div>
+		Learning <span class='globalStatus'>stopped</span>
+	</div>
 	<ul></ul>
 </div>
 <script>
@@ -176,7 +174,7 @@
 			subMarkersControls.push(markerControls)
 		}
 
-		initMarkerStatus(markerControls)
+		createMarkerStatus(markerControls)
 	})
 		
 	var multiMarkerLearning = new THREEx.ArMultiMakersLearning(arToolkitContext, subMarkersControls)
@@ -291,7 +289,7 @@
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
 
-	function initMarkerStatus(markerControls){
+	function createMarkerStatus(markerControls){
 		var container = document.createElement('li')
 		container.id = 'markerStatus_'+markerControls.id
 		
@@ -307,19 +305,55 @@
 
 		document.querySelector('#markersStatus ul').appendChild(container)			
 		
-		updateMarkerStatus(markerControls)
+		// updateMarkerStatus(markerControls)
 	}
 
- 	function updateMarkerStatus(markerControls){
- 		var container = document.querySelector('#markerStatus_'+markerControls.id+ ' .status')
-		var confidenceFactor = 0.5
+	function updateMarkersStatus(){
+		multiMarkerLearning.computeResult()
+
+		multiMarkerLearning.subMarkersControls.forEach(function(subMarkerControls){
+			updateMarkerStatus(subMarkerControls)
+		})
 		
-		if( confidenceFactor >= 1 ){
+		var nMarkersLearned = 0
+		multiMarkerLearning.subMarkersControls.forEach(function(subMarkerControls){
+			if( subMarkerControls.object3d.userData.result === undefined )	return
+			if( subMarkerControls.object3d.userData.result.confidenceFactor < 1 ) return
+			nMarkersLearned++
+		})
+		var domElement = document.querySelector('#markersStatus .globalStatus')
+		if( nMarkersLearned === multiMarkerLearning.subMarkersControls.length ){
+			domElement.style.color = 'green'
+			domElement.innerHTML = 'DONE'
+		}else{
+			domElement.style.color = 'red'
+			domElement.innerHTML = 'incomplete'
+		}
+			
+	}
+	setInterval(function(){
+		updateMarkersStatus()
+	}, 1000/10)
+
+ 	function updateMarkerStatus(subMarkerControls){
+ 		var container = document.querySelector('#markerStatus_'+subMarkerControls.id+ ' .status')
+		var confidenceFactor = 0
+		if( subMarkerControls.object3d.userData.result !== undefined ){
+			var confidenceFactor = subMarkerControls.object3d.userData.result.confidenceFactor
+		}else{
+			var confidenceFactor = 0
+		}
+		
+		var progress = Math.min(confidenceFactor, 1)
+		
+		// originSubControls.object3d.userData.result
+		
+		if( progress >= 1 ){
 			container.style.color = 'green'
  			container.innerHTML = "\u2713"
 		}else{
 			container.style.color = 'red'
- 			container.innerHTML = (confidenceFactor*100).toFixed(1) + '%'
+ 			container.innerHTML = (progress*100).toFixed(1) + '%'
 		}
  	}
 	//////////////////////////////////////////////////////////////////////////////////

@@ -26,8 +26,6 @@
 	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Multi marker
 	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 	<br/>
-	<a id='recordButton' href='learner.html?url=player.html'>Record new area</a>
-	<br/>
 	Markers Helper : 
 		<a href='javascript:void(0)' onclick='urlOptions.markersHelper = true; reload()'>enable</a>
 		/
@@ -36,7 +34,13 @@
 		<a href='javascript:void(0)' onclick='urlOptions.appMode = "areaUsing"; reload()'>stored</a>
 		/
 		<a href='javascript:void(0)' onclick='urlOptions.appMode = "areaHardcoded"; reload()'>hardcoded</a>
-</div><script>
+</div>
+<div style='position: absolute; bottom: 16px; right: 16px; z-index:1';>
+	<a id='recordButton' href='learner.html?url=player.html'>
+		<img src="images/record-start.png" width='64px'  height='64px'>
+	</a>
+</div>
+<script>
 ;(function(){
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init

@@ -1,6 +1,6 @@
 # new Learning UI
 
-- in learner, display all the markers as text
+- DONE in learner, display all the markers as text
   - each got a progress in percent 
   - display percent in red
   - when percent is 100%, display check character in green
@@ -9,7 +9,7 @@
     - add a .name() function in the controls ?
   - progress is directly the result.confidenceFactor clamp [0, 1]
 - display the origin markers
-- Global progress for the whole area 
+- DONE Global progress for the whole area 
   - sum of all progress divided by the number of sub markers.
   - It should exclude the origin markers
 - change compute .computeAverageMatrix()
