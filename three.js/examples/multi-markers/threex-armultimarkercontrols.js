@@ -29,7 +29,7 @@ THREEx.ArMultiMarkerControls.prototype.constructor = THREEx.ArMultiMarkerControl
 THREEx.ArMultiMarkerControls.prototype._onSourceProcessed = function(){
 	var _this = this
 	var stats = {
-		countVisible: 0,
+		count: 0,
 		position : {
 			sum: new THREE.Vector3(0,0,0),
 			average: new THREE.Vector3(0,0,0),
@@ -64,22 +64,22 @@ THREEx.ArMultiMarkerControls.prototype._onSourceProcessed = function(){
 		matrix.decompose(position, quaternion, scale)
 
 		// http://wiki.unity3d.com/index.php/Averaging_Quaternions_and_Vectors
-		stats.countVisible++
+		stats.count++
 
-		THREEx.ArMultiMarkerControls.averageVector3(stats.position.sum, position, stats.countVisible, stats.position.average)
-		THREEx.ArMultiMarkerControls.averageQuaternion(stats.quaternion.sum, quaternion, firstQuaternion, stats.countVisible, stats.quaternion.average)
-		THREEx.ArMultiMarkerControls.averageVector3(stats.scale.sum, scale, stats.countVisible, stats.scale.average)
+		THREEx.ArMultiMarkerControls.averageVector3(stats.position.sum, position, stats.count, stats.position.average)
+		THREEx.ArMultiMarkerControls.averageQuaternion(stats.quaternion.sum, quaternion, firstQuaternion, stats.count, stats.quaternion.average)
+		THREEx.ArMultiMarkerControls.averageVector3(stats.scale.sum, scale, stats.count, stats.scale.average)
 	})
 
 	// if at least one sub-marker has been detected, make the average of all detected markers
-	if( stats.countVisible > 0 ){
+	if( stats.count > 0 ){
 		_this.object3d.position.copy(stats.position.average)
 		_this.object3d.quaternion.copy(stats.quaternion.average)
 		_this.object3d.scale.copy(stats.scale.average)
 	}
 
 	// honor _this.object3d.visible
-	if( stats.countVisible > 0 ){
+	if( stats.count > 0 ){
 		_this.object3d.visible = true
 	}else{
 		_this.object3d.visible = false			

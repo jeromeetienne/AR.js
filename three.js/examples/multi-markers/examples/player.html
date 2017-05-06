@@ -113,46 +113,10 @@
 
 		arToolkitContext.update( arToolkitSource.domElement )
 	})
-	
-	////////////////////////////////////////////////////////////////////////////////
-	//          Create a ArMarkerControls
-	////////////////////////////////////////////////////////////////////////////////
 
-
-	var hasHash = location.hash.substring(1) !== '' ? true : false
-	if( hasHash === true ){
-		var urlOptions = JSON.parse(location.hash.substring(1))
-	}else{
-		var urlOptions = {
-			appMode : 'areaUsing',
-			markersHelper: true,
-		}
-	}
-	window.urlOptions = urlOptions
-	window.reload = function(){
-		location.hash = '#'+JSON.stringify(urlOptions)
-		location.reload()
-	}
-
-	if( location.hash.substring(1) === '' )	location.hash = '#'+JSON.stringify(urlOptions)
-	
-	if( urlOptions.appMode === 'areaUsing' && localStorage.getItem('ARjsMultiMarkerFile') === null ){
-		alert('cant find sample multimarker.')
-		urlOptions.appMode = 'areaHardcoded'
-	}
-	
-	
-	if( urlOptions.appMode === 'areaUsing' ){
-		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
-		multiMarkerPlay(localStorage.getItem('ARjsMultiMarkerFile'))
-	}else if( urlOptions.appMode === 'areaHardcoded' ){
-		multiMarkerPlayHarcoded()
-	}else{
-		console.assert('unknown appMode', appMode)
-	}
 
 	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
+	//		Parameters of the multimarkers for this application
 	//////////////////////////////////////////////////////////////////////////////
 
 	
@@ -186,16 +150,55 @@
 			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.f',
 		},
 	]
-	
+
 	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
+	//		init #recordButton 
 	//////////////////////////////////////////////////////////////////////////////
 	var learnerParameters = {
-		backURL : 'player.html',
+		backURL : 'player.html'+location.hash,
 		markersControlsParameters: markersControlsParameters,
 	}
 	// debugger
-	document.querySelector('#recordButton').href = 'learner.html#'+JSON.stringify(learnerParameters)
+	document.querySelector('#recordButton').href = 'learner.html#'+JSON.stringify(learnerParameters)	
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          Create a ArMarkerControls
+	////////////////////////////////////////////////////////////////////////////////
+
+
+	var hasHash = location.hash.substring(1) !== '' ? true : false
+	if( hasHash === true ){
+		var urlOptions = JSON.parse(location.hash.substring(1))
+	}else{
+		var urlOptions = {
+			appMode : 'areaUsing',
+			markersHelper: false,
+		}
+	}
+	window.urlOptions = urlOptions
+	window.reload = function(){
+		location.hash = '#'+JSON.stringify(urlOptions)
+		location.reload()
+	}
+
+	if( location.hash.substring(1) === '' )	location.hash = '#'+JSON.stringify(urlOptions)
+	
+	if( urlOptions.appMode === 'areaUsing' && localStorage.getItem('ARjsMultiMarkerFile') === null ){
+		alert('No area has been learned on this device!\n Forwarding you to the learning application.')
+		location.href = document.querySelector('#recordButton').href		
+	}
+	
+	
+	if( urlOptions.appMode === 'areaUsing' ){
+		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
+		multiMarkerPlay(localStorage.getItem('ARjsMultiMarkerFile'))
+	}else if( urlOptions.appMode === 'areaHardcoded' ){
+		multiMarkerPlayHarcoded()
+	}else{
+		console.assert('unknown appMode', appMode)
+	}
+	
+
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator

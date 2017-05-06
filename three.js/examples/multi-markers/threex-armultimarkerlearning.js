@@ -34,7 +34,7 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 		return markerControls.object3d.visible === true
 	})
 
-	var countVisible = Object.keys(visibleMarkerControls).length
+	var count = Object.keys(visibleMarkerControls).length
 
 	var positionDelta = new THREE.Vector3()
 	var quaternionDelta = new THREE.Quaternion()
@@ -42,9 +42,9 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 	var tmpMatrix = new THREE.Matrix4()
 	
 	// go thru all the visibleMarkerControls
-	for(var i = 0; i < countVisible; i++){
+	for(var i = 0; i < count; i++){
 		var markerControls1 = visibleMarkerControls[i]
-		for(var j = 0; j < countVisible; j++){
+		for(var j = 0; j < count; j++){
 			var markerControls2 = visibleMarkerControls[j]
 
 			// if markerControls1 is markerControls2, then skip it
@@ -128,7 +128,7 @@ THREEx.ArMultiMakersLearning.prototype.computeResult = function(){
 		if( originSubControls.id === otherSubControlsID )	return
 
 		// store averageMatrix in otherSubControls
-		var otherSubControls = getSubControlsByID(otherSubControlsID)
+		var otherSubControls = _this._getSubMarkerControlsByID(otherSubControlsID)
 		// init userData.result if needed
 		var result = otherSubControls.object3d.userData.result =  otherSubControls.object3d.userData.result || {
 			averageMatrix: null,
@@ -145,20 +145,114 @@ THREEx.ArMultiMakersLearning.prototype.computeResult = function(){
 		var requiredSamples = 50
 		result.confidenceFactor = seenCoupleStats.count / requiredSamples
 	})
+}
+
+THREEx.ArMultiMakersLearning.prototype.computeResult2 = function(){
+	var _this = this
+	var originSubControls = this.subMarkersControls[0]
 	
-	return
-	
-	// get a _this.subMarkersControls based on markerControls.id
-	function getSubControlsByID(controlsID){
-		// debugger
-		for(var i = 0; i < _this.subMarkersControls.length; i++){
-			var subMarkerControls = _this.subMarkersControls[i]
-			if( subMarkerControls.id === controlsID ){
-				return subMarkerControls
-			}
-		}
-		return null
+	// special case of originSubControls averageMatrix
+	originSubControls.object3d.userData.result = {
+		averageMatrix : new THREE.Matrix4(),
+		confidenceFactor: 1,
 	}
+	// TODO here check if the originSubControls has been seen at least once!!
+	
+	
+	/**
+	 * ALGO in pseudo code
+	 *
+	 * - Set confidenceFactor of origin sub markers as 1
+	 *
+	 * Start Looping
+	 * - For a given sub marker, skip it if it already has a result.
+	 * - if no result, check all seen couple and find n ones which has a progress of 1 or more.
+	 * - So the other seen sub markers, got a valid transformation matrix. 
+	 * - So take local averages position/orientation/scale, compose a transformation matrix. 
+	 * - Multiple it by the other seen marker matrix. 
+	 * - Loop on the array until one pass could not compute any new sub marker
+	 */
+	
+	var resultChanged = false
+	// loop over each subMarkerControls
+	this.subMarkersControls.forEach(function(subMarkerControls){
+
+console.log('checking subMarkerControls', subMarkerControls.name())
+		// if subMarkerControls already has a result, do nothing
+		var result = subMarkerControls.object3d.userData.result
+		if( result !== undefined && result.confidenceFactor >= 1 )	return
+		
+		console.log('compute subMarkerControls', subMarkerControls.name())
+
+debugger
+
+		// if this subMarkerControls has never been seen with another subMarkerControls
+		if( subMarkerControls.object3d.userData.seenCouples === undefined )	return
+
+
+		// build stats to average position/rotation/scale from all seenCouples
+		var firstQuaternion = new THREE.Quaternion() // FIXME ???
+		var stats = {
+			count : 0,
+			position : {
+				sum: new THREE.Vector3(0,0,0),
+				average: new THREE.Vector3(0,0,0),						
+			},
+			quaternion : {
+				sum: new THREE.Quaternion(0,0,0,0),
+				average: new THREE.Quaternion(0,0,0,0),						
+			},
+			scale : {
+				sum: new THREE.Vector3(0,0,0),
+				average: new THREE.Vector3(0,0,0),						
+			},
+		}	
+
+
+		// go thru all the seenCouples
+		Object.keys(subMarkerControls.object3d.userData.seenCouples).forEach(function(otherSubControlsID){
+			// otherSubControlsID are string here, as they are keys from objects, converting them to Number
+			otherSubControlsID = parseInt(otherSubControlsID)
+			// get otherSubControls
+			var otherSubControls = _this._getSubMarkerControlsByID(otherSubControlsID)
+			
+			// if otherSubControls isnt learned, skip it
+			var result = otherSubControls.object3d.userData.result
+			if( result === undefined  || result.confidenceFactor < 1 )	return
+
+			var seenCouple = subMarkerControls.object3d.userData.seenCouples[otherSubControlsID]
+		
+			// get position/rotation/scale
+			var position = seenCouple.position.average
+			var quaternion = seenCouple.quaternion.average
+			var scale = seenCouple.scale.average
+			
+			// http://wiki.unity3d.com/index.php/Averaging_Quaternions_and_Vectors
+			stats.count++
+
+			THREEx.ArMultiMarkerControls.averageVector3(stats.position.sum, position, stats.count, stats.position.average)
+			THREEx.ArMultiMarkerControls.averageQuaternion(stats.quaternion.sum, quaternion, firstQuaternion, stats.count, stats.quaternion.average)
+			THREEx.ArMultiMarkerControls.averageVector3(stats.scale.sum, scale, stats.count, stats.scale.average)			
+		})
+		
+		
+		
+		resultChanged = true
+	})
+	
+}
+
+// get a _this.subMarkersControls based on markerControls.id
+THREEx.ArMultiMakersLearning.prototype._getSubMarkerControlsByID	= function(controlsID){
+
+	for(var i = 0; i < this.subMarkersControls.length; i++){
+		var subMarkerControls = this.subMarkersControls[i]
+		if( subMarkerControls.id === controlsID ){
+			return subMarkerControls
+		}
+	}
+
+	return null
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -169,7 +263,6 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 
 	// compute the average matrix before generating the file
 	this.computeResult()
-
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		actually build the json
@@ -185,12 +278,12 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 
 	var originSubControls = this.subMarkersControls[0]
 	var originMatrixInverse = new THREE.Matrix4().getInverse(originSubControls.object3d.matrix)
-	this.subMarkersControls.forEach(function(markerControls, index){
+	this.subMarkersControls.forEach(function(subMarkerControls, index){
 		
-		var poseMatrix = originMatrixInverse.clone()
-		poseMatrix.multiply(markerControls.object3d.matrix)
+		// if a subMarkerControls has no result, ignore it
+		if( subMarkerControls.object3d.userData.result === undefined )	return
 
-		var poseMatrix = markerControls.object3d.userData.result.averageMatrix
+		var poseMatrix = subMarkerControls.object3d.userData.result.averageMatrix
 		console.assert(poseMatrix instanceof THREE.Matrix4)
 		
 		data.subMarkersControls.push({
@@ -198,8 +291,8 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 				// TODO here be more generic, what about bar code
 				// - depends on the type of markers
 				// - copy them from parameters ?
-				type: markerControls.parameters.type,
-				patternUrl: markerControls.parameters.patternUrl,
+				type: subMarkerControls.parameters.type,
+				patternUrl: subMarkerControls.parameters.patternUrl,
 			},
 			poseMatrix : poseMatrix.toArray(),
 		})
@@ -234,7 +327,7 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
  */
 THREEx.ArMultiMakersLearning.prototype.resetStats = function(){
 	this.subMarkersControls.forEach(function(markerControls){
-		delete markerControls.object3d.userData.averageMatrix
+		delete markerControls.object3d.userData.result
 		delete markerControls.object3d.userData.seenCouples
 	})
 }

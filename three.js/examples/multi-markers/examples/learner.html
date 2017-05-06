@@ -37,7 +37,7 @@
 </div>
 <div style='position: fixed; bottom: 16px; left: 16px; z-index:2' id='markersStatus';>
 	<div>
-		Learning <span class='globalStatus'>stopped</span>
+		Learning <span class='globalStatus'>Stopped</span>
 	</div>
 	<ul></ul>
 </div>
@@ -173,16 +173,17 @@
 		}else {
 			subMarkersControls.push(markerControls)
 		}
-
-		createMarkerStatus(markerControls)
 	})
 		
 	var multiMarkerLearning = new THREEx.ArMultiMakersLearning(arToolkitContext, subMarkersControls)
 // window.multiMarkerLearning = multiMarkerLearning
 	multiMarkerLearning.enabled = false
 
+
+
+
 	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
+	//		UI Functions
 	//////////////////////////////////////////////////////////////////////////////
 	
 	function onRecordStart(){
@@ -273,6 +274,7 @@
 	window.onRecordStart = onRecordStart
 	window.onRecordStop = onRecordStop
 	window.onRecordClear = onRecordClear
+	window.multiMarkerLearning = multiMarkerLearning
 	
 	updateAppStatus()
 	
@@ -286,35 +288,60 @@
 	})
 
 	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
+	//		UI for markersStatus
 	//////////////////////////////////////////////////////////////////////////////
 
-	function createMarkerStatus(markerControls){
-		var container = document.createElement('li')
-		container.id = 'markerStatus_'+markerControls.id
-		
-		var domElement = document.createElement('span')
-		domElement.classList.add('name')
-		domElement.innerHTML = markerControls.name() + ' : '
-		container.appendChild(domElement)
+	function createUIMarkersStatus(){
+		multiMarkerLearning.subMarkersControls.forEach(function(subMarkerControls){
+			var container = document.createElement('li')
+			container.id = 'markerStatus_'+subMarkerControls.id
+			
+			var domElement = document.createElement('span')
+			domElement.classList.add('name')
+			domElement.innerHTML = subMarkerControls.name() + ' : '
+			container.appendChild(domElement)
 
-		var domElement = document.createElement('span')
-		domElement.classList.add('status')
-		domElement.innerHTML = '0%'
-		container.appendChild(domElement)
+			var domElement = document.createElement('span')
+			domElement.classList.add('status')
+			domElement.innerHTML = '0%'
+			container.appendChild(domElement)
 
-		document.querySelector('#markersStatus ul').appendChild(container)			
-		
-		// updateMarkerStatus(markerControls)
+			document.querySelector('#markersStatus ul').appendChild(container)			
+		})
 	}
 
-	function updateMarkersStatus(){
+	function updateUIMarkersStatus(){
+		// compute result
 		multiMarkerLearning.computeResult()
 
+		//////////////////////////////////////////////////////////////////////////////
+		//	update all subMarkersControls
+		//////////////////////////////////////////////////////////////////////////////
 		multiMarkerLearning.subMarkersControls.forEach(function(subMarkerControls){
-			updateMarkerStatus(subMarkerControls)
+	 		var container = document.querySelector('#markerStatus_'+subMarkerControls.id+ ' .status')
+			var confidenceFactor = 0
+			if( subMarkerControls.object3d.userData.result !== undefined ){
+				var confidenceFactor = subMarkerControls.object3d.userData.result.confidenceFactor
+			}else{
+				var confidenceFactor = 0
+			}
+			// compute progress from confidenceFactor
+			var progress = Math.min(confidenceFactor, 1)
+			
+			// if progress === 1, display a green check character
+			if( progress === 1 ){
+				container.style.color = 'green'
+	 			container.innerHTML = "\u2713"
+			}else{
+				// if progress < 1, display it as a red percent
+				container.style.color = 'red'
+	 			container.innerHTML = (progress*100).toFixed(1) + '%'
+			}
 		})
 		
+		//////////////////////////////////////////////////////////////////////////////
+		//		update globalStatus
+		//////////////////////////////////////////////////////////////////////////////
 		var nMarkersLearned = 0
 		multiMarkerLearning.subMarkersControls.forEach(function(subMarkerControls){
 			if( subMarkerControls.object3d.userData.result === undefined )	return
@@ -327,35 +354,22 @@
 			domElement.innerHTML = 'DONE'
 		}else{
 			domElement.style.color = 'red'
-			domElement.innerHTML = 'incomplete'
+			domElement.innerHTML = 'in progress'
 		}
 			
 	}
+	
+	// init markersStatus UI
+	createUIMarkersStatus()
+
+	// update markersStatus 10 time per seconds
 	setInterval(function(){
-		updateMarkersStatus()
+		updateUIMarkersStatus()
 	}, 1000/10)
 
- 	function updateMarkerStatus(subMarkerControls){
- 		var container = document.querySelector('#markerStatus_'+subMarkerControls.id+ ' .status')
-		var confidenceFactor = 0
-		if( subMarkerControls.object3d.userData.result !== undefined ){
-			var confidenceFactor = subMarkerControls.object3d.userData.result.confidenceFactor
-		}else{
-			var confidenceFactor = 0
-		}
-		
-		var progress = Math.min(confidenceFactor, 1)
-		
-		// originSubControls.object3d.userData.result
-		
-		if( progress >= 1 ){
-			container.style.color = 'green'
- 			container.innerHTML = "\u2713"
-		}else{
-			container.style.color = 'red'
- 			container.innerHTML = (progress*100).toFixed(1) + '%'
-		}
- 	}
+	// onRecordStart()
+
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
 	//////////////////////////////////////////////////////////////////////////////////
