@@ -202,25 +202,19 @@ THREEx.ArMultiMakersLearning.prototype.computeResult = function(){
 
 			var seenCoupleStats = subMarkerControls.object3d.userData.seenCouples[otherSubControlsID]
 			
-			var matrix = new THREE.Matrix4()
-			matrix.compose(seenCoupleStats.position.average,
-				seenCoupleStats.quaternion.average,
-				seenCoupleStats.scale.average)
+			var averageMatrix = new THREE.Matrix4()
+			averageMatrix.compose(seenCoupleStats.position.average, seenCoupleStats.quaternion.average, seenCoupleStats.scale.average)
 				
-			var otherAverageMatrix = otherSubControls.object3d.userData.result.averageMatrix.clone()
+			var otherAverageMatrix = otherSubControls.object3d.userData.result.averageMatrix
 
-			// matrix.multiply(otherAverageMatrix)
-			otherAverageMatrix.multiply(matrix)
-			matrix = otherAverageMatrix
+			var matrix = new THREE.Matrix4().getInverse(otherAverageMatrix).multiply(averageMatrix)
+			matrix = new THREE.Matrix4().getInverse(matrix)
 
 			console.assert( subMarkerControls.object3d.userData.result === undefined )
 			subMarkerControls.object3d.userData.result = {
-				// averageMatrix: matrix,
-				averageMatrix: new THREE.Matrix4().getInverse(matrix),
+				averageMatrix: matrix,
 				confidenceFactor: 1
 			}
-			
-			// console.log('set transformation matrix', subMarkerControls.name(), 'from', otherSubControls.name())
 			
 			resultChanged = true
 		})
