@@ -108,7 +108,7 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 //		Compute markers transformation matrix from current stats
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArMultiMakersLearning.prototype.computeResult = function(){
+THREEx.ArMultiMakersLearning.prototype.computeResultOLD = function(){
 	var _this = this
 	var originSubControls = this.subMarkersControls[0]
 	var originSeenCouples = originSubControls.object3d.userData.seenCouples || {}
@@ -152,7 +152,7 @@ THREEx.ArMultiMakersLearning.prototype.computeResult = function(){
 }
 
 
-THREEx.ArMultiMakersLearning.prototype.computeResultRobust = function(){
+THREEx.ArMultiMakersLearning.prototype.computeResult = function(){
 	var _this = this
 	var originSubControls = this.subMarkersControls[0]
 
@@ -181,42 +181,58 @@ THREEx.ArMultiMakersLearning.prototype.computeResultRobust = function(){
 	 * - Loop on the array until one pass could not compute any new sub marker
 	 */
 	
-	var resultChanged = false
-	// loop over each subMarkerControls
-	this.subMarkersControls.forEach(function(subMarkerControls){
+	do{
+		var resultChanged = false
+		// loop over each subMarkerControls
+		this.subMarkersControls.forEach(function(subMarkerControls){
 
-// console.log('checking subMarkerControls', subMarkerControls.name())
-
-		// if subMarkerControls already has a result, do nothing
-		var result = subMarkerControls.object3d.userData.result
-		var isLearned = (result !== undefined && result.confidenceFactor >= 1) ? true : false
-		if( isLearned === true )	return
-		
-		console.log('compute subMarkerControls', subMarkerControls.name())
-		var otherSubControlsID = _this._getLearnedCoupleStats(subMarkerControls)
-		if( otherSubControlsID === null ){
-			console.log('no learnedCoupleStats')
-			return
-		}
-		
-		var otherSubControls = _this._getSubMarkerControlsByID(otherSubControlsID)
-
-		var seenCoupleStats = subMarkerControls.object3d.userData.seenCouples[otherSubControlsID]
-		
-		var matrix = new THREE.Matrix4()
-		matrix.compose(seenCoupleStats.position.average, seenCoupleStats.quaternion.average, seenCoupleStats.scale.average)
+			// if subMarkerControls already has a result, do nothing
+			var result = subMarkerControls.object3d.userData.result
+			var isLearned = (result !== undefined && result.confidenceFactor >= 1) ? true : false
+			if( isLearned === true )	return
 			
-		var otherAverageMatrix = otherSubControls.object3d.userData.result.averageMatrix.clone()
+			// console.log('compute subMarkerControls', subMarkerControls.name())
+			var otherSubControlsID = _this._getLearnedCoupleStats(subMarkerControls)
+			if( otherSubControlsID === null ){
+				// console.log('no learnedCoupleStats')
+				return
+			}
+			
+			var otherSubControls = _this._getSubMarkerControlsByID(otherSubControlsID)
 
-		matrix.multiply(otherAverageMatrix)
+			var seenCoupleStats = subMarkerControls.object3d.userData.seenCouples[otherSubControlsID]
+			
+			var matrix = new THREE.Matrix4()
+			matrix.compose(seenCoupleStats.position.average,
+				seenCoupleStats.quaternion.average,
+				seenCoupleStats.scale.average)
+				
+			var otherAverageMatrix = otherSubControls.object3d.userData.result.averageMatrix.clone()
 
-		console.assert( subMarkerControls.object3d.userData.result === undefined )
-		subMarkerControls.object3d.userData.result = {
-			averageMatrix: matrix,
-			confidenceFactor: 1
-		}
-	})
+			// matrix.multiply(otherAverageMatrix)
+			otherAverageMatrix.multiply(matrix)
+			matrix = otherAverageMatrix
+
+			console.assert( subMarkerControls.object3d.userData.result === undefined )
+			subMarkerControls.object3d.userData.result = {
+				// averageMatrix: matrix,
+				averageMatrix: new THREE.Matrix4().getInverse(matrix),
+				confidenceFactor: 1
+			}
+			
+			// console.log('set transformation matrix', subMarkerControls.name(), 'from', otherSubControls.name())
+			
+			resultChanged = true
+		})
+		console.log('loop')
+	}while(resultChanged === true)
 	
+	// debugger
+	// console.log('json:', this.toJSON())
+	// this.subMarkersControls.forEach(function(subMarkerControls){
+	// 	var hasResult = subMarkerControls.object3d.userData.result !== undefined
+	// 	console.log('marker', subMarkerControls.name(), hasResult ? 'has' : 'has NO', 'result')
+	// })
 }
 
 //////////////////////////////////////////////////////////////////////////////

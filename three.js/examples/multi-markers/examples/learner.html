@@ -311,8 +311,6 @@
 	}
 
 	function updateUIMarkersStatus(){
-		// compute result
-		multiMarkerLearning.computeResult()
 
 		//////////////////////////////////////////////////////////////////////////////
 		//	update all subMarkersControls
@@ -364,10 +362,14 @@
 
 	// update markersStatus 10 time per seconds
 	setInterval(function(){
+// return
+		// compute result
+		multiMarkerLearning.computeResult()
+
 		updateUIMarkersStatus()
 	}, 1000/10)
 
-	// onRecordStart()
+	onRecordStart()
 
 
 	//////////////////////////////////////////////////////////////////////////////////
