@@ -7,7 +7,7 @@ THREEx.RefractionMaterial = function(videoTexture){
 			texture: { value: videoTexture },
 			// pull to see the throshold: 0.7-ish solid glass/water ('upsidevdown'), 0.8+ thinner glass ('magnifying glass')
 			refractionRatio: { value: 0.9 },
-			color: { value: new THREE.Color('white') },
+			color: { value: new THREE.Color('lightblue') },
 			// refractionRatio: { type: 'f', value: 0.8 },
 			// experiment to adjust offset to video-plane. set to 1 for no effect
 			distance: { value: 1 },

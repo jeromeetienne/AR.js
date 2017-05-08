@@ -25,15 +25,18 @@
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
 	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Multi marker
 	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
-	<br/>
-	Markers Helper : 
-		<a href='javascript:void(0)' onclick='urlOptions.markersHelper = true; reload()'>enable</a>
+</div>
+<div style='position: absolute; bottom: 10px; width:100%; text-align: center;z-index:1';>
+	Area source: 
+		<a href='javascript:void(0)' onclick='urlOptions.areaSource = "localStorage"; reload()'>localStorage</a>
 		/
-		<a href='javascript:void(0)' onclick='urlOptions.markersHelper = false; reload()'>disable</a>
-	appMode : 
-		<a href='javascript:void(0)' onclick='urlOptions.appMode = "areaUsing"; reload()'>stored</a>
+		<a href='javascript:void(0)' onclick='urlOptions.areaSource = "hardcoded"; reload()'>hardcoded</a>
+		(<a href='../../../../data/images/multi-pattern-template-abcdgf.png' target='_blank'>image</a>)
+	<br>
+	Marker helpers: 
+		<a href='javascript:void(0)' onclick='urlOptions.markerHelpers = true; reload()'>yes</a>
 		/
-		<a href='javascript:void(0)' onclick='urlOptions.appMode = "areaHardcoded"; reload()'>hardcoded</a>
+		<a href='javascript:void(0)' onclick='urlOptions.markerHelpers = false; reload()'>no</a>
 </div>
 <div style='position: fixed; bottom: 16px; right: 16px; z-index:1';>
 	<a id='recordButton' href='learner.html?url=player.html'>
@@ -41,14 +44,14 @@
 	</a>
 </div>
 <script>
-;(function(){
+// ;(function(){
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
-		// antialias	: true,
+		antialias	: true,
 		alpha: true
 	});
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
@@ -152,6 +155,34 @@
 		},
 	]
 
+	// pattern a/b/c/f
+	var markersControlsParameters = [
+		{
+			type : 'pattern',
+			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+		},
+		{
+			type : 'pattern',
+			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
+		},
+		{
+			type : 'pattern',
+			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.a',
+		},
+		{
+			type : 'pattern',
+			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.b',
+		},
+		{
+			type : 'pattern',
+			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.c',
+		},
+		{
+			type : 'pattern',
+			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.f',
+		},
+	]
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		init #recordButton 
 	//////////////////////////////////////////////////////////////////////////////
@@ -171,8 +202,8 @@
 		var urlOptions = JSON.parse(location.hash.substring(1))
 	}else{
 		var urlOptions = {
-			appMode : 'areaUsing',
-			markersHelper: false,
+			areaSource : 'localStorage',
+			markerHelpers: false,
 		}
 	}
 	window.urlOptions = urlOptions
@@ -183,19 +214,19 @@
 
 	if( location.hash.substring(1) === '' )	location.hash = '#'+JSON.stringify(urlOptions)
 	
-	if( urlOptions.appMode === 'areaUsing' && localStorage.getItem('ARjsMultiMarkerFile') === null ){
+	if( urlOptions.areaSource === 'localStorage' && localStorage.getItem('ARjsMultiMarkerFile') === null ){
 		alert('No area has been learned on this device!\n Forwarding you to the learning application.')
 		location.href = document.querySelector('#recordButton').href		
 	}
 	
 	
-	if( urlOptions.appMode === 'areaUsing' ){
+	if( urlOptions.areaSource === 'localStorage' ){
 		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
 		multiMarkerPlay(localStorage.getItem('ARjsMultiMarkerFile'))
-	}else if( urlOptions.appMode === 'areaHardcoded' ){
+	}else if( urlOptions.areaSource === 'hardcoded' ){
 		multiMarkerPlayHarcoded()
 	}else{
-		console.assert('unknown appMode', appMode)
+		console.assert('unknown areaSource', areaSource)
 	}
 	
 
@@ -253,7 +284,7 @@
 		var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arToolkitContext, scene, markerRoot, multiMarkerFile)
 
 		// display THREEx.ArMarkerHelper if needed - useful to debug
-		if( urlOptions.markersHelper === true ){
+		if( urlOptions.markerHelpers === true ){
 			multiMarkerControls.subMarkersControls.forEach(function(subMarkerControls){
 				// add an helper to visuable each sub-marker
 				var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
@@ -264,28 +295,36 @@
 		// build a smoothedControls
 		var smoothedRoot = new THREE.Group()
 		scene.add(smoothedRoot)
-		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
+		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
+			lerpPosition : 0.01,
+			lerpQuaternion : 0.01, 
+			lerpScale : 0.01,
+			minVisibleDelay: 0,
+			minUnvisibleDelay: 0,
+		})
 		onRenderFcts.push(function(delta){
 			smoothedControls.update(markerRoot)
 		})	
 
 		
 		var markerScene = new THREE.Scene
-		// markerRoot.add(markerScene)
-		smoothedRoot.add(markerScene)
+		markerRoot.add(markerScene)
+		// smoothedRoot.add(markerScene)
 
 		// compute the average matrix of this markerFile
-		var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
-		averageMatrix.decompose(markerScene.position, markerScene.quaternion, markerScene.scale)
+		// var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
+		// averageMatrix.decompose(markerScene.position, markerScene.quaternion, markerScene.scale)
 		markerScene.scale.multiplyScalar(8)
+		markerScene.scale.y *= 1.5
 
 		//////////////////////////////////////////////////////////////////////////////////
 		//		add an object in the scene
 		//////////////////////////////////////////////////////////////////////////////////
 		
 
-		var geometry = new THREE.TorusGeometry(0.3,0.2,20,30);	
-		// var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
+		var geometry = new THREE.TorusGeometry(0.3,0.15,16,32);	
+		var geometry = new THREE.TorusGeometry(0.3,0.15,16*4,32*4);	
+		var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
 
 		var videoTexture = new THREE.VideoTexture(arToolkitSource.domElement)
 		videoTexture.minFilter = THREE.NearestFilter
@@ -298,8 +337,8 @@
 		markerScene.add( mesh );
 		
 		onRenderFcts.push(function(delta){
-			// mesh.rotation.x += delta * Math.PI
-			mesh.rotation.y += delta * Math.PI
+			// mesh.rotation.x += delta * Math.PI * 0.1
+			mesh.rotation.y += delta * Math.PI * 0.5
 		})
 	}
 
@@ -333,5 +372,5 @@
 			onRenderFct(deltaMsec/1000, nowMsec/1000)
 		})
 	})
-})()
+// })()
 </script></body>

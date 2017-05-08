@@ -4,14 +4,27 @@
   - link the hardcoded one with the image of the multi marker
 - in player, remove the function multiMarkerPlay() - serialise it
   - either you take it from localstore or hardcoded
+- appMode: areaUsing become areaSource: 'localStorage' or 'hardcodedABCF'
+- add link to the abcf images
+  - it is in https://github.com/artoolkit/artoolkit5/blob/master/doc/patterns/Multi%20pattern%20(template%2C%20A4).pdf
+  - take a screenshots
+  - store it in data/images
+- clean up data/images 
+  - a lot of file from experiementation qr-code or multimarker
+  - remove them
+
 - park official jsartoolkit stuff
-- describe the algo rightm you used to learn and to use multi markers
 - posts "Area Learning with Marker-based Augmented Reality"
   - larger AR
   - more stable AR
   - describe workflow: dynamic learning + usage
-  - how to learning
-  - how to user 
+  - screenshots of the experience
+  
+- describe the algorightm you used to learn and to use multi markers
+- algo definition: ALGORITHM.md here
+  - how to learn
+  - how to use 
+  - may become a post on medium 
 
 
 

@@ -65,10 +65,10 @@ THREEx.ArToolkitProfile.prototype.performance = function(label) {
 	}
 
 	if( label === 'desktop-fast' ){
-		this.contextParameters.sourceWidth = 640*2
-		this.contextParameters.sourceHeight = 480*2
+		this.contextParameters.sourceWidth = 640*3
+		this.contextParameters.sourceHeight = 480*3
 
-		this.contextParameters.maxDetectionRate = 60
+		this.contextParameters.maxDetectionRate = 30
 	}else if( label === 'desktop-normal' ){
 		this.contextParameters.sourceWidth = 640
 		this.contextParameters.sourceHeight = 480

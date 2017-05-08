@@ -145,14 +145,30 @@ THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, scene, marker
 	// prepare the parameters
 	multiMarkerFile.subMarkersControls.forEach(function(item){
 		// create a markerRoot
-		var object3d = new THREE.Object3D()
-		scene.add(object3d)
+		var markerRoot = new THREE.Object3D()
+		scene.add(markerRoot)
 
-		// create markerControls for our object3d
-		var subMarkerControls = new THREEx.ArMarkerControls(arToolkitContext, object3d, item.parameters)
+		// create markerControls for our markerRoot
+		var subMarkerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, item.parameters)
+
+
+		// build a smoothedControls
+		var smoothedRoot = new THREE.Group()
+		scene.add(smoothedRoot)
+		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
+			lerpPosition : 0.1,
+			lerpQuaternion : 0.1, 
+			lerpScale : 0.1,
+			minVisibleDelay: 0,
+			minUnvisibleDelay: 0,
+		})
+		onRenderFcts.push(function(delta){
+			smoothedControls.update(markerRoot)	// TODO this is a global
+		})
 
 		// store it in the parameters
 		subMarkersControls.push(subMarkerControls)
+		// subMarkersControls.push(smoothedControls)
 		subMarkerPoses.push(new THREE.Matrix4().fromArray(item.poseMatrix))
 	})
 	// create a new THREEx.ArMultiMarkerControls
