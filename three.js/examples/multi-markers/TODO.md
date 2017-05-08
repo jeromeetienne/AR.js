@@ -1,3 +1,24 @@
+- CLEAN UP STUFF
+- in player, load the hardcoded from a file
+  - clean up the code and demo the case
+  - link the hardcoded one with the image of the multi marker
+- in player, remove the function multiMarkerPlay() - serialise it
+  - either you take it from localstore or hardcoded
+- park official jsartoolkit stuff
+- describe the algo rightm you used to learn and to use multi markers
+- posts "Area Learning with Marker-based Augmented Reality"
+  - larger AR
+  - more stable AR
+  - describe workflow: dynamic learning + usage
+  - how to learning
+  - how to user 
+
+
+
+
+
+
+
 # new Learning UI
 
 - DONE in learner, display all the markers as text

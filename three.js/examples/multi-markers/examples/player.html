@@ -79,6 +79,7 @@
 
 	var artoolkitProfile = new THREEx.ArToolkitProfile()
 	artoolkitProfile.sourceWebcam()
+		.performance('desktop-fast')
 	// artoolkitProfile.sourceVideo(THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4').kanjiMarker();
 	// artoolkitProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg').hiroMarker()
 
@@ -131,7 +132,7 @@
 	// 	},
 	// ]
 
-	// pattern a/b/c
+	// pattern a/b/c/f
 	var markersControlsParameters = [
 		{
 			type : 'pattern',
@@ -158,7 +159,6 @@
 		backURL : 'player.html'+location.hash,
 		markersControlsParameters: markersControlsParameters,
 	}
-	// debugger
 	document.querySelector('#recordButton').href = 'learner.html#'+JSON.stringify(learnerParameters)	
 
 	////////////////////////////////////////////////////////////////////////////////
