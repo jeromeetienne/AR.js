@@ -1585,7 +1585,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 			// console.log('ajax done for ', url);
 			var arrayBuffer = oReq.response;
 			var byteArray = new Uint8Array(arrayBuffer);
-	console.log('writeByteArrayToFS', target, byteArray.length, 'byte. url', url)
+	// console.log('writeByteArrayToFS', target, byteArray.length, 'byte. url', url)
 			writeByteArrayToFS(target, byteArray, callback);
 		};
 
@@ -1627,6 +1627,7 @@ THREEx.ArBaseControls = function(object3d){
 
 	// Events to honor
 	// this.dispatchEvent({ type: 'becameVisible' })
+	// this.dispatchEvent({ type: 'markerVisible' })	// replace markerFound
 	// this.dispatchEvent({ type: 'becameUnVisible' })
 }
 
@@ -1642,6 +1643,14 @@ Object.assign( THREEx.ArBaseControls.prototype, THREE.EventDispatcher.prototype 
  */
 THREEx.ArBaseControls.prototype.update = function(){
 	console.assert(false, 'you need to implement your own update')
+}
+
+/**
+ * error catching function for name()
+ */
+THREEx.ArBaseControls.prototype.name = function(){
+	console.assert(false, 'you need to implement your own .name()')
+	return 'Not yet implemented - name()'
 }
 var THREEx = THREEx || {}
 /**
@@ -2022,6 +2031,20 @@ THREEx.ArMarkerControls.prototype.dispose = function(){
 	// TODO remove the event listener if needed
 	// unloadMaker ???
 }
+
+
+THREEx.ArMarkerControls.prototype.name = function(){
+	var name = ''
+	name += this.parameters.type;
+	if( this.parameters.type === 'pattern' ){
+		var url = this.parameters.patternUrl
+		var basename = url.replace(/^.*\//g, '')
+		name += ' - ' + basename
+	}else{
+		console.assert(false, 'no .name() implemented for this marker controls')
+	}
+	return name
+}
 var THREEx = THREEx || {}
 
 THREEx.ArMarkerHelper = function(markerControls){
@@ -2030,9 +2053,9 @@ THREEx.ArMarkerHelper = function(markerControls){
 	var mesh = new THREE.AxisHelper()
 	this.object3d.add(mesh)
 
-	// var text = markerControls.id
+	var text = markerControls.id
 	// debugger
-	var text = markerControls.parameters.patternUrl.slice(-1).toUpperCase();
+	// var text = markerControls.parameters.patternUrl.slice(-1).toUpperCase();
 
 	var canvas = document.createElement( 'canvas' );
 	canvas.width =  64;
@@ -2094,9 +2117,9 @@ THREEx.ArSmoothedControls = function(object3d, parameters){
 		// delay for lerp fixed steps - in seconds - default to 1/120
 		lerpStepDelay: parameters.fixStepDelay !== undefined ? parameters.fixStepDelay : 1/60,
 		// minimum delay the sub-control must be visible before this controls become visible - default to 0 seconds
-		minVisibleDelay: parameters.minVisibleDelay !== undefined ? parameters.minVisibleDelay : 0.0,
+		minVisibleDelay: parameters.minVisibleDelay !== undefined ? parameters.minVisibleDelay : 0.3,
 		// minimum delay the sub-control must be unvisible before this controls become unvisible - default to 0 seconds
-		minUnvisibleDelay: parameters.minUnvisibleDelay !== undefined ? parameters.minUnvisibleDelay : 0.0,
+		minUnvisibleDelay: parameters.minUnvisibleDelay !== undefined ? parameters.minUnvisibleDelay : 0.2,
 	}
 }
 	
@@ -2447,10 +2470,10 @@ THREEx.ArToolkitProfile.prototype.performance = function(label) {
 	}
 
 	if( label === 'desktop-fast' ){
-		this.contextParameters.sourceWidth = 640*2
-		this.contextParameters.sourceHeight = 480*2
+		this.contextParameters.sourceWidth = 640*3
+		this.contextParameters.sourceHeight = 480*3
 
-		this.contextParameters.maxDetectionRate = 60
+		this.contextParameters.maxDetectionRate = 30
 	}else if( label === 'desktop-normal' ){
 		this.contextParameters.sourceWidth = 640
 		this.contextParameters.sourceHeight = 480
@@ -2684,7 +2707,7 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 			document.body.addEventListener('click', function(){
 				domElement.play();
 			})
-			domElement.play();
+			// domElement.play();
 		
 			// wait until the video stream is ready
 			var interval = setInterval(function() {

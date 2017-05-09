@@ -4,8 +4,8 @@
   - link the hardcoded one with the image of the multi marker
 - in player, remove the function multiMarkerPlay() - serialise it
   - either you take it from localstore or hardcoded
-- appMode: areaUsing become areaSource: 'localStorage' or 'hardcodedABCF'
-- add link to the abcf images
+- DONE appMode: areaUsing become areaSource: 'localStorage' or 'hardcodedABCF'
+- DONE add link to the abcf images
   - it is in https://github.com/artoolkit/artoolkit5/blob/master/doc/patterns/Multi%20pattern%20(template%2C%20A4).pdf
   - take a screenshots
   - store it in data/images

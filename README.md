@@ -312,6 +312,8 @@ I exited to see what people will do with AR.js :)
   - http://filmicworlds.com/blog/everything-has-fresnel/
   - http://kylehalladay.com/blog/tutorial/2014/02/18/Fresnel-Shaders-From-The-Ground-Up.html
   - http://www.tingting-wu.com/webgl_projects/ttwu_shaders.html
+- IDEA: "screen as portal" - put 4 markers in screen's corners, direct your phone at it and display a portal on the screen in #AR
+  - https://twitter.com/jerome_etienne/status/861868630883094528
 
 # Browser Support
 Demo tested on the following browser setups:

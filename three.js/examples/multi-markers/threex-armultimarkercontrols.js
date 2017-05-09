@@ -134,52 +134,7 @@ THREEx.ArMultiMarkerControls.averageVector3 = function(vector3Sum, vector3, coun
 }
 
 //////////////////////////////////////////////////////////////////////////////
-//		Code Separator
-//////////////////////////////////////////////////////////////////////////////
-THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, scene, markerRoot, jsonData){
-	var multiMarkerFile = JSON.parse(jsonData)
-	// declare the parameters
-	var subMarkersControls = []
-	var subMarkerPoses = []
-
-	// prepare the parameters
-	multiMarkerFile.subMarkersControls.forEach(function(item){
-		// create a markerRoot
-		var markerRoot = new THREE.Object3D()
-		scene.add(markerRoot)
-
-		// create markerControls for our markerRoot
-		var subMarkerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, item.parameters)
-
-
-		// build a smoothedControls
-		var smoothedRoot = new THREE.Group()
-		scene.add(smoothedRoot)
-		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
-			lerpPosition : 0.1,
-			lerpQuaternion : 0.1, 
-			lerpScale : 0.1,
-			minVisibleDelay: 0,
-			minUnvisibleDelay: 0,
-		})
-		onRenderFcts.push(function(delta){
-			smoothedControls.update(markerRoot)	// TODO this is a global
-		})
-
-		// store it in the parameters
-		subMarkersControls.push(subMarkerControls)
-		// subMarkersControls.push(smoothedControls)
-		subMarkerPoses.push(new THREE.Matrix4().fromArray(item.poseMatrix))
-	})
-	// create a new THREEx.ArMultiMarkerControls
-	var multiMarkerControls = new THREEx.ArMultiMarkerControls(arToolkitContext, markerRoot, subMarkersControls, subMarkerPoses)
-
-	// return it
-	return multiMarkerControls	
-}
-
-//////////////////////////////////////////////////////////////////////////////
-//		Code Separator
+//		Utility function
 //////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -224,4 +179,55 @@ THREEx.ArMultiMarkerControls.computeCenter = function(jsonData){
 	averageMatrix.compose(stats.position.average, stats.quaternion.average, stats.scale.average)
 
 	return averageMatrix
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Create THREEx.ArMultiMarkerControls from JSON
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, scene, markerRoot, jsonData){
+	var multiMarkerFile = JSON.parse(jsonData)
+	// declare the parameters
+	var subMarkersControls = []
+	var subMarkerPoses = []
+
+	// prepare the parameters
+	multiMarkerFile.subMarkersControls.forEach(function(item){
+		// create a markerRoot
+		var markerRoot = new THREE.Object3D()
+		scene.add(markerRoot)
+
+		// create markerControls for our markerRoot
+		var subMarkerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, item.parameters)
+
+if( true ){
+		// store it in the parameters
+		subMarkersControls.push(subMarkerControls)
+		subMarkerPoses.push(new THREE.Matrix4().fromArray(item.poseMatrix))	
+}else{
+		// build a smoothedControls
+		var smoothedRoot = new THREE.Group()
+		scene.add(smoothedRoot)
+		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
+			lerpPosition : 0.1,
+			lerpQuaternion : 0.1, 
+			lerpScale : 0.1,
+			minVisibleDelay: 0,
+			minUnvisibleDelay: 0,
+		})
+		onRenderFcts.push(function(delta){
+			smoothedControls.update(markerRoot)	// TODO this is a global
+		})
+	
+
+		// store it in the parameters
+		subMarkersControls.push(smoothedControls)
+		subMarkerPoses.push(new THREE.Matrix4().fromArray(item.poseMatrix))
+}
+	})
+	// create a new THREEx.ArMultiMarkerControls
+	var multiMarkerControls = new THREEx.ArMultiMarkerControls(arToolkitContext, markerRoot, subMarkersControls, subMarkerPoses)
+
+	// return it
+	return multiMarkerControls	
 }
