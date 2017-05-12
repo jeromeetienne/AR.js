@@ -1,10 +1,20 @@
-- put refraction in a threex, same for hole-in-the-wall and liquid-markers
-  - in examples/threex/
-  - thus i can reuse them
-
 - do a webvr demo with a hole in the ground. - good for tango
   - possible demo: hole in the wall, refraction, liquid marker but on all the wall
   - code a webvr demo
+
+- put refraction in a threex, same for hole-in-the-wall and liquid-markers
+  - in examples/threex/
+  - thus i can reuse them
+  - apply to webvr and to multi marker
+  - refraction - large torus 
+  - liquid-markers - multi plane ? video with neo effect
+  - hole in the wall - aka the duck pool
+  - hole in the wall - actual portal
+
+- currently webvr is able to do location already
+  - why wouldnt i code it all in webvr location, without the stereo rendering
+  - well it is too early. it is better to make it easier to reuse.
+  - webvr tango isnt mature enougth
 
 - release soon and start doing dev/master
   - create a dev branch
