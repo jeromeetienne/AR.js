@@ -38,15 +38,16 @@ This is great for sure but how did we get here ? **By standing on the shoulders 
 It is thanks to the hard work from others, that we can today reach this mythic 60fps AR.
 So i would like to thanks :
 
-- **three.js** for being a great library to do 3d on the web.
-- **artoolkit!** years of development and experiences on doing augmented reality
-- **emscripten and asm.js**! thus we could compile artoolkit c into javascript
+- **aframe.js** A-Frame is a web framework for building virtual reality (VR) experiences. (https://aframe.io)
+- **three.js** for being a great library to do 3d on the web. (https://threejs.org/)
+- **artoolkit and jsartoolkit5** years of development and experiences on doing augmented reality (https://artoolkit.org/, https://github.com/artoolkit/jsartoolkit5)
+- **emscripten and asm.js**! thus we could compile artoolkit c into javascript (http://kripken.github.io/emscripten-site/, http://asmjs.org/)
 - **chromium**! thanks for being so fast!
 
 Only thanks to all of them, i could do my part : Optimizing performance from 5fps on high-end
 phone, to 60fps on 2years old phone.
 
-After all this work done by a lot of people, we have a *web-based augmented reality solution fast enough for mobile*!
+After all this work done by a lot of people, we have a *web-based augmented reality solution fast enough for mobile*
 
 Now, many people got a phone powerful enough to do web AR in their pocket.
 I think this performance improvement makes web AR a reality.
@@ -116,6 +117,16 @@ by
 ```
 
 See on [codepen](https://codepen.io/jeromeetienne/pen/mRqqzb) or [bl.ocks.org](https://bl.ocks.org/jeromeetienne/feeb69257803e69f18dc3ea5f4fc6d71)
+
+Step by step:
+
+- Include the [aframe](https://aframe.io) library (the VR library), provides the primitives (`a-scene`, `a-box`)
+- Include the [aframe-ar](https://github.com/jeromeetienne/AR.js) library that adds the primitives to make AR possible.
+- Adds the ```<a-scene>``` tag from the [aframe](https://aframe.io) library and uses the attribute ```artoolkit```
+ registered through the [aframe-ar](https://github.com/jeromeetienne/AR.js) library, bridging the two systems, in this case
+ to use the camera as source.
+- Adds the ```<a-box>``` [primitive](https://aframe.io/docs/0.5.0/primitives/a-box.html), the box on top of the marker.
+- Adds the ```<a-marker-camera>``` primitive shortcut, detects the *hiro* marker.
 
 # Posts on medium
 We started a [AR.js blog](https://medium.com/arjs), thus we can write about
@@ -191,7 +202,7 @@ Three.js Examples:
 - [multimarker-artoolkit](https://jeromeetienne.github.io/AR.js/three.js/examples/multimarker-artoolkit/multimarker.html) :
   three.js example for multimarker
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multimarker-artoolkit/multimarker.html))
-  
+
 a-frame Examples:
 
 - [basic](https://jeromeetienne.github.io/AR.js/aframe/examples/basic.html) :
@@ -286,7 +297,7 @@ I exited to see what people will do with AR.js :)
   - by using gravity sensor
 - discover marker absolute orientation by comparing that to the phone gravity
   - can be used to know if the marker is on a table, or on a wall
-- area learning with markers 
+- area learning with markers
   - auto generation of multimarkers pattern
   - the phone is in a mode acquisition
   - the user walks around the room
@@ -301,7 +312,7 @@ I exited to see what people will do with AR.js :)
 - social AR - https://github.com/haydenjameslee/networked-aframe/blob/master/docs/Tutorial:%20Create%20your%20first%20Networked-Aframe%20experience.md
 - use a pingpong ball or a metallic ball to estimate the reality lighting
   - https://www.youtube.com/watch?v=fhFzStkoE50&feature=youtu.be&t=59 for ping pong ball
-  - https://www.researchgate.net/publication/220222173_Image_Based_Shadowing_in_Real-Time_Augmented_Reality for metallic ball  
+  - https://www.researchgate.net/publication/220222173_Image_Based_Shadowing_in_Real-Time_Augmented_Reality for metallic ball
 - do a jelwery examples
   - get a model or ring, one model of diamond
   - https://www.transpacific-software.com/webgl/ring.html?tPage=7
@@ -330,7 +341,7 @@ Credits: @HelloDeadline, @sorianog
 # Ideas
 - AR Gaming - https://www.youtube.com/watch?v=EmGGGzibGok
 - AR Business Card - https://vimeo.com/4979525
-- plug ar.js into sketchfab 
+- plug ar.js into sketchfab
   - do a mockup with the monkey script
   - add a AR button on sketchfab, it pops up on marker on the screen with the instruction to connect to it
   - then you display the model in 3d on top of the screen
@@ -361,25 +372,25 @@ The larger the camera image, the smaller the marker can be.
 
 ## How to Run AR.js Locally
 First you have to copy the repository locally (using git clone).
-After that, just serve the files on a static http server. 
+After that, just serve the files on a static http server.
 Personnaly, i use a simple command line http server called ```http-server```.
 You can install it via ```npm install -g http-server```.
 
 
 ## About WebRTC and https
-WebRTC requires to have a [Secure Contexts](https://w3c.github.io/webappsec-secure-contexts/), 
+WebRTC requires to have a [Secure Contexts](https://w3c.github.io/webappsec-secure-contexts/),
 So in short, you need to [serve your application over https](http://stackoverflow.com/questions/34197653/getusermedia-in-chrome-47-without-using-https).
 Webrtc records video/audio and it is really sensitive information.
 Without https, an attacker to easily know what is recorded by your webcam, or even insert audio and makes you say anything he want to.
 Clearly not something desirable :)
 
-So, in short, you need to **serve your application over https** to use the webcam. 
+So, in short, you need to **serve your application over https** to use the webcam.
 
 Unfortunatly, this is always a pain to setup https, but it is the prize to pay for security.
 [@mritzco](https://gist.github.com/mritzco) posted a great
 [description on https configuration for ar.js](https://gist.github.com/mritzco/18dfe13096294592d5eb53e7e1a5f63c)
 on gist.
-Let's note that [github pages](https://pages.github.com/) are served over https by default. So if you deploy on github, it is easier. 
+Let's note that [github pages](https://pages.github.com/) are served over https by default. So if you deploy on github, it is easier.
 During developement, there is a trick, [localhost is assumed secured](https://w3c.github.io/webappsec-secure-contexts/#localhost).
 So if you serve your file over localhost, you don't need to have https.
 
