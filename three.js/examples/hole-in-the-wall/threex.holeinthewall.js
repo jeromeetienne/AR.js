@@ -2,7 +2,9 @@ var THREEx = THREEx || {}
 
 THREEx.HoleInTheWall = {}
 
-
+//////////////////////////////////////////////////////////////////////////////
+//		Build various cache
+//////////////////////////////////////////////////////////////////////////////
 THREEx.HoleInTheWall.buildSquareCache = function(){
 	var container = new THREE.Group
 	// add outter cube - invisibility cloak
@@ -34,10 +36,14 @@ THREEx.HoleInTheWall.buildSquareCache = function(){
 
 THREEx.HoleInTheWall.buildCircleCache = function(){
 	var geometry = new THREE.RingGeometry( 0.5, 5, 32 );	
-	var material = buildTransparentMaterial()
+	var material = THREEx.HoleInTheWall.buildTransparentMaterial()
 	var mesh = new THREE.Mesh( geometry, material);
 	return mesh
 }
+
+//////////////////////////////////////////////////////////////////////////////
+//		build transparent material
+//////////////////////////////////////////////////////////////////////////////
 
 THREEx.HoleInTheWall.buildTransparentMaterial = function(){
 	var material = new THREE.MeshBasicMaterial({

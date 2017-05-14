@@ -152,6 +152,7 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 
 		devices.forEach(function(device) {
 			if( device.kind !== 'videoinput' )	return
+			if( constraints.video.optional !== undefined )	return
 			constraints.video.optional = [{sourceId: device.deviceId}]
 		});
 

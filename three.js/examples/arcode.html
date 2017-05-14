@@ -101,33 +101,30 @@ function generatePdf(){
                 header: [
                         {
                                 text: 'AR.js by @jerome_etienne - https://github.com/jeromeetienne/ar.js',
-                                margin: [0, 20],
+                                margin: [0, 0],
                                 alignment: 'center',
                         },                        
                 ],
                 content: [
                         {
                                 image: canvas.toDataURL(),
-                                width: 300,
+                                width: 320,
                                 alignment: 'center',
                         },
                         {
                                 text: [                                        
                                         {
                                                 text: '\nAR-CODE ',
-                        			fontSize: 36,
+                        			fontSize: 30,
                         			bold: true,
                                         },
                                         {
                                                 text: 'for',
-                        			fontSize: 24,
+                        			fontSize: 20,
         			                bold: false,
                                         }
                                 ],
                                 alignment: 'center',
-        			fontSize: 36,
-        			bold: true,
-                                margin: [0, 10],
                         },
                         {
                                 text: urlQrCode,
@@ -263,7 +260,7 @@ function generateArCodeCanvas(canvas, text, onLoad){
 
         generateQrCodeImage(text, function onLoaded(qrCodeImage){
                 console.log('qrcode generated')
-                context.drawImage(qrCodeImage,canvas.width*0.55,canvas.height*0.3,canvas.width*0.15, canvas.height*0.15);      
+                context.drawImage(qrCodeImage,canvas.width*0.50,canvas.height*0.30,canvas.width*0.20, canvas.height*0.20);      
                 
                 onLoad && onLoad()          
         })

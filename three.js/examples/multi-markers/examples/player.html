@@ -19,8 +19,12 @@
 <script src='../threex-armultimarkercontrols.js'></script>
 <script src='../threex-armultimarkerlearning.js'></script>
 
-<!-- include the material -->
+<!-- include demo scenes -->
+<script src='../../democontent/threex-democontent.js'></script>
 <script src='../../refraction/threex.refractionmaterial.js'></script>
+<script src='../../hole-in-the-wall/threex.holeinthewall.js'></script>
+<script src='../../vendor/three.js/examples/js/loaders/GLTFLoader.js'></script>
+
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
 	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Multi marker
@@ -67,7 +71,12 @@
 
 	// init scene and camera
 	var scene	= new THREE.Scene();
+	var ambient = new THREE.AmbientLight( 0x666666 );
+	scene.add( ambient );
 
+	var directionalLight = new THREE.DirectionalLight( 0x887766 );
+	directionalLight.position.set( -1, 1, 1 ).normalize();
+	scene.add( directionalLight );
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
@@ -307,39 +316,24 @@
 		})	
 
 		
-		var markerScene = new THREE.Scene
-		// markerRoot.add(markerScene)
-		smoothedRoot.add(markerScene)
-
-		// compute the average matrix of this markerFile
-		// var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
-		// averageMatrix.decompose(markerScene.position, markerScene.quaternion, markerScene.scale)
-		markerScene.scale.multiplyScalar(8)
-		// markerScene.scale.y *= 1.5
-
 		//////////////////////////////////////////////////////////////////////////////////
 		//		add an object in the scene
 		//////////////////////////////////////////////////////////////////////////////////
-		
 
-		var geometry = new THREE.TorusGeometry(0.3,0.15,16,32);	
-		var geometry = new THREE.TorusGeometry(0.3,0.15,16*4,32*4);	
-		// var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-
-		var videoTexture = new THREE.VideoTexture(arToolkitSource.domElement)
-		videoTexture.minFilter = THREE.NearestFilter
-		videoTexture.wrapS = videoTexture.wrapT = THREE.ClampToEdgeWrapping;
-		var material = new THREEx.RefractionMaterial(videoTexture)
-	
-		// var material	= new THREE.MeshNormalMaterial(); 
-		var mesh	= new THREE.Mesh( geometry, material );
-		mesh.position.y	= 0.5
-		markerScene.add( mesh );
-		
+		var demoContent = new THREEx.DemoContent()
 		onRenderFcts.push(function(delta){
-			// mesh.rotation.x += delta * Math.PI * 0.1
-			// mesh.rotation.y += delta * Math.PI * 0.5
-		})
+			demoContent.update(delta)
+		})	
+		var markerContent = demoContent.createMarkerScene('holePool')
+
+		// compute the average matrix of this markerFile
+		var markerScene = new THREE.Group()
+		markerScene.add(markerContent)
+		markerRoot.add( markerScene )
+		
+		var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
+		averageMatrix.decompose(markerScene.position, markerScene.quaternion, markerScene.scale)
+		markerScene.scale.multiplyScalar(5)
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
