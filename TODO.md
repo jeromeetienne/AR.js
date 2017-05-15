@@ -1,6 +1,9 @@
 - do a webvr demo with a hole in the ground. - good for tango
   - possible demo: hole in the wall, refraction, liquid marker but on all the wall
   - code a webvr demo
+ 
+- TODO super unclear how to get the backward facing camera...
+
 
 - put refraction in a threex, same for hole-in-the-wall and liquid-markers
   - in examples/threex/

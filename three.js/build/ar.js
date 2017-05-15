@@ -2055,7 +2055,7 @@ THREEx.ArMarkerHelper = function(markerControls){
 
 	var text = markerControls.id
 	// debugger
-	// var text = markerControls.parameters.patternUrl.slice(-1).toUpperCase();
+	var text = markerControls.parameters.patternUrl.slice(-1).toUpperCase();
 
 	var canvas = document.createElement( 'canvas' );
 	canvas.width =  64;
@@ -2688,6 +2688,10 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 
 		devices.forEach(function(device) {
 			if( device.kind !== 'videoinput' )	return
+
+			// TODO super unclear how to get the backward facing camera...
+
+			// if( constraints.video.optional !== undefined )	return
 			constraints.video.optional = [{sourceId: device.deviceId}]
 		});
 
