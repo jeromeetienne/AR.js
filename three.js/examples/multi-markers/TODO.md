@@ -8,16 +8,27 @@
   - maybe some placements depending multi placements
   - all this code will be copyed directly in chromiumAR
   - 
+
 - DONE appMode: areaUsing become areaSource: 'localStorage' or 'hardcodedABCF'
 - DONE add link to the abcf images
   - it is in https://github.com/artoolkit/artoolkit5/blob/master/doc/patterns/Multi%20pattern%20(template%2C%20A4).pdf
   - take a screenshots
   - store it in data/images
+
 - clean up data/images
   - a lot of file from experiementation qr-code or multimarker
   - remove them
 
 - park official jsartoolkit stuff
+
+
+---
+# Porting to a-frame
+- port only 
+
+
+---
+
 - posts "Area Learning with Marker-based Augmented Reality"
   - larger AR
   - more stable AR
@@ -28,7 +39,11 @@
 - algo definition: ALGORITHM.md here
   - how to learn
   - how to use 
-  - may become a post on medium 
+  - may become a post on medium
+
+---
+
+
 
 
 

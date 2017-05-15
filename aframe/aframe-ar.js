@@ -174,7 +174,7 @@ AFRAME.registerComponent('artoolkitmarker', {
 			this.data.patternUrl = THREEx.ArToolkitContext.baseURL+'../data/data/patt.hiro'
 		}else if( this.data.preset === 'kanji' ){
 			this.data.type = 'pattern'
-			this.data.patternUrl = THREEx.ArToolkitContext.baseURL+'../data/data/patt.kanji'			
+			this.data.patternUrl = THREEx.ArToolkitContext.baseURL+'../data/data/patt.kanji'
 		}else {
 			console.assert( this.data.preset === '', 'illegal preset value '+this.data.preset)
 		}
