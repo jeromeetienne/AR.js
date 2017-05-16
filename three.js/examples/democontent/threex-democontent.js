@@ -6,6 +6,8 @@ THREEx.DemoContent = function(){
 	
 }
 
+THREEx.DemoContent.baseURL = '../'
+
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
@@ -40,9 +42,10 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 	var _this = this
 	
 	var markerScene = new THREE.Group
-	markerScene.scale.set(1,1,1).multiplyScalar(1.2)
+	// markerScene.scale.set(1,1,1).multiplyScalar(1.2)
 	markerScene.rotation.x = -Math.PI/2
-	markerScene.position.y = -0.5
+	
+	markerScene.position.y = 0.5
 
 
 	buildCacheMesh()
@@ -71,7 +74,7 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 		var material = new THREE.MeshPhongMaterial({
 			transparent: true,
 			opacity: 0.5,
-			map: new THREE.TextureLoader().load(THREEx.ArToolkitContext.baseURL + 'examples/hole-in-the-wall/images/water.jpg')
+			map: new THREE.TextureLoader().load(THREEx.DemoContent.baseURL + 'examples/hole-in-the-wall/images/water.jpg')
 		})
 		var mesh = new THREE.Mesh(geometry, material);
 		mesh.position.z = 0.4;
@@ -81,10 +84,11 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 		var innerGeom = new THREE.BoxGeometry(1,1,1);
 		innerGeom.faces.splice(8, 2); // remove top (though this is a backside material)
 		innerGeom.elementsNeedUpdate = true;
-		var poolMesh = new THREE.Mesh(innerGeom, new THREE.MeshPhongMaterial({
+		var material = new THREE.MeshBasicMaterial({
 			side: THREE.BackSide,
-			map: new THREE.TextureLoader().load(THREEx.ArToolkitContext.baseURL + 'examples/hole-in-the-wall/images/mosaic-256x256.jpg')
-		}));
+			map: new THREE.TextureLoader().load(THREEx.DemoContent.baseURL + 'examples/hole-in-the-wall/images/mosaic-256x256.jpg')
+		})
+		var poolMesh = new THREE.Mesh(innerGeom, material);
 		markerScene.add(poolMesh)
 		
 		// proper orientation for the uv 
@@ -124,7 +128,7 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 	//		create duck
 	//////////////////////////////////////////////////////////////////////////////
 	function createDuck(){
-		new THREE.GLTFLoader().load( THREEx.ArToolkitContext.baseURL + 'examples/hole-in-the-wall/models/duck/glTF-MaterialsCommon/duck.gltf', function(gltf) {
+		new THREE.GLTFLoader().load( THREEx.DemoContent.baseURL + 'examples/hole-in-the-wall/models/duck/glTF-MaterialsCommon/duck.gltf', function(gltf) {
 			var duck = gltf.scene;
 			markerScene.add( duck );
 			
@@ -153,7 +157,7 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 		var geometry	= new THREE.PlaneGeometry(1,0.5).scale(0.4, 0.4, 0.4);
 		var material	= new THREE.MeshBasicMaterial({
 			alphaTest: 0.1,
-			map: new THREE.TextureLoader().load(THREEx.ArToolkitContext.baseURL + 'examples/hole-in-the-wall/images/fish-texture.png'),
+			map: new THREE.TextureLoader().load(THREEx.DemoContent.baseURL + 'examples/hole-in-the-wall/images/fish-texture.png'),
 			side: THREE.DoubleSide
 		}); 
 		var nFishes = 6
@@ -216,13 +220,14 @@ THREEx.DemoContent.prototype._createHolePortal = function () {
 	
 	// add bounding sphere
 	var geometry = new THREE.SphereGeometry( 3, 32, 16, 0, Math.PI, Math.PI, Math.PI);
-	geometry.scale( 1, -1, 1 );
+	geometry.scale( 1, -1, 1 )
 	var material = new THREE.MeshBasicMaterial( {
-		map: new THREE.TextureLoader().load( THREEx.ArToolkitContext.baseURL + 'examples/hole-in-the-wall/images/32211336474_380b67d014_k.jpg' ),
+		map: new THREE.TextureLoader().load( THREEx.DemoContent.baseURL + 'examples/hole-in-the-wall/images/32211336474_380b67d014_k.jpg' ),
 		side: THREE.DoubleSide
 	});
 	mesh = new THREE.Mesh( geometry, material );
 	mesh.position.z = -0.05
+	mesh.rotation.z = Math.PI/2
 	markerScene.add( mesh );
 	
 	return markerScene
@@ -235,18 +240,21 @@ THREEx.DemoContent.prototype._createHolePortal = function () {
 THREEx.DemoContent.prototype._createHoleTorus = function () {
 
 	var markerScene = new THREE.Group
-	markerScene.scale.set(1,1,1).multiplyScalar(1.2)
-	markerScene.rotation.x = -Math.PI/2
-	markerScene.position.y = -0.5 * markerScene.scale.x
+
+	
+	var proxy = new THREE.Group
+	markerScene.add(proxy)
+	// proxy.scale.set(1,1,1).multiplyScalar(1.2)
+	// proxy.rotation.x = -Math.PI/2
+	proxy.position.z = -0.5 * proxy.scale.x
 
 	// add outter cube - invisibility cloak
 	var geometry = new THREE.BoxGeometry(1,1,1);
 	geometry.faces.splice(8, 2); // make hole by removing top two triangles (is this assumption stable?)
 	var material = THREEx.HoleInTheWall.buildTransparentMaterial()	
-
 	var mesh = new THREE.Mesh( geometry, material);
-	mesh.scale.set(1,1,1).multiplyScalar(1.02)
-	markerScene.add(mesh)
+	mesh.scale.set(1,1,1).multiplyScalar(1.01)
+	proxy.add(mesh)
 
 	// add the inner box
 	var geometry	= new THREE.BoxGeometry(1,1,1);
@@ -254,13 +262,13 @@ THREEx.DemoContent.prototype._createHoleTorus = function () {
 		side: THREE.BackSide
 	}); 
 	var mesh	= new THREE.Mesh( geometry, material );
-	markerScene.add( mesh );
+	proxy.add( mesh );
 
 	// add the torus knot
 	var geometry	= new THREE.TorusKnotGeometry(0.25,0.1,32,32);
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
-	markerScene.add( mesh );
+	proxy.add( mesh );
 	
 	this._onRenderFcts.push(function(delta){
 		mesh.rotation.x += 0.1
@@ -314,13 +322,13 @@ THREEx.DemoContent.prototype._createTorus = function () {
 		side: THREE.DoubleSide
 	}); 
 	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= geometry.parameters.height/2
+	mesh.position.z	= geometry.parameters.height/2
 	markerScene.add(mesh)
 	
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= 0.5
+	mesh.position.z	= 0.5
 	markerScene.add( mesh );
 	
 	this._onRenderFcts.push(function(delta){

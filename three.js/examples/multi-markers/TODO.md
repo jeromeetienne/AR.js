@@ -24,7 +24,16 @@
 
 ---
 # Porting to a-frame
-- port only 
+- port only multi markers controls
+- start the port
+- it will make it easier to do demo and accessible for aframe people
+- preset='multimarker-localstorage'
+
+- put the smoother on option for aframe
+- use the profile by default
+  - remove all the default from the aframe configuration
+  - so first, init basic of profile, then push specific configuration from configuration
+  - avoid to duplicate all the default
 
 
 ---
