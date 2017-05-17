@@ -9,88 +9,88 @@
 
 <body style='margin: 0px; overflow: hidden;'>
 	<div id='aframe-container'></div>
-	<!-- domElement UI -->
-	<style>
-	body {
-		font-family: Monospace;
-	}
-	#demoUITop {
-		position: absolute;
-		top: 0;
-		left: 0;
-		background-color: rgba(255,255,255,0.4);
-		padding: 10px;
-	}
-	#demoUIBottom {
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		background-color: rgba(255,255,255,0.4);
-		padding: 10px;
-	}
-	.rs-base {	/* the aframe stat */
-		left : auto;
-		right: 20px;
-	}
-	</style>
-	<div id='demoUITop'>
-		<label title='the video source used by artoolkit'>Video Source :
-			<select id='videoSource'>
-			  <option value="webcam">webcam</option> 
-			  <option value="video_headtracking">video_headtracking</option>
-			  <option value="video_output_4">video_output_4</option>
-			  <option value="image_armchair">image_armchair</option>
-			  <option value="image_chalk_multi">image_chalk_multi</option>
-			  <option value="image_chalk">image_chalk</option>
-			  <option value="image_img">image_img</option>
-			  <option value="image_kuva">image_kuva</option>
-			</select>
-		</label>
-		<br/>
-		<label title='the content to add on top of the marker'>Marker Content :
-			<select id='markerContent'>
-			  <option value="cube">cube</option> 
-			  <option value="minecraft">minecraft</option>
-			</select>
-		</label>
-	</div>		
-	<div id='demoUIBottom'>
-		<label title='The type of marker detected'>Marker Type :
-			<select id='markerType'>
-			  <option value="hiro">hiro</option> 
-			  <option value="kanji">kanji</option>
-			  <option value="unknown">unknown</option>
-			  <option value="barcode_3x3_20">barcode_3x3_20</option>
-			</select>
-		</label>
-		<br/>
-		<label title='enabled debug in artoolkit'>debug :
-			<select id='debug'>
-			  <option value="true">true</option> 
-			  <option value="false">false</option>
-			</select>
-		</label>
-		<br/>
-		<label title='type of marker detected by artoolkit'>detectionMode :
-			<select id='detectionMode'>
-			  <option value="color">color</option> 
-			  <option value="color_and_matrix">color_and_matrix</option> 
-			  <option value="mono">mono</option> 
-			  <option value="mono_and_matrix">mono_and_matrix</option> 
-			</select>
-		</label>
-		<br/>
-		<label title='valid only detectionMode contains matrix'>matrixCodeType :
-			<select id='matrixCodeType'>
-			  <option value="3x3">3x3</option> 
-			  <option value="3x3_HAMMING63">3x3_HAMMING63</option> 
-			  <option value="3x3_PARITY65">3x3_PARITY65</option> 
-			  <option value="4x4">4x4</option> 
-			  <option value="4x4_BCH_13_9_3">4x4_BCH_13_9_3</option> 
-			  <option value="4x4_BCH_13_5_5">4x4_BCH_13_5_5</option> 
-			</select>
-		</label>
-	</div>
+<!-- domElement UI -->
+<style>
+body {
+	font-family: Monospace;
+}
+#demoUITop {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: rgba(255,255,255,0.4);
+	padding: 10px;
+}
+#demoUIBottom {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background-color: rgba(255,255,255,0.4);
+	padding: 10px;
+}
+.rs-base {	/* the aframe stat */
+	left : auto;
+	right: 20px;
+}
+</style>
+<div id='demoUITop'>
+	<label title='the video source used by artoolkit'>Video Source :
+		<select id='videoSource'>
+		  <option value="webcam">webcam</option> 
+		  <option value="video_headtracking">video_headtracking</option>
+		  <option value="video_output_4">video_output_4</option>
+		  <option value="image_armchair">image_armchair</option>
+		  <option value="image_chalk_multi">image_chalk_multi</option>
+		  <option value="image_chalk">image_chalk</option>
+		  <option value="image_img">image_img</option>
+		  <option value="image_kuva">image_kuva</option>
+		</select>
+	</label>
+	<br/>
+	<label title='the content to add on top of the marker'>Marker Content :
+		<select id='markerContent'>
+		  <option value="cube">cube</option> 
+		  <option value="minecraft">minecraft</option>
+		</select>
+	</label>
+</div>		
+<div id='demoUIBottom'>
+	<label title='The type of marker detected'>Marker Type :
+		<select id='markerType'>
+		  <option value="hiro">hiro</option> 
+		  <option value="kanji">kanji</option>
+		  <option value="unknown">unknown</option>
+		  <option value="barcode_3x3_20">barcode_3x3_20</option>
+		</select>
+	</label>
+	<br/>
+	<label title='enabled debug in artoolkit'>debug :
+		<select id='debug'>
+		  <option value="true">true</option> 
+		  <option value="false">false</option>
+		</select>
+	</label>
+	<br/>
+	<label title='type of marker detected by artoolkit'>detectionMode :
+		<select id='detectionMode'>
+		  <option value="color">color</option> 
+		  <option value="color_and_matrix">color_and_matrix</option> 
+		  <option value="mono">mono</option> 
+		  <option value="mono_and_matrix">mono_and_matrix</option> 
+		</select>
+	</label>
+	<br/>
+	<label title='valid only detectionMode contains matrix'>matrixCodeType :
+		<select id='matrixCodeType'>
+		  <option value="3x3">3x3</option> 
+		  <option value="3x3_HAMMING63">3x3_HAMMING63</option> 
+		  <option value="3x3_PARITY65">3x3_PARITY65</option> 
+		  <option value="4x4">4x4</option> 
+		  <option value="4x4_BCH_13_9_3">4x4_BCH_13_9_3</option> 
+		  <option value="4x4_BCH_13_5_5">4x4_BCH_13_5_5</option> 
+		</select>
+	</label>
+</div>
 	<script>
 		// define options with default values
 		var options = {
@@ -191,8 +191,8 @@
 			  
 		// honor options.markerContent
 		if( options.markerContent === 'cube' ){
-			sceneHtml += `<a-box position='0 0 0.5' material='opacity: 0.5; side:double'></a-box>
-			<a-entity geometry="primitive: torusKnot; radius: 0.3; radiusTubular: 0.05" position='0 0 0.5'>
+			sceneHtml += `<a-box position='0 0.5 0' material='opacity: 0.5; side:double'></a-box>
+			<a-entity geometry="primitive: torusKnot; radius: 0.3; radiusTubular: 0.05" position='0 0.5 0'>
 				<a-animation attribute="rotation" from="0 0 0" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
 			</a-entity>`			
 		}else if( options.markerContent === 'minecraft' ){

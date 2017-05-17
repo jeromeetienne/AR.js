@@ -36,29 +36,26 @@ https://github.com/mrdoob/three.js/tree/dev/examples/models/mmd#readme
 
                 <a-entity camera></a-entity>
 
-		<a-marker type='pattern' url='../../data/data/patt.hiro' size='10'>
-			<a-entity scale="0.1 0.1 0.1">
-      				<a-entity mmd="audio:https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/mmd/audios/wavefile_short.mp3;
-                     			audioDelayTime:5.333333333333333; afterglow:2.0;">
-        			<a-entity mmd-model="model:https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/mmd/miku/miku_v2.pmd;
-                				vmd:https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/mmd/vmds/wavefile_v2.vmd;
-                        			physics:false;"
-                        			
-                  			rotation="90 0 0"
-                  			shadow="cast:true">
-				</a-entity>
-       			</a-entity>
+		<a-marker type='pattern' url='../../data/data/patt.hiro' size='3'>
+			<a-entity mmd="audio:https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/mmd/audios/wavefile_short.mp3;
+     			                audioDelayTime:5.333333333333333; afterglow:2.0;">
+			<a-entity mmd-model="model:https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/mmd/miku/miku_v2.pmd;
+        				vmd:https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/mmd/vmds/wavefile_v2.vmd;
+                			physics:false;"
+          			shadow="cast:true">
+			</a-entity>
 		</a-marker>
 
-      <a-plane rotation="-90 0 0"
-               color="#AAAAAA"
-               height="200"
-               width="200"
-               shadow="receive:true"></a-plane>
+                <a-plane rotation="-90 0 0"
+                       color="#AAAAAA"
+                       height="200"
+                       width="200"
+                       shadow="receive:true">
+                </a-plane>
 
-      <a-sky src="#sky"></a-sky>
+                <a-sky src="#sky"></a-sky>
 
-      <a-entity shadow-light="type:directional;
+                <a-entity shadow-light="type:directional;
                               castShadow:true;
                               color:#888;
                               shadowMapWidth:1024;
@@ -67,7 +64,8 @@ https://github.com/mrdoob/three.js/tree/dev/examples/models/mmd#readme
                               shadowCameraTop:20;
                               shadowCameraLeft:-20;
                               shadowCameraBottom:-20"
-                position="-20 20 20"></a-entity>
+                              position="-20 20 20">
+                </a-entity>
     </a-scene>
   </body>
 </html>

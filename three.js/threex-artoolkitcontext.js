@@ -28,8 +28,6 @@ THREEx.ArToolkitContext = function(parameters){
 		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : false,
 	}
 	
-// debugger	
-	
 	// set this._projectionAxisTransformMatrix to change artoolkit projection matrix axis to match usual webgl one
 	this._projectionAxisTransformMatrix = new THREE.Matrix4()
 	this._projectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
@@ -41,7 +39,11 @@ THREEx.ArToolkitContext = function(parameters){
 	this._arMarkersControls = []
 }
 
-THREEx.ArToolkitContext.baseURL = '../'
+Object.assign( THREEx.ArToolkitContext.prototype, THREE.EventDispatcher.prototype );
+
+// THREEx.ArToolkitContext.baseURL = '../'
+// default to github page
+THREEx.ArToolkitContext.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
 THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 
 /**
@@ -162,9 +164,16 @@ THREEx.ArToolkitContext.prototype.update = function(srcElement){
 	// process this frame
 	arController.process(srcElement)
 
+	// dispatch event
+	this.dispatchEvent({
+		type: 'sourceProcessed'
+	});
+
+
 	// return true as we processed the frame
 	return true;
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 //          Code Separator

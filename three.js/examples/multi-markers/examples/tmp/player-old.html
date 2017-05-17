@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
+<!-- three.js library -->
+<script src='../../vendor/three.js/build/three.js'></script>
+<script src='../../vendor/three.js/examples/js/libs/stats.min.js'></script>
+<!-- jsartookit -->
+<script src='../../../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
+<script src='../../../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
+<!-- include threex.artoolkit -->
+<script src='../../../threex-artoolkitsource.js'></script>
+<script src='../../../threex-artoolkitcontext.js'></script>
+<script src='../../../threex-artoolkitprofile.js'></script>
+<script src='../../../threex-arbasecontrols.js'></script>
+<script src='../../../threex-armarkercontrols.js'></script>
+<script src='../../../threex-armarkerhelper.js'></script>
+<script src='../../../threex-arsmoothedcontrols.js'></script>
+<script>THREEx.ArToolkitContext.baseURL = '../../../'</script>
+
+<script src='../threex-armultimarkercontrols.js'></script>
+<script src='../threex-armultimarkerlearning.js'></script>
+
+<!-- include the material -->
+<script src='../../refraction/threex.refractionmaterial.js'></script>
+
+<!-- activate NoSleep.js to force mobile browser to stay awake -->
+<script src='../../vendor/NoSleep.min.js'></script>
+<script>
+	var noSleep = new NoSleep();
+	noSleep.enable();
+</script>
+
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
+	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Multi marker
+	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+	<br/>
+	<a id='recordButton' href='learner.html?url=player.html'>Record new area</a>
+	<br/>
+	Markers Helper : 
+		<a href='javascript:void(0)' onclick='urlOptions.markersHelper = true; reload()'>enable</a>
+		/
+		<a href='javascript:void(0)' onclick='urlOptions.markersHelper = false; reload()'>disable</a>
+	appMode : 
+		<a href='javascript:void(0)' onclick='urlOptions.appMode = "areaUsing"; reload()'>stored</a>
+		/
+		<a href='javascript:void(0)' onclick='urlOptions.appMode = "areaHardcoded"; reload()'>hardcoded</a>
+</div><script>
+;(function(){
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Init
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// init renderer
+	var renderer	= new THREE.WebGLRenderer({
+		antialias	: true,
+		alpha: true
+	});
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap
+	renderer.shadowMap.enabled = true;	
+
+	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+	// renderer.setPixelRatio( 2 );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.domElement.style.position = 'absolute'
+	renderer.domElement.style.top = '0px'
+	renderer.domElement.style.left = '0px'
+	document.body.appendChild( renderer.domElement );
+
+	// array of functions for the rendering loop
+	var onRenderFcts= [];
+
+	// init scene and camera
+	var scene	= new THREE.Scene();
+
+	var ambient = new THREE.AmbientLight( 0x666666 );
+	scene.add( ambient );
+
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Initialize a basic camera
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// Create a camera
+	var camera = new THREE.Camera();
+	scene.add(camera);
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          handle arToolkitSource
+	////////////////////////////////////////////////////////////////////////////////
+
+	var arToolkitSource = new THREEx.ArToolkitSource({
+		// to read from the webcam 
+		sourceType : 'webcam',
+		
+		// // to read from an image
+		// sourceType : 'image',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/multimarker.jpg'		
+
+		// to read from a video
+		// sourceType : 'video',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',	
+	})
+
+
+	arToolkitSource.init(function onReady(){
+		// handle resize of renderer
+		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])		
+	})
+	
+	// handle resize
+	window.addEventListener('resize', function(){
+		// handle arToolkitSource resize
+		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])
+	})
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          initialize arToolkitContext
+	////////////////////////////////////////////////////////////////////////////////	
+
+	// create atToolkitContext
+	var arToolkitContext = new THREEx.ArToolkitContext({
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
+		detectionMode: 'mono',
+		maxDetectionRate: 30,
+		canvasWidth: 80*4,
+		canvasHeight: 60*4,
+	})
+	// initialize it
+	arToolkitContext.init(function onCompleted(){
+		// copy projection matrix to camera
+		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+	})
+
+	// update artoolkit on every frame
+	onRenderFcts.push(function(){
+		if( arToolkitSource.ready === false )	return
+
+		arToolkitContext.update( arToolkitSource.domElement )
+	})
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          Create a ArMarkerControls
+	////////////////////////////////////////////////////////////////////////////////
+
+
+	var hasHash = location.hash.substring(1) !== '' ? true : false
+	if( hasHash === true ){
+		var urlOptions = JSON.parse(location.hash.substring(1))
+	}else{
+		var urlOptions = {
+			appMode : 'areaUsing',
+			markersHelper: true,
+		}
+	}
+	window.urlOptions = urlOptions
+	window.reload = function(){
+		location.hash = '#'+JSON.stringify(urlOptions)
+		location.reload()
+	}
+
+	if( location.hash.substring(1) === '' )	location.hash = '#'+JSON.stringify(urlOptions)
+	
+	if( urlOptions.appMode === 'areaUsing' && localStorage.getItem('ARjsMultiMarkerFile') === null ){
+		alert('cant find sample multimarker.')
+		urlOptions.appMode = 'areaHardcoded'
+	}
+	
+	
+	if( urlOptions.appMode === 'areaUsing' ){
+		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
+		multiMarkerPlay(localStorage.getItem('ARjsMultiMarkerFile'))
+	}else if( urlOptions.appMode === 'areaHardcoded' ){
+		multiMarkerPlayHarcoded()
+	}else{
+		console.assert('unknown appMode', appMode)
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+
+	
+	// var markersControlsParameters = [
+	// 	{
+	// 		type : 'pattern',
+	// 		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+	// 	},
+	// 	{
+	// 		type : 'pattern',
+	// 		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
+	// 	},
+	// ]
+
+	// pattern a/b/c
+	var markersControlsParameters = [
+		{
+			type : 'pattern',
+			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.a',
+		},
+		{
+			type : 'pattern',
+			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.b',
+		},
+		{
+			type : 'pattern',
+			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.c',
+		},
+		{
+			type : 'pattern',
+			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.f',
+		},
+	]
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+	var learnerParameters = {
+		backURL : 'player.html',
+		markersControlsParameters: markersControlsParameters,
+	}
+	// debugger
+	document.querySelector('#recordButton').href = 'learner.html#'+JSON.stringify(learnerParameters)
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+	function multiMarkerPlay(multiMarkerFile){
+		// build a markerRoot
+		var markerRoot = new THREE.Group()
+		scene.add(markerRoot)
+		
+		// build a multiMarkerControls
+		var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arToolkitContext, scene, markerRoot, multiMarkerFile)
+
+
+		if( urlOptions.markersHelper === true ){
+			multiMarkerControls.subMarkersControls.forEach(function(subMarkerControls){
+				// add an helper to visuable each sub-marker
+				var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
+				subMarkerControls.object3d.add( markerHelper.object3d )		
+			})			
+		}
+
+		// build a smoothedControls
+		var smoothedRoot = new THREE.Group()
+		scene.add(smoothedRoot)
+		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
+		onRenderFcts.push(function(delta){
+			smoothedControls.update(markerRoot)
+		})	
+
+		
+		var markerScene = new THREE.Scene
+		// markerRoot.add(markerScene)
+		smoothedRoot.add(markerScene)
+
+		// compute the average matrix of this markerFile
+		var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
+		averageMatrix.decompose(markerScene.position, markerScene.quaternion, markerScene.scale)
+		markerScene.scale.multiplyScalar(3)
+
+		//////////////////////////////////////////////////////////////////////////////////
+		//		add an object in the scene
+		//////////////////////////////////////////////////////////////////////////////////
+		
+
+		var geometry = new THREE.TorusGeometry(0.3,0.2,20,30);	
+		// var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
+
+		var videoTexture = new THREE.VideoTexture(arToolkitSource.domElement)
+		videoTexture.minFilter = THREE.NearestFilter
+		videoTexture.wrapS = videoTexture.wrapT = THREE.ClampToEdgeWrapping;
+		var material = new THREEx.RefractionMaterial(videoTexture)
+	
+		// var material	= new THREE.MeshNormalMaterial(); 
+		var mesh	= new THREE.Mesh( geometry, material );
+		mesh.position.y	= 0.5
+		markerScene.add( mesh );
+		
+		onRenderFcts.push(function(delta){
+			// mesh.rotation.x += delta * Math.PI
+			mesh.rotation.y += delta * Math.PI
+		})
+	}
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		Hard coded
+	//////////////////////////////////////////////////////////////////////////////
+
+	function multiMarkerPlayHarcoded(){
+		
+		var interMarkerWidth = 2.61
+
+		var multiMarkerFile = {
+			subMarkersControls : [
+				{
+					parameters: {
+						type : 'pattern',
+						patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.a',
+					},
+					poseMatrix: new THREE.Matrix4().makeTranslation(0,0, 0).toArray()
+				},
+				{
+					parameters: {
+						type : 'pattern',
+						patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.b',
+					},
+					poseMatrix: new THREE.Matrix4().makeTranslation(interMarkerWidth,0, 0).toArray()
+				},
+				{
+					parameters: {
+						type : 'pattern',
+						patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.c',
+					},
+					poseMatrix: new THREE.Matrix4().makeTranslation(interMarkerWidth*2, 0, 0).toArray()
+				},
+				{
+					parameters: {
+						type : 'pattern',
+						patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.f',
+					},
+					poseMatrix: new THREE.Matrix4().makeTranslation(interMarkerWidth*2, 0, interMarkerWidth).toArray()
+				},
+			]
+		}
+
+		multiMarkerPlay(JSON.stringify(multiMarkerFile))
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		render the whole thing on the page
+	//////////////////////////////////////////////////////////////////////////////////
+	var stats = new Stats();
+	document.body.appendChild( stats.dom );
+	// render the scene
+	onRenderFcts.push(function(){
+		renderer.render( scene, camera );
+		stats.update();
+	})
+
+	// run the rendering loop
+	var lastTimeMsec= null
+	requestAnimationFrame(function animate(nowMsec){
+		// keep looping
+		requestAnimationFrame( animate );
+		// measure time
+		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+		lastTimeMsec	= nowMsec
+		// call each update function
+		onRenderFcts.forEach(function(onRenderFct){
+			onRenderFct(deltaMsec/1000, nowMsec/1000)
+		})
+	})
+})()
+</script></body>

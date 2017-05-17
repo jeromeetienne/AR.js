@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/css/materialize.min.css"  media="screen,projection"/>
+        
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <!-- https://davidshimjs.github.io/qrcodejs/ -->
+        <script src='https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js'></script>
+
+        <!-- Include pdfMake - http://pdfmake.org/ -->
+ 	<script src='vendor/pdfMake/pdfmake.min.js'></script>
+ 	<script src='vendor/pdfMake/vfs_fonts.js'></script>
+</head>
+
+<body>
+
+        <div class="row" id='row-ui' >
+                <div class="col s12">
+                        <a class="waves-effect waves-light btn" onclick='hideUI()'><i class="material-icons right">reorder</i>Hide</a>
+                        <h1 class='center-align'>AR-Code Generator</h1>
+                </div>
+
+                <div class="col s12">
+                        <input id="urlQrCode" type="text">
+                </div>
+
+                <div class="input-field col s3">
+                        <input type="checkbox" id="saveInUrl" />
+                        <label for="saveInUrl">Save in url</label>
+                        <input type="checkbox" id="hideUiEnabled" type="hidden"/>
+                </div>                
+
+
+                <div class="input-field col s4 offset-s4">
+                        <a href='https://medium.com/arjs/ar-code-a-fast-path-to-augmented-reality-60e51be3cbdf' target='_blank' class="waves-effect waves-light btn-large">
+                                <i class="material-icons right">info</i>
+                                Info
+                        </a>
+                        <a onclick='generatePdf()' class="waves-effect waves-light btn-large" title='Generate a PDF instruction page'>Pdf</a>
+                </div>                
+
+        </div>
+        <div class="row">
+                <div class="col s2">
+                        <a class="waves-effect waves-light btn" onclick='showUI()' id='btnShowUI' style='display:none;'><i class="material-icons right">reorder</i>Show</a>
+                </div>                
+                <div class="col s10"></div>
+                <div class="col s12">
+                        <div class="valign-wrapper">
+                                <div class="valign center" style="width: 100%;" id='arcode-container' ></div>
+                        </div>
+                </div>                
+        </div>
+        
+</div>
+
+
+        
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
+
+        <script type="text/javascript">
+        $(document).ready(function() {
+                Materialize.updateTextFields();
+        });
+        </script>
+
+<script>
+
+
+function hideUI(){
+        document.querySelector('#hideUiEnabled').checked = true
+        updateARCode()
+}
+
+function showUI(){
+        document.querySelector('#hideUiEnabled').checked = false
+        updateARCode()
+}
+
+document.querySelector('#urlQrCode').addEventListener('change', updateARCode)
+document.querySelector('#saveInUrl').addEventListener('change', updateARCode)
+
+//////////////////////////////////////////////////////////////////////////////
+//                PDF Generation
+//////////////////////////////////////////////////////////////////////////////
+
+function generatePdf(){
+        console.log('generate PDF')
+        
+        var urlQrCode = document.querySelector('#urlQrCode').value
+        
+        var docDefinition = {
+                header: [
+                        {
+                                text: 'AR.js by @jerome_etienne - https://github.com/jeromeetienne/ar.js',
+                                margin: [0, 0],
+                                alignment: 'center',
+                        },                        
+                ],
+                content: [
+                        {
+                                image: canvas.toDataURL(),
+                                width: 320,
+                                alignment: 'center',
+                        },
+                        {
+                                text: [                                        
+                                        {
+                                                text: '\nAR-CODE ',
+                        			fontSize: 30,
+                        			bold: true,
+                                        },
+                                        {
+                                                text: 'for',
+                        			fontSize: 20,
+        			                bold: false,
+                                        }
+                                ],
+                                alignment: 'center',
+                        },
+                        {
+                                text: urlQrCode,
+                                alignment: 'center',
+                                margin: [0, 10],
+                        },
+                        {
+                                text: 'How to Use an AR-Code ?',
+        			fontSize: 24,
+                                margin: [0, 20],
+                        },
+                        {
+                                text: 'Step 1 - Get a Phone',
+        			bold: true,
+        			fontSize: 15,
+                        },
+                        {
+                                text: [
+                                        'It works on any browser with WebGL and WebRTC. So android works. Windows mobile works. ',
+                                        'IOS doesn\'t work unfortunately. IOS safari doesn\'t support WebRTC at the moment.',
+                                        ' Apple is currently working on it tho. Let\'s hope they join the party soon!'
+                                ],
+                                margin: [0, 10, 0 , 30],
+        		},
+                        {
+                                text: 'Step 2 - Scan the QR-Code',
+        			bold: true,
+        			fontSize: 15,
+                        },
+                        {
+                                text: [
+                                        'It will open your web browser to an augmented reality page. ',
+                                        'It will open the url from the qr-code to some AR.js content. ',
+                                        'Then your phone will use the camera to find out the position ',
+                                        'of the marker and display 3d content on top of it. ',
+                                ],
+                                margin: [0, 10, 0 , 30],
+        		},        
+                        {
+                                text: 'Step 3 - Point the Phone at the Hiro Marker',
+        			bold: true,
+        			fontSize: 15,
+                        },
+                        {
+                                text: [
+                                        'You are ',
+                                        { text: 'DONE', bold: true, },
+                                        '! Enjoy the Augmented Reality :)',                                        
+                                ],
+                                margin: [0, 10, 0 , 30],
+        		},        
+                ],
+        }
+        pdfMake.createPdf(docDefinition).open();
+        // pdfMake.createPdf(docDefinition).download('optionalName.pdf');
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
+//                build canvas 
+//////////////////////////////////////////////////////////////////////////////
+var canvas = document.createElement('canvas');
+document.querySelector('#arcode-container').appendChild(canvas)
+canvas.width  = 1024;
+canvas.height = 1024;
+canvas.style.width  = '512px';
+canvas.style.height = '512px';
+
+var context = canvas.getContext('2d')
+
+var hiroImage = new Image;
+hiroImage.onload = function() {
+        console.log('hiro image loaded')
+        
+        if( location.hash.substr(1) !== '' ){
+                var parameters = JSON.parse(decodeURIComponent(location.hash.substr(1)))
+                document.querySelector('#urlQrCode').value = parameters.urlQrCode
+                document.querySelector('#hideUiEnabled').checked = parameters.hideUiEnabled
+                document.querySelector('#saveInUrl').checked = true
+// debugger;
+        }else{
+                document.querySelector('#urlQrCode').value = 'https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html'
+        }
+
+        updateARCode()
+}
+hiroImage.src = '../../data/images/hiro.png';
+
+function updateARCode(){
+        var urlQrCode = document.querySelector('#urlQrCode').value
+        var hideUiEnabled = document.querySelector('#hideUiEnabled').checked
+        var saveInUrl = document.querySelector('#saveInUrl').checked
+        var parameters = {
+                urlQrCode : urlQrCode,
+                hideUiEnabled: hideUiEnabled,
+        }
+        
+        // generate the ar-code canvas
+        generateArCodeCanvas(canvas, urlQrCode, function onReady(){
+                console.log('ar-code generated for', urlQrCode)
+        })
+
+        if( hideUiEnabled === true ){
+                document.querySelector('#row-ui').style.display = 'none'
+                document.querySelector('#btnShowUI').style.display = 'block'
+        }else{
+                document.querySelector('#row-ui').style.display = 'block'
+                document.querySelector('#btnShowUI').style.display = 'none'                
+        }
+        
+        //////////////////////////////////////////////////////////////////////////////
+        //                update location.hash if suitable
+        //////////////////////////////////////////////////////////////////////////////
+        if( saveInUrl === true ){
+                location.hash = '#' + encodeURIComponent(JSON.stringify(parameters))
+        }else{
+                // magic to remove the old location.hash
+                history.pushState("", document.title, location.pathname + location.search);
+        }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//                Code Separator
+//////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Generate AR-Code
+ */
+function generateArCodeCanvas(canvas, text, onLoad){
+        var context = canvas.getContext('2d')
+        
+        context.drawImage(hiroImage, 0, 0, canvas.width, canvas.height);
+
+        generateQrCodeImage(text, function onLoaded(qrCodeImage){
+                console.log('qrcode generated')
+                context.drawImage(qrCodeImage,canvas.width*0.50,canvas.height*0.30,canvas.width*0.20, canvas.height*0.20);      
+                
+                onLoad && onLoad()          
+        })
+}
+
+/**
+ * Generate AR-Code
+ */
+function generateQrCodeImage(text, onLoaded){
+        var container = document.createElement('div')
+
+        var qrcode = new QRCode(container, {
+                text: text,
+                width: 256,
+                height: 256,
+                colorDark : '#000000',
+                colorLight : '#ffffff',
+                // correctLevel : QRCode.CorrectLevel.H
+        });
+
+        var qrCodeImage = container.querySelector('img')
+        qrCodeImage.addEventListener('load', function(){
+                onLoaded(qrCodeImage)
+        })
+        
+}
+                
+</script></body></html>

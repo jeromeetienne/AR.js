@@ -10,6 +10,7 @@
 <script src="../threex-artoolkitsource.js"></script>
 <script src="../threex-artoolkitcontext.js"></script>
 <script src="../threex-artoolkitprofile.js"></script>
+<script src="../threex-arbasecontrols.js"></script>
 <script src="../threex-armarkercontrols.js"></script>
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
@@ -21,6 +22,7 @@
 <div style='position: absolute;bottom: 0;right: 0;background-color: rgba(255,255,255,0.4); padding: 1em; z-index: 1;'>
 	<label title='Select the profile you like'>Profile :
 		<select id='artoolkitProfile'>
+		  <option value="desktop-fast">desktop-fast</option> 
 		  <option value="desktop-normal">desktop-normal</option> 
 		  <option value="phone-normal">phone-normal</option>
 		  <option value="phone-slow">phone-slow</option>
@@ -89,8 +91,8 @@
 
 	var artoolkitProfile = new THREEx.ArToolkitProfile()
 	artoolkitProfile.sourceWebcam().hiroMarker()
-	// artoolkitProfile.sourceVideo('../../data/videos/headtracking.mp4').kanjiMarker();
-	// artoolkitProfile.sourceImage('../../data/images/img.jpg').hiroMarker()
+	// artoolkitProfile.sourceVideo(THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4').kanjiMarker();
+	// artoolkitProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg').hiroMarker()
 	// artoolkitProfile.performance('desktop-fast')
 	
 	if( localStorage.getItem('artoolkitPerformanceProfile') !== null ){
@@ -160,7 +162,7 @@
 	mesh.position.y	= geometry.parameters.height/2
 	markerRoot.add( mesh );
 	
-	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
+	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= 0.5

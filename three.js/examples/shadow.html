@@ -9,6 +9,7 @@
 <!-- include threex.artoolkit -->
 <script src="../threex-artoolkitsource.js"></script>
 <script src="../threex-artoolkitcontext.js"></script>
+<script src="../threex-arbasecontrols.js"></script>
 <script src="../threex-armarkercontrols.js"></script>
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
@@ -79,11 +80,11 @@ renderer.shadowMap.enabled = true;
 
 		// to read from an image
 		// sourceType : 'image',
-		// sourceUrl : '../../data/images/img.jpg',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',
 
 		// to read from a video
 		// sourceType : 'video',
-		// sourceUrl : '../../data/videos/headtracking.mp4',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',
 	})
 
 	arToolkitSource.init(function onReady(){
@@ -103,9 +104,8 @@ renderer.shadowMap.enabled = true;
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
-		cameraParametersUrl: '../../data/data/camera_para.dat',
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
 		detectionMode: 'mono',
-		imageSmoothingEnabled: false,
 		// maxDetectionRate: 30,
 		// canvasWidth: 80*3,
 		// canvasHeight: 60*3,
@@ -133,8 +133,8 @@ renderer.shadowMap.enabled = true;
 
 	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
 		type : 'pattern',
-		patternUrl : '../../data/data/patt.hiro',
-		// patternUrl : '../../data/data/patt.kanji',
+		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
 		// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
 		changeMatrixMode: 'cameraTransformMatrix'
 	})
@@ -160,7 +160,7 @@ renderer.shadowMap.enabled = true;
 	// markerRoot.add( mesh );
 
 	;(function(){
-		var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32); // make it slightly larger for better view
+		var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16); // make it slightly larger for better view
 		var material	= new THREE.MeshNormalMaterial();
 		var material	= new THREE.MeshLambertMaterial();
 		var mesh	= new THREE.Mesh( geometry, material );

@@ -152,6 +152,10 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 
 		devices.forEach(function(device) {
 			if( device.kind !== 'videoinput' )	return
+
+			// TODO super unclear how to get the backward facing camera...
+
+			// if( constraints.video.optional !== undefined )	return
 			constraints.video.optional = [{sourceId: device.deviceId}]
 		});
 
@@ -171,7 +175,7 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 			document.body.addEventListener('click', function(){
 				domElement.play();
 			})
-			domElement.play();
+			// domElement.play();
 		
 			// wait until the video stream is ready
 			var interval = setInterval(function() {
@@ -194,7 +198,8 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 //          handle resize
 ////////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArToolkitSource.prototype.onResize = function(rendererDomElement){
+THREEx.ArToolkitSource.prototype.onResize = function(mirrorDomElements){
+	var _this = this
 	var screenWidth = window.innerWidth
 	var screenHeight = window.innerHeight
 
@@ -235,11 +240,15 @@ THREEx.ArToolkitSource.prototype.onResize = function(rendererDomElement){
 		this.domElement.style.marginLeft = '0px'
 	}
 	
-	if( rendererDomElement !== undefined ){
-		// copy arToolkitSource.domElement position to renderer.domElement
-		rendererDomElement.style.width = this.domElement.style.width
-		rendererDomElement.style.height = this.domElement.style.height	
-		rendererDomElement.style.marginLeft = this.domElement.style.marginLeft
-		rendererDomElement.style.marginTop = this.domElement.style.marginTop
-	}
+	// honor default parameters
+	if( mirrorDomElements === undefined )	mirrorDomElements = []
+	if( mirrorDomElements instanceof Array === false )	mirrorDomElements = [mirrorDomElements]	
+
+	// Mirror _this.domElement.style to mirrorDomElements
+	mirrorDomElements.forEach(function(domElement){
+		domElement.style.width = _this.domElement.style.width
+		domElement.style.height = _this.domElement.style.height	
+		domElement.style.marginLeft = _this.domElement.style.marginLeft
+		domElement.style.marginTop = _this.domElement.style.marginTop
+	})
 }

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
+<!-- three.js library -->
+<script src='../../vendor/three.js/build/three.js'></script>
+<script src='../../vendor/three.js/examples/js/libs/stats.min.js'></script>
+<!-- jsartookit -->
+<script src='../../../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
+<script src='../../../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
+<!-- include threex.artoolkit -->
+<script src='../../../threex-artoolkitsource.js'></script>
+<script src='../../../threex-artoolkitcontext.js'></script>
+<script src='../../../threex-artoolkitprofile.js'></script>
+<script src='../../../threex-arbasecontrols.js'></script>
+<script src='../../../threex-armarkercontrols.js'></script>
+<script src='../../../threex-armarkerhelper.js'></script>
+<script src='../../../threex-arsmoothedcontrols.js'></script>
+<script>THREEx.ArToolkitContext.baseURL = '../../../'</script>
+
+<script src='../threex-armultimarkercontrols.js'></script>
+<script src='../threex-armultimarkerlearning.js'></script>
+
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
+	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Multi marker
+	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+	<br/>
+	Status:
+	<span id='appStatus' style='font-weight: bolder;'>stopped</span>
+	- 
+	File:
+	<span id='dataStatus' style='font-weight: bolder;'>none</span>
+	<br/>
+	Area learner : 
+	<a href='javascript:void(0)' onclick='onRecordClear()'>clear</a>
+	-
+	<a href='javascript:void(0)' onclick='onRecordStart()'>start</a>
+	-
+	<a href='javascript:void(0)' onclick='onRecordStop()'>stop</a>
+</div>
+<div style='position: absolute; bottom: 16px; right: 16px; z-index:2';>
+	<img id='recordStartButton' src="images/record-start.png" width='64px'  height='64px' onclick='onRecordStart()'>
+	<img id='recordStopButton' src="images/record-stop.png" width='64px'  height='64px' onclick='onRecordStop()' style='display: none;'>
+</div>
+<script>
+;(function(){
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Init
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// init renderer
+	var renderer	= new THREE.WebGLRenderer({
+		antialias	: true,
+		alpha: true
+	});
+	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+	// renderer.setPixelRatio( 2 );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.domElement.style.position = 'absolute'
+	renderer.domElement.style.top = '0px'
+	renderer.domElement.style.left = '0px'
+	document.body.appendChild( renderer.domElement );
+
+	// array of functions for the rendering loop
+	var onRenderFcts= [];
+
+	// init scene and camera
+	var scene	= new THREE.Scene();
+
+	var ambient = new THREE.AmbientLight( 0x666666 );
+	scene.add( ambient );
+
+	var directionalLight = new THREE.DirectionalLight( 0x887766 );
+	directionalLight.position.set( -1, 1, 1 ).normalize();
+	scene.add( directionalLight );
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Initialize a basic camera
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// Create a camera
+	var camera = new THREE.Camera();
+	scene.add(camera);
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          handle arToolkitSource
+	////////////////////////////////////////////////////////////////////////////////
+
+	var arToolkitSource = new THREEx.ArToolkitSource({
+		// to read from the webcam 
+		sourceType : 'webcam',
+		
+		// // to read from an image
+		// sourceType : 'image',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/multimarker.jpg'		
+
+		// to read from a video
+		// sourceType : 'video',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',	
+	})
+
+
+	arToolkitSource.init(function onReady(){
+		// handle resize of renderer
+		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])		
+	})
+	
+	// handle resize
+	window.addEventListener('resize', function(){
+		// handle arToolkitSource resize
+		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])
+	})
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          initialize arToolkitContext
+	////////////////////////////////////////////////////////////////////////////////	
+
+	// create atToolkitContext
+	var arToolkitContext = new THREEx.ArToolkitContext({
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
+		detectionMode: 'mono',
+		maxDetectionRate: 30,
+		// high accuracy of detection on purpose - important during learning
+		// canvasWidth: 80*4,
+		// canvasHeight: 60*4,
+		// debug: true,
+	})
+	// initialize it
+	arToolkitContext.init(function onCompleted(){
+		// copy projection matrix to camera
+		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+	})
+
+	// update artoolkit on every frame
+	onRenderFcts.push(function(){
+		if( arToolkitSource.ready === false )	return
+
+		arToolkitContext.update( arToolkitSource.domElement )
+	})
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		learn
+	//////////////////////////////////////////////////////////////////////////////
+	
+	var hasHash = location.hash.substring(1) !== '' ? true : false
+	if( hasHash === true ){
+		var urlOptions = JSON.parse(location.hash.substring(1))
+	}else{
+		var urlOptions = {
+			backURL : null,
+			markerControlsParameters : [],
+		}
+		alert('should not happen')
+	}
+	
+
+
+	// prepare the parameters
+	var subMarkersControls = []
+	urlOptions.markersControlsParameters.forEach(function(markerControlsParameters){
+		// create a markerRoot
+		var markerRoot = new THREE.Group()
+		scene.add(markerRoot)
+
+		// create markerControls for our markerRoot
+		var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, markerControlsParameters)
+
+
+		// TODO here put a THREEx.ArSmoothedControls behind a flag - could be useful for tunning
+		var smoothedControls = null
+		if( false ){
+			// build a smoothedControls
+			var smoothedRoot = new THREE.Group()
+			scene.add(smoothedRoot)
+			var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
+			onRenderFcts.push(function(){
+				smoothedControls.update(markerRoot)
+			})				
+		}
+
+		// add an helper to visuable each sub-marker
+		var markerHelper = new THREEx.ArMarkerHelper(markerControls)
+		if( smoothedControls !== null ){
+			smoothedControls.object3d.add( markerHelper.object3d )
+		}else{
+			markerControls.object3d.add( markerHelper.object3d )			
+		}
+		
+
+
+		
+		// store it in the parameters
+		if( smoothedControls !== null ){
+			subMarkersControls.push(smoothedControls)
+		}else {
+			subMarkersControls.push(markerControls)
+		}
+	})
+		
+	var multiMarkerLearning = new THREEx.ArMultiMakersLearning(arToolkitContext, subMarkersControls)
+// window.multiMarkerLearning = multiMarkerLearning
+	multiMarkerLearning.enabled = false
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+	
+	function onRecordStart(){
+		// cant be started, if it is already started
+		if( multiMarkerLearning.enabled === true ){
+			console.log('already started')
+			return
+		}
+		// reset previously collected statistics
+		multiMarkerLearning.resetStats()
+		
+		// enabled data collection
+		multiMarkerLearning.enabled = true
+		
+		// update application status
+		updateAppStatus()
+	}
+	function onRecordStop(){
+		// cant be stopped, if it is alread stopped
+		if( multiMarkerLearning.enabled === false ){
+			console.log('already stopped')
+		}
+		
+		// stop the application, if it is started
+		if( multiMarkerLearning.enabled === true ){
+			// stop data collection
+			multiMarkerLearning.enabled = false
+
+			// generate json file and store it
+			var jsonString = multiMarkerLearning.toJSON()
+			console.log('Writing multiMarkerFile', jsonString)
+			localStorage.setItem('ARjsMultiMarkerFile', jsonString);	
+			
+			// update application status
+			updateAppStatus()			
+		}
+		
+		// honor ?url= if present
+		if( urlOptions.backURL !== null ){
+			setTimeout(function(){
+				location.href = urlOptions.backURL				
+			}, 1)
+		}
+	}
+
+	function onRecordClear(){
+		localStorage.removeItem('ARjsMultiMarkerFile')
+		updateAppStatus()
+	}
+
+	function updateAppStatus(){
+		var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile');
+		if( multiMarkerFile === null ){
+			document.querySelector('#dataStatus').innerHTML = 'none'
+		}else{
+			var json = JSON.parse(multiMarkerFile)
+			var fileAge = Date.now() - new Date(json.meta.createdAt).getTime()
+			document.querySelector('#dataStatus').innerHTML = 'present'			
+
+			var fileAge = (Date.now() - new Date(json.meta.createdAt).getTime())/1000
+			
+			var deltaMinutes = Math.floor(fileAge / 60)
+			var deltaSecond = Math.round(fileAge % 60)
+			
+			document.querySelector('#dataStatus').innerHTML = 'present since '
+				+ String(deltaMinutes).padStart(4)
+				+ 'm' 
+				+ String(deltaSecond).padStart(2, "0")
+				+ 's'
+
+		}
+		
+		if( multiMarkerLearning.enabled === true ){
+			document.querySelector('#appStatus').innerHTML = 'running'			
+		}else{
+			document.querySelector('#appStatus').innerHTML = 'stopped'			
+		}
+
+		if( multiMarkerLearning.enabled === true ){
+			document.querySelector('#recordStartButton').style.display = 'none'
+			document.querySelector('#recordStopButton').style.display = 'inherit'
+		}else{
+			document.querySelector('#recordStartButton').style.display = 'inherit'
+			document.querySelector('#recordStopButton').style.display = 'none'			
+		}
+	}
+
+window.onRecordStart = onRecordStart
+window.onRecordStop = onRecordStop
+window.onRecordClear = onRecordClear
+	
+	updateAppStatus()
+	
+	// global click on renderer.domElement is doing a recordToggle
+	renderer.domElement.addEventListener('click', function(){
+		if( multiMarkerLearning.enabled === false ){
+			onRecordStart()
+		}else{
+			onRecordStop()
+		}		
+	})
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		render the whole thing on the page
+	//////////////////////////////////////////////////////////////////////////////////
+	var stats = new Stats();
+	document.body.appendChild( stats.dom );
+	// render the scene
+	onRenderFcts.push(function(){
+		renderer.render( scene, camera );
+		stats.update();
+	})
+
+	// run the rendering loop
+	var lastTimeMsec= null
+	requestAnimationFrame(function animate(nowMsec){
+		// keep looping
+		requestAnimationFrame( animate );
+		// measure time
+		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+		lastTimeMsec	= nowMsec
+		// call each update function
+		onRenderFcts.forEach(function(onRenderFct){
+			onRenderFct(deltaMsec/1000, nowMsec/1000)
+		})
+	})
+})()
+</script></body>

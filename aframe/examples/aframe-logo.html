@@ -6,6 +6,7 @@
 <!-- include threex.artoolkit -->
 <script src="../../three.js/threex-artoolkitcontext.js"></script>
 <script src="../../three.js/threex-artoolkitsource.js"></script>
+<script src="../../three.js/threex-arbasecontrols.js"></script>
 <script src="../../three.js/threex-armarkercontrols.js"></script>
 <!-- aframe-artoolkit -->
 <script src="../aframe-ar.js"></script>
@@ -29,12 +30,10 @@
 			<a-asset-item id="assetAframe" src="models/aframe.ply"></a-asset-item>
 		</a-assets>
 
-		<a-marker type='pattern' url='../../data/data/patt.hiro'>
 		<!-- <a-marker type='unknown'> -->
-      			<a-entity ply-model="src: #assetAframe" rotation="0 0 90" scale='0.02 0.02 0.02'></a-entity>
-		</a-marker>
+		<a-entity ply-model="src: #assetAframe" rotation='-90 0 0'scale='0.02 0.02 0.02'></a-entity>
 
-		<a-entity camera></a-entity>
+		<a-marker-camera preset='hiro'></a-marker-camera>
 	</a-scene>
 </body>
 </html>

@@ -1,0 +1,22 @@
+<body>
+<h1>Meta page for AR.js - bookmarklet</h1>	
+	
+<a href='https://sketchfab.com/models/d6c802a74a174c8c805deb20186d1877'>hand sketchfab</a>
+<br>
+<a href='viewer.html'>viewer</a>
+<br>
+	
+<script>
+	var url= `
+	javascript:(function(){ 
+		var jsCode = document.createElement('script'); 
+		jsCode.setAttribute('src', 'http://127.0.0.1:8080/three.js/examples/sketchfab/src/bookmarklet.js');
+		document.body.appendChild(jsCode);
+	}());`
+
+	var domElement = document.createElement('a')
+	domElement.innerHTML = 'bookmarklet link'
+	domElement.href = url
+	document.body.appendChild(domElement)
+	
+</script></body>

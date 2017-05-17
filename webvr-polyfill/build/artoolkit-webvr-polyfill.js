@@ -204,7 +204,6 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 
 			artoolkit.getTransMatMultiSquareRobust(this.id, i);
 			this.transMatToGLMat(this.marker_transform_mat, this.transform_mat);
-
 			for (var j=0; j<subMarkerCount; j++) {
 				var multiEachMarkerInfo = this.getMultiEachMarker(i, j);
 				if (multiEachMarkerInfo.visible >= 0) {
@@ -402,7 +401,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 	ARController.prototype.loadMultiMarker = function(markerURL, onSuccess, onError) {
 		return artoolkit.addMultiMarker(this.id, markerURL, onSuccess, onError);
 	};
-
+	
 	/**
 	 * Populates the provided float array with the current transformation for the specified marker. After 
 	 * a call to detectMarker, all marker information will be current. Marker transformations can then be 
@@ -1386,7 +1385,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 		loadCamera: loadCamera,
 
 		addMarker: addMarker,
-		addMultiMarker: addMultiMarker
+		addMultiMarker: addMultiMarker,
 
 	};
 
@@ -1526,9 +1525,14 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 
 			var path = url.split('/').slice(0, -1).join('/')
 			files = files.map(function(file) {
+				// FIXME super kludge - remove it
+				// console.assert(file !== '')
+				if( file === 'patt.hiro' || file === 'patt.kanji' || file === 'patt2.hiro' || file === 'patt2.kanji' ){
+					// debugger
+					return ['http://127.0.0.1:8080/data/data/' + file, file]
+				}
 				return [path + '/' + file, file]
 			})
-
 			ajaxDependencies(files, ok);
 		});
 	}
@@ -1580,6 +1584,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 			// console.log('ajax done for ', url);
 			var arrayBuffer = oReq.response;
 			var byteArray = new Uint8Array(arrayBuffer);
+	console.log('writeByteArrayToFS', target, byteArray.length, 'byte. url', url)
 			writeByteArrayToFS(target, byteArray, callback);
 		};
 
@@ -1630,10 +1635,14 @@ THREEx.ArMarkerCloak = function(videoTexture){
 	var material = new THREE.ShaderMaterial( {
 		vertexShader: THREEx.ArMarkerCloak.vertexShader,
 		fragmentShader: THREEx.ArMarkerCloak.fragmentShader,
+                transparent: true,
 		uniforms: {
 			texture: {
 				value: videoTexture
 			},
+                        opacity: {
+                                value: 0.5
+                        }
 		},
 		defines: {
 			updateInShaderEnabled: updateInShaderEnabled ? 1 : 0,
@@ -1641,6 +1650,7 @@ THREEx.ArMarkerCloak = function(videoTexture){
 	});
 
 	var cloakMesh = new THREE.Mesh( geometry, material );
+        cloakMesh.rotation.x = -Math.PI/2
 	this.object3d = cloakMesh
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -1824,11 +1834,12 @@ THREEx.ArMarkerCloak.vertexShader = THREEx.ArMarkerCloak.markerSpaceShaderFuncti
 THREEx.ArMarkerCloak.fragmentShader = '\n'+
 '	varying vec2 vUv;\n'+
 '	uniform sampler2D texture;\n'+
+'	uniform float opacity;\n'+
 '\n'+
 '	void main(void){\n'+
 '		vec3 color = texture2D( texture, vUv ).rgb;\n'+
 '\n'+
-'		gl_FragColor = vec4( color, 1.0);\n'+
+'		gl_FragColor = vec4( color, opacity);\n'+
 '	}'
 var THREEx = THREEx || {}
 
@@ -1838,7 +1849,7 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 	// handle default parameters
 	this.parameters = {
 		// size of the marker in meter
-		size : parameters.debug !== undefined ? parameters.debug : 1,
+		size : parameters.size !== undefined ? parameters.size : 1,
 		// type of marker - ['pattern', 'barcode', 'unknown' ]
 		type : parameters.type !== undefined ? parameters.type : 'unknown',
 		// url of the pattern - IIF type='pattern'
@@ -1850,7 +1861,7 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 	}
 
 	// sanity check
-	var possibleValues = ['pattern', 'barcode', 'unknown' ]
+	var possibleValues = ['pattern', 'barcode', 'multiMarker', 'unknown' ]
 	console.assert(possibleValues.indexOf(this.parameters.type) !== -1, 'illegal value', this.parameters.type)
 	var possibleValues = ['modelViewMatrix', 'cameraTransformMatrix' ]
 	console.assert(possibleValues.indexOf(this.parameters.changeMatrixMode) !== -1, 'illegal value', this.parameters.changeMatrixMode)
@@ -1859,7 +1870,6 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 
         // create the marker Root
 	this.object3d = object3d
-	this.object3d.name = 'Marker Root'
 	this.object3d.matrixAutoUpdate = false;
 	this.object3d.visible = false
 
@@ -1897,56 +1907,81 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 	}else if( _this.parameters.type === 'barcode' ){
 		_this.markerId = _this.parameters.barcodeValue
 		arController.trackBarcodeMarkerId(_this.markerId, _this.parameters.size);
+	}else if( _this.parameters.type === 'multiMarker' ){
+// TODO rename patternUrl into .url - as it is used in multiple parameters
+// debugger
+                arController.loadMultiMarker(_this.parameters.patternUrl, function(markerId, markerNum) {
+			_this.markerId = markerId
+                        // arController.trackPatternMarkerId(_this.markerId, _this.parameters.size);
+                });
+		arController.addEventListener('getMultiMarker', function(event) {
+			console.log('getMultiMarker')
+			if( event.data.multiMarkerId === _this.markerId ){
+				onMarkerFound(event)
+			} 
+		});
 	}else if( _this.parameters.type === 'unknown' ){
 		_this.markerId = null
 	}else{
 		console.log(false, 'invalid marker type', _this.parameters.type)
 	}
+	
 
 	// listen to the event
 	arController.addEventListener('getMarker', function(event){
 
 		if( event.data.type === artoolkit.PATTERN_MARKER && _this.parameters.type === 'pattern' ){
 			if( _this.markerId === null )	return
-			if( event.data.marker.idPatt === _this.markerId ) onMarkerFound()
+			if( event.data.marker.idPatt === _this.markerId ) onMarkerFound(event)
 		}else if( event.data.type === artoolkit.BARCODE_MARKER && _this.parameters.type === 'barcode' ){
 			// console.log('BARCODE_MARKER idMatrix', event.data.marker.idMatrix, _this.markerId )
 			if( _this.markerId === null )	return
-			if( event.data.marker.idMatrix === _this.markerId )  onMarkerFound()
+			if( event.data.marker.idMatrix === _this.markerId )  onMarkerFound(event)
 		}else if( event.data.type === artoolkit.UNKNOWN_MARKER && _this.parameters.type === 'unknown'){
-			onMarkerFound()
-		}
-
-		function onMarkerFound(){
-			// mark object as visible
-			markerObject3D.visible = true
-
-			// data.matrix is the model view matrix
-			var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
-
-			// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-			var tmpMatrix = new THREE.Matrix4().copy(_this.context._axistransformMatrix)
-			tmpMatrix.multiply(modelViewMatrix)
-			modelViewMatrix.copy(tmpMatrix)
-
-
-			// change markerObject3D.matrix based on parameters.changeMatrixMode
-			if( _this.parameters.changeMatrixMode === 'modelViewMatrix' ){
-				markerObject3D.matrix.copy(modelViewMatrix)
-			}else if( _this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
-				var cameraTransformMatrix = new THREE.Matrix4().getInverse( modelViewMatrix )
-				markerObject3D.matrix.copy(cameraTransformMatrix)
-			}else {
-				console.assert(false)
-			}
-
-			// decompose the matrix into .position, .quaternion, .scale
-			markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
+			onMarkerFound(event)
 		}
 	})
+
+	return
+	function onMarkerFound(event){
+		// mark object as visible
+		markerObject3D.visible = true
+
+		// data.matrix is the model view matrix
+		var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
+
+
+		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
+		var tmpMatrix = new THREE.Matrix4().copy(_this.context._projectionAxisTransformMatrix)
+		tmpMatrix.multiply(modelViewMatrix)
+
+		// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
+		var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
+		tmpMatrix.multiply(markerAxisTransformMatrix)
+
+		modelViewMatrix.copy(tmpMatrix)
+
+
+		// change markerObject3D.matrix based on parameters.changeMatrixMode
+		if( _this.parameters.changeMatrixMode === 'modelViewMatrix' ){
+			markerObject3D.matrix.copy(modelViewMatrix)
+		}else if( _this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
+			markerObject3D.matrix.getInverse( modelViewMatrix )
+		}else {
+			console.assert(false)
+		}
+
+		// decompose the matrix into .position, .quaternion, .scale
+		markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
+
+		// dispatchEvent
+		_this.dispatchEvent( { type: 'markerFound' } );
+	}
 }
 
-THREEx.ArMarkerControls.dispose = function(){
+Object.assign( THREEx.ArMarkerControls.prototype, THREE.EventDispatcher.prototype );
+
+THREEx.ArMarkerControls.prototype.dispose = function(){
 	this.context.removeMarker(this)
 
 	// TODO remove the event listener if needed
@@ -1974,18 +2009,18 @@ THREEx.ArToolkitContext = function(parameters){
 		// tune the maximum rate of pose detection in the source image
 		maxDetectionRate: parameters.maxDetectionRate !== undefined ? parameters.maxDetectionRate : 60,
 		// resolution of at which we detect pose in the source image
-		sourceWidth: parameters.sourceWidth !== undefined ? parameters.sourceWidth : 640,
-		sourceHeight: parameters.sourceHeight !== undefined ? parameters.sourceHeight : 480,
+		canvasWidth: parameters.canvasWidth !== undefined ? parameters.canvasWidth : 640,
+		canvasHeight: parameters.canvasHeight !== undefined ? parameters.canvasHeight : 480,
 		
 		// enable image smoothing or not for canvas copy - default to true
 		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
 		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : false,
 	}
 	
-	this._axistransformMatrix = new THREE.Matrix4()
-	// this._axistransformMatrix.multiply(new THREE.Matrix4().makeRotationX(Math.PI))
-	this._axistransformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
-	this._axistransformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
+	// set this._projectionAxisTransformMatrix to change artoolkit projection matrix axis to match usual webgl one
+	this._projectionAxisTransformMatrix = new THREE.Matrix4()
+	this._projectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
+	this._projectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
 
 	
         this.arController = null;
@@ -1993,7 +2028,10 @@ THREEx.ArToolkitContext = function(parameters){
 	this._arMarkersControls = []
 }
 
-THREEx.ArToolkitContext.baseURL = '../'
+Object.assign( THREEx.ArToolkitContext.prototype, THREE.EventDispatcher.prototype );
+
+// THREEx.ArToolkitContext.baseURL = '../'
+THREEx.ArToolkitContext.baseURL = 'https://raw.githubusercontent.com/jeromeetienne/ar.js/master/'
 THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 
 /**
@@ -2006,7 +2044,7 @@ THREEx.ArToolkitContext.prototype.getProjectionMatrix = function(srcElement){
 	var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)
 		
 	// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-	projectionMatrix.multiply(this._axistransformMatrix)
+	projectionMatrix.multiply(this._projectionAxisTransformMatrix)
 	
 	// return the result
 	return projectionMatrix
@@ -2017,13 +2055,13 @@ THREEx.ArToolkitContext.prototype.getProjectionMatrix = function(srcElement){
 //////////////////////////////////////////////////////////////////////////////
 THREEx.ArToolkitContext.prototype.init = function(onCompleted){
         var _this = this
-	var sourceWidth = this.parameters.sourceWidth
-	var sourceHeight = this.parameters.sourceHeight
+	var canvasWidth = this.parameters.canvasWidth
+	var canvasHeight = this.parameters.canvasHeight
 
-        // console.log('ArToolkitContext: _onSourceReady width', sourceWidth, 'height', sourceHeight)
+        // console.log('ArToolkitContext: _onSourceReady width', canvasWidth, 'height', canvasHeight)
         _this._cameraParameters = new ARCameraParam(_this.parameters.cameraParametersUrl, function() {
         	// init controller
-                var arController = new ARController(sourceWidth, sourceHeight, _this._cameraParameters);
+                var arController = new ARController(canvasWidth, canvasHeight, _this._cameraParameters);
                 _this.arController = arController
                 
 		arController.ctx.mozImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
@@ -2114,9 +2152,16 @@ THREEx.ArToolkitContext.prototype.update = function(srcElement){
 	// process this frame
 	arController.process(srcElement)
 
+	// dispatch event
+	this.dispatchEvent({
+		type: 'sourceProcessed'
+	});
+
+
 	// return true as we processed the frame
 	return true;
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////
 //          Code Separator
@@ -2274,7 +2319,7 @@ THREEx.ArToolkitSource = function(parameters){
 		// url of the source - valid if sourceType = image|video
 		sourceUrl : parameters.sourceUrl !== undefined ? parameters.sourceUrl : null,
 		
-		// resolution of at which we detect pose in the source image
+		// resolution of at which we initialize in the source image
 		sourceWidth: parameters.sourceWidth !== undefined ? parameters.sourceWidth : 640,
 		sourceHeight: parameters.sourceHeight !== undefined ? parameters.sourceHeight : 480,
 		// resolution displayed for the source 
@@ -2397,7 +2442,12 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 	domElement.style.height = this.parameters.displayHeight+'px'
 
 
-	if (navigator.getUserMedia == false )	console.log("navigator.getUserMedia not present in your browser");
+	if (navigator.getUserMedia === undefined ){
+		alert("WebRTC issue! navigator.getUserMedia not present in your browser");		
+	}
+	if (navigator.mediaDevices === undefined || navigator.mediaDevices.enumerateDevices === undefined ){
+		alert("WebRTC issue! navigator.mediaDevices.enumerateDevices not present in your browser");		
+	}
 
 	navigator.mediaDevices.enumerateDevices().then(function(devices) {
                 // define getUserMedia() constraints
@@ -2503,6 +2553,111 @@ THREEx.ArToolkitSource.prototype.onResize = function(rendererDomElement){
 		rendererDomElement.style.marginLeft = this.domElement.style.marginLeft
 		rendererDomElement.style.marginTop = this.domElement.style.marginTop
 	}
+}
+var THREEx = THREEx || {}
+
+THREEx.ArVideoInWebgl = function(videoTexture){	
+	var _this = this
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//	plane always in front of the camera, exactly as big as the viewport
+	//////////////////////////////////////////////////////////////////////////////
+	var geometry = new THREE.PlaneGeometry(2, 2);
+	var material = new THREE.MeshBasicMaterial({
+		// map : new THREE.TextureLoader().load('images/water.jpg'),
+		map : videoTexture,
+		// side: THREE.DoubleSide,
+		// opacity: 0.5,
+		// color: 'pink',
+		// transparent: true,
+	});
+	var seethruPlane = new THREE.Mesh(geometry, material);
+	this.object3d = seethruPlane
+	// scene.add(seethruPlane);
+	
+	// arToolkitSource.domElement.style.visibility = 'hidden'
+
+	// TODO extract the fov from the projectionMatrix
+	// camera.fov = 43.1
+	this.update = function(camera){
+		camera.updateMatrixWorld(true)
+		
+		// get seethruPlane position
+		var position = new THREE.Vector3(-0.15,0,-20)	// TODO how come you got that offset on x ???
+		var position = new THREE.Vector3(-0,0,-20)	// TODO how come you got that offset on x ???
+		seethruPlane.position.copy(position)
+		camera.localToWorld(seethruPlane.position)
+		
+		// get seethruPlane quaternion
+		camera.matrixWorld.decompose( camera.position, camera.quaternion, camera.scale );	
+		seethruPlane.quaternion.copy( camera.quaternion )
+		
+		// extract the fov from the projectionMatrix
+		var fov = THREE.Math.radToDeg(Math.atan(1/camera.projectionMatrix.elements[5])) *2;
+		
+		
+		var elementWidth = parseFloat( arToolkitSource.domElement.style.width.replace(/px$/,''), 10 )
+		var elementHeight = parseFloat( arToolkitSource.domElement.style.height.replace(/px$/,''), 10 )
+		
+		var aspect = elementWidth / elementHeight
+		
+		// camera.fov = fov
+		// if( vrDisplay.isPresenting ){
+		// 	fov *= 2
+		// 	aspect *= 2
+		// }
+		
+		// get seethruPlane height relative to fov
+		seethruPlane.scale.y = Math.tan(THREE.Math.DEG2RAD * fov/2)*position.length() 
+		// get seethruPlane aspect
+		seethruPlane.scale.x = seethruPlane.scale.y * aspect
+	}
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+	// var video = arToolkitSource.domElement;
+	// 
+	// window.addEventListener('resize', function(){
+	// 	updateSeeThruAspectUv(seethruPlane)	
+	// })
+	// video.addEventListener('canplaythrough', function(){
+	// 	updateSeeThruAspectUv(seethruPlane)
+	// })
+	// function updateSeeThruAspectUv(plane){
+	// 
+	// 	// if video isnt yet ready to play
+	// 	if( video.videoWidth === 0 || video.videoHeight === 0 )	return
+	// 
+	// 	var faceVertexUvs = plane.geometry.faceVertexUvs[0]
+	// 	var screenAspect = window.innerWidth / window.innerHeight
+	// 	var videoAspect = video.videoWidth / video.videoHeight
+	// 	
+	// 	plane.geometry.uvsNeedUpdate = true
+	// 	if( screenAspect >= videoAspect ){
+	// 		var actualHeight = videoAspect / screenAspect;
+	// 		// faceVertexUvs y 0
+	// 		faceVertexUvs[0][1].y = 0.5 - actualHeight/2
+	// 		faceVertexUvs[1][0].y = 0.5 - actualHeight/2
+	// 		faceVertexUvs[1][1].y = 0.5 - actualHeight/2
+	// 		// faceVertexUvs y 1
+	// 		faceVertexUvs[0][0].y = 0.5 + actualHeight/2
+	// 		faceVertexUvs[0][2].y = 0.5 + actualHeight/2
+	// 		faceVertexUvs[1][2].y = 0.5 + actualHeight/2
+	// 	}else{
+	// 		var actualWidth = screenAspect / videoAspect;
+	// 		// faceVertexUvs x 0
+	// 		faceVertexUvs[0][0].x = 0.5 - actualWidth/2
+	// 		faceVertexUvs[0][1].x = 0.5 - actualWidth/2
+	// 		faceVertexUvs[1][0].x = 0.5 - actualWidth/2
+	// 		
+	// 		// faceVertexUvs x 1
+	// 		faceVertexUvs[0][2].x = 0.5 + actualWidth/2
+	// 		faceVertexUvs[1][1].x = 0.5 + actualWidth/2
+	// 		faceVertexUvs[1][2].x = 0.5 + actualWidth/2
+	// 	}
+	// }
+
 }
 function ARToolKitFrameData(arToolKitSourceOptions, arToolKitContextOptions, arMarkerControlsOptions){
 	var _this = this

@@ -1,12 +1,107 @@
-- see about an example of videoinwebgl + vreffect
+- do a webvr demo with a hole in the ground. - good for tango
+  - possible demo: hole in the wall, refraction, liquid marker but on all the wall
+  - code a webvr demo
+ 
+- TODO super unclear how to get the backward facing camera...
+
+
+- put refraction in a threex, same for hole-in-the-wall and liquid-markers
+  - in examples/threex/
+  - thus i can reuse them
+  - apply to webvr and to multi marker
+  - refraction - large torus 
+  - liquid-markers - multi plane ? video with neo effect
+  - hole in the wall - aka the duck pool
+  - hole in the wall - actual portal
+
+- currently webvr is able to do location already
+  - why wouldnt i code it all in webvr location, without the stereo rendering
+  - well it is too early. it is better to make it easier to reuse.
+  - webvr tango isnt mature enougth
+
+- release soon and start doing dev/master
+  - create a dev branch
+  - release AR.js as 1.2
+  - what about the communication ?
+  - make a post on what is new in AR.js
+  - ISSUE: i need to deploy dev on gh-pages it helps with https during dev
+
 - redo parameters-tuning.html
   - all parameters exposed as button - stored as json in url
   - to replace the demo.html in a-frame - which is super broken anyway
+  - 3 groups of parameters : source, context, controls. make it 3 group on screen too
+
+---
+
+- do the initial tunning of camera resolution to have the same aspect as the screen resolution
+  - better precision for my cpu
+  - currently it is doing 640x480 by default
+  - as it is supposed to be fullscreen, get the screen resolution, instead of the window resolution
+    - thus no resize being late issue
+
+---
+
+- DONE bug in resize + debug in context
+  - API is still crap tho
+- DONE do the tweening + disapearance with timeout in threex-armarkersmoother.js
+  - this is a controls which read a armarkercontrols and output a new smoothed root
+  - make a possible delay in the appearance and disapearance
+- DONE put armarkerhelper else where
+- DONE do a threex.armarkershelper.js something which display info on the marker
+  - which pattern, etc...
+  - an axis too
+  - like you did in threex.arealearning.js
+  - if controls.parameters.helperEnabled: true, then the controls will add the helper automatically
+
+
+- about.me in ar - augmented.club - augmented.whoswho - augmented.cat - augmented.fans - ar.codes
+  - multiple link
+  - twitter, avatar, linkedin, facebook
+  - all stored in the url. so all the states is in the network
+  - avatar at the center, each link graviting around, with exploding entrance like in https://vimeo.com/6264709
+  - minimal: twitter avatar, username, twitter logo
+  - twitter logo model - https://sketchfab.com/models/60aedf8d974d481995e196225fb0bd2e
+  - logo in voxel ? https://sketchfab.com/models/8da01234347a4193b06f0b2f07113d40
+  - sketchfab logo - https://sketchfab.com/models/585ace7e32b44d93bb1cecb456488934
+  - gravatar from the email - http://en.gravatar.com/site/implement/hash/
+
+- release ar.js
+  - start working in dev branch
+  - more frequent release.
+
+- moving three.js/ at the root ?
+  - it seems more natural. But there is no emergency
+  - webvr and aframe in their own repository now that it is more stable ?
+
+- for refraction, do some deforming mirror effect
+  - put dat.gui in it
+  - various shape which will act as mirrors
+  - cylinder with shrinked middle, dilated middle
+  - animated geometry ?
+
+- see about an example of videoinwebgl + vreffect
+- work on the stereo thing - make the webvr stuff
+  - suddently your demo would work on any webvr device
+  - does this work if i port video-in-webvr into aframe ? what if we go in webvr mode ?
+
+- what to do with profile
+  - should it be the default ?
+  - at least on a-frame it should be the default because it is targeted at easy
+  - by default, the setting should be the most common one. 
+  - aka the one of a phone
+
+- "Augmented Reality in WebVR" as WebVR experiments... It has a nice twist that 
+  i like :)  http://www.blog.google/products/google-vr/come-play-webvr-experiments/
+
+- DONE fix the multimarker and the symlink - it prevents updating ar.js gh-pages
+- DONE add show/hide into arcode.html url
+  - thus the apps workflow is finished
+- DONE do a build file
+  threejs/build/ar.js
+  threejs/build/ar.min.js
 
 - DONE re-integrate dead reckoning
   - rename motion prediction into deadreckoningcontrols - more precise
-
-
 - DONE put THREEx.ArToolkitContext.baseURL = '../' in all demo
 - DONE add fish in pool hole-in-the-wall
   - https://blog.int3ractive.com/2012/05/fish-boids-threejs-demo.html
@@ -21,32 +116,8 @@
   - it can be like the finger in matrix - https://www.youtube.com/watch?v=b2MSF35IxVE&feature=youtu.be&t=98
   - http://mrdoob.com/lab/javascript/webgl/voxels_liquid/index.html
 
-# star war hologram
-- mvp DONE
-- DONE imported shader from badtvpproc - http://jeromeetienne.github.io/threex.badtvpproc/examples/demo.html
-- take sound some badtvpproc
-- maybe some particules
-- get video: (i) write text (ii) record it (iii) minimal editing
-- do business card
   
-# Multimarker
-- how to say 'those markers will start act as one'
-- actually print 6 cards with matrix markers on simple papers, and play with them
-- you need to ensure this is working as a setup
-- multipattern seems to work on old version... not on new version
-  - git checkout 8510249f1d3c20d24bcce2350b95b67c28495971
-  - make it work on new version too
-- first integrate the multi pattern in ar.js
-- then do it dynamically
-- multiple pattern
-- multiple matrix - this one seems bogus even on a old one
-- algo: 
-  1. the user put all the marker on the table
-  2. this is deemed the stable positional
-  3. from all those positions, build a Multimarker
-  4. init artoolkit with this multimarker
-- this is all about programmation, no subtle algo
-- see https://github.com/artoolkit/jsartoolkit5/issues/34
+
 
 # webvr-polyfill
 - GOAL: works well using only the positional tracking, not the stereo display

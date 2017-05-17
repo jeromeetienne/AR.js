@@ -10,7 +10,7 @@
 <script src="../threex-artoolkitsource.js"></script>
 <script src="../threex-artoolkitcontext.js"></script>
 <script src="../threex-artoolkitprofile.js"></script>
-<script src="../threex-armarkercontrols.js"></script>
+<script src="../threex-arbasecontrols.js"></script>
 <script src="../threex-armarkercontrols.js"></script>
 <script src="deadreckoning/threex-deadreckoningcontrols.js"></script>
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
@@ -68,11 +68,11 @@
 		
 		// to read from an image
 		// sourceType : 'image',
-		// sourceUrl : '../../data/images/img.jpg',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
 
 		// to read from a video
 		// sourceType : 'video',
-		// sourceUrl : '../../data/videos/headtracking.mp4',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
 	})
 
 	arToolkitSource.init(function onReady(){
@@ -92,7 +92,7 @@
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
-		cameraParametersUrl: '../../data/data/camera_para.dat',
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
 		detectionMode: 'mono',
 		canvasWidth: 80*4,
 		canvasHeight: 60*4,
@@ -122,8 +122,8 @@
 if( false ){
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
-		patternUrl : '../../data/data/patt.hiro',
-		// patternUrl : '../../data/data/patt.kanji',
+		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
 	})
 }else{	
 	var deadReckoningControls = new THREEx.DeadReckoningControls(markerRoot)
@@ -136,8 +136,8 @@ if( false ){
 
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, knownPositionMesh, {
 		type : 'pattern',
-		patternUrl : '../../data/data/patt.hiro',
-		// patternUrl : '../../data/data/patt.kanji',
+		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
 	})
 	
 	artoolkitMarker.addEventListener('markerFound', function(event){
@@ -168,7 +168,7 @@ if( false ){
 	mesh.position.y	= geometry.parameters.height/2
 	markerRoot.add( mesh );
 	
-	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
+	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= 0.5

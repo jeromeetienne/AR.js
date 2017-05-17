@@ -11,12 +11,12 @@
 	<a-scene embedded artoolkit='sourceType: webcam;'>
 		<!-- handle unknown marker -->
 		<a-marker type='unknown'>
-			<a-box depth="1" height="1" width="1" position='0 0 0.5' material='opacity: 0.5; side:double; color:blue;'></a-box>
+			<a-box depth="1" height="1" width="1" position='0 0.5 0' material='opacity: 0.5; side:double; color:blue;'></a-box>
 		</a-marker>
 
 		<!-- handle hiro marker -->
 		<a-marker preset='hiro'>
-			<a-box position='0 0 0.5' material='opacity: 0.5; side: double;color:red;'>
+			<a-box position='0 0.5 0' material='opacity: 0.5; side: double;color:red;'>
 				<a-torus-knot radius='0.27' radius-tubular='0.05'>
 					<a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
 				</a-torus-knot>
@@ -25,7 +25,7 @@
 		
 		<!-- handle kanji marker -->
 		<a-marker preset='kanji'>
-			<a-box position='0 0 0.5' material='opacity: 0.5; side: double;color:green;'>
+			<a-box position='0 0.5 0' material='opacity: 0.5; side: double;color:green;'>
 				<a-torus-knot radius='0.27' radius-tubular='0.05'>
 					<a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
 				</a-torus-knot>

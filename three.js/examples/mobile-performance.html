@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 <!-- three.js library -->
-<script src='vendor/three.js/build/three.js'></script>
+<script src='vendor/three.js/build/three.min.js'></script>
 <script src="vendor/three.js/examples/js/libs/stats.min.js"></script>
-<!-- jsartookit -->
-<script src="../vendor/jsartoolkit5/build/artoolkit.min.js"></script>
-<script src="../vendor/jsartoolkit5/js/artoolkit.api.js"></script>
-<!-- include threex.artoolkit -->
-<script src="../threex-artoolkitsource.js"></script>
-<script src="../threex-artoolkitcontext.js"></script>
-<script src="../threex-armarkercontrols.js"></script>
+<!-- ar.js -->
+<script src="../build/ar.min.js"></script>
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
@@ -39,13 +34,6 @@
 
 	// init scene and camera
 	var scene	= new THREE.Scene();
-
-	var ambient = new THREE.AmbientLight( 0x666666 );
-	scene.add( ambient );
-
-	var directionalLight = new THREE.DirectionalLight( 0x887766 );
-	directionalLight.position.set( -1, 1, 1 ).normalize();
-	scene.add( directionalLight );
 	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
@@ -62,14 +50,14 @@
 	var arToolkitSource = new THREEx.ArToolkitSource({
 		// to read from the webcam 
 		sourceType : 'webcam',
-		
+
 		// to read from an image
 		// sourceType : 'image',
-		// sourceUrl : '../../data/images/img.jpg',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
 
 		// to read from a video
 		// sourceType : 'video',
-		// sourceUrl : '../../data/videos/headtracking.mp4',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
 	})
 
 	arToolkitSource.init(function onReady(){
@@ -89,7 +77,7 @@
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
-		cameraParametersUrl: '../../data/data/camera_para.dat',
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
 		detectionMode: 'mono',
 		maxDetectionRate: 30,
 		canvasWidth: 80*3,
@@ -117,8 +105,8 @@
 	scene.add(markerRoot)
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
-		patternUrl : '../../data/data/patt.hiro'
-		// patternUrl : '../../data/data/patt.kanji'
+		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji'
 	})
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -136,7 +124,7 @@
 	mesh.position.y	= geometry.parameters.height/2
 	markerRoot.add( mesh );
 	
-	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,32,32);
+	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= 0.5

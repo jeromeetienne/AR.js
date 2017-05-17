@@ -1,5 +1,11 @@
 # 1.0.1-dev - Current
 
+- added smoothedControls - everything tunable via parameters
+  - it applies LERP for position/quaternion/scale on sub-controls
+  - if display controls object3d when sub-controls has been visible for minVisibleDelay
+  - if display controls object3d when sub-controls has been unvisible for minUnvisibleDelay
+- did THREEx.ArMarkerHelper to help visualize marker
+- AR-Code generator - see [AR-Code Generator](https://jeromeetienne.github.io/AR.js/three.js/examples/arcode.html)
 - liquid markers are in!
   [water tweet](https://twitter.com/jerome_etienne/status/844681159112036356) -
   [boing tweet](https://twitter.com/jerome_etienne/status/845646514814947328)

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
+<!-- three.js library -->
+<script src='../vendor/three.js/build/three.js'></script>
+<script src='../vendor/three.js/examples/js/modifiers/ExplodeModifier.js'></script>
+<script src='../vendor/three.js/examples/js/modifiers/TessellateModifier.js'></script>
+<script src='../vendor/three.js/examples/js/libs/stats.min.js'></script>
+<!-- jsartookit -->
+<script src='../../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
+<script src='../../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
+<!-- include threex.artoolkit -->
+<script src='../../threex-artoolkitsource.js'></script>
+<script src='../../threex-artoolkitcontext.js'></script>
+<script src='../../threex-artoolkitprofile.js'></script>
+<script src='../../threex-armarkercontrols.js'></script>
+<script src='../../threex-arsmoothedcontrols.js'></script>
+<script>THREEx.ArToolkitContext.baseURL = '../../'</script>
+
+<script type="x-shader/x-vertex" id="vertexshader">
+	uniform float amplitude;
+	attribute vec3 customColor;
+	attribute vec3 displacement;
+	varying vec3 vNormal;
+	varying vec3 vColor;
+	void main() {
+		vNormal = normal;
+		vColor = customColor;
+		vec3 newPosition = position + normal * amplitude * displacement;
+		gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+	}
+</script>
+
+<script type="x-shader/x-fragment" id="fragmentshader">
+	varying vec3 vNormal;
+	varying vec3 vColor;
+	void main() {
+		const float ambient = 0.4;
+		vec3 light = vec3( 1.0 );
+		light = normalize( light );
+		float directional = max( dot( vNormal, light ), 0.0 );
+		gl_FragColor = vec4( ( directional + ambient ) * vColor, 1.0 );
+	}
+</script>
+
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
+	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Magic Book for uploadVR
+	<br/>
+	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+</div><script>
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Init
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// init renderer
+	var renderer	= new THREE.WebGLRenderer({
+		// antialias	: true,
+		alpha: true
+	});
+	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+	// renderer.setPixelRatio( 2 );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.domElement.style.position = 'absolute'
+	renderer.domElement.style.top = '0px'
+	renderer.domElement.style.left = '0px'
+	document.body.appendChild( renderer.domElement );
+
+	// array of functions for the rendering loop
+	var onRenderFcts= [];
+
+	// init scene and camera
+	var scene	= new THREE.Scene();
+
+	var ambient = new THREE.AmbientLight( 0x666666 );
+	scene.add( ambient );
+
+	var directionalLight = new THREE.DirectionalLight( 0x887766 );
+	directionalLight.position.set( -1, 1, 1 ).normalize();
+	scene.add( directionalLight );
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Initialize a basic camera
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// Create a camera
+	var camera = new THREE.Camera();
+	scene.add(camera);
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          handle arToolkitSource
+	////////////////////////////////////////////////////////////////////////////////
+
+	var arToolkitSource = new THREEx.ArToolkitSource({
+		// to read from the webcam 
+		sourceType : 'webcam',
+		
+		// to read from an image
+		// sourceType : 'image',
+		// sourceUrl : 'images/magic-book.jpg',	
+		// sourceUrl : 'images/magic-book2.png',	
+
+		// to read from a video
+		// sourceType : 'video',
+		// sourceUrl : 'videos/magic-book.mov',
+	})
+
+	arToolkitSource.init(function onReady(){
+		// handle resize of renderer
+		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])		
+	})
+	
+	// handle resize
+	window.addEventListener('resize', function(){
+		// handle arToolkitSource resize
+		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])
+	})
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          initialize arToolkitContext
+	////////////////////////////////////////////////////////////////////////////////	
+
+	// create atToolkitContext
+	var arToolkitContext = new THREEx.ArToolkitContext({
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
+		detectionMode: 'mono',
+		// canvasWidth: 80*3,
+		// canvasHeight: 60*3,
+	})
+	// initialize it
+	arToolkitContext.init(function onCompleted(){
+		// copy projection matrix to camera
+		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+	})
+
+	// update artoolkit on every frame
+	onRenderFcts.push(function(){
+		if( arToolkitSource.ready === false )	return
+
+		arToolkitContext.update( arToolkitSource.domElement )
+	})
+	
+	
+	////////////////////////////////////////////////////////////////////////////////
+	//          Create a ArMarkerControls
+	////////////////////////////////////////////////////////////////////////////////
+	
+	var markerRoot = new THREE.Group
+	scene.add(markerRoot)
+	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
+		type : 'pattern',
+		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
+	})
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		add an object in the scene
+	//////////////////////////////////////////////////////////////////////////////////
+
+
+	var mesh = new THREE.AxisHelper()
+	markerRoot.add(mesh)
+	
+	// build a smoothedControls
+	var smoothedRoot = new THREE.Group()
+	scene.add(smoothedRoot)
+	var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
+		// minVisibleDelay: 1,
+		// minUnvisibleDelay: 1,
+	})
+	onRenderFcts.push(function(delta){
+		smoothedControls.update(markerRoot)
+	})	
+
+	
+	var bookRoot = new THREE.Group
+	smoothedRoot.add(bookRoot)
+	
+	bookRoot.position.x = -1.15
+	bookRoot.position.y = 1.5
+	bookRoot.position.z = 1.5
+	bookRoot.rotation.x = -Math.PI/2
+
+
+;(function(){
+// return
+	var geometry = new THREE.IcosahedronGeometry(0.5, 1)
+
+	var explodeModifier = new THREE.ExplodeModifier();
+	explodeModifier.modify( geometry );
+	var numFaces = geometry.faces.length;
+	//
+	geometry = new THREE.BufferGeometry().fromGeometry( geometry );
+	var colors = new Float32Array( numFaces * 3 * 3 );
+	var displacement = new Float32Array( numFaces * 3 * 3 );
+	var color = new THREE.Color();
+	for ( var f = 0; f < numFaces; f ++ ) {
+		var index = 9 * f;
+
+		var h = 0.2 * Math.random();
+		var s = 0.5 + 0.5 * Math.random();
+		var l = 0.5 + 0.5 * Math.random();
+		color.setHSL( h, s, l );
+		color.set('cyan')
+
+		var d = 1 * ( Math.random() );
+		// var d = 10;
+		for ( var i = 0; i < 3; i ++ ) {
+			colors[ index + ( 3 * i )     ] = color.r;
+			colors[ index + ( 3 * i ) + 1 ] = color.g;
+			colors[ index + ( 3 * i ) + 2 ] = color.b;
+			displacement[ index + ( 3 * i )     ] = d;
+			displacement[ index + ( 3 * i ) + 1 ] = d;
+			displacement[ index + ( 3 * i ) + 2 ] = d;
+		}
+	}
+	geometry.addAttribute( 'customColor', new THREE.BufferAttribute( colors, 3 ) );
+	geometry.addAttribute( 'displacement', new THREE.BufferAttribute( displacement, 3 ) );
+	//
+	uniforms = {
+		amplitude: { value: 0.0 }
+	};
+	var shaderMaterial = new THREE.ShaderMaterial( {
+		uniforms:       uniforms,
+		vertexShader:   document.getElementById( 'vertexshader' ).textContent,
+		fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
+		side: THREE.DoubleSide,
+		wireframe: true
+	});
+	//
+	mesh = new THREE.Mesh( geometry, shaderMaterial );
+	mesh.position.y = 1.5
+	markerRoot.add( mesh );
+
+	onRenderFcts.push(function(){
+		var time = Date.now() / 1000;
+		uniforms.amplitude.value = 0.1 * (Math.sin( time * 5 )+1);
+	})
+})()
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+
+;(function(){
+// return
+	var parent	= new THREE.Object3D();
+	markerRoot.add(parent)
+	parent.scale.set(1,1,1).multiplyScalar(0.4)
+	
+	var COLOR1	= new THREE.Color('red')
+	var COLOR2	= new THREE.Color('pink')
+	var COLOR1 = new THREE.Color(0x77bbff);
+	var COLOR2 = new THREE.Color(0x8ec5e5);
+	var COLOR3 = new THREE.Color(0x97a8ba);
+	var size	= 1;
+
+	// GLYPH (BIG ONE)
+	var geometry = new THREE.IcosahedronGeometry(1.4, 2)
+	var material = new THREE.MeshBasicMaterial({
+		color: COLOR1,
+		opacity: 1,
+		wireframe: true,
+		wireframeLinewidth: 4
+	})
+	var glyph = new THREE.Mesh( geometry, material )
+	glyph.position.y = 0.5
+	parent.add( glyph );
+
+	// GLYPH2 (CORE)
+	var geometry = new THREE.IcosahedronGeometry(1,1)
+	// var geometry = new THREE.CylinderGeometry( 0.5, 0.5, 2, 6, 12, true, 0, Math.PI );
+	var material = new THREE.MeshPhongMaterial({
+		color: COLOR1,
+		specular: COLOR2,
+		shading: THREE.FlatShading,
+		transparent : true,
+		opacity: 1.0,
+		// specular: 70,
+		// ambient: 0x202830
+	})
+	var glyph2 = new THREE.Mesh( geometry, material )
+	glyph2.position.y = 0.5
+	parent.add( glyph2 );
+	
+
+	// GLYPHE2 WIREFRAME
+	var material = new THREE.MeshBasicMaterial({
+		color: COLOR2,
+		wireframe: true,
+		wireframeLinewidth: 4,
+		blending	: THREE.AdditiveBlending, 
+		// depthTest: false, 
+		opacity: 1,
+		transparent : true,
+	})
+	var glyph2wf = new THREE.Mesh( glyph2.geometry, material)
+
+	glyph2wf.position.copy( glyph2.position )
+	glyph2wf.rotation.copy( glyph2.rotation )
+	glyph2wf.scale.copy(glyph2.scale).multiplyScalar(1.00)
+	parent.add( glyph2wf );	
+	
+	// GLYPHE2 GLOW OCCLUDER
+	var glyph2oc = new THREE.Mesh( 
+		glyph2.geometry.clone(),
+		new THREE.MeshPhongMaterial({
+			color: 0x000000,
+			specular: 0x000000,
+			shading: THREE.FlatShading,
+			opacity: 0.9,
+			transparent: true,
+			// ambient: 0x000000
+		})
+	);
+	glyph2oc.position.copy( glyph2.position )
+	glyph2oc.rotation.copy( glyph2.rotation )
+	glyph2oc.scale.copy(glyph2.scale).multiplyScalar(0.9)
+	// parent.add( glyph2oc );
+
+	onRenderFcts.push(function(delta, now){
+		glyph.rotation.x += 0.004;
+		glyph.rotation.z -= 0.003;
+
+		glyph2.rotation.x -= 0.004;
+		glyph2.rotation.z += 0.003;	
+
+		glyph2wf.rotation.x -= 0.004;
+		glyph2wf.rotation.z += 0.003;
+
+		glyph2oc.rotation.x -= 0.004;
+		glyph2oc.rotation.z += 0.003;	
+	})
+})()
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		particles
+	//////////////////////////////////////////////////////////////////////////////
+
+;(function(){
+// return
+	var COLOR1 = new THREE.Color(0x77bbff);
+	var COLOR2 = new THREE.Color(0x8ec5e5);
+	var COLOR3 = new THREE.Color(0x97a8ba);
+	
+	// CUBE PARTICLES
+	var material = new THREE.PointsMaterial({
+		map : THREE.ImageUtils.loadTexture( "images/pixel.png" ), 
+		blending : THREE.AdditiveBlending, 
+		depthTest: false, 
+		transparent : true,
+		color: COLOR1, 
+		size: 0.4,
+		opacity	: 1.4,
+	});
+	
+	var height = 2.5
+
+	var geometry	= new THREE.Geometry();
+	var vertices	= geometry.vertices
+	for(var i = 0; i < 500; i++ ) {
+		var vector3	= new THREE.Vector3()
+		var angle	= Math.random() * Math.PI
+		// var angle	= Math.random() * Math.PI*2
+
+		vector3.x	= Math.cos(angle)
+		vector3.z	= Math.sin(angle)
+		
+		var radius = 0.3 + 0.1*(Math.random()-0.5) 
+		vector3.setLength( radius )
+		vector3.y	= (Math.random()-0.5) * height
+		vertices.push( vector3 )
+	}
+
+	var cube = new THREE.Points( geometry, material );
+	cube.position.y = height/2
+	bookRoot.add( cube );
+	
+	var speeds	= [];
+	for( i = 0; i < vertices.length; i++ ){		
+		speeds[i]	= Math.random()*0.2+0.02;
+	}
+
+	onRenderFcts.push(function(delta, now){
+		for(var i = 0; i < vertices.length; i++){
+			var position	 = vertices[i];
+			position.y	+= speeds[i] * delta;
+			if( position.y > height/2 )	position.y = -height/2;
+		}
+		geometry.verticesNeedUpdate = true;
+	})
+})()
+
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		render the whole thing on the page
+	//////////////////////////////////////////////////////////////////////////////////
+	var stats = new Stats();
+	document.body.appendChild( stats.dom );
+	// render the scene
+	onRenderFcts.push(function(){
+		renderer.render( scene, camera );
+		stats.update();
+	})
+
+	// run the rendering loop
+	var lastTimeMsec= null
+	requestAnimationFrame(function animate(nowMsec){
+		// keep looping
+		requestAnimationFrame( animate );
+		// measure time
+		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+		lastTimeMsec	= nowMsec
+		// call each update function
+		onRenderFcts.forEach(function(onRenderFct){
+			onRenderFct(deltaMsec/1000, nowMsec/1000)
+		})
+	})
+</script></body>
