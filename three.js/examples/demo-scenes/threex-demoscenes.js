@@ -115,7 +115,8 @@ THREEx.DemoContent.prototype._createMinecraft = function () {
 
 	// var mesh = new THREE.AxisHelper()
 	// markerScene.add(mesh)
-	
+
+	THREEx.MinecraftChar.baseUrl = THREEx.DemoContent.baseURL + '../aframe/examples/vendor/threex.minecraft/'	
 	var character	= new THREEx.MinecraftChar()
 	markerScene.add(character.root)
 
@@ -446,8 +447,7 @@ THREEx.DemoContent.prototype._createGlassTorus = function () {
 THREEx.DemoContent.prototype._createTorus = function () {
 	var markerScene = new THREE.Group()
 
-	var mesh = new THREE.AxisHelper()
-	markerScene.add(mesh)
+
 	
 	// add a torus knot	
 	var geometry	= new THREE.CubeGeometry(1,1,1);
