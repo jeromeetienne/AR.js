@@ -373,40 +373,40 @@ THREEx.DemoContent.prototype._createHoleTorus = function () {
 THREEx.DemoContent.prototype._createGlassTorus = function () {
 	var markerScene = new THREE.Group()
 	
-	//////////////////////////////////////////////////////////////////////////////
-	//		setup lights
-	//////////////////////////////////////////////////////////////////////////////
-	var ambient = new THREE.AmbientLight( 0x222222 );
-	markerScene.add( ambient );
-	
-	var directionalLight = new THREE.DirectionalLight( 'white', 0.5);
-	directionalLight.position.set( 1, 2, 1 ).setLength(2)
-	directionalLight.shadow.mapSize.set(256,256)
-	directionalLight.shadow.camera.bottom = -0.6
-	directionalLight.shadow.camera.top = 0.6
-	directionalLight.shadow.camera.right = 0.6
-	directionalLight.shadow.camera.left = -0.6
-	directionalLight.castShadow = true;
-	markerScene.add( directionalLight );
-
-	if( false ){
-		var cameraHelper = new THREE.CameraHelper( directionalLight.shadow.camera )
-		markerScene.add(cameraHelper)
-		this._onRenderFcts.push(function(){
-			cameraHelper.update()
-		})		
-	}
-	
-	// add a transparent ground-plane shadow-receiver
-	var material = new THREE.ShadowMaterial();
-	material.opacity = 0.45; //! bug in threejs. can't set in constructor
-
-	var geometry = new THREE.PlaneGeometry(3, 3)
-	var planeMesh = new THREE.Mesh( geometry, material);
-	planeMesh.receiveShadow = true;
-	planeMesh.depthWrite = false;
-	planeMesh.rotation.x = -Math.PI/2
-	markerScene.add(planeMesh);
+	// //////////////////////////////////////////////////////////////////////////////
+	// //		setup lights
+	// //////////////////////////////////////////////////////////////////////////////
+	// var ambient = new THREE.AmbientLight( 0x222222 );
+	// markerScene.add( ambient );
+	// 
+	// var directionalLight = new THREE.DirectionalLight( 'white', 0.5);
+	// directionalLight.position.set( 1, 2, 1 ).setLength(2)
+	// directionalLight.shadow.mapSize.set(256,256)
+	// directionalLight.shadow.camera.bottom = -0.6
+	// directionalLight.shadow.camera.top = 0.6
+	// directionalLight.shadow.camera.right = 0.6
+	// directionalLight.shadow.camera.left = -0.6
+	// directionalLight.castShadow = true;
+	// markerScene.add( directionalLight );
+	// 
+	// if( false ){
+	// 	var cameraHelper = new THREE.CameraHelper( directionalLight.shadow.camera )
+	// 	markerScene.add(cameraHelper)
+	// 	this._onRenderFcts.push(function(){
+	// 		cameraHelper.update()
+	// 	})		
+	// }
+	// 
+	// // add a transparent ground-plane shadow-receiver
+	// var material = new THREE.ShadowMaterial();
+	// material.opacity = 0.45; //! bug in threejs. can't set in constructor
+	// 
+	// var geometry = new THREE.PlaneGeometry(3, 3)
+	// var planeMesh = new THREE.Mesh( geometry, material);
+	// planeMesh.receiveShadow = true;
+	// planeMesh.depthWrite = false;
+	// planeMesh.rotation.x = -Math.PI/2
+	// markerScene.add(planeMesh);
 		
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
@@ -416,7 +416,7 @@ THREEx.DemoContent.prototype._createGlassTorus = function () {
 	// var geometry = new THREE.TorusGeometry(0.3,0.15,16*4,32*4);	
 	// var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
 
-console.warn('using arToolkitSource global to get video stream in glass')
+	console.warn('using arToolkitSource global to get video stream in glass')
 	var videoTexture = new THREE.VideoTexture(arToolkitSource.domElement)
 	videoTexture.minFilter = THREE.NearestFilter
 	videoTexture.wrapS = videoTexture.wrapT = THREE.ClampToEdgeWrapping;
@@ -424,12 +424,12 @@ console.warn('using arToolkitSource global to get video stream in glass')
 
 	// var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.castShadow = true;
+	// mesh.castShadow = true;
 	mesh.position.y	= 0.5
 	markerScene.add( mesh );
 
 	// point the directionalLight to the marker
-	directionalLight.target = mesh
+	// directionalLight.target = mesh
 	
 	this._onRenderFcts.push(function(delta){
 		// mesh.rotation.x += delta * Math.PI * 0.1
