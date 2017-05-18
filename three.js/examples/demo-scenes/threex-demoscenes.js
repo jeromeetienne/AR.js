@@ -171,11 +171,30 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 		markerScene.add(mesh)		
 	}
 	function buildWater(){
+		// build texture
+		var texture = new THREE.TextureLoader().load(THREEx.DemoContent.baseURL + 'examples/hole-in-the-wall/images/water.jpg')
+		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+		var normalMap = new THREE.TextureLoader().load(THREEx.DemoContent.baseURL + 'examples/hole-in-the-wall/images/water-normal.jpeg')
+		normalMap.wrapS = normalMap.wrapT = THREE.RepeatWrapping;
+		// animate texture
+		_this._onRenderFcts.push(function(delta){
+			var deltaUV = new THREE.Vector2()
+			deltaUV.x = 0.1 * delta
+			
+			material.normalMap.offset.add(deltaUV)
+			material.map.offset.add(deltaUV)
+			
+			var angle = Date.now()/1000 * Math.PI * 2
+			material.normalScale.set(Math.cos(angle),Math.sin(angle))
+		})
+		// build the mesh
 		var geometry = new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI/2)
 		var material = new THREE.MeshPhongMaterial({
 			transparent: true,
-			opacity: 0.5,
-			map: new THREE.TextureLoader().load(THREEx.DemoContent.baseURL + 'examples/hole-in-the-wall/images/water.jpg')
+			opacity: 0.6,
+			color: 'cyan',
+			map: texture,
+			normalMap: normalMap
 		})
 		var mesh = new THREE.Mesh(geometry, material);
 		mesh.position.y = -0.1;
@@ -183,47 +202,16 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 	}
 	function buildPoolWalls(){
 		var geometry = new THREE.BoxGeometry(1,1,1);
-		geometry.faces.splice(8, 2); // remove top (though this is a backside material)
+		geometry.faces.splice(4, 2);	// remove top (though this is a backside material)
 		geometry.elementsNeedUpdate = true;
+		
 		var material = new THREE.MeshBasicMaterial({
 			side: THREE.BackSide,
-			map: new THREE.TextureLoader().load(THREEx.DemoContent.baseURL + 'examples/hole-in-the-wall/images/mosaic-256x256.jpg')
+			map: new THREE.TextureLoader().load(THREEx.DemoContent.baseURL + 'examples/hole-in-the-wall/images/mosaic-256x256.jpg'),
 		})
 		var mesh = new THREE.Mesh(geometry, material);
 		mesh.position.y = -0.5
 		markerScene.add(mesh)
-		
-		// proper orientation for the uv 
-		var faceTransforms = [{	faceIndex : 0,
-				angle: -Math.PI/2,
-			},{
-				faceIndex : 1,
-				angle: -Math.PI/2,
-			},{
-				faceIndex : 2,
-				angle: Math.PI/2,
-			},{
-				faceIndex : 3,
-				angle: Math.PI/2,
-			},{
-				faceIndex : 4,
-				angle: Math.PI,
-			},{
-				faceIndex : 5,
-				angle: Math.PI,
-			}]
-		
-		faceTransforms.forEach(function(faceTransforms){
-			mesh.geometry.faceVertexUvs[0][faceTransforms.faceIndex].forEach(function(uv){
-				var tmp = uv.clone().sub(new THREE.Vector2(0.5, 0.5))
-
-				uv.x = tmp.x * Math.cos(faceTransforms.angle) - tmp.y * Math.sin(faceTransforms.angle)
-				uv.y = tmp.x * Math.sin(faceTransforms.angle) + tmp.y * Math.cos(faceTransforms.angle)
-
-				uv.add(new THREE.Vector2(0.5, 0.5))
-			})			
-		})
-		
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////
