@@ -29,6 +29,8 @@ THREEx.DemoContent.prototype.createMarkerScene = function (sceneName) {
 		return this._createHolePortal()
 	}else if( sceneName === 'holePool' ){
 		return this._createHolePool()
+	}else if( sceneName === 'minecraft' ){
+		return this._createMinecraft()
 	}else{
 		console.assert(false)
 	}
@@ -38,20 +40,44 @@ THREEx.DemoContent.prototype.createMarkerScene = function (sceneName) {
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
+THREEx.DemoContent.prototype._createMinecraft = function () {
+	var markerScene = new THREE.Group
+
+	var mesh = new THREE.AxisHelper()
+	markerScene.add(mesh)
+	
+	var character	= new THREEx.MinecraftChar()
+	markerScene.add(character.root)
+
+
+	var headAnims	= new THREEx.MinecraftCharHeadAnimations(character);
+	headAnims.start('yes');
+	this._onRenderFcts.push(function(delta){
+		headAnims.update(delta)	
+	})
+
+
+	// init bodyAnims
+	var bodyAnims	= new THREEx.MinecraftCharBodyAnimations(character);
+	bodyAnims.start('hiwave');
+	this._onRenderFcts.push(function(delta){
+		bodyAnims.update(delta)	
+	})		
+
+	return markerScene
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
 THREEx.DemoContent.prototype._createHolePool = function () {
 	var _this = this
 	
 
-	var markerRoot = new THREE.Group
-
 	var markerScene = new THREE.Group
-	markerRoot.add(markerScene)
-	// markerScene.rotation.y = -Math.PI/2
-	// markerScene.rotation.x = Math.PI/2
-	markerScene.position.z = -0.5
 
 	var mesh = new THREE.AxisHelper()
-	// markerScene.add(mesh)
+	markerScene.add(mesh)
 	
 
 	buildCacheMesh()
@@ -60,7 +86,7 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 	createDuck()
 	createFishes()
 	
-	return markerRoot
+	return markerScene
 	
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
@@ -68,34 +94,36 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 	function buildCacheMesh(){
 		// add outter cube - invisibility cloak
 		var geometry = new THREE.BoxGeometry(1,1,1);
-		geometry.faces.splice(8, 2); // make hole by removing top two triangles (is this assumption stable?)
+		geometry.faces.splice(4, 2); // make hole by removing top two triangles (is this assumption stable?)
 		var material = THREEx.HoleInTheWall.buildTransparentMaterial()
 
 		var mesh = new THREE.Mesh( geometry, material);
 		mesh.scale.set(1,1,1).multiplyScalar(1.02)
+		mesh.position.y = -0.5
 		markerScene.add(mesh)		
 	}
 	function buildWater(){
-		var geometry = new THREE.PlaneGeometry(1, 1)
+		var geometry = new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI/2)
 		var material = new THREE.MeshPhongMaterial({
 			transparent: true,
 			opacity: 0.5,
 			map: new THREE.TextureLoader().load(THREEx.DemoContent.baseURL + 'examples/hole-in-the-wall/images/water.jpg')
 		})
 		var mesh = new THREE.Mesh(geometry, material);
-		mesh.position.z = 0.4;
+		mesh.position.y = -0.1;
 		markerScene.add(mesh)
 	}
 	function buildPoolWalls(){
-		var innerGeom = new THREE.BoxGeometry(1,1,1);
-		innerGeom.faces.splice(8, 2); // remove top (though this is a backside material)
-		innerGeom.elementsNeedUpdate = true;
+		var geometry = new THREE.BoxGeometry(1,1,1);
+		geometry.faces.splice(8, 2); // remove top (though this is a backside material)
+		geometry.elementsNeedUpdate = true;
 		var material = new THREE.MeshBasicMaterial({
 			side: THREE.BackSide,
 			map: new THREE.TextureLoader().load(THREEx.DemoContent.baseURL + 'examples/hole-in-the-wall/images/mosaic-256x256.jpg')
 		})
-		var poolMesh = new THREE.Mesh(innerGeom, material);
-		markerScene.add(poolMesh)
+		var mesh = new THREE.Mesh(geometry, material);
+		mesh.position.y = -0.5
+		markerScene.add(mesh)
 		
 		// proper orientation for the uv 
 		var faceTransforms = [{	faceIndex : 0,
@@ -118,7 +146,7 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 			}]
 		
 		faceTransforms.forEach(function(faceTransforms){
-			poolMesh.geometry.faceVertexUvs[0][faceTransforms.faceIndex].forEach(function(uv){
+			mesh.geometry.faceVertexUvs[0][faceTransforms.faceIndex].forEach(function(uv){
 				var tmp = uv.clone().sub(new THREE.Vector2(0.5, 0.5))
 
 				uv.x = tmp.x * Math.cos(faceTransforms.angle) - tmp.y * Math.sin(faceTransforms.angle)
@@ -138,9 +166,9 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 			var duck = gltf.scene;
 			markerScene.add( duck );
 			
-			duck.rotateX(Math.PI/2)
+			// duck.rotateX(Math.PI/2)
 			duck.scale.set(1,1,1).multiplyScalar(0.2)
-			duck.position.z = 0.35;
+			duck.position.y = -0.15;
 			
 			_this._onRenderFcts.push(function(delta){
 				var present = Date.now()/1000
@@ -148,8 +176,8 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 				var angle = present*Math.PI * 0.2
 				var radius = 0.3 + 0.02*Math.sin(present*Math.PI)
 				duck.position.x = Math.cos(angle) * radius
-				duck.position.y = Math.sin(angle) * radius
-				duck.rotation.y = angle + Math.PI/2
+				duck.position.z = Math.sin(angle) * radius
+				duck.rotation.y = -angle - Math.PI/2
 
 				duck.rotation.z = Math.sin(present*Math.PI*1) * Math.PI/15
 			})			
@@ -172,11 +200,7 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 				var fish	= new THREE.Mesh( geometry, material );
 				markerScene.add( fish );		
 
-				fish.position.z = 0.0 + 0.3 * Math.random();
-				// fish.scale.set(1,1,1).multiplyScalar(0.4)
-
-				fish.rotation.x = -Math.PI/2;
-				fish.rotation.z= Math.PI
+				fish.position.y = -0.4 + 0.2 * Math.random();
 				
 				var initialAngle = Math.random() * Math.PI*0.0 + Math.PI*2*(index/nFishes * 2)
 				var initialRadius = 0.25 + 0.2 * Math.random()
@@ -188,12 +212,12 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 					var angle = present*Math.PI * speed + initialAngle
 					var radius = initialRadius + 0.01*Math.sin(present*Math.PI)
 					fish.position.x = Math.cos(angle) * radius
-					fish.position.y = Math.sin(angle) * radius
+					fish.position.z = Math.sin(angle) * radius
 					
-					fish.rotation.y = -angle + Math.PI/2 + Math.PI
+					fish.rotation.y = -angle + Math.PI/2
 
 					var angle = present*Math.PI * 0.5
-					fish.rotation.x = -Math.PI/2 + Math.sin(angle)*Math.PI/8;
+					fish.rotation.x = Math.sin(angle)*Math.PI/8;
 				})
 			})(i)
 		}		
@@ -246,21 +270,15 @@ THREEx.DemoContent.prototype._createHolePortal = function () {
 THREEx.DemoContent.prototype._createHoleTorus = function () {
 
 	var markerScene = new THREE.Group
-
-	
-	var proxy = new THREE.Group
-	markerScene.add(proxy)
-	// proxy.scale.set(1,1,1).multiplyScalar(1.2)
-	// proxy.rotation.x = -Math.PI/2
-	proxy.position.z = -0.5 * proxy.scale.x
+	markerScene.position.y = -0.5
 
 	// add outter cube - invisibility cloak
 	var geometry = new THREE.BoxGeometry(1,1,1);
-	geometry.faces.splice(8, 2); // make hole by removing top two triangles (is this assumption stable?)
+	geometry.faces.splice(4, 2); // make hole by removing top two triangles (is this assumption stable?)
 	var material = THREEx.HoleInTheWall.buildTransparentMaterial()	
 	var mesh = new THREE.Mesh( geometry, material);
 	mesh.scale.set(1,1,1).multiplyScalar(1.01)
-	proxy.add(mesh)
+	markerScene.add(mesh)
 
 	// add the inner box
 	var geometry	= new THREE.BoxGeometry(1,1,1);
@@ -268,13 +286,13 @@ THREEx.DemoContent.prototype._createHoleTorus = function () {
 		side: THREE.BackSide
 	}); 
 	var mesh	= new THREE.Mesh( geometry, material );
-	proxy.add( mesh );
+	markerScene.add( mesh );
 
 	// add the torus knot
 	var geometry	= new THREE.TorusKnotGeometry(0.25,0.1,32,32);
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
-	proxy.add( mesh );
+	markerScene.add( mesh );
 	
 	this._onRenderFcts.push(function(delta){
 		mesh.rotation.x += 0.1
@@ -328,13 +346,13 @@ THREEx.DemoContent.prototype._createTorus = function () {
 		side: THREE.DoubleSide
 	}); 
 	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= -geometry.parameters.height/2
+	mesh.position.y	= geometry.parameters.height/2
 	markerScene.add(mesh)
 	
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= -0.5
+	mesh.position.y	= 0.5
 	markerScene.add( mesh );
 	
 	this._onRenderFcts.push(function(delta){
