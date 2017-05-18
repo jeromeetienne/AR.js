@@ -190,10 +190,10 @@ Three.js Examples:
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multi-markers/examples/player.html))
 - [multimarker-artoolkit](https://jeromeetienne.github.io/AR.js/three.js/examples/multimarker-artoolkit/multimarker.html) :
   three.js example for multimarker
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multimarker-artoolkit/demo-scenes.html))
-- [demo-scenes](https://jeromeetienne.github.io/AR.js/three.js/examples/demo-scenes/demo-scenes.html) :
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multimarker-artoolkit/multimarker.html))
+- [demo-scenes](https://jeromeetienne.github.io/AR.js/three.js/examples/demo-scenes/examples/demo-scenes.html) :
   Show how to easily build the AR.js scenes that you see in the demos
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/demo-scenes/demo-scenes.html)) 
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/demo-scenes/examples/demo-scenes.html)) 
    
 a-frame Examples:
 
