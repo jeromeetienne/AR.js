@@ -157,6 +157,9 @@ window.arToolkitSource = arToolkitSource
 	var smoothedRoot = new THREE.Group()
 	scene.add(smoothedRoot)
 	var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
+		lerpPosition: 0.9,
+		lerpQuaternion: 0.9,
+		lerpScale: 0.9,
 		// minVisibleDelay: 1,
 		// minUnvisibleDelay: 1,
 	})
