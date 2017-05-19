@@ -20,11 +20,19 @@
 <script src='../threex-armultimarkerlearning.js'></script>
 
 <!-- include demo scenes -->
-<script src='../../democontent/threex-democontent.js'></script>
-<script src='../../refraction/threex.refractionmaterial.js'></script>
-<script src='../../hole-in-the-wall/threex.holeinthewall.js'></script>
-<script src='../../vendor/three.js/examples/js/loaders/GLTFLoader.js'></script>
-
+<script src='../../../../three.js/examples/demo-scenes/threex-demoscenes.js'></script>
+<script src='../../../../three.js/examples/refraction/threex.refractionmaterial.js'></script>
+<script src='../../../../three.js/examples/hole-in-the-wall/threex.holeinthewall.js'></script>
+<script src='../../../../three.js/examples/vendor/three.js/examples/js/loaders/GLTFLoader.js'></script>
+<script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraft.js'></script>
+<script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraftcontrols.js'></script>
+<script src='../../../../aframe/examples/vendor/threex.minecraft/threex.animation.js'></script>
+<script src='../../../../aframe/examples/vendor/threex.minecraft/threex.animations.js'></script>
+<script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraftcharheadanim.js'></script>
+<script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraftcharbodyanim.js'></script>
+<script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraftnickname.js'></script>
+<script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraftbubble.js'></script>
+<script>THREEx.ARjsDemoScenes.baseURL = '../../../../three.js/'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
 	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Multi marker
@@ -41,6 +49,15 @@
 		<a href='javascript:void(0)' onclick='urlOptions.markerHelpers = true; reload()'>yes</a>
 		/
 		<a href='javascript:void(0)' onclick='urlOptions.markerHelpers = false; reload()'>no</a>
+	<br>
+	Scenes: 
+		<a href='javascript:void(0)' onclick='javascript: switchDemoScene("torus")'>torus</a>
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("glassTorus")'>glassTorus</a>
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("holePortal")'>holePortal</a>
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("holeTorus")'>holeTorus</a>
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("holePool")'>holePool</a> 
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("minecraft")'>minecraft</a> 
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("shaddowTorusKnot")'>shaddowTorusKnot</a> 
 </div>
 <div style='position: fixed; bottom: 16px; right: 16px; z-index:1';>
 	<a id='recordButton' href='learner.html?url=player.html'>
@@ -315,25 +332,63 @@
 			smoothedControls.update(markerRoot)
 		})	
 
-		
 		//////////////////////////////////////////////////////////////////////////////////
-		//		add an object in the scene
+		//		create ARjs demo scenes
 		//////////////////////////////////////////////////////////////////////////////////
 
-		var demoContent = new THREEx.DemoContent()
+		// create demo scenes
+		var demoScenes = new THREEx.ARjsDemoScenes()
 		onRenderFcts.push(function(delta){
-			demoContent.update(delta)
-		})	
-		var markerContent = demoContent.createMarkerScene('holePool')
-
-		// compute the average matrix of this markerFile
-		var markerScene = new THREE.Group()
-		markerScene.add(markerContent)
-		markerRoot.add( markerScene )
+			demoScenes.update(delta)
+		})
+		
+		var demoObject3d = new THREE.Group
+		smoothedRoot.add(demoObject3d)
 		
 		var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
-		averageMatrix.decompose(markerScene.position, markerScene.quaternion, markerScene.scale)
-		markerScene.scale.multiplyScalar(5)
+		averageMatrix.decompose(demoObject3d.position, demoObject3d.quaternion, demoObject3d.scale)
+		demoObject3d.scale.multiplyScalar(6)
+
+		// create the markerScene based on sceneName
+		var sceneName = location.hash.substring(1) || 'torus'
+		var sceneName = 'minecraft'
+		var markerScene = null
+		switchDemoScene(sceneName)
+
+		// function to dynamically switch demoScenes
+		function switchDemoScene(newSceneName){
+			// remove previous markerScene if suiltabled
+			if( markerScene ){
+				markerScene.parent.remove( markerScene )
+				demoScenes.dispose()			
+				markerScene = null
+			}
+			// create the new markerScene
+			markerScene = demoScenes.createMarkerScene(newSceneName)	
+			demoObject3d.add( markerScene )
+		}	
+		window.switchDemoScene = switchDemoScene	
+
+		
+
+		// //////////////////////////////////////////////////////////////////////////////////
+		// //		add an object in the scene
+		// //////////////////////////////////////////////////////////////////////////////////
+		// 
+		// var demoContent = new THREEx.DemoContent()
+		// onRenderFcts.push(function(delta){
+		// 	demoContent.update(delta)
+		// })	
+		// var markerContent = demoContent.createMarkerScene('holePool')
+		// 
+		// // compute the average matrix of this markerFile
+		// var markerScene = new THREE.Group()
+		// markerScene.add(markerContent)
+		// markerRoot.add( markerScene )
+		// 
+		// var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
+		// averageMatrix.decompose(markerScene.position, markerScene.quaternion, markerScene.scale)
+		// markerScene.scale.multiplyScalar(5)
 	}
 
 	//////////////////////////////////////////////////////////////////////////////

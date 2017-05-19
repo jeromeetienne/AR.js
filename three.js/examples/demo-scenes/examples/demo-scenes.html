@@ -28,20 +28,20 @@
 <script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraftcharbodyanim.js'></script>
 <script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraftnickname.js'></script>
 <script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraftbubble.js'></script>
-<script>THREEx.DemoContent.baseURL = '../../../../three.js/'</script>
+<script>THREEx.ARjsDemoScenes.baseURL = '../../../../three.js/'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
 	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Various Demos Scenes 
 	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 	<br>
 	Scenes: 
-		<a href='javascript:void(0)' onclick='javascript: switchScene("torus")'>torus</a>
-		- <a href='javascript:void(0)' onclick='javascript: switchScene("glassTorus")'>glassTorus</a>
-		- <a href='javascript:void(0)' onclick='javascript: switchScene("holePortal")'>holePortal</a>
-		- <a href='javascript:void(0)' onclick='javascript: switchScene("holeTorus")'>holeTorus</a>
-		- <a href='javascript:void(0)' onclick='javascript: switchScene("holePool")'>holePool</a> 
-		- <a href='javascript:void(0)' onclick='javascript: switchScene("minecraft")'>minecraft</a> 
-		- <a href='javascript:void(0)' onclick='javascript: switchScene("shaddowTorusKnot")'>shaddowTorusKnot</a> 
+		<a href='javascript:void(0)' onclick='javascript: switchDemoScene("torus")'>torus</a>
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("glassTorus")'>glassTorus</a>
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("holePortal")'>holePortal</a>
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("holeTorus")'>holeTorus</a>
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("holePool")'>holePool</a> 
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("minecraft")'>minecraft</a> 
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("shaddowTorusKnot")'>shaddowTorusKnot</a> 
 </div><script>
 ;(function(){
 	//////////////////////////////////////////////////////////////////////////////////
@@ -175,28 +175,32 @@ window.arToolkitSource = arToolkitSource
 	// })
 
 	//////////////////////////////////////////////////////////////////////////////////
-	//		add an object in the scene
+	//		create ARjs demo scenes
 	//////////////////////////////////////////////////////////////////////////////////
 
-	var demoContent = new THREEx.DemoContent()
+	// create demo scenes
+	var demoScenes = new THREEx.ARjsDemoScenes()
 	onRenderFcts.push(function(delta){
-		demoContent.update(delta)
+		demoScenes.update(delta)
 	})
 	
+	// create the markerScene based on sceneName
 	var sceneName = location.hash.substring(1) || 'torus'
-	
-	var markerScene = demoContent.createMarkerScene(sceneName)
+	var markerScene = demoScenes.createMarkerScene(sceneName)
 	smoothedRoot.add( markerScene )
 
-	window.switchScene = function(newSceneName){
-		var parentObject3D = markerScene.parent
-		if( demoContent ){
+	// function to dynamically switch demoScenes
+	window.switchDemoScene = function(newSceneName){
+		// remove previous markerScene if suiltabled
+		var previousParent = markerScene.parent || smoothedRoot
+		if( demoScenes ){
 			markerScene.parent.remove( markerScene )
-			demoContent.dispose()			
+			demoScenes.dispose()			
 		}
-		markerScene = demoContent.createMarkerScene(newSceneName)	
-		smoothedRoot.add( markerScene )
-		
+		// create the new markerScene
+		markerScene = demoScenes.createMarkerScene(newSceneName)	
+		previousParent.add( markerScene )
+		// update the location.hash
 		location.hash = '#'+newSceneName
 	}
 

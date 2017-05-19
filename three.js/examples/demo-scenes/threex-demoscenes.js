@@ -1,27 +1,27 @@
 var THREEx = THREEx || {}
 
-THREEx.DemoContent = function(){
+THREEx.ARjsDemoScenes = function(){
 	this._onRenderFcts = []
 	
 	
 }
 
-THREEx.DemoContent.baseURL = '../'
+THREEx.ARjsDemoScenes.baseURL = '../'
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-THREEx.DemoContent.prototype.update = function (delta) {
+THREEx.ARjsDemoScenes.prototype.update = function (delta) {
 	this._onRenderFcts.forEach(function(onRenderFct){
 		onRenderFct(delta)
 	})
 }
 
-THREEx.DemoContent.prototype.dispose = function (delta) {
+THREEx.ARjsDemoScenes.prototype.dispose = function (delta) {
 	this._onRenderFcts = []
 }
 
-THREEx.DemoContent.prototype.createMarkerScene = function (sceneName) {
+THREEx.ARjsDemoScenes.prototype.createMarkerScene = function (sceneName) {
 
 	if( sceneName === 'torus' ){
 		return this._createTorus()
@@ -46,7 +46,7 @@ THREEx.DemoContent.prototype.createMarkerScene = function (sceneName) {
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-THREEx.DemoContent.prototype._createShaddowTorusKnot = function () {
+THREEx.ARjsDemoScenes.prototype._createShaddowTorusKnot = function () {
 	var markerScene = new THREE.Group
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -114,13 +114,13 @@ THREEx.DemoContent.prototype._createShaddowTorusKnot = function () {
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-THREEx.DemoContent.prototype._createMinecraft = function () {
+THREEx.ARjsDemoScenes.prototype._createMinecraft = function () {
 	var markerScene = new THREE.Group
 
 	// var mesh = new THREE.AxisHelper()
 	// markerScene.add(mesh)
 
-	THREEx.MinecraftChar.baseUrl = THREEx.DemoContent.baseURL + '../aframe/examples/vendor/threex.minecraft/'	
+	THREEx.MinecraftChar.baseUrl = THREEx.ARjsDemoScenes.baseURL + '../aframe/examples/vendor/threex.minecraft/'	
 	var character	= new THREEx.MinecraftChar()
 	markerScene.add(character.root)
 
@@ -185,7 +185,7 @@ THREEx.DemoContent.prototype._createMinecraft = function () {
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-THREEx.DemoContent.prototype._createHolePool = function () {
+THREEx.ARjsDemoScenes.prototype._createHolePool = function () {
 	var _this = this
 	var markerScene = new THREE.Group
 
@@ -216,9 +216,9 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 	}
 	function buildWater(){
 		// build texture
-		var texture = new THREE.TextureLoader().load(THREEx.DemoContent.baseURL + 'examples/hole-in-the-wall/images/water.jpg')
+		var texture = new THREE.TextureLoader().load(THREEx.ARjsDemoScenes.baseURL + 'examples/hole-in-the-wall/images/water.jpg')
 		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-		var normalMap = new THREE.TextureLoader().load(THREEx.DemoContent.baseURL + 'examples/hole-in-the-wall/images/water-normal.jpeg')
+		var normalMap = new THREE.TextureLoader().load(THREEx.ARjsDemoScenes.baseURL + 'examples/hole-in-the-wall/images/water-normal.jpeg')
 		normalMap.wrapS = normalMap.wrapT = THREE.RepeatWrapping;
 		// animate texture
 		_this._onRenderFcts.push(function(delta){
@@ -251,7 +251,7 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 		
 		var material = new THREE.MeshBasicMaterial({
 			side: THREE.BackSide,
-			map: new THREE.TextureLoader().load(THREEx.DemoContent.baseURL + 'examples/hole-in-the-wall/images/mosaic-256x256.jpg'),
+			map: new THREE.TextureLoader().load(THREEx.ARjsDemoScenes.baseURL + 'examples/hole-in-the-wall/images/mosaic-256x256.jpg'),
 		})
 		var mesh = new THREE.Mesh(geometry, material);
 		mesh.position.y = -0.5
@@ -262,7 +262,7 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 	//		create duck
 	//////////////////////////////////////////////////////////////////////////////
 	function createDuck(){
-		new THREE.GLTFLoader().load( THREEx.DemoContent.baseURL + 'examples/hole-in-the-wall/models/duck/glTF-MaterialsCommon/duck.gltf', function(gltf) {
+		new THREE.GLTFLoader().load( THREEx.ARjsDemoScenes.baseURL + 'examples/hole-in-the-wall/models/duck/glTF-MaterialsCommon/duck.gltf', function(gltf) {
 			var duck = gltf.scene;
 			markerScene.add( duck );
 			
@@ -291,7 +291,7 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 		var geometry	= new THREE.PlaneGeometry(1,0.5).scale(0.4, 0.4, 0.4);
 		var material	= new THREE.MeshBasicMaterial({
 			alphaTest: 0.1,
-			map: new THREE.TextureLoader().load(THREEx.DemoContent.baseURL + 'examples/hole-in-the-wall/images/fish-texture.png'),
+			map: new THREE.TextureLoader().load(THREEx.ARjsDemoScenes.baseURL + 'examples/hole-in-the-wall/images/fish-texture.png'),
 			side: THREE.DoubleSide
 		}); 
 		var nFishes = 6
@@ -327,7 +327,7 @@ THREEx.DemoContent.prototype._createHolePool = function () {
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-THREEx.DemoContent.prototype._createHolePortal = function () {
+THREEx.ARjsDemoScenes.prototype._createHolePortal = function () {
 	var markerScene = new THREE.Group
 	markerScene.rotation.x = -Math.PI/2
 	markerScene.scale.set(1,1,1).multiplyScalar(1)
@@ -352,7 +352,7 @@ THREEx.DemoContent.prototype._createHolePortal = function () {
 	var geometry = new THREE.SphereGeometry( 3, 32, 16, 0, Math.PI, Math.PI, Math.PI);
 	geometry.scale( 1, -1, 1 )
 	var material = new THREE.MeshBasicMaterial( {
-		map: new THREE.TextureLoader().load( THREEx.DemoContent.baseURL + 'examples/hole-in-the-wall/images/32211336474_380b67d014_k.jpg' ),
+		map: new THREE.TextureLoader().load( THREEx.ARjsDemoScenes.baseURL + 'examples/hole-in-the-wall/images/32211336474_380b67d014_k.jpg' ),
 		side: THREE.DoubleSide
 	});
 	mesh = new THREE.Mesh( geometry, material );
@@ -367,7 +367,7 @@ THREEx.DemoContent.prototype._createHolePortal = function () {
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-THREEx.DemoContent.prototype._createHoleTorus = function () {
+THREEx.ARjsDemoScenes.prototype._createHoleTorus = function () {
 
 	var markerScene = new THREE.Group
 	markerScene.position.y = -0.5
@@ -403,7 +403,7 @@ THREEx.DemoContent.prototype._createHoleTorus = function () {
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-THREEx.DemoContent.prototype._createGlassTorus = function () {
+THREEx.ARjsDemoScenes.prototype._createGlassTorus = function () {
 	var markerScene = new THREE.Group()
 	
 	// //////////////////////////////////////////////////////////////////////////////
@@ -476,7 +476,7 @@ THREEx.DemoContent.prototype._createGlassTorus = function () {
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.DemoContent.prototype._createTorus = function () {
+THREEx.ARjsDemoScenes.prototype._createTorus = function () {
 	var markerScene = new THREE.Group()
 
 
