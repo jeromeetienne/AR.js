@@ -39,6 +39,16 @@
 	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div>
 <div style='position: absolute; bottom: 10px; width:100%; text-align: center;z-index:1';>
+	Scenes: 
+		<a href='javascript:void(0)' onclick='javascript: switchDemoScene("torus")'>torus</a>
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("glassTorus")'>glassTorus</a>
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("holePortal")'>holePortal</a>
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("holeTorus")'>holeTorus</a>
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("holePool")'>holePool</a> 
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("minecraft")'>minecraft</a> 
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("shaddowTorusKnot")'>shaddowTorusKnot</a> 
+	<br>
+	<br>
 	Area source: 
 		<a href='javascript:void(0)' onclick='urlOptions.areaSource = "localStorage"; reload()'>localStorage</a>
 		/
@@ -49,15 +59,6 @@
 		<a href='javascript:void(0)' onclick='urlOptions.markerHelpers = true; reload()'>yes</a>
 		/
 		<a href='javascript:void(0)' onclick='urlOptions.markerHelpers = false; reload()'>no</a>
-	<br>
-	Scenes: 
-		<a href='javascript:void(0)' onclick='javascript: switchDemoScene("torus")'>torus</a>
-		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("glassTorus")'>glassTorus</a>
-		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("holePortal")'>holePortal</a>
-		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("holeTorus")'>holeTorus</a>
-		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("holePool")'>holePool</a> 
-		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("minecraft")'>minecraft</a> 
-		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("shaddowTorusKnot")'>shaddowTorusKnot</a> 
 </div>
 <div style='position: fixed; bottom: 16px; right: 16px; z-index:1';>
 	<a id='recordButton' href='learner.html?url=player.html'>
@@ -82,6 +83,9 @@
 	renderer.domElement.style.top = '0px'
 	renderer.domElement.style.left = '0px'
 	document.body.appendChild( renderer.domElement );
+	// enable shadow in renderer
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap
+	renderer.shadowMap.enabled = true;	
 
 	// array of functions for the rendering loop
 	var onRenderFcts= [];
@@ -146,42 +150,10 @@
 
 
 	//////////////////////////////////////////////////////////////////////////////
-	//		Parameters of the multimarkers for this application
+	//		init learnerParameters and markersControlsParameters
 	//////////////////////////////////////////////////////////////////////////////
 
-	
-	// var markersControlsParameters = [
-	// 	{
-	// 		type : 'pattern',
-	// 		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
-	// 	},
-	// 	{
-	// 		type : 'pattern',
-	// 		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
-	// 	},
-	// ]
-
-	// // pattern a/b/c/f
-	// var markersControlsParameters = [
-	// 	{
-	// 		type : 'pattern',
-	// 		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.a',
-	// 	},
-	// 	{
-	// 		type : 'pattern',
-	// 		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.b',
-	// 	},
-	// 	{
-	// 		type : 'pattern',
-	// 		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.c',
-	// 	},
-	// 	{
-	// 		type : 'pattern',
-	// 		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.f',
-	// 	},
-	// ]
-
-	// pattern a/b/c/f
+	// pattern hiro/kanji/a/b/c/f
 	var markersControlsParameters = [
 		{
 			type : 'pattern',
@@ -209,17 +181,13 @@
 		},
 	]
 
-	//////////////////////////////////////////////////////////////////////////////
-	//		init #recordButton 
-	//////////////////////////////////////////////////////////////////////////////
 	var learnerParameters = {
-		backURL : 'player.html'+location.hash,
+		backURL : 'player.html',
 		markersControlsParameters: markersControlsParameters,
-	}
-	document.querySelector('#recordButton').href = 'learner.html#'+JSON.stringify(learnerParameters)	
+	}	
 
 	////////////////////////////////////////////////////////////////////////////////
-	//          Create a ArMarkerControls
+	//          handle urlOptions
 	////////////////////////////////////////////////////////////////////////////////
 
 	var hasHash = location.hash.substring(1) !== '' ? true : false
@@ -229,38 +197,132 @@
 		var urlOptions = {
 			areaSource : 'localStorage',
 			markerHelpers: false,
+			sceneName: 'torus',
 		}
 	}
 	window.urlOptions = urlOptions
+	urlOptionsUpdate()
 	window.reload = function(){
-		location.hash = '#'+JSON.stringify(urlOptions)
+		urlOptionsUpdate()
 		location.reload()
 	}
-
-	if( location.hash.substring(1) === '' )	location.hash = '#'+JSON.stringify(urlOptions)
+	function urlOptionsUpdate(){
+		location.hash = '#'+JSON.stringify(urlOptions)
+		learnerParameters.backURL= 'player.html'+location.hash
+		document.querySelector('#recordButton').href = 'learner.html#'+JSON.stringify(learnerParameters)	
+	}
 	
 	if( urlOptions.areaSource === 'localStorage' && localStorage.getItem('ARjsMultiMarkerFile') === null ){
 		alert('No area has been learned on this device!\n Forwarding you to the learning application.')
 		location.href = document.querySelector('#recordButton').href		
 	}
 	
-	
 	if( urlOptions.areaSource === 'localStorage' ){
 		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
-		multiMarkerPlay(localStorage.getItem('ARjsMultiMarkerFile'))
+		multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
 	}else if( urlOptions.areaSource === 'hardcoded' ){
-		multiMarkerPlayHarcoded()
+		console.assert(false)
+		multiMarkerFile = buildMarkerPlayHarcoded()
 	}else{
 		console.assert('unknown areaSource', areaSource)
 	}
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		Create ArMultiMarkerControls
+	//////////////////////////////////////////////////////////////////////////////
+	// build a markerRoot
+	var markerRoot = new THREE.Group()
+	scene.add(markerRoot)
 	
+	// build a multiMarkerControls
+	var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arToolkitContext, scene, markerRoot, multiMarkerFile)
 
+	// display THREEx.ArMarkerHelper if needed - useful to debug
+	if( urlOptions.markerHelpers === true ){
+		multiMarkerControls.subMarkersControls.forEach(function(subMarkerControls){
+			// add an helper to visuable each sub-marker
+ 			var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
+			subMarkerControls.object3d.add( markerHelper.object3d )		
+		})			
+	}
 
+	// build a smoothedControls
+	var smoothedRoot = new THREE.Group()
+	scene.add(smoothedRoot)
+	var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
+	onRenderFcts.push(function(delta){
+		smoothedControls.update(markerRoot)
+	})	
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		create ARjs demo scenes
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// create demo scenes
+	var demoScenes = new THREEx.ARjsDemoScenes()
+	onRenderFcts.push(function(delta){
+		demoScenes.update(delta)
+	})
+	
+	var demoObject3d = new THREE.Group
+	smoothedRoot.add(demoObject3d)
+	
+	var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
+	averageMatrix.decompose(demoObject3d.position, demoObject3d.quaternion, demoObject3d.scale)
+	demoObject3d.scale.multiplyScalar(3)
+
+	// create the markerScene based on sceneName
+	var markerScene = null
+	switchDemoScene(urlOptions.sceneName)
+
+	// function to dynamically switch demoScenes
+	function switchDemoScene(newSceneName){
+		// remove previous markerScene if suiltabled
+		if( markerScene ){
+			markerScene.parent.remove( markerScene )
+			demoScenes.dispose()			
+			markerScene = null
+		}
+		// create the new markerScene
+		markerScene = demoScenes.createMarkerScene(newSceneName)	
+		demoObject3d.add( markerScene )
+
+		// update urlOptions.sceneName
+		urlOptions.sceneName = newSceneName
+		urlOptionsUpdate()
+	}	
+	window.switchDemoScene = switchDemoScene	
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		render the whole thing on the page
+	//////////////////////////////////////////////////////////////////////////////////
+	var stats = new Stats();
+	// document.body.appendChild( stats.dom );
+	// render the scene
+	onRenderFcts.push(function(){
+		renderer.render( scene, camera );
+		stats.update();
+	})
+
+	// run the rendering loop
+	var lastTimeMsec= null
+	requestAnimationFrame(function animate(nowMsec){
+		// keep looping
+		requestAnimationFrame( animate );
+		// measure time
+		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+		lastTimeMsec	= nowMsec
+		// call each update function
+		onRenderFcts.forEach(function(onRenderFct){
+			onRenderFct(deltaMsec/1000, nowMsec/1000)
+		})
+	})
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
 
-	function multiMarkerPlayHarcoded(){
+	function buildMarkerPlayHarcoded(){
 		
 		var interMarkerWidth = 2.61
 
@@ -297,122 +359,7 @@
 			]
 		}
 
-		multiMarkerPlay(JSON.stringify(multiMarkerFile))
+		return multiMarkerFile
 	}
-
-	function multiMarkerPlay(multiMarkerFile){
-		// build a markerRoot
-		var markerRoot = new THREE.Group()
-		scene.add(markerRoot)
-		
-		// build a multiMarkerControls
-		var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arToolkitContext, scene, markerRoot, multiMarkerFile)
-
-		// display THREEx.ArMarkerHelper if needed - useful to debug
-		if( urlOptions.markerHelpers === true ){
-			multiMarkerControls.subMarkersControls.forEach(function(subMarkerControls){
-				// add an helper to visuable each sub-marker
-				var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
-				subMarkerControls.object3d.add( markerHelper.object3d )		
-			})			
-		}
-
-		// build a smoothedControls
-		var smoothedRoot = new THREE.Group()
-		scene.add(smoothedRoot)
-		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
-		onRenderFcts.push(function(delta){
-			smoothedControls.update(markerRoot)
-		})	
-
-		//////////////////////////////////////////////////////////////////////////////////
-		//		create ARjs demo scenes
-		//////////////////////////////////////////////////////////////////////////////////
-
-		// create demo scenes
-		var demoScenes = new THREEx.ARjsDemoScenes()
-		onRenderFcts.push(function(delta){
-			demoScenes.update(delta)
-		})
-		
-		var demoObject3d = new THREE.Group
-		smoothedRoot.add(demoObject3d)
-		
-		var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
-		averageMatrix.decompose(demoObject3d.position, demoObject3d.quaternion, demoObject3d.scale)
-		demoObject3d.scale.multiplyScalar(6)
-
-		// create the markerScene based on sceneName
-		var sceneName = location.hash.substring(1) || 'torus'
-		var sceneName = 'minecraft'
-		var markerScene = null
-		switchDemoScene(sceneName)
-
-		// function to dynamically switch demoScenes
-		function switchDemoScene(newSceneName){
-			// remove previous markerScene if suiltabled
-			if( markerScene ){
-				markerScene.parent.remove( markerScene )
-				demoScenes.dispose()			
-				markerScene = null
-			}
-			// create the new markerScene
-			markerScene = demoScenes.createMarkerScene(newSceneName)	
-			demoObject3d.add( markerScene )
-		}	
-		window.switchDemoScene = switchDemoScene	
-
-		
-
-		// //////////////////////////////////////////////////////////////////////////////////
-		// //		add an object in the scene
-		// //////////////////////////////////////////////////////////////////////////////////
-		// 
-		// var demoContent = new THREEx.DemoContent()
-		// onRenderFcts.push(function(delta){
-		// 	demoContent.update(delta)
-		// })	
-		// var markerContent = demoContent.createMarkerScene('holePool')
-		// 
-		// // compute the average matrix of this markerFile
-		// var markerScene = new THREE.Group()
-		// markerScene.add(markerContent)
-		// markerRoot.add( markerScene )
-		// 
-		// var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
-		// averageMatrix.decompose(markerScene.position, markerScene.quaternion, markerScene.scale)
-		// markerScene.scale.multiplyScalar(5)
-	}
-
-	//////////////////////////////////////////////////////////////////////////////
-	//		Hard coded
-	//////////////////////////////////////////////////////////////////////////////
-
-
-	//////////////////////////////////////////////////////////////////////////////////
-	//		render the whole thing on the page
-	//////////////////////////////////////////////////////////////////////////////////
-	var stats = new Stats();
-	// document.body.appendChild( stats.dom );
-	// render the scene
-	onRenderFcts.push(function(){
-		renderer.render( scene, camera );
-		stats.update();
-	})
-
-	// run the rendering loop
-	var lastTimeMsec= null
-	requestAnimationFrame(function animate(nowMsec){
-		// keep looping
-		requestAnimationFrame( animate );
-		// measure time
-		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
-		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
-		lastTimeMsec	= nowMsec
-		// call each update function
-		onRenderFcts.forEach(function(onRenderFct){
-			onRenderFct(deltaMsec/1000, nowMsec/1000)
-		})
-	})
 // })()
 </script></body>

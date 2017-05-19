@@ -53,16 +53,15 @@
 		// antialias	: true,
 		alpha: true
 	});
-
-renderer.shadowMap.type = THREE.PCFSoftShadowMap
-renderer.shadowMap.enabled = true;
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-	// renderer.setPixelRatio( 2 );
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	renderer.domElement.style.position = 'absolute'
 	renderer.domElement.style.top = '0px'
 	renderer.domElement.style.left = '0px'
 	document.body.appendChild( renderer.domElement );
+	// enable shadow in renderer
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap
+	renderer.shadowMap.enabled = true;	
 
 	// array of functions for the rendering loop
 	var onRenderFcts= [];
@@ -156,13 +155,7 @@ window.arToolkitSource = arToolkitSource
 	// build a smoothedControls
 	var smoothedRoot = new THREE.Group()
 	scene.add(smoothedRoot)
-	var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
-		lerpPosition: 0.9,
-		lerpQuaternion: 0.9,
-		lerpScale: 0.9,
-		// minVisibleDelay: 1,
-		// minUnvisibleDelay: 1,
-	})
+	var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
 	onRenderFcts.push(function(delta){
 		smoothedControls.update(markerRoot)
 	})	
