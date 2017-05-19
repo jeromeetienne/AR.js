@@ -35,13 +35,13 @@
 	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 	<br>
 	Scenes: 
-		<a href='#torus' onclick='javascript: location.reload()'>torus</a>
-		- <a href='#glassTorus' onclick='javascript: location.reload()'>glassTorus</a>
-		- <a href='#holePortal' onclick='javascript: location.reload()'>holePortal</a>
-		- <a href='#holeTorus' onclick='javascript: location.reload()'>holeTorus</a>
-		- <a href='#holePool' onclick='javascript: location.reload()'>holePool</a> 
-		- <a href='#minecraft' onclick='javascript: location.reload()'>minecraft</a> 
-		- <a href='#shaddowTorusKnot' onclick='javascript: location.reload()'>shaddowTorusKnot</a> 
+		<a href='javascript:void(0)' onclick='javascript: switchScene("torus")'>torus</a>
+		- <a href='javascript:void(0)' onclick='javascript: switchScene("glassTorus")'>glassTorus</a>
+		- <a href='javascript:void(0)' onclick='javascript: switchScene("holePortal")'>holePortal</a>
+		- <a href='javascript:void(0)' onclick='javascript: switchScene("holeTorus")'>holeTorus</a>
+		- <a href='javascript:void(0)' onclick='javascript: switchScene("holePool")'>holePool</a> 
+		- <a href='javascript:void(0)' onclick='javascript: switchScene("minecraft")'>minecraft</a> 
+		- <a href='javascript:void(0)' onclick='javascript: switchScene("shaddowTorusKnot")'>shaddowTorusKnot</a> 
 </div><script>
 ;(function(){
 	//////////////////////////////////////////////////////////////////////////////////
@@ -181,13 +181,24 @@ window.arToolkitSource = arToolkitSource
 	var demoContent = new THREEx.DemoContent()
 	onRenderFcts.push(function(delta){
 		demoContent.update(delta)
-	})	
+	})
 	
 	var sceneName = location.hash.substring(1) || 'torus'
 	
 	var markerScene = demoContent.createMarkerScene(sceneName)
-	markerRoot.add( markerScene )
 	smoothedRoot.add( markerScene )
+
+	window.switchScene = function(newSceneName){
+		var parentObject3D = markerScene.parent
+		if( demoContent ){
+			markerScene.parent.remove( markerScene )
+			demoContent.dispose()			
+		}
+		markerScene = demoContent.createMarkerScene(newSceneName)	
+		smoothedRoot.add( markerScene )
+		
+		location.hash = '#'+newSceneName
+	}
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
