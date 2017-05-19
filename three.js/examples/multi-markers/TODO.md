@@ -1,5 +1,5 @@
 - CLEAN UP STUFF
-- in player, load the hardcoded from a file
+- NOGO in player, load the hardcoded from a file
   - clean up the code and demo the case
   - link the hardcoded one with the image of the multi marker
 - in player, remove the function multiMarkerPlay() - serialise it
@@ -7,7 +7,6 @@
 - in player, parameters this is a sceneName='' in the url
   - maybe some placements depending multi placements
   - all this code will be copyed directly in chromiumAR
-  - 
 
 - DONE appMode: areaUsing become areaSource: 'localStorage' or 'hardcodedABCF'
 - DONE add link to the abcf images

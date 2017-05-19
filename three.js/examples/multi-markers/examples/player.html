@@ -161,25 +161,25 @@
 	// 	},
 	// ]
 
-	// pattern a/b/c/f
-	var markersControlsParameters = [
-		{
-			type : 'pattern',
-			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.a',
-		},
-		{
-			type : 'pattern',
-			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.b',
-		},
-		{
-			type : 'pattern',
-			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.c',
-		},
-		{
-			type : 'pattern',
-			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.f',
-		},
-	]
+	// // pattern a/b/c/f
+	// var markersControlsParameters = [
+	// 	{
+	// 		type : 'pattern',
+	// 		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.a',
+	// 	},
+	// 	{
+	// 		type : 'pattern',
+	// 		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.b',
+	// 	},
+	// 	{
+	// 		type : 'pattern',
+	// 		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.c',
+	// 	},
+	// 	{
+	// 		type : 'pattern',
+	// 		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.f',
+	// 	},
+	// ]
 
 	// pattern a/b/c/f
 	var markersControlsParameters = [
@@ -221,7 +221,6 @@
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
-
 
 	var hasHash = location.hash.substring(1) !== '' ? true : false
 	if( hasHash === true ){
@@ -321,13 +320,7 @@
 		// build a smoothedControls
 		var smoothedRoot = new THREE.Group()
 		scene.add(smoothedRoot)
-		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
-			lerpPosition : 0.3,
-			lerpQuaternion : 0.3, 
-			lerpScale : 0.3,
-			minVisibleDelay: 0.2,
-			minUnvisibleDelay: 0.4,
-		})
+		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
 		onRenderFcts.push(function(delta){
 			smoothedControls.update(markerRoot)
 		})	
