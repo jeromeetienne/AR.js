@@ -23,11 +23,11 @@ THREEx.ArSmoothedControls = function(object3d, parameters){
 	parameters = parameters || {}
 	this.parameters = {
 		// lerp coeficient for the position - between [0,1] - default to 1
-		lerpPosition: parameters.lerpPosition !== undefined ? parameters.lerpPosition : 0.8,
+		lerpPosition: parameters.lerpPosition !== undefined ? parameters.lerpPosition : 0.7,
 		// lerp coeficient for the quaternion - between [0,1] - default to 1
-		lerpQuaternion: parameters.lerpQuaternion !== undefined ? parameters.lerpQuaternion : 0.8,
+		lerpQuaternion: parameters.lerpQuaternion !== undefined ? parameters.lerpQuaternion : 0.7,
 		// lerp coeficient for the scale - between [0,1] - default to 1
-		lerpScale: parameters.lerpScale !== undefined ? parameters.lerpScale : 0.8,
+		lerpScale: parameters.lerpScale !== undefined ? parameters.lerpScale : 0.7,
 		// delay for lerp fixed steps - in seconds - default to 1/120
 		lerpStepDelay: parameters.fixStepDelay !== undefined ? parameters.fixStepDelay : 1/60,
 		// minimum delay the sub-control must be visible before this controls become visible - default to 0 seconds

@@ -3,6 +3,8 @@
 <!-- three.js library -->
 <script src='../../vendor/three.js/build/three.js'></script>
 <script src='../../vendor/three.js/examples/js/libs/stats.min.js'></script>
+<script src='../../vendor/hammer.min.js'></script>
+<script src='../../vendor/hammer-time.min.js'></script>
 <!-- jsartookit -->
 <script src='../../../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
 <script src='../../../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
@@ -52,8 +54,7 @@
 	Area source: 
 		<a href='javascript:void(0)' onclick='urlOptions.areaSource = "localStorage"; reload()'>localStorage</a>
 		/
-		<a href='javascript:void(0)' onclick='urlOptions.areaSource = "hardcoded"; reload()'>hardcoded</a>
-		(<a href='../../../../data/images/multi-pattern-template-abcdgf.png' target='_blank'>image</a>)
+		<a href='javascript:void(0)' onclick='urlOptions.areaSource = "onlyHiro"; reload()'>onlyHiro</a>
 	<br>
 	Marker helpers: 
 		<a href='javascript:void(0)' onclick='urlOptions.markerHelpers = true; reload()'>yes</a>
@@ -64,6 +65,27 @@
 	<a id='recordButton' href='learner.html?url=player.html'>
 		<img src="images/record-start.png" width='64px'  height='64px'>
 	</a>
+</div>
+<div id='objectList' style='position: fixed; top: 16px; right: 16px; z-index:1';>
+	<ul>
+	</ul>
+	<style>
+		#objectList ul {
+			list-style: none;
+			font-size: 15px;
+		}
+		#objectList ul li {
+			cursor: pointer;
+			padding: 5px;
+			border-radius: 10px;
+		}
+		#objectList ul li.selected {
+			background: lightgray;
+		}
+		#objectList ul li:hover {
+			background: gray;
+		}
+	</style>
 </div>
 <script>
 // ;(function(){
@@ -213,16 +235,30 @@
 	}
 	
 	if( urlOptions.areaSource === 'localStorage' && localStorage.getItem('ARjsMultiMarkerFile') === null ){
-		alert('No area has been learned on this device!\n Forwarding you to the learning application.')
-		location.href = document.querySelector('#recordButton').href		
+		alert('No area has been learned on this device!\n Using only hiro.')
+		urlOptions.areaSource === 'onlyHiro'	
+		urlOptionsUpdate()
 	}
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		get multiMarkerFile
+	//////////////////////////////////////////////////////////////////////////////
 	
 	if( urlOptions.areaSource === 'localStorage' ){
 		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
-		multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
-	}else if( urlOptions.areaSource === 'hardcoded' ){
-		console.assert(false)
-		multiMarkerFile = buildMarkerPlayHarcoded()
+		var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
+	}else if( urlOptions.areaSource === 'onlyHiro' ){
+		var multiMarkerFile = JSON.stringify({
+			subMarkersControls : [
+				{
+					parameters: {
+						type : 'pattern',
+						patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+					},
+					poseMatrix: new THREE.Matrix4().makeTranslation(0,0, 0).toArray()
+				},
+			]
+		})
 	}else{
 		console.assert('unknown areaSource', areaSource)
 	}
@@ -249,7 +285,13 @@
 	// build a smoothedControls
 	var smoothedRoot = new THREE.Group()
 	scene.add(smoothedRoot)
-	var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
+	var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
+		lerpPosition: 0.3,
+		lerpQuaternion: 0.5,
+		lerpScale: 0.5,
+		minVisibleDelay: 0.3,
+		minUnvisibleDelay: 0.2,
+	})
 	onRenderFcts.push(function(delta){
 		smoothedControls.update(markerRoot)
 	})	
@@ -263,35 +305,148 @@
 	onRenderFcts.push(function(delta){
 		demoScenes.update(delta)
 	})
-	
-	var demoObject3d = new THREE.Group
-	smoothedRoot.add(demoObject3d)
-	
-	var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
-	averageMatrix.decompose(demoObject3d.position, demoObject3d.quaternion, demoObject3d.scale)
-	demoObject3d.scale.multiplyScalar(3)
 
-	// create the markerScene based on sceneName
-	var markerScene = null
+	// create the selectedMarkerScene based on sceneName
+	var markerScenes = []
+	var selectedMarkerScene = null
+
 	switchDemoScene(urlOptions.sceneName)
 
 	// function to dynamically switch demoScenes
+	window.switchDemoScene = switchDemoScene
 	function switchDemoScene(newSceneName){
-		// remove previous markerScene if suiltabled
-		if( markerScene ){
-			markerScene.parent.remove( markerScene )
-			demoScenes.dispose()			
-			markerScene = null
+		// remove previous selectedMarkerScene if suiltabled
+		if( selectedMarkerScene ){
+			// selectedMarkerScene.parent.remove( selectedMarkerScene )
+			// demoScenes.dispose()			
+			// selectedMarkerScene = null
 		}
-		// create the new markerScene
-		markerScene = demoScenes.createMarkerScene(newSceneName)	
-		demoObject3d.add( markerScene )
+	
+
+		var demoRoot = new THREE.Group
+		var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
+		averageMatrix.decompose(demoRoot.position, demoRoot.quaternion, demoRoot.scale)		
+		smoothedRoot.add(demoRoot)
+
+		// create the new selectedMarkerScene
+		var markerScene = demoScenes.createMarkerScene(newSceneName)	
+		demoRoot.add( markerScene )
+
+		markerScenes[markerScene.id] = markerScene
+		
+		
+		// update the UI
+		var domElement = document.createElement('li')
+		document.querySelector('#objectList ul').appendChild(domElement)
+		domElement.classList.add('selected')
+		domElement.innerHTML = newSceneName
+		domElement.dataset.markerSceneId = markerScene.id
 
 		// update urlOptions.sceneName
 		urlOptions.sceneName = newSceneName
 		urlOptionsUpdate()
-	}	
-	window.switchDemoScene = switchDemoScene	
+
+		selectScene(markerScene)
+
+		domElement.addEventListener('click', function(){
+			var object3dId = domElement.dataset.markerSceneId
+			var markerScene = markerScenes[object3dId];
+			selectScene(markerScene)
+		})
+		return
+		
+		function selectScene(markerScene){
+			// debugger
+			selectedMarkerScene = markerScene
+			
+			;[].slice.call(document.querySelectorAll('#objectList ul li.selected')).forEach(function(domElement){
+				// debugger
+				domElement.classList.remove('selected')
+			})
+			domElement.classList.add('selected')
+		}
+		
+	}
+		
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+
+	var hammertime = new Hammer(renderer.domElement);
+	// var hammertime = new Hammer(document.body);
+	hammertime.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+	hammertime.on('pan', function(event) {
+		if( event.additionalEvent !== 'panright' && event.additionalEvent !== 'panleft' )	return
+		
+		var delta = event.velocityX / window.innerWidth * 60
+		var demoRoot = selectedMarkerScene.parent
+		demoRoot.rotation.y +=  delta
+	});
+	hammertime.on('pan', function(event) {
+		if( event.additionalEvent !== 'panup' && event.additionalEvent !== 'pandown' )	return
+
+		var delta = -event.velocityY/window.innerHeight * 60
+		delta = THREE.Math.clamp(delta, -0.2, 0.2)
+		
+		var demoRoot = selectedMarkerScene.parent
+
+		var scale = demoRoot.scale.x * (1 + delta)
+		scale = THREE.Math.clamp(scale, 0.2, 10)
+		demoRoot.scale.set(scale, scale, scale)
+	});
+	
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		Picking on ground
+	//////////////////////////////////////////////////////////////////////////////
+	var raycaster = new THREE.Raycaster();
+	
+	var mouseCoordinate = new THREE.Vector2()
+	document.addEventListener( 'mousemove', function onDocumentMouseMove( event ) {
+		event.preventDefault();
+		mouseCoordinate.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+		mouseCoordinate.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+	}, false );
+	
+	// Create a three.js camera.
+	var cameraPicking = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
+	scene.add(cameraPicking);	
+	// handle resize
+	window.addEventListener('resize', function(){
+		cameraPicking.aspect = window.innerWidth / window.innerHeight;
+		cameraPicking.updateProjectionMatrix();
+	})
+		
+	var geometry = new THREE.PlaneGeometry(20,20).rotateX(-Math.PI/2)
+	var material = new THREE.MeshBasicMaterial({
+		// opacity: 0.5,
+		// transparent: true,
+	})
+	material.visible = false
+	var pickingPlane = new THREE.Mesh(geometry, material)
+	selectedMarkerScene.parent.add(pickingPlane)
+
+	// keep pickingPlane the same size even if parent is changing scale
+	onRenderFcts.push(function(delta){
+		pickingPlane.scale.set(1,1,1).multiplyScalar(1 / pickingPlane.parent.scale.x)
+	})	
+	
+	
+	hammertime.on('tap', function(event) {
+		// compute intersections between mouseCoordinate and pickingPlane
+		raycaster.setFromCamera( mouseCoordinate, cameraPicking );
+		var intersects = raycaster.intersectObjects( [pickingPlane] )
+
+		// if no intersection occurs, return now
+		if( intersects.length === 0 )	return
+
+		// set new demoRoot position
+		var demoRoot = selectedMarkerScene.parent
+		var newPosition = demoRoot.parent.worldToLocal( intersects[0].point.clone() )
+		demoRoot.position.copy(newPosition)
+	})
+
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
@@ -301,6 +456,8 @@
 	// render the scene
 	onRenderFcts.push(function(){
 		renderer.render( scene, camera );
+		// scene.updateMatrixWorld(true)
+		// renderer.render( scenePicking, cameraPicking );
 		stats.update();
 	})
 
@@ -318,48 +475,5 @@
 			onRenderFct(deltaMsec/1000, nowMsec/1000)
 		})
 	})
-	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
-	//////////////////////////////////////////////////////////////////////////////
-
-	function buildMarkerPlayHarcoded(){
-		
-		var interMarkerWidth = 2.61
-
-		var multiMarkerFile = {
-			subMarkersControls : [
-				{
-					parameters: {
-						type : 'pattern',
-						patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.a',
-					},
-					poseMatrix: new THREE.Matrix4().makeTranslation(0,0, 0).toArray()
-				},
-				{
-					parameters: {
-						type : 'pattern',
-						patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.b',
-					},
-					poseMatrix: new THREE.Matrix4().makeTranslation(interMarkerWidth,0, 0).toArray()
-				},
-				{
-					parameters: {
-						type : 'pattern',
-						patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.c',
-					},
-					poseMatrix: new THREE.Matrix4().makeTranslation(interMarkerWidth*2, 0, 0).toArray()
-				},
-				// {
-				// 	parameters: {
-				// 		type : 'pattern',
-				// 		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.f',
-				// 	},
-				// 	poseMatrix: new THREE.Matrix4().makeTranslation(interMarkerWidth*2, 0, interMarkerWidth).toArray()
-				// },
-			]
-		}
-
-		return multiMarkerFile
-	}
 // })()
 </script></body>

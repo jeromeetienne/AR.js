@@ -187,63 +187,6 @@
 		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
 	})
 
-	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
-	//////////////////////////////////////////////////////////////////////////////
-	initSceneCubeTorus()
-	function initSceneCubeTorus(){
-		var group = new THREE.Group
-		group.scale.set(1,1,1).multiplyScalar(1.2)
-		group.rotation.x = -Math.PI/2
-		group.position.y = -0.5 * group.scale.x
-		markerRoot.add(group)
-
-		// add outter cube - invisibility cloak
-		var geometry = new THREE.BoxGeometry(1,1,1);
-		geometry.faces.splice(8, 2); // make hole by removing top two triangles (is this assumption stable?)
-		var material = buildTransparentMaterial()	
-
-		var mesh = new THREE.Mesh( geometry, material);
-		mesh.scale.set(1,1,1).multiplyScalar(1.02)
-		group.add(mesh)
-
-		// add the inner box
-		var geometry	= new THREE.BoxGeometry(1,1,1);
-		var material	= new THREE.MeshNormalMaterial({
-			side: THREE.BackSide
-		}); 
-		var mesh	= new THREE.Mesh( geometry, material );
-		group.add( mesh );
-
-		// add the torus knot
-		var geometry	= new THREE.TorusKnotGeometry(0.25,0.1,32,32);
-		var material	= new THREE.MeshNormalMaterial(); 
-		var mesh	= new THREE.Mesh( geometry, material );
-		group.add( mesh );
-		
-		onRenderFcts.push(function(){
-			mesh.rotation.x += 0.1
-		})	
-	}
-
-	function buildCircleCache(){
-		var geometry = new THREE.RingGeometry( 0.5, 5, 32 );	
-		var material = buildTransparentMaterial()			
-		var mesh = new THREE.Mesh( geometry, material);
-		return mesh
-	}
-
-	function buildTransparentMaterial(){
-		var material = new THREE.MeshBasicMaterial({
-			colorWrite: false // only write to z-buf
-		})
-		// an alternative to reach the same visual - this one seems way slower tho. My guess is it is hitting a slow-path in gpu
-		// var material   = new THREE.MeshBasicMaterial();
-		// material.color.set('black')
-		// material.opacity   = 0;
-		// material.blending  = THREE.NoBlending;
-		return material		
-	}
 	//////////////////////////////////////////////////////////////////////////////////
 	//		build videoTexture
 	//////////////////////////////////////////////////////////////////////////////////

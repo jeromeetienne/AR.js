@@ -38,7 +38,7 @@ THREEx.ArVideoInWebgl = function(videoTexture){
 		
 		// extract the fov from the projectionMatrix
 		var fov = THREE.Math.radToDeg(Math.atan(1/camera.projectionMatrix.elements[5]))*2;
-		
+	// console.log('fov', fov)
 		
 		var elementWidth = parseFloat( arToolkitSource.domElement.style.width.replace(/px$/,''), 10 )
 		var elementHeight = parseFloat( arToolkitSource.domElement.style.height.replace(/px$/,''), 10 )

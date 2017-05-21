@@ -1,3 +1,25 @@
+- every time you add a new object
+  - make a list of all the objects in the scene in a <li> element
+  - on top left
+  - easy element of this list an idea aka demoScene.id
+  - each created demoSCene is set in array demoScene.id
+  - click on <li> is about setting the demoScene variable - rename it selectedDemoScene
+  - each click on li change selectedDemoScene
+  - add a button to delete element
+- write a basic.html
+- fix the hiro case
+
+---
+- make a simple multi marker with a hardcoded cube
+- make a player more useful
+  - pick to create object on the ground plane
+  - drag to rotate on y
+  - scale with pinch in/out
+- demo.html
+- put all that in chromium webar
+- create repo with those demo in webar/ar.js webar/chromiumAR 
+  - make your demo scene in there
+
 - CLEAN UP STUFF
 - NOGO in player, load the hardcoded from a file
   - clean up the code and demo the case
