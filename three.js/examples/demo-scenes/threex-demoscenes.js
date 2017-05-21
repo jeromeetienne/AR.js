@@ -204,15 +204,22 @@ THREEx.ARjsDemoScenes.prototype._createHolePool = function () {
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
 	function buildCacheMesh(){
-		// add outter cube - invisibility cloak
-		var geometry = new THREE.BoxGeometry(1,1,1);
-		geometry.faces.splice(4, 2); // make hole by removing top two triangles (is this assumption stable?)
+		var geometry = new THREE.RingGeometry( 0.5, 5, 32 ).rotateX(-Math.PI/2);
 		var material = THREEx.HoleInTheWall.buildTransparentMaterial()
-
 		var mesh = new THREE.Mesh( geometry, material);
-		mesh.scale.set(1,1,1).multiplyScalar(1.02)
-		mesh.position.y = -0.5
 		markerScene.add(mesh)		
+
+		// radiusTop, radiusBottom, height
+		var geometry = new THREE.CylinderGeometry(0.5, 0.5, 0.05, 32, 1, true)
+		var material = new THREE.MeshLambertMaterial( {
+			side: THREE.BackSide,
+			color: 'lightgrey'
+			
+		})
+		mesh = new THREE.Mesh( geometry, material )
+		mesh.position.y = -geometry.parameters.height/2
+		markerScene.add( mesh );
+	
 	}
 	function buildWater(){
 		// build texture
@@ -241,11 +248,11 @@ THREEx.ARjsDemoScenes.prototype._createHolePool = function () {
 			normalMap: normalMap
 		})
 		var mesh = new THREE.Mesh(geometry, material);
-		mesh.position.y = -0.1;
+		mesh.position.y = -0.05;
 		markerScene.add(mesh)
 	}
 	function buildPoolWalls(){
-		var geometry = new THREE.BoxGeometry(1,1,1);
+		var geometry = new THREE.BoxGeometry(1.1,1.1,1.1);
 		geometry.faces.splice(4, 2);	// remove top (though this is a backside material)
 		geometry.elementsNeedUpdate = true;
 		
@@ -254,7 +261,7 @@ THREEx.ARjsDemoScenes.prototype._createHolePool = function () {
 			map: new THREE.TextureLoader().load(THREEx.ARjsDemoScenes.baseURL + 'examples/hole-in-the-wall/images/mosaic-256x256.jpg'),
 		})
 		var mesh = new THREE.Mesh(geometry, material);
-		mesh.position.y = -0.5
+		mesh.position.y = -geometry.parameters.height/2
 		markerScene.add(mesh)
 	}
 	
@@ -346,13 +353,14 @@ THREEx.ARjsDemoScenes.prototype._createHolePortal = function () {
 	mesh = new THREE.Mesh( geometry, material );
 	mesh.rotateX(Math.PI/2)
 	mesh.position.z = -geometry.parameters.height/2
-	markerScene.add( mesh );		
+	markerScene.add( mesh );
 	
 	// add bounding sphere
 	var geometry = new THREE.SphereGeometry( 3, 32, 16, 0, Math.PI, Math.PI, Math.PI);
 	geometry.scale( 1, -1, 1 )
+	var texture = new THREE.TextureLoader().load( THREEx.ARjsDemoScenes.baseURL + 'examples/hole-in-the-wall/images/32211336474_380b67d014_k.jpg' )
 	var material = new THREE.MeshBasicMaterial( {
-		map: new THREE.TextureLoader().load( THREEx.ARjsDemoScenes.baseURL + 'examples/hole-in-the-wall/images/32211336474_380b67d014_k.jpg' ),
+		map: texture,
 		side: THREE.DoubleSide
 	});
 	mesh = new THREE.Mesh( geometry, material );
