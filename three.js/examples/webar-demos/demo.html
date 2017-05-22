@@ -1,30 +1,31 @@
 <!DOCTYPE html>
 <meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
+
 <!-- three.js library -->
-<script src='../../vendor/three.js/build/three.js'></script>
-<script src='../../vendor/three.js/examples/js/libs/stats.min.js'></script>
-<script src='../../vendor/hammer.min.js'></script>
-<script src='../../vendor/hammer-time.min.js'></script>
+<script src='../../../../three.js/examples/vendor/three.js/build/three.js'></script>
+<script src='../../../../three.js/examples/vendor/three.js/examples/js/libs/stats.min.js'></script>
+
+<script src='../../../../three.js/examples/vendor/hammer.min.js'></script>
+<script src='../../../../three.js/examples/vendor/hammer-time.min.js'></script>
+
 <!-- jsartookit -->
-<script src='../../../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
-<script src='../../../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
+<script src='../../../../three.js/vendor/jsartoolkit5/build/artoolkit.min.js'></script>
+<script src='../../../../three.js/vendor/jsartoolkit5/js/artoolkit.api.js'></script>
 <!-- include threex.artoolkit -->
-<script src='../../../threex-artoolkitsource.js'></script>
-<script src='../../../threex-artoolkitcontext.js'></script>
-<script src='../../../threex-artoolkitprofile.js'></script>
-<script src='../../../threex-arbasecontrols.js'></script>
-<script src='../../../threex-armarkercontrols.js'></script>
-<script src='../../../threex-armarkerhelper.js'></script>
-<script src='../../../threex-arsmoothedcontrols.js'></script>
-<script>THREEx.ArToolkitContext.baseURL = '../../../'</script>
+<script src='../../../../three.js/threex-artoolkitsource.js'></script>
+<script src='../../../../three.js/threex-artoolkitcontext.js'></script>
+<script src='../../../../three.js/threex-artoolkitprofile.js'></script>
+<script src='../../../../three.js/threex-arbasecontrols.js'></script>
+<script src='../../../../three.js/threex-armarkercontrols.js'></script>
+<script src='../../../../three.js/threex-arsmoothedcontrols.js'></script>
+<script>THREEx.ArToolkitContext.baseURL = '../../../../three.js/'</script>
 
 <script src='../../../../three.js/examples/multi-markers/threex-armultimarkercontrols.js'></script>
-<!-- <script src='../../../../three.js/examples/multi-markers/threex-armultimarkerlearning.js'></script> -->
 
 <!-- include demo scenes -->
-<script src='../../../../three.js/examples/demo-scenes/threex-demoscenes.js'></script>
-<script src='../../../../three.js/examples/refraction/threex.refractionmaterial.js'></script>
-<script src='../../../../three.js/examples/hole-in-the-wall/threex.holeinthewall.js'></script>
+<script src='../../../../three.js/examples/webar-demos/js/threex-demoscenes.js'></script>
+<script src='../../../../three.js/examples/webar-demos/vendor/refraction/threex.refractionmaterial.js'></script>
+<script src='../../../../three.js/examples/webar-demos/vendor/hole-in-the-wall/threex.holeinthewall.js'></script>
 <script src='../../../../three.js/examples/vendor/three.js/examples/js/loaders/GLTFLoader.js'></script>
 <script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraft.js'></script>
 <script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraftcontrols.js'></script>
@@ -67,13 +68,13 @@
 </div>
 <div style='position: fixed; bottom: 10px; width:100%; text-align: center;z-index:1';>
 	Scenes: 
-		<a href='javascript:void(0)' onclick='javascript: createDemoScene("torus")'>torus</a>
-		- <a href='javascript:void(0)' onclick='javascript: createDemoScene("glassTorus")'>glassTorus</a>
-		- <a href='javascript:void(0)' onclick='javascript: createDemoScene("holePortal")'>holePortal</a>
-		- <a href='javascript:void(0)' onclick='javascript: createDemoScene("holeTorus")'>holeTorus</a>
-		- <a href='javascript:void(0)' onclick='javascript: createDemoScene("holePool")'>holePool</a> 
-		- <a href='javascript:void(0)' onclick='javascript: createDemoScene("minecraft")'>minecraft</a> 
-		- <a href='javascript:void(0)' onclick='javascript: createDemoScene("shaddowTorusKnot")'>shaddowTorusKnot</a> 
+		<a href='javascript:void(0)' onclick='javascript: createScene("torus")'>torus</a>
+		- <a href='javascript:void(0)' onclick='javascript: createScene("glassTorus")'>glassTorus</a>
+		- <a href='javascript:void(0)' onclick='javascript: createScene("holePortal")'>holePortal</a>
+		- <a href='javascript:void(0)' onclick='javascript: createScene("holeTorus")'>holeTorus</a>
+		- <a href='javascript:void(0)' onclick='javascript: createScene("holePool")'>holePool</a> 
+		- <a href='javascript:void(0)' onclick='javascript: createScene("minecraft")'>minecraft</a> 
+		- <a href='javascript:void(0)' onclick='javascript: createScene("shaddowTorusKnot")'>shaddowTorusKnot</a> 
 	<br>
 	<br>
 	Area source: 
@@ -326,11 +327,11 @@
 	var markerScenes = []
 	var selectedMarkerScene = null
 
-	createDemoScene(urlOptions.sceneName)
+	createScene(urlOptions.sceneName)
 
 	// function to dynamically switch demoScenes
-	window.createDemoScene = createDemoScene
-	function createDemoScene(newSceneName){
+	window.createScene = createScene
+	function createScene(newSceneName){
 		var demoRoot = new THREE.Group
 		var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
 		averageMatrix.decompose(demoRoot.position, demoRoot.quaternion, demoRoot.scale)		
