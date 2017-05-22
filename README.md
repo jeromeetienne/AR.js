@@ -147,24 +147,24 @@ Three.js Examples:
 - [deadreckoning](https://jeromeetienne.github.io/AR.js/three.js/examples/deadreckoning.html) :
   Experiment with dead reckoning - not conclusive :(
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/deadreckoning.html))
-- [hole-in-the-wall](https://jeromeetienne.github.io/AR.js/three.js/examples/webar-demos/vendor/hole-in-the-wall/hole-in-the-wall.html) :
+- [hole-in-the-wall](https://jeromeetienne.github.io/AR.js/three.js/examples/webar-playground/vendor/hole-in-the-wall/hole-in-the-wall.html) :
   three.js example for hole-in-the-wall
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/webar-demos/vendor/hole-in-the-wall/hole-in-the-wall.html))
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/webar-playground/vendor/hole-in-the-wall/hole-in-the-wall.html))
 - [shadow](https://jeromeetienne.github.io/AR.js/three.js/examples/shadow.html) :
   three.js example for shadow
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/shadow.html))
-- [refraction](https://jeromeetienne.github.io/AR.js/three.js/examples/webar-demos/vendor/refraction/refraction.html) :
+- [refraction](https://jeromeetienne.github.io/AR.js/three.js/examples/webar-playground/vendor/refraction/refraction.html) :
   three.js example for refraction
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/webar-demos/vendor/refraction/refraction.html))
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/webar-playground/vendor/refraction/refraction.html))
 - [markercloak](https://jeromeetienne.github.io/AR.js/three.js/examples/markercloak.html) :
   three.js example for markercloak
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/markercloak.html))
 - [liquid-marker](https://jeromeetienne.github.io/AR.js/three.js/examples/liquid-marker/) :
   demo transforming table and wall as liquid
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/liquid-marker/index.html))
-- [holographic-message](https://jeromeetienne.github.io/AR.js/three.js/examples/webar-demos/vendor/holographic-message/) :
+- [holographic-message](https://jeromeetienne.github.io/AR.js/three.js/examples/webar-playground/vendor/holographic-message/) :
   A holographic-message in Augmented reality. Part of a business card for [@AndraConnect](https://twitter.com/AndraConnect)
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/webar-demos/vendor/holographic-message/index.html))
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/webar-playground/vendor/holographic-message/index.html))
 - [videoinwebgl](https://jeromeetienne.github.io/AR.js/three.js/examples/videoinwebgl.html) :
   Add video in webgl - useful for phone-in-hmd usecase - work in progress
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/videoinwebgl.html))
@@ -191,9 +191,9 @@ Three.js Examples:
 - [multimarker-artoolkit](https://jeromeetienne.github.io/AR.js/three.js/examples/multimarker-artoolkit/multimarker.html) :
   three.js example for multimarker
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multimarker-artoolkit/multimarker.html))
-- [WebAR Demos](https://jeromeetienne.github.io/AR.js/three.js/examples/webar-demos/examples/demo.html) :
+- [WebAR Demos](https://jeromeetienne.github.io/AR.js/three.js/examples/webar-playground/examples/demo.html) :
   Show how to easily build the AR.js scenes that you see in the demos - with a nice simple "editor" on top.
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/webar-demos/examples/demo.html)) 
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/webar-playground/examples/demo.html)) 
    
 a-frame Examples:
 

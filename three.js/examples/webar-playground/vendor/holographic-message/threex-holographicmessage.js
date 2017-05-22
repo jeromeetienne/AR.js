@@ -8,73 +8,20 @@ THREEx.HolographicMessage = function(videoURL, camera){
 	
 	var videoMesh = this._initVideoMesh(videoURL)
 	this._initRingMeshes()
-	// scene.add( containerMesh );
-
-	// //////////////////////////////////////////////////////////////////////////////
-	// //		create textures
-	// //////////////////////////////////////////////////////////////////////////////
-	// 
-	// var video = document.createElement( 'video' );
-	// video.src = videoURL
-	// video.autoplay = true;
-	// video.webkitPlaysinline = true;
-	// video.controls = false;
-	// video.loop = true;
-	// video.muted = true
-	// // trick to trigger the video on android
-	// document.body.addEventListener('click', function onClick(){
-	// 	document.body.removeEventListener('click', onClick);
-	// 	video.play()
-	// })
-	// 
-	// var videoTexture = new THREE.VideoTexture(video)
-	// videoTexture.needsUpdate = true		
-	// videoTexture.minFilter =  THREE.NearestFilter
-	// 
-	// 
-	// //////////////////////////////////////////////////////////////////////////////
-	// //		create video mesh
-	// //////////////////////////////////////////////////////////////////////////////
-	// var geometry = new THREE.PlaneGeometry(1,9/16);
-	// var material = new THREE.ShaderMaterial({
-	// 	uniforms: {
-	// 		time: { value: 0.0 },
-	// 		opacity: { value: 0.7 },
-	// 		tDiffuse: { value: videoTexture },
-	// 		distortion: { value: 0 },
-	// 		distortion2: { value: 0 },
-	// 		speed: { value: 0.0 },
-	// 		rollHeight: { value: 0.0 },
-	// 		randomSeed: { value: Math.random()*1000 },
-	// 	},
-	// 	defines: {
-	// 		badTvShaderEnabled : 0
-	// 	},
-	// 	vertexShader: THREEx.HolographicMessage.vertexShader,
-	// 	fragmentShader: THREEx.HolographicMessage.fragmentShader,
-	// 	side: THREE.DoubleSide,
-	// 	// TODO try other blending
-	// })
-	// 
-	// var videoMesh	= new THREE.Mesh( geometry, material );
-	// containerMesh.add(videoMesh)	
-	// videoMesh.position.y = 1.0
-	// videoMesh.rotation.x = Math.PI/2
-	// videoMesh.scale.set(1,1,1).multiplyScalar(2.5)
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		update video mesh
 	//////////////////////////////////////////////////////////////////////////////
 
-	// bill boarding by @blq
-	this._onRenderFcts.push(function(){
-		var x = new THREE.Vector3();
-		var y = new THREE.Vector3();
-		var z = new THREE.Vector3();
-		containerMesh.matrixWorld.extractBasis(x, y, z);
-		videoMesh.up.copy(y);
-		videoMesh.lookAt(camera.position);
-	})
+	// // bill boarding by @blq
+	// this._onRenderFcts.push(function(){
+	// 	var x = new THREE.Vector3();
+	// 	var y = new THREE.Vector3();
+	// 	var z = new THREE.Vector3();
+	// 	containerMesh.matrixWorld.extractBasis(x, y, z);
+	// 	videoMesh.up.copy(y);
+	// 	videoMesh.lookAt(camera.position);
+	// })
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -86,6 +33,9 @@ THREEx.HolographicMessage.prototype.update = function (delta) {
 	})
 }
 
+//////////////////////////////////////////////////////////////////////////////
+//		initialisation functions
+//////////////////////////////////////////////////////////////////////////////
 
 THREEx.HolographicMessage.prototype._initVideoMesh = function(videoURL){
 	//////////////////////////////////////////////////////////////////////////////
@@ -137,7 +87,7 @@ THREEx.HolographicMessage.prototype._initVideoMesh = function(videoURL){
 	var videoMesh	= new THREE.Mesh( geometry, material );
 	this.object3d.add(videoMesh)	
 	videoMesh.position.y = 1.0
-	videoMesh.rotation.x = Math.PI/2
+	// videoMesh.rotation.x = Math.PI/2
 	videoMesh.scale.set(1,1,1).multiplyScalar(2.5)
 	
 	this._onRenderFcts.push(function(delta){

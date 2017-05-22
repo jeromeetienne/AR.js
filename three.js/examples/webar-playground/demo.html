@@ -23,11 +23,11 @@
 <script src='../../../../three.js/examples/multi-markers/threex-armultimarkercontrols.js'></script>
 
 <!-- include demo scenes -->
-<script src='../../../../three.js/examples/webar-demos/js/threex-demoscenes.js'></script>
-<script src='../../../../three.js/examples/webar-demos/vendor/refraction/threex.refractionmaterial.js'></script>
-<script src='../../../../three.js/examples/webar-demos/vendor/hole-in-the-wall/threex.holeinthewall.js'></script>
+<script src='../../../../three.js/examples/webar-playground/js/threex-demoscenes.js'></script>
+<script src='../../../../three.js/examples/webar-playground/vendor/refraction/threex.refractionmaterial.js'></script>
+<script src='../../../../three.js/examples/webar-playground/vendor/hole-in-the-wall/threex.holeinthewall.js'></script>
 <script src='../../../../three.js/examples/vendor/three.js/examples/js/loaders/GLTFLoader.js'></script>
-<script src='../../../../three.js/examples/webar-demos/vendor/holographic-message/threex-holographicmessage.js'></script>
+<script src='../../../../three.js/examples/webar-playground/vendor/holographic-message/threex-holographicmessage.js'></script>
 <script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraft.js'></script>
 <script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraftcontrols.js'></script>
 <script src='../../../../aframe/examples/vendor/threex.minecraft/threex.animation.js'></script>
@@ -36,7 +36,7 @@
 <script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraftcharbodyanim.js'></script>
 <script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraftnickname.js'></script>
 <script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraftbubble.js'></script>
-<script>THREEx.ARjsDemoScenes.baseURL = '../../../../three.js/'</script>
+<script>THREEx.ARjsDemoScenes.baseURL = THREEx.ArToolkitContext.baseURL + 'examples/webar-playground/'</script>
 
 <style>
 	#recordButton:hover {
@@ -62,10 +62,9 @@
 
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
-	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Multi marker
+	<a href='https://github.com/jeromeetienne/WebAR-Playground/' target='_blank'>WebAR Playground</a>
 	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
-	<br>
-	<span style='font-weight: bold;'>Instruction:</span> position with tap - rotate with horizontal pan - scale with vertical pan
+	on <a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a>
 </div>
 <div style='position: fixed; bottom: 10px; width:100%; text-align: center;z-index:1';>
 	Scenes: 
@@ -78,6 +77,8 @@
 		- <a href='javascript:void(0)' onclick='javascript: createScene("shaddowTorusKnot")'>shaddowTorusKnot</a> 
 		- <a href='javascript:void(0)' onclick='javascript: createScene("holographicMessage")'>holographicMessage</a> 
 	<br>
+	<br>
+	<span style='font-weight: bold;'>Instruction:</span> position with tap - rotate with horizontal pan - scale with vertical pan
 	<br>
 	Area source: 
 		<a href='javascript:void(0)' onclick='urlOptions.areaSource = "localStorage"; reload()'>localStorage</a>

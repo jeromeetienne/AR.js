@@ -1,4 +1,4 @@
-# WebAR-Demos
+# webar-playground
 - Create repo webar demo. If mobile then ar.js or chromiumAR. Post about it and about chromium ar
 - how to store put the files in this repo
 - start packing all the assets into /examples/demo-scenes
@@ -9,9 +9,9 @@
 # Demo.html
 
 - get unique name when creating object
-- make it possible to save/load scene from localstorage
+- make it possible to save/load scene from json - put json in url - thus shareable
 - remove the sceneName='' in the url - just store the whole scene
-- add holographic message
+- DONE add holographic message
 
 - picking doesnt work on mobile
   - or on horizontal aspect on desktop

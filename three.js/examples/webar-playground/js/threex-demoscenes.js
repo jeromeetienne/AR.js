@@ -51,9 +51,9 @@ THREEx.ARjsDemoScenes.prototype.createMarkerScene = function (sceneName) {
 THREEx.ARjsDemoScenes.prototype._createHolographicMessage = function () {
 	var markerScene = new THREE.Group
 
- 	// var videoURL = THREEx.ArToolkitContext.baseURL + 'examples/webar-demos/vendor/holographic-message/examples/videos/bird_greenscreen.mp4'
-	// var videoURL = THREEx.ArToolkitContext.baseURL + 'examples/webar-demos/vendor/holographic-message/examples/videos/Star\ wars\ demo\ Alex.mp4'
-	var videoURL = THREEx.ArToolkitContext.baseURL + 'examples/webar-demos/vendor/holographic-message/examples/videos/AndraConnect business\ card.mp4'
+ 	// var videoURL = THREEx.ArToolkitContext.baseURL + 'examples/webar-playground/vendor/holographic-message/examples/videos/bird_greenscreen.mp4'
+	// var videoURL = THREEx.ArToolkitContext.baseURL + 'examples/webar-playground/vendor/holographic-message/examples/videos/Star\ wars\ demo\ Alex.mp4'
+	var videoURL = THREEx.ArToolkitContext.baseURL + 'examples/webar-playground/vendor/holographic-message/examples/videos/AndraConnect business\ card.mp4'
 	var holograhicMessage = new THREEx.HolographicMessage(videoURL, this.camera)
 	this._onRenderFcts.push(function(delta){
 		holograhicMessage.update(delta)
@@ -141,7 +141,7 @@ THREEx.ARjsDemoScenes.prototype._createMinecraft = function () {
 	// var mesh = new THREE.AxisHelper()
 	// markerScene.add(mesh)
 
-	THREEx.MinecraftChar.baseUrl = THREEx.ARjsDemoScenes.baseURL + '../aframe/examples/vendor/threex.minecraft/'	
+	THREEx.MinecraftChar.baseUrl = THREEx.ARjsDemoScenes.baseURL + '../../../aframe/examples/vendor/threex.minecraft/'	
 	var character	= new THREEx.MinecraftChar()
 	markerScene.add(character.root)
 
