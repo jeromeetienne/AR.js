@@ -1,9 +1,10 @@
 var THREEx = THREEx || {}
 
-THREEx.ARjsDemoScenes = function(){
+THREEx.ARjsDemoScenes = function(camera){
 	this._onRenderFcts = []
 	
-	
+	console.assert(camera)
+	this.camera = camera
 }
 
 THREEx.ARjsDemoScenes.baseURL = '../'
@@ -37,10 +38,30 @@ THREEx.ARjsDemoScenes.prototype.createMarkerScene = function (sceneName) {
 		return this._createMinecraft()
 	}else if( sceneName === 'shaddowTorusKnot' ){
 		return this._createShaddowTorusKnot()
+	}else if( sceneName === 'holographicMessage' ){
+		return this._createHolographicMessage()
 	}else{
 		console.assert(false)
 	}
 	return null
+}
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ARjsDemoScenes.prototype._createHolographicMessage = function () {
+	var markerScene = new THREE.Group
+
+ 	// var videoURL = THREEx.ArToolkitContext.baseURL + 'examples/webar-demos/vendor/holographic-message/examples/videos/bird_greenscreen.mp4'
+	// var videoURL = THREEx.ArToolkitContext.baseURL + 'examples/webar-demos/vendor/holographic-message/examples/videos/Star\ wars\ demo\ Alex.mp4'
+	var videoURL = THREEx.ArToolkitContext.baseURL + 'examples/webar-demos/vendor/holographic-message/examples/videos/AndraConnect business\ card.mp4'
+	var holograhicMessage = new THREEx.HolographicMessage(videoURL, this.camera)
+	this._onRenderFcts.push(function(delta){
+		holograhicMessage.update(delta)
+	})
+	
+	markerScene.add(holograhicMessage.object3d)
+
+	return markerScene
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -223,9 +244,9 @@ THREEx.ARjsDemoScenes.prototype._createHolePool = function () {
 	}
 	function buildWater(){
 		// build texture
-		var texture = new THREE.TextureLoader().load(THREEx.ARjsDemoScenes.baseURL + 'examples/hole-in-the-wall/images/water.jpg')
+		var texture = new THREE.TextureLoader().load(THREEx.ARjsDemoScenes.baseURL + 'vendor/hole-in-the-wall/images/water.jpg')
 		texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-		var normalMap = new THREE.TextureLoader().load(THREEx.ARjsDemoScenes.baseURL + 'examples/hole-in-the-wall/images/water-normal.jpeg')
+		var normalMap = new THREE.TextureLoader().load(THREEx.ARjsDemoScenes.baseURL + 'vendor/hole-in-the-wall/images/water-normal.jpeg')
 		normalMap.wrapS = normalMap.wrapT = THREE.RepeatWrapping;
 		// animate texture
 		_this._onRenderFcts.push(function(delta){
@@ -258,7 +279,7 @@ THREEx.ARjsDemoScenes.prototype._createHolePool = function () {
 		
 		var material = new THREE.MeshBasicMaterial({
 			side: THREE.BackSide,
-			map: new THREE.TextureLoader().load(THREEx.ARjsDemoScenes.baseURL + 'examples/hole-in-the-wall/images/mosaic-256x256.jpg'),
+			map: new THREE.TextureLoader().load(THREEx.ARjsDemoScenes.baseURL + 'vendor/hole-in-the-wall/images/mosaic-256x256.jpg'),
 		})
 		var mesh = new THREE.Mesh(geometry, material);
 		mesh.position.y = -geometry.parameters.height/2
@@ -269,7 +290,7 @@ THREEx.ARjsDemoScenes.prototype._createHolePool = function () {
 	//		create duck
 	//////////////////////////////////////////////////////////////////////////////
 	function createDuck(){
-		new THREE.GLTFLoader().load( THREEx.ARjsDemoScenes.baseURL + 'examples/hole-in-the-wall/models/duck/glTF-MaterialsCommon/duck.gltf', function(gltf) {
+		new THREE.GLTFLoader().load( THREEx.ARjsDemoScenes.baseURL + 'vendor/hole-in-the-wall/models/duck/glTF-MaterialsCommon/duck.gltf', function(gltf) {
 			var duck = gltf.scene;
 			markerScene.add( duck );
 			
@@ -298,7 +319,7 @@ THREEx.ARjsDemoScenes.prototype._createHolePool = function () {
 		var geometry	= new THREE.PlaneGeometry(1,0.5).scale(0.4, 0.4, 0.4);
 		var material	= new THREE.MeshBasicMaterial({
 			alphaTest: 0.1,
-			map: new THREE.TextureLoader().load(THREEx.ARjsDemoScenes.baseURL + 'examples/hole-in-the-wall/images/fish-texture.png'),
+			map: new THREE.TextureLoader().load(THREEx.ARjsDemoScenes.baseURL + 'vendor/hole-in-the-wall/images/fish-texture.png'),
 			side: THREE.DoubleSide
 		}); 
 		var nFishes = 6
@@ -358,7 +379,7 @@ THREEx.ARjsDemoScenes.prototype._createHolePortal = function () {
 	// add bounding sphere
 	var geometry = new THREE.SphereGeometry( 3, 32, 16, 0, Math.PI, Math.PI, Math.PI);
 	geometry.scale( 1, -1, 1 )
-	var texture = new THREE.TextureLoader().load( THREEx.ARjsDemoScenes.baseURL + 'examples/hole-in-the-wall/images/32211336474_380b67d014_k.jpg' )
+	var texture = new THREE.TextureLoader().load( THREEx.ARjsDemoScenes.baseURL + 'vendor/hole-in-the-wall/images/32211336474_380b67d014_k.jpg' )
 	var material = new THREE.MeshBasicMaterial( {
 		map: texture,
 		side: THREE.DoubleSide

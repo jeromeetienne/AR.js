@@ -20,6 +20,7 @@
 <script src='../../../../three.js/examples/webar-demos/vendor/refraction/threex.refractionmaterial.js'></script>
 <script src='../../../../three.js/examples/webar-demos/vendor/hole-in-the-wall/threex.holeinthewall.js'></script>
 <script src='../../../../three.js/examples/vendor/three.js/examples/js/loaders/GLTFLoader.js'></script>
+<script src='../../../../three.js/examples/webar-demos/vendor/holographic-message/threex-holographicmessage.js'></script>
 <script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraft.js'></script>
 <script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraftcontrols.js'></script>
 <script src='../../../../aframe/examples/vendor/threex.minecraft/threex.animation.js'></script>
@@ -28,7 +29,7 @@
 <script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraftcharbodyanim.js'></script>
 <script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraftnickname.js'></script>
 <script src='../../../../aframe/examples/vendor/threex.minecraft/threex.minecraftbubble.js'></script>
-<script>THREEx.ARjsDemoScenes.baseURL = '../../../../three.js/'</script>
+<script>THREEx.ARjsDemoScenes.baseURL = THREEx.ArToolkitContext.baseURL + 'examples/webar-demos/'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
 	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Various Demos Scenes 
@@ -42,6 +43,7 @@
 		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("holePool")'>holePool</a> 
 		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("minecraft")'>minecraft</a> 
 		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("shaddowTorusKnot")'>shaddowTorusKnot</a> 
+		- <a href='javascript:void(0)' onclick='javascript: switchDemoScene("holographicMessage")'>holographicMessage</a> 
 </div><script>
 ;(function(){
 	//////////////////////////////////////////////////////////////////////////////////
@@ -172,7 +174,7 @@ window.arToolkitSource = arToolkitSource
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// create demo scenes
-	var demoScenes = new THREEx.ARjsDemoScenes()
+	var demoScenes = new THREEx.ARjsDemoScenes(camera)
 	onRenderFcts.push(function(delta){
 		demoScenes.update(delta)
 	})
