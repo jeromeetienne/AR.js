@@ -17,6 +17,7 @@
 <script src='../../../../three.js/threex-artoolkitprofile.js'></script>
 <script src='../../../../three.js/threex-arbasecontrols.js'></script>
 <script src='../../../../three.js/threex-armarkercontrols.js'></script>
+<script src='../../../../three.js/threex-armarkerhelper.js'></script>
 <script src='../../../../three.js/threex-arsmoothedcontrols.js'></script>
 <script>THREEx.ArToolkitContext.baseURL = '../../../../three.js/'</script>
 
@@ -83,7 +84,7 @@
 	Area source: 
 		<a href='javascript:void(0)' onclick='urlOptions.areaSource = "localStorage"; reload()'>localStorage</a>
 		/
-		<a href='javascript:void(0)' onclick='urlOptions.areaSource = "onlyHiro"; reload()'>onlyHiro</a>
+		<a href='javascript:void(0)' onclick='urlOptions.areaSource = "hardcodedHiro"; reload()'>hardcodedHiro</a>
 	<br>
 	Marker helpers: 
 		<a href='javascript:void(0)' onclick='urlOptions.markerHelpers = true; reload()'>yes</a>
@@ -228,37 +229,31 @@
 		}	
 		location.href = THREEx.ArToolkitContext.baseURL + 'examples/multi-markers/examples/learner.html#'+JSON.stringify(learnerParameters)
 	})
-window.fullSceneToJSON = fullSceneToJSON
 
+	var updateUrlTimer = null
 	function markerScenesUpdated(){
+		urlOptions.fullScene = fullSceneToJSON()
 		
+		clearTimeout(updateUrlTimer)
+		updateUrlTimer = setTimeout(function(){
+			updateUrlTimer = null
+			urlOptionsUpdate()
+		}, 0.1 * 1000)
 	}
 
 	function fullSceneToJSON(){
+		scene.updateMatrix(true)
+		scene.updateMatrixWorld(true)
 		var jsonData = {
 			markerScenes: []
 		}
-		
+
 		markerScenes.forEach(function(markerScene){
+			markerScene.updateMatrix()
 			var parentObject3D = markerScene.parent
 			jsonData.markerScenes.push({
 				type: markerScene.userData.sceneType,
-				position: {
-					x: parentObject3D.position.x,
-					y: parentObject3D.position.y,
-					z: parentObject3D.position.z,
-				},
-				quaternion: {
-					x: parentObject3D.quaternion.x,
-					y: parentObject3D.quaternion.y,
-					z: parentObject3D.quaternion.z,
-					w: parentObject3D.quaternion.w,
-				},
-				scale: {
-					x: parentObject3D.scale.x,
-					y: parentObject3D.scale.y,
-					z: parentObject3D.scale.z,
-				},
+				poseMatrix: parentObject3D.matrix.toArray()
 			})
 		})
 		
@@ -270,19 +265,11 @@ window.fullSceneToJSON = fullSceneToJSON
 			createScene(item.type)
 			
 			var parentObject3D = selectedMarkerScene.parent
-
-			parentObject3D.position.x = item.position.x
-			parentObject3D.position.y = item.position.y
-			parentObject3D.position.z = item.position.z
-
-			parentObject3D.quaternion.x = item.quaternion.x
-			parentObject3D.quaternion.y = item.quaternion.y
-			parentObject3D.quaternion.z = item.quaternion.z
-			parentObject3D.quaternion.w = item.quaternion.w
-
-			parentObject3D.scale.x = item.scale.x
-			parentObject3D.scale.y = item.scale.y
-			parentObject3D.scale.z = item.scale.z
+			
+			var poseMatrix = new THREE.Matrix4().fromArray(item.poseMatrix)
+			parentObject3D.matrix.copy(poseMatrix)
+			
+			parentObject3D.matrix.decompose(parentObject3D.position, parentObject3D.quaternion, parentObject3D.scale)
 		})
 	}
 
@@ -297,7 +284,14 @@ window.fullSceneToJSON = fullSceneToJSON
 		var urlOptions = {
 			areaSource : 'localStorage',
 			markerHelpers: false,
-			sceneName: 'torus',
+			fullScene: {
+				markerScenes : [
+					{
+						type: 'torus',
+						poseMatrix : new THREE.Matrix4().makeTranslation(0,0, 0).toArray()					
+					},
+				]
+			},
 		}
 	}
 	window.urlOptions = urlOptions
@@ -312,7 +306,7 @@ window.fullSceneToJSON = fullSceneToJSON
 	
 	if( urlOptions.areaSource === 'localStorage' && localStorage.getItem('ARjsMultiMarkerFile') === null ){
 		alert('No area has been learned on this device!\n Using only hiro.')
-		urlOptions.areaSource === 'onlyHiro'	
+		urlOptions.areaSource === 'hardcodedHiro'	
 		urlOptionsUpdate()
 	}
 	
@@ -323,7 +317,7 @@ window.fullSceneToJSON = fullSceneToJSON
 	if( urlOptions.areaSource === 'localStorage' ){
 		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
 		var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
-	}else if( urlOptions.areaSource === 'onlyHiro' ){
+	}else if( urlOptions.areaSource === 'hardcodedHiro' ){
 		var multiMarkerFile = JSON.stringify({
 			subMarkersControls : [
 				{
@@ -386,7 +380,8 @@ window.fullSceneToJSON = fullSceneToJSON
 	var markerScenes = []
 	var selectedMarkerScene = null
 
-	createScene(urlOptions.sceneName)
+	fullSceneFromJSON(urlOptions.fullScene)
+	// createScene(urlOptions.sceneName)
 
 	// function to dynamically switch demoScenes
 	window.createScene = createScene
@@ -416,8 +411,7 @@ window.fullSceneToJSON = fullSceneToJSON
 		})
 
 		// update urlOptions.sceneName
-		urlOptions.sceneName = newSceneName
-		urlOptionsUpdate()
+		markerScenesUpdated()
 
 		// actually select this scene
 		selectScene(markerScene)
@@ -472,6 +466,8 @@ window.fullSceneToJSON = fullSceneToJSON
 		var delta = event.velocityX / window.innerWidth * 60
 		var demoRoot = selectedMarkerScene.parent
 		demoRoot.rotation.y +=  delta
+		
+		markerScenesUpdated()
 	});
 	hammertime.on('pan', function(event) {
 		if( event.additionalEvent !== 'panup' && event.additionalEvent !== 'pandown' )	return
@@ -484,6 +480,8 @@ window.fullSceneToJSON = fullSceneToJSON
 		var scale = demoRoot.scale.x * (1 + delta)
 		scale = THREE.Math.clamp(scale, 0.2, 10)
 		demoRoot.scale.set(scale, scale, scale)
+
+		markerScenesUpdated()
 	});
 	
 	
@@ -534,6 +532,8 @@ window.fullSceneToJSON = fullSceneToJSON
 		var demoRoot = selectedMarkerScene.parent
 		var newPosition = demoRoot.parent.worldToLocal( intersects[0].point.clone() )
 		demoRoot.position.copy(newPosition)
+		
+		markerScenesUpdated()
 	})
 
 

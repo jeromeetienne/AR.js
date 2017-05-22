@@ -5,7 +5,6 @@
   - what about a simple demo-scenes/vendor where i copy all the files from elsewhere in the repo
   - refraction/threex.minecraft/hole-in-the-wall/holographic-message
 
-
 # Demo.html
 
 - make it possible to save/load scene from json - put json in url - thus shareable
