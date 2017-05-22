@@ -219,7 +219,6 @@
 
 	
 	document.querySelector('#recordButton').addEventListener('click', function(){
-
 		urlOptions.areaSource = 'localStorage'	
 		urlOptionsUpdate()
 
@@ -229,6 +228,63 @@
 		}	
 		location.href = THREEx.ArToolkitContext.baseURL + 'examples/multi-markers/examples/learner.html#'+JSON.stringify(learnerParameters)
 	})
+window.fullSceneToJSON = fullSceneToJSON
+
+	function markerScenesUpdated(){
+		
+	}
+
+	function fullSceneToJSON(){
+		var jsonData = {
+			markerScenes: []
+		}
+		
+		markerScenes.forEach(function(markerScene){
+			var parentObject3D = markerScene.parent
+			jsonData.markerScenes.push({
+				type: markerScene.userData.sceneType,
+				position: {
+					x: parentObject3D.position.x,
+					y: parentObject3D.position.y,
+					z: parentObject3D.position.z,
+				},
+				quaternion: {
+					x: parentObject3D.quaternion.x,
+					y: parentObject3D.quaternion.y,
+					z: parentObject3D.quaternion.z,
+					w: parentObject3D.quaternion.w,
+				},
+				scale: {
+					x: parentObject3D.scale.x,
+					y: parentObject3D.scale.y,
+					z: parentObject3D.scale.z,
+				},
+			})
+		})
+		
+		return jsonData
+	}
+
+	function fullSceneFromJSON(jsonData){
+		jsonData.markerScenes.forEach(function(item){
+			createScene(item.type)
+			
+			var parentObject3D = selectedMarkerScene.parent
+
+			parentObject3D.position.x = item.position.x
+			parentObject3D.position.y = item.position.y
+			parentObject3D.position.z = item.position.z
+
+			parentObject3D.quaternion.x = item.quaternion.x
+			parentObject3D.quaternion.y = item.quaternion.y
+			parentObject3D.quaternion.z = item.quaternion.z
+			parentObject3D.quaternion.w = item.quaternion.w
+
+			parentObject3D.scale.x = item.scale.x
+			parentObject3D.scale.y = item.scale.y
+			parentObject3D.scale.z = item.scale.z
+		})
+	}
 
 	////////////////////////////////////////////////////////////////////////////////
 	//          handle urlOptions

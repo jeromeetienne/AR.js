@@ -8,9 +8,14 @@
 
 # Demo.html
 
-- get unique name when creating object
 - make it possible to save/load scene from json - put json in url - thus shareable
+  - each markerScene got a name/type/position/orientation/scale
+  - a fullScene is an array of those
+  - need to be able to build a json from current structure
+  - need to be able to parse this json and create the matching scene tree
 - remove the sceneName='' in the url - just store the whole scene
+
+- get unique name when creating object
 - DONE add holographic message
 
 - picking doesnt work on mobile

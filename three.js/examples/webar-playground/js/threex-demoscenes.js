@@ -23,27 +23,29 @@ THREEx.ARjsDemoScenes.prototype.dispose = function (delta) {
 }
 
 THREEx.ARjsDemoScenes.prototype.createMarkerScene = function (sceneName) {
+	var markerScene = null
 
 	if( sceneName === 'torus' ){
-		return this._createTorus()
+		markerScene = this._createTorus()
 	}else if( sceneName === 'glassTorus' ){
-		return this._createGlassTorus()
+		markerScene = this._createGlassTorus()
 	}else if( sceneName === 'holeTorus' ){
-		return this._createHoleTorus()
+		markerScene = this._createHoleTorus()
 	}else if( sceneName === 'holePortal' ){
-		return this._createHolePortal()
+		markerScene = this._createHolePortal()
 	}else if( sceneName === 'holePool' ){
-		return this._createHolePool()
+		markerScene = this._createHolePool()
 	}else if( sceneName === 'minecraft' ){
-		return this._createMinecraft()
+		markerScene = this._createMinecraft()
 	}else if( sceneName === 'shaddowTorusKnot' ){
-		return this._createShaddowTorusKnot()
+		markerScene = this._createShaddowTorusKnot()
 	}else if( sceneName === 'holographicMessage' ){
-		return this._createHolographicMessage()
+		markerScene = this._createHolographicMessage()
 	}else{
 		console.assert(false)
 	}
-	return null
+	markerScene.userData.sceneType = sceneName
+	return markerScene
 }
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
