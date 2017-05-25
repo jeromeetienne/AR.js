@@ -136,10 +136,10 @@ all the crazy ideas related to AR.js.
 
 Some applications:
 
-- [marker generator](https://jeromeetienne.github.io/AR.js/three.js/examples/markerGenerator/examples/generator.html) :
-  generator of [pattern markers](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_training)
-- [arcode](https://jeromeetienne.github.io/AR.js/three.js/examples/arcode.html) :
-  generator of AR-Code
+- [Pattern Marker Generator](https://jeromeetienne.github.io/AR.js/three.js/examples/markerGenerator/examples/generator.html) :
+  Generator of [pattern markers](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_training)
+- [ARCode Generator](https://jeromeetienne.github.io/AR.js/three.js/examples/arcode.html) :
+  Generator of AR-Code
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arcode.html))
 - [WebAR Playground](https://jeromeetienne.github.io/webar-playground/) :
   Playground running in WebAR with ar.js/chromiumAR

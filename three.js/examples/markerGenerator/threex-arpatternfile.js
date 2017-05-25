@@ -96,7 +96,7 @@ THREEx.ArPatternFile.buildFullMarker =  function(innerImageURL, onComplete){
 	context.fillStyle = 'black';
 	context.fillRect(
 		whiteMargin * canvas.width,
-		whiteMargin*canvas.height,
+		whiteMargin * canvas.height,
 		canvas.width * (1-2*whiteMargin),
 		canvas.height * (1-2*whiteMargin)
 	);
@@ -104,8 +104,8 @@ THREEx.ArPatternFile.buildFullMarker =  function(innerImageURL, onComplete){
 	// clear the area for innerImage (in case of transparent image)
 	context.fillStyle = 'white';
 	context.fillRect(
-		innerMargin*canvas.width,
-		innerMargin*canvas.height,
+		innerMargin * canvas.width,
+		innerMargin * canvas.height,
 		canvas.width * (1-2*innerMargin),
 		canvas.height * (1-2*innerMargin)
 	);
@@ -116,14 +116,13 @@ THREEx.ArPatternFile.buildFullMarker =  function(innerImageURL, onComplete){
 		// draw innerImage
 		context.drawImage(innerImage,
 			innerMargin * canvas.width,
-			innerMargin*canvas.height,
+			innerMargin * canvas.height,
 			canvas.width * (1-2*innerMargin),
 			canvas.height * (1-2*innerMargin)
 		);
 		
 		var imageUrl = canvas.toDataURL()
 		onComplete(imageUrl)
-		
 	})
 	innerImage.src = innerImageURL
 }
