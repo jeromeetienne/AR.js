@@ -8,6 +8,8 @@
   - multiple markers per page
 
 --------------
+- 
+--------------
 
 - do the upload in browser
 - do the drawing on screen of the marker - using a inner marker image

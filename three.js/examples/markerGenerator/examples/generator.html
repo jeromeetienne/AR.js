@@ -1,30 +1,75 @@
-<!doctype html>
+<!DOCTYPE html>
+
+<!-- include mdl -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+<script src="../threex-arpatternfile.js"></script>
 
 <style media="screen">
 	body {
-		background-color: #ccc;
+		font-family: arial;
+		background-color: #eee;
+	}
+	h1 {
+		text-align: center;
+		font-size: 500%;
+	}
+	div.mdl-cell {
+		text-align: center;
+	}
+	
+	h1 a {
+		text-decoration: none;
+	}
+	h1 a:hover {
+		text-decoration: underline;
 	}
 </style>
-
-<script src="../threex-arpatternfile.js"></script>
 <body>
-<a target='_blank' href='https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_training'>artoolkit tutorial</a>	
-<br/>
-<input id='buttonDownloadEncoded' type="button" value="Download encoded file">
-<br/>
-<input id='buttonDownloadImage' type="button" value="Download image">
-<br/>
-<input id='buttonDownloadPDF' type="button" value="Download PDF" disabled>
-<br/>
-<input type="file" id="fileinput" />
-<br/>
-<div id='imageContainer'></div>
+
+<h1><a href='https://github.com/jeromeetienne/ar.js' target='_blank'>AR.js</a> Marker Generator</h1>
+
+<div class="mdl-grid">
+	<div class="mdl-cell mdl-cell--2-col"></div>	
+	<div class="mdl-cell mdl-cell--4-col">
+		<label id='buttonUpload' for="fileinput" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+			<input type="file" id="fileinput" style='display: none'>
+			Upload
+		</label>
+		<div class="mdl-tooltip" for="buttonUpload">
+			Upload the image to put inside the marker
+		</div>
+	</div>
+	<div class="mdl-cell mdl-cell--4-col">
+		<button id='buttonDownloadEncoded' class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+			Download
+		</button>
+		<div class="mdl-tooltip" for="buttonDownloadEncoded">
+			Download marker encoded from the uploaded image
+		</div>
+	</div>
+	<div class="mdl-cell mdl-cell--2-col"></div>	
+</div>
+
+<div class="mdl-grid">
+	<div class="mdl-cell mdl-cell--3-col"></div>
+	<div class="mdl-cell mdl-cell--6-col">
+		<div id='imageContainer'></div>
+	</div>
+	<div class="mdl-cell mdl-cell--3-col"></div>
+</div>
+
+
 
 <script>
 	var innerImageURL = null
 	var fullMarkerURL = null
 
-	document.querySelector('#buttonDownloadImage').addEventListener('click', downloadFullMarkerImage)
+	// document.querySelector('#buttonDownloadImage').addEventListener('click', downloadFullMarkerImage)
 
 	document.querySelector('#buttonDownloadEncoded').addEventListener('click', function(){
 		if( innerImageURL === null ){
@@ -71,4 +116,6 @@
 		var win = window.open(fullMarkerURL, '_blank');
 		win.focus();		
 	}
-</script></body>
+</script>
+
+</body>

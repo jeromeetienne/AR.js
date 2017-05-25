@@ -1,0 +1,74 @@
+<!doctype html>
+
+<style media="screen">
+	body {
+		background-color: #ccc;
+	}
+</style>
+
+<script src="../threex-arpatternfile.js"></script>
+<body>
+<a target='_blank' href='https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_training'>artoolkit tutorial</a>	
+<br/>
+<input id='buttonDownloadEncoded' type="button" value="Download encoded file">
+<br/>
+<input id='buttonDownloadImage' type="button" value="Download image">
+<br/>
+<input id='buttonDownloadPDF' type="button" value="Download PDF" disabled>
+<br/>
+<input type="file" id="fileinput" />
+<br/>
+<div id='imageContainer'></div>
+
+<script>
+	var innerImageURL = null
+	var fullMarkerURL = null
+
+	document.querySelector('#buttonDownloadImage').addEventListener('click', downloadFullMarkerImage)
+
+	document.querySelector('#buttonDownloadEncoded').addEventListener('click', function(){
+		if( innerImageURL === null ){
+			alert('upload a file first')
+			return
+		}
+		console.assert(innerImageURL)
+		THREEx.ArPatternFile.encodeImageURL(innerImageURL, function onComplete(patternFileString){
+			THREEx.ArPatternFile.triggerDownload(patternFileString)
+		})
+	})
+	
+	document.querySelector('#fileinput').addEventListener('change', function(){
+		var file = this.files[0];
+		// debugger
+
+		var reader = new FileReader();
+		reader.onload = function(event){
+			innerImageURL = event.target.result
+
+			THREEx.ArPatternFile.buildFullMarker(innerImageURL, function onComplete(markerUrl){
+				fullMarkerURL = markerUrl
+
+				var fullMarkerImage = document.createElement('img')
+				fullMarkerImage.src = fullMarkerURL
+				
+				fullMarkerImage.addEventListener('click', downloadFullMarkerImage)
+
+				// put fullMarkerImage into #imageContainer
+				var container = document.querySelector('#imageContainer')
+				while (container.firstChild) container.removeChild(container.firstChild);
+				container.appendChild(fullMarkerImage)
+			})
+		};
+		reader.readAsDataURL(file);
+	})	
+	
+	function downloadFullMarkerImage(){
+		if( innerImageURL === null ){
+			alert('upload a file first')
+			return
+		}
+		console.assert(fullMarkerURL)
+		var win = window.open(fullMarkerURL, '_blank');
+		win.focus();		
+	}
+</script></body>

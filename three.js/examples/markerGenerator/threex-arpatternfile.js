@@ -45,7 +45,9 @@ THREEx.ArPatternFile.encodeImage = function(image){
 
 		// generate the patternFileString for this orientation
 		if( orientation !== 0 )	patternFileString += '\n'
-		for(var channelOffset = 0; channelOffset < 3; channelOffset++){
+		// NOTE bgr order and not rgb!!! so from 2 to 0
+		for(var channelOffset = 2; channelOffset >= 0; channelOffset--){
+			// console.log('channelOffset', channelOffset)
 			for(var y = 0; y < imageData.height; y++){
 				for(var x = 0; x < imageData.width; x++){
 
