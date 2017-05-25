@@ -121,6 +121,10 @@ See on [codepen](https://codepen.io/jeromeetienne/pen/mRqqzb) or [bl.ocks.org](h
 We started a [AR.js blog](https://medium.com/arjs), thus we can write about
 all the crazy ideas related to AR.js.
 
+- ["WebVR for Augmented Reality - Using WebVR to write cross-platform AR applications"](https://medium.com/arjs/webvr-for-augmented-reality-f1e69a505902)
+  by [@jerome_etienne](https://twitter.com/jerome_etienne)
+- ["WebVR for Augmented Reality - Using WebVR to write cross-platform AR applications"](https://medium.com/arjs/augmenting-the-web-page-e893f2d199b8)
+  by [@jerome_etienne](https://twitter.com/jerome_etienne)
 - ["Server Rendering for Augmented Reality - Cloud Rendering with Web Standards"](https://medium.com/arjs/server-rendering-for-augmented-reality-2de0a71aae04)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)
 - ["AR-Code:a Fast Path to Augmented Reality - From qrcode to AR.js content"](https://medium.com/arjs/ar-code-a-fast-path-to-augmented-reality-60e51be3cbdf)
@@ -129,6 +133,17 @@ all the crazy ideas related to AR.js.
   by [@AndraConnect](https://twitter.com/AndraConnect)
 
 # Examples
+
+Some applications:
+
+- [marker generator](https://jeromeetienne.github.io/AR.js/three.js/examples/markerGenerator/examples/generator.html) :
+  generator of [pattern markers](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_training)
+- [arcode](https://jeromeetienne.github.io/AR.js/three.js/examples/arcode.html) :
+  generator of AR-Code
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arcode.html))
+- [WebAR Playground](https://jeromeetienne.github.io/webar-playground/) :
+  Playground running in WebAR with ar.js/chromiumAR
+
 
 Three.js Examples:
 
@@ -171,9 +186,6 @@ Three.js Examples:
 - [ar-in-webvr](https://jeromeetienne.github.io/AR.js/three.js/examples/ar-in-webvr.html) :
   Displaying AR in WebVR - work in progress
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/ar-in-webvr.html))
-- [arcode](https://jeromeetienne.github.io/AR.js/three.js/examples/arcode.html) :
-  generator of AR-Code
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arcode.html))
 - [magic-book](https://jeromeetienne.github.io/AR.js/three.js/examples/magic-book/index.html) :
   Experimentation around magical book to open a secret door in [upload.io office](http://upload.io)
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/magic-book/index.html))
@@ -191,9 +203,7 @@ Three.js Examples:
 - [multimarker-artoolkit](https://jeromeetienne.github.io/AR.js/three.js/examples/multimarker-artoolkit/multimarker.html) :
   three.js example for multimarker
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multimarker-artoolkit/multimarker.html))
-- [WebAR Playground](https://jeromeetienne.github.io/webar-playground/) :
-  Playground running in WebAR with ar.js/chromiumAR
-  ([source](https://github.com/jeromeetienne/WebAR-Playground/index.html)) 
+
    
 a-frame Examples:
 
