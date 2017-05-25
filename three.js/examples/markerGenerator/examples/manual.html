@@ -1,0 +1,59 @@
+<!doctype html>
+<body><script>
+	/**
+	 * - Load the image
+	 * - it has to be square
+	 * - build the .patt file
+	 * - copy it in a file, and run 
+	 *
+	 * - threex.arpatternmarker
+	 *   .encode(imageUrl, function done(encodedMarkerString){})
+	 *   var canvas = .draw(encodedMarkerString)
+	 */
+	
+	
+	var image = new Image;
+	image.onload = function() {
+		// debugger
+		// copy image on canvas
+		var canvas = document.createElement("canvas");
+		var context = canvas.getContext("2d")
+		canvas.width = 16;
+		canvas.height = 16;
+		document.body.appendChild(canvas)
+		canvas.style.width = '200px'
+
+
+		var resultStr = ''
+		for(var orientation = 0; orientation > -2*Math.PI; orientation -= Math.PI/2){
+			context.save();
+	 		context.clearRect(0,0,canvas.width,canvas.height);
+			context.translate(canvas.width/2,canvas.height/2);
+			context.rotate(orientation);
+			context.drawImage(image, -canvas.width/2,-canvas.height/2, canvas.width, canvas.height);
+			context.restore();
+			
+			
+			var imageData = context.getImageData(0, 0, canvas.width, canvas.height)
+			console.log(orientation, imageData);
+			// debugger
+			if( orientation !== 0 )	resultStr += '\n'
+			for(var channelOffset = 0; channelOffset < 3; channelOffset++){
+				for(var y = 0; y < imageData.height; y++){
+					for(var x = 0; x < imageData.width; x++){
+						if( x !== 0 ) resultStr += ' '
+						var offset = (y*imageData.width*4) + (x * 4) + channelOffset
+						var value = imageData.data[offset]
+						resultStr += String(value).padStart(3);
+					}
+					resultStr += '\n'
+				}
+			}
+		}
+		
+		console.log(resultStr)
+		
+	}
+	image.src = 'images/inner-kanji.png';
+	image.src = 'images/inner-hiro.png';
+</script></body>

@@ -191,9 +191,9 @@ Three.js Examples:
 - [multimarker-artoolkit](https://jeromeetienne.github.io/AR.js/three.js/examples/multimarker-artoolkit/multimarker.html) :
   three.js example for multimarker
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multimarker-artoolkit/multimarker.html))
-- [WebAR Demos](https://jeromeetienne.github.io/webar-playground/demo.html) :
+- [WebAR Playground](https://jeromeetienne.github.io/webar-playground/) :
   Playground running in WebAR with ar.js/chromiumAR
-  ([source](https://github.com/jeromeetienne/WebAR-Playground/)) 
+  ([source](https://github.com/jeromeetienne/WebAR-Playground/index.html)) 
    
 a-frame Examples:
 
