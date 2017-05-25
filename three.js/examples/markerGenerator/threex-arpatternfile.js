@@ -77,3 +77,51 @@ THREEx.ArPatternFile.triggerDownload =  function(patternFileString){
 	domElement.click();
 	document.body.removeChild(domElement)
 }
+
+THREEx.ArPatternFile.buildFullMarker =  function(innerImageURL, onComplete){
+	var whiteMargin = 0.1
+	var blackMargin = 0.2
+
+	var canvas = document.createElement('canvas');
+	var context = canvas.getContext('2d')
+	canvas.width = canvas.height = 512
+
+	context.fillStyle = 'white';
+	context.fillRect(0,0,canvas.width, canvas.height)
+		
+	// copy image on canvas
+	context.fillStyle = 'black';
+	context.fillRect(
+		whiteMargin * canvas.width,
+		whiteMargin*canvas.height,
+		canvas.width * (1-2*whiteMargin),
+		canvas.height * (1-2*whiteMargin)
+	);
+
+	// clear the area for innerImage (in case of transparent image)
+	context.fillStyle = 'white';
+	context.fillRect(
+		innerMargin * canvas.width,
+		innerMargin*canvas.height,
+		canvas.width * (1-2*innerMargin),
+		canvas.height * (1-2*innerMargin)
+	);
+
+
+	var innerImage = document.createElement('img')
+	var innerMargin = whiteMargin + blackMargin
+	innerImage.addEventListener('load', function(){
+		// draw innerImage
+		context.drawImage(innerImage,
+			innerMargin * canvas.width,
+			innerMargin*canvas.height,
+			canvas.width * (1-2*innerMargin),
+			canvas.height * (1-2*innerMargin)
+		);
+		
+		var imageUrl = canvas.toDataURL()
+		onComplete(imageUrl)
+		
+	})
+	innerImage.src = innerImageURL
+}

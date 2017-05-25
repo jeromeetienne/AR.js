@@ -2,7 +2,10 @@
 - when a file is uploaded, display the fullMarkerImage (thus downloadable + usable immediatly for AR)
 - button upload (drag drop latter)
 - warn if image isnt square but goes on, convert to square automatically
-
+  - or not... they will see it
+- do a pdf download
+  - with specific size of markers on the page
+  - multiple markers per page
 
 --------------
 

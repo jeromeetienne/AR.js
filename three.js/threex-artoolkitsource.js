@@ -155,7 +155,7 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 
 			// TODO super unclear how to get the backward facing camera...
 
-			// if( constraints.video.optional !== undefined )	return
+			if( constraints.video.optional !== undefined )	return
 			constraints.video.optional = [{sourceId: device.deviceId}]
 		});
 
