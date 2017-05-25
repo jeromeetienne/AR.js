@@ -83,6 +83,7 @@ THREEx.ArPatternFile.triggerDownload =  function(patternFileString){
 THREEx.ArPatternFile.buildFullMarker =  function(innerImageURL, onComplete){
 	var whiteMargin = 0.1
 	var blackMargin = 0.2
+	var innerMargin = whiteMargin + blackMargin
 
 	var canvas = document.createElement('canvas');
 	var context = canvas.getContext('2d')
@@ -103,7 +104,7 @@ THREEx.ArPatternFile.buildFullMarker =  function(innerImageURL, onComplete){
 	// clear the area for innerImage (in case of transparent image)
 	context.fillStyle = 'white';
 	context.fillRect(
-		innerMargin * canvas.width,
+		innerMargin*canvas.width,
 		innerMargin*canvas.height,
 		canvas.width * (1-2*innerMargin),
 		canvas.height * (1-2*innerMargin)
@@ -111,7 +112,6 @@ THREEx.ArPatternFile.buildFullMarker =  function(innerImageURL, onComplete){
 
 
 	var innerImage = document.createElement('img')
-	var innerMargin = whiteMargin + blackMargin
 	innerImage.addEventListener('load', function(){
 		// draw innerImage
 		context.drawImage(innerImage,
