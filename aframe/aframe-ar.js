@@ -165,6 +165,7 @@ AFRAME.registerComponent('artoolkitmarker', {
 		},
 		preset: {
 			type: 'string',
+			default: 'hiro'
 		}
 	},
 	init: function () {
