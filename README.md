@@ -373,28 +373,49 @@ It is a tradeoff: the larger the camera image, the slower it is running.
 The larger the camera image, the smaller the marker can be.
 
 ## How to Run AR.js Locally
-First you have to copy the repository locally (using git clone).
-After that, just serve the files on a static http server. 
-Personnaly, i use a simple command line http server called ```http-server```.
-You can install it via ```npm install -g http-server```.
+To run AR.js locally on your computer, first clone a copy of the repository, and change to the `AR.js` folder:
+
+  ````
+  git clone git@github.com:jeromeetienne/AR.js.git
+  cd AR.js
+  ````
+
+After that, serve the files using a static http server.  I use a simple command line http server called ```http-server```.
+This can be installed using npm:
+
+  ````
+  npm install -g http-server
+  ````
 
 
-## About WebRTC and https
-WebRTC requires to have a [Secure Contexts](https://w3c.github.io/webappsec-secure-contexts/), 
-So in short, you need to [serve your application over https](http://stackoverflow.com/questions/34197653/getusermedia-in-chrome-47-without-using-https).
-Webrtc records video/audio and it is really sensitive information.
-Without https, an attacker to easily know what is recorded by your webcam, or even insert audio and makes you say anything he want to.
-Clearly not something desirable :)
+to start the http-server, simply run:
 
-So, in short, you need to **serve your application over https** to use the webcam. 
+  ````
+  http-server
+  ````
 
-Unfortunatly, this is always a pain to setup https, but it is the prize to pay for security.
-[@mritzco](https://gist.github.com/mritzco) posted a great
-[description on https configuration for ar.js](https://gist.github.com/mritzco/18dfe13096294592d5eb53e7e1a5f63c)
-on gist.
-Let's note that [github pages](https://pages.github.com/) are served over https by default. So if you deploy on github, it is easier. 
-During developement, there is a trick, [localhost is assumed secured](https://w3c.github.io/webappsec-secure-contexts/#localhost).
-So if you serve your file over localhost, you don't need to have https.
+
+## Can't access user media error
+
+On mobile, accessing the camera using `getUserMedia` requires that you have a secure HTTPS connection to the server.  To do this, you will need to generate a certificate by running:
+
+  ````
+  openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
+  ````
+
+This will generate two files: `key.pem` and `cert.pem`.
+
+You then run the server with the `-S` to enable SSL and `-C` for your certificate files:
+
+  ````
+  http-server -S -C cert.pem -o
+  ````
+
+Alternatively, you can deploy to [github pages](https://pages.github.com/) which by default, is served using HTTPS.  This avoids having to configure a SSL server.
+
+Also working from localhost, you can avoid having to use HTTPS since [localhost is assumed secured](https://w3c.github.io/webappsec-secure-contexts/#localhost).
+
+Thanks to [@mritzco](https://gist.github.com/mritzco) for [configuration directions](https://gist.github.com/mritzco/18dfe13096294592d5eb53e7e1a5f63c).
 
 # How To Release ?
 
