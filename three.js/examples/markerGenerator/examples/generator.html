@@ -55,11 +55,33 @@
 		</div>
 	</div>
 	<div class='mdl-cell mdl-cell--4-col'>
-		<button id='buttonDownloadPDF' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>
-			PDF
+		<button id='buttonDownloadPDFOnePerPage' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>
+			PDF One per Page
 		</button>
-		<div class='mdl-tooltip' for='buttonDownloadPDF'>
-			Download markers as PDF - Nice to print
+		<div class='mdl-tooltip' for='buttonDownloadPDFOnePerPage'>
+			Download markers as PDF
+			<br/> 
+			One marker per page
+		</div>
+		<br/>
+		<br/>
+		<button id='buttonDownloadPDFTwoPerPage' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>
+			PDF Two per Page
+		</button>
+		<div class='mdl-tooltip' for='buttonDownloadPDFTwoPerPage'>
+			Download markers as PDF
+			<br/> 
+			Two marker per page
+		</div>
+		<br/>
+		<br/>
+		<button id='buttonDownloadPDFSixPerPage' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>
+			PDF Six per Page
+		</button>
+		<div class='mdl-tooltip' for='buttonDownloadPDFSixPerPage'>
+			Download markers as PDF.
+			<br/> 
+			Six marker per page
 		</div>
 	</div>	
 </div>
@@ -133,20 +155,41 @@
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
-	document.querySelector('#buttonDownloadPDF').addEventListener('click', generatePdf)
+	document.querySelector('#buttonDownloadPDFOnePerPage').addEventListener('click', generatePdfOnePerPage)
+	document.querySelector('#buttonDownloadPDFTwoPerPage').addEventListener('click', generatePdfTwoPerPage)
+	document.querySelector('#buttonDownloadPDFSixPerPage').addEventListener('click', generatePdfSixPerPage)
 		
-	function generatePdf(){
-	        var docDefinition1PerPage = {
-	                content: [
-	                        {
-	                                image: fullMarkerURL,
-	                                width: 600,
-	                                alignment: 'center',
-	                        },
+	function generatePdfOnePerPage(){
+	        var docDefinition = {
+			content: [
+				{
+					image: fullMarkerURL,
+					width: 600,
+					alignment: 'center',
+				},
 			]
-		}
-	        
-	        var docDefinition6PerPage = {
+	        }
+	        pdfMake.createPdf(docDefinition).open();
+	}
+	function generatePdfTwoPerPage(){
+	        var docDefinition = {
+			content: [
+				{
+					image: fullMarkerURL,
+					width: 300,
+					alignment: 'center',
+				},
+				{
+					image: fullMarkerURL,
+					width: 300,
+					alignment: 'center',
+				},
+			]
+	        }
+	        pdfMake.createPdf(docDefinition).open();
+	}
+	function generatePdfSixPerPage(){
+	        var docDefinition = {
 	                content: [
 				{
 					columns: [
@@ -186,7 +229,7 @@
 				},
 	                ],
 	        }
-	        pdfMake.createPdf(docDefinition1PerPage).open();
+	        pdfMake.createPdf(docDefinition).open();
 	}
 </script>
 

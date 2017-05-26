@@ -1,4 +1,2 @@
-- do a pdf download
-  - with specific size of markers on the page
-  - multiple markers per page
 - add link to artoolkit tutorial
+- do a info popup
