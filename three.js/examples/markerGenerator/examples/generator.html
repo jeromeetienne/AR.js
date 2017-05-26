@@ -78,7 +78,7 @@
 	var innerImageURL = null
 	var fullMarkerURL = null
 	
-	innerImageURL = 'http://127.0.0.1:8080/three.js/examples/markerGenerator/examples/images/inner-arjs.png'
+	innerImageURL = 'http://127.0.0.1:8080/three.js/examples/markerGenerator/examples/inner-images/inner-arjs.png'
 	updateFullMarkerImage()
 	
 	document.querySelector('#buttonDownloadEncoded').addEventListener('click', function(){
@@ -136,17 +136,57 @@
 	document.querySelector('#buttonDownloadPDF').addEventListener('click', generatePdf)
 		
 	function generatePdf(){
-	        
-	        var docDefinition = {
+	        var docDefinition1PerPage = {
 	                content: [
 	                        {
 	                                image: fullMarkerURL,
 	                                width: 600,
 	                                alignment: 'center',
 	                        },
+			]
+		}
+	        
+	        var docDefinition6PerPage = {
+	                content: [
+				{
+					columns: [
+			                        {
+			                                image: fullMarkerURL,
+			                                width: 250,
+			                        },
+			                        {
+			                                image: fullMarkerURL,
+			                                width: 250,
+			                        },
+					]			
+				},
+				{
+					columns: [
+			                        {
+			                                image: fullMarkerURL,
+			                                width: 250,
+			                        },
+			                        {
+			                                image: fullMarkerURL,
+			                                width: 250,
+			                        },
+					]					
+				},
+				{
+					columns: [
+			                        {
+			                                image: fullMarkerURL,
+			                                width: 250,
+			                        },
+			                        {
+			                                image: fullMarkerURL,
+			                                width: 250,
+			                        },
+					]					
+				},
 	                ],
 	        }
-	        pdfMake.createPdf(docDefinition).open();
+	        pdfMake.createPdf(docDefinition1PerPage).open();
 	}
 </script>
 

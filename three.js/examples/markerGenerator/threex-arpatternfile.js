@@ -111,6 +111,7 @@ THREEx.ArPatternFile.buildFullMarker =  function(innerImageURL, onComplete){
 	);
 
 
+	// display innerImage in the middle
 	var innerImage = document.createElement('img')
 	innerImage.addEventListener('load', function(){
 		// draw innerImage
