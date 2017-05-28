@@ -2109,11 +2109,11 @@ THREEx.ArSmoothedControls = function(object3d, parameters){
 	parameters = parameters || {}
 	this.parameters = {
 		// lerp coeficient for the position - between [0,1] - default to 1
-		lerpPosition: parameters.lerpPosition !== undefined ? parameters.lerpPosition : 0.3,
+		lerpPosition: parameters.lerpPosition !== undefined ? parameters.lerpPosition : 0.7,
 		// lerp coeficient for the quaternion - between [0,1] - default to 1
-		lerpQuaternion: parameters.lerpQuaternion !== undefined ? parameters.lerpQuaternion : 0.6,
+		lerpQuaternion: parameters.lerpQuaternion !== undefined ? parameters.lerpQuaternion : 0.7,
 		// lerp coeficient for the scale - between [0,1] - default to 1
-		lerpScale: parameters.lerpScale !== undefined ? parameters.lerpScale : 0.6,
+		lerpScale: parameters.lerpScale !== undefined ? parameters.lerpScale : 0.7,
 		// delay for lerp fixed steps - in seconds - default to 1/120
 		lerpStepDelay: parameters.fixStepDelay !== undefined ? parameters.fixStepDelay : 1/60,
 		// minimum delay the sub-control must be visible before this controls become visible - default to 0 seconds
@@ -2686,14 +2686,41 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 		  	}
                 }
 
-		devices.forEach(function(device) {
-			if( device.kind !== 'videoinput' )	return
+		// TODO super unclear how to get the backward facing camera...
+		// use heuristic - on chrome android current algo is working
+		// 
+		// on macosx it isnt. figure out the algo, and do if(macosx)
+		// - with one or two camera
+		// 
+		// some issue on window
+		
+		/**
+		 * how to test
+		 * - one or two camera on macbook
+		 * - my phone
+		 */
+		var runOnMobile = 'ontouchstart' in window ? true : false
+		if( runOnMobile === true ){
+			pickDeviceAndroid()
+		}else{
+			pickDeviceMacosx()
+		}
+		
 
-			// TODO super unclear how to get the backward facing camera...
+		function pickDeviceAndroid(){
+			devices.forEach(function(device) {
+				if( device.kind !== 'videoinput' )	return
+				constraints.video.optional = [{sourceId: device.deviceId}]
+			});			
+		}
+		function pickDeviceMacosx(){
+			devices.forEach(function(device) {
+				if( device.kind !== 'videoinput' )	return
 
-			// if( constraints.video.optional !== undefined )	return
-			constraints.video.optional = [{sourceId: device.deviceId}]
-		});
+				if( constraints.video.optional !== undefined )	return
+				constraints.video.optional = [{sourceId: device.deviceId}]
+			});			
+		}
 
 		// OLD API
                 // it it finds the videoSource 'environment', modify constraints.video
@@ -2828,7 +2855,7 @@ THREEx.ArVideoInWebgl = function(videoTexture){
 		
 		// extract the fov from the projectionMatrix
 		var fov = THREE.Math.radToDeg(Math.atan(1/camera.projectionMatrix.elements[5]))*2;
-		
+	// console.log('fov', fov)
 		
 		var elementWidth = parseFloat( arToolkitSource.domElement.style.width.replace(/px$/,''), 10 )
 		var elementHeight = parseFloat( arToolkitSource.domElement.style.height.replace(/px$/,''), 10 )

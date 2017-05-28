@@ -150,18 +150,41 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 		  	}
                 }
 
-		devices.forEach(function(device) {
-			if( device.kind !== 'videoinput' )	return
+		// TODO super unclear how to get the backward facing camera...
+		// use heuristic - on chrome android current algo is working
+		// 
+		// on macosx it isnt. figure out the algo, and do if(macosx)
+		// - with one or two camera
+		// 
+		// some issue on window
+		
+		/**
+		 * how to test
+		 * - one or two camera on macbook
+		 * - my phone
+		 */
+		var runOnMobile = 'ontouchstart' in window ? true : false
+		if( runOnMobile === true ){
+			pickDeviceAndroid()
+		}else{
+			pickDeviceMacosx()
+		}
+		
 
-			// TODO super unclear how to get the backward facing camera...
-			// use heuristic - on chrome android current algo is working
-			// 
-			// on macosx it isnt. figure out the algo, and do if(macosx)
-			// 
-			// some issue on window
-			// if( constraints.video.optional !== undefined )	return
-			constraints.video.optional = [{sourceId: device.deviceId}]
-		});
+		function pickDeviceAndroid(){
+			devices.forEach(function(device) {
+				if( device.kind !== 'videoinput' )	return
+				constraints.video.optional = [{sourceId: device.deviceId}]
+			});			
+		}
+		function pickDeviceMacosx(){
+			devices.forEach(function(device) {
+				if( device.kind !== 'videoinput' )	return
+
+				if( constraints.video.optional !== undefined )	return
+				constraints.video.optional = [{sourceId: device.deviceId}]
+			});			
+		}
 
 		// OLD API
                 // it it finds the videoSource 'environment', modify constraints.video
