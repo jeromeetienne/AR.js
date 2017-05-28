@@ -1,3 +1,5 @@
+- THREEx.ArSmoothedControls.minVisibleDelay to 0 ?
+  - why would it be worst to show the marker, than to hide it ? 
 - TODO super unclear how to get the backward facing camera...
 
 - currently webvr is able to do location already

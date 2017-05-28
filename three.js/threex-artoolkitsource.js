@@ -154,7 +154,11 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 			if( device.kind !== 'videoinput' )	return
 
 			// TODO super unclear how to get the backward facing camera...
-
+			// use heuristic - on chrome android current algo is working
+			// 
+			// on macosx it isnt. figure out the algo, and do if(macosx)
+			// 
+			// some issue on window
 			if( constraints.video.optional !== undefined )	return
 			constraints.video.optional = [{sourceId: device.deviceId}]
 		});
