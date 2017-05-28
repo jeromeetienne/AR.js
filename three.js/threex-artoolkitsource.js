@@ -159,7 +159,7 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 			// on macosx it isnt. figure out the algo, and do if(macosx)
 			// 
 			// some issue on window
-			if( constraints.video.optional !== undefined )	return
+			// if( constraints.video.optional !== undefined )	return
 			constraints.video.optional = [{sourceId: device.deviceId}]
 		});
 
