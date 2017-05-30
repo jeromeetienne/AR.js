@@ -32,10 +32,54 @@
 	h1 a:hover {
 		text-decoration: underline;
 	}
+	
+	#topRightButtons {
+		position: fixed;
+		top: 1em;
+		right: 1em;
+	}
 </style>
 <body>
 
 <h1><a href='https://github.com/jeromeetienne/ar.js' target='_blank'>AR.js</a> Marker Generator</h1>
+
+
+
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+<div id='topRightButtons'>
+	<button id="show-info" class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored">
+		<i class="material-icons">info_outline</i>
+	</button>
+</div>
+<dialog style='width:400px' id='dialog-info' class="mdl-dialog">
+	<h4 class="mdl-dialog__title">Welcome!</h4>
+	<div class="mdl-dialog__content">
+		Details on how to pick the inner image can be found <a target='_blank' href='https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_training'>here</a>
+	</div>
+	<div class="mdl-dialog__actions">
+		<button type="button" class="mdl-button">OK</button>
+	</div>
+</dialog>
+<script>
+	var dialogElement = document.querySelector('#dialog-info')
+	if (! dialogElement.showModal) {
+		dialogElementPolyfill.registerDialog(dialogElement)
+	}
+	dialogElement.querySelector('.mdl-dialog__actions button').addEventListener('click', function() {
+		dialogElement.close()
+	})
+
+	var showDialogButton = document.querySelector('#show-info')
+	showDialogButton.addEventListener('click', function() {
+		dialogElement.showModal()
+	})
+</script>
+  
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
 <div class='mdl-grid'>
 	<div class='mdl-cell mdl-cell--4-col'>
 		<label id='buttonUpload' for='fileinput' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>
