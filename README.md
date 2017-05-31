@@ -343,6 +343,7 @@ Credits: @HelloDeadline, @sorianog
 # Ideas
 - AR Gaming - https://www.youtube.com/watch?v=EmGGGzibGok
 - AR Business Card - https://vimeo.com/4979525
+- ar cube visu - real nice for 360 AR https://twitter.com/jerome_etienne/status/869765239356747776
 - plug ar.js into sketchfab 
   - do a mockup with the monkey script
   - add a AR button on sketchfab, it pops up on marker on the screen with the instruction to connect to it

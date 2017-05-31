@@ -2,10 +2,25 @@
   - why would it be worst to show the marker, than to hide it ? 
 - TODO super unclear how to get the backward facing camera...
 
+- do something to upload marker from image directly instead of .patt
+  - this avoid the pain of handling .patt files
+  - so get the image encoding it, and then do a dataurl
+  - as the data is image
+
+- THREEx.ArToolkitSource.prototype.onResize
+  split it in 
+  THREEx.ArToolkitSource.prototype.mirrorSizeTo(blabla)
+- Race conditions in resize
+  - arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])
+  - fails if arToolkitContext.arController not ready
+  - change this code, and port is EVERYWHERE :)
+
 - currently webvr is able to do location already
   - why wouldnt i code it all in webvr location, without the stereo rendering
   - well it is too early. it is better to make it easier to reuse.
   - webvr tango isnt mature enougth
+
+
 
 - release soon and start doing dev/master
   - create a dev branch
