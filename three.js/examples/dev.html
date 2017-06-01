@@ -117,6 +117,16 @@
 	
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
+	// var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
+	// 	type : 'pattern',
+	// 	// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+	// 	patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
+	// 	patternUrl : 'marker-generator/examples/patternFiles/generated-kanji.patt',
+	// 	patternUrl : 'marker-generator/examples/patternFiles/generated-hiro.patt',
+	// })
+
+
+setTimeout(function(){
 	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		type : 'pattern',
 		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
@@ -124,6 +134,8 @@
 		patternUrl : 'marker-generator/examples/patternFiles/generated-kanji.patt',
 		patternUrl : 'marker-generator/examples/patternFiles/generated-hiro.patt',
 	})
+	
+}, 2000)
 
 
 	// build a smoothedControls

@@ -136,8 +136,8 @@ all the crazy ideas related to AR.js.
 
 Some applications:
 
-- [Pattern Marker Generator](https://jeromeetienne.github.io/AR.js/three.js/examples/marker-generator/examples/generator.html) :
-  Generator of [pattern markers](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_training)
+- [Pattern Marker Training](https://jeromeetienne.github.io/AR.js/three.js/examples/marker-trainer/examples/generator.html) :
+  Generate a [pattern marker](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_training) with your own image.
 - [ARCode Generator](https://jeromeetienne.github.io/AR.js/three.js/examples/arcode.html) :
   Generator of AR-Code
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arcode.html))
