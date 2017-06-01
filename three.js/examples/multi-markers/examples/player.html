@@ -251,14 +251,11 @@
 	// build a smoothedControls
 	var smoothedRoot = new THREE.Group()
 	scene.add(smoothedRoot)
-	var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
-		lerpPosition: 0.7,
-		lerpQuaternion: 0.7,
-		lerpScale: 0.7,
-		minVisibleDelay: 0.0,
-		minUnvisibleDelay: 0.2,
-	})
+	var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
 	onRenderFcts.push(function(delta){
+		// update smoothedControls parameters depending on how many markers are visible in multiMarkerControls
+		multiMarkerControls.updateSmoothedControls(smoothedControls)
+		// update multiMarkerRoot position
 		smoothedControls.update(markerRoot)
 	})	
 	//////////////////////////////////////////////////////////////////////////////////

@@ -182,6 +182,41 @@ THREEx.ArMultiMarkerControls.computeCenter = function(jsonData){
 }
 
 //////////////////////////////////////////////////////////////////////////////
+//		updateSmoothedControls
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.ArMultiMarkerControls.prototype.updateSmoothedControls = function(smoothedControls, lerpsValues){
+	// handle default values
+	if( lerpsValues === undefined ){
+		lerpsValues = [
+			[0.5, 0.3, 0.3],
+			[0.6, 0.4, 0.4],
+			[0.7, 0.5, 0.5],
+			[0.8, 0.7, 0.7],
+		]
+	}
+	// count how many subMarkersControls are visible
+	var nVisible = 0
+	this.subMarkersControls.forEach(function(markerControls, markerIndex){
+		var markerObject3d = markerControls.object3d
+		if( markerObject3d.visible === true )	nVisible ++
+	})
+
+	// find the good lerpValues
+	if( lerpsValues[nVisible-1] !== undefined ){
+		var lerpValues = lerpsValues[nVisible-1]
+	}else{
+		var lerpValues = lerpsValues[lerpsValues.length-1]
+	}
+
+	// modify lerpValues in smoothedControls
+	smoothedControls.parameters.lerpPosition = lerpValues[0]
+	smoothedControls.parameters.lerpQuaternion = lerpValues[1]
+	smoothedControls.parameters.lerpScale = lerpValues[2]
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
 //		Create THREEx.ArMultiMarkerControls from JSON
 //////////////////////////////////////////////////////////////////////////////
 
