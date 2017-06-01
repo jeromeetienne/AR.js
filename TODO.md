@@ -1,8 +1,7 @@
-- rename marker generator as marker-training - just because it is what artoolkit said before
+- DONE rename marker generator as marker-training - just because it is what artoolkit said before
   - maybe creator ? 
   - training is the same word as before, and seems to do something smart
-
-- do something to upload marker from image directly instead of .patt
+- DONE do something to upload marker from image directly instead of .patt
   - this avoid the pain of handling .patt files
   - so get the image encoding it, and then do a dataurl
   - as the data is image
@@ -11,8 +10,6 @@
   - why would it be worst to show the marker, than to hide it ? 
 
 - TODO super unclear how to get the backward facing camera...
-
-
 
 
 - THREEx.ArToolkitSource.prototype.onResize

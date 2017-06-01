@@ -299,12 +299,6 @@ I exited to see what people will do with AR.js :)
   - by using gravity sensor
 - discover marker absolute orientation by comparing that to the phone gravity
   - can be used to know if the marker is on a table, or on a wall
-- area learning with markers 
-  - auto generation of multimarkers pattern
-  - the phone is in a mode acquisition
-  - the user walks around the room
-  - the phone takes statistic on markers location
-  - the actual area will be the average of those statistics.
 - cloud computing to get better rendering
   - fancy name for easy tech -
   [Capture a MediaStream From a Canvas, Video or Audio Element](https://developers.google.com/web/updates/2016/10/capture-stream)
