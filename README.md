@@ -183,9 +183,9 @@ Three.js Examples:
 - [videoinwebgl](https://jeromeetienne.github.io/AR.js/three.js/examples/videoinwebgl.html) :
   Add video in webgl - useful for phone-in-hmd usecase - work in progress
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/videoinwebgl.html))
-- [ar-in-webvr](https://jeromeetienne.github.io/AR.js/three.js/examples/ar-in-webvr.html) :
+- [webvr-for-ar](https://jeromeetienne.github.io/AR.js/three.js/examples/webvr-for-ar.html) :
   Displaying AR in WebVR - work in progress
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/ar-in-webvr.html))
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/webvr-for-ar.html))
 - [magic-book](https://jeromeetienne.github.io/AR.js/three.js/examples/magic-book/index.html) :
   Experimentation around magical book to open a secret door in [upload.io office](http://upload.io)
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/magic-book/index.html))
