@@ -2117,7 +2117,7 @@ THREEx.ArSmoothedControls = function(object3d, parameters){
 		// delay for lerp fixed steps - in seconds - default to 1/120
 		lerpStepDelay: parameters.fixStepDelay !== undefined ? parameters.fixStepDelay : 1/60,
 		// minimum delay the sub-control must be visible before this controls become visible - default to 0 seconds
-		minVisibleDelay: parameters.minVisibleDelay !== undefined ? parameters.minVisibleDelay : 0.3,
+		minVisibleDelay: parameters.minVisibleDelay !== undefined ? parameters.minVisibleDelay : 0.0,
 		// minimum delay the sub-control must be unvisible before this controls become unvisible - default to 0 seconds
 		minUnvisibleDelay: parameters.minUnvisibleDelay !== undefined ? parameters.minUnvisibleDelay : 0.2,
 	}
@@ -2576,8 +2576,8 @@ THREEx.ArToolkitSource.prototype.init = function(onReady){
         this.domElement = domElement
         this.domElement.style.position = 'absolute'
         this.domElement.style.top = '0px'
-        this.domElement.style.zIndex = '-2'	
-        this.domElement.style.zIndex = '-2'	
+        this.domElement.style.left = '0px'
+        this.domElement.style.zIndex = '-2'
 
 	return this
         function onSourceReady(){
@@ -2804,16 +2804,21 @@ THREEx.ArToolkitSource.prototype.onResize = function(mirrorDomElements){
 	}
 	
 	// honor default parameters
+	if( mirrorDomElements !== undefined )	console.warn('still use the old resize. fix it')
 	if( mirrorDomElements === undefined )	mirrorDomElements = []
 	if( mirrorDomElements instanceof Array === false )	mirrorDomElements = [mirrorDomElements]	
 
 	// Mirror _this.domElement.style to mirrorDomElements
 	mirrorDomElements.forEach(function(domElement){
-		domElement.style.width = _this.domElement.style.width
-		domElement.style.height = _this.domElement.style.height	
-		domElement.style.marginLeft = _this.domElement.style.marginLeft
-		domElement.style.marginTop = _this.domElement.style.marginTop
+		_this.copySizeTo(domElement)
 	})
+}
+
+THREEx.ArToolkitSource.prototype.copySizeTo = function(otherElement){
+	otherElement.style.width = this.domElement.style.width
+	otherElement.style.height = this.domElement.style.height	
+	otherElement.style.marginLeft = this.domElement.style.marginLeft
+	otherElement.style.marginTop = this.domElement.style.marginTop
 }
 var THREEx = THREEx || {}
 

@@ -268,14 +268,19 @@ THREEx.ArToolkitSource.prototype.onResize = function(mirrorDomElements){
 	}
 	
 	// honor default parameters
+	if( mirrorDomElements !== undefined )	console.warn('still use the old resize. fix it')
 	if( mirrorDomElements === undefined )	mirrorDomElements = []
 	if( mirrorDomElements instanceof Array === false )	mirrorDomElements = [mirrorDomElements]	
 
 	// Mirror _this.domElement.style to mirrorDomElements
 	mirrorDomElements.forEach(function(domElement){
-		domElement.style.width = _this.domElement.style.width
-		domElement.style.height = _this.domElement.style.height	
-		domElement.style.marginLeft = _this.domElement.style.marginLeft
-		domElement.style.marginTop = _this.domElement.style.marginTop
+		_this.copySizeTo(domElement)
 	})
+}
+
+THREEx.ArToolkitSource.prototype.copySizeTo = function(otherElement){
+	otherElement.style.width = this.domElement.style.width
+	otherElement.style.height = this.domElement.style.height	
+	otherElement.style.marginLeft = this.domElement.style.marginLeft
+	otherElement.style.marginTop = this.domElement.style.marginTop
 }
