@@ -1,11 +1,3 @@
-- THREEx.ArToolkitSource.prototype.onResize
-  split it in 
-  THREEx.ArToolkitSource.prototype.mirrorSizeTo(blabla)
-- Race conditions in resize
-  - arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])
-  - fails if arToolkitContext.arController not ready
-  - change this code, and port is EVERYWHERE :)
-
 - TODO super unclear how to get the backward facing camera...
 
 
@@ -38,6 +30,13 @@
 
 ---
 
+- DONE THREEx.ArToolkitSource.prototype.onResize
+  split it in 
+  THREEx.ArToolkitSource.prototype.mirrorSizeTo(blabla)
+- DONE Race conditions in resize
+  - arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])
+  - fails if arToolkitContext.arController not ready
+  - change this code, and port is EVERYWHERE :)
 - DONE rename marker generator as marker-training - just because it is what artoolkit said before
   - maybe creator ? 
   - training is the same word as before, and seems to do something smart

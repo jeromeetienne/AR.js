@@ -109,15 +109,20 @@
 	var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)
 
 	arToolkitSource.init(function onReady(){
-		// handle resize of renderer
-		arToolkitSource.onResize(renderer.domElement)		
+		onResize()
 	})
 	
 	// handle resize
 	window.addEventListener('resize', function(){
-		// handle arToolkitSource resize
-		arToolkitSource.onResize(renderer.domElement)		
-	})	
+		onResize()
+	})
+	function onResize(){
+		arToolkitSource.onResize()	
+		arToolkitSource.copySizeTo(renderer.domElement)	
+		if( arToolkitContext.arController !== null ){
+			arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
+		}	
+	}
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
 	////////////////////////////////////////////////////////////////////////////////
