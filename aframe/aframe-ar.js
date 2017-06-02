@@ -4,10 +4,10 @@
 
 AFRAME.registerSystem('artoolkit', {
 	schema: {
-                debug : {
-                        type: 'boolean',
-                        default: false
-                },
+    debug : {
+      type: 'boolean',
+      default: false
+    },
 		detectionMode : {
 			type: 'string',
 			default: 'mono',
@@ -23,13 +23,13 @@ AFRAME.registerSystem('artoolkit', {
 			type: 'number',
 			default: 60
 		},
-                sourceType : {
-                        type: 'string',
-                        default: 'webcam',        
-                },
-                sourceUrl : {
-                        type: 'string',
-                },
+    sourceType : {
+      type: 'string',
+      default: 'webcam',
+    },
+    sourceUrl : {
+      type: 'string',
+    },
 		sourceWidth : {
 			type: 'number',
 			default: 640
@@ -63,8 +63,8 @@ AFRAME.registerSystem('artoolkit', {
 
 	init: function () {
 		var _this = this
-		
-		if( this.data.cameraParametersUrl === '' ){			
+
+		if( this.data.cameraParametersUrl === '' ){
 			this.data.cameraParametersUrl = THREEx.ArToolkitContext.baseURL+'../data/data/camera_para.dat'
 		}
 
@@ -143,7 +143,7 @@ AFRAME.registerSystem('artoolkit', {
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 AFRAME.registerComponent('artoolkitmarker', {
-        dependencies: ['artoolkit'],
+  dependencies: ['artoolkit'],
 	schema: {
 		size: {
 			type: 'number',
@@ -165,6 +165,7 @@ AFRAME.registerComponent('artoolkitmarker', {
 		},
 		preset: {
 			type: 'string',
+			default: 'hiro'
 		}
 	},
 	init: function () {
@@ -202,30 +203,30 @@ AFRAME.registerComponent('artoolkitmarker', {
 //////////////////////////////////////////////////////////////////////////////
 
 AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
-        defaultComponents: {
-                artoolkitmarker: {},
-        },
-        mappings: {
-                'type': 'artoolkitmarker.type',
-                'size': 'artoolkitmarker.size',
-                'url': 'artoolkitmarker.patternUrl',
-                'value': 'artoolkitmarker.barcodeValue',
-                'preset': 'artoolkitmarker.preset',
-        }
+  defaultComponents: {
+    artoolkitmarker: {},
+  },
+  mappings: {
+	  'type': 'artoolkitmarker.type',
+	  'size': 'artoolkitmarker.size',
+	  'url': 'artoolkitmarker.patternUrl',
+	  'value': 'artoolkitmarker.barcodeValue',
+	  'preset': 'artoolkitmarker.preset',
+	}
 }));
 
 AFRAME.registerPrimitive('a-marker-camera', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
-        defaultComponents: {
-                artoolkitmarker: {
-			changeMatrixMode: 'cameraTransformMatrix'
-		},
-		camera: true,
-        },
-        mappings: {
-                'type': 'artoolkitmarker.type',
-                'size': 'artoolkitmarker.size',
-                'url': 'artoolkitmarker.patternUrl',
-                'value': 'artoolkitmarker.barcodeValue',
-                'preset': 'artoolkitmarker.preset',
-        }
+    defaultComponents: {
+      artoolkitmarker: {
+				changeMatrixMode: 'cameraTransformMatrix'
+			},
+			camera: true,
+      },
+      mappings: {
+        'type': 'artoolkitmarker.type',
+        'size': 'artoolkitmarker.size',
+        'url': 'artoolkitmarker.patternUrl',
+        'value': 'artoolkitmarker.barcodeValue',
+        'preset': 'artoolkitmarker.preset',
+      }
 }));
