@@ -4,10 +4,10 @@
 
 AFRAME.registerSystem('artoolkit', {
 	schema: {
-    debug : {
-      type: 'boolean',
-      default: false
-    },
+		debug : {
+			type: 'boolean',
+			default: false
+		},
 		detectionMode : {
 			type: 'string',
 			default: 'mono',
@@ -23,13 +23,13 @@ AFRAME.registerSystem('artoolkit', {
 			type: 'number',
 			default: 60
 		},
-    sourceType : {
-      type: 'string',
-      default: 'webcam',
-    },
-    sourceUrl : {
-      type: 'string',
-    },
+		sourceType : {
+			type: 'string',
+			default: 'webcam',
+		},
+		sourceUrl : {
+			type: 'string',
+		},
 		sourceWidth : {
 			type: 'number',
 			default: 640
@@ -55,23 +55,23 @@ AFRAME.registerSystem('artoolkit', {
 			default: 480
 		},
 	},
-
+	
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
-
-
+	
+	
 	init: function () {
 		var _this = this
-
+		
 		if( this.data.cameraParametersUrl === '' ){
 			this.data.cameraParametersUrl = THREEx.ArToolkitContext.baseURL+'../data/data/camera_para.dat'
 		}
-
+		
 		////////////////////////////////////////////////////////////////////////////////
 		//          handle arToolkitSource
 		////////////////////////////////////////////////////////////////////////////////
-
+		
 		var arToolkitSource = new THREEx.ArToolkitSource(this.data)
 		this.arToolkitSource = arToolkitSource
 		arToolkitSource.init(function onReady(){
@@ -94,14 +94,14 @@ AFRAME.registerSystem('artoolkit', {
 			// handle arToolkitSource resize
 			// var rendererDomElement = _this.sceneEl.renderer ? _this.sceneEl.renderer.domElement : undefined
 			// arToolkitSource.onResize(rendererDomElement)	
-
+			
 			// var rendererDomElement = _this.sceneEl.renderer ? _this.sceneEl.renderer.domElement : undefined
 			// console.log('dd', _this.sceneEl.renderer.domElement)
-
+			
 			// ugly kludge to get resize on aframe... not even sure it works
 			arToolkitSource.onResize(document.body)		
 			arToolkitSource.domElement.style.marginLeft = '0px'
-
+			
 			
 			var buttonElement = document.querySelector('.a-enter-vr')
 			if( buttonElement ){
@@ -118,22 +118,22 @@ AFRAME.registerSystem('artoolkit', {
 		// initialize it
 		arToolkitContext.init(function onCompleted(){
 			// // copy projection matrix to camera
-                        // var projectionMatrixArr = arToolkitContext.arController.getCameraMatrix();
-                        // _this.sceneEl.camera.projectionMatrix.fromArray(projprojectionMatrixArrectionMatrix);
+			// var projectionMatrixArr = arToolkitContext.arController.getCameraMatrix();
+			// _this.sceneEl.camera.projectionMatrix.fromArray(projprojectionMatrixArrectionMatrix);
 		})
 	},
 	
-        tick : function(now, delta){
+	tick : function(now, delta){
 		if( this.arToolkitSource.ready === false )	return
-
-                // var projectionMatrixArr = this.arToolkitContext.arController.getCameraMatrix();
-                // this.sceneEl.camera.projectionMatrix.fromArray(projectionMatrixArr);
-
+		
+		// var projectionMatrixArr = this.arToolkitContext.arController.getCameraMatrix();
+		// this.sceneEl.camera.projectionMatrix.fromArray(projectionMatrixArr);
+		
 		// copy projection matrix to camera
 		if( this.arToolkitContext.arController !== null ){
 			this.sceneEl.camera.projectionMatrix.copy( this.arToolkitContext.getProjectionMatrix() );
 		}
-
+		
 		this.arToolkitContext.update( this.arToolkitSource.domElement )
 	},
 });
@@ -143,7 +143,7 @@ AFRAME.registerSystem('artoolkit', {
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 AFRAME.registerComponent('artoolkitmarker', {
-  dependencies: ['artoolkit'],
+	dependencies: ['artoolkit'],
 	schema: {
 		size: {
 			type: 'number',
@@ -188,8 +188,8 @@ AFRAME.registerComponent('artoolkitmarker', {
 	},
 	update: function () {
 		// FIXME this mean to change the recode in trackBarcodeMarkerId ?
-        	// var markerRoot = this.el.object3D;
-        	// markerRoot.userData.size = this.data.size;
+		// var markerRoot = this.el.object3D;
+		// markerRoot.userData.size = this.data.size;
 	},
 	tick: function(){
 		if( this.data.changeMatrixMode === 'cameraTransformMatrix' ){
@@ -203,30 +203,30 @@ AFRAME.registerComponent('artoolkitmarker', {
 //////////////////////////////////////////////////////////////////////////////
 
 AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
-  defaultComponents: {
-    artoolkitmarker: {},
-  },
-  mappings: {
-	  'type': 'artoolkitmarker.type',
-	  'size': 'artoolkitmarker.size',
-	  'url': 'artoolkitmarker.patternUrl',
-	  'value': 'artoolkitmarker.barcodeValue',
-	  'preset': 'artoolkitmarker.preset',
+	defaultComponents: {
+		artoolkitmarker: {},
+	},
+	mappings: {
+		'type': 'artoolkitmarker.type',
+		'size': 'artoolkitmarker.size',
+		'url': 'artoolkitmarker.patternUrl',
+		'value': 'artoolkitmarker.barcodeValue',
+		'preset': 'artoolkitmarker.preset',
 	}
 }));
 
 AFRAME.registerPrimitive('a-marker-camera', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
-    defaultComponents: {
-      artoolkitmarker: {
-				changeMatrixMode: 'cameraTransformMatrix'
-			},
-			camera: true,
-      },
-      mappings: {
-        'type': 'artoolkitmarker.type',
-        'size': 'artoolkitmarker.size',
-        'url': 'artoolkitmarker.patternUrl',
-        'value': 'artoolkitmarker.barcodeValue',
-        'preset': 'artoolkitmarker.preset',
-      }
+	defaultComponents: {
+		artoolkitmarker: {
+			changeMatrixMode: 'cameraTransformMatrix'
+		},
+		camera: true,
+	},
+	mappings: {
+		'type': 'artoolkitmarker.type',
+		'size': 'artoolkitmarker.size',
+		'url': 'artoolkitmarker.patternUrl',
+		'value': 'artoolkitmarker.barcodeValue',
+		'preset': 'artoolkitmarker.preset',
+	}
 }));
