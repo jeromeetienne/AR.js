@@ -268,7 +268,7 @@ THREEx.ArToolkitSource.prototype.onResize = function(mirrorDomElements){
 	}
 	
 	// honor default parameters
-	if( mirrorDomElements !== undefined )	console.warn('still use the old resize. fix it')
+	// if( mirrorDomElements !== undefined )	console.warn('still use the old resize. fix it')
 	if( mirrorDomElements === undefined )	mirrorDomElements = []
 	if( mirrorDomElements instanceof Array === false )	mirrorDomElements = [mirrorDomElements]	
 
