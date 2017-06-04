@@ -1,7 +1,5 @@
 - TODO super unclear how to get the backward facing camera...
 
-
-
 - currently webvr is able to do location already
   - why wouldnt i code it all in webvr location, without the stereo rendering
   - well it is too early. it is better to make it easier to reuse.

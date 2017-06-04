@@ -171,13 +171,18 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 		}
 		
 
-		function pickDeviceAndroid(){
-			devices.forEach(function(device) {
-				if( device.kind !== 'videoinput' )	return
-				constraints.video.optional = [{sourceId: device.deviceId}]
-			});			
+		function pickDeviceAndroid(devices){
+			var videoDevices = devices.filter(function(device){
+				return device.kind === 'videoinput'
+			})
+			if( videoDevices.length !== 0 ){
+				var pickedDevice = videoDevices[videoDevices.length-1]
+				constraints.video.optional = [{sourceId: pickedDevice.deviceId}]
+				
+			}
 		}
 		function pickDeviceMacosx(){
+			// debugger
 			devices.forEach(function(device) {
 				if( device.kind !== 'videoinput' )	return
 

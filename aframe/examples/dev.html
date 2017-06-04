@@ -7,6 +7,7 @@
 <!-- include threex.artoolkit -->
 <script src="../../three.js/threex-artoolkitcontext.js"></script>
 <script src="../../three.js/threex-artoolkitsource.js"></script>
+<script src="../../three.js/threex-arbasecontrols.js"></script>
 <script src="../../three.js/threex-armarkercontrols.js"></script>
 <!-- aframe-artoolkit -->
 <script src="../aframe-ar.js"></script>
@@ -28,7 +29,8 @@
 	<!-- <a-scene artoolkit='sourceType: webcam'> -->
 
 		<a-box depth="1" height="1" width="1" position='0 0.5 0' material='opacity: 0.5; side:double; color:blue;'></a-box>
-		<a-marker-camera preset='hiro'></a-marker-camera>
+		
+		<a-marker-camera type='pattern' patternUrl='../../data/data/patt.hiro'></a-marker-camera>
 	</a-scene>
 </body>
 </html>

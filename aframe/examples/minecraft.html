@@ -14,14 +14,14 @@
 	<br/>
 	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div>
-        <a-scene embedded artoolkit='sourceType: image; sourceUrl:../../data/images/armchair.jpg' antialias="true">        
-        <!-- <a-scene embedded artoolkit='sourceType: webcam; sourceWidth: 240; sourceHeight: 180;' antialias="true"> -->
+        <a-scene embedded artoolkit='sourceType: image; sourceUrl:../../data/images/armchair.jpg; detectionMode: mono_and_matrix;' antialias="true">        
 
 		<!-- <a-marker type='unknown'>                 -->
 		<a-marker type='pattern' url='../../data/data/patt.hiro' size='1'>
 	                <!-- Add a minecraft character -->
 	                <a-minecraft></a-minecraft>
 		</a-marker>
+
 		<a-entity camera></a-entity>
         </a-scene>
 </body>
