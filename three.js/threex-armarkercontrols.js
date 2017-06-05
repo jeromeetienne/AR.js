@@ -93,7 +93,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 
 	// listen to the event
 	arController.addEventListener('getMarker', function(event){
-
+// debugger
 		if( event.data.type === artoolkit.PATTERN_MARKER && _this.parameters.type === 'pattern' ){
 			if( _this.markerId === null )	return
 			if( event.data.marker.idPatt === _this.markerId ) onMarkerFound(event)

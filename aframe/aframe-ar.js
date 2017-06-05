@@ -163,9 +163,11 @@ AFRAME.registerComponent('artoolkitmarker', {
 			type: 'string',
 			default : 'modelViewMatrix',
 		},
+		minConfidence: {
+			type: 'number'
+		},
 		preset: {
 			type: 'string',
-			default: 'hiro'
 		}
 	},
 	init: function () {
@@ -212,6 +214,7 @@ AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitiv
 		'url': 'artoolkitmarker.patternUrl',
 		'value': 'artoolkitmarker.barcodeValue',
 		'preset': 'artoolkitmarker.preset',
+		'minConfidence': 'artoolkitmarker.minConfidence',
 	}
 }));
 

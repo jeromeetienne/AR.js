@@ -123,7 +123,7 @@ all the crazy ideas related to AR.js.
 
 - ["WebVR for Augmented Reality - Using WebVR to write cross-platform AR applications"](https://medium.com/arjs/webvr-for-augmented-reality-f1e69a505902)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)
-- ["Augmenting The Web Page - Using WebVR to write cross-platform AR applications"](https://medium.com/arjs/augmenting-the-web-page-e893f2d199b8)
+- ["Augmenting The Web Page - Bringing augmenting reality to normal web pages"](https://medium.com/arjs/augmenting-the-web-page-e893f2d199b8)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)
 - ["Server Rendering for Augmented Reality - Cloud Rendering with Web Standards"](https://medium.com/arjs/server-rendering-for-augmented-reality-2de0a71aae04)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)

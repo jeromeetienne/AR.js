@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<style>
+  body {
+  	margin:0;
+  	overflow: hidden;
+    /*width: 450px;*/*/
+    
+	}
+
+	#marker {
+    /*margin: 0px auto;*/
+    /*width: 278px;*/
+    /*margin-top: 100px;*/
+  }
+  #marker {
+    padding: 60px;
+  }
+</style>
+<body>
+  <div id="marker">
+  </div>
+
+  <script src="vendor/aruco-marker.js"></script>
+  <script>
+    if( location.hash ){
+      var id = parseInt(location.hash.substr(1), 10)
+    }else{
+      var id = Math.floor(Math.random() * 1024);
+    }
+
+    var element = document.getElementById('marker');
+    element.innerHTML = new ArucoMarker(id).toSVG('100%');
+    
+    setInterval(function(){
+      var domElement = document.querySelector('#marker svg')
+      element.style.height = window.innerHeight-120+'px'
+    }, 100)
+  </script>
+</body>
+</html>

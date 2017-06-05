@@ -349,7 +349,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 
 	// listen to the event
 	arController.addEventListener('getMarker', function(event){
-
+// debugger
 		if( event.data.type === artoolkit.PATTERN_MARKER && _this.parameters.type === 'pattern' ){
 			if( _this.markerId === null )	return
 			if( event.data.marker.idPatt === _this.markerId ) onMarkerFound(event)
@@ -1474,9 +1474,11 @@ AFRAME.registerComponent('artoolkitmarker', {
 			type: 'string',
 			default : 'modelViewMatrix',
 		},
+		minConfidence: {
+			type: 'number'
+		},
 		preset: {
 			type: 'string',
-			default: 'hiro'
 		}
 	},
 	init: function () {
@@ -1523,6 +1525,7 @@ AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitiv
 		'url': 'artoolkitmarker.patternUrl',
 		'value': 'artoolkitmarker.barcodeValue',
 		'preset': 'artoolkitmarker.preset',
+		'minConfidence': 'artoolkitmarker.minConfidence',
 	}
 }));
 
