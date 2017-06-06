@@ -99,10 +99,18 @@
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
-		detectionMode: 'mono',
+		detectionMode: 'mono_and_matrix',
+		// detectionMode: 'mono',
 		// detectionMode: 'color_and_matrix',
 		// canvasWidth: 80*3,
 		// canvasHeight: 60*3,
+
+		matrixCodeType: '3x3',
+		// matrixCodeType: '3x3_HAMMING63',
+		// matrixCodeType: '3x3_PARITY65',
+		// matrixCodeType: '4x4',
+		// matrixCodeType: '4x4_BCH_13_9_3',
+		// matrixCodeType: '4x4_BCH_13_5_5',
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
@@ -125,11 +133,11 @@
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
 	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
-		type : 'pattern',
-		// // patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
-		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
-		// patternUrl : 'marker-training/examples/pattern-files/pattern-kanji.patt',
-		patternUrl : 'marker-training/examples/pattern-files/pattern-hiro.patt',
+		type: 'barcode',
+		barcodeValue: 5,
+		
+		// type : 'pattern',
+		// patternUrl : 'marker-training/examples/pattern-files/pattern-hiro.patt',
 	})
 
 

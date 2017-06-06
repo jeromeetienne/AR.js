@@ -67,7 +67,7 @@ AFRAME.registerSystem('artoolkit', {
 		if( this.data.cameraParametersUrl === '' ){
 			this.data.cameraParametersUrl = THREEx.ArToolkitContext.baseURL+'../data/data/camera_para.dat'
 		}
-		
+
 		////////////////////////////////////////////////////////////////////////////////
 		//          handle arToolkitSource
 		////////////////////////////////////////////////////////////////////////////////

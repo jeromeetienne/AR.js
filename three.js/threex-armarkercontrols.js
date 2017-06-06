@@ -93,7 +93,6 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 
 	// listen to the event
 	arController.addEventListener('getMarker', function(event){
-// debugger
 		if( event.data.type === artoolkit.PATTERN_MARKER && _this.parameters.type === 'pattern' ){
 			if( _this.markerId === null )	return
 			if( event.data.marker.idPatt === _this.markerId ) onMarkerFound(event)
@@ -108,9 +107,10 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 
 	return
 	function onMarkerFound(event){
-
+		
 		// honor his.parameters.minConfidence
-		if( event.data.marker.cf < _this.parameters.minConfidence )	return
+		if( event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence )	return
+		if( event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence )	return
 
 		// mark object as visible
 		markerObject3D.visible = true
