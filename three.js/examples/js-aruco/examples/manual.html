@@ -9,29 +9,37 @@
 <script src='../vendor/js-aruco/src/aruco.js'></script> 
 
 
-<script src='../threex-aruco.js'></script> 
+<script src='../threex-arucocontext.js'></script> 
+<script src='../threex-arucodebug.js'></script> 
 
+<div>
+        <form>
+                <label>clear canvas<input id='checkboxClearCanvas' name="imgsel" type="radio"></label>
+                <br/>
+                <label>draw video<input id='checkboxDrawVideo' name="imgsel" type="radio" checked="checked" ></label>
+                <br/>
+                <label>draw detector grey<input id='checkboxDetectorGrey' name="imgsel" type="radio"></label>
+                <br/>
+                <label>draw detector threshold<input id='checkboxDetectorThreshold' name="imgsel" type="radio"></label>
+        </form>
 
-<body style='background-color: darkgray;'>
-        
-        <canvas id='canvas' style='width: 320px; height: 240px;'></canvas>
-        <div id='webGLContainer' style='width: 320px; height: 240px; display: inline;'></div>
-        
-        <style media="screen">
-        img {
-                width: 256px;
-                height: 256px;
-                padding: 8em;
-        }
-        </style>
+        <label>draw marker corners<input id='checkboxMarkerCorners' type="checkbox" checked="checked" ></label>
         <br/>
-        <div>
-                <!-- <img src="images/1001.png"/> -->
-                <img src="images/1001.png"/>
-        </div>
+        <label>draw marker ids<input id='checkboxMarkerId' type="checkbox" checked="checked" ></label>
+        <br/>
+        <label>draw contours contours<input id='checkboxContoursContours' type="checkbox"></label>
+        <br/>
+        <label>draw contours polys<input id='checkboxContoursPolys' type="checkbox"></label>
+        <br/>
+        <label>draw contours candiddates<input id='checkboxContoursCandidates' type="checkbox"></label>
+</div>
+<body style='background-color: darkgray;'>
+
+        <div id='webGLContainer' style='width: 320px; height: 240px; display: inline;'></div>
+
         
         <script>
-        var markerSize = 1.0; //millimeters
+        
         
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
         
@@ -40,11 +48,7 @@
         // videoElement.height = 240
         videoElement.autoplay = true
         
-        var canvas = document.getElementById('canvas');
-        
-        canvas.width = 320;
-        canvas.height = 240;
-        
+
         //////////////////////////////////////////////////////////////////////////////
         //                Code Separator
         //////////////////////////////////////////////////////////////////////////////
@@ -61,13 +65,15 @@
                 function(error){
                 }
         );
-        
-        var detector = new AR.Detector();
-        var posit = new POS.Posit(markerSize, canvas.width);
+
+        var markerSize = 1.0; //millimeters
+        var arucoContext = new THREEx.ArucoContext(markerSize)
+        var arucoDebug = new THREEx.ArucoDebug(arucoContext)
+        document.body.appendChild(arucoDebug.canvasElement)
         
         var renderer = new THREE.WebGLRenderer();
         renderer.setClearColor(0xffffff, 1);
-        renderer.setSize(canvas.width, canvas.height);
+        renderer.setSize(arucoContext.canvas.width, arucoContext.canvas.height);
         document.getElementById('webGLContainer').appendChild(renderer.domElement);
         
         var sceneOrtho = new THREE.Scene();
@@ -75,7 +81,7 @@
         sceneOrtho.add(cameraOrtho);
         
         var scenePersp = new THREE.Scene();
-        var cameraPersp = new THREE.PerspectiveCamera(42, canvas.width / canvas.height, 0.01, 100);
+        var cameraPersp = new THREE.PerspectiveCamera(42, arucoContext.canvas.width / arucoContext.canvas.height, 0.01, 100);
         scenePersp.add(cameraPersp);
         
         //////////////////////////////////////////////////////////////////////////////
@@ -121,43 +127,28 @@
                 if( lastDetectionAt === null || present-lastDetectionAt >= 1/30){
                         lastDetectionAt = Date.now()/1000
                 // if( videoElement.readyState >= videoElement.HAVE_CURRENT_DATA ){
-// console.log('ddd')
                         
-                        var context = canvas.getContext('2d');
-                        context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-                        imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-                        
-                        var detectedMarkers = detector.detect(imageData);
-                        
-                        // compute the pose for each detectedMarkers
-                        detectedMarkers.forEach(function(detectedMarker){
-                                // debugger
-                                var markerCorners = detectedMarker.corners;
-
-                                // convert the corners
-                                var poseCorners = new Array(markerCorners.length)
-                                for (var i = 0; i < markerCorners.length; ++ i){
-                                        var markerCorner = markerCorners[i];        
-                                        poseCorners[i] = {
-                                                x:  markerCorner.x - (canvas.width / 2),
-                                                y: -markerCorner.y + (canvas.height/ 2)
-                                        }
-                                }
-                                
-                                // estimate pose from corners
-                                detectedMarker.pose = posit.pose(poseCorners);
-                        })
-                        
-
-                        if (detectedMarkers.length > 0){
+                        // detect markers in imageData
+                        var detectedMarkers = arucoContext.detect(videoElement)
+                        if( detectedMarkers.length > 0 ){
                                 var detectedMarker = detectedMarkers[0]
                                 
-                                THREEx.Aruco.updateObject3D(arWorldRoot, detectedMarker.pose.bestRotation, detectedMarker.pose.bestTranslation);
-                        }                
+                                THREEx.ArucoContext.updateObject3D(arWorldRoot, detectedMarker);
+                                arWorldRoot.visible = true
+                        }else{
+                                arWorldRoot.visible = false
+                        }  
+                        
+                        if( document.querySelector('#checkboxClearCanvas').checked )      arucoDebug.clear()
+                        if( document.querySelector('#checkboxDrawVideo').checked )      arucoDebug.drawVideo(videoElement)
+                        if( document.querySelector('#checkboxDetectorGrey').checked )      arucoDebug.drawDetectorGrey()
+                        if( document.querySelector('#checkboxDetectorThreshold').checked )      arucoDebug.drawDetectorThreshold()
 
-                        THREEx.Aruco.drawDebugCorners(canvas, detectedMarkers);
-                        THREEx.Aruco.drawDebugId(canvas, detectedMarkers);
-
+                        if( document.querySelector('#checkboxMarkerCorners').checked )      arucoDebug.drawMarkerCorners(detectedMarkers)
+                        if( document.querySelector('#checkboxMarkerId').checked )      arucoDebug.drawMarkerIDs(detectedMarkers)
+                        if( document.querySelector('#checkboxContoursContours').checked )      arucoDebug.drawContoursContours()
+                        if( document.querySelector('#checkboxContoursPolys').checked )      arucoDebug.drawContoursPolys()
+                        if( document.querySelector('#checkboxContoursCandidates').checked )      arucoDebug.drawContoursCandidates()
                 }
                 
                 // render scene
@@ -170,5 +161,19 @@
         
         
         </script>        
+        
+        
+        <style media="screen">
+        img {
+                width: 256px;
+                height: 256px;
+                padding: 8em;
+        }
+        </style>
+        <br/>
+        <div>
+                <!-- <img src="images/1001.png"/> -->
+                <img src="images/1001.png"/>
+        </div>        
 </body>
 </html>
