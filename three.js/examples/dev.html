@@ -67,9 +67,9 @@
 		sourceType : 'webcam',
 		
 		// // to read from an image
-		sourceType : 'image',
-		sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
-		sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/armchair.jpg',		
+		// sourceType : 'image',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/armchair.jpg',		
 
 		// to read from a video
 		// sourceType : 'video',
@@ -125,17 +125,11 @@
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
 	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
-		type: 'barcode',
-		barcodeValue: 42,
-		
-		type: 'unknown',
-		minConfidence: 0,
-		
-		// type : 'pattern',
+		type : 'pattern',
 		// // patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
 		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
 		// patternUrl : 'marker-training/examples/pattern-files/pattern-kanji.patt',
-		// patternUrl : 'marker-training/examples/pattern-files/pattern-hiro.patt',
+		patternUrl : 'marker-training/examples/pattern-files/pattern-hiro.patt',
 	})
 
 

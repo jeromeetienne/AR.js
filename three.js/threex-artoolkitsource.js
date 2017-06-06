@@ -172,14 +172,20 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 		
 
 		function pickDeviceAndroid(devices){
-			var videoDevices = devices.filter(function(device){
-				return device.kind === 'videoinput'
-			})
-			if( videoDevices.length !== 0 ){
-				var pickedDevice = videoDevices[videoDevices.length-1]
-				constraints.video.optional = [{sourceId: pickedDevice.deviceId}]
-				
-			}
+	
+			// var videoDevices = devices.filter(function(device){
+			// 	return device.kind === 'videoinput'
+			// })
+			// if( videoDevices.length !== 0 ){
+			// 	var pickedDevice = videoDevices[videoDevices.length-1]
+			// 	constraints.video.optional = [{sourceId: pickedDevice.deviceId}]
+			// }
+			devices.forEach(function(device) {
+				if( device.kind !== 'videoinput' )	return
+
+				if( constraints.video.optional !== undefined )	return
+				constraints.video.optional = [{sourceId: device.deviceId}]
+			});		
 		}
 		function pickDeviceMacosx(){
 			// debugger
@@ -207,7 +213,7 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 			document.body.addEventListener('click', function(){
 				domElement.play();
 			})
-			// domElement.play();
+			domElement.play();
 		
 			// wait until the video stream is ready
 			var interval = setInterval(function() {
