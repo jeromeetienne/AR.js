@@ -1970,7 +1970,7 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 
 	// listen to the event
 	arController.addEventListener('getMarker', function(event){
-
+// debugger
 		if( event.data.type === artoolkit.PATTERN_MARKER && _this.parameters.type === 'pattern' ){
 			if( _this.markerId === null )	return
 			if( event.data.marker.idPatt === _this.markerId ) onMarkerFound(event)
@@ -2700,20 +2700,25 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 		 * - my phone
 		 */
 		var runOnMobile = 'ontouchstart' in window ? true : false
+		// debugger
 		if( runOnMobile === true ){
-			pickDeviceAndroid()
+			pickDeviceAndroid(devices)
 		}else{
-			pickDeviceMacosx()
+			pickDeviceMacosx(devices)
 		}
 		
 
-		function pickDeviceAndroid(){
-			devices.forEach(function(device) {
-				if( device.kind !== 'videoinput' )	return
-				constraints.video.optional = [{sourceId: device.deviceId}]
-			});			
+		function pickDeviceAndroid(devices){
+			var videoDevices = devices.filter(function(device){
+				return device.kind === 'videoinput'
+			})
+			if( videoDevices.length !== 0 ){
+				var pickedDevice = videoDevices[videoDevices.length-1]
+				constraints.video.optional = [{sourceId: pickedDevice.deviceId}]
+			}
 		}
-		function pickDeviceMacosx(){
+		function pickDeviceMacosx(devices){
+			// debugger
 			devices.forEach(function(device) {
 				if( device.kind !== 'videoinput' )	return
 
@@ -2804,7 +2809,7 @@ THREEx.ArToolkitSource.prototype.onResize = function(mirrorDomElements){
 	}
 	
 	// honor default parameters
-	if( mirrorDomElements !== undefined )	console.warn('still use the old resize. fix it')
+	// if( mirrorDomElements !== undefined )	console.warn('still use the old resize. fix it')
 	if( mirrorDomElements === undefined )	mirrorDomElements = []
 	if( mirrorDomElements instanceof Array === false )	mirrorDomElements = [mirrorDomElements]	
 

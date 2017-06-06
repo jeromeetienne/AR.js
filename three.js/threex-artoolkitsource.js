@@ -164,30 +164,24 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 		 * - my phone
 		 */
 		var runOnMobile = 'ontouchstart' in window ? true : false
+		// debugger
 		if( runOnMobile === true ){
-			pickDeviceAndroid()
+			pickDeviceAndroid(devices)
 		}else{
-			pickDeviceMacosx()
+			pickDeviceMacosx(devices)
 		}
 		
 
 		function pickDeviceAndroid(devices){
-	
-			// var videoDevices = devices.filter(function(device){
-			// 	return device.kind === 'videoinput'
-			// })
-			// if( videoDevices.length !== 0 ){
-			// 	var pickedDevice = videoDevices[videoDevices.length-1]
-			// 	constraints.video.optional = [{sourceId: pickedDevice.deviceId}]
-			// }
-			devices.forEach(function(device) {
-				if( device.kind !== 'videoinput' )	return
-
-				if( constraints.video.optional !== undefined )	return
-				constraints.video.optional = [{sourceId: device.deviceId}]
-			});		
+			var videoDevices = devices.filter(function(device){
+				return device.kind === 'videoinput'
+			})
+			if( videoDevices.length !== 0 ){
+				var pickedDevice = videoDevices[videoDevices.length-1]
+				constraints.video.optional = [{sourceId: pickedDevice.deviceId}]
+			}
 		}
-		function pickDeviceMacosx(){
+		function pickDeviceMacosx(devices){
 			// debugger
 			devices.forEach(function(device) {
 				if( device.kind !== 'videoinput' )	return
@@ -213,7 +207,7 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 			document.body.addEventListener('click', function(){
 				domElement.play();
 			})
-			domElement.play();
+			// domElement.play();
 		
 			// wait until the video stream is ready
 			var interval = setInterval(function() {

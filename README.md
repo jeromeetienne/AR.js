@@ -359,6 +359,11 @@ Credits: @HelloDeadline, @sorianog
   - and go thru each and every matrix type detection
 - Nice effect with video texture - https://www.youtube.com/watch?v=Y9HMn6bd-v8&feature=youtu.be&t=172
 - Nice snowball effect - http://www.spacegoo.com/bubbles/
+- AR scene Minecraft: 
+  - When close to covered area, start making it interactive
+  - When I come close the character come to me and say hello
+  - I got 2d UI to say-hi dance, trigger animation, say stuff. Action button
+  - The screener become active depending on the distance with the user
 
 # FAQ
 
