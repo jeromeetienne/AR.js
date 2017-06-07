@@ -87,22 +87,21 @@ THREEx.ArucoDebug.prototype.drawCVImage = function(cvImage){
 	var context = canvas.getContext('2d');
 
 	var imageData = context.createImageData(canvas.width, canvas.height);
-	copyImage(cvImage, imageData)
+	this.copyCVImage2ImageData(cvImage, imageData)
 	context.putImageData( imageData, 0, 0);
-	
-	return
-	function copyImage(src, dst){
-		var i = src.data.length, j = (i * 4) + 3;
-		
-		while(i --){
-			dst.data[j -= 4] = 255;
-			dst.data[j - 1] = dst.data[j - 2] = dst.data[j - 3] = src.data[i];
-		}
-		
-		return dst;
-	};
 }
 
+
+THREEx.ArucoDebug.prototype.copyCVImage2ImageData = function(cvImage, imageData){
+	var i = cvImage.data.length, j = (i * 4) + 3;
+	
+	while(i --){
+		imageData.data[j -= 4] = 255;
+		imageData.data[j - 1] = imageData.data[j - 2] = imageData.data[j - 3] = cvImage.data[i];
+	}
+	
+	return imageData;
+};
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator

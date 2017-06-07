@@ -1,0 +1,61 @@
+<script src='../../js-aruco/vendor/js-aruco/src/svd.js'></script> 
+<script src='../../js-aruco/vendor/js-aruco/src/posit1.js'></script> 
+<script src='../../js-aruco/vendor/js-aruco/src/cv.js'></script> 
+<script src='../../js-aruco/vendor/js-aruco/src/aruco.js'></script> 
+<body><script>
+        
+        var videoElement = document.createElement('video')
+	// document.body.appendChild(videoElement)
+        videoElement.autoplay = true
+        
+	navigator.mediaDevices.getUserMedia({
+		video:true
+	}).then(function(stream){
+	        videoElement.src = window.URL.createObjectURL(stream);
+	}).catch(function(error){
+		console.assert(false)
+		console.dir(error)
+	})
+        
+        var canvas = document.createElement('canvas')
+        canvas.width = 640      
+        canvas.height = 480
+	document.body.appendChild(canvas)
+        var context = canvas.getContext('2d')
+        
+	
+        var greyCVImage = new CV.Image();
+        var thresCVImage = new CV.Image();
+	requestAnimationFrame(function callback(){
+                
+                context.drawImage(videoElement, 0, 0)
+                var imageData = context.getImageData(0, 0, canvas.width, canvas.height)
+
+		CV.grayscale(imageData, greyCVImage)
+                CV.adaptiveThreshold(greyCVImage, thresCVImage, 2, 7);
+
+
+        	var imageData = context.createImageData(canvas.width, canvas.height);
+        	copyCVImage2ImageData(thresCVImage, imageData)
+        	context.putImageData( imageData, 0, 0);
+		
+		requestAnimationFrame(callback)
+	})
+
+
+
+        //////////////////////////////////////////////////////////////////////////////
+        //                Code Separator
+        //////////////////////////////////////////////////////////////////////////////
+	function copyCVImage2ImageData(cvImage, imageData){
+		var i = cvImage.data.length, j = (i * 4) + 3;
+		
+		while(i --){
+			imageData.data[j -= 4] = 255;
+			imageData.data[j - 1] = imageData.data[j - 2] = imageData.data[j - 3] = cvImage.data[i];
+		}
+		
+		return imageData;
+	};
+	
+</script></body>

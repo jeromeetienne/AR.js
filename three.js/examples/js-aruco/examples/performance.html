@@ -105,9 +105,9 @@
                 // if( videoElement.readyState >= videoElement.HAVE_CURRENT_DATA ){
                         
                         // detect markers in imageData
-                        console.time('detect');
+                        // console.time('detect');
                         var detectedMarkers = arucoContext.detect(videoElement)
-                        console.timeEnd('detect');
+                        // console.timeEnd('detect');
                         if( detectedMarkers.length > 0 ){
                                 var detectedMarker = detectedMarkers[0]
                                 

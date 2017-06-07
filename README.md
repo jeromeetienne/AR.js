@@ -335,6 +335,8 @@ Demo tested on the following browser setups:
 Credits: @HelloDeadline, @sorianog
 
 # Ideas
+- play with camera parameters to optimize it for AR - available in mediastreamtrack
+  - https://www.oberhofer.co/mediastreamtrack-and-its-capabilities/
 - AR Gaming - https://www.youtube.com/watch?v=EmGGGzibGok
 - AR Business Card - https://vimeo.com/4979525
 - ar cube visu - real nice for 360 AR https://twitter.com/jerome_etienne/status/869765239356747776
