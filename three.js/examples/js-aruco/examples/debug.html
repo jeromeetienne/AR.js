@@ -3,14 +3,14 @@
 <script src='../../vendor/three.js/build/three.js'></script> 
 
 <script src='../vendor/js-aruco/src/svd.js'></script> 
-<!-- <script src='../vendor/js-aruco/src/posit1.js'></script>  -->
-<script src='../vendor/js-aruco/src/posit2.js'></script> 
+<script src='../vendor/js-aruco/src/posit1.js'></script> 
 <script src='../vendor/js-aruco/src/cv.js'></script> 
 <script src='../vendor/js-aruco/src/aruco.js'></script> 
-
-
 <script src='../threex-arucocontext.js'></script> 
-<script src='../threex-arucodebug.js'></script> 
+<script src='../threex-arucodebug.js'></script>
+
+<!-- <script src='../build/threex-aruco-min.js'></script>  -->
+<!-- <script src='../build/threex-aruco-prepacked.js'></script>  -->
 
 <div>
         <form>
@@ -35,7 +35,7 @@
 </div>
 <body style='background-color: darkgray;'>
 
-        <div id='webGLContainer' style='width: 320px; height: 240px; display: inline;'></div>
+        <div id='webGLContainer' style='display: inline;'></div>
 
         
         <script>
@@ -118,7 +118,6 @@
         //////////////////////////////////////////////////////////////////////////////
         var lastDetectionAt = null
         requestAnimationFrame(function onAnimationFrame(){
-                requestAnimationFrame(onAnimationFrame);
                 
                 // update videoMesh
                 videoMesh.material.map.needsUpdate = true;
@@ -143,7 +142,7 @@
                         if( document.querySelector('#checkboxDrawVideo').checked )      arucoDebug.drawVideo(videoElement)
                         if( document.querySelector('#checkboxDetectorGrey').checked )      arucoDebug.drawDetectorGrey()
                         if( document.querySelector('#checkboxDetectorThreshold').checked )      arucoDebug.drawDetectorThreshold()
-
+                        
                         if( document.querySelector('#checkboxMarkerCorners').checked )      arucoDebug.drawMarkerCorners(detectedMarkers)
                         if( document.querySelector('#checkboxMarkerId').checked )      arucoDebug.drawMarkerIDs(detectedMarkers)
                         if( document.querySelector('#checkboxContoursContours').checked )      arucoDebug.drawContoursContours()
@@ -156,6 +155,8 @@
                 renderer.clear();
                 renderer.render(sceneOrtho, cameraOrtho);
                 renderer.render(scenePersp, cameraPersp);
+
+                requestAnimationFrame(onAnimationFrame);
         });
         
         
