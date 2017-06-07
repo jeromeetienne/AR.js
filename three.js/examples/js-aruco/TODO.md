@@ -1,5 +1,9 @@
 - tried with prepacked
 - try with webassembly
+- try with webworker
+  - how to use webworker ?
+  - split the processing of the original image
+  - so gray scale + adatative threshold - splitted in 4 zones for 4 cpu
 
 
 ---
