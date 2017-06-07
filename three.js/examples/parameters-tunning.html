@@ -51,8 +51,8 @@ body {
 <div id='demoUISource'>
 	<h3>Source Parameters</h3>
 	<label title='the video source used by artoolkit'>Video Source :
-		<select id='videoSource'>
-		  <option value="webcam">webcam</option> 
+		<select id='videoSourceType'>
+		  <option value="webcam">webcam</option>
 		  <option value="video_headtracking.mp4">video_headtracking</option>
 		  <option value="video_output_4.mp4">video_output_4</option>
 		  <option value="image_armchair.jpg">image_armchair</option>
@@ -64,29 +64,73 @@ body {
 	</label>
 	<br/>
 	<label title='the video source used by artoolkit'>Source Width x Height :
-		<select id='videoSource'>
-		  <option value="640x480">640x480</option> 
+		<select id='videoSourceDimensions'>
+		  <option value="640x480">640x480</option>
 		  <option value="320x240">320x240</option>
 		  <option value="240x180">240x180</option>
 		</select>
 	</label>
-</div>		
+	<br/>
+	<label title='the video source used by artoolkit'>Display Width x Height :
+		<select id='videoDisplayDimensions'>
+			<option value="640x480">640x480</option>
+			<option value="320x240">320x240</option>
+			<option value="240x180">240x180</option>
+		</select>
+	</label>
+</div>
 <div id='demoUIContext'>
 	<h3>Context Parameters</h3>
-
 	<label title='enabled debug in artoolkit'>debug :
 		<select id='debug'>
-		  <option value="true">true</option> 
+		  <option value="true">true</option>
 		  <option value="false">false</option>
 		</select>
 	</label>
 	<br/>
 	<label title='type of marker detected by artoolkit'>detectionMode :
 		<select id='detectionMode'>
-		  <option value="color">color</option> 
-		  <option value="color_and_matrix">color_and_matrix</option> 
-		  <option value="mono">mono</option> 
-		  <option value="mono_and_matrix">mono_and_matrix</option> 
+		  <option value="color">color</option>
+		  <option value="color_and_matrix">color_and_matrix</option>
+		  <option value="mono">mono</option>
+		  <option value="mono_and_matrix">mono_and_matrix</option>
+		</select>
+	</label>
+	<br/>
+	<label title='valid only detectionMode contains matrix'>matrixCodeType :
+		<select id='matrixCodeType'>
+			<option value="3x3">3x3</option>
+			<option value="3x3_HAMMING63">3x3_HAMMING63</option>
+			<option value="3x3_PARITY65">3x3_PARITY65</option>
+			<option value="4x4">4x4</option>
+			<option value="4x4_BCH_13_9_3">4x4_BCH_13_9_3</option>
+			<option value="4x4_BCH_13_5_5">4x4_BCH_13_5_5</option>
+		</select>
+	</label>
+	<br/>
+	<label title='max detection rate'>maxDetectionRate :
+		<select id='maxDetectionRate'>
+			<option value="10">10</option>
+			<option value="20">20</option>
+			<option value="30">30</option>
+			<option value="40">40</option>
+			<option value="50">50</option>
+			<option value="60" selected="selected">60</option>
+		</select>
+	</label>
+	<br/>
+	<label title='resolution of at which we detect pose in the source image'>Canvas Width x Height :
+		<select id='canvasDimensions'>
+			<option value="640x480">640x480</option>
+			<option value="320x240">320x240</option>
+			<option value="240x180">240x180</option>
+		</select>
+	</label>
+	<br/>
+	<label title='enabled image smoothing'>image smoothing :
+		<select id='imageSmoothingEnabled'>
+			<option value="true">true</option>
+			<option value="false">false</option>
 		</select>
 	</label>
 </div>
@@ -94,21 +138,38 @@ body {
 	<h3>Controls Parameters</h3>
 	<label title='The type of marker detected'>Marker Type :
 		<select id='markerType'>
-		  <option value="hiro">hiro</option> 
+		  <option value="hiro">hiro</option>
 		  <option value="kanji">kanji</option>
 		  <option value="unknown">unknown</option>
 		  <option value="barcode_3x3_20">barcode_3x3_20</option>
 		</select>
 	</label>
 	<br/>
-	<label title='valid only detectionMode contains matrix'>matrixCodeType :
-		<select id='matrixCodeType'>
-		  <option value="3x3">3x3</option> 
-		  <option value="3x3_HAMMING63">3x3_HAMMING63</option> 
-		  <option value="3x3_PARITY65">3x3_PARITY65</option> 
-		  <option value="4x4">4x4</option> 
-		  <option value="4x4_BCH_13_9_3">4x4_BCH_13_9_3</option> 
-		  <option value="4x4_BCH_13_5_5">4x4_BCH_13_5_5</option> 
+	<label title='change matrix mode'>matrix mode :
+		<select id='matrixMode'>
+			<option value="modelViewMatrix">modelViewMatrix</option>
+			<option value="cameraTransformMatrix">cameraTransformMatrix</option>
+		</select>
+	</label>
+	<br/>
+	<label title='size of the marker in meters'>size in meters :
+		<select id='makerSize'>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>
+	</label>
+	<br/>
+	<label title='minimal confidence in the marke recognition'>minimal recognition confidence :
+		<select id='confidence'>
+			<option value="0">0</option>
+			<option value="0.2">0.2</option>
+			<option value="0.4">0.4</option>
+			<option value="0.6">0.6</option>
+			<option value="0.8">0.8</option>
+			<option value="1" selected="selected">1</option>
 		</select>
 	</label>
 </div>
@@ -148,7 +209,7 @@ body {
 	var directionalLight = new THREE.DirectionalLight( 0x887766 );
 	directionalLight.position.set( -1, 1, 1 ).normalize();
 	scene.add( directionalLight );
-	
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
@@ -176,21 +237,21 @@ body {
 			sourceParameters.sourceType = sourceType
 			sourceParameters.sourceUrl = THREEx.ArToolkitContext.baseURL + '../data/videos/' + sourceUrl
 		}
-		
+
 		return sourceParameters
 	}
-	
+
 	function onParametersChange(){
 		var parameters = {
 			sourceParameters : buildSourceParameters()
 		}
 
 		location.hash = '#' + encodeURIComponent( JSON.stringify(parameters) )
-		location.reload()		
+		location.reload()
 	}
-	
-	document.querySelector('#videoSource').addEventListener('change', onParametersChange)
-	
+
+	document.querySelector('#videoSourceType').addEventListener('change', onParametersChange)
+
 	var sourceParameters = {
 		sourceType : 'webcam'
 	}
@@ -205,32 +266,32 @@ body {
 
 	var arToolkitSource = new THREEx.ArToolkitSource(sourceParameters)
 	// var arToolkitSource = new THREEx.ArToolkitSource({
-	// 	// to read from the webcam 
+	// 	// to read from the webcam
 	// 	sourceType : 'webcam',
-	// 	
+	//
 	// 	// // to read from an image
 	// 	// sourceType : 'image',
-	// 	// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
-	// 
+	// 	// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',
+	//
 	// 	// to read from a video
 	// 	// sourceType : 'video',
-	// 	// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
+	// 	// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',
 	// })
 
 	arToolkitSource.init(function onReady(){
 		// handle resize of renderer
-		arToolkitSource.onResize(renderer.domElement)		
+		arToolkitSource.onResize(renderer.domElement)
 	})
-	
+
 	// handle resize
 	window.addEventListener('resize', function(){
 		// handle arToolkitSource resize
-		arToolkitSource.onResize(renderer.domElement)		
+		arToolkitSource.onResize(renderer.domElement)
 	})
 
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
-	////////////////////////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////////////////////////
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
@@ -251,12 +312,12 @@ body {
 
 		arToolkitContext.update( arToolkitSource.domElement )
 	})
-	
-	
+
+
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
-	
+
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
@@ -273,19 +334,19 @@ body {
 	var mesh = new THREE.AxisHelper()
 	markerRoot.add(mesh)
 
-	// add a torus knot	
+	// add a torus knot
 	var geometry	= new THREE.CubeGeometry(1,1,1);
 	var material	= new THREE.MeshNormalMaterial({
 		transparent : true,
 		opacity: 0.5,
 		side: THREE.DoubleSide
-	}); 
+	});
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= geometry.parameters.height/2
 	markerRoot.add( mesh );
-	
+
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	var material	= new THREE.MeshNormalMaterial(); 
+	var material	= new THREE.MeshNormalMaterial();
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= 0.5
 	markerRoot.add( mesh );
