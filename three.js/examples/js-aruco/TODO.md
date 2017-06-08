@@ -1,3 +1,5 @@
+- Check js implementation and their multi channels issue
+
 - tried with prepacked
 - try with webassembly
 - try with webworker

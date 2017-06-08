@@ -1,5 +1,8 @@
+# WebAssembly 
 - thresholding is working in webassembly
 - now lets make it fast
+  - O(n) incremental blur In webassembly
+  - Incremental blur: 3 stages. First, middle, end. Do slow loop for those. Only aim for O(n). 
 - do a linear time with the incremental technique
   - do a pure average first
   - you know how to code it
@@ -9,7 +12,6 @@
 - good to bench webassembly
 - test multiple browser - multiple resolutions
 - see how hard it would be to incoporate it in threex-aruco.js
-
 
 
 - source ~/webwork/emsdk/emsdk_env.sh

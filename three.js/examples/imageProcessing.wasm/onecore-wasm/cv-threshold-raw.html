@@ -1,32 +1,28 @@
-
 <script src="module.js"></script>
 <body><script type="text/javascript">
-
 	// https://stackoverflow.com/questions/34307692/how-to-pass-canvas-imagedata-to-emscripten-c-program-without-copying-it
-
 	var srcCanvas = document.createElement('canvas')
 	srcCanvas.width = 640
 	srcCanvas.height = 480
 
 	var srcContext = srcCanvas.getContext('2d')
 	srcContext.fillStyle = 'red';
-        srcContext.fillRect (0, 0, srcCanvas.width, srcCanvas.height);
+        srcContext.fillRect(0, 0, srcCanvas.width, srcCanvas.height)
 	srcContext.fillStyle = 'pink';
-        srcContext.fillRect (50, 50, 150, 150);
+        srcContext.fillRect(50, 50, 150, 150)
 	srcContext.fillStyle = 'green';
-        srcContext.fillRect (250, 250, 350, 50);
+        srcContext.fillRect(250, 250, 350, 50)
 	document.body.appendChild(srcCanvas)
 	
 	var srcImageData = srcContext.getImageData(0, 0, srcCanvas.width, srcCanvas.height)
 
-	var wasmBufferPtr = Module._malloc(srcImageData.data.length);
-	var wasmBufferArray = new Uint8Array(Module.HEAPU8.buffer, wasmBufferPtr, srcImageData.data.length);
+	var wasmBufferPtr = Module._malloc(srcImageData.data.length)
+	var wasmBufferArray = new Uint8Array(Module.HEAPU8.buffer, wasmBufferPtr, srcImageData.data.length)
 
 	wasmBufferArray.set(new Uint8Array(srcImageData.data))
 
 	Module.asm._convertToGray(wasmBufferArray.byteOffset, srcCanvas.width, srcCanvas.height)	
 	
-	srcImageData.data.set(wasmBufferArray);	
+	srcImageData.data.set(wasmBufferArray)
 	srcContext.putImageData(srcImageData, 0, 0)
-
 </script></body>

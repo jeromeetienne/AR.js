@@ -1,0 +1,35 @@
+<body><script>
+	// create srcCanvas
+	var srcCanvas = document.createElement('canvas')
+	srcCanvas.width = 320
+	srcCanvas.height = 240
+	var srcContext = srcCanvas.getContext('2d')
+	srcContext.fillStyle = 'pink';
+        srcContext.fillRect(50, 50, 150, 150)
+	document.body.appendChild(srcCanvas)
+	// create srcImageData
+	var srcImageData = srcContext.getImageData(0, 0, srcCanvas.width, srcCanvas.height)
+	
+	
+	
+	var sharedArrayBuffer = new SharedArrayBuffer(32768);
+
+	var workerURL = 'worker-pool-worker.js'
+	// create all workers
+	var workers = []
+	workers.push( new Worker(workerURL) )
+	workers.push( new Worker(workerURL) )
+	workers.push( new Worker(workerURL) )
+	workers.push( new Worker(workerURL) )
+	
+	var nWorkers = workers.length
+
+	var worker = workers[1]
+	worker.postMessage('init')
+	worker.onmessage = function(event) {
+		// console.log('in mainthread - received event', event)
+		if( event.data === 'started' ){
+			console.log('in mainthread - worker started')
+		}
+	}
+</script></body>
