@@ -8,17 +8,23 @@
 	// document.body.appendChild(videoElement)
         videoElement.autoplay = true
         
-	navigator.mediaDevices.getUserMedia({
-		video:true
-	}).then(function(stream){
+        // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+        var userMediaContraints = {
+                // video: true,
+                video : {
+                        width: 640,
+                        height:480
+                }
+	}
+	navigator.mediaDevices.getUserMedia(userMediaContraints).then(function(stream){
 	        videoElement.src = window.URL.createObjectURL(stream);
 	}).catch(function(error){
-		console.assert(false)
+		console.assert(false, 'getUserMedia failed due to')
 		console.dir(error)
 	})
         
         var canvas = document.createElement('canvas')
-        canvas.width = 640      
+        canvas.width = 640
         canvas.height = 480
 	document.body.appendChild(canvas)
         var context = canvas.getContext('2d')
@@ -32,8 +38,7 @@
                 var imageData = context.getImageData(0, 0, canvas.width, canvas.height)
 
 		CV.grayscale(imageData, greyCVImage)
-                CV.adaptiveThreshold(greyCVImage, thresCVImage, 2, 7);
-
+                CV.adaptiveThreshold(greyCVImage, thresCVImage, 2, 10);
 
         	var imageData = context.createImageData(canvas.width, canvas.height);
         	copyCVImage2ImageData(thresCVImage, imageData)
