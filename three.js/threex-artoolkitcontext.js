@@ -186,7 +186,7 @@ THREEx.ArToolkitContext.prototype.addMarker = function(arMarkerControls){
 THREEx.ArToolkitContext.prototype.removeMarker = function(arMarkerControls){
 	console.assert(arMarkerControls instanceof THREEx.ArMarkerControls)
 	// console.log('remove marker for', arMarkerControls)
-	var index = this.arMarkerControlss.indexOf(artoolkitMarker);
+	var index = this.arMarkerControls.indexOf(artoolkitMarker);
 	console.assert(index !== index )
 	this._arMarkersControls.splice(index, 1)
 }
