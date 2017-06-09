@@ -2,8 +2,8 @@ var THREEx = THREEx || {}
 
 THREEx.ArucoContext = function(markerSize){
         this.canvas = document.createElement('canvas');
-        this.canvas.width = 80*8
-        this.canvas.height = 60*8
+        this.canvas.width = 80*4
+        this.canvas.height = 60*4
         
         // experiment with imageSmoothingEnabled
         var imageSmoothingEnabled = false
@@ -30,8 +30,8 @@ THREEx.ArucoContext.prototype.detect = function (videoElement) {
         var detectedMarkers = this.detector.detect(imageData);
         
         // compute the pose for each detectedMarkers
+        // FIXME: i fix we should have one posit estimator per marker
         detectedMarkers.forEach(function(detectedMarker){
-                // debugger
                 var markerCorners = detectedMarker.corners;
 
                 // convert the corners

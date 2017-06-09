@@ -6,3 +6,4 @@
   - worker - telling main-thread the process is completed
 - issue with the setup
   - i copy the whole thing SO SO much
+- can i copy the frame less often

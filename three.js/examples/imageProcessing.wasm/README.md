@@ -1,18 +1,19 @@
 # GOAL
-- filtering : convert2Grey + adaptativeThresholding
-- code this in multiple versions : webworkers - webassembly - gpu
-- mix them together - which combinasion
+- Bench how fast the web can go about image processing
+- Example on filtering : convert2Grey + adaptativeThresholding
+- Code this in multiple versions : webworkers - webassembly - gpu
+- Then mix them together - determine which combinason is best
 
-# Step1 Basic Demo
+# Step1 Basic Demo - onecore-purejs
 - read the webcam
 - display the origianl image
 - filter the image - use jsaruco function
 - display the filtered image
 
-# Step2 Implement webworkers + jsaruco
+# Step2 Implement webworkers + jsaruco - multicore-purejs
 - aka all normal javascript - no webassembly so more stable
 
-# Step3 Implement webassembly
+# Step3 Implement webassembly - onecore-wasm
 - code in C the convert2Grey yourself first
 - see about getting a horintal/vertical blur in C 
 - then do a adaptative thresholding
