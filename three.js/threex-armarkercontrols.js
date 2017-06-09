@@ -38,17 +38,23 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 	// add this marker to artoolkitsystem
 	context.addMarker(this)
 
-	// wait for arController to be initialized before going on with the init
-	var delayedInitTimerId = setInterval(function(){
-		// check if arController is init
-		var arController = _this.context.arController
-		if( arController === null )	return
-		// stop looping if it is init
-		clearInterval(delayedInitTimerId)
-		delayedInitTimerId = null
-		// launch the _postInit
-		_this._postInit()
-	}, 1000/50)
+	if( _this.context.arucoContext !== null ){
+		// IF ARUCO
+		console.log('init arucoControls here')
+	}else{
+		// IF ARTOOLKIT
+		// wait for arController to be initialized before going on with the init
+		var delayedInitTimerId = setInterval(function(){
+			// check if arController is init
+			var arController = _this.context.arController
+			if( arController === null )	return
+			// stop looping if it is init
+			clearInterval(delayedInitTimerId)
+			delayedInitTimerId = null
+			// launch the _postInit
+			_this._postInit()
+		}, 1000/50)
+	}
 	return
 
 }
@@ -61,7 +67,6 @@ THREEx.ArMarkerControls.prototype.constructor = THREEx.ArMarkerControls;
 //////////////////////////////////////////////////////////////////////////////
 THREEx.ArMarkerControls.prototype._postInit = function(){
 	var _this = this
-	var markerObject3D = this.object3d;
 	// check if arController is init
 	var arController = this.context.arController
 	console.assert(arController !== null )
@@ -75,15 +80,6 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 	}else if( _this.parameters.type === 'barcode' ){
 		_this.markerId = _this.parameters.barcodeValue
 		arController.trackBarcodeMarkerId(_this.markerId, _this.parameters.size);
-	}else if( _this.parameters.type === 'multiMarker' ){
-// TODO rename patternUrl into .url - as it is used in multiple parameters
-                arController.loadMultiMarker(_this.parameters.patternUrl, function(markerId, markerNum) {
-			_this.markerId = markerId
-                });
-		arController.addEventListener('getMultiMarker', function(event) {
-			if( event.data.multiMarkerId !== _this.markerId )	return
-			onMarkerFound(event)
-		});
 	}else if( _this.parameters.type === 'unknown' ){
 		_this.markerId = null
 	}else{
@@ -107,43 +103,47 @@ THREEx.ArMarkerControls.prototype._postInit = function(){
 
 	return
 	function onMarkerFound(event){
-		
 		// honor his.parameters.minConfidence
 		if( event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence )	return
 		if( event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence )	return
 
-		// mark object as visible
-		markerObject3D.visible = true
-
-		// data.matrix is the model view matrix
 		var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
+		_this.notifyFoundModelViewMatrix(modelViewMatrix)
+	}
+}
 
+THREEx.ArMarkerControls.prototype.notifyFoundModelViewMatrix = function(modelViewMatrix){
+	var markerObject3D = this.object3d;
+
+	// mark object as visible
+	markerObject3D.visible = true
+
+	if( this.context.arucoContext === null ){
 		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-		var tmpMatrix = new THREE.Matrix4().copy(_this.context._projectionAxisTransformMatrix)
+		var tmpMatrix = new THREE.Matrix4().copy(this.context._projectionAxisTransformMatrix)
 		tmpMatrix.multiply(modelViewMatrix)
-
+		
 		// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
 		var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
 		tmpMatrix.multiply(markerAxisTransformMatrix)
-
-		modelViewMatrix.copy(tmpMatrix)
-
-
-		// change markerObject3D.matrix based on parameters.changeMatrixMode
-		if( _this.parameters.changeMatrixMode === 'modelViewMatrix' ){
-			markerObject3D.matrix.copy(modelViewMatrix)
-		}else if( _this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
-			markerObject3D.matrix.getInverse( modelViewMatrix )
-		}else {
-			console.assert(false)
-		}
-
-		// decompose - the matrix into .position, .quaternion, .scale
-		markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
-
-		// dispatchEvent
-		_this.dispatchEvent( { type: 'markerFound' } );
+		
+		modelViewMatrix.copy(tmpMatrix)		
 	}
+
+	// change markerObject3D.matrix based on parameters.changeMatrixMode
+	if( this.parameters.changeMatrixMode === 'modelViewMatrix' ){
+		markerObject3D.matrix.copy(modelViewMatrix)
+	}else if( this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
+		markerObject3D.matrix.getInverse( modelViewMatrix )
+	}else {
+		console.assert(false)
+	}
+
+	// decompose - the matrix into .position, .quaternion, .scale
+	markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
+
+	// dispatchEvent
+	this.dispatchEvent( { type: 'markerFound' } );
 }
 
 Object.assign( THREEx.ArMarkerControls.prototype, THREE.EventDispatcher.prototype );

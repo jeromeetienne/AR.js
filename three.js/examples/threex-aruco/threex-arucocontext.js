@@ -63,6 +63,9 @@ THREEx.ArucoContext.updateObject3D = function(object3D, detectedMarker){
         object3D.rotation.y = -Math.atan2(rotation[0][2], rotation[2][2]);
         object3D.rotation.z =  Math.atan2(rotation[1][0], rotation[1][1]);
         
+        // TODO this function must die!!!!
+        
+        var markerSize = 1
         object3D.scale.x = markerSize;
         object3D.scale.y = markerSize;
         object3D.scale.z = markerSize;

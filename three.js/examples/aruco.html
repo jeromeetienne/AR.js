@@ -27,6 +27,7 @@
 	<br/>
 	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div><script>
+	var useAruco = true
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////
@@ -54,7 +55,11 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// Create a camera
-	var camera = new THREE.Camera();
+	if( useAruco === true ){
+		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
+	}else{
+		var camera = new THREE.Camera();
+	}
 	scene.add(camera);
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -89,6 +94,7 @@
 			arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
 		}	
 	}
+
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
 	////////////////////////////////////////////////////////////////////////////////
@@ -101,8 +107,10 @@
 	})
 	// initialize it
 	arToolkitContext.initAruco(function onCompleted(){
-		// copy projection matrix to camera
-		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+		if( useAruco === false ){
+			// copy projection matrix to camera
+			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+		}
 	})
 
 	// update artoolkit on every frame
@@ -118,12 +126,15 @@
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
-	
+
 	// init controls for camera
 	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
-		type : 'pattern',
-		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
-		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
+		type: 'barcode',
+		barcodeValue: 1001,
+
+		// type : 'pattern',
+		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+
 		// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
 		changeMatrixMode: 'cameraTransformMatrix'
 	})
