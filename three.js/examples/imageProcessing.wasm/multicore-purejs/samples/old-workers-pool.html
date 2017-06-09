@@ -1,0 +1,46 @@
+<body><script>
+	// create srcCanvas
+	var srcCanvas = document.createElement('canvas')
+	srcCanvas.width = 320
+	srcCanvas.height = 240
+	var srcContext = srcCanvas.getContext('2d')
+	srcContext.fillStyle = 'pink';
+        srcContext.fillRect(50, 50, 150, 150)
+	document.body.appendChild(srcCanvas)
+	// create srcImageData
+	var srcImageData = srcContext.getImageData(0, 0, srcCanvas.width, srcCanvas.height)
+
+	// srcContext.fillStyle = 'black';
+        // srcContext.fillRect(0, 0, srcCanvas.width, srcCanvas.height)
+// 
+// for(var i = 0; i < srcImageData.data.byteLength; i+=4){
+// 	srcImageData.data[i]   = 255 - srcImageData.data[i]
+// 	srcImageData.data[i+1] = 255 - srcImageData.data[i+1]
+// 	srcImageData.data[i+2] = 255 - srcImageData.data[i+2]
+// 	srcImageData.data[i+3] = 127
+// }
+// srcContext.putImageData(srcImageData, 0, 0)
+
+	
+	var workerURL = 'old-worker-pool-worker.js'
+	// create all workers
+	var workers = []
+	workers.push( new Worker(workerURL) )
+	// workers.push( new Worker(workerURL) )
+	// workers.push( new Worker(workerURL) )
+	// workers.push( new Worker(workerURL) )
+
+	workers.forEach(function(worker){
+		worker.onmessage = function(event) {
+			// console.log('in mainthread - received event', event)
+			if( event.data === 'started' ){
+				console.log('in mainthread - worker started')
+	var sharedArrayBuffer = new SharedArrayBuffer(srcImageData.byteLength);
+				worker.postMessage(sharedArrayBuffer)
+			}else if( event.data === 'completed' ){
+				console.log('in mainthread - worker completed')
+				srcContext.putImageData(srcImageData, 0, 0)
+			}
+		}
+	})
+</script></body>

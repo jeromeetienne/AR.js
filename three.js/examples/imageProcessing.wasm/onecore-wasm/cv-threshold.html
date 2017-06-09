@@ -50,16 +50,28 @@
 
                 // process wasmBuffer1Array
                 Module.asm._convertToGray(wasmBuffer1Array.byteOffset, canvas.width, canvas.height)
-                var windowW = 5
-                var windowH = 5
+                var windowW = 30
+                var windowH = 30
                 
-                Module.asm._meanBlurHorizontal (wasmBuffer1Array.byteOffset, wasmBuffer2Array.byteOffset, canvas.width, canvas.height, windowW)
-                Module.asm._meanBlurVertical   (wasmBuffer2Array.byteOffset, wasmBuffer3Array.byteOffset, canvas.width, canvas.height, windowH)
-                Module.asm._adaptativeThreshold(wasmBuffer1Array.byteOffset, wasmBuffer3Array.byteOffset, wasmBuffer2Array.byteOffset, canvas.width, canvas.height, 7)
 
-                // copy processed image in context
-                tmpImageData.data.set(wasmBuffer2Array);	
-                context.putImageData(tmpImageData, 0, 0)
+                if( true ){
+                        Module.asm._meanBlurHorizontalSlidingWindow(wasmBuffer1Array.byteOffset, wasmBuffer2Array.byteOffset, canvas.width, canvas.height, windowW)
+                        // Module.asm._meanBlurHorizontalExactSlow (wasmBuffer1Array.byteOffset, wasmBuffer2Array.byteOffset, canvas.width, canvas.height, windowW)
+                        // Module.asm._meanBlurHorizontal (wasmBuffer1Array.byteOffset, wasmBuffer2Array.byteOffset, canvas.width, canvas.height, windowW)
+
+                        // copy processed image in context
+                        tmpImageData.data.set(wasmBuffer2Array);	
+                        context.putImageData(tmpImageData, 0, 0)
+                }else{
+                        Module.asm._meanBlurHorizontal (wasmBuffer1Array.byteOffset, wasmBuffer2Array.byteOffset, canvas.width, canvas.height, windowW)
+                        Module.asm._meanBlurVertical   (wasmBuffer2Array.byteOffset, wasmBuffer3Array.byteOffset, canvas.width, canvas.height, windowH)
+                        Module.asm._adaptativeThreshold(wasmBuffer1Array.byteOffset, wasmBuffer3Array.byteOffset, wasmBuffer2Array.byteOffset, canvas.width, canvas.height, 7)
+
+                        // copy processed image in context
+                        tmpImageData.data.set(wasmBuffer2Array);	
+                        context.putImageData(tmpImageData, 0, 0)
+                        
+                }
                 		
 		requestAnimationFrame(callback)
 	})

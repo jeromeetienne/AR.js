@@ -1,0 +1,54 @@
+<body><script>
+var blob = new Blob([`
+	self.addEventListener('message', function(imageBuffer){
+		var imageArray = new Uint8Array(imageBuffer.data.imageBuffer);
+
+		var oldValue = imageArray[0];
+		console.log('inworker: waiting for value to differ from ' + oldValue)
+		// while(imageArray[0] === oldValue) {}
+		for(var i = 0; i < imageArray.byteLength; i+=4){
+			imageArray[i] = 255 - imageArray[i];
+			imageArray[i+3] = 255;
+		}
+
+		console.log('inworker: value updated!')
+		self.postMessage('completed')
+	})
+`], {type: 'text/javascript'});
+var workerURL = URL.createObjectURL(blob)
+
+// create srcCanvas
+var srcCanvas = document.createElement('canvas')
+srcCanvas.width = 320
+srcCanvas.height = 240
+var srcContext = srcCanvas.getContext('2d')
+srcContext.fillStyle = 'rgba(255,255,0,255)';
+// srcContext.fillRect(0,0,srcCanvas.width, srcCanvas.height)
+srcContext.fillRect(10,10,50,50)
+document.body.appendChild(srcCanvas)
+var srcImageData = srcContext.getImageData(0, 0, srcCanvas.width, srcCanvas.height)
+	
+
+var imageBuffer = new SharedArrayBuffer(srcImageData.data.byteLength);
+var imageArray = new Uint8Array(imageBuffer);
+imageArray.set(srcImageData.data)
+
+imageArray[0] = 123
+
+var worker = new Worker(workerURL);
+worker.postMessage({
+	imageBuffer: imageBuffer
+})
+
+
+worker.addEventListener('message', function(message){
+	console.log('main-thread: first value', imageArray[0])
+	// debugger
+	// var tmpImageData = srcContext.createImageData(srcCanvas.width, srcCanvas.height)
+	// tmpImageData.data.set(imageArray)
+	// srcContext.putImageData(tmpImageData, 0, 0)
+
+	srcImageData.data.set(imageArray)
+	srcContext.putImageData(srcImageData, 0, 0)	
+})
+</script></body>

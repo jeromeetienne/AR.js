@@ -1,20 +1,3 @@
-# WebAssembly 
-- thresholding is working in webassembly
-- now lets make it fast
-  - O(n) incremental blur In webassembly
-  - Incremental blur: 3 stages. First, middle, end. Do slow loop for those. Only aim for O(n). 
-- do a linear time with the incremental technique
-  - do a pure average first
-  - you know how to code it
-  - later: do a gaussian approximentation - boxstackblur stuff which is the trick
-- so you get a good idea of the speed
-- so you get webassembly version from optimised c - this is the fastest it can be on the web at the moment
-- good to bench webassembly
-- test multiple browser - multiple resolutions
-- see how hard it would be to incoporate it in threex-aruco.js
-
-
-- source ~/webwork/emsdk/emsdk_env.sh
 
 
 Found issues
@@ -24,3 +7,12 @@ Found issues
 - jsaruco - adaptiveThreshold is doing it on ALL bytes - so all channel ???
   - it use blackwhite image - it only needs 1 channel - 8 bits is already a lot to store blackwhite
   - this mean 4 times more work than needed
+  - NOTES: unclear this is true - grayscale is packing it all in 1 channel. check it out ?
+
+
+# API issue
+- missing videoElement.getImageData(). It is only available in canvas context
+  - cause a canvasContext.drawImage(videoElement) + canvasContext.getImageData()
+- missing getImageData() .data directly as SharedArrayBuffer
+  - new API ? imageData = contextCanvas.getImageData(x, y, width, height, dstImageData)
+- inability to pass a buffer i want to WebAssembly without copying
