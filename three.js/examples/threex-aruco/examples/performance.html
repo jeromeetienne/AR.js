@@ -42,8 +42,10 @@
                 }
         );
 
+        var arucoContext = new THREEx.ArucoContext()
+
         var markerSize = 1.0; //millimeters
-        var arucoContext = new THREEx.ArucoContext(markerSize)
+        var arucoPosit = new POS.Posit(markerSize, arucoContext.canvas.width);
         
         var renderer = new THREE.WebGLRenderer();
         renderer.setClearColor(0xffffff, 1);
@@ -108,7 +110,9 @@
                         if( detectedMarkers.length > 0 ){
                                 var detectedMarker = detectedMarkers[0]
                                 
-                                THREEx.ArucoContext.updateObject3D(arWorldRoot, detectedMarker);
+                                var markerSize = 1
+                                arucoContext.updateObject3D(arWorldRoot, arucoPosit, markerSize, detectedMarker);
+
                                 arWorldRoot.visible = true
                         }else{
                                 arWorldRoot.visible = false

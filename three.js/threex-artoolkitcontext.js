@@ -153,24 +153,6 @@ THREEx.ArToolkitContext.prototype.update = function(srcElement){
 	}
 	this._updatedAt = present
 
-	// TODO put this in arToolkitContext
-	// var video = arToolkitContext.srcElement
-	// if( video.currentTime === lastTime ){
-	// 	console.log('skip this frame')
-	// 	return
-	// }
-	// lastTime = video.currentTime
-	
-	// if( video.readyState < video.HAVE_CURRENT_DATA ) {
-	// 	console.log('skip this frame')
-	// 	return
-	// }
-
-	// arToolkitContext.srcElement.addEventListener('timeupdate', function(){
-	// 	console.log('timeupdate', arguments, Date())
-	// })
-
-
 	// mark all markers to invisible before processing this frame
 	this._arMarkersControls.forEach(function(markerControls){
 		markerControls.object3d.visible = false
@@ -201,7 +183,6 @@ THREEx.ArToolkitContext.prototype._updateAruco = function(srcElement){
         var detectedMarkers = this.arucoContext.detect(srcElement)
 	
 	detectedMarkers.forEach(function(detectedMarker){
-// console.log('detectedMarker', detectedMarker)
 		var foundControls = null
 		for(var i = 0; i < arMarkersControls.length; i++){
 			if( arMarkersControls[i].parameters.barcodeValue === detectedMarker.id ){
@@ -212,14 +193,10 @@ THREEx.ArToolkitContext.prototype._updateAruco = function(srcElement){
 		if( foundControls === null )	return
 
 		var tmpObject3d = new THREE.Object3D
-                THREEx.ArucoContext.updateObject3D(tmpObject3d, detectedMarker);
+                _this.arucoContext.updateObject3D(tmpObject3d, foundControls._arucoPosit, foundControls.parameters.size, detectedMarker);
 		tmpObject3d.updateMatrix()
 
-		var modelViewMatrix = new THREE.Matrix4()
-		modelViewMatrix.copy(tmpObject3d.matrix)
-		foundControls.notifyFoundModelViewMatrix(modelViewMatrix)
-		
-		console.log('position', foundControls.object3d.quaternion)
+		foundControls.notifyFoundModelViewMatrix(tmpObject3d.matrix)
 	})
 }
 THREEx.ArToolkitContext.prototype._updateArtoolkit = function(srcElement){

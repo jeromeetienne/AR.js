@@ -88,11 +88,16 @@
 		onResize()
 	})
 	function onResize(){
-		arToolkitSource.onResize()	
+		arToolkitSource.onResize()
 		arToolkitSource.copySizeTo(renderer.domElement)	
-		if( arToolkitContext.arController !== null ){
-			arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
-		}	
+		if( arToolkitContext.arucoContext !== null ){
+			arToolkitSource.copySizeTo(arToolkitContext.arucoContext.canvas)	
+
+			camera.aspect = renderer.domElement.width / renderer.domElement.height;
+			camera.updateProjectionMatrix();			
+		}else{
+			arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)				
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -105,13 +110,17 @@
 		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
 		detectionMode: 'mono',
 	})
+
 	// initialize it
-	arToolkitContext.initAruco(function onCompleted(){
-		if( useAruco === false ){
+	if( useAruco === true ){
+		arToolkitContext.initAruco(function onCompleted(){
+		})
+	}else{
+		arToolkitContext.initArtoolkit(function onCompleted(){
 			// copy projection matrix to camera
 			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
-		}
-	})
+		})
+	}	
 
 	// update artoolkit on every frame
 	onRenderFcts.push(function(){
@@ -145,6 +154,10 @@
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
+	var mesh = new THREE.AxisHelper()
+	// markerRoot.add(mesh)
+	scene.add(mesh)
+	
 	// add a torus knot	
 	var geometry	= new THREE.CubeGeometry(1,1,1);
 	var material	= new THREE.MeshNormalMaterial({

@@ -1,3 +1,14 @@
+# incorporating aruco
+- ArMarkerControls.markerId is artoolkit specific
+  - to rename artoolkitMarkerId for now
+- ArToolkitContext.projectionAxisTransformMatrix is only to correct artoolkit axis
+- all this testing about aruco or jsartoolkit it crappy
+  - not very clear + timer to init jsartoolkit
+- all the posit stuff MUST be out of aruco context
+
+---
+# TODO
+
 - TODO super unclear how to get the backward facing camera...
 
 - currently webvr is able to do location already

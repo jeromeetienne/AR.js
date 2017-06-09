@@ -40,7 +40,8 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 
 	if( _this.context.arucoContext !== null ){
 		// IF ARUCO
-		console.log('init arucoControls here')
+
+		this._arucoPosit = new POS.Posit(this.parameters.size, _this.context.arucoContext.canvas.width)
 	}else{
 		// IF ARTOOLKIT
 		// wait for arController to be initialized before going on with the init
@@ -118,17 +119,22 @@ THREEx.ArMarkerControls.prototype.notifyFoundModelViewMatrix = function(modelVie
 	// mark object as visible
 	markerObject3D.visible = true
 
-	if( this.context.arucoContext === null ){
+	if( this.context.arucoContext !== null ){
+		// IF ARUCO
+
+	}else{
+		// IF ARTOOLKIT
+
 		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
 		var tmpMatrix = new THREE.Matrix4().copy(this.context._projectionAxisTransformMatrix)
 		tmpMatrix.multiply(modelViewMatrix)
 		
-		// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
-		var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
-		tmpMatrix.multiply(markerAxisTransformMatrix)
-		
-		modelViewMatrix.copy(tmpMatrix)		
+		modelViewMatrix.copy(tmpMatrix)				
 	}
+
+	// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
+	var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
+	modelViewMatrix.multiply(markerAxisTransformMatrix)
 
 	// change markerObject3D.matrix based on parameters.changeMatrixMode
 	if( this.parameters.changeMatrixMode === 'modelViewMatrix' ){
