@@ -17,7 +17,6 @@ function convert2Grayscale(imageBuffer, imageW, imageH){
 
 function convert2GrayscaleZone(imageBuffer, imageW, imageH, originX, originY, width, height){
 	var imageArray = new Uint8Array(imageBuffer)
-// debugger
 	for(var y = originY; y < originY+height; y++){
 		for(var x = originX; x < originX+width; x++){
 			var i = (y * imageW + x)*4
