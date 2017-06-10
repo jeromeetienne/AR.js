@@ -286,6 +286,10 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 	return domElement
 }
 
+/**
+ * - toggle the flash/torch of the mobile fun if applicable
+ * Great post about it https://www.oberhofer.co/mediastreamtrack-and-its-capabilities/
+ */
 THREEx.ArToolkitSource.prototype.toggleMobileTorch = function(){
 	var stream = arToolkitSource.domElement.srcObject
 	if( stream instanceof MediaStream === false ){
