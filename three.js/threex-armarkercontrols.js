@@ -43,6 +43,7 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 
 		this._arucoPosit = new POS.Posit(this.parameters.size, _this.context.arucoContext.canvas.width)
 	}else{
+// TODO in ArMarkerControls controllers - put all the initartookit specifics in a single function
 		// IF ARTOOLKIT
 		// wait for arController to be initialized before going on with the init
 		var delayedInitTimerId = setInterval(function(){
@@ -52,8 +53,8 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 			// stop looping if it is init
 			clearInterval(delayedInitTimerId)
 			delayedInitTimerId = null
-			// launch the _postInit
-			_this._postInit()
+			// launch the _postInitArtoolkit
+			_this._postInitArtoolkit()
 		}, 1000/50)
 	}
 	return
@@ -66,7 +67,7 @@ THREEx.ArMarkerControls.prototype.constructor = THREEx.ArMarkerControls;
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArMarkerControls.prototype._postInit = function(){
+THREEx.ArMarkerControls.prototype._postInitArtoolkit = function(){
 	var _this = this
 	// check if arController is init
 	var arController = this.context.arController

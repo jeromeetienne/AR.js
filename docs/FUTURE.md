@@ -1,0 +1,71 @@
+# Futures
+- add webworkers
+- add the nft
+- handle sensor fusion with the IMU ? Assume that the marker is fixed in space
+- marker removal in the video - https://twitter.com/jerome_etienne/status/838584931009835009
+- dynamic multiple markers - https://github.com/artoolkit/jsartoolkit5/issues/34
+- put the video in the webgl (and not the dom), as an options
+- stabilizer for marker orientation and/or position
+  - some tweening/smoothing on marker orientation - maybe just a lerp ?
+  - it would help the shakyness especially when the source resolution is low
+- stabilizer using gravity ?
+  - using gravity it is possible to know if the marker is on a wall or on a table
+  - once we flag the marker as on a wall, we can reduce shakyness from video detection
+  - by using gravity sensor
+- discover marker absolute orientation by comparing that to the phone gravity
+  - can be used to know if the marker is on a table, or on a wall
+- cloud computing to get better rendering
+  - fancy name for easy tech -
+  [Capture a MediaStream From a Canvas, Video or Audio Element](https://developers.google.com/web/updates/2016/10/capture-stream)
+  - have a browser on server to produce high quality 3d - aka pbs and to stream that to a phone
+  - so when the phone is moving a lot, we do the local rendering
+  - when the phone is stable, we do the server rendering
+- social AR - https://github.com/haydenjameslee/networked-aframe/blob/master/docs/Tutorial:%20Create%20your%20first%20Networked-Aframe%20experience.md
+- use a pingpong ball or a metallic ball to estimate the reality lighting
+  - https://www.youtube.com/watch?v=fhFzStkoE50&feature=youtu.be&t=59 for ping pong ball
+  - https://www.researchgate.net/publication/220222173_Image_Based_Shadowing_in_Real-Time_Augmented_Reality for metallic ball  
+- do a jelwery examples
+  - get a model or ring, one model of diamond
+  - https://www.transpacific-software.com/webgl/ring.html?tPage=7
+  - https://www.shadertoy.com/view/ltfXDM
+  - a refraction
+  - one ruby, one gold
+- add fresnel with bubble - even with fake envmap
+  - http://filmicworlds.com/blog/everything-has-fresnel/
+  - http://kylehalladay.com/blog/tutorial/2014/02/18/Fresnel-Shaders-From-The-Ground-Up.html
+  - http://www.tingting-wu.com/webgl_projects/ttwu_shaders.html
+- IDEA: "screen as portal" - put 4 markers in screen's corners, direct your phone at it and display a portal on the screen in #AR
+  - https://twitter.com/jerome_etienne/status/861868630883094528
+
+# Ideas
+- play with camera parameters to optimize it for AR - available in mediastreamtrack
+  - https://www.oberhofer.co/mediastreamtrack-and-its-capabilities/
+- AR Gaming - https://www.youtube.com/watch?v=EmGGGzibGok
+- AR Business Card - https://vimeo.com/4979525
+- ar cube visu - real nice for 360 AR https://twitter.com/jerome_etienne/status/869765239356747776
+- plug ar.js into sketchfab 
+  - do a mockup with the monkey script
+  - add a AR button on sketchfab, it pops up on marker on the screen with the instruction to connect to it
+  - then you display the model in 3d on top of the screen
+  - some simple user content
+- multi user AR world : much easier to code than you think - https://twitter.com/jerome_etienne/status/842219346030149632
+- IDEA: produce a single image able to do qr-code and pattern marker. https://twitter.com/nlehuen/status/834115970641829888
+  - about having an image able to do qr-code and pattern marker at the same time. If we have such image, we skip one step.
+  - The person first acquire the qr-code with his phone, and then it goes to a webpage which is a webar application.
+  - thus the publisher only has to publish this on its ads, likely on paper ads in magazine or in the street.
+  - and the user can use his phone to immediatly see the related augmented reality
+  - https://techcrunch.com/2017/02/02/google-chrome-gets-its-own-qr-code-barcode-scanner/
+  - somebody did it! https://twitter.com/alan17wilson/status/847738517669027842
+- do something with ps vita AR cards
+  - http://ie.playstation.com/media/8DokiOUp/AR%20Play%20Cards.pdf
+  - print it on hard papers
+  - find the kind of matrix it is.
+  - just put each marker in front of the camera - using image / photo of screen
+  - and go thru each and every matrix type detection
+- Nice effect with video texture - https://www.youtube.com/watch?v=Y9HMn6bd-v8&feature=youtu.be&t=172
+- Nice snowball effect - http://www.spacegoo.com/bubbles/
+- AR scene Minecraft: 
+  - When close to covered area, start making it interactive
+  - When I come close the character come to me and say hello
+  - I got 2d UI to say-hi dance, trigger animation, say stuff. Action button
+  - The screener become active depending on the distance with the user

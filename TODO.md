@@ -1,10 +1,49 @@
+- do a pass on THREEx.ArToolkitSource
+  - IOS support - https://github.com/jeromeetienne/AR.js/issues/90
+  - support for torch - https://www.oberhofer.co/mediastreamtrack-and-its-capabilities/
+  - use the new getUserMedia API with envfacing api - see IOS bugs
+- update link in README.md
+
 # incorporating aruco
 - ArMarkerControls.markerId is artoolkit specific
   - to rename artoolkitMarkerId for now
 - ArToolkitContext.projectionAxisTransformMatrix is only to correct artoolkit axis
+  - make it as contained as possible
 - all this testing about aruco or jsartoolkit it crappy
+  - in artoolkitContext.backend === 'aruco' || 'artoolkit'
   - not very clear + timer to init jsartoolkit
-- all the posit stuff MUST be out of aruco context
+- DONE all the posit stuff MUST be out of aruco context and in controls
+- replace THREEx.ArMarkerControls.notifyFoundModelViewMatrix() by .updateWithModelViewMatrix()
+- add modelViewMatrix and a smoother in AR.js example
+- LATER: remove all the artoolkit mention in the front as is now multiple backends
+  - you got classname with 'artoolkit' in it
+  - even exposed in a-frame parameters
+- threex-aruco layer is really really thin - YET ANOTHER INDIRECTION
+  - seems useless indirection for AR.js
+  - why not aruco directly
+  - you are using jsartoolkit directly
+  - YES use aruco directly
+
+- can you make it easy to try all your demo with aruco
+  - this means supporting aruco in webar-playground
+  - so multi markers
+  - may even be an option in the json localstorage learned area
+  - thus it is easy to switch from one to another
+  - the best way to put aruco as first player
+
+- aruco seems the future
+  - there is pure js implementation - readable code
+  - there is a cpp implementation too
+  - much smaller code
+  - well documented code + algo
+  - simple algo - easy to understand
+  - not too big - i can maintain it myself
+  - i got MUCH better controls over the code
+  - this lead to ability to tune and experiments with the detection
+  - the detection is the core of the business. it MUCH be under controls
+  - still issue with homography
+  - but can be easily fixed, compared to the huge advantage
+  
 
 ---
 # TODO

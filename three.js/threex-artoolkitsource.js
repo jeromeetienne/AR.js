@@ -202,13 +202,14 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 
 		navigator.getUserMedia(constraints, function success(stream) {
 			// console.log('success', stream);
+// or this .srcObjectURL stuff ?
 			domElement.src = window.URL.createObjectURL(stream);
 			// to start the video, when it is possible to start it only on userevent. like in android
 			document.body.addEventListener('click', function(){
 				domElement.play();
 			})
 			// domElement.play();
-		
+// TODO listen to loadedmetadata instead
 			// wait until the video stream is ready
 			var interval = setInterval(function() {
 				if (!domElement.videoWidth)	return;

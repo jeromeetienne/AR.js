@@ -1,9 +1,0 @@
-- how thread notify each other ?
-  - currently this is message ?
-  - could it be better with atomics ?
-- Current communication
-  - main-thread - asking workers to process part of the image
-  - worker - telling main-thread the process is completed
-- issue with the setup
-  - i copy the whole thing SO SO much
-- can i copy the frame less often
