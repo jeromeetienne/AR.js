@@ -201,4 +201,4 @@ Credits: @HelloDeadline, @sorianog
 
 # FAQ
 
-[FAQ.mf](docs/FUTURE.md)
+[FAQ.md](docs/FUTURE.md)

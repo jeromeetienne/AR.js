@@ -31,6 +31,7 @@ THREEx.ArToolkitSource.prototype.init = function(onReady){
         }else if( this.parameters.sourceType === 'video' ){
                 var domElement = this._initSourceVideo(onSourceReady)                        
         }else if( this.parameters.sourceType === 'webcam' ){
+                // var domElement = this._initSourceWebcamOld(onSourceReady)                        
                 var domElement = this._initSourceWebcam(onSourceReady)                        
         }else{
                 console.assert(false)
@@ -120,8 +121,7 @@ THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
 //          handle webcam source
 ////////////////////////////////////////////////////////////////////////////////
 
-
-THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
+THREEx.ArToolkitSource.prototype._initSourceWebcamOld = function(onReady) {
 	var _this = this
 	// TODO make it static
 	navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
@@ -225,6 +225,91 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 	});
 
 	return domElement
+}
+
+THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
+	var _this = this
+
+	var domElement = document.createElement('video');
+	domElement.setAttribute('autoplay', '');
+	domElement.setAttribute('muted', '');
+	domElement.setAttribute('playsinline', '');
+	domElement.style.width = this.parameters.displayWidth+'px'
+	domElement.style.height = this.parameters.displayHeight+'px'
+
+	if (navigator.mediaDevices === undefined 
+			|| navigator.mediaDevices.enumerateDevices === undefined 
+			|| navigator.mediaDevices.getUserMedia === undefined  ){
+		alert("WebRTC issue! navigator.mediaDevices.enumerateDevices not present in your browser");		
+	}
+
+	navigator.mediaDevices.enumerateDevices().then(function(devices) {
+                var userMediaConstraints = {
+			audio: false,
+			video: {
+				facingMode: 'environment',
+				width: {
+					ideal: _this.parameters.sourceWidth,
+					// min: 1024,
+					// max: 1920
+				},
+				height: {
+					ideal: _this.parameters.sourceHeight,
+					// min: 776,
+					// max: 1080
+				}
+		  	}
+                }
+		navigator.mediaDevices.getUserMedia(userMediaConstraints).then(function success(stream) {
+			// set the .src of the domElement
+			domElement.srcObject = stream;
+			// to start the video, when it is possible to start it only on userevent. like in android
+			document.body.addEventListener('click', function(){
+				domElement.play();
+			})
+			// domElement.play();
+// TODO listen to loadedmetadata instead
+			// wait until the video stream is ready
+			var interval = setInterval(function() {
+				if (!domElement.videoWidth)	return;
+				onReady()
+				clearInterval(interval)
+			}, 1000/50);
+		}).catch(function(error) {
+			console.log("Can't access user media", error);
+			alert("Can't access user media :()");
+		});
+	}).catch(function(err) {
+		console.log(err.name + ": " + err.message);
+	});
+
+	return domElement
+}
+
+THREEx.ArToolkitSource.prototype.toggleMobileTorch = function(){
+	var stream = arToolkitSource.domElement.srcObject
+	if( stream instanceof MediaStream === false ){
+		alert('enabling mobile torch is available only on webcam')
+		return
+	}
+
+	if( this._currentTorchStatus === undefined ){
+		this._currentTorchStatus = false
+	}
+
+	var videoTrack = stream.getVideoTracks()[0];
+	var capabilities = videoTrack.getCapabilities()
+	
+	if( capabilities.torch === false )	return
+
+	this._currentTorchStatus = this._currentTorchStatus === false ? true : false
+	videoTrack.applyConstraints({
+		advanced: [{
+			torch: this._currentTorchStatus
+		}]
+	}).catch(function(error){
+		console.log(error)
+	});
 }
 
 ////////////////////////////////////////////////////////////////////////////////
