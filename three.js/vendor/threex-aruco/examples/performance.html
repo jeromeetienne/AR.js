@@ -1,40 +1,19 @@
 <html>
-<!-- <script src='vendor/Three.js'></script>  -->
-<script src='../../vendor/three.js/build/three.js'></script> 
+<script src='vendor/three.js/build/three.js'></script> 
 
-<script src='../vendor/js-aruco/src/svd.js'></script> 
-<script src='../vendor/js-aruco/src/posit1.js'></script> 
-<script src='../vendor/js-aruco/src/cv.js'></script> 
-<script src='../vendor/js-aruco/src/aruco.js'></script> 
+<script src='../../../vendor/js-aruco/src/svd.js'></script> 
+<script src='../../../vendor/js-aruco/src/posit1.js'></script> 
+<script src='../../../vendor/js-aruco/src/cv.js'></script> 
+<script src='../../../vendor/js-aruco/src/aruco.js'></script> 
 <script src='../threex-arucocontext.js'></script> 
 <script src='../threex-arucodebug.js'></script>
 
-<div>
-        <form>
-                <label>clear canvas<input id='checkboxClearCanvas' name="imgsel" type="radio"></label>
-                <br/>
-                <label>draw video<input id='checkboxDrawVideo' name="imgsel" type="radio" checked="checked" ></label>
-                <br/>
-                <label>draw detector grey<input id='checkboxDetectorGrey' name="imgsel" type="radio"></label>
-                <br/>
-                <label>draw detector threshold<input id='checkboxDetectorThreshold' name="imgsel" type="radio"></label>
-        </form>
 
-        <label>draw marker corners<input id='checkboxMarkerCorners' type="checkbox" checked="checked" ></label>
-        <br/>
-        <label>draw marker ids<input id='checkboxMarkerId' type="checkbox" checked="checked" ></label>
-        <br/>
-        <label>draw contours contours<input id='checkboxContoursContours' type="checkbox"></label>
-        <br/>
-        <label>draw contours polys<input id='checkboxContoursPolys' type="checkbox"></label>
-        <br/>
-        <label>draw contours candiddates<input id='checkboxContoursCandidates' type="checkbox"></label>
-</div>
+<!-- <script src='../build/threex-aruco-min.js'></script>  -->
+<!-- <script src='../build/threex-aruco-prepacked.js'></script>  -->
+
 <body style='background-color: darkgray;'>
-
         <div id='webGLContainer' style='display: inline;'></div>
-
-        
         <script>
         
         
@@ -63,10 +42,7 @@
                 }
         );
 
-
         var arucoContext = new THREEx.ArucoContext()
-        var arucoDebug = new THREEx.ArucoDebug(arucoContext)
-        document.body.appendChild(arucoDebug.canvasElement)
 
         var markerSize = 1.0; //millimeters
         var arucoPosit = new POS.Posit(markerSize, arucoContext.canvas.width);
@@ -128,27 +104,19 @@
                 // if( videoElement.readyState >= videoElement.HAVE_CURRENT_DATA ){
                         
                         // detect markers in imageData
+                        // console.time('detect');
                         var detectedMarkers = arucoContext.detect(videoElement)
+                        // console.timeEnd('detect');
                         if( detectedMarkers.length > 0 ){
                                 var detectedMarker = detectedMarkers[0]
-                        
+                                
                                 var markerSize = 1
                                 arucoContext.updateObject3D(arWorldRoot, arucoPosit, markerSize, detectedMarker);
+
                                 arWorldRoot.visible = true
                         }else{
                                 arWorldRoot.visible = false
                         }  
-                        
-                        if( document.querySelector('#checkboxClearCanvas').checked )      arucoDebug.clear()
-                        if( document.querySelector('#checkboxDrawVideo').checked )      arucoDebug.drawVideo(videoElement)
-                        if( document.querySelector('#checkboxDetectorGrey').checked )      arucoDebug.drawDetectorGrey()
-                        if( document.querySelector('#checkboxDetectorThreshold').checked )      arucoDebug.drawDetectorThreshold()
-                        
-                        if( document.querySelector('#checkboxMarkerCorners').checked )      arucoDebug.drawMarkerCorners(detectedMarkers)
-                        if( document.querySelector('#checkboxMarkerId').checked )      arucoDebug.drawMarkerIDs(detectedMarkers)
-                        if( document.querySelector('#checkboxContoursContours').checked )      arucoDebug.drawContoursContours()
-                        if( document.querySelector('#checkboxContoursPolys').checked )      arucoDebug.drawContoursPolys()
-                        if( document.querySelector('#checkboxContoursCandidates').checked )      arucoDebug.drawContoursCandidates()
                 }
                 
                 // render scene
@@ -167,18 +135,15 @@
         
         <style media="screen">
         img {
-                width: 196px;
-                height: 196px;
-                padding: 0em;
-                margin: 0;
+                width: 128px;
+                height: 128px;
+                padding: 8em;
         }
         </style>
         <br/>
         <div>
+                <!-- <img src="images/1001.png"/> -->
                 <img src="images/1001.png"/>
-                <img src="images/1002.png"/>
-                <img src="images/1003.png"/>
-                <img src="images/1004.png"/>
         </div>        
 </body>
 </html>

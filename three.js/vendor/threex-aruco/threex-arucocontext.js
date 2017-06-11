@@ -4,14 +4,6 @@ THREEx.ArucoContext = function(){
         this.canvas = document.createElement('canvas');
         this.canvas.width = 80*4
         this.canvas.height = 60*4
-        
-        // experiment with imageSmoothingEnabled
-        var imageSmoothingEnabled = false
-        var context = this.canvas.getContext('2d');
-	context.mozImageSmoothingEnabled = imageSmoothingEnabled;
-	context.webkitImageSmoothingEnabled = imageSmoothingEnabled;
-	context.msImageSmoothingEnabled = imageSmoothingEnabled;
-	context.imageSmoothingEnabled = imageSmoothingEnabled;	
                 
         this.detector = new AR.Detector();
 }

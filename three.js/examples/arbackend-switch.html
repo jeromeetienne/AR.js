@@ -5,6 +5,13 @@
 <!-- jsartookit -->
 <script src='../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
 <script src='../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
+<!-- aruco -->
+<script src='../vendor/js-aruco/src/svd.js'></script> 
+<script src='../vendor/js-aruco/src/posit1.js'></script> 
+<script src='../vendor/js-aruco/src/cv.js'></script> 
+<script src='../vendor/js-aruco/src/aruco.js'></script> 
+<script src='../vendor/threex-aruco/threex-arucocontext.js'></script> 
+<script src='../vendor/threex-aruco/threex-arucodebug.js'></script>
 <!-- include threex.artoolkit -->
 <script src='../threex-artoolkitsource.js'></script>
 <script src='../threex-artoolkitcontext.js'></script>
@@ -14,20 +21,23 @@
 <script src='../threex-arsmoothedcontrols.js'></script>
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
-<!-- threex aruco -->
-<script src='threex-aruco/vendor/js-aruco/src/svd.js'></script> 
-<script src='threex-aruco/vendor/js-aruco/src/posit1.js'></script> 
-<script src='threex-aruco/vendor/js-aruco/src/cv.js'></script> 
-<script src='threex-aruco/vendor/js-aruco/src/aruco.js'></script> 
-<script src='threex-aruco/threex-arucocontext.js'></script> 
-<script src='threex-aruco/threex-arucodebug.js'></script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - three.js camera transform
+	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - switching between backend
+	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 	<br/>
-	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+	Marker image <a href='../../../three.js/vendor/threex-aruco/examples/images/1001.png' target='_blank'>1001 for aruco</a> /
+	<a href='../../../data/images/hiro.jpg' target='_blank'>hiro for artoolkit</a>
+	<br/>
+	<strong>Backend:</strong>
+		switch to : <a href='#aruco' onclick='location.reload()'>aruco</a>
+		/ 
+		<a href='#artoolkit' onclick='location.reload()'>artoolkit</a>
+	-
+	current : <span id='currentArBackend'>unknown</a>
 </div><script>
-	var useAruco = true
+	var arBackend = location.hash.substring(1) ? location.hash.substring(1) : 'artoolkit'
+	document.querySelector('#currentArBackend').innerHTML = arBackend
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////
@@ -55,11 +65,11 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// Create a camera
-	if( useAruco === true ){
+	if( arBackend === 'aruco' ){
 		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
-	}else{
+	}else if( arBackend === 'artoolkit' ){
 		var camera = new THREE.Camera();
-	}
+	}else console.assert(false)
 	scene.add(camera);
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -90,14 +100,14 @@
 	function onResize(){
 		arToolkitSource.onResize()
 		arToolkitSource.copySizeTo(renderer.domElement)	
-		if( arToolkitContext.arucoContext !== null ){
+		if( arBackend === 'aruco' ){
 			arToolkitSource.copySizeTo(arToolkitContext.arucoContext.canvas)	
 
 			camera.aspect = renderer.domElement.width / renderer.domElement.height;
 			camera.updateProjectionMatrix();			
-		}else{
+		}else if( arBackend === 'artoolkit' ){
 			arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)				
-		}
+		}else console.assert(false)
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -109,18 +119,16 @@
 	var arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
 		detectionMode: 'mono',
+		arBackend: arBackend,
 	})
 
 	// initialize it
-	if( useAruco === true ){
-		arToolkitContext.initAruco(function onCompleted(){
-		})
-	}else{
-		arToolkitContext.initArtoolkit(function onCompleted(){
-			// copy projection matrix to camera
-			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
-		})
-	}	
+	arToolkitContext.init(function onCompleted(){
+		// if artoolkit, copy projection matrix to camera
+		if( arToolkitContext.parameters.arBackend === 'artoolkit' ){
+			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
+		}
+	})
 
 	// update artoolkit on every frame
 	onRenderFcts.push(function(){
@@ -137,16 +145,26 @@
 	////////////////////////////////////////////////////////////////////////////////
 
 	// init controls for camera
-	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
-		type: 'barcode',
-		barcodeValue: 1001,
+	if( arToolkitContext.parameters.arBackend === 'artoolkit' ){
+		var controlsParameters = {
+			type : 'pattern',
+			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
 
-		// type : 'pattern',
-		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+			// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
+			changeMatrixMode: 'cameraTransformMatrix'
+		}		
+	}else if( arToolkitContext.parameters.arBackend === 'aruco' ){
+		var controlsParameters = {
+			type: 'barcode',
+			barcodeValue: 1001,
 
-		// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
-		changeMatrixMode: 'cameraTransformMatrix'
-	})
+			// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
+			changeMatrixMode: 'cameraTransformMatrix'
+		}
+	}else console.assert(false)
+	
+	
+	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, controlsParameters)
 	// as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
 	scene.visible = false
 

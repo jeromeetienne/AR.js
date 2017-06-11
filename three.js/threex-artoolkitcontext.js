@@ -7,6 +7,8 @@ THREEx.ArToolkitContext = function(parameters){
 	
 	// handle default parameters
 	this.parameters = {
+		// AR backend - ['aruco', 'artoolkit']
+		arBackend: parameters.arBackend !== undefined ? parameters.arBackend : 'artoolkit',
 		// debug - true if one should display artoolkit debug canvas, false otherwise
 		debug: parameters.debug !== undefined ? parameters.debug : false,
 		// the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
@@ -27,6 +29,9 @@ THREEx.ArToolkitContext = function(parameters){
 		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
 		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : false,
 	}
+	// parameters sanity check
+	console.assert(['aruco', 'artoolkit'].indexOf(this.parameters.arBackend) !== -1, 'invalid parameter arBackend', this.parameters.arBackend)
+	console.assert(['color', 'color_and_matrix', 'mono', 'mono_and_matrix'].indexOf(this.parameters.detectionMode) !== -1, 'invalid parameter detectionMode', this.parameters.detectionMode)
 	
 	// set this._projectionAxisTransformMatrix to change artoolkit projection matrix axis to match usual webgl one
 	this._projectionAxisTransformMatrix = new THREE.Matrix4()
@@ -47,42 +52,29 @@ Object.assign( THREEx.ArToolkitContext.prototype, THREE.EventDispatcher.prototyp
 THREEx.ArToolkitContext.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
 THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 
-/**
- * return the projection matrix
- */
-THREEx.ArToolkitContext.prototype.getProjectionMatrix = function(srcElement){
-	
-	if( this.arucoContext !== null ){
-		console.assert(false, 'dont call this function with aruco')
-	}else{
-		console.assert(this.arController, 'arController MUST be initialized to call this function')
-		// get projectionMatrixArr from artoolkit
-		var projectionMatrixArr = this.arController.getCameraMatrix();
-		var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)		
-	}
-		
-	// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-	projectionMatrix.multiply(this._projectionAxisTransformMatrix)
-	
-	// return the result
-	return projectionMatrix
+
+
+//////////////////////////////////////////////////////////////////////////////
+//		init functions
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArToolkitContext.prototype.init = function(onCompleted){
+	if( this.parameters.arBackend === 'aruco' ){
+		this._initAruco(onCompleted)
+	}else if( this.parameters.arBackend === 'artoolkit' ){
+		this._initArtoolkit(onCompleted)
+	}else console.assert(false)
 }
 
-//////////////////////////////////////////////////////////////////////////////
-//		Code Separator
-//////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitContext.prototype.init =
-THREEx.ArToolkitContext.prototype.initArtoolkit = function(onCompleted){
+THREEx.ArToolkitContext.prototype._initArtoolkit = function(onCompleted){
         var _this = this
-	var canvasWidth = this.parameters.canvasWidth
-	var canvasHeight = this.parameters.canvasHeight
 
-        // console.log('ArToolkitContext: _onSourceReady width', canvasWidth, 'height', canvasHeight)
+	// get cameraParameters
         var cameraParameters = new ARCameraParam(_this.parameters.cameraParametersUrl, function() {
         	// init controller
-                var arController = new ARController(canvasWidth, canvasHeight, cameraParameters);
+                var arController = new ARController(_this.parameters.canvasWidth, _this.parameters.canvasHeight, cameraParameters);
                 _this.arController = arController
                 
+		// honor this.parameters.imageSmoothingEnabled
 		arController.ctx.mozImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
 		arController.ctx.webkitImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
 		arController.ctx.msImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
@@ -130,21 +122,53 @@ THREEx.ArToolkitContext.prototype.initArtoolkit = function(onCompleted){
 	return this
 }
 
-THREEx.ArToolkitContext.prototype.initAruco = function(onCompleted){
-	// FIXME markerSize is in controls
-	var markerSize = 1
-	this.arucoContext = new THREEx.ArucoContext(markerSize)
+THREEx.ArToolkitContext.prototype._initAruco = function(onCompleted){
+	this.arucoContext = new THREEx.ArucoContext()
+	
+	// honor this.parameters.canvasWidth/.canvasHeight
+	this.arucoContext.canvas.width = this.parameters.canvasWidth
+	this.arucoContext.canvas.height = this.parameters.canvasHeight
+
+	// honor this.parameters.imageSmoothingEnabled
+	var context = this.arucoContext.canvas.getContext('2d')
+	// context.mozImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
+	context.webkitImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
+	context.msImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
+	context.imageSmoothingEnabled = this.parameters.imageSmoothingEnabled;			
+
+	
 	setTimeout(function(){
 		onCompleted && onCompleted()
 	})
 }
 
+/**
+ * return the projection matrix
+ */
+THREEx.ArToolkitContext.prototype.getProjectionMatrix = function(srcElement){
+	
+	if( this.parameters.arBackend === 'aruco' ){
+		console.assert(false, 'dont call this function with aruco')
+	}else if( this.parameters.arBackend === 'artoolkit' ){
+		console.assert(this.arController, 'arController MUST be initialized to call this function')
+		// get projectionMatrixArr from artoolkit
+		var projectionMatrixArr = this.arController.getCameraMatrix();
+		var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)		
+	}else console.assert(false)
+		
+	// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
+	projectionMatrix.multiply(this._projectionAxisTransformMatrix)
+	
+	// return the result
+	return projectionMatrix
+}
+
 ////////////////////////////////////////////////////////////////////////////////
-//          Code Separator
+//          update function
 ////////////////////////////////////////////////////////////////////////////////
 THREEx.ArToolkitContext.prototype.update = function(srcElement){
 	// be sure arController is fully initialized
-        if (this.arucoContext === null && this.arController === null) return false;
+        if (this.parameters.arBackend === 'artoolkit' && this.arController === null) return false;
 
 	// honor this.parameters.maxDetectionRate
 	var present = performance.now()
@@ -159,10 +183,12 @@ THREEx.ArToolkitContext.prototype.update = function(srcElement){
 	})
 
 	// process this frame
-	if( this.arucoContext !== null ){
+	if(this.parameters.arBackend === 'artoolkit'){
+		this._updateArtoolkit(srcElement)		
+	}else if( this.parameters.arBackend === 'aruco' ){
 		this._updateAruco(srcElement)
 	}else{
-		this._updateArtoolkit(srcElement)		
+		console.assert(false)
 	}
 
 	// dispatch event
@@ -175,6 +201,9 @@ THREEx.ArToolkitContext.prototype.update = function(srcElement){
 	return true;
 }
 
+THREEx.ArToolkitContext.prototype._updateArtoolkit = function(srcElement){
+	this.arController.process(srcElement)
+}
 
 THREEx.ArToolkitContext.prototype._updateAruco = function(srcElement){
 	// console.log('update aruco here')
@@ -196,15 +225,12 @@ THREEx.ArToolkitContext.prototype._updateAruco = function(srcElement){
                 _this.arucoContext.updateObject3D(tmpObject3d, foundControls._arucoPosit, foundControls.parameters.size, detectedMarker);
 		tmpObject3d.updateMatrix()
 
-		foundControls.notifyFoundModelViewMatrix(tmpObject3d.matrix)
+		foundControls.updateWithModelViewMatrix(tmpObject3d.matrix)
 	})
-}
-THREEx.ArToolkitContext.prototype._updateArtoolkit = function(srcElement){
-	this.arController.process(srcElement)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//          Code Separator
+//          Add/Remove markerControls
 ////////////////////////////////////////////////////////////////////////////////
 THREEx.ArToolkitContext.prototype.addMarker = function(arMarkerControls){
 	console.assert(arMarkerControls instanceof THREEx.ArMarkerControls)
