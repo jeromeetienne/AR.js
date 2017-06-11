@@ -1,4 +1,4 @@
-Three.js Examples:
+# Three.js Examples
 
 - [basic](https://jeromeetienne.github.io/AR.js/three.js/examples/basic.html) :
   three.js example for basic
@@ -53,12 +53,11 @@ Three.js Examples:
   learner.html is a example of dynamic learning of a multi markers configuration. It has been designed
   to be reusable.
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multi-markers/examples/player.html))
-- [multimarker-artoolkit](https://jeromeetienne.github.io/AR.js/three.js/examples/multimarker-artoolkit/multimarker.html) :
-  three.js example for multimarker
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multimarker-artoolkit/multimarker.html))
-
+- [backend switcher](https://jeromeetienne.github.io/AR.js/three.js/examples/arbackend-switch.html) :
+  Show to easily switch between arBackend 'aruco' or 'jsartoolkit'
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arbackend-switch.html))
    
-a-frame Examples:
+# a-frame Examples
 
 - [basic](https://jeromeetienne.github.io/AR.js/aframe/examples/basic.html) :
   a-frame example for basic
@@ -92,7 +91,7 @@ a-frame Examples:
   a-frame example for mobile-performance
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/mobile-performance.html))
 
-WebVR-polyfill Examples:
+# WebVR-polyfill Examples
 - [aframe](https://jeromeetienne.github.io/AR.js/webvr-polyfill/examples/aframe.html) :
   a-frame example for aframe
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/webvr-polyfill/examples/aframe.html))
