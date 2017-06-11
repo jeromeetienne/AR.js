@@ -106,7 +106,9 @@
 			camera.aspect = renderer.domElement.width / renderer.domElement.height;
 			camera.updateProjectionMatrix();			
 		}else if( arBackend === 'artoolkit' ){
-			arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)				
+			if( arToolkitContext.arController !== null ){
+				arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
+			}	
 		}else console.assert(false)
 	}
 

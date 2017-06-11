@@ -8,7 +8,7 @@ THREEx.ArMarkerHelper = function(markerControls){
 
 	var text = markerControls.id
 	// debugger
-	var text = markerControls.parameters.patternUrl.slice(-1).toUpperCase();
+	// var text = markerControls.parameters.patternUrl.slice(-1).toUpperCase();
 
 	var canvas = document.createElement( 'canvas' );
 	canvas.width =  64;
