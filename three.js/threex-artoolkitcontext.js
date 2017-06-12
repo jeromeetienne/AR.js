@@ -33,12 +33,6 @@ THREEx.ArToolkitContext = function(parameters){
 	console.assert(['aruco', 'artoolkit'].indexOf(this.parameters.arBackend) !== -1, 'invalid parameter arBackend', this.parameters.arBackend)
 	console.assert(['color', 'color_and_matrix', 'mono', 'mono_and_matrix'].indexOf(this.parameters.detectionMode) !== -1, 'invalid parameter detectionMode', this.parameters.detectionMode)
 	
-	// set this._projectionAxisTransformMatrix to change artoolkit projection matrix axis to match usual webgl one
-	this._projectionAxisTransformMatrix = new THREE.Matrix4()
-	this._projectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
-	this._projectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
-
-	
         this.arController = null;
         this.arucoContext = null;
 
@@ -67,6 +61,11 @@ THREEx.ArToolkitContext.prototype.init = function(onCompleted){
 
 THREEx.ArToolkitContext.prototype._initArtoolkit = function(onCompleted){
         var _this = this
+
+	// set this._artoolkitProjectionAxisTransformMatrix to change artoolkit projection matrix axis to match usual webgl one
+	this._artoolkitProjectionAxisTransformMatrix = new THREE.Matrix4()
+	this._artoolkitProjectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
+	this._artoolkitProjectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
 
 	// get cameraParameters
         var cameraParameters = new ARCameraParam(_this.parameters.cameraParametersUrl, function() {
@@ -113,8 +112,14 @@ THREEx.ArToolkitContext.prototype._initArtoolkit = function(onCompleted){
 		var matrixCodeType = matrixCodeTypes[_this.parameters.matrixCodeType]
 		console.assert(matrixCodeType !== undefined)
 		arController.setMatrixCodeType(matrixCodeType);
+		
 
-		// console.warn('arController fully initialized')
+		// set thresholding in artoolkit
+		// this seems to be the default
+		// arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_MANUAL)
+		// adatative consume a LOT of cpu...
+		// arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_AUTO_ADAPTIVE)
+		// arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_AUTO_OTSU)
 
 		// notify
                 onCompleted && onCompleted()                
@@ -157,7 +162,7 @@ THREEx.ArToolkitContext.prototype.getProjectionMatrix = function(srcElement){
 	}else console.assert(false)
 		
 	// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-	projectionMatrix.multiply(this._projectionAxisTransformMatrix)
+	projectionMatrix.multiply(this._artoolkitProjectionAxisTransformMatrix)
 	
 	// return the result
 	return projectionMatrix

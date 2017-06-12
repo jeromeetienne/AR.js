@@ -60,7 +60,7 @@ THREEx.ArMarkerControls.prototype.dispose = function(){
 THREEx.ArMarkerControls.prototype._initArtoolkit = function(){
 	var _this = this
 
-	this.markerId = null
+	var artoolkitMarkerId = null
 
 	var delayedInitTimerId = setInterval(function(){
 		// check if arController is init
@@ -83,14 +83,14 @@ THREEx.ArMarkerControls.prototype._initArtoolkit = function(){
 		// start tracking this pattern
 		if( _this.parameters.type === 'pattern' ){
 	                arController.loadMarker(_this.parameters.patternUrl, function(markerId) {
-				_this.markerId = markerId
-	                        arController.trackPatternMarkerId(_this.markerId, _this.parameters.size);
+				artoolkitMarkerId = markerId
+	                        arController.trackPatternMarkerId(artoolkitMarkerId, _this.parameters.size);
 	                });
 		}else if( _this.parameters.type === 'barcode' ){
-			_this.markerId = _this.parameters.barcodeValue
-			arController.trackBarcodeMarkerId(_this.markerId, _this.parameters.size);
+			artoolkitMarkerId = _this.parameters.barcodeValue
+			arController.trackBarcodeMarkerId(artoolkitMarkerId, _this.parameters.size);
 		}else if( _this.parameters.type === 'unknown' ){
-			_this.markerId = null
+			artoolkitMarkerId = null
 		}else{
 			console.log(false, 'invalid marker type', _this.parameters.type)
 		}
@@ -99,12 +99,12 @@ THREEx.ArMarkerControls.prototype._initArtoolkit = function(){
 		// listen to the event
 		arController.addEventListener('getMarker', function(event){
 			if( event.data.type === artoolkit.PATTERN_MARKER && _this.parameters.type === 'pattern' ){
-				if( _this.markerId === null )	return
-				if( event.data.marker.idPatt === _this.markerId ) onMarkerFound(event)
+				if( artoolkitMarkerId === null )	return
+				if( event.data.marker.idPatt === artoolkitMarkerId ) onMarkerFound(event)
 			}else if( event.data.type === artoolkit.BARCODE_MARKER && _this.parameters.type === 'barcode' ){
-				// console.log('BARCODE_MARKER idMatrix', event.data.marker.idMatrix, _this.markerId )
-				if( _this.markerId === null )	return
-				if( event.data.marker.idMatrix === _this.markerId )  onMarkerFound(event)
+				// console.log('BARCODE_MARKER idMatrix', event.data.marker.idMatrix, artoolkitMarkerId )
+				if( artoolkitMarkerId === null )	return
+				if( event.data.marker.idMatrix === artoolkitMarkerId )  onMarkerFound(event)
 			}else if( event.data.type === artoolkit.UNKNOWN_MARKER && _this.parameters.type === 'unknown'){
 				onMarkerFound(event)
 			}
@@ -140,7 +140,7 @@ THREEx.ArMarkerControls.prototype.updateWithModelViewMatrix = function(modelView
 		// ...
 	}else if( this.context.parameters.arBackend === 'artoolkit' ){
 		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-		var tmpMatrix = new THREE.Matrix4().copy(this.context._projectionAxisTransformMatrix)
+		var tmpMatrix = new THREE.Matrix4().copy(this.context._artoolkitProjectionAxisTransformMatrix)
 		tmpMatrix.multiply(modelViewMatrix)
 		
 		modelViewMatrix.copy(tmpMatrix)				

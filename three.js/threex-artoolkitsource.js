@@ -121,112 +121,6 @@ THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
 //          handle webcam source
 ////////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArToolkitSource.prototype._initSourceWebcamOld = function(onReady) {
-	var _this = this
-	// TODO make it static
-	navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-
-	var domElement = document.createElement('video');
-	domElement.style.width = this.parameters.displayWidth+'px'
-	domElement.style.height = this.parameters.displayHeight+'px'
-
-
-	if (navigator.getUserMedia === undefined ){
-		alert("WebRTC issue! navigator.getUserMedia not present in your browser");		
-	}
-	if (navigator.mediaDevices === undefined || navigator.mediaDevices.enumerateDevices === undefined ){
-		alert("WebRTC issue! navigator.mediaDevices.enumerateDevices not present in your browser");		
-	}
-
-	navigator.mediaDevices.enumerateDevices().then(function(devices) {
-                // define getUserMedia() constraints
-                var constraints = {
-			audio: false,
-			video: {
-				mandatory: {
-					maxWidth: _this.parameters.sourceWidth,
-					maxHeight: _this.parameters.sourceHeight
-		    		}
-		  	}
-                }
-
-		// TODO super unclear how to get the backward facing camera...
-		// use heuristic - on chrome android current algo is working
-		// 
-		// on macosx it isnt. figure out the algo, and do if(macosx)
-		// - with one or two camera
-		// 
-		// some issue on window
-		
-		/**
-		 * how to test
-		 * - one or two camera on macbook
-		 * - my phone
-		 */
-		var runOnMobile = 'ontouchstart' in window ? true : false
-		// debugger
-		if( runOnMobile === true ){
-			pickDeviceAndroid(devices)
-		}else{
-			pickDeviceMacosx(devices)
-		}
-		
-
-		function pickDeviceAndroid(devices){
-			var videoDevices = devices.filter(function(device){
-				return device.kind === 'videoinput'
-			})
-			if( videoDevices.length !== 0 ){
-				var pickedDevice = videoDevices[videoDevices.length-1]
-				constraints.video.optional = [{sourceId: pickedDevice.deviceId}]
-			}
-		}
-		function pickDeviceMacosx(devices){
-			// debugger
-			devices.forEach(function(device) {
-				if( device.kind !== 'videoinput' )	return
-
-				if( constraints.video.optional !== undefined )	return
-				constraints.video.optional = [{sourceId: device.deviceId}]
-			});			
-		}
-
-		// OLD API
-                // it it finds the videoSource 'environment', modify constraints.video
-                // for (var i = 0; i != sourceInfos.length; ++i) {
-                //         var sourceInfo = sourceInfos[i];
-                //         if(sourceInfo.kind == "video" && sourceInfo.facing == "environment") {
-                //                 constraints.video.optional = [{sourceId: sourceInfo.id}]
-                //         }
-                // }
-
-		navigator.getUserMedia(constraints, function success(stream) {
-			// console.log('success', stream);
-// or this .srcObjectURL stuff ?
-			domElement.src = window.URL.createObjectURL(stream);
-			// to start the video, when it is possible to start it only on userevent. like in android
-			document.body.addEventListener('click', function(){
-				domElement.play();
-			})
-			// domElement.play();
-// TODO listen to loadedmetadata instead
-			// wait until the video stream is ready
-			var interval = setInterval(function() {
-				if (!domElement.videoWidth)	return;
-				onReady()
-				clearInterval(interval)
-			}, 1000/50);
-		}, function(error) {
-			console.log("Can't access user media", error);
-			alert("Can't access user media :()");
-		});
-	}).catch(function(err) {
-		console.log(err.name + ": " + err.message);
-	});
-
-	return domElement
-}
-
 THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 	var _this = this
 
@@ -286,6 +180,23 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 	return domElement
 }
 
+//////////////////////////////////////////////////////////////////////////////
+//		Handle Mobile Torch
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArToolkitSource.prototype.hasMobileTorch = function(){
+	var stream = arToolkitSource.domElement.srcObject
+	if( stream instanceof MediaStream === false )	return false
+
+	if( this._currentTorchStatus === undefined ){
+		this._currentTorchStatus = false
+	}
+
+	var videoTrack = stream.getVideoTracks()[0];
+	var capabilities = videoTrack.getCapabilities()
+	
+	return capabilities.torch ? true : false
+}
+
 /**
  * - toggle the flash/torch of the mobile fun if applicable
  * Great post about it https://www.oberhofer.co/mediastreamtrack-and-its-capabilities/
@@ -304,7 +215,10 @@ THREEx.ArToolkitSource.prototype.toggleMobileTorch = function(){
 	var videoTrack = stream.getVideoTracks()[0];
 	var capabilities = videoTrack.getCapabilities()
 	
-	if( capabilities.torch === false )	return
+	if( !capabilities.torch ){
+		alert('no mobile torch is available on your camera')
+		return
+	}
 
 	this._currentTorchStatus = this._currentTorchStatus === false ? true : false
 	videoTrack.applyConstraints({

@@ -284,7 +284,6 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 	var possibleValues = ['modelViewMatrix', 'cameraTransformMatrix' ]
 	console.assert(possibleValues.indexOf(this.parameters.changeMatrixMode) !== -1, 'illegal value', this.parameters.changeMatrixMode)
 
-	this.markerId = null
 
         // create the marker Root
 	this.object3d = object3d
@@ -294,100 +293,114 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 	// add this marker to artoolkitsystem
 	context.addMarker(this)
 
-	if( _this.context.arucoContext !== null ){
-		// IF ARUCO
-
+	if( _this.context.parameters.arBackend === 'aruco' ){
 		this._arucoPosit = new POS.Posit(this.parameters.size, _this.context.arucoContext.canvas.width)
-	}else{
-// TODO in ArMarkerControls controllers - put all the initartookit specifics in a single function
-		// IF ARTOOLKIT
-		// wait for arController to be initialized before going on with the init
-		var delayedInitTimerId = setInterval(function(){
-			// check if arController is init
-			var arController = _this.context.arController
-			if( arController === null )	return
-			// stop looping if it is init
-			clearInterval(delayedInitTimerId)
-			delayedInitTimerId = null
-			// launch the _postInitArtoolkit
-			_this._postInitArtoolkit()
-		}, 1000/50)
-	}
-	return
-
+	}else if( _this.context.parameters.arBackend === 'artoolkit' ){
+		this._initArtoolkit()
+	}else console.assert(false)
 }
 
 THREEx.ArMarkerControls.prototype = Object.create( THREEx.ArBaseControls.prototype );
 THREEx.ArMarkerControls.prototype.constructor = THREEx.ArMarkerControls;
 
+THREEx.ArMarkerControls.prototype.dispose = function(){
+	this.context.removeMarker(this)
+
+	// TODO remove the event listener if needed
+	// unloadMaker ???
+}
+
 //////////////////////////////////////////////////////////////////////////////
-//		Code Separator
+//		init for Artoolkit
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArMarkerControls.prototype._postInitArtoolkit = function(){
+THREEx.ArMarkerControls.prototype._initArtoolkit = function(){
 	var _this = this
-	// check if arController is init
-	var arController = this.context.arController
-	console.assert(arController !== null )
 
-	// start tracking this pattern
-	if( _this.parameters.type === 'pattern' ){
-                arController.loadMarker(_this.parameters.patternUrl, function(markerId) {
-			_this.markerId = markerId
-                        arController.trackPatternMarkerId(_this.markerId, _this.parameters.size);
-                });
-	}else if( _this.parameters.type === 'barcode' ){
-		_this.markerId = _this.parameters.barcodeValue
-		arController.trackBarcodeMarkerId(_this.markerId, _this.parameters.size);
-	}else if( _this.parameters.type === 'unknown' ){
-		_this.markerId = null
-	}else{
-		console.log(false, 'invalid marker type', _this.parameters.type)
-	}
-	
+	var artoolkitMarkerId = null
 
-	// listen to the event
-	arController.addEventListener('getMarker', function(event){
-		if( event.data.type === artoolkit.PATTERN_MARKER && _this.parameters.type === 'pattern' ){
-			if( _this.markerId === null )	return
-			if( event.data.marker.idPatt === _this.markerId ) onMarkerFound(event)
-		}else if( event.data.type === artoolkit.BARCODE_MARKER && _this.parameters.type === 'barcode' ){
-			// console.log('BARCODE_MARKER idMatrix', event.data.marker.idMatrix, _this.markerId )
-			if( _this.markerId === null )	return
-			if( event.data.marker.idMatrix === _this.markerId )  onMarkerFound(event)
-		}else if( event.data.type === artoolkit.UNKNOWN_MARKER && _this.parameters.type === 'unknown'){
-			onMarkerFound(event)
-		}
-	})
+	var delayedInitTimerId = setInterval(function(){
+		// check if arController is init
+		var arController = _this.context.arController
+		if( arController === null )	return
+		// stop looping if it is init
+		clearInterval(delayedInitTimerId)
+		delayedInitTimerId = null
+		// launch the _postInitArtoolkit
+		postInit()
+	}, 1000/50)
 
 	return
+	
+	function postInit(){
+		// check if arController is init
+		var arController = _this.context.arController
+		console.assert(arController !== null )
+
+		// start tracking this pattern
+		if( _this.parameters.type === 'pattern' ){
+	                arController.loadMarker(_this.parameters.patternUrl, function(markerId) {
+				artoolkitMarkerId = markerId
+	                        arController.trackPatternMarkerId(artoolkitMarkerId, _this.parameters.size);
+	                });
+		}else if( _this.parameters.type === 'barcode' ){
+			artoolkitMarkerId = _this.parameters.barcodeValue
+			arController.trackBarcodeMarkerId(artoolkitMarkerId, _this.parameters.size);
+		}else if( _this.parameters.type === 'unknown' ){
+			artoolkitMarkerId = null
+		}else{
+			console.log(false, 'invalid marker type', _this.parameters.type)
+		}
+		
+
+		// listen to the event
+		arController.addEventListener('getMarker', function(event){
+			if( event.data.type === artoolkit.PATTERN_MARKER && _this.parameters.type === 'pattern' ){
+				if( artoolkitMarkerId === null )	return
+				if( event.data.marker.idPatt === artoolkitMarkerId ) onMarkerFound(event)
+			}else if( event.data.type === artoolkit.BARCODE_MARKER && _this.parameters.type === 'barcode' ){
+				// console.log('BARCODE_MARKER idMatrix', event.data.marker.idMatrix, artoolkitMarkerId )
+				if( artoolkitMarkerId === null )	return
+				if( event.data.marker.idMatrix === artoolkitMarkerId )  onMarkerFound(event)
+			}else if( event.data.type === artoolkit.UNKNOWN_MARKER && _this.parameters.type === 'unknown'){
+				onMarkerFound(event)
+			}
+		})
+		
+	}
+
 	function onMarkerFound(event){
 		// honor his.parameters.minConfidence
 		if( event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence )	return
 		if( event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence )	return
 
 		var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
-		_this.notifyFoundModelViewMatrix(modelViewMatrix)
+		_this.updateWithModelViewMatrix(modelViewMatrix)
 	}
 }
 
-THREEx.ArMarkerControls.prototype.notifyFoundModelViewMatrix = function(modelViewMatrix){
+//////////////////////////////////////////////////////////////////////////////
+//		update controls with new modelViewMatrix
+//////////////////////////////////////////////////////////////////////////////
+
+/**
+ * When you actually got a new modelViewMatrix, you need to perfom a whole bunch 
+ * of things. it is done here.
+ */
+THREEx.ArMarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatrix){
 	var markerObject3D = this.object3d;
 
 	// mark object as visible
 	markerObject3D.visible = true
 
-	if( this.context.arucoContext !== null ){
-		// IF ARUCO
-
-	}else{
-		// IF ARTOOLKIT
-
+	if( this.context.parameters.arBackend === 'aruco' ){
+		// ...
+	}else if( this.context.parameters.arBackend === 'artoolkit' ){
 		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-		var tmpMatrix = new THREE.Matrix4().copy(this.context._projectionAxisTransformMatrix)
+		var tmpMatrix = new THREE.Matrix4().copy(this.context._artoolkitProjectionAxisTransformMatrix)
 		tmpMatrix.multiply(modelViewMatrix)
 		
 		modelViewMatrix.copy(tmpMatrix)				
-	}
+	}else console.assert(false)
 
 	// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
 	var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
@@ -409,16 +422,15 @@ THREEx.ArMarkerControls.prototype.notifyFoundModelViewMatrix = function(modelVie
 	this.dispatchEvent( { type: 'markerFound' } );
 }
 
-Object.assign( THREEx.ArMarkerControls.prototype, THREE.EventDispatcher.prototype );
+//////////////////////////////////////////////////////////////////////////////
+//		utility functions
+//////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArMarkerControls.prototype.dispose = function(){
-	this.context.removeMarker(this)
-
-	// TODO remove the event listener if needed
-	// unloadMaker ???
-}
-
-
+/**
+ * provide a name for a marker 
+ * - silly heuristic for now
+ * - should be improved
+ */
 THREEx.ArMarkerControls.prototype.name = function(){
 	var name = ''
 	name += this.parameters.type;
@@ -441,7 +453,7 @@ THREEx.ArMarkerHelper = function(markerControls){
 
 	var text = markerControls.id
 	// debugger
-	var text = markerControls.parameters.patternUrl.slice(-1).toUpperCase();
+	// var text = markerControls.parameters.patternUrl.slice(-1).toUpperCase();
 
 	var canvas = document.createElement( 'canvas' );
 	canvas.width =  64;
@@ -606,6 +618,8 @@ THREEx.ArToolkitContext = function(parameters){
 	
 	// handle default parameters
 	this.parameters = {
+		// AR backend - ['aruco', 'artoolkit']
+		arBackend: parameters.arBackend !== undefined ? parameters.arBackend : 'artoolkit',
 		// debug - true if one should display artoolkit debug canvas, false otherwise
 		debug: parameters.debug !== undefined ? parameters.debug : false,
 		// the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
@@ -626,12 +640,9 @@ THREEx.ArToolkitContext = function(parameters){
 		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
 		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : false,
 	}
-	
-	// set this._projectionAxisTransformMatrix to change artoolkit projection matrix axis to match usual webgl one
-	this._projectionAxisTransformMatrix = new THREE.Matrix4()
-	this._projectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
-	this._projectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
-
+	// parameters sanity check
+	console.assert(['aruco', 'artoolkit'].indexOf(this.parameters.arBackend) !== -1, 'invalid parameter arBackend', this.parameters.arBackend)
+	console.assert(['color', 'color_and_matrix', 'mono', 'mono_and_matrix'].indexOf(this.parameters.detectionMode) !== -1, 'invalid parameter detectionMode', this.parameters.detectionMode)
 	
         this.arController = null;
         this.arucoContext = null;
@@ -646,42 +657,34 @@ Object.assign( THREEx.ArToolkitContext.prototype, THREE.EventDispatcher.prototyp
 THREEx.ArToolkitContext.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
 THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 
-/**
- * return the projection matrix
- */
-THREEx.ArToolkitContext.prototype.getProjectionMatrix = function(srcElement){
-	
-	if( this.arucoContext !== null ){
-		console.assert(false, 'dont call this function with aruco')
-	}else{
-		console.assert(this.arController, 'arController MUST be initialized to call this function')
-		// get projectionMatrixArr from artoolkit
-		var projectionMatrixArr = this.arController.getCameraMatrix();
-		var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)		
-	}
-		
-	// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-	projectionMatrix.multiply(this._projectionAxisTransformMatrix)
-	
-	// return the result
-	return projectionMatrix
+
+
+//////////////////////////////////////////////////////////////////////////////
+//		init functions
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArToolkitContext.prototype.init = function(onCompleted){
+	if( this.parameters.arBackend === 'aruco' ){
+		this._initAruco(onCompleted)
+	}else if( this.parameters.arBackend === 'artoolkit' ){
+		this._initArtoolkit(onCompleted)
+	}else console.assert(false)
 }
 
-//////////////////////////////////////////////////////////////////////////////
-//		Code Separator
-//////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitContext.prototype.init =
-THREEx.ArToolkitContext.prototype.initArtoolkit = function(onCompleted){
+THREEx.ArToolkitContext.prototype._initArtoolkit = function(onCompleted){
         var _this = this
-	var canvasWidth = this.parameters.canvasWidth
-	var canvasHeight = this.parameters.canvasHeight
 
-        // console.log('ArToolkitContext: _onSourceReady width', canvasWidth, 'height', canvasHeight)
+	// set this._artoolkitProjectionAxisTransformMatrix to change artoolkit projection matrix axis to match usual webgl one
+	this._artoolkitProjectionAxisTransformMatrix = new THREE.Matrix4()
+	this._artoolkitProjectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
+	this._artoolkitProjectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
+
+	// get cameraParameters
         var cameraParameters = new ARCameraParam(_this.parameters.cameraParametersUrl, function() {
         	// init controller
-                var arController = new ARController(canvasWidth, canvasHeight, cameraParameters);
+                var arController = new ARController(_this.parameters.canvasWidth, _this.parameters.canvasHeight, cameraParameters);
                 _this.arController = arController
                 
+		// honor this.parameters.imageSmoothingEnabled
 		arController.ctx.mozImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
 		arController.ctx.webkitImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
 		arController.ctx.msImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
@@ -720,8 +723,14 @@ THREEx.ArToolkitContext.prototype.initArtoolkit = function(onCompleted){
 		var matrixCodeType = matrixCodeTypes[_this.parameters.matrixCodeType]
 		console.assert(matrixCodeType !== undefined)
 		arController.setMatrixCodeType(matrixCodeType);
+		
 
-		// console.warn('arController fully initialized')
+		// set thresholding in artoolkit
+		// this seems to be the default
+		// arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_MANUAL)
+		// adatative consume a LOT of cpu...
+		// arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_AUTO_ADAPTIVE)
+		// arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_AUTO_OTSU)
 
 		// notify
                 onCompleted && onCompleted()                
@@ -729,21 +738,53 @@ THREEx.ArToolkitContext.prototype.initArtoolkit = function(onCompleted){
 	return this
 }
 
-THREEx.ArToolkitContext.prototype.initAruco = function(onCompleted){
-	// FIXME markerSize is in controls
-	var markerSize = 1
-	this.arucoContext = new THREEx.ArucoContext(markerSize)
+THREEx.ArToolkitContext.prototype._initAruco = function(onCompleted){
+	this.arucoContext = new THREEx.ArucoContext()
+	
+	// honor this.parameters.canvasWidth/.canvasHeight
+	this.arucoContext.canvas.width = this.parameters.canvasWidth
+	this.arucoContext.canvas.height = this.parameters.canvasHeight
+
+	// honor this.parameters.imageSmoothingEnabled
+	var context = this.arucoContext.canvas.getContext('2d')
+	// context.mozImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
+	context.webkitImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
+	context.msImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
+	context.imageSmoothingEnabled = this.parameters.imageSmoothingEnabled;			
+
+	
 	setTimeout(function(){
 		onCompleted && onCompleted()
 	})
 }
 
+/**
+ * return the projection matrix
+ */
+THREEx.ArToolkitContext.prototype.getProjectionMatrix = function(srcElement){
+	
+	if( this.parameters.arBackend === 'aruco' ){
+		console.assert(false, 'dont call this function with aruco')
+	}else if( this.parameters.arBackend === 'artoolkit' ){
+		console.assert(this.arController, 'arController MUST be initialized to call this function')
+		// get projectionMatrixArr from artoolkit
+		var projectionMatrixArr = this.arController.getCameraMatrix();
+		var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)		
+	}else console.assert(false)
+		
+	// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
+	projectionMatrix.multiply(this._artoolkitProjectionAxisTransformMatrix)
+	
+	// return the result
+	return projectionMatrix
+}
+
 ////////////////////////////////////////////////////////////////////////////////
-//          Code Separator
+//          update function
 ////////////////////////////////////////////////////////////////////////////////
 THREEx.ArToolkitContext.prototype.update = function(srcElement){
 	// be sure arController is fully initialized
-        if (this.arucoContext === null && this.arController === null) return false;
+        if (this.parameters.arBackend === 'artoolkit' && this.arController === null) return false;
 
 	// honor this.parameters.maxDetectionRate
 	var present = performance.now()
@@ -758,10 +799,12 @@ THREEx.ArToolkitContext.prototype.update = function(srcElement){
 	})
 
 	// process this frame
-	if( this.arucoContext !== null ){
+	if(this.parameters.arBackend === 'artoolkit'){
+		this._updateArtoolkit(srcElement)		
+	}else if( this.parameters.arBackend === 'aruco' ){
 		this._updateAruco(srcElement)
 	}else{
-		this._updateArtoolkit(srcElement)		
+		console.assert(false)
 	}
 
 	// dispatch event
@@ -774,6 +817,9 @@ THREEx.ArToolkitContext.prototype.update = function(srcElement){
 	return true;
 }
 
+THREEx.ArToolkitContext.prototype._updateArtoolkit = function(srcElement){
+	this.arController.process(srcElement)
+}
 
 THREEx.ArToolkitContext.prototype._updateAruco = function(srcElement){
 	// console.log('update aruco here')
@@ -795,15 +841,12 @@ THREEx.ArToolkitContext.prototype._updateAruco = function(srcElement){
                 _this.arucoContext.updateObject3D(tmpObject3d, foundControls._arucoPosit, foundControls.parameters.size, detectedMarker);
 		tmpObject3d.updateMatrix()
 
-		foundControls.notifyFoundModelViewMatrix(tmpObject3d.matrix)
+		foundControls.updateWithModelViewMatrix(tmpObject3d.matrix)
 	})
-}
-THREEx.ArToolkitContext.prototype._updateArtoolkit = function(srcElement){
-	this.arController.process(srcElement)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//          Code Separator
+//          Add/Remove markerControls
 ////////////////////////////////////////////////////////////////////////////////
 THREEx.ArToolkitContext.prototype.addMarker = function(arMarkerControls){
 	console.assert(arMarkerControls instanceof THREEx.ArMarkerControls)
@@ -1199,26 +1242,19 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 			video: {
 				facingMode: 'environment',
 				width: {
-					// min: 1024,
 					ideal: _this.parameters.sourceWidth,
+					// min: 1024,
 					// max: 1920
 				},
 				height: {
-					// min: 776,
 					ideal: _this.parameters.sourceHeight,
+					// min: 776,
 					// max: 1080
 				}
-				// mandatory: {
-				// 	maxWidth: _this.parameters.sourceWidth,
-				// 	maxHeight: _this.parameters.sourceHeight
-				//   		}
 		  	}
                 }
-// debugger
 		navigator.mediaDevices.getUserMedia(userMediaConstraints).then(function success(stream) {
-			// console.log('success', stream);
-// or this .srcObjectURL stuff ?
-			// domElement.src = window.URL.createObjectURL(stream);
+			// set the .src of the domElement
 			domElement.srcObject = stream;
 			// to start the video, when it is possible to start it only on userevent. like in android
 			document.body.addEventListener('click', function(){
@@ -1241,6 +1277,36 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 	});
 
 	return domElement
+}
+
+/**
+ * - toggle the flash/torch of the mobile fun if applicable
+ * Great post about it https://www.oberhofer.co/mediastreamtrack-and-its-capabilities/
+ */
+THREEx.ArToolkitSource.prototype.toggleMobileTorch = function(){
+	var stream = arToolkitSource.domElement.srcObject
+	if( stream instanceof MediaStream === false ){
+		alert('enabling mobile torch is available only on webcam')
+		return
+	}
+
+	if( this._currentTorchStatus === undefined ){
+		this._currentTorchStatus = false
+	}
+
+	var videoTrack = stream.getVideoTracks()[0];
+	var capabilities = videoTrack.getCapabilities()
+	
+	if( capabilities.torch === false )	return
+
+	this._currentTorchStatus = this._currentTorchStatus === false ? true : false
+	videoTrack.applyConstraints({
+		advanced: [{
+			torch: this._currentTorchStatus
+		}]
+	}).catch(function(error){
+		console.log(error)
+	});
 }
 
 ////////////////////////////////////////////////////////////////////////////////

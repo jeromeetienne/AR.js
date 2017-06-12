@@ -1,15 +1,16 @@
-- ArMarkerControls.markerId is artoolkit specific
+- add modelViewMatrix and a smoother in AR.js example ?
+  - what would be a good example for aruco feature in ar.js
+  - yep add that because this is like the default now
+  
+  
+- DONE ArMarkerControls.markerId is artoolkit specific
   - to rename artoolkitMarkerId for now
-- ArToolkitContext.projectionAxisTransformMatrix is only to correct artoolkit axis
+- DONE ArToolkitContext.projectionAxisTransformMatrix is only to correct artoolkit axis
   - it is a kludge to start with
   - make it as contained as possible
   - maybe cached in a ARtoolkit specific function
   - projectionAxisTransformMatrix renamed as artoolkitprojectionAxisTransformMatrix
   - simple, no risk and make it clear it is artoolkit - 
-- add modelViewMatrix and a smoother in AR.js example ?
-  - what wwould be a good example for aruco feature in ar.js
-
-
 - DONE in arbackend-switch put the backend in hash. and offer to switch
   - good for testing
 - DONE all this testing about aruco or jsartoolkit it crappy
@@ -55,7 +56,8 @@
 
 ---
 # TODO
-
+- if artoolkit arbackend and marker facing camera, then change the tweening
+  - specific fix to artoolkit
 - TODO super unclear how to get the backward facing camera...
 
 - currently webvr is able to do location already

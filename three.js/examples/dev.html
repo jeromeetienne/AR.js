@@ -65,7 +65,7 @@
 	var arToolkitSource = new THREEx.ArToolkitSource({
 		// to read from the webcam 
 		sourceType : 'webcam',
-		
+
 		// // to read from an image
 		// sourceType : 'image',
 		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
@@ -99,6 +99,7 @@
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
+		// debug: true,
 		// detectionMode: 'mono_and_matrix',
 		detectionMode: 'mono',
 		// detectionMode: 'color_and_matrix',
@@ -142,6 +143,9 @@
 	var smoothedRoot = new THREE.Group()
 	scene.add(smoothedRoot)
 	var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
+		lerpPosition: 0.8,
+		lerpQuaternion: 0.2,
+		lerpScale: 0.7,
 		// minVisibleDelay: 1,
 		// minUnvisibleDelay: 1,
 	})
