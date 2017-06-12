@@ -42,8 +42,8 @@
 	var arBackend = location.hash.substring(1) ? location.hash.substring(1) : 'artoolkit'
 	document.querySelector('#currentArBackend').innerHTML = arBackend
 	
-	// var changeMatrixMode = 'cameraTransformMatrix'
-	var changeMatrixMode = 'modelViewMatrix'
+	var changeMatrixMode = 'cameraTransformMatrix'
+	// var changeMatrixMode = 'modelViewMatrix'
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
@@ -167,28 +167,27 @@
 		var markerRoot = new THREE.Group
 		scene.add(markerRoot)
 		var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, controlsParameters)		
-		
-		// build a smoothedControls
-		var smoothedRoot = new THREE.Group()
-		scene.add(smoothedRoot)
-		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
-			lerpPosition: 0.8,
-			lerpQuaternion: 0.2,
-			lerpScale: 0.7,
-		})
-		onRenderFcts.push(function(delta){
-			smoothedControls.update(markerRoot)
-		})
-		var arWorldRoot = smoothedRoot
 	}else if( changeMatrixMode === 'cameraTransformMatrix' ){
+		var markerRoot = scene
 		var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, controlsParameters)
-		// as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
-		var arWorldRoot = scene
 		onRenderFcts.push(function(){
 			// update scene.visible if the marker is seen
 			arWorldRoot.visible = camera.visible
 		})
 	}else console.assert(false)
+
+	// build a smoothedControls
+	var smoothedRoot = new THREE.Group()
+	scene.add(smoothedRoot)
+	var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
+		lerpPosition: 0.8,
+		lerpQuaternion: 0.2,
+		lerpScale: 0.7,
+	})
+	onRenderFcts.push(function(delta){
+		smoothedControls.update(markerRoot)
+	})
+	var arWorldRoot = smoothedRoot
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
