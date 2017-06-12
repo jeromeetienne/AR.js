@@ -2,6 +2,7 @@ var THREEx = THREEx || {}
 
 THREEx.ArMultiMakersLearning = function(arToolkitContext, subMarkersControls){
 	var _this = this
+	this._arToolkitContext = arToolkitContext
 
 	// Init variables
 	this.subMarkersControls = subMarkersControls
@@ -107,50 +108,6 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 //////////////////////////////////////////////////////////////////////////////
 //		Compute markers transformation matrix from current stats
 //////////////////////////////////////////////////////////////////////////////
-
-THREEx.ArMultiMakersLearning.prototype.computeResultOLD = function(){
-	var _this = this
-	var originSubControls = this.subMarkersControls[0]
-	var originSeenCouples = originSubControls.object3d.userData.seenCouples || {}
-	
-	
-	this.deleteResult()
-	
-	
-	// special case of originSubControls averageMatrix
-	originSubControls.object3d.userData.result = {
-		averageMatrix : new THREE.Matrix4(),
-		confidenceFactor: 1,
-	}
-	// TODO here check if the originSubControls has been seen at least once!!
-	
-	// go thru all the originSeenCouples
-	Object.keys(originSeenCouples).forEach(function(otherSubControlsID){
-		// otherSubControlsID are string here, as they are keys from objects, converting them to Number
-		otherSubControlsID = parseInt(otherSubControlsID)
-		
-		if( originSubControls.id === otherSubControlsID )	return
-
-		// store averageMatrix in otherSubControls
-		var otherSubControls = _this._getSubMarkerControlsByID(otherSubControlsID)
-		// init userData.result if needed
-		var result = otherSubControls.object3d.userData.result =  otherSubControls.object3d.userData.result || {
-			averageMatrix: null,
-			confidenceFactor: 0
-		}
-
-		// compute averageMatrix
-		var seenCoupleStats = originSeenCouples[otherSubControlsID]
-		var averageMatrix = new THREE.Matrix4()
-		averageMatrix.compose(seenCoupleStats.position.average, seenCoupleStats.quaternion.average, seenCoupleStats.scale.average)
-		result.averageMatrix = averageMatrix
-
-		// compute confidenceFactor
-		var requiredSamples = 50
-		result.confidenceFactor = seenCoupleStats.count / requiredSamples
-	})
-}
-
 
 THREEx.ArMultiMakersLearning.prototype.computeResult = function(){
 	var _this = this
@@ -294,7 +251,8 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 			createdAt : new Date().toJSON(),
 			
 		},
-		subMarkersControls : []
+		arBackend: this._arToolkitContext.parameters.arBackend,
+		subMarkersControls : [],
 	}
 
 	var originSubControls = this.subMarkersControls[0]
@@ -307,16 +265,23 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 		var poseMatrix = subMarkerControls.object3d.userData.result.averageMatrix
 		console.assert(poseMatrix instanceof THREE.Matrix4)
 		
-		data.subMarkersControls.push({
+
+		// build the info
+		var info = {
 			parameters : {
-				// TODO here be more generic, what about bar code
-				// - depends on the type of markers
-				// - copy them from parameters ?
-				type: subMarkerControls.parameters.type,
-				patternUrl: subMarkerControls.parameters.patternUrl,
+				// to fill ...
 			},
 			poseMatrix : poseMatrix.toArray(),
-		})
+		}
+		if( subMarkerControls.parameters.type === 'pattern' ){
+			info.parameters.type = subMarkerControls.parameters.type
+			info.parameters.patternUrl = subMarkerControls.parameters.patternUrl
+		}else if( subMarkerControls.parameters.type === 'barcode' ){
+			info.parameters.type = subMarkerControls.parameters.type
+			info.parameters.barcodeValue = subMarkerControls.parameters.barcodeValue
+		}else console.assert(false)
+
+		data.subMarkersControls.push(info)
 	})
 
 	var strJSON = JSON.stringify(data, null, '\t');

@@ -6,6 +6,13 @@
 <!-- jsartookit -->
 <script src='../../../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
 <script src='../../../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
+<!-- aruco -->
+<script src='../../../vendor/js-aruco/src/svd.js'></script> 
+<script src='../../../vendor/js-aruco/src/posit1.js'></script> 
+<script src='../../../vendor/js-aruco/src/cv.js'></script> 
+<script src='../../../vendor/js-aruco/src/aruco.js'></script> 
+<script src='../../../vendor/threex-aruco/threex-arucocontext.js'></script> 
+<script src='../../../vendor/threex-aruco/threex-arucodebug.js'></script>
 <!-- include threex.artoolkit -->
 <script src='../../../threex-artoolkitsource.js'></script>
 <script src='../../../threex-artoolkitcontext.js'></script>
@@ -43,6 +50,7 @@
 </div>
 <div style='position: fixed; bottom: 16px; left: 16px; z-index:2' id='markersStatus';>
 	<div>
+		Backend <span class='labelARBackend'>Unknown</span> - 
 		Learning <span class='globalStatus'>Stopped</span>
 	</div>
 	<ul></ul>
@@ -72,14 +80,34 @@
 	// init scene and camera
 	var scene	= new THREE.Scene();
 
+	//////////////////////////////////////////////////////////////////////////////
+	//		parse urlOptions
+	//////////////////////////////////////////////////////////////////////////////
+	
+	var hasHash = location.hash.substring(1) !== '' ? true : false
+	if( hasHash === true ){
+		var urlOptions = JSON.parse(location.hash.substring(1))
+	}else{
+		var urlOptions = {
+			backURL : null,
+			arBackend: 'artookit',
+			markerControlsParameters : [],
+		}
+		alert('no urlOption - should not happen')
+	}
+	
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// Create a camera
-	var camera = new THREE.Camera();
+	if( urlOptions.arBackend === 'aruco' ){
+		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
+	}else if( urlOptions.arBackend === 'artoolkit' ){
+		var camera = new THREE.Camera();
+	}else console.assert(false)
 	scene.add(camera);
-
 	////////////////////////////////////////////////////////////////////////////////
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
@@ -94,26 +122,42 @@
 	var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)
 
 	arToolkitSource.init(function onReady(){
-		// handle resize of renderer
-		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])		
+		onResize()
 	})
 	
 	// handle resize
 	window.addEventListener('resize', function(){
-		// handle arToolkitSource resize
-		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])
+		onResize()
 	})
+	function onResize(){
+		arToolkitSource.onResize()
+		arToolkitSource.copySizeTo(renderer.domElement)	
+		if( urlOptions.arBackend === 'aruco' ){
+			arToolkitSource.copySizeTo(arToolkitContext.arucoContext.canvas)	
 
+			camera.aspect = renderer.domElement.width / renderer.domElement.height;
+			camera.updateProjectionMatrix();			
+		}else if( urlOptions.arBackend === 'artoolkit' ){
+			if( arToolkitContext.arController !== null ){
+				arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
+			}	
+		}else console.assert(false)
+	}
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
 	////////////////////////////////////////////////////////////////////////////////	
+
+	// honor urlOptions.arBackend
+	artoolkitProfile.contextParameters.arBackend = urlOptions.arBackend
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
-		// copy projection matrix to camera
-		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+		// if artoolkit, copy projection matrix to camera
+		if( arToolkitContext.parameters.arBackend === 'artoolkit' ){
+			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
+		}
 	})
 
 	// update artoolkit on every frame
@@ -127,19 +171,6 @@
 	//////////////////////////////////////////////////////////////////////////////
 	//		learn
 	//////////////////////////////////////////////////////////////////////////////
-	
-	var hasHash = location.hash.substring(1) !== '' ? true : false
-	if( hasHash === true ){
-		var urlOptions = JSON.parse(location.hash.substring(1))
-	}else{
-		var urlOptions = {
-			backURL : null,
-			markerControlsParameters : [],
-		}
-		alert('no urlOption - should not happen')
-	}
-	
-
 
 	// prepare the parameters
 	var subMarkersControls = []
@@ -300,6 +331,8 @@
 	//////////////////////////////////////////////////////////////////////////////
 
 	function createUIMarkersStatus(){
+		document.querySelector('#markersStatus .labelARBackend').innerHTML = urlOptions.arBackend
+
 		multiMarkerLearning.subMarkersControls.forEach(function(subMarkerControls){
 			var container = document.createElement('li')
 			container.id = 'markerStatus_'+subMarkerControls.id
@@ -362,11 +395,12 @@
 			domElement.style.color = 'red'
 			domElement.innerHTML = 'in progress'
 		}
-			
+		
 	}
 	
 	// init markersStatus UI
 	createUIMarkersStatus()
+
 
 	// update markersStatus 10 time per seconds
 	setInterval(function(){

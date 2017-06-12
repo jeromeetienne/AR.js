@@ -1,5 +1,9 @@
-- expose all the hardcoded parameters from AR.Detect in the debug,html
+- expose all the hardcoded parameters from AR.Detect in the debug.html
   - thus you can tune them
+
+- epnp as way to fix pose estimation issue
+- https://infoscience.epfl.ch/record/160138/files/top.pdf?version=1
+- standalone cpp implementation - https://github.com/artivis/epnp/blob/master/src/main.cpp
 
 ---
 

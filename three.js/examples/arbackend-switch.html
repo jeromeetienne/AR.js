@@ -26,18 +26,25 @@
 	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - switching between backend
 	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 	<br/>
-	Marker image <a href='../../../three.js/vendor/threex-aruco/examples/images/1001.png' target='_blank'>1001 for aruco</a> /
+	Marker image 
 	<a href='../../../data/images/hiro.jpg' target='_blank'>hiro for artoolkit</a>
+	/
+	<a href='../../../three.js/vendor/threex-aruco/examples/images/1001.png' target='_blank'>1001 for aruco</a>
 	<br/>
 	<strong>Backend:</strong>
-		switch to : <a href='#aruco' onclick='location.reload()'>aruco</a>
-		/ 
+		switch to : 
 		<a href='#artoolkit' onclick='location.reload()'>artoolkit</a>
+		/ 
+		<a href='#aruco' onclick='location.reload()'>aruco</a>
 	-
 	current : <span id='currentArBackend'>unknown</a>
 </div><script>
 	var arBackend = location.hash.substring(1) ? location.hash.substring(1) : 'artoolkit'
 	document.querySelector('#currentArBackend').innerHTML = arBackend
+	
+	// var changeMatrixMode = 'cameraTransformMatrix'
+	var changeMatrixMode = 'modelViewMatrix'
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////
@@ -137,9 +144,6 @@
 		if( arToolkitSource.ready === false )	return
 
 		arToolkitContext.update( arToolkitSource.domElement )
-		
-		// update scene.visible if the marker is seen
-		scene.visible = camera.visible
 	})
 		
 	////////////////////////////////////////////////////////////////////////////////
@@ -147,36 +151,51 @@
 	////////////////////////////////////////////////////////////////////////////////
 
 	// init controls for camera
+	var controlsParameters = {
+		// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
+		changeMatrixMode: changeMatrixMode
+	}		
 	if( arToolkitContext.parameters.arBackend === 'artoolkit' ){
-		var controlsParameters = {
-			type : 'pattern',
-			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
-
-			// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
-			changeMatrixMode: 'cameraTransformMatrix'
-		}		
+		controlsParameters.type = 'pattern'
+		controlsParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
 	}else if( arToolkitContext.parameters.arBackend === 'aruco' ){
-		var controlsParameters = {
-			type: 'barcode',
-			barcodeValue: 1001,
-
-			// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
-			changeMatrixMode: 'cameraTransformMatrix'
-		}
+		controlsParameters.type = 'barcode'
+		controlsParameters.barcodeValue = 1001
 	}else console.assert(false)
-	
-	
-	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, controlsParameters)
-	// as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
-	scene.visible = false
+
+	if( changeMatrixMode === 'modelViewMatrix' ){
+		var markerRoot = new THREE.Group
+		scene.add(markerRoot)
+		var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, controlsParameters)		
+		
+		// build a smoothedControls
+		var smoothedRoot = new THREE.Group()
+		scene.add(smoothedRoot)
+		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
+			lerpPosition: 0.8,
+			lerpQuaternion: 0.2,
+			lerpScale: 0.7,
+		})
+		onRenderFcts.push(function(delta){
+			smoothedControls.update(markerRoot)
+		})
+		var arWorldRoot = smoothedRoot
+	}else if( changeMatrixMode === 'cameraTransformMatrix' ){
+		var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, controlsParameters)
+		// as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
+		var arWorldRoot = scene
+		onRenderFcts.push(function(){
+			// update scene.visible if the marker is seen
+			arWorldRoot.visible = camera.visible
+		})
+	}else console.assert(false)
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
 	var mesh = new THREE.AxisHelper()
-	// markerRoot.add(mesh)
-	scene.add(mesh)
+	arWorldRoot.add(mesh)
 	
 	// add a torus knot	
 	var geometry	= new THREE.CubeGeometry(1,1,1);
@@ -187,13 +206,13 @@
 	}); 
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= geometry.parameters.height/2
-	scene.add( mesh );
+	arWorldRoot.add( mesh );
 	
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= 0.5
-	scene.add( mesh );
+	arWorldRoot.add( mesh );
 	
 	onRenderFcts.push(function(delta){
 		mesh.rotation.x += Math.PI*delta

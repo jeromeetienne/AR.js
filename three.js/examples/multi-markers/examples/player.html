@@ -3,11 +3,16 @@
 <!-- three.js library -->
 <script src='../../vendor/three.js/build/three.js'></script>
 <script src='../../vendor/three.js/examples/js/libs/stats.min.js'></script>
-<script src='../../vendor/hammer.min.js'></script>
-<script src='../../vendor/hammer-time.min.js'></script>
 <!-- jsartookit -->
 <script src='../../../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
 <script src='../../../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
+<!-- aruco -->
+<script src='../../../vendor/js-aruco/src/svd.js'></script> 
+<script src='../../../vendor/js-aruco/src/posit1.js'></script> 
+<script src='../../../vendor/js-aruco/src/cv.js'></script> 
+<script src='../../../vendor/js-aruco/src/aruco.js'></script> 
+<script src='../../../vendor/threex-aruco/threex-arucocontext.js'></script> 
+<script src='../../../vendor/threex-aruco/threex-arucodebug.js'></script>
 <!-- include threex.artoolkit -->
 <script src='../../../threex-artoolkitsource.js'></script>
 <script src='../../../threex-artoolkitcontext.js'></script>
@@ -36,7 +41,12 @@
 	Area source: 
 		<a href='javascript:void(0)' onclick='urlOptions.areaSource = "localStorage"; reload()'>localStorage</a>
 		/
-		<a href='javascript:void(0)' onclick='urlOptions.areaSource = "onlyHiro"; reload()'>onlyHiro</a>
+		<a href='javascript:void(0)' onclick='urlOptions.areaSource = "hardcodedSingle"; reload()'>hardcodedSingle</a>
+	<br>
+	ar backend: 
+		<a href='javascript:void(0)' onclick='urlOptions.arBackend = "artoolkit"; reload()'>artoolkit</a>
+		/
+		<a href='javascript:void(0)' onclick='urlOptions.arBackend = "aruco"; reload()'>aruco</a>
 	<br>
 	Marker helpers: 
 		<a href='javascript:void(0)' onclick='urlOptions.markerHelpers = true; reload()'>yes</a>
@@ -54,19 +64,14 @@
 
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
-		// antialias	: true,
 		alpha: true
 	});
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-	// renderer.setPixelRatio( 2 );
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	renderer.domElement.style.position = 'absolute'
 	renderer.domElement.style.top = '0px'
 	renderer.domElement.style.left = '0px'
 	document.body.appendChild( renderer.domElement );
-	// enable shadow in renderer
-	renderer.shadowMap.type = THREE.PCFSoftShadowMap
-	renderer.shadowMap.enabled = true;	
 
 	// array of functions for the rendering loop
 	var onRenderFcts= [];
@@ -79,104 +84,8 @@
 	var directionalLight = new THREE.DirectionalLight( 0x887766 );
 	directionalLight.position.set( -1, 1, 1 ).normalize();
 	scene.add( directionalLight );
-	//////////////////////////////////////////////////////////////////////////////////
-	//		Initialize a basic camera
-	//////////////////////////////////////////////////////////////////////////////////
-
-	// Create a camera
-	var camera = new THREE.Camera();
-	scene.add(camera);
-
-	////////////////////////////////////////////////////////////////////////////////
-	//          handle arToolkitSource
-	////////////////////////////////////////////////////////////////////////////////
-
-	var artoolkitProfile = new THREEx.ArToolkitProfile()
-	artoolkitProfile.sourceWebcam()
-		.performance('desktop-fast')
-
-	var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)
-
-	arToolkitSource.init(function onReady(){
-		// handle resize of renderer
-		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])		
-	})
-	
-	// handle resize
-	window.addEventListener('resize', function(){
-		// handle arToolkitSource resize
-		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])
-	})
-
-	////////////////////////////////////////////////////////////////////////////////
-	//          initialize arToolkitContext
-	////////////////////////////////////////////////////////////////////////////////	
-
-	// create atToolkitContext
-	var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
-	// initialize it
-	arToolkitContext.init(function onCompleted(){
-		// copy projection matrix to camera
-		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
-	})
-
-	// update artoolkit on every frame
-	onRenderFcts.push(function(){
-		if( arToolkitSource.ready === false )	return
-
-		arToolkitContext.update( arToolkitSource.domElement )
-	})
 
 
-	//////////////////////////////////////////////////////////////////////////////
-	//		init learnerParameters and markersControlsParameters
-	//////////////////////////////////////////////////////////////////////////////
-
-	// pattern hiro/kanji/a/b/c/f
-	var markersControlsParameters = [
-		{
-			type : 'pattern',
-			// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
-			patternUrl : THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt',
-		},
-		{
-			type : 'pattern',
-			// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
-			patternUrl : THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-kanji.patt',
-		},
-		{
-			type : 'pattern',
-			// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.a',
-			patternUrl : THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-letterA.patt',
-		},
-		{
-			type : 'pattern',
-			// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.b',
-			patternUrl : THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-letterB.patt',
-		},
-		{
-			type : 'pattern',
-			// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.c',
-			patternUrl : THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-letterC.patt',
-		},
-		{
-			type : 'pattern',
-			// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.f',
-			patternUrl : THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-letterF.patt',
-		},
-	]
-
-	
-	document.querySelector('#recordButton').addEventListener('click', function(){
-		urlOptions.areaSource = 'localStorage'	
-		urlOptionsUpdate()
-
-		var learnerParameters = {
-			backURL : location.href,
-			markersControlsParameters: markersControlsParameters,
-		}	
-		location.href = 'learner.html#'+JSON.stringify(learnerParameters)
-	})
 
 	////////////////////////////////////////////////////////////////////////////////
 	//          handle urlOptions
@@ -188,6 +97,7 @@
 	}else{
 		var urlOptions = {
 			areaSource : 'localStorage',
+			arBackend: 'artoolkit',
 			markerHelpers: false,
 		}
 	}
@@ -202,10 +112,152 @@
 	}
 	
 	if( urlOptions.areaSource === 'localStorage' && localStorage.getItem('ARjsMultiMarkerFile') === null ){
-		alert('No area has been learned on this device!\n Using only hiro.')
-		urlOptions.areaSource === 'onlyHiro'	
+		alert('No area has been learned on this device!\n Using only hardcoded single marker hiro/1001.')
+		urlOptions.areaSource === 'hardcodedSingle'	
 		urlOptionsUpdate()
 	}
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Initialize a basic camera
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// Create a camera
+	if( urlOptions.arBackend === 'aruco' ){
+		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
+	}else if( urlOptions.arBackend === 'artoolkit' ){
+		var camera = new THREE.Camera();
+	}else console.assert(false)
+	scene.add(camera);
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          handle arToolkitSource
+	////////////////////////////////////////////////////////////////////////////////
+
+	var artoolkitProfile = new THREEx.ArToolkitProfile()
+	artoolkitProfile.sourceWebcam()
+		.performance('desktop-fast')
+
+	var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)
+
+	arToolkitSource.init(function onReady(){
+		onResize()
+	})
+	
+	// handle resize
+	window.addEventListener('resize', function(){
+		onResize()
+	})
+	function onResize(){
+		arToolkitSource.onResize()
+		arToolkitSource.copySizeTo(renderer.domElement)	
+		if( urlOptions.arBackend === 'aruco' ){
+			arToolkitSource.copySizeTo(arToolkitContext.arucoContext.canvas)	
+
+			camera.aspect = renderer.domElement.width / renderer.domElement.height;
+			camera.updateProjectionMatrix();			
+		}else if( urlOptions.arBackend === 'artoolkit' ){
+			if( arToolkitContext.arController !== null ){
+				arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
+			}	
+		}else console.assert(false)
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          initialize arToolkitContext
+	////////////////////////////////////////////////////////////////////////////////	
+
+	// honor urlOptions.arBackend
+	artoolkitProfile.contextParameters.arBackend = urlOptions.arBackend
+
+	// create atToolkitContext
+	var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
+	// initialize it
+	arToolkitContext.init(function onCompleted(){
+		// if artoolkit, copy projection matrix to camera
+		if( arToolkitContext.parameters.arBackend === 'artoolkit' ){
+			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
+		}
+	})
+
+	// update artoolkit on every frame
+	onRenderFcts.push(function(){
+		if( arToolkitSource.ready === false )	return
+
+		arToolkitContext.update( arToolkitSource.domElement )
+	})
+	//////////////////////////////////////////////////////////////////////////////
+	//		init learnerParameters and markersControlsParameters
+	//////////////////////////////////////////////////////////////////////////////
+
+	if( urlOptions.arBackend === 'artoolkit' ){
+		// pattern hiro/kanji/a/b/c/f
+		var markersControlsParameters = [
+			{
+				type : 'pattern',
+				patternUrl : THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt',
+			},
+			{
+				type : 'pattern',
+				patternUrl : THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-kanji.patt',
+			},
+			{
+				type : 'pattern',
+				patternUrl : THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-letterA.patt',
+			},
+			{
+				type : 'pattern',
+				patternUrl : THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-letterB.patt',
+			},
+			{
+				type : 'pattern',
+				patternUrl : THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-letterC.patt',
+			},
+			{
+				type : 'pattern',
+				patternUrl : THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-letterF.patt',
+			},
+		]		
+	}else if( urlOptions.arBackend === 'aruco' ){
+		var markersControlsParameters = [
+			{
+				type : 'barcode',
+				barcodeValue: 1001,
+			},
+			{
+				type : 'barcode',
+				barcodeValue: 1002,
+			},
+			{
+				type : 'barcode',
+				barcodeValue: 1003,
+			},
+			{
+				type : 'barcode',
+				barcodeValue: 1004,
+			},
+			{
+				type : 'barcode',
+				barcodeValue: 1005,
+			},
+			{
+				type : 'barcode',
+				barcodeValue: 1006,
+			},
+		]
+	}else console.assert(false)
+
+	
+	document.querySelector('#recordButton').addEventListener('click', function(){
+		urlOptions.areaSource = 'localStorage'	
+		urlOptionsUpdate()
+
+		var learnerParameters = {
+			backURL : location.href,
+			arBackend: urlOptions.arBackend,
+			markersControlsParameters: markersControlsParameters,
+		}
+		location.href = 'learner.html#'+JSON.stringify(learnerParameters)
+	})
 	
 	//////////////////////////////////////////////////////////////////////////////
 	//		get multiMarkerFile
@@ -214,18 +266,32 @@
 	if( urlOptions.areaSource === 'localStorage' ){
 		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
 		var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
-	}else if( urlOptions.areaSource === 'onlyHiro' ){
-		var multiMarkerFile = JSON.stringify({
-			subMarkersControls : [
-				{
-					parameters: {
-						type : 'pattern',
-						patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+	}else if( urlOptions.areaSource === 'hardcodedSingle' ){
+		if( urlOptions.arBackend === 'artoolkit' ){
+			var multiMarkerFile = JSON.stringify({
+				subMarkersControls : [
+					{
+						parameters: {
+							type : 'pattern',
+							patternUrl : THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt',
+						},
+						poseMatrix: new THREE.Matrix4().makeTranslation(0,0,0).toArray()
 					},
-					poseMatrix: new THREE.Matrix4().makeTranslation(0,0, 0).toArray()
-				},
-			]
-		})
+				]
+			})
+		}else if( urlOptions.arBackend === 'aruco' ){
+			var multiMarkerFile = JSON.stringify({
+				subMarkersControls : [
+					{
+						parameters: {
+							type : 'barcode',
+							barcodeValue : 1001,
+						},
+						poseMatrix: new THREE.Matrix4().makeTranslation(0,0,0).toArray()
+					},
+				]
+			})
+		}else console.assert(false)
 	}else{
 		console.assert('unknown areaSource', areaSource)
 	}
@@ -265,13 +331,13 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 	;(function(){
-		var demoRoot = new THREE.Group
+		var arWorldRoot = new THREE.Group()
 		var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
-		averageMatrix.decompose(demoRoot.position, demoRoot.quaternion, demoRoot.scale)		
-		smoothedRoot.add(demoRoot)
+		averageMatrix.decompose(arWorldRoot.position, arWorldRoot.quaternion, arWorldRoot.scale)		
+		smoothedRoot.add(arWorldRoot)
 				
 		var mesh = new THREE.AxisHelper()
-		demoRoot.add(mesh)
+		arWorldRoot.add(mesh)
 		
 		// add a torus knot	
 		var geometry	= new THREE.CubeGeometry(1,1,1);
@@ -282,13 +348,13 @@
 		}); 
 		var mesh	= new THREE.Mesh( geometry, material );
 		mesh.position.y	= geometry.parameters.height/2
-		demoRoot.add(mesh)
+		arWorldRoot.add(mesh)
 		
 		var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
 		var material	= new THREE.MeshNormalMaterial(); 
 		var mesh	= new THREE.Mesh( geometry, material );
 		mesh.position.y	= 0.5
-		demoRoot.add( mesh );
+		arWorldRoot.add( mesh );
 		
 		onRenderFcts.push(function(delta){
 			mesh.rotation.x += delta * Math.PI

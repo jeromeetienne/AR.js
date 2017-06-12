@@ -182,6 +182,8 @@ THREEx.ArMarkerControls.prototype.name = function(){
 		var url = this.parameters.patternUrl
 		var basename = url.replace(/^.*\//g, '')
 		name += ' - ' + basename
+	}else if( this.parameters.type === 'barcode' ){
+		name += ' - ' + this.parameters.barcodeValue
 	}else{
 		console.assert(false, 'no .name() implemented for this marker controls')
 	}
