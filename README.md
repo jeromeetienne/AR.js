@@ -121,6 +121,7 @@ See on [codepen](https://codepen.io/jeromeetienne/pen/mRqqzb) or [bl.ocks.org](h
 We started a [AR.js blog](https://medium.com/arjs), thus we can write about
 all the crazy ideas related to AR.js.
 
+- ["Area Learning with Multi-Markers in AR.js - For a Larger & More Stable Augmented Reality"](https://medium.com/arjs/area-learning-with-multi-markers-in-ar-js-1ff03a2f9fbe)
 - ["WebVR for Augmented Reality - Using WebVR to write cross-platform AR applications"](https://medium.com/arjs/webvr-for-augmented-reality-f1e69a505902)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)
 - ["Augmenting The Web Page - Bringing augmenting reality to normal web pages"](https://medium.com/arjs/augmenting-the-web-page-e893f2d199b8)
