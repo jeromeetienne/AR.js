@@ -189,9 +189,9 @@ THREEx.ArMultiMarkerControls.prototype.updateSmoothedControls = function(smoothe
 	// handle default values
 	if( lerpsValues === undefined ){
 		lerpsValues = [
-			[0.5, 0.1, 0.3],
-			[0.6, 0.1, 0.4],
-			[0.7, 0.2, 0.5],
+			[0.7, 0.1, 0.3],
+			[0.7, 0.1, 0.4],
+			[0.8, 0.2, 0.5],
 			[0.8, 0.2, 0.7],
 		]
 	}

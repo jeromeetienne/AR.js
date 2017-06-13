@@ -1,7 +1,7 @@
-- make multi-markers to support aruco too
+- DONE make multi-markers to support aruco too
   - add arBackend in learner.html input
   - handle arBackend definition in player.html
-- add modelViewMatrix and a smoother in AR.js example ?
+- DONE add modelViewMatrix and a smoother in AR.js example ?
   - what would be a good example for aruco feature in ar.js
   - yep add that because this is like the default now
 
