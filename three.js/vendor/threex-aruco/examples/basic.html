@@ -1,27 +1,27 @@
 <html>
+<!-- three.js -->
 <script src='vendor/three.js/build/three.js'></script> 
 
+<!-- js-aruco -->
 <script src='../../../vendor/js-aruco/src/svd.js'></script> 
 <script src='../../../vendor/js-aruco/src/posit1.js'></script> 
 <script src='../../../vendor/js-aruco/src/cv.js'></script> 
 <script src='../../../vendor/js-aruco/src/aruco.js'></script> 
+<!-- threex-aruco -->
 <script src='../threex-arucocontext.js'></script> 
 <script src='../threex-arucodebug.js'></script>
 
-
-<!-- <script src='../build/threex-aruco-min.js'></script>  -->
-<!-- <script src='../build/threex-aruco-prepacked.js'></script>  -->
-
 <body style='background-color: darkgray;'>
-        <div id='webGLContainer' style='display: inline;'></div>
-        <script>
-        
+<div id='webGLContainer' style='display: inline;'></div>
+<script>
+        var onRenderFcts = []   // init rendering loop
+                
         
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
         
         var videoElement = document.createElement('video')
-        // videoElement.width = 320
-        // videoElement.height = 240
+        videoElement.width = 640
+        videoElement.height = 480
         videoElement.autoplay = true
         
 
@@ -43,6 +43,8 @@
         );
 
         var arucoContext = new THREEx.ArucoContext()
+        arucoContext.canvas.width = videoElement.width
+        arucoContext.canvas.height = videoElement.height
 
         var markerSize = 1.0; //millimeters
         var arucoPosit = new POS.Posit(markerSize, arucoContext.canvas.width);
@@ -93,7 +95,7 @@
         //                render loop
         //////////////////////////////////////////////////////////////////////////////
         var lastDetectionAt = null
-        requestAnimationFrame(function onAnimationFrame(){
+        onRenderFcts.push(function(){
                 
                 // update videoMesh
                 videoMesh.material.map.needsUpdate = true;
@@ -101,34 +103,54 @@
                 var present = Date.now()/1000
                 if( lastDetectionAt === null || present-lastDetectionAt >= 1/30){
                         lastDetectionAt = Date.now()/1000
-                // if( videoElement.readyState >= videoElement.HAVE_CURRENT_DATA ){
-                        
-                        // detect markers in imageData
-                        // console.time('detect');
-                        var detectedMarkers = arucoContext.detect(videoElement)
-                        // console.timeEnd('detect');
-                        if( detectedMarkers.length > 0 ){
-                                var detectedMarker = detectedMarkers[0]
-                                
-                                var markerSize = 1
-                                arucoContext.updateObject3D(arWorldRoot, arucoPosit, markerSize, detectedMarker);
 
-                                arWorldRoot.visible = true
-                        }else{
-                                arWorldRoot.visible = false
-                        }  
+                        processFrame(videoElement)
                 }
-                
-                // render scene
+                return
+
+        });
+
+        function processFrame(videoElement){
+                var detectedMarkers = arucoContext.detect(videoElement)
+                // console.timeEnd('detect');
+                if( detectedMarkers.length > 0 ){
+                        var detectedMarker = detectedMarkers[0]
+                        
+                        var markerSize = 1
+                        arucoContext.updateObject3D(arWorldRoot, arucoPosit, markerSize, detectedMarker);
+
+                        arWorldRoot.visible = true
+                }else{
+                        arWorldRoot.visible = false
+                }                          
+        }
+        
+	//////////////////////////////////////////////////////////////////////////////////
+	//		render the whole thing on the page
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// render the scene
+	onRenderFcts.push(function(){
                 renderer.autoClear = false;
                 renderer.clear();
                 renderer.render(sceneOrtho, cameraOrtho);
                 renderer.render(scenePersp, cameraPersp);
+	})
 
-                requestAnimationFrame(onAnimationFrame);
-        });
-        
-        
+	// run the rendering loop
+	var lastTimeMsec= null
+	requestAnimationFrame(function animate(nowMsec){
+		// keep looping
+		requestAnimationFrame( animate );
+		// measure time
+		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+		lastTimeMsec	= nowMsec
+		// call each update function
+		onRenderFcts.forEach(function(onRenderFct){
+			onRenderFct(deltaMsec/1000, nowMsec/1000)
+		})
+	})        
         
         </script>        
         

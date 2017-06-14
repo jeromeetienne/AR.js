@@ -1,11 +1,17 @@
+- expose debug info in arucocontext
+  - in fact, put ALL the code of debug in arucocontext
 - expose all the hardcoded parameters from AR.Detect in the debug.html
   - thus you can tune them
+  - download js files
+  - init gui in basic.html
+  - 
+  
+  
 
+# Fix pose estimation
 - epnp as way to fix pose estimation issue
 - https://infoscience.epfl.ch/record/160138/files/top.pdf?version=1
 - standalone cpp implementation - https://github.com/artivis/epnp/blob/master/src/main.cpp
-
----
 
 # Performances
 - jsaruco use a kernel size of 2 in adaptative thresholding

@@ -2,10 +2,16 @@ var THREEx = THREEx || {}
 
 THREEx.ArucoDebug = function(arucoContext){
 	this.arucoContext = arucoContext
-	
+
+// TODO to rename canvasElement into canvas
 	this.canvasElement = document.createElement('canvas');
 	this.canvasElement.width = this.arucoContext.canvas.width
 	this.canvasElement.height = this.arucoContext.canvas.height
+}
+
+THREEx.ArucoDebug.prototype.setSize = function (width, height) {
+        if( this.canvasElement.width !== width )	this.canvasElement.width = width
+        if( this.canvasElement.height !== height )	this.canvasElement.height = height
 }
 
 THREEx.ArucoDebug.prototype.clear = function(){

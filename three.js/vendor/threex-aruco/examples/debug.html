@@ -1,12 +1,15 @@
-<html>
+<!-- three.js -->
 <script src='vendor/three.js/build/three.js'></script> 
-
+<script src='vendor/three.js/examples/js/libs/dat.gui.min.js'></script> 
+<!-- js-aruco -->
 <script src='../../../vendor/js-aruco/src/svd.js'></script> 
 <script src='../../../vendor/js-aruco/src/posit1.js'></script> 
 <script src='../../../vendor/js-aruco/src/cv.js'></script> 
 <script src='../../../vendor/js-aruco/src/aruco.js'></script> 
+<!-- threex-aruco -->
 <script src='../threex-arucocontext.js'></script> 
 <script src='../threex-arucodebug.js'></script>
+<script src='../threex-arucodatgui.js'></script>
 
 <div>
         <form>
@@ -35,13 +38,11 @@
 
         
         <script>
-        
-        
+        var onRenderFcts = []   // init rendering loop
+
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
         
         var videoElement = document.createElement('video')
-        // videoElement.width = 320
-        // videoElement.height = 240
         videoElement.autoplay = true
         
 
@@ -64,7 +65,15 @@
 
 
         var arucoContext = new THREEx.ArucoContext()
+        arucoContext.canvas.width = 320
+        arucoContext.canvas.height = 240
+
+	// here is how to setup a datGUI for fine tuning
+	var datGUI	= new dat.GUI()
+	THREEx.addArucoDatGui(arucoContext, datGUI)
+                
         var arucoDebug = new THREEx.ArucoDebug(arucoContext)
+        arucoContext.debug = arucoDebug
         document.body.appendChild(arucoDebug.canvasElement)
 
         var markerSize = 1.0; //millimeters
@@ -82,6 +91,14 @@
         var scenePersp = new THREE.Scene();
         var cameraPersp = new THREE.PerspectiveCamera(42, arucoContext.canvas.width / arucoContext.canvas.height, 0.01, 100);
         scenePersp.add(cameraPersp);
+
+
+        onRenderFcts.push(function(){
+                renderer.setSize(arucoContext.canvas.width, arucoContext.canvas.height);
+                
+		cameraPersp.aspect = renderer.domElement.width / renderer.domElement.height;
+		cameraPersp.updateProjectionMatrix();		
+        })
         
         //////////////////////////////////////////////////////////////////////////////
         //                Code Separator
@@ -119,7 +136,9 @@
         requestAnimationFrame(function onAnimationFrame(){
                 
                 // update videoMesh
-                videoMesh.material.map.needsUpdate = true;
+                if( videoElement.videoWidth ){
+                        videoMesh.material.map.needsUpdate = true;
+                }
                 
                 var present = Date.now()/1000
                 if( lastDetectionAt === null || present-lastDetectionAt >= 1/30){
@@ -160,24 +179,58 @@
         });
         
         
+	//////////////////////////////////////////////////////////////////////////////////
+	//		render the whole thing on the page
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// render the scene
+	onRenderFcts.push(function(){
+                renderer.autoClear = false;
+                renderer.clear();
+                renderer.render(sceneOrtho, cameraOrtho);
+                renderer.render(scenePersp, cameraPersp);
+	})
+
+	// run the rendering loop
+	var lastTimeMsec= null
+	requestAnimationFrame(function animate(nowMsec){
+		// keep looping
+		requestAnimationFrame( animate );
+		// measure time
+		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+		lastTimeMsec	= nowMsec
+		// call each update function
+		onRenderFcts.forEach(function(onRenderFct){
+			onRenderFct(deltaMsec/1000, nowMsec/1000)
+		})
+	})        
         
-        </script>        
-        
-        
-        <style media="screen">
-        img {
-                width: 196px;
-                height: 196px;
-                padding: 0em;
-                margin: 0;
-        }
-        </style>
-        <br/>
-        <div>
-                <img src="images/1001.png"/>
-                <img src="images/1002.png"/>
-                <img src="images/1003.png"/>
-                <img src="images/1004.png"/>
-        </div>        
+</script>        
+
+
+<style media="screen">
+img {
+        width: 196px;
+        height: 196px;
+        padding: 0em;
+        margin: 0;
+}
+</style>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<div>
+        <img src="images/1001.png"/>
+        <!-- <img src="images/1002.png"/>
+        <img src="images/1003.png"/>
+        <img src="images/1004.png"/> -->
+</div>        
 </body>
-</html>

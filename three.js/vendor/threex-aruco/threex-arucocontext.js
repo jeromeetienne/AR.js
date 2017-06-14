@@ -2,10 +2,19 @@ var THREEx = THREEx || {}
 
 THREEx.ArucoContext = function(){
         this.canvas = document.createElement('canvas');
-        this.canvas.width = 80*4
-        this.canvas.height = 60*4
+        this.canvas.width = 640
+        this.canvas.height = 480
                 
-        this.detector = new AR.Detector();
+        this.detector = new AR.Detector()
+        this.debug = null
+}
+
+THREEx.ArucoContext.prototype.setSize = function (width, height) {
+        this.canvas.width = width
+        this.canvas.height = height
+        if( this.debug !== null ){
+                this.debug.setSize(width, height)
+        }
 }
 
 THREEx.ArucoContext.prototype.detect = function (videoElement) {
