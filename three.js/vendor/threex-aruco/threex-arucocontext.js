@@ -2,6 +2,7 @@ var THREEx = THREEx || {}
 
 THREEx.ArucoContext = function(parameters){
 	// handle default parameters
+	parameters = parameters || {}
 	this.parameters = {
 		// debug - true if one should display artoolkit debug canvas, false otherwise
 		debug: parameters.debug !== undefined ? parameters.debug : false,
@@ -12,8 +13,6 @@ THREEx.ArucoContext = function(parameters){
 
 
         this.canvas = document.createElement('canvas');
-        this.canvas.width = this.parameters.canvasWidth
-        this.canvas.height = this.parameters.canvasHeight
                 
         this.detector = new AR.Detector()
         
@@ -22,6 +21,9 @@ THREEx.ArucoContext = function(parameters){
         if( parameters.debug == true ){
                 this.debug = new THREEx.ArucoDebug(this)
         }
+	
+	// honor parameters.canvasWidth/.canvasHeight
+	this.setSize(this.parameters.canvasWidth, this.parameters.canvasHeight)
 }
 
 THREEx.ArucoContext.prototype.setSize = function (width, height) {
