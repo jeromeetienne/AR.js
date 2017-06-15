@@ -66,7 +66,7 @@ THREEx.addArucoDatGui	= function(arucoContext, datGui){
 	
 	var folder = datGui.addFolder('Candidates')
 	folder.open()
-	folder.add( arucoContext.detector.datGUIOptions.candidates, 'minSize').min(0).step(1)
+	folder.add( arucoContext.detector.datGUIOptions.candidates, 'minSize').min(0).max(1)
 		.onChange( onChange )
 	folder.add( arucoContext.detector.datGUIOptions.candidates, 'epsilon').min(0)
 		.onChange( onChange )

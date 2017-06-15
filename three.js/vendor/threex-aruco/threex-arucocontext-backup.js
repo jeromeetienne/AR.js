@@ -1,27 +1,12 @@
 var THREEx = THREEx || {}
 
-THREEx.ArucoContext = function(parameters){
-	// handle default parameters
-	this.parameters = {
-		// debug - true if one should display artoolkit debug canvas, false otherwise
-		debug: parameters.debug !== undefined ? parameters.debug : false,
-		// resolution of at which we detect pose in the source image
-		canvasWidth: parameters.canvasWidth !== undefined ? parameters.canvasWidth : 640,
-		canvasHeight: parameters.canvasHeight !== undefined ? parameters.canvasHeight : 480,
-	}
-
-
+THREEx.ArucoContext = function(){
         this.canvas = document.createElement('canvas');
-        this.canvas.width = this.parameters.canvasWidth
-        this.canvas.height = this.parameters.canvasHeight
+        this.canvas.width = 640
+        this.canvas.height = 480
                 
         this.detector = new AR.Detector()
-        
-        // setup THREEx.ArucoDebug if needed
         this.debug = null
-        if( parameters.debug == true ){
-                this.debug = new THREEx.ArucoDebug(this)
-        }
 }
 
 THREEx.ArucoContext.prototype.setSize = function (width, height) {

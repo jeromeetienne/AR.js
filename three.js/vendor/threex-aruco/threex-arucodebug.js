@@ -14,6 +14,7 @@ THREEx.ArucoDebug.prototype.setSize = function (width, height) {
         if( this.canvasElement.height !== height )	this.canvasElement.height = height
 }
 
+
 THREEx.ArucoDebug.prototype.clear = function(){
 	var canvas = this.canvasElement
 	var context = canvas.getContext('2d');

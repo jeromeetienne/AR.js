@@ -1,10 +1,7 @@
+- in fact, put ALL the code of debug in arucocontext
 - expose debug info in arucocontext
-  - in fact, put ALL the code of debug in arucocontext
 - expose all the hardcoded parameters from AR.Detect in the debug.html
-  - thus you can tune them
-  - download js files
-  - init gui in basic.html
-  - 
+  - init gui in debug.html
   
   
 

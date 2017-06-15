@@ -64,18 +64,19 @@
         );
 
 
-        var arucoContext = new THREEx.ArucoContext()
-        arucoContext.canvas.width = 320
-        arucoContext.canvas.height = 240
+        var arucoContext = new THREEx.ArucoContext({
+                debug: true,
+                canvasWidth: 320,
+                canvasHeight: 240,
+        })
+        if( arucoContext.debug !== null ){
+                document.body.appendChild(arucoContext.debug.canvasElement)
+        }
 
 	// here is how to setup a datGUI for fine tuning
 	var datGUI	= new dat.GUI()
 	THREEx.addArucoDatGui(arucoContext, datGUI)
                 
-        var arucoDebug = new THREEx.ArucoDebug(arucoContext)
-        arucoContext.debug = arucoDebug
-        document.body.appendChild(arucoDebug.canvasElement)
-
         var markerSize = 1.0; //millimeters
         var arucoPosit = new POS.Posit(markerSize, arucoContext.canvas.width);
         
@@ -157,16 +158,16 @@
                                 arWorldRoot.visible = false
                         }  
                         
-                        if( document.querySelector('#checkboxClearCanvas').checked )      arucoDebug.clear()
-                        if( document.querySelector('#checkboxDrawVideo').checked )      arucoDebug.drawVideo(videoElement)
-                        if( document.querySelector('#checkboxDetectorGrey').checked )      arucoDebug.drawDetectorGrey()
-                        if( document.querySelector('#checkboxDetectorThreshold').checked )      arucoDebug.drawDetectorThreshold()
+                        if( document.querySelector('#checkboxClearCanvas').checked )      arucoContext.debug.clear()
+                        if( document.querySelector('#checkboxDrawVideo').checked )      arucoContext.debug.drawVideo(videoElement)
+                        if( document.querySelector('#checkboxDetectorGrey').checked )      arucoContext.debug.drawDetectorGrey()
+                        if( document.querySelector('#checkboxDetectorThreshold').checked )      arucoContext.debug.drawDetectorThreshold()
                         
-                        if( document.querySelector('#checkboxMarkerCorners').checked )      arucoDebug.drawMarkerCorners(detectedMarkers)
-                        if( document.querySelector('#checkboxMarkerId').checked )      arucoDebug.drawMarkerIDs(detectedMarkers)
-                        if( document.querySelector('#checkboxContoursContours').checked )      arucoDebug.drawContoursContours()
-                        if( document.querySelector('#checkboxContoursPolys').checked )      arucoDebug.drawContoursPolys()
-                        if( document.querySelector('#checkboxContoursCandidates').checked )      arucoDebug.drawContoursCandidates()
+                        if( document.querySelector('#checkboxMarkerCorners').checked )      arucoContext.debug.drawMarkerCorners(detectedMarkers)
+                        if( document.querySelector('#checkboxMarkerId').checked )      arucoContext.debug.drawMarkerIDs(detectedMarkers)
+                        if( document.querySelector('#checkboxContoursContours').checked )      arucoContext.debug.drawContoursContours()
+                        if( document.querySelector('#checkboxContoursPolys').checked )      arucoContext.debug.drawContoursPolys()
+                        if( document.querySelector('#checkboxContoursCandidates').checked )      arucoContext.debug.drawContoursCandidates()
                 }
                 
                 // render scene

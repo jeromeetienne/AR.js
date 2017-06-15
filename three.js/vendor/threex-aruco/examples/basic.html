@@ -20,8 +20,8 @@
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
         
         var videoElement = document.createElement('video')
-        videoElement.width = 640
-        videoElement.height = 480
+        videoElement.width = 320
+        videoElement.height = 240
         videoElement.autoplay = true
         
 
@@ -42,9 +42,10 @@
                 }
         );
 
-        var arucoContext = new THREEx.ArucoContext()
-        arucoContext.canvas.width = videoElement.width
-        arucoContext.canvas.height = videoElement.height
+        var arucoContext = new THREEx.ArucoContext({
+                canvasWidth: 320,
+                canvasHeight: 240,
+        })
 
         var markerSize = 1.0; //millimeters
         var arucoPosit = new POS.Posit(markerSize, arucoContext.canvas.width);
