@@ -7,7 +7,7 @@ THREEx.ArToolkitContext = function(parameters){
 	
 	// handle default parameters
 	this.parameters = {
-		// AR backend - ['aruco', 'artoolkit']
+		// AR backend - ['artoolkit', 'aruco', 'tango']
 		arBackend: parameters.arBackend !== undefined ? parameters.arBackend : 'artoolkit',
 		// debug - true if one should display artoolkit debug canvas, false otherwise
 		debug: parameters.debug !== undefined ? parameters.debug : false,
@@ -30,7 +30,7 @@ THREEx.ArToolkitContext = function(parameters){
 		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : false,
 	}
 	// parameters sanity check
-	console.assert(['aruco', 'artoolkit'].indexOf(this.parameters.arBackend) !== -1, 'invalid parameter arBackend', this.parameters.arBackend)
+	console.assert(['artoolkit', 'aruco', 'tango'].indexOf(this.parameters.arBackend) !== -1, 'invalid parameter arBackend', this.parameters.arBackend)
 	console.assert(['color', 'color_and_matrix', 'mono', 'mono_and_matrix'].indexOf(this.parameters.detectionMode) !== -1, 'invalid parameter detectionMode', this.parameters.detectionMode)
 	
         this.arController = null;
@@ -47,18 +47,80 @@ THREEx.ArToolkitContext.baseURL = 'https://jeromeetienne.github.io/AR.js/three.j
 THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 
 
-
 //////////////////////////////////////////////////////////////////////////////
 //		init functions
 //////////////////////////////////////////////////////////////////////////////
 THREEx.ArToolkitContext.prototype.init = function(onCompleted){
-	if( this.parameters.arBackend === 'aruco' ){
-		this._initAruco(onCompleted)
-	}else if( this.parameters.arBackend === 'artoolkit' ){
+	if( this.parameters.arBackend === 'artoolkit' ){
 		this._initArtoolkit(onCompleted)
+	}else if( this.parameters.arBackend === 'aruco' ){
+		this._initAruco(onCompleted)
+	}else if( this.parameters.arBackend === 'tango' ){
+		this._initTango(onCompleted)
 	}else console.assert(false)
 }
+////////////////////////////////////////////////////////////////////////////////
+//          update function
+////////////////////////////////////////////////////////////////////////////////
+THREEx.ArToolkitContext.prototype.update = function(srcElement){
 
+	// be sure arController is fully initialized
+        if (this.parameters.arBackend === 'artoolkit' && this.arController === null) return false;
+
+	// honor this.parameters.maxDetectionRate
+	var present = performance.now()
+	if( this._updatedAt !== null && present - this._updatedAt < 1000/this.parameters.maxDetectionRate ){
+		return false
+	}
+	this._updatedAt = present
+
+	// mark all markers to invisible before processing this frame
+	this._arMarkersControls.forEach(function(markerControls){
+		markerControls.object3d.visible = false
+	})
+
+	// process this frame
+	if(this.parameters.arBackend === 'artoolkit'){
+		this._updateArtoolkit(srcElement)		
+	}else if( this.parameters.arBackend === 'aruco' ){
+		this._updateAruco(srcElement)
+	}else if( this.parameters.arBackend === 'tango' ){
+		this._updateTango(srcElement)
+	}else{
+		console.assert(false)
+	}
+
+	// dispatch event
+	this.dispatchEvent({
+		type: 'sourceProcessed'
+	});
+
+
+	// return true as we processed the frame
+	return true;
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+//          Add/Remove markerControls
+////////////////////////////////////////////////////////////////////////////////
+THREEx.ArToolkitContext.prototype.addMarker = function(arMarkerControls){
+	console.assert(arMarkerControls instanceof THREEx.ArMarkerControls)
+	this._arMarkersControls.push(arMarkerControls)
+}
+
+THREEx.ArToolkitContext.prototype.removeMarker = function(arMarkerControls){
+	console.assert(arMarkerControls instanceof THREEx.ArMarkerControls)
+	// console.log('remove marker for', arMarkerControls)
+	var index = this.arMarkerControlss.indexOf(artoolkitMarker);
+	console.assert(index !== index )
+	this._arMarkersControls.splice(index, 1)
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		artoolkit specific
+//////////////////////////////////////////////////////////////////////////////
 THREEx.ArToolkitContext.prototype._initArtoolkit = function(onCompleted){
         var _this = this
 
@@ -127,30 +189,15 @@ THREEx.ArToolkitContext.prototype._initArtoolkit = function(onCompleted){
 	return this
 }
 
-THREEx.ArToolkitContext.prototype._initAruco = function(onCompleted){
-	this.arucoContext = new THREEx.ArucoContext()
-	
-	// honor this.parameters.canvasWidth/.canvasHeight
-	this.arucoContext.canvas.width = this.parameters.canvasWidth
-	this.arucoContext.canvas.height = this.parameters.canvasHeight
-
-	// honor this.parameters.imageSmoothingEnabled
-	var context = this.arucoContext.canvas.getContext('2d')
-	// context.mozImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
-	context.webkitImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
-	context.msImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
-	context.imageSmoothingEnabled = this.parameters.imageSmoothingEnabled;			
-
-	
-	setTimeout(function(){
-		onCompleted && onCompleted()
-	})
-}
-
 /**
  * return the projection matrix
  */
 THREEx.ArToolkitContext.prototype.getProjectionMatrix = function(srcElement){
+	
+	
+// FIXME rename this function to say it is artoolkit specific - getArtoolkitProjectMatrix
+// keep a backward compatibility with a console.warn
+	
 	
 	if( this.parameters.arBackend === 'aruco' ){
 		console.assert(false, 'dont call this function with aruco')
@@ -168,47 +215,33 @@ THREEx.ArToolkitContext.prototype.getProjectionMatrix = function(srcElement){
 	return projectionMatrix
 }
 
-////////////////////////////////////////////////////////////////////////////////
-//          update function
-////////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitContext.prototype.update = function(srcElement){
-	// be sure arController is fully initialized
-        if (this.parameters.arBackend === 'artoolkit' && this.arController === null) return false;
-
-	// honor this.parameters.maxDetectionRate
-	var present = performance.now()
-	if( this._updatedAt !== null && present - this._updatedAt < 1000/this.parameters.maxDetectionRate ){
-		return false
-	}
-	this._updatedAt = present
-
-	// mark all markers to invisible before processing this frame
-	this._arMarkersControls.forEach(function(markerControls){
-		markerControls.object3d.visible = false
-	})
-
-	// process this frame
-	if(this.parameters.arBackend === 'artoolkit'){
-		this._updateArtoolkit(srcElement)		
-	}else if( this.parameters.arBackend === 'aruco' ){
-		this._updateAruco(srcElement)
-	}else{
-		console.assert(false)
-	}
-
-	// dispatch event
-	this.dispatchEvent({
-		type: 'sourceProcessed'
-	});
-
-
-	// return true as we processed the frame
-	return true;
-}
-
 THREEx.ArToolkitContext.prototype._updateArtoolkit = function(srcElement){
 	this.arController.process(srcElement)
 }
+
+//////////////////////////////////////////////////////////////////////////////
+//		aruco specific 
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArToolkitContext.prototype._initAruco = function(onCompleted){
+	this.arucoContext = new THREEx.ArucoContext()
+	
+	// honor this.parameters.canvasWidth/.canvasHeight
+	this.arucoContext.canvas.width = this.parameters.canvasWidth
+	this.arucoContext.canvas.height = this.parameters.canvasHeight
+
+	// honor this.parameters.imageSmoothingEnabled
+	var context = this.arucoContext.canvas.getContext('2d')
+	// context.mozImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
+	context.webkitImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
+	context.msImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
+	context.imageSmoothingEnabled = this.parameters.imageSmoothingEnabled;			
+
+	
+	setTimeout(function(){
+		onCompleted && onCompleted()
+	}, 0)
+}
+
 
 THREEx.ArToolkitContext.prototype._updateAruco = function(srcElement){
 	// console.log('update aruco here')
@@ -219,6 +252,7 @@ THREEx.ArToolkitContext.prototype._updateAruco = function(srcElement){
 	detectedMarkers.forEach(function(detectedMarker){
 		var foundControls = null
 		for(var i = 0; i < arMarkersControls.length; i++){
+			console.assert( arMarkersControls[i].parameters.type === 'barcode' )
 			if( arMarkersControls[i].parameters.barcodeValue === detectedMarker.id ){
 				foundControls = arMarkersControls[i]
 				break;
@@ -234,18 +268,83 @@ THREEx.ArToolkitContext.prototype._updateAruco = function(srcElement){
 	})
 }
 
-////////////////////////////////////////////////////////////////////////////////
-//          Add/Remove markerControls
-////////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitContext.prototype.addMarker = function(arMarkerControls){
-	console.assert(arMarkerControls instanceof THREEx.ArMarkerControls)
-	this._arMarkersControls.push(arMarkerControls)
+//////////////////////////////////////////////////////////////////////////////
+//		tango specific 
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
+	var _this = this
+	// check webvr is available
+	if (navigator.getVRDisplays) {
+	} else if (navigator.getVRDevices) {
+		alert("Your browser supports WebVR but not the latest version. See <a href='http://webvr.info'>webvr.info</a> for more info.");
+	} else {
+		alert("Your browser does not support WebVR. See <a href='http://webvr.info'>webvr.info</a> for assistance.");
+	}
+
+
+	this._tangoContext = {
+		vrDisplay: null,
+		frameData: new VRFrameData(),
+	}
+	
+
+	// get vrDisplay
+	navigator.getVRDisplays().then(function (vrDisplays) {
+		if( vrDisplays.length === 0 )	alert('no vrDisplays available')
+		var vrDisplay = vrDisplays[0]
+		_this._tangoContext.vrDisplay = vrDisplay
+		console.log('vrDisplays.displayName :', vrDisplay.displayName)
+
+
+		var canvasElement = document.createElement('canvas')
+		document.body.appendChild(canvasElement)
+		var layers = [{ source: canvasElement }]
+		vrDisplay.requestPresent(layers).then(function() {
+			console.log('vrdisplay request accepted')
+		});
+
+
+		onCompleted && onCompleted()
+	});
 }
 
-THREEx.ArToolkitContext.prototype.removeMarker = function(arMarkerControls){
-	console.assert(arMarkerControls instanceof THREEx.ArMarkerControls)
-	// console.log('remove marker for', arMarkerControls)
-	var index = this.arMarkerControlss.indexOf(artoolkitMarker);
-	console.assert(index !== index )
-	this._arMarkersControls.splice(index, 1)
+
+THREEx.ArToolkitContext.prototype._updateTango = function(srcElement){
+	// console.log('update aruco here')
+	var _this = this
+	var arMarkersControls = this._arMarkersControls
+	var tangoContext= this._tangoContext
+
+// console.log('update tango')
+	// check vrDisplay is already initialized
+	if( tangoContext.vrDisplay === null )	return
+// console.log('update tango')
+
+	if( this._arMarkersControls.length === 0 )	return
+// console.log('update tango')
+
+	var foundControls = this._arMarkersControls[0]
+	
+	var frameData = this._tangoContext.frameData
+
+	// read frameData
+	tangoContext.vrDisplay.getFrameData(frameData);
+
+	var cameraTransformMatrix = new THREE.Matrix4()
+	
+	var position = new THREE.Vector3().fromArray(frameData.pose.position)
+	var quaternion = new THREE.Quaternion().fromArray(frameData.pose.orientation)
+	var scale = new THREE.Vector3(1,1,1)	
+	cameraTransformMatrix.compose(position, quaternion, scale)
+	
+	var modelViewMatrix = new THREE.Matrix4()
+	modelViewMatrix.getInverse( cameraTransformMatrix )	
+	
+	// console.log('position', position)
+	console.log('update tango quaternion', quaternion)
+	
+	// debugger;
+
+
+	foundControls.updateWithModelViewMatrix(modelViewMatrix)
 }

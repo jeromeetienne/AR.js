@@ -23,7 +23,7 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 	}
 
 	// sanity check
-	var possibleValues = ['pattern', 'barcode', 'multiMarker', 'unknown' ]
+	var possibleValues = ['pattern', 'barcode', 'unknown']
 	console.assert(possibleValues.indexOf(this.parameters.type) !== -1, 'illegal value', this.parameters.type)
 	var possibleValues = ['modelViewMatrix', 'cameraTransformMatrix' ]
 	console.assert(possibleValues.indexOf(this.parameters.changeMatrixMode) !== -1, 'illegal value', this.parameters.changeMatrixMode)
@@ -35,12 +35,17 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 	this.object3d.visible = false
 
 	// add this marker to artoolkitsystem
+	// TODO rename that .addMarkerControls
 	context.addMarker(this)
 
-	if( _this.context.parameters.arBackend === 'aruco' ){
-		this._arucoPosit = new POS.Posit(this.parameters.size, _this.context.arucoContext.canvas.width)
-	}else if( _this.context.parameters.arBackend === 'artoolkit' ){
+	if( _this.context.parameters.arBackend === 'artoolkit' ){
 		this._initArtoolkit()
+	}else if( _this.context.parameters.arBackend === 'aruco' ){
+		// TODO create a ._initAruco
+		// put aruco second
+		this._arucoPosit = new POS.Posit(this.parameters.size, _this.context.arucoContext.canvas.width)
+	}else if( _this.context.parameters.arBackend === 'tango' ){
+		this._initTango()
 	}else console.assert(false)
 }
 
@@ -52,6 +57,80 @@ THREEx.ArMarkerControls.prototype.dispose = function(){
 
 	// TODO remove the event listener if needed
 	// unloadMaker ???
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		update controls with new modelViewMatrix
+//////////////////////////////////////////////////////////////////////////////
+
+/**
+ * When you actually got a new modelViewMatrix, you need to perfom a whole bunch 
+ * of things. it is done here.
+ */
+THREEx.ArMarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatrix){
+	var markerObject3D = this.object3d;
+
+	// mark object as visible
+	markerObject3D.visible = true
+
+	if( this.context.parameters.arBackend === 'artoolkit' ){
+		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
+		var tmpMatrix = new THREE.Matrix4().copy(this.context._artoolkitProjectionAxisTransformMatrix)
+		tmpMatrix.multiply(modelViewMatrix)
+		
+		modelViewMatrix.copy(tmpMatrix)		
+	}else if( this.context.parameters.arBackend === 'aruco' ){
+		// ...
+	}else if( this.context.parameters.arBackend === 'tango' ){
+		// ...
+	}else console.assert(false)
+
+
+if( this.context.parameters.arBackend !== 'tango' ){
+
+	// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
+	var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
+	modelViewMatrix.multiply(markerAxisTransformMatrix)
+}
+
+	// change markerObject3D.matrix based on parameters.changeMatrixMode
+	if( this.parameters.changeMatrixMode === 'modelViewMatrix' ){
+		markerObject3D.matrix.copy(modelViewMatrix)
+	}else if( this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
+		markerObject3D.matrix.getInverse( modelViewMatrix )
+	}else {
+		console.assert(false)
+	}
+
+	// decompose - the matrix into .position, .quaternion, .scale
+	markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
+
+	// dispatchEvent
+	this.dispatchEvent( { type: 'markerFound' } );
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		utility functions
+//////////////////////////////////////////////////////////////////////////////
+
+/**
+ * provide a name for a marker 
+ * - silly heuristic for now
+ * - should be improved
+ */
+THREEx.ArMarkerControls.prototype.name = function(){
+	var name = ''
+	name += this.parameters.type;
+	if( this.parameters.type === 'pattern' ){
+		var url = this.parameters.patternUrl
+		var basename = url.replace(/^.*\//g, '')
+		name += ' - ' + basename
+	}else if( this.parameters.type === 'barcode' ){
+		name += ' - ' + this.parameters.barcodeValue
+	}else{
+		console.assert(false, 'no .name() implemented for this marker controls')
+	}
+	return name
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -123,69 +202,16 @@ THREEx.ArMarkerControls.prototype._initArtoolkit = function(){
 }
 
 //////////////////////////////////////////////////////////////////////////////
-//		update controls with new modelViewMatrix
+//		aruco specific
 //////////////////////////////////////////////////////////////////////////////
-
-/**
- * When you actually got a new modelViewMatrix, you need to perfom a whole bunch 
- * of things. it is done here.
- */
-THREEx.ArMarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatrix){
-	var markerObject3D = this.object3d;
-
-	// mark object as visible
-	markerObject3D.visible = true
-
-	if( this.context.parameters.arBackend === 'aruco' ){
-		// ...
-	}else if( this.context.parameters.arBackend === 'artoolkit' ){
-		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-		var tmpMatrix = new THREE.Matrix4().copy(this.context._artoolkitProjectionAxisTransformMatrix)
-		tmpMatrix.multiply(modelViewMatrix)
-		
-		modelViewMatrix.copy(tmpMatrix)				
-	}else console.assert(false)
-
-	// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
-	var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
-	modelViewMatrix.multiply(markerAxisTransformMatrix)
-
-	// change markerObject3D.matrix based on parameters.changeMatrixMode
-	if( this.parameters.changeMatrixMode === 'modelViewMatrix' ){
-		markerObject3D.matrix.copy(modelViewMatrix)
-	}else if( this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
-		markerObject3D.matrix.getInverse( modelViewMatrix )
-	}else {
-		console.assert(false)
-	}
-
-	// decompose - the matrix into .position, .quaternion, .scale
-	markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
-
-	// dispatchEvent
-	this.dispatchEvent( { type: 'markerFound' } );
+THREEx.ArMarkerControls.prototype._initAruco = function(){
+	this._arucoPosit = new POS.Posit(this.parameters.size, _this.context.arucoContext.canvas.width)
 }
 
 //////////////////////////////////////////////////////////////////////////////
-//		utility functions
+//		init for Artoolkit
 //////////////////////////////////////////////////////////////////////////////
-
-/**
- * provide a name for a marker 
- * - silly heuristic for now
- * - should be improved
- */
-THREEx.ArMarkerControls.prototype.name = function(){
-	var name = ''
-	name += this.parameters.type;
-	if( this.parameters.type === 'pattern' ){
-		var url = this.parameters.patternUrl
-		var basename = url.replace(/^.*\//g, '')
-		name += ' - ' + basename
-	}else if( this.parameters.type === 'barcode' ){
-		name += ' - ' + this.parameters.barcodeValue
-	}else{
-		console.assert(false, 'no .name() implemented for this marker controls')
-	}
-	return name
+THREEx.ArMarkerControls.prototype._initTango = function(){
+	var _this = this
+	console.log('init tango ArMarkerControls')
 }

@@ -36,6 +36,8 @@
 		<a href='#artoolkit' onclick='location.reload()'>artoolkit</a>
 		/ 
 		<a href='#aruco' onclick='location.reload()'>aruco</a>
+		/ 
+		<a href='#tango' onclick='location.reload()'>tango</a>
 	-
 	current : <span id='currentArBackend'>unknown</a>
 </div><script>
@@ -51,7 +53,7 @@
 
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
-		antialias: true,
+		// antialias: true,
 		alpha: true
 	});
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
@@ -72,10 +74,13 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// Create a camera
-	if( arBackend === 'aruco' ){
-		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
-	}else if( arBackend === 'artoolkit' ){
+	if( arBackend === 'artoolkit' ){
 		var camera = new THREE.Camera();
+	}else if( arBackend === 'aruco' ){
+		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
+	}else if( arBackend === 'tango' ){
+		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 1000);
+		console.log('TODO here init tango arBackend')
 	}else console.assert(false)
 	scene.add(camera);
 
@@ -85,11 +90,11 @@
 
 	var arToolkitSource = new THREEx.ArToolkitSource({
 		// to read from the webcam 
-		sourceType : 'webcam',
+		// sourceType : 'webcam',
 		
 		// // to read from an image
-		// sourceType : 'image',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
+		sourceType : 'image',
+		sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
 
 		// to read from a video
 		// sourceType : 'video',
@@ -107,15 +112,19 @@
 	function onResize(){
 		arToolkitSource.onResize()
 		arToolkitSource.copySizeTo(renderer.domElement)	
-		if( arBackend === 'aruco' ){
+		if( arBackend === 'artoolkit' ){
+			if( arToolkitContext.arController !== null ){
+				arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
+			}
+		}else if( arBackend === 'aruco' ){
 			arToolkitSource.copySizeTo(arToolkitContext.arucoContext.canvas)	
 
 			camera.aspect = renderer.domElement.width / renderer.domElement.height;
 			camera.updateProjectionMatrix();			
-		}else if( arBackend === 'artoolkit' ){
-			if( arToolkitContext.arController !== null ){
-				arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
-			}	
+		}else if( arBackend === 'tango' ){
+			// console.log('here resize for tango')
+			camera.aspect = renderer.domElement.width / renderer.domElement.height;
+			camera.updateProjectionMatrix();			
 		}else console.assert(false)
 	}
 
@@ -161,6 +170,9 @@
 	}else if( arToolkitContext.parameters.arBackend === 'aruco' ){
 		controlsParameters.type = 'barcode'
 		controlsParameters.barcodeValue = 1001
+	}else if( arToolkitContext.parameters.arBackend === 'tango' ){
+		controlsParameters.type = 'barcode'
+		controlsParameters.barcodeValue = 1001
 	}else console.assert(false)
 
 	if( changeMatrixMode === 'modelViewMatrix' ){
@@ -198,19 +210,20 @@
 	
 	// add a torus knot	
 	var geometry	= new THREE.CubeGeometry(1,1,1);
+	var geometry	= new THREE.CubeGeometry(1/5,1/5,1/5);
 	var material	= new THREE.MeshNormalMaterial({
 		transparent : true,
 		opacity: 0.5,
 		side: THREE.DoubleSide
 	}); 
 	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= geometry.parameters.height/2
+	// mesh.position.y	= geometry.parameters.height/2
 	arWorldRoot.add( mesh );
 	
-	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
+	var geometry	= new THREE.TorusKnotGeometry(0.3/5,0.1/5,64,16);
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= 0.5
+	// mesh.position.y	= 0.5
 	arWorldRoot.add( mesh );
 	
 	onRenderFcts.push(function(delta){

@@ -1,12 +1,14 @@
+- port webvr-arbackend
+- rename THREEx.ArToolkitContext.getProjectionMatrix into .getArtoolkitProjectMatrix
+- three.js/vendor/threex-aruco  => three.js/threex/threex-aruco
+---
+  
 - DONE make multi-markers to support aruco too
   - add arBackend in learner.html input
   - handle arBackend definition in player.html
 - DONE add modelViewMatrix and a smoother in AR.js example ?
   - what would be a good example for aruco feature in ar.js
   - yep add that because this is like the default now
-
----
-  
 - DONE ArMarkerControls.markerId is artoolkit specific
   - to rename artoolkitMarkerId for now
 - DONE ArToolkitContext.projectionAxisTransformMatrix is only to correct artoolkit axis
