@@ -3,3 +3,8 @@ build:
 
 minify:
 	(cd three.js && make minify) && (cd aframe && make minify) && (cd webvr-polyfill && make minify)
+
+test:
+	(cd test && make test)
+
+.PHONY: test
