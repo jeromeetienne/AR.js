@@ -1,0 +1,20 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "wdio.conf.js",
+  "dependencies": {
+    "wdio-mocha-framework": "^0.5.10",
+    "webdriverio": "^4.8.0"
+  },
+  "devDependencies": {
+    "wdio-selenium-standalone-service": "0.0.9",
+    "wdio-static-server-service": "^1.0.1",
+    "wdio-visual-regression-service": "^0.8.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC"
+}
