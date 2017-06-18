@@ -8,20 +8,11 @@
 - landingPage got a arPageUrl (for qrCode)
 - handle webar-playground parameters in the qrCode
 - add description in marker pages
-- move it all to ar.js three.js/examples/multi-markers/augmenting-webpages
-- make an example in multi marker
+- DONE move it all to ar.js three.js/examples/multi-markers/augmenting-webpages
+- DONE make an example in multi marker
   - examples/screenAsPortal.html
   - with usual lee demo
 
----
-
-- THREEx.ArMultiMarkerControls.computeBoundingBox(jsonData)
-  - similar to THREEx.ArMultiMarkerControls.computeCenter
-- from this function, you get -0.5 - 0.1 (white margin) on x,z
-- and you get the dimension of the screen
-- display a plane on top of the screen as you see it
-- gather back a hole in a wall
-- with usual lee demo
 ---------------------------------------------------
 # in marker pages
 - marker page is mainly running on desktop
