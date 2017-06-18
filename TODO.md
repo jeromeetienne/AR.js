@@ -1,6 +1,8 @@
 - port webvr-arbackend
 - rename THREEx.ArToolkitContext.getProjectionMatrix into .getArtoolkitProjectMatrix
 - three.js/vendor/threex-aruco  => three.js/threex/threex-aruco
+
+
 ---
   
 - DONE make multi-markers to support aruco too

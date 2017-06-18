@@ -1,0 +1,66 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+<!-- https://davidshimjs.github.io/qrcodejs/ -->
+<script src='https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js'></script>
+	
+<body>
+	
+	<div id='descriptionForDesktop'>
+		<h2>You are on Desktop</h2>
+		<div id="qrCodeContainer">
+			
+		</div>
+	</div>
+	<div id='descriptionForPhone'>
+		<h2>You are on Phone</h2>
+	</div>
+
+	<div id="arAppURLView">
+	</div>
+	<a id="arAppURLLink" href='javascript:void(0)'>
+		<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+			WebAR App
+		</button>
+	</a>
+	<a href='../markerPage/index.html'>
+		<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+			Marker Page
+		</button>
+	</a>
+	
+	<script>
+		// goto the proper landing page depending on where you run
+		var isMobile = 'ontouchstart' in window === true ? true : false
+		// document.querySelector('#currentPlatform').innerHTML = isMobile ? 'mobile' : 'desktop'
+	</script>
+	
+
+<script type="text/javascript">
+	var arAppURL = 'https://jeromeetienne.github.io/webar-playground/'
+	var arAppURL = '../screenAsPortal/screenAsPortal.html'
+	// TODO take url from hash is available
+	document.body.querySelector('#arAppURLView').innerHTML = arAppURL
+	document.body.querySelector('#arAppURLLink').href = arAppURL
+
+	if( isMobile === false ){
+	        var container = document.createElement('div')
+	        var qrcode = new QRCode(container, {
+	                text: arAppURL,
+	                width: 256,
+	                height: 256,
+	                colorDark : '#000000',
+	                colorLight : '#ffffff',
+	        });
+	        var qrCodeImage = container.querySelector('img')
+		qrCodeImage.style.margin = '3em'
+		document.body.querySelector('#qrCodeContainer').appendChild(qrCodeImage)		
+	}
+	
+	document.body.querySelector('#descriptionForDesktop').style.display = isMobile === false ? 'inherit' :  'none'
+	document.body.querySelector('#descriptionForPhone').style.display = isMobile === true ? 'inherit' :  'none'
+	
+</script>
+
+</body>

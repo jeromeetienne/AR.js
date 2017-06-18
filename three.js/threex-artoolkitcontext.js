@@ -299,10 +299,10 @@ THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 		var canvasElement = document.createElement('canvas')
 		document.body.appendChild(canvasElement)
 		var layers = [{ source: canvasElement }]
-		vrDisplay.requestPresent(layers).then(function() {
-			console.log('vrdisplay request accepted')
-		});
-
+// 		vrDisplay.requestPresent(layers).then(function() {
+// 			console.log('vrdisplay request accepted')
+// 		});
+// window.vrDisplay = vrDisplay
 
 		onCompleted && onCompleted()
 	});
@@ -315,13 +315,12 @@ THREEx.ArToolkitContext.prototype._updateTango = function(srcElement){
 	var arMarkersControls = this._arMarkersControls
 	var tangoContext= this._tangoContext
 
-// console.log('update tango')
 	// check vrDisplay is already initialized
 	if( tangoContext.vrDisplay === null )	return
-// console.log('update tango')
 
 	if( this._arMarkersControls.length === 0 )	return
-// console.log('update tango')
+
+	// TODO here do a fake search on barcode/1001 ?
 
 	var foundControls = this._arMarkersControls[0]
 	
@@ -330,21 +329,16 @@ THREEx.ArToolkitContext.prototype._updateTango = function(srcElement){
 	// read frameData
 	tangoContext.vrDisplay.getFrameData(frameData);
 
-	var cameraTransformMatrix = new THREE.Matrix4()
-	
+	// create cameraTransformMatrix
 	var position = new THREE.Vector3().fromArray(frameData.pose.position)
 	var quaternion = new THREE.Quaternion().fromArray(frameData.pose.orientation)
 	var scale = new THREE.Vector3(1,1,1)	
-	cameraTransformMatrix.compose(position, quaternion, scale)
-	
+	var cameraTransformMatrix = new THREE.Matrix4().compose(position, quaternion, scale)
+	// compute modelViewMatrix from cameraTransformMatrix
 	var modelViewMatrix = new THREE.Matrix4()
 	modelViewMatrix.getInverse( cameraTransformMatrix )	
 	
-	// console.log('position', position)
-	console.log('update tango quaternion', quaternion)
-	
-	// debugger;
-
+	console.log('position', position)
 
 	foundControls.updateWithModelViewMatrix(modelViewMatrix)
 }

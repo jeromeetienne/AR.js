@@ -181,6 +181,23 @@ THREEx.ArMultiMarkerControls.computeCenter = function(jsonData){
 	return averageMatrix
 }
 
+THREEx.ArMultiMarkerControls.computeBoundingBox = function(jsonData){
+	var multiMarkerFile = JSON.parse(jsonData)
+	var boundingBox = new THREE.Box3()
+
+	multiMarkerFile.subMarkersControls.forEach(function(item){
+		var poseMatrix = new THREE.Matrix4().fromArray(item.poseMatrix)
+		
+		var position = new THREE.Vector3
+		var quaternion = new THREE.Quaternion
+		var scale = new THREE.Vector3
+		poseMatrix.decompose(position, quaternion, scale)
+
+		boundingBox.expandByPoint(position)
+	})
+
+	return boundingBox
+}
 //////////////////////////////////////////////////////////////////////////////
 //		updateSmoothedControls
 //////////////////////////////////////////////////////////////////////////////
@@ -189,10 +206,11 @@ THREEx.ArMultiMarkerControls.prototype.updateSmoothedControls = function(smoothe
 	// handle default values
 	if( lerpsValues === undefined ){
 		lerpsValues = [
-			[0.7, 0.1, 0.3],
-			[0.7, 0.1, 0.4],
-			[0.8, 0.2, 0.5],
-			[0.8, 0.2, 0.7],
+			[0.4, 0.1, 0.3],
+			[0.4, 0.1, 0.4],
+			[0.4, 0.2, 0.5],
+			[0.4, 0.2, 0.7],
+			[0.4, 0.2, 0.7],
 		]
 	}
 	// count how many subMarkersControls are visible
