@@ -23,11 +23,28 @@ THREEx.ScreenAsPortal = function(multiMarkerFile){
 	var screenSize = boundingBox.getSize()
 
 	var screenDepth = screenSize.z
-	
 	initCube()
 	addTargets()
 	addBorders()
+	initLogo()
+
+
+
 	return
+	
+	function initLogo(){
+		// add the inner box
+		var geometry	= new THREE.PlaneGeometry(1,1).rotateX(-Math.PI/2);
+		var material	= new THREE.MeshBasicMaterial({
+			side: THREE.DoubleSide,
+			map: new THREE.TextureLoader().load(THREEx.ArToolkitContext.baseURL+'../data/logo/logo-black-transparent-512x204.png'),
+			alphaTest: 0.9,
+		}); 
+		var mesh	= new THREE.Mesh( geometry, material );
+		mesh.scale.set(screenSize.x, 1, screenSize.x*204/512)
+		mesh.position.y = -screenDepth + 0.3
+		_this.object3d.add(mesh)		
+	}
 	
 	function initCube(){
 		// add outter cube - invisibility cloak
@@ -38,7 +55,7 @@ THREEx.ScreenAsPortal = function(multiMarkerFile){
 		})
 		var outterCubeMesh = new THREE.Mesh( geometry, material);
 		outterCubeMesh.scale.set(1.04, 1, 1.04)
-		outterCubeMesh.position.y = -geometry.parameters.height/2
+		outterCubeMesh.position.y = -geometry.parameters.height/2 + 0.2
 		_this.object3d.add(outterCubeMesh)
 
 		// add the inner box
@@ -105,11 +122,12 @@ THREEx.ScreenAsPortal = function(multiMarkerFile){
 	//		addBorders
 	//////////////////////////////////////////////////////////////////////////////
 	function addBorders(){
-		var thickNess = 0.1
+		var thickNess = 0.08
 		
 		var material = new THREE.MeshNormalMaterial()
 		var material = new THREE.MeshBasicMaterial({
-			color: 'black'
+			color: 'black',
+			color: '#111',
 		})
 		// top border
 		var geometry = new THREE.BoxGeometry(screenSize.x, thickNess, thickNess).rotateX(Math.PI/4);
