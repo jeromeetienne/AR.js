@@ -10,8 +10,8 @@
 <script src='../vendor/js-aruco/src/posit1.js'></script> 
 <script src='../vendor/js-aruco/src/cv.js'></script> 
 <script src='../vendor/js-aruco/src/aruco.js'></script> 
-<script src='../vendor/threex-aruco/threex-arucocontext.js'></script> 
-<script src='../vendor/threex-aruco/threex-arucodebug.js'></script>
+<script src='../threex/threex-aruco/threex-arucocontext.js'></script> 
+<script src='../threex/threex-aruco/threex-arucodebug.js'></script>
 <!-- include threex.artoolkit -->
 <script src='../threex-artoolkitsource.js'></script>
 <script src='../threex-artoolkitcontext.js'></script>
@@ -29,7 +29,7 @@
 	Marker image 
 	<a href='../../../data/images/hiro.jpg' target='_blank'>hiro for artoolkit</a>
 	/
-	<a href='../../../three.js/vendor/threex-aruco/examples/images/1001.png' target='_blank'>1001 for aruco</a>
+	<a href='../../../three.js/threex/threex-aruco/examples/images/1001.png' target='_blank'>1001 for aruco</a>
 	<br/>
 	<strong>Backend:</strong>
 		switch to : 
@@ -88,18 +88,20 @@
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
 
-	var arToolkitSource = new THREEx.ArToolkitSource({
-		// to read from the webcam 
-		// sourceType : 'webcam',
-		
-		// to read from an image
-		sourceType : 'image',
-		sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
-
-		// to read from a video
-		// sourceType : 'video',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
-	})
+	if( arBackend === 'artoolkit' ){
+		var sourceParameters = {
+			// to read from an image
+			sourceType : 'image',
+			sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
+		}
+	}else if( arBackend === 'aruco' ){
+		var sourceParameters = {
+			// to read from an image
+			sourceType : 'image',
+			sourceUrl : THREEx.ArToolkitContext.baseURL + 'threex/threex-aruco/examples/images/screenshot-marker-aruco.png',		
+		}
+	}else console.assert(false)
+	var arToolkitSource = new THREEx.ArToolkitSource(sourceParameters)
 
 	arToolkitSource.init(function onReady(){
 		onResize()
@@ -210,17 +212,16 @@
 	
 	// add a torus knot	
 	var geometry	= new THREE.CubeGeometry(1,1,1);
-	var geometry	= new THREE.CubeGeometry(1/5,1/5,1/5);
 	var material	= new THREE.MeshNormalMaterial({
 		transparent : true,
 		opacity: 0.5,
 		side: THREE.DoubleSide
 	}); 
 	var mesh	= new THREE.Mesh( geometry, material );
-	// mesh.position.y	= geometry.parameters.height/2
+	mesh.position.y	= geometry.parameters.height/2
 	arWorldRoot.add( mesh );
 	
-	var geometry	= new THREE.TorusKnotGeometry(0.3/5,0.1/5,64,16);
+	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
 	// mesh.position.y	= 0.5

@@ -10,8 +10,8 @@
 <script src='../vendor/js-aruco/src/posit1.js'></script> 
 <script src='../vendor/js-aruco/src/cv.js'></script> 
 <script src='../vendor/js-aruco/src/aruco.js'></script> 
-<script src='../vendor/threex-aruco/threex-arucocontext.js'></script> 
-<script src='../vendor/threex-aruco/threex-arucodebug.js'></script>
+<script src='../threex/threex-aruco/threex-arucocontext.js'></script> 
+<script src='../threex/threex-aruco/threex-arucodebug.js'></script>
 <!-- include threex.artoolkit -->
 <script src='../threex-artoolkitsource.js'></script>
 <script src='../threex-artoolkitcontext.js'></script>
@@ -28,7 +28,7 @@
 	Marker image 
 	<a href='../../../data/images/hiro.jpg' target='_blank'>hiro for artoolkit</a>
 	/
-	<a href='../../../three.js/vendor/threex-aruco/examples/images/1001.png' target='_blank'>1001 for aruco</a>
+	<a href='../../../three.js/threex/threex-aruco/examples/images/1001.png' target='_blank'>1001 for aruco</a>
 	<br/>
 	<strong>Backend:</strong>
 		switch to : 
@@ -97,7 +97,7 @@
 		var sourceParameters = {
 			// to read from an image
 			sourceType : 'image',
-			sourceUrl : THREEx.ArToolkitContext.baseURL + 'vendor/threex-aruco/examples/images/screenshot-marker-aruco.png',		
+			sourceUrl : THREEx.ArToolkitContext.baseURL + 'threex/threex-aruco/examples/images/screenshot-marker-aruco.png',		
 		}
 	}else console.assert(false)
 	var arToolkitSource = new THREEx.ArToolkitSource(sourceParameters)
