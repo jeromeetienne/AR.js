@@ -15,11 +15,12 @@ So I wanted to publish thus people can try it and have fun with it :)
 [![AR.js 1.0 Video](https://cloud.githubusercontent.com/assets/252962/23441016/ab6900ce-fe17-11e6-971b-24614fb8ac0e.png)](https://youtu.be/0MtvjFg7tik)
 
 
+[![Gitter chat](https://badges.gitter.im/gitterHQ/services.png)](https://gitter.im/gitterHQ/services)
+
 # Try it on Mobile
 
-It works on **any browser with WebGL and WebRTC**. So android works. Window mobile works.
-IOS doesnt work unfortunately. IOS safari doesn't support WebRTC at the moment.
-Apple is [currently working on it](https://webkit.org/status/#specification-webrtc) tho.
+It works on all platforms. Android, IOS and window phone. It run **any browser with WebGL and WebRTC**.
+(for IOS, you need to update to ios11)
 
 To try on your phone is only 2 easy steps, check it out!
 
