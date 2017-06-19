@@ -27,6 +27,7 @@ THREEx.ArucoContext = function(parameters){
 }
 
 THREEx.ArucoContext.prototype.setSize = function (width, height) {
+	debugger
         this.canvas.width = width
         this.canvas.height = height
         if( this.debug !== null ){

@@ -44,7 +44,7 @@ AR.Detector.prototype.datGUIOptions = {
 THREEx.addArucoDatGui	= function(arucoContext, datGui){
 	var datGUIOptions = arucoContext.detector.datGUIOptions
 	var options  = {
-		resolution: '320x240',
+		resolution: '640x480',
 	}
 	var onChange = function(){
 		// honor option resolution
