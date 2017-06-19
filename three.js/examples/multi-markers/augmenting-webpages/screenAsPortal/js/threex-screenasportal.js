@@ -3,7 +3,6 @@ var THREEx = THREEx || {}
 THREEx.ScreenAsPortal = function(multiMarkerFile){
 	var _this = this
 	this.object3d = new THREE.Group
-	var screenDepth = screenSize.z
 
 	// init render loop
 	this._onRenderFcts = []
@@ -22,6 +21,8 @@ THREEx.ScreenAsPortal = function(multiMarkerFile){
 	boundingBox.max.x += markerSize/2 + whiteMargin
 	boundingBox.max.z += markerSize/2 + whiteMargin
 	var screenSize = boundingBox.getSize()
+
+	var screenDepth = screenSize.z
 	
 	initCube()
 	addTargets()
