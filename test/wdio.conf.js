@@ -4,9 +4,8 @@ var VisualRegressionCompare = require('wdio-visual-regression-service/compare');
 function getScreenshotName(basePath) {
         return function(context) {
                 var testName = context.test.title;
-                var browserVersion = parseInt(context.browser.version, 10);
-                var browserName = context.browser.name;
-                return path.join(basePath, `${testName}_${browserName}_v${browserVersion}.png`);
+                var browserName = context.browser.name.toLowerCase();
+                return path.join(basePath, `${testName}-${browserName}.png`);
         };
 }
 
@@ -114,7 +113,6 @@ exports.config = {
         //     webdriverrtc: {},
         //     browserevent: {}
         // },
-        
         plugins: {
                 'wdio-screenshot': {},
         },
@@ -144,7 +142,7 @@ exports.config = {
                         referenceName: getScreenshotName(path.join(process.cwd(), 'screenshots/reference')),
                         screenshotName: getScreenshotName(path.join(process.cwd(), 'screenshots/screen')),
                         diffName: getScreenshotName(path.join(process.cwd(), 'screenshots/diff')),
-                        misMatchTolerance: 0.01,
+                        misMatchTolerance: 0.6,
                 }),
                 viewportChangePause: 300,
                 widths: [320, 480, 640, 1024],

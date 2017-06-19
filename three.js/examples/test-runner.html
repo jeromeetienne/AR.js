@@ -23,8 +23,7 @@
 
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - switching between backend
-	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - BLABLA test runner for three.js
 	<br/>
 	Marker image 
 	<a href='../../../data/images/hiro.jpg' target='_blank'>hiro for artoolkit</a>
@@ -88,18 +87,20 @@
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
 
-	var arToolkitSource = new THREEx.ArToolkitSource({
-		// to read from the webcam 
-		// sourceType : 'webcam',
-		
-		// to read from an image
-		sourceType : 'image',
-		sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
-
-		// to read from a video
-		// sourceType : 'video',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
-	})
+	if( arBackend === 'artoolkit' ){
+		var sourceParameters = {
+			// to read from an image
+			sourceType : 'image',
+			sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
+		}
+	}else if( arBackend === 'aruco' ){
+		var sourceParameters = {
+			// to read from an image
+			sourceType : 'image',
+			sourceUrl : THREEx.ArToolkitContext.baseURL + 'vendor/threex-aruco/examples/images/screenshot-marker-aruco.png',		
+		}
+	}else console.assert(false)
+	var arToolkitSource = new THREEx.ArToolkitSource(sourceParameters)
 
 	arToolkitSource.init(function onReady(){
 		onResize()

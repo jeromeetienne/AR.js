@@ -1,4 +1,4 @@
-# AR.js - Efficient Augmented Reality for the Web using ARToolKit
+# AR.js - Efficient Augmented Reality for the Web
 
 I am focusing hard on making AR for the web a reality.
 This repository is where I publish the code.
@@ -15,7 +15,8 @@ So I wanted to publish thus people can try it and have fun with it :)
 [![AR.js 1.0 Video](https://cloud.githubusercontent.com/assets/252962/23441016/ab6900ce-fe17-11e6-971b-24614fb8ac0e.png)](https://youtu.be/0MtvjFg7tik)
 
 
-[![Gitter chat](https://badges.gitter.im/gitterHQ/services.png)](https://gitter.im/gitterHQ/services)
+
+If you wanna chat, check [![Gitter chat](https://badges.gitter.im/AR-js/Lobby.png)](https://gitter.im/AR-js/Lobby)
 
 # Try it on Mobile
 
