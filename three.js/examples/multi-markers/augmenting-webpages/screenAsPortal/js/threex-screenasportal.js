@@ -51,7 +51,7 @@ THREEx.ScreenAsPortal = function(multiMarkerFile, screenDepth){
 		var material	= new THREE.MeshBasicMaterial({
 			side: THREE.BackSide,
 			map: textureBox,
-			color: 'cyan',
+			color: 'blue',
 		}); 
 		var innerBoxMesh	= new THREE.Mesh( geometry, material );
 		innerBoxMesh.position.y = -geometry.parameters.height/2
