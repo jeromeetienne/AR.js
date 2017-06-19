@@ -1,8 +1,9 @@
 var THREEx = THREEx || {}
 
-THREEx.ScreenAsPortal = function(multiMarkerFile, screenDepth){
+THREEx.ScreenAsPortal = function(multiMarkerFile){
 	var _this = this
 	this.object3d = new THREE.Group
+	var screenDepth = screenSize.z
 
 	// init render loop
 	this._onRenderFcts = []
@@ -22,7 +23,6 @@ THREEx.ScreenAsPortal = function(multiMarkerFile, screenDepth){
 	boundingBox.max.z += markerSize/2 + whiteMargin
 	var screenSize = boundingBox.getSize()
 	
-
 	initCube()
 	addTargets()
 	addBorders()
@@ -51,7 +51,7 @@ THREEx.ScreenAsPortal = function(multiMarkerFile, screenDepth){
 		var material	= new THREE.MeshBasicMaterial({
 			side: THREE.BackSide,
 			map: textureBox,
-			color: 'blue',
+			color: 'white',
 		}); 
 		var innerBoxMesh	= new THREE.Mesh( geometry, material );
 		innerBoxMesh.position.y = -geometry.parameters.height/2
@@ -77,7 +77,7 @@ THREEx.ScreenAsPortal = function(multiMarkerFile, screenDepth){
 		for(var i = 0; i < nTargets; i++){
 			var positionX = (Math.random()-0.5)*(screenSize.x - targetModel.geometry.parameters.width )
 			var positionZ = (Math.random()-0.5)*(screenSize.z - targetModel.geometry.parameters.height)
-			var height = screenDepth*0.25 + Math.random() * (screenDepth * 1.5)
+			var height = screenDepth*0.25 + Math.random() * (screenDepth * 2)
 			addTarget( positionX, positionZ, height)
 		}
 		
