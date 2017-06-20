@@ -6,15 +6,34 @@
 <script src='https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js'></script>
 	
 <body>
-	
+	<h2>Augmenting the Web Page</h2>
 	<div id='descriptionForDesktop'>
-		<h2>You are on Desktop</h2>
+		<h5>Where you are and what gonna happen</h5>
+		This page is seen on a desktop/laptop.
+		This is a augmented reality on top of the webpage.
+		It happens as you can see on <a href=''>this video</a>.
+		
+		<br/>
+		<br/>
+		<h5>Where you have to do now</h5>
+		You will need to open the application url on your phone.
+		you can do with with a qrcode. it is likely the easiest. here is how to do it in a popup
+		you can do it with history sharing.
+		you can simply type it - ok i understand it isn't too pleasant
+		
 		<div id="qrCodeContainer">
 			
 		</div>
 	</div>
 	<div id='descriptionForPhone'>
-		<h2>You are on Phone</h2>
+		This page is seen on a phone.
+		You need to open the marker page on your browser. 
+		<br/>
+		<a id="emailURLtoMeLink" href='mailto:deb@empirerecords.biz?subject=BlogFeedback"'>
+			<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+				Email it to me
+			</button>
+		</a>
 	</div>
 
 	<div id="arAppURLView">
@@ -24,12 +43,45 @@
 			WebAR App
 		</button>
 	</a>
-	<a href='../markerPage/index.html'>
+	<a href='markers-page.html'>
 		<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
 			Marker Page
 		</button>
 	</a>
-	
+	<!-- Wide card with share menu button -->
+<style>
+.demo-card-wide.mdl-card {
+  width: 512px;
+}
+.demo-card-wide > .mdl-card__title {
+  color: #fff;
+  height: 176px;
+  background: url('../assets/demos/welcome_card.jpg') center / cover;
+}
+.demo-card-wide > .mdl-card__menu {
+  color: #fff;
+}
+</style>
+
+<div class="demo-card-wide mdl-card mdl-shadow--2dp">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">Welcome</h2>
+  </div>
+  <div class="mdl-card__supporting-text">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    Mauris sagittis pellentesque lacus eleifend lacinia...
+  </div>
+  <div class="mdl-card__actions mdl-card--border">
+    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+      Get Started
+    </a>
+  </div>
+  <div class="mdl-card__menu">
+    <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+      <i class="material-icons">share</i>
+    </button>
+  </div>
+</div>
 	<script>
 		// goto the proper landing page depending on where you run
 		var isMobile = 'ontouchstart' in window === true ? true : false
@@ -38,8 +90,9 @@
 	
 
 <script type="text/javascript">
-	var arAppURL = 'https://jeromeetienne.github.io/webar-playground/'
-	var arAppURL = '../screenAsPortal/screenAsPortal.html'
+
+	var arAppURL = location.protocol + '//' + location.host + location.pathname.replace(/[^\/]*$/, '') + 'examples/screenAsPortal/index.html'
+
 	// TODO take url from hash is available
 	document.body.querySelector('#arAppURLView').innerHTML = arAppURL
 	document.body.querySelector('#arAppURLLink').href = arAppURL

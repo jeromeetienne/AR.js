@@ -1,3 +1,20 @@
+- augmenting-webpages: 
+- landing page parameters
+  - arAppURL
+  - backURL
+- avoid page reload 
+  - it is slow on phone
+  - it leaves the fullscreen
+  - all the state change in screenAsPortal - remove them
+- 
+---
+- landing page got many issues
+  - ugly - use getmdl
+  - not explicative
+
+
+---------------------------------------------------
+
 - screenAsPortal - put a border like with hublo 360
 
 - add description in landing pages

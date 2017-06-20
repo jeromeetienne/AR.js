@@ -50,32 +50,32 @@
 	}
 </style>
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
-	<div style='position: absolute; top: 10px; width:100%; text-align: center;';>
+	<div style='position: absolute; bottom: 10px; width:100%; text-align: center;';>
 		<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Augmenting the screen - screen as a portal
 		by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 		<br/>
 		Tracking backend:
-		<a href='#artoolkit' onclick='setTrackingBackend("artoolkit")'>artoolkit</a> /
-		<a href='#aruco' onclick='setTrackingBackend("aruco")'>aruco</a>
+		<a href='javascript:void(0)' onclick='setTrackingBackend("artoolkit")'>artoolkit</a> /
+		<a href='javascript:void(0)' onclick='setTrackingBackend("aruco")'>aruco</a>
 		Current : <span id='currentTracking'></span>
 		<br/>
-		<a href='../landingPage/index.html'>Home</a>
+		<a href='javascript:void(0)' onclick='toggleFullScreen()'>fullscreen</a>
 		/
-		<a href='javascript:void(0)' onclick='toggleFullScreen()'>Toggle Fullscreen</a>
+		<a href='index.html'>landing page</a>
 	</div>
 	<div class='markers-aruco'>
-		<img class='marker-center marker-image' src='../../../../../three.js/threex/threex-aruco/examples/images/1001.png'>
-		<img class='marker-topleft marker-image' src='../../../../../three.js/threex/threex-aruco/examples/images/1002.png'>
-		<img class='marker-topright marker-image' src='../../../../../three.js/threex/threex-aruco/examples/images/1003.png'>
-		<img class='marker-bottomleft marker-image' src='../../../../../three.js/threex/threex-aruco/examples/images/1004.png'>
-		<img class='marker-bottomright marker-image' src='../../../../../three.js/threex/threex-aruco/examples/images/1005.png'>
+		<img class='marker-center marker-image' src='../../../three.js/threex/threex-aruco/examples/images/1001.png'>
+		<img class='marker-topleft marker-image' src='../../../three.js/threex/threex-aruco/examples/images/1002.png'>
+		<img class='marker-topright marker-image' src='../../../three.js/threex/threex-aruco/examples/images/1003.png'>
+		<img class='marker-bottomleft marker-image' src='../../../three.js/threex/threex-aruco/examples/images/1004.png'>
+		<img class='marker-bottomright marker-image' src='../../../three.js/threex/threex-aruco/examples/images/1005.png'>
 	</div>
 	<div class='markers-artoolkit'>
-		<img class='marker-center marker-image' src='../../../marker-training/examples/pattern-images/pattern-hiro.png'>
-		<img class='marker-topleft marker-image' src='../../../marker-training/examples/pattern-images/pattern-letterA.png'>
-		<img class='marker-topright marker-image' src='../../../marker-training/examples/pattern-images/pattern-letterB.png'>
-		<img class='marker-bottomleft marker-image' src='../../../marker-training/examples/pattern-images/pattern-letterC.png'>
-		<img class='marker-bottomright marker-image' src='../../../marker-training/examples/pattern-images/pattern-letterF.png'>
+		<img class='marker-center marker-image' src='../../../three.js/examples/marker-training/examples/pattern-images/pattern-hiro.png'>
+		<img class='marker-topleft marker-image' src='../../../three.js/examples/marker-training/examples/pattern-images/pattern-letterA.png'>
+		<img class='marker-topright marker-image' src='../../../three.js/examples/marker-training/examples/pattern-images/pattern-letterB.png'>
+		<img class='marker-bottomleft marker-image' src='../../../three.js/examples/marker-training/examples/pattern-images/pattern-letterC.png'>
+		<img class='marker-bottomright marker-image' src='../../../three.js/examples/marker-training/examples/pattern-images/pattern-letterF.png'>
 	</div>
 	<script>
 		// honor trackingBackend
@@ -85,7 +85,7 @@
 		function setTrackingBackend(trackingBackend){
 			document.body.classList.remove('trackingBackend-artoolkit')			
 			document.body.classList.remove('trackingBackend-aruco')			
-
+			document.querySelector('#currentTracking').innerHTML = trackingBackend
 			if( trackingBackend === 'artoolkit' ){
 				document.body.classList.add('trackingBackend-artoolkit')
 			}else if( trackingBackend === 'aruco' ){
