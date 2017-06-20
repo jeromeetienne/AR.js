@@ -80,7 +80,7 @@
 	
 	Dont forget the change the reciptien email address before sending it :)
 	`
-	var mailtoUrl = 'mailto:your-goes-here-name@example.com?subject=augmented-webpages&body='
+	var mailtoUrl = 'mailto:your-goes-here-name@example.com?subject=augmented-webpages&body='+encodeURIComponent(mailBody)
 	document.body.querySelector('#emailURLtoMeLink').href = mailtoUrl
 
 	// create qrCode
