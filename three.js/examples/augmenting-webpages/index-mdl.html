@@ -1,0 +1,41 @@
+<!-- needed to render correctly on mobile -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- getmdl.io -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+
+
+<body>
+	<!-- Always shows a header, even in smaller screens. -->
+	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+		<header class="mdl-layout__header">
+			<div class="mdl-layout__header-row">
+				<!-- Title -->
+				<span class="mdl-layout-title">Augmenting the Webpage</span>
+			</div>
+		</header>
+		<main class="mdl-layout__content">
+			<div class="page-content">
+			
+				<!-- Accent-colored raised button with ripple -->
+				<a href='https://github.com/jeromeetienne/ar.js' target='_blank'>
+					<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+						AR.js
+					</button>
+				</a>
+				<div class="mdl-grid">
+				  <div class="mdl-cell mdl-cell--4-col">4</div>
+				  <div class="mdl-cell mdl-cell--4-col">4</div>
+				  <div class="mdl-cell mdl-cell--4-col">4</div>
+				</div>
+			</div>
+		</main>
+	</div>
+	
+	<!-- getmdl.io -->
+	<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+	
+	<!-- from https://davidshimjs.github.io/qrcodejs/ -->
+	<script defer src='https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js'></script>
+</body>

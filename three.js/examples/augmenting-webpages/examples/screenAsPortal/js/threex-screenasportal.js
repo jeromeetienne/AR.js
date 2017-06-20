@@ -72,6 +72,8 @@ THREEx.ScreenAsPortal = function(multiMarkerFile){
 			color: 'white',
 		}) 
 		var innerBoxMesh	= new THREE.Mesh( geometry, material )
+		// innerBoxMesh.scale.set(0.96, 1, 0.96)
+		
 		innerBoxMesh.position.y = -geometry.parameters.height/2
 		_this.object3d.add( innerBoxMesh )		
 	}
