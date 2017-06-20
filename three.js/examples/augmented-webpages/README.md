@@ -1,2 +1,1 @@
-- use mate screen
 - read this post about [Augmenting the webpage](https://medium.com/arjs/augmenting-the-web-page-e893f2d199b8)
