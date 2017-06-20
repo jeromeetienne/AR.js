@@ -136,11 +136,15 @@ all the crazy ideas related to AR.js.
   by [@AndraConnect](https://twitter.com/AndraConnect)
 
 
-How to write a AR.js application ? Here is a
-[full tutorial](https://marmelab.com/blog/2017/06/19/augmented-reality-html5.html)
+# Nice Posts
+
+- How to write a AR.js application ?
+Here is a [full tutorial](https://marmelab.com/blog/2017/06/19/augmented-reality-html5.html)
 by [marmelab](https://marmelab.com/) featuring [François Zaninotto](https://twitter.com/francoisz).
 It explain how to code a full application on phone! Step by Steps, with explaination and videos. 
 Very great! the perfect step if you want to start writing AR application today.
+- Great post about [WebAR for designer](http://www.nexusinteractivearts.com/webar/)
+by [nexus interactive arts](http://www.nexusinteractivearts.com/)
 
 
 # Examples
