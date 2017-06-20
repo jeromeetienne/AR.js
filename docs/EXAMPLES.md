@@ -56,10 +56,10 @@
 - [backend switcher](https://jeromeetienne.github.io/AR.js/three.js/examples/arbackend-switch.html) :
   Show to easily switch between arBackend 'aruco' or 'jsartoolkit'
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arbackend-switch.html))
-- [Screen as portal](https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/augmenting-webpages/screenAsPortal/screenAsPortal.html) :
+- [Screen as portal](https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/augmented-webpages/examples/screenAsPortal/screenAsPortal.html) :
   augmenting webpage example with a screen as portal
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multi-markers/augmenting-webpages/screenAsPortal/screenAsPortal.html))
-- [augmenting-webpages](https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/augmenting-webpages/landingPage/index.html) :
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multi-markers/augmented-webpages/examples/screenAsPortal/screenAsPortal.html))
+- [augmented-webpages](https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/augmented-webpages/lindex.html) :
   augmenting webpage example 
    
 # a-frame Examples
