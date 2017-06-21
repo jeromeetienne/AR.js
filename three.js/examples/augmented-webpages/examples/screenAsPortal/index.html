@@ -78,18 +78,20 @@
 	// http://127.0.0.1:8080/three.js/examples/augmented-webpages/examples/screenAsPortal/index.html?trackingBackend=artoolkit&markerPageResolution=1024x653
 
 	;(function(){
-// 		var link = document.createElement("a");
-// link.href = "../../lib/slider/slider.css";
-// alert(link.protocol+"//"+link.host+link.pathname+link.search+link.hash);
+		// get resolutionW/resolutionH
 		console.assert(urlOptions.markerPageResolution !== undefined )
 		var matches = urlOptions.markerPageResolution.match(/(\d+)x(\d+)/)
 		console.assert(matches.length === 3)
 		var resolutionW = parseInt(matches[1])
 		var resolutionH = parseInt(matches[2])
-		THREEx.AugmentedWebpages.baseURL = 'http://127.0.0.1:8080/three.js/'
+
+		// compute baseURL in absolute
+		var link = document.createElement("a");
+		link.href = "../../../../";
+		THREEx.AugmentedWebpages.baseURL = link.protocol+"//"+link.host+link.pathname
+		// buildAreaFileFromResolution
 		var file = THREEx.AugmentedWebpages.buildAreaFileFromResolution('artoolkit', resolutionW, resolutionH)
 		localStorage.setItem('ARjsMultiMarkerFile', JSON.stringify(file))
-
 	})()
 
 

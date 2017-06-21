@@ -38,9 +38,6 @@ THREEx.AugmentedWebpages.buildAreaFileFromResolution = function(trackingBackend,
 	
 	var subMarkerControls = buildSubMarkerControls('bottomright', +deltaX, +deltaZ)
 	file.subMarkersControls.push(subMarkerControls)
-// debugger
-	console.log('deltaX', deltaX, 'deltaZ', deltaZ, 'outterMarkerSize', outterMarkerSize)
-	console.dir(file)
 		
 	return file
 	
