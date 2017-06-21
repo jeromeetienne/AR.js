@@ -1,11 +1,47 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<!-- IOS: Set your app name -->
+<meta name="apple-mobile-web-app-title" content="AR.js Augmented Webpages" />
+<!-- IOS: Set your app to full screen mode -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
 <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
 <link rel='stylesheet' href='https://code.getmdl.io/1.3.0/material.indigo-pink.min.css'>
 <script defer src='https://code.getmdl.io/1.3.0/material.min.js'></script>
 
 <!-- https://davidshimjs.github.io/qrcodejs/ -->
 <script src='https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js'></script>
-	
+
+<link rel='stylesheet' href='css/main.css'>
+<link rel='stylesheet' href='css/markers-overlay.css'>
+
 <body>
+	<div id="markers-page" style='display: none;'>
+		<div style='position: absolute; bottom: 10px; width:100%; text-align: center;';>
+			Tracking backend:
+			<a href='javascript:void(0)' onclick='setMarkerPageTrackingBackend("artoolkit")'>artoolkit</a> /
+			<a href='javascript:void(0)' onclick='setMarkerPageTrackingBackend("aruco")'>aruco</a>
+			Current : <span id='currentTracking'></span>
+			<br/>
+			<a href='javascript:void(0)' onclick='toggleMarkerPage()'>toggle marker</a>
+		</div>
+		<div class='markers-aruco'>
+			<img class='marker-center marker-image' src='../../../../three.js/threex/threex-aruco/examples/images/1001.png'>
+			<img class='marker-topleft marker-image' src='../../../../three.js/threex/threex-aruco/examples/images/1002.png'>
+			<img class='marker-topright marker-image' src='../../../../three.js/threex/threex-aruco/examples/images/1003.png'>
+			<img class='marker-bottomleft marker-image' src='../../../../three.js/threex/threex-aruco/examples/images/1004.png'>
+			<img class='marker-bottomright marker-image' src='../../../../three.js/threex/threex-aruco/examples/images/1005.png'>
+		</div>
+		<div class='markers-artoolkit'>
+			<img class='marker-center marker-image' src='../../../../three.js/examples/marker-training/examples/pattern-images/pattern-hiro.png'>
+			<img class='marker-topleft marker-image' src='../../../../three.js/examples/marker-training/examples/pattern-images/pattern-letterA.png'>
+			<img class='marker-topright marker-image' src='../../../../three.js/examples/marker-training/examples/pattern-images/pattern-letterB.png'>
+			<img class='marker-bottomleft marker-image' src='../../../../three.js/examples/marker-training/examples/pattern-images/pattern-letterC.png'>
+			<img class='marker-bottomright marker-image' src='../../../../three.js/examples/marker-training/examples/pattern-images/pattern-letterF.png'>
+		</div>
+	</div>
+
 	<h2>Augmented webpages<h2>
 	<h4>Adding augmented reality to webpages</h4>
 	<hr/>
@@ -19,11 +55,11 @@
 		<!-- TODO in mdl, this could be 3 cards -->
 		<li>
 			Step 1: Open the application page on your phone.
-			- <a id='arAppURLLink' href='#'>link</a>
+			- <a id='arAppURLLink' href='#'>AR App</a>
 		</li>
 		<li>
 			Step 2: Open the marker page on your desktop/laptop. 
-			- <a href='markers-page/markers-page.html'>link</a>
+			- <a href='javascript:void(0)' onclick='toggleMarkerPage()'>toggle marker</a>
 		</li>
 		<li>
 			Step 3: Point your phone at the screen and enjoy :)
@@ -35,11 +71,14 @@
 	<hr/>
 	<hr/>
 	<hr/>
+
+	wanna get <a href='javascript:void(0)' onclick='toggleFullScreen()'>fullscreen</a> ?
+	wanna know <a href='javascript:void(0)' onclick='displayResolution()'>resolution</a> ?
+
 	<h5>How to share URL between your phone and your computer</h5>
 	
 	<div id='qrCodeContainer' style='float: right'></div>
 
-	<!-- to ease copy/paste https://css-tricks.com/copy-paste-the-web/ -->
 	<input id='arAppURLView' type='text' size='80' >
 	<ul>
 		<li>you can do with with a qrcode. it is likely the easiest. see below</li>
@@ -48,6 +87,8 @@
 		<li>you can copy/paste the link and handle it yourself</li>
 		<li>you can simply type it - low tech</li>
 	</ul>
+	
+
 	
 	
 	
@@ -67,8 +108,14 @@
 		var arAppURL = location.hash.substring(1)
 	}else{
 		// build arAppURL
+		// FIXME pass from relative to absolute url in a better way
 		var arAppURL = location.protocol + '//' + location.host + location.pathname.replace(/[^\/]*$/, '') + 'examples/screenAsPortal/index.html'		
 	}
+	arAppURL = arAppURL + '#' + JSON.stringify({
+		trackingBackend: 'artoolkit',
+		markerPageResolution: window.innerWidth + 'x' + window.innerHeight,
+		// markerPageResolution: 1024 + 'x' + 653,
+	})
 
 	// Update arAppURL in the webpage
 	document.body.querySelector('#arAppURLView').value = arAppURL
@@ -95,4 +142,67 @@
 		qrCodeImage.style.margin = '3em'
 		document.body.querySelector('#qrCodeContainer').appendChild(qrCodeImage)				
 	})()
+	
+	function toggleMarkerPage(){
+		var domElement = document.querySelector('#markers-page')
+		if( domElement.style.display === 'none' ){
+			domElement.style.display = 'block'
+		}else{
+			domElement.style.display = 'none'
+		}
+	}
+	//////////////////////////////////////////////////////////////////////////////
+	//		setMarkerPageTrackingBackend
+	//////////////////////////////////////////////////////////////////////////////
+	setMarkerPageTrackingBackend('artoolkit')	
+	function setMarkerPageTrackingBackend(trackingBackend){
+		// trackingBackend feedback
+		document.querySelector('#currentTracking').innerHTML = trackingBackend
+		// remove previous classes
+		document.body.classList.remove('trackingBackend-artoolkit')			
+		document.body.classList.remove('trackingBackend-aruco')
+		// set the proper class
+		if( trackingBackend === 'artoolkit' ){
+			document.body.classList.add('trackingBackend-artoolkit')
+		}else if( trackingBackend === 'aruco' ){
+			document.body.classList.add('trackingBackend-aruco')			
+		}else console.assert(false)
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		toggleFullScreen
+	//////////////////////////////////////////////////////////////////////////////
+	// from https://stackoverflow.com/questions/21280966/toggle-fullscreen-exit
+	function toggleFullScreen() {
+		if (!document.fullscreenElement 
+			&& !document.mozFullScreenElement 
+			&& !document.webkitFullscreenElement && !document.msFullscreenElement 
+		) {  // current working methods
+			if (document.documentElement.requestFullscreen) {
+				document.documentElement.requestFullscreen();
+			} else if (document.documentElement.msRequestFullscreen) {
+				document.documentElement.msRequestFullscreen();
+			} else if (document.documentElement.mozRequestFullScreen) {
+				document.documentElement.mozRequestFullScreen();
+			} else if (document.documentElement.webkitRequestFullscreen) {
+				document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+			}
+		} else {
+			if (document.exitFullscreen) {
+				document.exitFullscreen();
+			} else if (document.msExitFullscreen) {
+				document.msExitFullscreen();
+			} else if (document.mozCancelFullScreen) {
+				document.mozCancelFullScreen();
+			} else if (document.webkitExitFullscreen) {
+				document.webkitExitFullscreen();
+			}
+		}
+	}
+	
+	
+	function displayResolution(){
+		var resolution = window.innerWidth + 'x' + window.innerHeight
+		alert('resolution is ' + resolution)
+	}
 </script></body>

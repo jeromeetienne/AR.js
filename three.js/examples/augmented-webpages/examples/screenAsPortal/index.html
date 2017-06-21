@@ -27,6 +27,7 @@
 <script src='../../../multi-markers/threex-armultimarkerlearning.js'></script>
 
 <script src='js/threex-screenasportal.js'></script>
+<script src='../../js/threex-augmentedwebpages.js'></script>
 
 <style>
 	#recordButton:hover {
@@ -59,6 +60,39 @@
 </div>
 <script>
 ;(function(){
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          handle urlOptions
+	////////////////////////////////////////////////////////////////////////////////
+
+	if( location.hash.substring(1) ){
+		var urlOptions = JSON.parse(location.hash.substring(1))
+	}else{
+		var urlOptions = {
+			trackingBackend : 'artoolkit',
+			markerPageResolution : '1024x653'
+		}
+	}
+	
+
+	// http://127.0.0.1:8080/three.js/examples/augmented-webpages/examples/screenAsPortal/index.html?trackingBackend=artoolkit&markerPageResolution=1024x653
+
+	;(function(){
+// 		var link = document.createElement("a");
+// link.href = "../../lib/slider/slider.css";
+// alert(link.protocol+"//"+link.host+link.pathname+link.search+link.hash);
+		console.assert(urlOptions.markerPageResolution !== undefined )
+		var matches = urlOptions.markerPageResolution.match(/(\d+)x(\d+)/)
+		console.assert(matches.length === 3)
+		var resolutionW = parseInt(matches[1])
+		var resolutionH = parseInt(matches[2])
+		THREEx.AugmentedWebpages.baseURL = 'http://127.0.0.1:8080/three.js/'
+		var file = THREEx.AugmentedWebpages.buildAreaFileFromResolution('artoolkit', resolutionW, resolutionH)
+		localStorage.setItem('ARjsMultiMarkerFile', JSON.stringify(file))
+
+	})()
+
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////
@@ -80,51 +114,14 @@
 	// init scene and camera
 	var scene	= new THREE.Scene();
 
-
-	// ////////////////////////////////////////////////////////////////////////////////
-	// //          handle urlOptions
-	// ////////////////////////////////////////////////////////////////////////////////
-	// 
-	// var hasHash = location.hash.substring(1) !== '' ? true : false
-	// if( hasHash === true ){
-	// 	var urlOptions = JSON.parse(location.hash.substring(1))
-	// }else{
-	// 	var urlOptions = {
-	// 		areaSource : 'localStorage',
-	// 		arBackend: 'artoolkit',
-	// 		markerHelpers: false,
-	// 	}
-	// }
-	// window.urlOptions = urlOptions
-	// urlOptionsUpdate()
-	// window.reload = function(){
-	// 	urlOptionsUpdate()
-	// 	location.reload()
-	// }
-	// function urlOptionsUpdate(){
-	// 	location.hash = '#'+JSON.stringify(urlOptions)
-	// }
-	// 
-	// if( urlOptions.areaSource === 'localStorage' && localStorage.getItem('ARjsMultiMarkerFile') === null ){
-	// 	alert('No area has been learned on this device!\n Using only hardcoded single marker hiro/1001.')
-	// 	urlOptions.areaSource === 'hardcodedSingle'	
-	// 	urlOptionsUpdate()
-	// }
-	
-	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
-	//////////////////////////////////////////////////////////////////////////////
-	var trackingBackend = location.hash.substring(1) || 'artoolkit'
-
-
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// Create a camera
-	if( trackingBackend === 'aruco' ){
+	if( urlOptions.trackingBackend === 'aruco' ){
 		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
-	}else if( trackingBackend === 'artoolkit' ){
+	}else if( urlOptions.trackingBackend === 'artoolkit' ){
 		var camera = new THREE.Camera();
 	}else console.assert(false)
 	scene.add(camera);
@@ -135,7 +132,7 @@
 
 	var artoolkitProfile = new THREEx.ArToolkitProfile()
 	artoolkitProfile.sourceWebcam()
-		// .performance('desktop-normal')
+		// .performance('desktop-fast')
 
 	var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)
 
@@ -150,12 +147,12 @@
 	function onResize(){
 		arToolkitSource.onResize()
 		arToolkitSource.copySizeTo(renderer.domElement)	
-		if( trackingBackend === 'aruco' ){
+		if( urlOptions.trackingBackend === 'aruco' ){
 			arToolkitSource.copySizeTo(arToolkitContext.arucoContext.canvas)	
 
 			camera.aspect = renderer.domElement.width / renderer.domElement.height;
 			camera.updateProjectionMatrix();			
-		}else if( trackingBackend === 'artoolkit' ){
+		}else if( urlOptions.trackingBackend === 'artoolkit' ){
 			if( arToolkitContext.arController !== null ){
 				arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
 			}	
@@ -166,8 +163,8 @@
 	//          initialize arToolkitContext
 	////////////////////////////////////////////////////////////////////////////////	
 
-	// honor trackingBackend
-	artoolkitProfile.contextParameters.arBackend = trackingBackend
+	// honor urlOptions.trackingBackend
+	artoolkitProfile.contextParameters.arBackend = urlOptions.trackingBackend
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
@@ -189,7 +186,7 @@
 	//		init learnerParameters and markersControlsParameters
 	//////////////////////////////////////////////////////////////////////////////
 
-	if( trackingBackend === 'artoolkit' ){
+	if( urlOptions.trackingBackend === 'artoolkit' ){
 		// pattern hiro/kanji/a/b/c/f
 		var patternBaseUrl = location.protocol + '//'  + location.host + location.pathname + '/../../../../../'
 		
@@ -219,7 +216,7 @@
 				patternUrl : patternBaseUrl + 'examples/marker-training/examples/pattern-files/pattern-letterF.patt',
 			},
 		]		
-	}else if( trackingBackend === 'aruco' ){
+	}else if( urlOptions.trackingBackend === 'aruco' ){
 		var markersControlsParameters = [
 			{
 				type : 'barcode',
@@ -255,7 +252,7 @@
 		// 
 		var learnerParameters = {
 			backURL : location.href,
-			arBackend: trackingBackend,
+			arBackend: urlOptions.trackingBackend,
 			markersControlsParameters: markersControlsParameters,
 		}
 		location.href = THREEx.ArToolkitContext.baseURL + 'examples/multi-markers/examples/learner.html#'+JSON.stringify(learnerParameters)
@@ -267,7 +264,7 @@
 
 	// if no localStorage.ARjsMultiMarkerFile, then write one with default marker
 	if( localStorage.getItem('ARjsMultiMarkerFile') === null ){
-		THREEx.ArMultiMarkerControls.storeDefaultMultiMarkerFile(trackingBackend)
+		THREEx.ArMultiMarkerControls.storeDefaultMultiMarkerFile(urlOptions.trackingBackend)
 	}
 
 	
@@ -311,11 +308,11 @@
 	onRenderFcts.push(function(delta){
 		// parameters for updateSmoothedControls
 		var lerpsValues = [
-			[0.8, 0.1, 0.3],
-			[0.8, 0.1, 0.4],
-			[0.8, 0.2, 0.5],
-			[0.8, 0.2, 0.7],
-			[0.8, 0.2, 0.7],
+			[0.4, 0.1, 1.0],
+			[0.5, 0.1, 1.0],
+			[0.6, 0.2, 1.0],
+			[0.7, 0.2, 1.0],
+			[0.8, 0.2, 1.0],
 		]
 		// update smoothedControls parameters depending on how many markers are visible in multiMarkerControls
 		multiMarkerControls.updateSmoothedControls(smoothedControls, lerpsValues)

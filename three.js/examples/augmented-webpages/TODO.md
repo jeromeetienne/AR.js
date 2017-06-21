@@ -1,3 +1,15 @@
+- DONE make marker page part of landing page
+- generate multi marker file based on window resolution
+  - test hardcoded in player.html
+  - then pass it as parameters from landing-page
+- pass resolution from homepage to appPage
+  - get the multi marker from resolution if it is present
+  - get multi markers from localstorage is available
+  - else use default markers
+  - keep all the usual process of learning
+- later refactor learning in multimarker itself
+  - this will clean the code for webar-playground and other potential application
+
 # TODO 
 - cleanup code in the screenAsPortal examples
   - then make that the example for multi marker with a simpler 3d

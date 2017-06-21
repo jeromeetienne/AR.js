@@ -1,0 +1,59 @@
+#markers-page {
+	background-color: #222;
+	height: 100%;
+	position: relative;
+	top: 0%;
+	left: 0%;
+}
+
+
+/*============================================================================*/
+/*============================================================================*/
+/*============================================================================*/
+/*============================================================================*/
+
+
+.marker-image {
+	height:40%;
+}
+.marker-center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	/* bring your own prefixes */
+	transform: translate(-50%, -50%);		
+}
+.marker-topleft {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.marker-topright {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+.marker-bottomleft {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+.marker-bottomright{
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+
+.trackingBackend-aruco .markers-artoolkit {
+	display : none;
+}
+.trackingBackend-aruco .markers-aruco {
+	display : block;
+}
+.trackingBackend-artoolkit .markers-artoolkit {
+	background-color: #444;
+	display : block;
+}
+.trackingBackend-artoolkit .markers-aruco {
+	display : none;
+}

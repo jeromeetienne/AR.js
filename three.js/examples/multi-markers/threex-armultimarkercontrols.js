@@ -295,6 +295,12 @@ if( true ){
 //////////////////////////////////////////////////////////////////////////////
 
 THREEx.ArMultiMarkerControls.storeDefaultMultiMarkerFile = function(arBackend){
+	var file = THREEx.ArMultiMarkerControls.createDefaultMultiMarkerFile(arBackend)
+	// json.strinfy the value and store it in localStorage
+	localStorage.setItem('ARjsMultiMarkerFile', JSON.stringify(file))
+}
+
+THREEx.ArMultiMarkerControls.createDefaultMultiMarkerFile = function(arBackend){
 	// create the base file
 	var file = {
 		meta : {
@@ -320,5 +326,5 @@ THREEx.ArMultiMarkerControls.storeDefaultMultiMarkerFile = function(arBackend){
 	}else console.assert(false)
 	
 	// json.strinfy the value and store it in localStorage
-	localStorage.setItem('ARjsMultiMarkerFile', JSON.stringify(file))
+	return file
 }
