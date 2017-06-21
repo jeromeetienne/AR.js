@@ -1,14 +1,6 @@
-- CLEAN UP STUFF
 - NOGO in player, load the hardcoded from a file
   - clean up the code and demo the case
   - link the hardcoded one with the image of the multi marker
-
-- clean up data/images
-  - a lot of file from experiementation qr-code or multimarker
-  - remove them
-
-- park official jsartoolkit stuff
-
 
 ---
 # Porting to a-frame

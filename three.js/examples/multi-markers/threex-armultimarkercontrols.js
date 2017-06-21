@@ -23,6 +23,7 @@ THREEx.ArMultiMarkerControls.prototype.constructor = THREEx.ArMultiMarkerControl
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 
+
 /**
  * What to do when a image source is fully processed
  */
@@ -205,6 +206,10 @@ THREEx.ArMultiMarkerControls.computeBoundingBox = function(jsonData){
 THREEx.ArMultiMarkerControls.prototype.updateSmoothedControls = function(smoothedControls, lerpsValues){
 	// handle default values
 	if( lerpsValues === undefined ){
+		// FIXME this parameter format is uselessly cryptic
+		// lerpValues = [
+		// {lerpPosition: 0.5, lerpQuaternion: 0.2, lerpQuaternion: 0.7}
+		// ]
 		lerpsValues = [
 			[0.4, 0.1, 0.3],
 			[0.4, 0.1, 0.4],
@@ -283,4 +288,37 @@ if( true ){
 
 	// return it
 	return multiMarkerControls	
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		storeDefaultMultiMarkerFile
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.ArMultiMarkerControls.storeDefaultMultiMarkerFile = function(arBackend){
+	// create the base file
+	var file = {
+		meta : {
+			createdBy : "AR.js "+THREEx.ArToolkitContext.REVISION,
+			createdAt : new Date().toJSON(),
+		},
+		arBackend : arBackend,
+		subMarkersControls : [
+			// empty for now...
+		]
+	}
+	// add a subMarkersControls
+	file.subMarkersControls[0] = {
+		parameters: {},
+		poseMatrix: new THREE.Matrix4().makeTranslation(0,0, 0).toArray(),
+	}
+	if( arBackend === 'aruco' ){
+		file.subMarkersControls[0].parameters.type = 'barcode'
+		file.subMarkersControls[0].parameters.barcodeValue = 1001
+	}else if( arBackend === 'artoolkit' ){
+		file.subMarkersControls[0].parameters.type = 'pattern'
+		file.subMarkersControls[0].parameters.patternUrl = THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt'
+	}else console.assert(false)
+	
+	// json.strinfy the value and store it in localStorage
+	localStorage.setItem('ARjsMultiMarkerFile', JSON.stringify(file))
 }

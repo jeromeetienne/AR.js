@@ -16,13 +16,14 @@
 
 	<h5>Where you have to do now</h5>
 	<ul>
+		<!-- TODO in mdl, this could be 3 cards -->
 		<li>
 			Step 1: Open the application page on your phone.
 			- <a id='arAppURLLink' href='#'>link</a>
 		</li>
 		<li>
 			Step 2: Open the marker page on your desktop/laptop. 
-			- <a href='markers-page.html'>link</a>
+			- <a href='markers-page/markers-page.html'>link</a>
 		</li>
 		<li>
 			Step 3: Point your phone at the screen and enjoy :)
@@ -42,12 +43,10 @@
 	<input id='arAppURLView' type='text' size='80' >
 	<ul>
 		<li>you can do with with a qrcode. it is likely the easiest. see below</li>
-		<li>email it to yourself</li>
+		<li>email it to yourself - <a id='emailURLtoMeLink' href='#' target='_blank'>link</a></li>
 		<li>you can do it with history sharing.</li>
-		<li>email it to yourself - <a id='emailURLtoMeLink' href='#' target='_blank'>link</a>
-		</li>
 		<li>you can copy/paste the link and handle it yourself</li>
-		<li>you can simply type it - ok i understand it isn't too pleasant</li>
+		<li>you can simply type it - low tech</li>
 	</ul>
 	
 	
@@ -75,11 +74,10 @@
 	document.body.querySelector('#arAppURLView').value = arAppURL
 	document.body.querySelector('#arAppURLLink').href = arAppURL
 	
-	var mailBody = `
-	The AR.js App is at ${arAppURL}.
+	// prepare emailURLtoMeLink
+	var mailBody = `The AR.js App is at ${arAppURL}.
 	
-	Dont forget the change the reciptien email address before sending it :)
-	`
+	Dont forget the change the reciptien email address before sending it :)`
 	var mailtoUrl = 'mailto:your-goes-here-name@example.com?subject=augmented-webpages&body='+encodeURIComponent(mailBody)
 	document.body.querySelector('#emailURLtoMeLink').href = mailtoUrl
 

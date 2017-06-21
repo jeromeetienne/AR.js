@@ -1,12 +1,52 @@
+# TODO 
+- cleanup code in the screenAsPortal examples
+  - then make that the example for multi marker with a simpler 3d
+- put learner in the same .html to avoid reload
+- maybe do a threex-armultimarkersimple.js which regroup the usual usage of multi marker
+  - thus the boilerplate isnt too big when it is repeated all the time
+- clean up learner
+  - remove arToolkitContext
+  - have caller listen to the event and call areaLearning.onSourceProcessed()
+- we learn while we play ? thus the result are getting better and better
+- able to play when all marker are markers as learned
+- do nice visual on each marker - phase 'scan all the markers'
+- once all markers are learned we can start playing
+
+# What with resolution
+- if i got the resolution from the marker screen in the app, i can easily/immediatly generate the perfect markers.
+- so it got better accuracy, and immediate result
+- seem the way to go - do AR application receive trackingBackend and screenResolution. all that in hash
+- as app is coming from landing page, have the landing page pass the screen resolution
+- to avoid the page reload, make the marker page in the index.html
+  - thus we got ability to get fullscreen
+- when going to marker-page, goto fullscreen at the same time ?
+
+- so lets see if it is correct
+
+- do AR application receive trackingBackend and screenResolution. all that in hash
+- here compute the multimarker
+
+
+- what if it is read on a phone first ?
+  - we force another scanning ?
+  - we ask to explicitly learn ?
+  - doesnt seems avoid to add an extra step - another scanning seems the less painful
+  - on the other hand to say 'read this page on a desktop' isnt much... because you already need a desktop close to you
+
+# Misc
+- do a area: learn - reset
+- in player.html page UI
+  - do a area: learn - reset
+  - markerhelper 
+  - learn area - button exist
+- DONE in player.html
+  - remove all hash state
+  - aruco/artoolkit only in into via hash
+
+- /marker-page/index.html
+
 - augmenting-webpages: 
-- landing page parameters
-  - arAppURL
-  - backURL
-- avoid page reload 
-  - it is slow on phone
-  - it leaves the fullscreen
-  - all the state change in screenAsPortal - remove them
-- 
+
 ---
 - landing page got many issues
   - ugly - use getmdl

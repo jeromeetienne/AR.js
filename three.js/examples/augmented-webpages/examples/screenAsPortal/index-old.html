@@ -38,21 +38,21 @@
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1; color: grey;';>
 	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Augmenting the screen - screen as a portal
 	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
-	<!-- <br>
-	<a href='../../index.html'>landing page</a> -->
+	<br>
+	<a href='../../index.html'>landing page</a>
 </div>
 <div style='position: fixed; bottom: 10px; width:100%; text-align: center;z-index:1; color: grey;';>
-	<!-- Area source: 
+	Area source: 
 		<a href='javascript:void(0)' onclick='urlOptions.areaSource = "localStorage"; reload()'>localStorage</a>
 		/
 		<a href='javascript:void(0)' onclick='urlOptions.areaSource = "hardcodedSingle"; reload()'>hardcodedSingle</a>
-	<br> -->
-	<!-- ar backend: 
-		<a href='javascript:void(0)' onclick='trackingBackend = "artoolkit"; reload()'>artoolkit</a>
+	<br>
+	ar backend: 
+		<a href='javascript:void(0)' onclick='urlOptions.arBackend = "artoolkit"; reload()'>artoolkit</a>
 		/
-		<a href='javascript:void(0)' onclick='trackingBackend = "aruco"; reload()'>aruco</a>
-	<br> -->
-	<a href='javascript:void(0)' onclick='toggleMarkerHelper()'>marker helper : <span id='markerHelpersStatus'></span></a>
+		<a href='javascript:void(0)' onclick='urlOptions.arBackend = "aruco"; reload()'>aruco</a>
+	<br>
+	<a href='javascript:void(0)' onclick='touggleMarkerHelper()'>marker helper</a>
 </div>
 <div style='position: fixed; bottom: 16px; right: 16px; z-index:1';>
 	<img id='recordButton' src="../../../multi-markers/examples/images/record-start.png" width='64px'  height='64px'>
@@ -81,50 +81,46 @@
 	var scene	= new THREE.Scene();
 
 
-	// ////////////////////////////////////////////////////////////////////////////////
-	// //          handle urlOptions
-	// ////////////////////////////////////////////////////////////////////////////////
-	// 
-	// var hasHash = location.hash.substring(1) !== '' ? true : false
-	// if( hasHash === true ){
-	// 	var urlOptions = JSON.parse(location.hash.substring(1))
-	// }else{
-	// 	var urlOptions = {
-	// 		areaSource : 'localStorage',
-	// 		arBackend: 'artoolkit',
-	// 		markerHelpers: false,
-	// 	}
-	// }
-	// window.urlOptions = urlOptions
-	// urlOptionsUpdate()
-	// window.reload = function(){
-	// 	urlOptionsUpdate()
-	// 	location.reload()
-	// }
-	// function urlOptionsUpdate(){
-	// 	location.hash = '#'+JSON.stringify(urlOptions)
-	// }
-	// 
-	// if( urlOptions.areaSource === 'localStorage' && localStorage.getItem('ARjsMultiMarkerFile') === null ){
-	// 	alert('No area has been learned on this device!\n Using only hardcoded single marker hiro/1001.')
-	// 	urlOptions.areaSource === 'hardcodedSingle'	
-	// 	urlOptionsUpdate()
-	// }
-	
-	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
-	//////////////////////////////////////////////////////////////////////////////
-	var trackingBackend = location.hash.substring(1) || 'artoolkit'
 
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          handle urlOptions
+	////////////////////////////////////////////////////////////////////////////////
+
+	var hasHash = location.hash.substring(1) !== '' ? true : false
+	if( hasHash === true ){
+		var urlOptions = JSON.parse(location.hash.substring(1))
+	}else{
+		var urlOptions = {
+			areaSource : 'localStorage',
+			arBackend: 'artoolkit',
+			markerHelpers: false,
+		}
+	}
+	window.urlOptions = urlOptions
+	urlOptionsUpdate()
+	window.reload = function(){
+		urlOptionsUpdate()
+		location.reload()
+	}
+	function urlOptionsUpdate(){
+		location.hash = '#'+JSON.stringify(urlOptions)
+	}
+	
+	if( urlOptions.areaSource === 'localStorage' && localStorage.getItem('ARjsMultiMarkerFile') === null ){
+		alert('No area has been learned on this device!\n Using only hardcoded single marker hiro/1001.')
+		urlOptions.areaSource === 'hardcodedSingle'	
+		urlOptionsUpdate()
+	}
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// Create a camera
-	if( trackingBackend === 'aruco' ){
+	if( urlOptions.arBackend === 'aruco' ){
 		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
-	}else if( trackingBackend === 'artoolkit' ){
+	}else if( urlOptions.arBackend === 'artoolkit' ){
 		var camera = new THREE.Camera();
 	}else console.assert(false)
 	scene.add(camera);
@@ -150,12 +146,12 @@
 	function onResize(){
 		arToolkitSource.onResize()
 		arToolkitSource.copySizeTo(renderer.domElement)	
-		if( trackingBackend === 'aruco' ){
+		if( urlOptions.arBackend === 'aruco' ){
 			arToolkitSource.copySizeTo(arToolkitContext.arucoContext.canvas)	
 
 			camera.aspect = renderer.domElement.width / renderer.domElement.height;
 			camera.updateProjectionMatrix();			
-		}else if( trackingBackend === 'artoolkit' ){
+		}else if( urlOptions.arBackend === 'artoolkit' ){
 			if( arToolkitContext.arController !== null ){
 				arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
 			}	
@@ -166,8 +162,8 @@
 	//          initialize arToolkitContext
 	////////////////////////////////////////////////////////////////////////////////	
 
-	// honor trackingBackend
-	artoolkitProfile.contextParameters.arBackend = trackingBackend
+	// honor urlOptions.arBackend
+	artoolkitProfile.contextParameters.arBackend = urlOptions.arBackend
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
@@ -189,7 +185,7 @@
 	//		init learnerParameters and markersControlsParameters
 	//////////////////////////////////////////////////////////////////////////////
 
-	if( trackingBackend === 'artoolkit' ){
+	if( urlOptions.arBackend === 'artoolkit' ){
 		// pattern hiro/kanji/a/b/c/f
 		var patternBaseUrl = location.protocol + '//'  + location.host + location.pathname + '/../../../../../'
 		
@@ -219,7 +215,7 @@
 				patternUrl : patternBaseUrl + 'examples/marker-training/examples/pattern-files/pattern-letterF.patt',
 			},
 		]		
-	}else if( trackingBackend === 'aruco' ){
+	}else if( urlOptions.arBackend === 'aruco' ){
 		var markersControlsParameters = [
 			{
 				type : 'barcode',
@@ -250,12 +246,12 @@
 
 	
 	document.querySelector('#recordButton').addEventListener('click', function(){
-		// urlOptions.areaSource = 'localStorage'	
-		// urlOptionsUpdate()
-		// 
+		urlOptions.areaSource = 'localStorage'	
+		urlOptionsUpdate()
+
 		var learnerParameters = {
 			backURL : location.href,
-			arBackend: trackingBackend,
+			arBackend: urlOptions.arBackend,
 			markersControlsParameters: markersControlsParameters,
 		}
 		location.href = THREEx.ArToolkitContext.baseURL + 'examples/multi-markers/examples/learner.html#'+JSON.stringify(learnerParameters)
@@ -264,15 +260,39 @@
 	//////////////////////////////////////////////////////////////////////////////
 	//		get multiMarkerFile
 	//////////////////////////////////////////////////////////////////////////////
-
-	// if no localStorage.ARjsMultiMarkerFile, then write one with default marker
-	if( localStorage.getItem('ARjsMultiMarkerFile') === null ){
-		THREEx.ArMultiMarkerControls.storeDefaultMultiMarkerFile(trackingBackend)
-	}
-
 	
-	console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
-	var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
+	if( urlOptions.areaSource === 'localStorage' ){
+		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
+		var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
+	}else if( urlOptions.areaSource === 'hardcodedSingle' ){
+		if( urlOptions.arBackend === 'artoolkit' ){
+			var multiMarkerFile = JSON.stringify({
+				subMarkersControls : [
+					{
+						parameters: {
+							type : 'pattern',
+							patternUrl : THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt',
+						},
+						poseMatrix: new THREE.Matrix4().makeTranslation(0,0,0).toArray()
+					},
+				]
+			})
+		}else if( urlOptions.arBackend === 'aruco' ){
+			var multiMarkerFile = JSON.stringify({
+				subMarkersControls : [
+					{
+						parameters: {
+							type : 'barcode',
+							barcodeValue : 1001,
+						},
+						poseMatrix: new THREE.Matrix4().makeTranslation(0,0,0).toArray()
+					},
+				]
+			})
+		}else console.assert(false)
+	}else{
+		console.assert('unknown areaSource', areaSource)
+	}
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		Create ArMultiMarkerControls
@@ -291,17 +311,13 @@
 		subMarkerControls.object3d.add( markerHelper.object3d )				
 		markerHelpers.push(markerHelper)
 	})
-	window.toggleMarkerHelper = toggleMarkerHelper
-	function toggleMarkerHelper(){
-		var wasVisible = markerHelpers[0].object3d.visible;
-
-		document.querySelector('#markerHelpersStatus').innerHTML = wasVisible === false ? 'visible' : 'hidden'
-
+	window.touggleMarkerHelper = touggleMarkerHelper
+	function touggleMarkerHelper(){
+		var isVisible = markerHelpers[0].object3d.visible;
 		markerHelpers.forEach(function(markerHelper){
-			markerHelper.object3d.visible = wasVisible ? false : true 
+			markerHelper.object3d.visible = isVisible ? false : true 
 		})
 	}
-	toggleMarkerHelper()
 
 
 	// build a smoothedControls
@@ -309,16 +325,8 @@
 	scene.add(smoothedRoot)
 	var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
 	onRenderFcts.push(function(delta){
-		// parameters for updateSmoothedControls
-		var lerpsValues = [
-			[0.8, 0.1, 0.3],
-			[0.8, 0.1, 0.4],
-			[0.8, 0.2, 0.5],
-			[0.8, 0.2, 0.7],
-			[0.8, 0.2, 0.7],
-		]
 		// update smoothedControls parameters depending on how many markers are visible in multiMarkerControls
-		multiMarkerControls.updateSmoothedControls(smoothedControls, lerpsValues)
+		multiMarkerControls.updateSmoothedControls(smoothedControls)
 		// update multiMarkerRoot position
 		smoothedControls.update(markerRoot)
 	})

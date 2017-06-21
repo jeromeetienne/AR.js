@@ -1,3 +1,4 @@
+- make multi
 - port webvr-arbackend
 
 - rename THREEx.ArToolkitContext.getProjectionMatrix into .getArtoolkitProjectMatrix
