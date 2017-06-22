@@ -60,21 +60,67 @@ window.addEventListener('resize', function(){
 
 
 
-function toggleMarkerPage(){
-	toggleFullScreen()
-
+function setMarkerPageVisibility(visible){
 	var domElement = document.querySelector('#markers-page')
-	if( domElement.style.display === 'none' ){
-		history.pushState({ foo: "bar" }, "page 2", "#MarkerPage");
+	if( visible === true ){
 		domElement.style.display = 'block'
-	}else{
+	}else if( visible === false ){
 		domElement.style.display = 'none'
-	}
+	}else console.assert(false)
 }
-window.addEventListener('popstate', function(event){
-	toggleMarkerPage();
+
+//////////////////////////////////////////////////////////////////////////////
+//		toggleFullScreen
+//////////////////////////////////////////////////////////////////////////////
+// from https://stackoverflow.com/questions/21280966/toggle-fullscreen-exit
+function setFullScreen(enabled) {
+	if ( enabled === true ){
+		if (document.documentElement.requestFullscreen) {
+			document.documentElement.requestFullscreen();
+		} else if (document.documentElement.msRequestFullscreen) {
+			document.documentElement.msRequestFullscreen();
+		} else if (document.documentElement.mozRequestFullScreen) {
+			document.documentElement.mozRequestFullScreen();
+		} else if (document.documentElement.webkitRequestFullscreen) {
+			document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+		}
+	}else if ( enabled === false){
+		if (document.exitFullscreen) {
+			document.exitFullscreen();
+		} else if (document.msExitFullscreen) {
+			document.msExitFullscreen();
+		} else if (document.mozCancelFullScreen) {
+			document.mozCancelFullScreen();
+		} else if (document.webkitExitFullscreen) {
+			document.webkitExitFullscreen();
+		}
+	}else console.assert(false)
+}
+
+document.addEventListener("webkitfullscreenchange", function( event ) {
+	if( isFullscreen() === true ){
+		markerPageEnter()
+	}else{
+		markerPageLeave()
+	}
 })
-history.pushState("", document.title, location.pathname+ location.search);
+
+
+function isFullscreen(){
+	return document.webkitIsFullScreen
+}
+
+function markerPageEnter(){
+	if( isFullscreen() === false ){
+		setFullScreen(true)		
+	}
+	setMarkerPageVisibility(true)
+}
+
+function markerPageLeave(){
+	if( isFullscreen() === true )	setFullScreen(false)		
+	setMarkerPageVisibility(false)
+}
 
 //////////////////////////////////////////////////////////////////////////////
 //		setMarkerPageTrackingBackend
@@ -93,38 +139,6 @@ function setMarkerPageTrackingBackend(trackingBackend){
 		document.body.classList.add('trackingBackend-aruco')			
 	}else console.assert(false)
 }
-
-//////////////////////////////////////////////////////////////////////////////
-//		toggleFullScreen
-//////////////////////////////////////////////////////////////////////////////
-// from https://stackoverflow.com/questions/21280966/toggle-fullscreen-exit
-function toggleFullScreen() {
-	if (!document.fullscreenElement 
-		&& !document.mozFullScreenElement 
-		&& !document.webkitFullscreenElement && !document.msFullscreenElement 
-	) {  // current working methods
-		if (document.documentElement.requestFullscreen) {
-			document.documentElement.requestFullscreen();
-		} else if (document.documentElement.msRequestFullscreen) {
-			document.documentElement.msRequestFullscreen();
-		} else if (document.documentElement.mozRequestFullScreen) {
-			document.documentElement.mozRequestFullScreen();
-		} else if (document.documentElement.webkitRequestFullscreen) {
-			document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-		}
-	} else {
-		if (document.exitFullscreen) {
-			document.exitFullscreen();
-		} else if (document.msExitFullscreen) {
-			document.msExitFullscreen();
-		} else if (document.mozCancelFullScreen) {
-			document.mozCancelFullScreen();
-		} else if (document.webkitExitFullscreen) {
-			document.webkitExitFullscreen();
-		}
-	}
-}
-
 
 function displayResolution(){
 	var resolution = window.innerWidth + 'x' + window.innerHeight
