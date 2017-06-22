@@ -86,12 +86,12 @@ THREEx.ArMarkerControls.prototype.updateWithModelViewMatrix = function(modelView
 	}else console.assert(false)
 
 
-if( this.context.parameters.arBackend !== 'tango' ){
+	if( this.context.parameters.arBackend !== 'tango' ){
 
-	// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
-	var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
-	modelViewMatrix.multiply(markerAxisTransformMatrix)
-}
+		// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
+		var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
+		modelViewMatrix.multiply(markerAxisTransformMatrix)
+	}
 
 	// change markerObject3D.matrix based on parameters.changeMatrixMode
 	if( this.parameters.changeMatrixMode === 'modelViewMatrix' ){

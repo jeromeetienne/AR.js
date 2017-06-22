@@ -2,6 +2,14 @@
 var isMobile = 'ontouchstart' in window === true ? true : false
 // document.querySelector('#currentPlatform').innerHTML = isMobile ? 'mobile' : 'desktop'
 
+document.querySelector('#infoButton').addEventListener('click', function(){
+	document.querySelector('#infoDialog').showModal()
+})
+
+document.querySelector('#infoDialog button').addEventListener('click', function(){
+	document.querySelector('#infoDialog').close()
+})
+
 //////////////////////////////////////////////////////////////////////////////
 //		arAppURL
 //////////////////////////////////////////////////////////////////////////////
@@ -113,14 +121,12 @@ function isFullscreen(){
 }
 
 function markerPageEnter(){
-	if( isFullscreen() === false ){
-		setFullScreen(true)		
-	}
+	// if( isFullscreen() === false )	setFullScreen(true)		
 	setMarkerPageVisibility(true)
 }
 
 function markerPageLeave(){
-	if( isFullscreen() === true )	setFullScreen(false)		
+	// if( isFullscreen() === true )	setFullScreen(false)		
 	setMarkerPageVisibility(false)
 }
 

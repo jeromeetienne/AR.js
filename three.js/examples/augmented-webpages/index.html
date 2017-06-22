@@ -44,17 +44,38 @@
 			<img class='marker-bottomright marker-image' src='../../../three.js/examples/marker-training/examples/pattern-images/pattern-letterF.png'>
 		</div>
 	</div>
-
+	
 	<!-- Always shows a header, even in smaller screens. -->
 	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 		<header class="mdl-layout__header">
-			<div class="mdl-layout__header-row" style='justify-content: center'>
+			<div class="mdl-layout__header-row" style='justify-content: center; margin: 3em;'>
 				<!-- Title -->
-				<span class="mdl-layout-title">Augmented Webpages with AR.js</span>
+				<span class="mdl-layout-title" style="font-size: 300%;">Augmented Webpages with <a href='https://github.com/jeromeetienne/ar.js' target='_blank'>AR.js</a>
+					<br/>
+				<span style='font-size: 80%; color: #ccc;'>Adding AR to any Webpage</span></span>
 			</div>
 		</header>
 		<main class="mdl-layout__content">
 			<div class="page-content">
+
+				<!-- INFO BUTTON and DIALOG -->
+				<button id='infoButton' class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
+					<i class="material-icons">info</i>
+				</button>
+				<dialog id='infoDialog' class="mdl-dialog">
+					<h4 class="mdl-dialog__title">Augmented WebPages with AR.js</h4>
+					<div class="mdl-dialog__content">
+						<p>
+							Adding AR to any Webpage
+						</p>
+						<iframe width="560" height="315" src="https://www.youtube.com/embed/sp7Wxk1yVcY" frameborder="0" allowfullscreen></iframe>
+					</div>
+					<div class="mdl-dialog__actions">
+						<button type="button" class="mdl-button">Close</button>
+					</div>
+				</dialog>
+
+				<!-- MIDDLE QRCODE CARD -->
 				<div class="mdl-grid">
 					<div class="mdl-cell mdl-cell--4-col"></div>
 					<div class="mdl-cell mdl-cell--4-col">
@@ -66,9 +87,10 @@
 								<div id='qrCodeContainer'></div>
 							</div>
 							<div class="mdl-card__actions mdl-card--border">
-								<a onclick='markerPageEnter()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+								<a onclick='markerPageEnter()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"  style='width: 90%'>
 									Done
 								</a>
+								<!-- Colored FAB button with ripple -->
 							</div>
 						</div>
 					</div>

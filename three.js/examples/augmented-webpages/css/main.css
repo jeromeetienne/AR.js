@@ -4,3 +4,12 @@ body {
 .mdl-card {
 	width: 100%;
 }
+#infoButton {
+	position: absolute;
+	right: 1em;
+	top: 1em;
+}
+
+#infoDialog {
+	min-width: 40%;
+}
