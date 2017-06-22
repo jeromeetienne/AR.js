@@ -1,14 +1,12 @@
-- complete workflow from README.md link
-- then support on external site - try to get nice url
-
-
-
+# complete workflow from README.md link
 - make landing page less ugly
 - when doing markerPage, see if browser back can come back one state in landing-page
   - need to understand the history API
 - DONE in player.html, remove the learning button. if areaFileByResolution
 - DONE update resolution on window resize
 
+# Nice Url for augemented-webpages
+- then support on external site - try to get nice url
 - include that in webxr.io - little AR logo in bottom right - try clean url
   - keep on their URL
   - if click then go webxr.io/ar

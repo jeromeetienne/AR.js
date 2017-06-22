@@ -2,7 +2,9 @@
 var isMobile = 'ontouchstart' in window === true ? true : false
 // document.querySelector('#currentPlatform').innerHTML = isMobile ? 'mobile' : 'desktop'
 
-
+//////////////////////////////////////////////////////////////////////////////
+//		arAppURL
+//////////////////////////////////////////////////////////////////////////////
 var arAppURL = null
 function updateArAppURL(){
 	// build arAppURL
@@ -13,23 +15,24 @@ function updateArAppURL(){
 		// FIXME pass from relative to absolute url in a better way
 		arAppURL = location.protocol + '//' + location.host + location.pathname.replace(/[^\/]*$/, '') + 'examples/screenAsPortal/index.html'		
 	}
+	// add options in arAppURL
 	arAppURL = arAppURL + '#' + JSON.stringify({
 		trackingBackend: 'artoolkit',
 		markerPageResolution: window.innerWidth + 'x' + window.innerHeight,
 		// markerPageResolution: 1024 + 'x' + 653,
 	})
 
-	// Update arAppURL in the webpage
-	document.body.querySelector('#arAppURLView').value = arAppURL
-	document.body.querySelector('#arAppURLLink').href = arAppURL	
+	// // Update arAppURL in the webpage
+	// document.body.querySelector('#arAppURLView').value = arAppURL
+	// document.body.querySelector('#arAppURLLink').href = arAppURL	
 
-	// prepare emailURLtoMeLink
-	var mailBody = `DO NOT forget the change the reciptient email address before sending it :)
-	
-	The AR.js App is at ${arAppURL}.
-	`
-	var mailtoUrl = 'mailto:your-goes-here-name@example.com?subject=Augmented%20Webpages%20URL&body='+encodeURIComponent(mailBody)
-	document.body.querySelector('#emailURLtoMeLink').href = mailtoUrl
+	// // prepare emailURLtoMeLink
+	// var mailBody = `DO NOT forget the change the reciptient email address before sending it :)
+	// 
+	// The AR.js App is at ${arAppURL}.
+	// `
+	// var mailtoUrl = 'mailto:your-goes-here-name@example.com?subject=Augmented%20Webpages%20URL&body='+encodeURIComponent(mailBody)
+	// document.body.querySelector('#emailURLtoMeLink').href = mailtoUrl
 
 	// create qrCode
 	;(function(){
@@ -42,8 +45,6 @@ function updateArAppURL(){
 	                colorLight : '#ffffff',
 	        });
 	        var qrCodeImage = container.querySelector('img')
-		qrCodeImage.style.margin = '3em'
-		// console.log(qrCodeImage)
 		var containerElement = document.body.querySelector('#qrCodeContainer')
 		while (containerElement.firstChild){
 			containerElement.removeChild(containerElement.firstChild);
@@ -60,13 +61,21 @@ window.addEventListener('resize', function(){
 
 
 function toggleMarkerPage(){
+	toggleFullScreen()
+
 	var domElement = document.querySelector('#markers-page')
 	if( domElement.style.display === 'none' ){
+		history.pushState({ foo: "bar" }, "page 2", "#MarkerPage");
 		domElement.style.display = 'block'
 	}else{
 		domElement.style.display = 'none'
 	}
 }
+window.addEventListener('popstate', function(event){
+	toggleMarkerPage();
+})
+history.pushState("", document.title, location.pathname+ location.search);
+
 //////////////////////////////////////////////////////////////////////////////
 //		setMarkerPageTrackingBackend
 //////////////////////////////////////////////////////////////////////////////
