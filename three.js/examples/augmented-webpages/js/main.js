@@ -45,6 +45,7 @@ function updateArAppURL(){
 	                colorLight : '#ffffff',
 	        });
 	        var qrCodeImage = container.querySelector('img')
+		qrCodeImage.style.width='100%'
 		var containerElement = document.body.querySelector('#qrCodeContainer')
 		while (containerElement.firstChild){
 			containerElement.removeChild(containerElement.firstChild);
@@ -61,11 +62,12 @@ window.addEventListener('resize', function(){
 
 
 function setMarkerPageVisibility(visible){
-	var domElement = document.querySelector('#markers-page')
 	if( visible === true ){
-		domElement.style.display = 'block'
+		document.querySelector('#markers-page').style.display = 'block'
+		document.querySelector('.mdl-layout__container').style.display = 'none'
 	}else if( visible === false ){
-		domElement.style.display = 'none'
+		document.querySelector('#markers-page').style.display = 'none'
+		document.querySelector('.mdl-layout__container').style.display = 'block'
 	}else console.assert(false)
 }
 
