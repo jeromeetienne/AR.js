@@ -1,4 +1,5 @@
 - complete workflow from README.md link
+- make landing page less ugly
 
 - when doing markerPage, see if browser back can come back one state in landing-page
   - need to understand the history API
