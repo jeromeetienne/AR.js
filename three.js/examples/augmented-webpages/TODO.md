@@ -1,3 +1,17 @@
+- complete workflow from README.md link
+
+- when doing markerPage, see if browser back can come back one state in landing-page
+  - need to understand the history API
+- DONE in player.html, remove the learning button. if areaFileByResolution
+- DONE update resolution on window resize
+
+- include that in webxr.io - little AR logo in bottom right - try clean url
+  - if click then go webxr.io/ar
+  - can i put that in the github readme.md ?
+  - here goes in iframe with the augmented-webpages examples
+  - and url remains simple
+  - no need to move files 
+
 - DONE make marker page part of landing page
 - generate multi marker file based on window resolution
   - test hardcoded in player.html

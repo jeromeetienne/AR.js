@@ -60,7 +60,7 @@
   augmenting webpage example with a screen as portal
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/augmented-webpages/examples/screenAsPortal/screenAsPortal.html))
 - [augmented-webpages](https://jeromeetienne.github.io/AR.js/three.js/examples/augmented-webpages/index.html) :
-  augmenting webpage example 
+  Example of augmented webpage - AR in any webpage
    
 # a-frame Examples
 

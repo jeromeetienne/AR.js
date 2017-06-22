@@ -39,20 +39,7 @@
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1; color: grey;';>
 	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Augmenting the screen - screen as a portal
 	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
-	<!-- <br>
-	<a href='../../index.html'>landing page</a> -->
-</div>
-<div style='position: fixed; bottom: 10px; width:100%; text-align: center;z-index:1; color: grey;';>
-	<!-- Area source: 
-		<a href='javascript:void(0)' onclick='urlOptions.areaSource = "localStorage"; reload()'>localStorage</a>
-		/
-		<a href='javascript:void(0)' onclick='urlOptions.areaSource = "hardcodedSingle"; reload()'>hardcodedSingle</a>
-	<br> -->
-	<!-- ar backend: 
-		<a href='javascript:void(0)' onclick='trackingBackend = "artoolkit"; reload()'>artoolkit</a>
-		/
-		<a href='javascript:void(0)' onclick='trackingBackend = "aruco"; reload()'>aruco</a>
-	<br> -->
+	<br>
 	<a href='javascript:void(0)' onclick='toggleMarkerHelper()'>marker helper : <span id='markerHelpersStatus'></span></a>
 </div>
 <div style='position: fixed; bottom: 16px; right: 16px; z-index:1';>
@@ -92,6 +79,8 @@
 		// buildAreaFileFromResolution
 		var file = THREEx.AugmentedWebpages.buildAreaFileFromResolution('artoolkit', resolutionW, resolutionH)
 		localStorage.setItem('ARjsMultiMarkerFile', JSON.stringify(file))
+		
+		document.querySelector('#recordButton').style.display = 'none'
 	})()
 
 
