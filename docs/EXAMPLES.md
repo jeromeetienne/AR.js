@@ -56,8 +56,8 @@
 - [backend switcher](https://jeromeetienne.github.io/AR.js/three.js/examples/arbackend-switch.html) :
   Show to easily switch between arBackend 'aruco' or 'jsartoolkit'
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arbackend-switch.html))
-- [Screen as portal](https://jeromeetienne.github.io/AR.js/three.js/examples/augmented-webpages/examples/screenAsPortal/screenAsPortal.html) :
-  augmenting webpage example with a screen as portal
+- [Screen as portal](https://jeromeetienne.github.io/AR.js/three.js/examples/augmented-webpages/examples/screenAsPortal/index.html) :
+  screen as portal
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/augmented-webpages/examples/screenAsPortal/screenAsPortal.html))
 - [augmented-webpages](https://jeromeetienne.github.io/AR.js/three.js/examples/augmented-webpages/index.html) :
   Example of augmented webpage - AR in any webpage
