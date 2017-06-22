@@ -1,29 +1,35 @@
 - complete workflow from README.md link
-- make landing page less ugly
+- then support on external site - try to get nice url
 
+
+
+- make landing page less ugly
 - when doing markerPage, see if browser back can come back one state in landing-page
   - need to understand the history API
 - DONE in player.html, remove the learning button. if areaFileByResolution
 - DONE update resolution on window resize
 
 - include that in webxr.io - little AR logo in bottom right - try clean url
+  - keep on their URL
   - if click then go webxr.io/ar
   - can i put that in the github readme.md ?
   - here goes in iframe with the augmented-webpages examples
   - and url remains simple
   - no need to move files 
 
+- later refactor learning in multimarker itself
+  - this will clean the code for webar-playground and other potential application
+
+
 - DONE make marker page part of landing page
-- generate multi marker file based on window resolution
+- DONE generate multi marker file based on window resolution
   - test hardcoded in player.html
   - then pass it as parameters from landing-page
-- pass resolution from homepage to appPage
+- DONE pass resolution from homepage to appPage
   - get the multi marker from resolution if it is present
   - get multi markers from localstorage is available
   - else use default markers
   - keep all the usual process of learning
-- later refactor learning in multimarker itself
-  - this will clean the code for webar-playground and other potential application
 
 # TODO 
 - cleanup code in the screenAsPortal examples
