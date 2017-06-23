@@ -25,7 +25,7 @@ function arAppURLUpdatePage(arAppURL){
 
 	// create qrCode
 	;(function(){
-		if( arAppURL.length >= 132 )	return
+		if( arAppURL.length >= 185 )	return
 	        var container = document.createElement('div')
 	        var qrcode = new QRCode(container, {
 	                text: arAppURL,
