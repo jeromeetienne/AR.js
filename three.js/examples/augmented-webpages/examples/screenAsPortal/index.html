@@ -29,6 +29,8 @@
 <script src='js/threex-screenasportal.js'></script>
 <script src='../../js/threex-augmentedwebpages.js'></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/0.3.14/peer.js"></script>
+
 <style>
 	#recordButton:hover {
 		cursor: pointer;
@@ -55,6 +57,7 @@
 	//          handle urlOptions
 	////////////////////////////////////////////////////////////////////////////////
 
+	// parse urlOptions from location.search
 	if( location.search.substring(1) ){
 		var urlOptions = JSON.parse(decodeURIComponent(location.search.substring(1)))
 	}else{
@@ -66,8 +69,7 @@
 	if( urlOptions.trackingBackend === undefined ) urlOptions.trackingBackend = 'artoolkit'
 	
 
-	// http://127.0.0.1:8080/three.js/examples/augmented-webpages/examples/screenAsPortal/index.html?trackingBackend=artoolkit&markerPageResolution=1024x653
-
+	// if urlOptions.markerPageResolution, then build ARjsMultiMarkerFile according to it
 	;(function(){
 		if( urlOptions.markerPageResolution === undefined )	return
 		// get resolutionW/resolutionH
@@ -87,7 +89,24 @@
 		document.querySelector('#recordButton').style.display = 'none'
 	})()
 
-
+	;(function(){
+		if( urlOptions.peerjsPeerID === undefined )	return
+		// peer.js to signal markersPage got booted
+		var peer = new Peer({key: 'lwjd5qra8257b9'});
+		peer.on('open', function(id) {
+			console.log('My peer ID is: ' + id);
+		});
+		var conn = peer.connect(urlOptions.peerjsPeerID);
+		conn.on('open', function() {
+			// Receive messages
+			conn.on('data', function(data) {
+				console.log('Received', data);
+			});
+			
+			// Send messages
+			conn.send('Hello from phone!');
+		});		
+	})()
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////

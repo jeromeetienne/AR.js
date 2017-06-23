@@ -10,13 +10,17 @@ function peerjsInit(){
 	peerjsPeer.on('connection', function(peerjsConnection) {
 		peerjsConnection.on('open', function() {
 			// Receive messages
-			peerjsConnection.on('data', function(data) {
-				console.log('Received', data);
+			peerjsConnection.on('data', function(message) {
+				// console.log('Received', message);
+				if( message === 'markersPageEnter' ){
+					markersPageEnter()
+				}else{
+					console.log('received unknown message :', message)
+				}
 			});
 			
 			// Send messages
 			peerjsConnection.send('Hello from markers-page!');
 		});
 	});
-	
 }

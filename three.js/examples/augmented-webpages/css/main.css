@@ -31,3 +31,23 @@ body {
 #helpDialog {
 	min-width: 40%;
 }
+
+
+/*info page*/
+#infoPageTitle {
+	font-size: 150%;
+}
+#infoPageHeader {
+	justify-content: center; 
+	margin: 1em;
+	padding-left: 16px;
+}
+
+@media (min-width: 768px) {
+	#infoPageTitle {
+		font-size: 300%;
+	}
+	#infoPageHeader {
+		margin: 2em;
+	}
+}
