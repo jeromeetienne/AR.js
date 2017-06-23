@@ -302,11 +302,11 @@
 	onRenderFcts.push(function(delta){
 		// parameters for updateSmoothedControls
 		var lerpsValues = [
+			[0.1, 0.1, 0.5],
 			[0.2, 0.1, 0.5],
-			[0.2, 0.1, 0.5],
+			[0.2, 0.2, 0.5],
 			[0.3, 0.2, 0.5],
-			[0.4, 0.2, 0.5],
-			[0.5, 0.2, 0.5],
+			[0.3, 0.2, 0.5],
 		]
 		// update smoothedControls parameters depending on how many markers are visible in multiMarkerControls
 		multiMarkerControls.updateSmoothedControls(smoothedControls, lerpsValues)
