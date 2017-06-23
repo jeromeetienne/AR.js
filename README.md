@@ -147,6 +147,8 @@ by [nexus interactive arts](http://www.nexusinteractivearts.com/)
 
 # Augmented Webpages
 [Seminal post](https://medium.com/arjs/augmenting-the-web-page-e893f2d199b8) explaining the concept.
+
+
 [![Augmented Webpages](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://jeromeetienne.github.io/AR.js/three.js/examples/augmented-webpages/)
 
 
