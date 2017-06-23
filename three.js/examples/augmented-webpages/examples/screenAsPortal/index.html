@@ -41,7 +41,8 @@
 	with <a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a>
 	<br>
 	Directly inspired of the <a href='https://www.youtube.com/watch?v=Jd3-eiid-Uw'>cult demo</a> by <a href='https://www.youtube.com/user/jcl5m/videos'>johnny lee</a>
-	<br>
+</div>
+<div style='position: fixed; bottom: 10px; width:100%; text-align: center;z-index:1; color: grey;';>
 	<a href='javascript:void(0)' onclick='toggleMarkerHelper()'>marker helper : <span id='markerHelpersStatus'></span></a>
 </div>
 <div style='position: fixed; bottom: 16px; right: 16px; z-index:1';>
@@ -301,11 +302,11 @@
 	onRenderFcts.push(function(delta){
 		// parameters for updateSmoothedControls
 		var lerpsValues = [
-			[0.4, 0.1, 1.0],
-			[0.5, 0.1, 1.0],
-			[0.6, 0.2, 1.0],
-			[0.7, 0.2, 1.0],
-			[0.8, 0.2, 1.0],
+			[0.2, 0.1, 0.5],
+			[0.2, 0.1, 0.5],
+			[0.3, 0.2, 0.5],
+			[0.4, 0.2, 0.5],
+			[0.5, 0.2, 0.5],
 		]
 		// update smoothedControls parameters depending on how many markers are visible in multiMarkerControls
 		multiMarkerControls.updateSmoothedControls(smoothedControls, lerpsValues)
