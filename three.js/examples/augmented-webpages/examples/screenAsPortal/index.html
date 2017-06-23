@@ -65,8 +65,8 @@
 	// http://127.0.0.1:8080/three.js/examples/augmented-webpages/examples/screenAsPortal/index.html?trackingBackend=artoolkit&markerPageResolution=1024x653
 
 	;(function(){
+		if( urlOptions.markerPageResolution === undefined )	return
 		// get resolutionW/resolutionH
-		console.assert(urlOptions.markerPageResolution !== undefined )
 		var matches = urlOptions.markerPageResolution.match(/(\d+)x(\d+)/)
 		console.assert(matches.length === 3)
 		var resolutionW = parseInt(matches[1])
