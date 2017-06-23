@@ -1,11 +1,19 @@
 var peerjsPeer = null
 
 function googlInit(){
-	gapi.client.setApiKey('AIzaSyDehQAfFZ9COHDLsvg8tIv7m4I4ySIc0e4');
-	gapi.client.load('urlshortener', 'v1', function() { 
-		console.log('urlshortener loaded')
-		updateArAppURL()
-	})
+	
+	var timerId = setInterval(function(){
+		if( gapi.client === undefined )	return
+		clearInterval(timerId)
+		timerId = null
+
+		gapi.client.setApiKey('AIzaSyDehQAfFZ9COHDLsvg8tIv7m4I4ySIc0e4');
+		gapi.client.load('urlshortener', 'v1', function() { 
+			console.log('urlshortener loaded')
+			updateArAppURL()
+		})
+	}, 1000/10)
+	
 }
 
 function googlMinify(longURL, onComplete){

@@ -79,7 +79,7 @@ function updateArAppURL(){
 // arAppURLUpdatePage(arAppURL)
 // return
 
-	if( typeof(gapi) === 'undefined' || gapi.client.urlshortener === undefined ){
+	if( typeof(gapi) === 'undefined' || gapi.client === undefined || gapi.client.urlshortener === undefined ){
 		shouldShortenUrl = false
 	}
 	
