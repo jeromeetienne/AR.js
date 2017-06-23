@@ -1,8 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////
 //		arAppURL
 //////////////////////////////////////////////////////////////////////////////
-var arAppURL = null
-
 function arAppURLInit(){
 
 	updateArAppURL()
@@ -12,23 +10,7 @@ function arAppURLInit(){
 	})
 }
 
-
-function updateArAppURL(){
-	// build arAppURL
-	if( location.hash.substring(1) ){
-		arAppURL = location.hash.substring(1)
-	}else{
-		// build url
-		// FIXME pass from relative to absolute url in a better way
-		arAppURL = location.protocol + '//' + location.host + location.pathname.replace(/[^\/]*$/, '') + 'examples/screenAsPortal/index.html'		
-	}
-	// add options in arAppURL
-	arAppURL = arAppURL + '#' + JSON.stringify({
-		trackingBackend: 'artoolkit',
-		markerPageResolution: window.innerWidth + 'x' + window.innerHeight,
-		// markerPageResolution: 1024 + 'x' + 653,
-	})
-
+function arAppURLUpdatePage(arAppURL){
 	// Update arAppURL in the webpage
 	document.body.querySelector('#arAppURLView').value = arAppURL
 	document.body.querySelector('#arAppURLLink').href = arAppURL	
@@ -59,4 +41,51 @@ function updateArAppURL(){
 		}
 		containerElement.appendChild(qrCodeImage)				
 	})()
+}
+
+function updateArAppURL(){
+	// build urlOptions
+	var urlOptions = {
+		trackingBackend: 'artoolkit',
+		markerPageResolution: window.innerWidth + 'x' + window.innerHeight,
+	}
+	if( peerjsPeer.id !== undefined ) urlOptions.peerjsPeerID = peerjsPeer.id
+	// build arAppURL
+	if( location.hash.substring(1) ){
+		var arAppURL = location.hash.substring(1)
+	}else{
+		// build url
+		// FIXME pass from relative to absolute url in a better way
+		arAppURL = location.protocol + '//' + location.host + location.pathname.replace(/[^\/]*$/, '') + 'examples/screenAsPortal/index.html'		
+	}
+	// add options in arAppURL
+	arAppURL = arAppURL + '?' + encodeURIComponent(JSON.stringify(urlOptions))
+
+	// arAppURL = 'https://github.com/jeromeetienne/ar.js'
+
+	var shouldShortenUrl = true
+	
+
+	var linkElement = document.createElement('a')
+	linkElement.href = arAppURL
+// debugger
+	if( linkElement.hostname === '127.0.0.1' || linkElement.hostname === 'localhost' ){
+		shouldShortenUrl = false
+	}
+// debugger
+
+// arAppURLUpdatePage(arAppURL)
+// return
+
+	if( gapi.client.urlshortener === undefined ){
+		shouldShortenUrl = false
+	}
+	
+	if( shouldShortenUrl === false ){
+		arAppURLUpdatePage(arAppURL)
+	}else{
+		googlMinify(arAppURL, function(shortURL){
+			arAppURLUpdatePage(shortURL)
+		})
+	}
 }

@@ -40,7 +40,6 @@ function fullscreenInit(){
 	})
 	
 	document.addEventListener('keydown', function(event){
-		console.log(event.code)
 		if( event.code !== 'KeyT' ) return
 		fullscreenToggle()
 	})

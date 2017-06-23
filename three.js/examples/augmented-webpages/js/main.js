@@ -1,3 +1,5 @@
+googlInit()
+peerjsInit()
 arAppURLInit()
 markersPageInit()
 fullscreenInit()

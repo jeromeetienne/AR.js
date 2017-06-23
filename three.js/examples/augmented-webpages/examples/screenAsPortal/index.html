@@ -55,14 +55,15 @@
 	//          handle urlOptions
 	////////////////////////////////////////////////////////////////////////////////
 
-	if( location.hash.substring(1) ){
-		var urlOptions = JSON.parse(location.hash.substring(1))
+	if( location.search.substring(1) ){
+		var urlOptions = JSON.parse(decodeURIComponent(location.search.substring(1)))
 	}else{
 		var urlOptions = {
 			trackingBackend : 'artoolkit',
 			//markerPageResolution : '1024x653'
 		}
 	}
+	if( urlOptions.trackingBackend === undefined ) urlOptions.trackingBackend = 'artoolkit'
 	
 
 	// http://127.0.0.1:8080/three.js/examples/augmented-webpages/examples/screenAsPortal/index.html?trackingBackend=artoolkit&markerPageResolution=1024x653
