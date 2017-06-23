@@ -135,10 +135,6 @@ all the crazy ideas related to AR.js.
 - ["Augmented Reality in 10 Lines of HTML - AR.js with a-frame magic"](https://medium.com/arjs/augmented-reality-in-10-lines-of-html-4e193ea9fdbf)
   by [@AndraConnect](https://twitter.com/AndraConnect)
 
-
-[![Augmented Webpages](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://jeromeetienne.github.io/AR.js/three.js/examples/augmented-webpages/)
-
-
 # Great Posts by Users
 
 - How to write a AR.js application ?
@@ -148,6 +144,10 @@ It explain how to code a full application on phone! Step by Steps, with explaina
 Very great! the perfect step if you want to start writing AR application today.
 - Great post about [WebAR for designer](http://www.nexusinteractivearts.com/webar/)
 by [nexus interactive arts](http://www.nexusinteractivearts.com/)
+
+# Augmented Webpages
+[Seminal post](https://medium.com/arjs/augmenting-the-web-page-e893f2d199b8) explaining the concept.
+[![Augmented Webpages](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://jeromeetienne.github.io/AR.js/three.js/examples/augmented-webpages/)
 
 
 # Examples
