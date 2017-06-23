@@ -1,3 +1,7 @@
+- make the player receive variable query instead of hash
+  - check if it works well when sending email
+
+
 # Nice Url for augemented-webpages
 - then support on external site - try to get nice url
 - include that in webxr.io - little AR logo in bottom right - try clean url

@@ -2,12 +2,20 @@
 var isMobile = 'ontouchstart' in window === true ? true : false
 // document.querySelector('#currentPlatform').innerHTML = isMobile ? 'mobile' : 'desktop'
 
+// infoDialog and infoDialog
 document.querySelector('#infoButton').addEventListener('click', function(){
 	document.querySelector('#infoDialog').showModal()
 })
-
 document.querySelector('#infoDialog button').addEventListener('click', function(){
 	document.querySelector('#infoDialog').close()
+})
+
+// helpDialog and helpDialog
+document.querySelector('#helpButton').addEventListener('click', function(){
+	document.querySelector('#helpDialog').showModal()
+})
+document.querySelector('#helpDialog button').addEventListener('click', function(){
+	document.querySelector('#helpDialog').close()
 })
 
 //////////////////////////////////////////////////////////////////////////////
@@ -30,17 +38,17 @@ function updateArAppURL(){
 		// markerPageResolution: 1024 + 'x' + 653,
 	})
 
-	// // Update arAppURL in the webpage
-	// document.body.querySelector('#arAppURLView').value = arAppURL
-	// document.body.querySelector('#arAppURLLink').href = arAppURL	
+	// Update arAppURL in the webpage
+	document.body.querySelector('#arAppURLView').value = arAppURL
+	document.body.querySelector('#arAppURLLink').href = arAppURL	
 
-	// // prepare emailURLtoMeLink
-	// var mailBody = `DO NOT forget the change the reciptient email address before sending it :)
-	// 
-	// The AR.js App is at ${arAppURL}.
-	// `
-	// var mailtoUrl = 'mailto:your-goes-here-name@example.com?subject=Augmented%20Webpages%20URL&body='+encodeURIComponent(mailBody)
-	// document.body.querySelector('#emailURLtoMeLink').href = mailtoUrl
+	// prepare emailURLtoMeLink
+	var mailBody = `DO NOT forget the change the recipient email address before sending it :)
+	
+	The AR.js App is at ${arAppURL}
+	`
+	var mailtoUrl = 'mailto:your-goes-here-name@example.com?subject=Augmented%20Webpages%20URL&body='+encodeURIComponent(mailBody)
+	document.body.querySelector('#emailURLtoMeLink').href = mailtoUrl
 
 	// create qrCode
 	;(function(){
@@ -68,16 +76,6 @@ window.addEventListener('resize', function(){
 })
 
 
-
-function setMarkerPageVisibility(visible){
-	if( visible === true ){
-		document.querySelector('#markers-page').style.display = 'block'
-		document.querySelector('.mdl-layout__container').style.display = 'none'
-	}else if( visible === false ){
-		document.querySelector('#markers-page').style.display = 'none'
-		document.querySelector('.mdl-layout__container').style.display = 'block'
-	}else console.assert(false)
-}
 
 //////////////////////////////////////////////////////////////////////////////
 //		toggleFullScreen
@@ -120,6 +118,11 @@ function isFullscreen(){
 	return document.webkitIsFullScreen
 }
 
+
+//////////////////////////////////////////////////////////////////////////////
+//		markerPage
+//////////////////////////////////////////////////////////////////////////////
+
 function markerPageEnter(){
 	// if( isFullscreen() === false )	setFullScreen(true)		
 	setMarkerPageVisibility(true)
@@ -130,11 +133,75 @@ function markerPageLeave(){
 	setMarkerPageVisibility(false)
 }
 
+function setMarkerPageVisibility(visible){
+	if( visible === true ){
+		document.querySelector('#markers-page').style.display = 'block'
+		document.querySelector('.mdl-layout__container').style.display = 'none'
+	}else if( visible === false ){
+		document.querySelector('#markers-page').style.display = 'none'
+		document.querySelector('.mdl-layout__container').style.display = 'block'
+	}else console.assert(false)
+}
+
+document.body.addEventListener('keydown', function(event){
+	if( event.code !== 'Space' )	return
+	markerPageEnter()
+})
+
+document.body.addEventListener('keydown', function(event){
+	if( event.code !== 'Backspace' )	return
+	markerPageLeave()
+})
+
 //////////////////////////////////////////////////////////////////////////////
-//		setMarkerPageTrackingBackend
+//		markerPage brightness/contrast
 //////////////////////////////////////////////////////////////////////////////
-setMarkerPageTrackingBackend('artoolkit')	
-function setMarkerPageTrackingBackend(trackingBackend){
+var markerPageBrightness = 0
+var markerPageOpacity = 0.2
+markerPageUpdateBrightnessOpacity()
+function markerPageUpdateBrightnessOpacity(){
+	// normalize values
+	markerPageBrightness = Math.max(0, Math.min(1, markerPageBrightness))
+	markerPageOpacity = Math.max(0, Math.min(1, markerPageOpacity))
+	
+	// update css
+	var domElement = document.querySelector('#markers-page .filter')
+	var colorRgba = 'rgba(' + Math.round(markerPageBrightness * 255)
+			+ ', ' + Math.round(markerPageBrightness * 255)
+			+ ', ' + Math.round(markerPageBrightness * 255)
+			+ ', ' + (1-markerPageOpacity)
+			+ ')'
+	domElement.style.backgroundColor = colorRgba
+	// debugger
+	console.log('colorRgba', colorRgba)
+
+	// update views1
+	document.querySelector('#markers-page .currentBrightness').innerHTML = markerPageBrightness.toFixed(3)
+	document.querySelector('#markers-page .currentOpacity').innerHTML = markerPageOpacity.toFixed(3)	
+}
+
+document.body.addEventListener('keydown', function(event){
+	if( event.code === 'ArrowLeft' ){
+		markerPageBrightness -= 0.025
+	}else if( event.code === 'ArrowRight' ){
+		markerPageBrightness += 0.025
+	}else if( event.code === 'ArrowUp' ){
+		markerPageOpacity += 0.025
+	}else if( event.code === 'ArrowDown' ){
+		markerPageOpacity -= 0.025		
+	}else{
+		return
+	}
+	
+	markerPageUpdateBrightnessOpacity()
+})
+
+
+//////////////////////////////////////////////////////////////////////////////
+//		markerPageSetTrackingBackend
+//////////////////////////////////////////////////////////////////////////////
+markerPageSetTrackingBackend('artoolkit')	
+function markerPageSetTrackingBackend(trackingBackend){
 	// trackingBackend feedback
 	document.querySelector('#currentTracking').innerHTML = trackingBackend
 	// remove previous classes
