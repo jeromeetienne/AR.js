@@ -25,6 +25,7 @@ function arAppURLUpdatePage(arAppURL){
 
 	// create qrCode
 	;(function(){
+		if( arAppURL.length >= 132 )	return
 	        var container = document.createElement('div')
 	        var qrcode = new QRCode(container, {
 	                text: arAppURL,
@@ -63,6 +64,7 @@ function updateArAppURL(){
 	// add options in arAppURL
 	arAppURL = arAppURL + '?' + encodeURIComponent(JSON.stringify(urlOptions))
 
+console.log('arAppURL', arAppURL.length)
 	// arAppURL = 'https://github.com/jeromeetienne/ar.js'
 
 	var shouldShortenUrl = true
