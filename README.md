@@ -136,7 +136,7 @@ all the crazy ideas related to AR.js.
   by [@AndraConnect](https://twitter.com/AndraConnect)
 
 
-[![Augmented Webpages](https://cloud.githubusercontent.com/assets/252962/23441016/ab6900ce-fe17-11e6-971b-24614fb8ac0e.png)](https://jeromeetienne.github.io/AR.js/three.js/examples/augmented-webpages/)
+[![Augmented Webpages](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://jeromeetienne.github.io/AR.js/three.js/examples/augmented-webpages/)
 
 
 # Great Posts by Users
