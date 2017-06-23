@@ -6,6 +6,12 @@ body {
 }
 
 
+#fullscreenButton {
+	position: absolute;
+	right: 1em;
+	top: 5em;	
+}
+
 /* infoButton and infoDialog*/
 #infoButton {
 	position: absolute;

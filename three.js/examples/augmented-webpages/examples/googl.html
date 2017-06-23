@@ -1,0 +1,37 @@
+<html>
+<head>
+	<title>URL Shortener using Google API - may help having more readable QRCode. http://goo.gl </title>
+	<script src="https://apis.google.com/js/client.js" type="text/javascript"> </script>
+</head>
+<script type="text/javascript">
+function load() {
+	gapi.client.setApiKey('AIzaSyDehQAfFZ9COHDLsvg8tIv7m4I4ySIc0e4');
+	gapi.client.load('urlshortener', 'v1', function() { 
+		document.getElementById("result").innerHTML = "";
+		
+		var Url = 
+		'https://jeromeetienne.github.io/AR.js/three.js/examples/augmented-webpages/examples/screenAsPortal/index.html#{"trackingBackend":"artoolkit","markerPageResolution":"1920x979"}';
+		var request = gapi.client.urlshortener.url.insert({
+			'resource': {
+				'longUrl': Url
+			}
+		});
+		request.execute(function(response) {
+			
+			if (response.id != null) {
+				str = "<b>Long URL:</b>" + Url + "<br>";
+				str += "<b>Test Short URL:</b> <a href='" + response.id + "'>" + response.id + "</a><br>";
+				document.getElementById("result").innerHTML = str;
+			}
+			else {
+				alert("Error: creating short url \n" + response.error);
+			}
+		});
+	});
+}
+window.onload = load;
+</script>
+<body>
+	<div id="result"></div>
+</body>
+</html>

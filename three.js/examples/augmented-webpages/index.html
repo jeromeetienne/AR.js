@@ -16,6 +16,8 @@
 <link rel='stylesheet' href='css/main.css'>
 <link rel='stylesheet' href='css/markers-overlay.css'>
 
+<script defer src='js/markers-page.js'></script>
+<script defer src='js/fullscreen.js'></script>
 <script defer src='js/main.js'></script>
 
 <body>
@@ -28,12 +30,12 @@
 			-
 			arrow keys to tune
 			<br/>
-			<a href='javascript:void(0)' onclick='markerPageLeave()'>Back</a>
+			<a href='javascript:void(0)' onclick='markersPageLeave()'>Back</a>
 		</div>
 		<div style='position: absolute; bottom: 10px; width:100%; text-align: center;';>
 			Tracking backend:
-			<a href='javascript:void(0)' onclick='markerPageSetTrackingBackend("artoolkit")'>artoolkit</a> /
-			<a href='javascript:void(0)' onclick='markerPageSetTrackingBackend("aruco")'>aruco</a>
+			<a href='javascript:void(0)' onclick='markersPageSetTrackingBackend("artoolkit")'>artoolkit</a> /
+			<a href='javascript:void(0)' onclick='markersPageSetTrackingBackend("aruco")'>aruco</a>
 			- Current : <span id='currentTracking'></span>
 		</div>
 		<div class='markers-aruco'>
@@ -65,10 +67,13 @@
 		</header>
 		<main class="mdl-layout__content">
 			<div class="page-content">
-
+				<!-- Fullscreen Button -->
+				<button id='fullscreenButton' class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
+					<i class="material-icons">aspect_ratio</i>
+				</button>
 				<!-- INFO BUTTON and DIALOG -->
 				<button id='infoButton' class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
-					<i class="material-icons">info</i>
+					<i class="material-icons">info_outline</i>
 				</button>
 				<dialog id='infoDialog' class="mdl-dialog">
 					<h4 class="mdl-dialog__title">Augmented WebPages with AR.js</h4>
@@ -89,14 +94,12 @@
 
 				<!-- help BUTTON and DIALOG -->
 				<button id='helpButton' class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
-					<i class="material-icons">help</i>
+					<i class="material-icons">help_outline</i>
 				</button>
 				<dialog id='helpDialog' class="mdl-dialog">
 					<h4 class="mdl-dialog__title">Debug stuff</h4>
 					<div class="mdl-dialog__content">
 						wanna open <a target='_blank' id='arAppURLLink' href='javascript:void(0)'>ar app</a> ?
-						<br/>
-						<a href='javascript:void(0)' onclick='setFullScreen(true)'>enable fullscreen</a>
 						<br/>
 						wanna know <a href='javascript:void(0)' onclick='displayResolution()'>resolution</a> ?
 
@@ -132,7 +135,7 @@
 								<div id='qrCodeContainer'></div>
 							</div>
 							<div class="mdl-card__actions mdl-card--border">
-								<a onclick='markerPageEnter()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"  style='width: 90%'>
+								<a onclick='markersPageEnter()' class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"  style='width: 90%'>
 									Done
 								</a>
 								<!-- Colored FAB button with ripple -->
@@ -141,6 +144,9 @@
 					</div>
 					<div class="mdl-cell mdl-cell--4-col"></div>
 				</div>
+			</div>
+			<div style='position: absolute; bottom: 10px; width:100%; text-align: center;';>
+				Made with love by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>. Contact me anytime.
 			</div>
 		</main>
 	</div>

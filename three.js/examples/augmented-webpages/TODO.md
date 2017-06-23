@@ -1,6 +1,31 @@
 - make the player receive variable query instead of hash
   - check if it works well when sending email
+- how to include goo.gl - make QRCode easier to read important
+- peerjs works in standalone
 
+
+- initialisation phase needed for peerjs+goo.gl
+- peerjs signaling thru camera
+- goo.gl workglow:
+  - url is updated on every resize this may be a lot
+  - do a rate limiter ? like if not moved for 0.5 seconds, then do it
+  - hide qrcode image when it is invalid - aka during goo.gl call
+- peerjs workflow: 
+  - markerspage open
+  - update qrcode with peer.id
+  - phone scan qrcode
+  - phone connect markerspage with peer.id
+  - phone send 'showMarkersPage' to markerspage
+  - markerPage receive 'showMarkersPage' and show the markers page
+
+# communication between markerPage and phone
+- https://twitter.com/jerome_etienne/status/877628394388602880
+- establish connection with peerjs or other
+
+# goo.gl url shortner
+- api key AIzaSyDehQAfFZ9COHDLsvg8tIv7m4I4ySIc0e4
+- to restrict usage 
+https://console.developers.google.com/apis/credentials/key/140?authuser=0&project=augmented-webpag-1498205969249&pli=1
 
 # Nice Url for augemented-webpages
 - then support on external site - try to get nice url

@@ -1,0 +1,20 @@
+<script src="http://cdn.peerjs.com/0.3/peer.min.js"></script>
+<script type="text/javascript">
+	var peerjsPeer = new Peer({key: 'lwjd5qra8257b9'});
+	peerjsPeer.on('open', function() {
+		console.log('My peerjsPeer ID is: ', peerjsPeer.id);
+	});
+
+	peerjsPeer.on('connection', function(peerjsConnection) {
+		peerjsConnection.on('open', function() {
+			// Receive messages
+			peerjsConnection.on('data', function(data) {
+				console.log('Received', data);
+			});
+			
+			// Send messages
+			peerjsConnection.send('Hello from markers-page!');
+		});
+	});
+	// var conn = peer.connect('arjs-marker-page');
+</script>
