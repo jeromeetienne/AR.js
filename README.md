@@ -136,7 +136,10 @@ all the crazy ideas related to AR.js.
   by [@AndraConnect](https://twitter.com/AndraConnect)
 
 
-# Nice Posts
+[![Augmented Webpages](https://cloud.githubusercontent.com/assets/252962/23441016/ab6900ce-fe17-11e6-971b-24614fb8ac0e.png)](https://jeromeetienne.github.io/AR.js/three.js/examples/augmented-webpages/)
+
+
+# Great Posts by Users
 
 - How to write a AR.js application ?
 Here is a [full tutorial](https://marmelab.com/blog/2017/06/19/augmented-reality-html5.html)
