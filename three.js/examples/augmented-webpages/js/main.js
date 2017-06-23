@@ -1,5 +1,5 @@
 googlInit()
-peerjsInit()
+// peerjsInit()
 arAppURLInit()
 markersPageInit()
 fullscreenInit()

@@ -49,7 +49,7 @@ function updateArAppURL(){
 		trackingBackend: 'artoolkit',
 		markerPageResolution: window.innerWidth + 'x' + window.innerHeight,
 	}
-	if( peerjsPeer.id !== undefined ) urlOptions.peerjsPeerID = peerjsPeer.id
+	if( typeof(peerjsPeer) !== 'undefined' && peerjsPeer.id !== undefined ) urlOptions.peerjsPeerID = peerjsPeer.id
 	// build arAppURL
 	if( location.hash.substring(1) ){
 		var arAppURL = location.hash.substring(1)
@@ -77,7 +77,7 @@ function updateArAppURL(){
 // arAppURLUpdatePage(arAppURL)
 // return
 
-	if( gapi.client.urlshortener === undefined ){
+	if( typeof(gapi) === 'undefined' || gapi.client.urlshortener === undefined ){
 		shouldShortenUrl = false
 	}
 	
