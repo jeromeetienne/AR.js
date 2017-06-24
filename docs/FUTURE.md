@@ -38,8 +38,10 @@
   - https://twitter.com/jerome_etienne/status/861868630883094528
 
 # Ideas
+- IDEA: A pong game in AR. Do it in augmented screen space. solo or multi-player. Two persons playing together thru #AR. https://twitter.com/jerome_etienne/status/878534742458732544
 - play with camera parameters to optimize it for AR - available in mediastreamtrack
   - https://www.oberhofer.co/mediastreamtrack-and-its-capabilities/
+  - white balance off ?
 - AR Gaming - https://www.youtube.com/watch?v=EmGGGzibGok
 - AR Business Card - https://vimeo.com/4979525
 - ar cube visu - real nice for 360 AR https://twitter.com/jerome_etienne/status/869765239356747776

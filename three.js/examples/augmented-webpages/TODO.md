@@ -1,5 +1,11 @@
-- make the player receive variable query instead of hash. check if it works well when sending email
-- how to include goo.gl - make QRCode easier to read important
+- try to integrate firebase
+  - there is already working examples
+- firebase could be used to sync-up markers-page size with phone
+- firebase could be used to calibrate markers-page brightness/contrast
+
+------------
+- DONE make the player receive variable query instead of hash. check if it works well when sending email
+- DONE how to include goo.gl - make QRCode easier to read important
 - peerjs works in standalone
 - replace peerjs by firebase
   - 

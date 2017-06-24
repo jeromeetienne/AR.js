@@ -14,7 +14,7 @@ var rootRef = firebase.database().ref();
 // Get a reference to the /users/ada node
 var adaRef = firebase.database().ref("users/ada");
 
-adaRef.on('value', function(snapshot) {
-  console.log('new value',  Date.now() - snapshot.val().time);
+adaRef.on('value', function(snapshot){
+	console.log('new value',  Date.now() - snapshot.val().time);
 });
 </script>
