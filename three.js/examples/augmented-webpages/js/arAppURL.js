@@ -92,7 +92,7 @@ console.log('arAppURL without shortening', arAppURL.length)
 		arAppURLUpdatePage(arAppURL)
 	}else{
 		googlMinify(arAppURL, function(shortURL){
-console.log('arAppURL with shortening', arAppURL.length)
+console.log('arAppURL with shortening', shortURL.length)
 			arAppURLUpdatePage(shortURL)
 		})
 	}
