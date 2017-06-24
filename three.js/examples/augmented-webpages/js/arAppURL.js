@@ -64,7 +64,6 @@ function updateArAppURL(){
 	// add options in arAppURL
 	arAppURL = arAppURL + '?' + encodeURIComponent(JSON.stringify(urlOptions))
 
-console.log('arAppURL', arAppURL.length)
 	// arAppURL = 'https://github.com/jeromeetienne/ar.js'
 
 	var shouldShortenUrl = true
@@ -86,9 +85,11 @@ console.log('arAppURL', arAppURL.length)
 	}
 	
 	if( shouldShortenUrl === false ){
+console.log('arAppURL without shortening', arAppURL.length)
 		arAppURLUpdatePage(arAppURL)
 	}else{
 		googlMinify(arAppURL, function(shortURL){
+console.log('arAppURL with shortening', arAppURL.length)
 			arAppURLUpdatePage(shortURL)
 		})
 	}
