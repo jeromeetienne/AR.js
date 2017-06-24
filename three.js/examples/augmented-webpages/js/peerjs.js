@@ -24,3 +24,32 @@ function peerjsInit(){
 		});
 	});
 }
+
+
+function firebaseInit(){
+	// Initialize Firebase
+	var config = {
+		apiKey: "AIzaSyAKONfp5EmXuAlFmGGtmJcJiWg_Xyjb5SQ",
+		authDomain: "augmented-webpages.firebaseapp.com",
+		databaseURL: "https://augmented-webpages.firebaseio.com",
+		projectId: "augmented-webpages",
+		storageBucket: "augmented-webpages.appspot.com",
+		messagingSenderId: "128557805583"
+	};
+	var firebaseApp = firebase.initializeApp(config);
+	var rootRef = firebase.database().ref();
+	// Get a reference to the /users/ada node
+	var adaRef = firebase.database().ref("users/ada");
+	adaRef.set({
+		// arAppStatus: 'not-loaded'
+		markersPagesShown : false
+	});
+
+	adaRef.on('value', function(snapshot){
+		console.log('new value', snapshot.val())
+		if( snapshot.val().markersPagesShown === true ){
+			markersPageEnter()
+		}
+		// console.log('new value',  Date.now() - snapshot.val().time);
+	});
+}

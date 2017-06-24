@@ -29,6 +29,7 @@
 <script src='js/threex-screenasportal.js'></script>
 <script src='../../js/threex-augmentedwebpages.js'></script>
 
+<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/0.3.14/peer.js"></script>
 
 <style>
@@ -106,6 +107,34 @@
 			// Send messages
 			conn.send('markersPageEnter');
 		});		
+	})()
+
+
+	;(function(){
+		// Initialize Firebase
+		var config = {
+			apiKey: "AIzaSyAKONfp5EmXuAlFmGGtmJcJiWg_Xyjb5SQ",
+			authDomain: "augmented-webpages.firebaseapp.com",
+			databaseURL: "https://augmented-webpages.firebaseio.com",
+			projectId: "augmented-webpages",
+			storageBucket: "augmented-webpages.appspot.com",
+			messagingSenderId: "128557805583"
+		};
+		var firebaseApp = firebase.initializeApp(config);
+		var rootRef = firebase.database().ref();
+		// Get a reference to the /users/ada node
+		var adaRef = firebase.database().ref("users/ada");
+
+		adaRef.set({
+			markersPagesShown: true
+		});
+
+		// setInterval(function(){
+		// 	console.log('time')
+		// 	adaRef.set({
+		// 		time : Date.now()
+		// 	});
+		// }, 100)	
 	})()
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init

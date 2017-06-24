@@ -8,6 +8,7 @@ for(var i = 0; i < dialogs.length; i++){
 
 googlInit()
 // peerjsInit()
+firebaseInit()
 arAppURLInit()
 markersPageInit()
 fullscreenInit()
