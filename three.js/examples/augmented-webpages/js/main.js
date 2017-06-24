@@ -1,3 +1,11 @@
+
+
+var dialogs = document.querySelectorAll('dialog');
+for(var i = 0; i < dialogs.length; i++){
+    	dialogPolyfill.registerDialog(dialogs[i]);
+	
+}
+
 googlInit()
 peerjsInit()
 arAppURLInit()

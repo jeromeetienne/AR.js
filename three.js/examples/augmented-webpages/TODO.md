@@ -1,12 +1,15 @@
 - make the player receive variable query instead of hash. check if it works well when sending email
 - how to include goo.gl - make QRCode easier to read important
 - peerjs works in standalone
+- replace peerjs by firebase
+  - 
 - step1 peerjs
   - init with peerjs open
   - if peer.id !== undefined, add it to the link
   - on open, update arAppUrl
   - in arApp, if peerjsID is present then connect
   - else dont
+- maybe easyrtc on now.sh
 
 
 - initialisation phase needed for peerjs+goo.gl

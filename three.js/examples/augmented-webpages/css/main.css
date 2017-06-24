@@ -39,15 +39,12 @@ body {
 }
 #infoPageHeader {
 	justify-content: center; 
-	margin: 1em;
+	margin: 1.5em;
 	padding-left: 16px;
 }
 
 @media (min-width: 768px) {
 	#infoPageTitle {
 		font-size: 300%;
-	}
-	#infoPageHeader {
-		margin: 2em;
 	}
 }
