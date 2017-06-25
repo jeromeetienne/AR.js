@@ -30,7 +30,6 @@
 <script src='../../js/threex-augmentedwebpages.js'></script>
 
 <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/0.3.14/peer.js"></script>
 
 <style>
 	#recordButton:hover {
@@ -91,50 +90,24 @@
 	})()
 
 	;(function(){
-		if( urlOptions.peerjsPeerID === undefined )	return
-		// peer.js to signal markersPage got booted
-		var peer = new Peer({key: 'lwjd5qra8257b9'});
-		peer.on('open', function(id) {
-			console.log('My peer ID is: ' + id);
-		});
-		var conn = peer.connect(urlOptions.peerjsPeerID);
-		conn.on('open', function() {
-			// Receive messages
-			conn.on('data', function(data) {
-				console.log('Received', data);
-			});
-			
-			// Send messages
-			conn.send('markersPageEnter');
-		});		
-	})()
-
-
-	;(function(){
+		if( urlOptions.firebasePeerID === undefined )	return
+		var firebasePeerID = urlOptions.firebasePeerID
 		// Initialize Firebase
 		var config = {
 			apiKey: "AIzaSyAKONfp5EmXuAlFmGGtmJcJiWg_Xyjb5SQ",
-			authDomain: "augmented-webpages.firebaseapp.com",
+			// authDomain: "augmented-webpages.firebaseapp.com",
 			databaseURL: "https://augmented-webpages.firebaseio.com",
-			projectId: "augmented-webpages",
-			storageBucket: "augmented-webpages.appspot.com",
-			messagingSenderId: "128557805583"
+			// projectId: "augmented-webpages",
+			// storageBucket: "augmented-webpages.appspot.com",
+			// messagingSenderId: "128557805583"
 		};
 		var firebaseApp = firebase.initializeApp(config);
 		var rootRef = firebase.database().ref();
 		// Get a reference to the /users/ada node
-		var adaRef = firebase.database().ref("users/ada");
-
-		adaRef.set({
-			markersPagesShown: true
-		});
-
-		// setInterval(function(){
-		// 	console.log('time')
-		// 	adaRef.set({
-		// 		time : Date.now()
-		// 	});
-		// }, 100)	
+		var dataRef = firebase.database().ref('marker-page-'+firebasePeerID);
+		dataRef.update({
+			qrCodeToScan : false
+		})
 	})()
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init

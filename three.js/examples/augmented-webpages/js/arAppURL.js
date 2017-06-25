@@ -25,10 +25,10 @@ function arAppURLUpdatePage(arAppURL){
 
 	// create qrCode
 	;(function(){
-		if( arAppURL.length > 190 ){
-			console.log('arAppURL too long. cant be encoded in qrCode')
-			return			
-		}
+		// if( arAppURL.length > 190 ){
+		// 	console.log('arAppURL too long. cant be encoded in qrCode')
+		// 	return			
+		// }
 	        var container = document.createElement('div')
 	        var qrcode = new QRCode(container, {
 	                text: arAppURL,
@@ -53,9 +53,12 @@ function updateArAppURL(){
 		trackingBackend: 'artoolkit',
 		markerPageResolution: window.innerWidth + 'x' + window.innerHeight,
 	}
-	if( typeof(peerjsPeer) !== 'undefined' && peerjsPeer !== null && peerjsPeer.id !== undefined ){
-		urlOptions.peerjsPeerID = peerjsPeer.id
+	if( typeof(firebasePeerID) !== 'undefined' && firebasePeerID !== null ){
+		urlOptions.firebasePeerID = firebasePeerID
 	}
+	// if( typeof(peerjsPeer) !== 'undefined' && peerjsPeer !== null && peerjsPeer.id !== undefined ){
+	// 	urlOptions.peerjsPeerID = peerjsPeer.id
+	// }
 	// build arAppURL
 	if( location.hash.substring(1) ){
 		var arAppURL = location.hash.substring(1)
@@ -74,25 +77,21 @@ function updateArAppURL(){
 
 	var linkElement = document.createElement('a')
 	linkElement.href = arAppURL
-// debugger
+
+	// if localhost, then goo.gl refuse to minimise
 	if( linkElement.hostname === '127.0.0.1' || linkElement.hostname === 'localhost' ){
 		shouldShortenUrl = false
 	}
-// debugger
 
-// arAppURLUpdatePage(arAppURL)
-// return
-
+	// is goo.gl available ?
 	if( typeof(gapi) === 'undefined' || gapi.client === undefined || gapi.client.urlshortener === undefined ){
 		shouldShortenUrl = false
 	}
 	
 	if( shouldShortenUrl === false ){
-console.log('arAppURL without shortening', arAppURL.length)
 		arAppURLUpdatePage(arAppURL)
 	}else{
 		googlMinify(arAppURL, function(shortURL){
-console.log('arAppURL with shortening', shortURL.length)
 			arAppURLUpdatePage(shortURL)
 		})
 	}

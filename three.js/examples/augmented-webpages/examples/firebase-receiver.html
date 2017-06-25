@@ -15,6 +15,6 @@ var rootRef = firebase.database().ref();
 var adaRef = firebase.database().ref("users/ada");
 
 adaRef.on('value', function(snapshot){
-	console.log('new value',  Date.now() - snapshot.val().time);
+	console.log('latency',  Date.now() - snapshot.val().time);
 });
 </script>

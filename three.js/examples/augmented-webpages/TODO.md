@@ -1,21 +1,23 @@
-- try to integrate firebase
-  - there is already working examples
+# try to integrate firebase
+- there is already working examples
 - firebase could be used to sync-up markers-page size with phone
 - firebase could be used to calibrate markers-page brightness/contrast
 
+- on landingPage, get a random number, add that in the url. this is the id of the infopage
+- make firebase record name based on this random number
+  - scanned : false
+  - createdAt : xxxxxx (used to delete it later)
+- have a procedurre to erase all record which are older than X. launch it in the background in the landing page
+- set scanned to false every time you leave markerPage
+- when the ar app is loaded, set the variable to true
+- when landingpage see the value become true, it show the markerPage and set it to false
+
 ------------
+- put examples firebase/peerjs/goo.gl in gist
+
 - DONE make the player receive variable query instead of hash. check if it works well when sending email
 - DONE how to include goo.gl - make QRCode easier to read important
-- peerjs works in standalone
-- replace peerjs by firebase
-  - 
-- step1 peerjs
-  - init with peerjs open
-  - if peer.id !== undefined, add it to the link
-  - on open, update arAppUrl
-  - in arApp, if peerjsID is present then connect
-  - else dont
-- maybe easyrtc on now.sh
+
 
 
 - initialisation phase needed for peerjs+goo.gl
@@ -24,13 +26,6 @@
   - url is updated on every resize this may be a lot
   - do a rate limiter ? like if not moved for 0.5 seconds, then do it
   - hide qrcode image when it is invalid - aka during goo.gl call
-- peerjs workflow: 
-  - markerspage open
-  - update qrcode with peer.id
-  - phone scan qrcode
-  - phone connect markerspage with peer.id
-  - phone send 'showMarkersPage' to markerspage
-  - markerPage receive 'showMarkersPage' and show the markers page
 
 # communication between markerPage and phone
 - https://twitter.com/jerome_etienne/status/877628394388602880
