@@ -8,12 +8,18 @@ function arAppURLInit(){
 	window.addEventListener('resize', function(){
 		updateArAppURL()
 	})
+	
+	// select input on click - easier user experience
+	document.querySelector("#arAppURLView").addEventListener('click', function() {
+		this.select();
+		document.execCommand('copy');
+	})
 }
 
 function arAppURLUpdatePage(arAppURL){
 	// Update arAppURL in the webpage
 	document.body.querySelector('#arAppURLView').value = arAppURL
-	document.body.querySelector('#arAppURLLink').href = arAppURL	
+	document.body.querySelector('#arAppURLLink').href = arAppURL
 
 	// prepare emailURLtoMeLink
 	var mailBody = `DO NOT forget the change the recipient email address before sending it :)

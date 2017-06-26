@@ -4,7 +4,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-	<title>Augmented Webpages with AR.js - Bringing AR to Any Webpage</title>
+	<title>Augmented Webpage with AR.js - Bringing AR to Any Webpage</title>
 	
 	<!-- Add to homescreen for Chrome on Android -->
 	<meta name="mobile-web-app-capable" content="yes">
@@ -46,7 +46,7 @@
 			-
 			arrow keys to tune
 			<br/>
-			<a href='javascript:void(0)' onclick='markersPageLeave()'>Back</a>
+				<a href='javascript:void(0)' onclick='markersPageLeave()'>Back</a>
 		</div>
 		<div style='position: absolute; bottom: 10px; width:100%; text-align: center;';>
 			Tracking backend:
@@ -76,7 +76,7 @@
 		<header class="mdl-layout__header">
 			<div class="mdl-layout__header-row" id='infoPageHeader'>
 				<!-- Title -->
-				<span id='infoPageTitle' class="mdl-layout-title">Augmented Webpages with <a href='https://github.com/jeromeetienne/ar.js' target='_blank'>AR.js</a>
+				<span id='infoPageTitle' class="mdl-layout-title">Augmented Webpage with <a href='https://github.com/jeromeetienne/ar.js' target='_blank'>AR.js</a>
 					<br/>
 					<span style='font-size: 80%; color: #ccc;'>Bringing AR to Any Webpage</span></span>
 				</div>
@@ -85,7 +85,7 @@
 				<div class="page-content">
 					<!-- Fullscreen Button -->
 					<button id='fullscreenButton' class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
-						<i class="material-icons">aspect_ratio</i>
+						<i class="material-icons">fullscreen</i>
 					</button>
 					<!-- INFO BUTTON and DIALOG -->
 					<button id='infoButton' class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
@@ -102,35 +102,32 @@
 							</p>
 							<iframe width="560" height="315" src="https://www.youtube.com/embed/sp7Wxk1yVcY" frameborder="0" allowfullscreen></iframe>
 						</div>
-						<!-- <div class="mdl-dialog__actions">
-							<button type="button" class="mdl-button">Close</button>
-						</div> -->
 					</dialog>
 					
 					<!-- help BUTTON and DIALOG -->
 					<button id='helpButton' class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
-						<i class="material-icons">settings</i>
+						<i class="material-icons">link</i>
 					</button>
 					<dialog id='helpDialog' class="mdl-dialog">
 						<img class='close' src='https://d30y9cdsu7xlg0.cloudfront.net/png/53504-200.png' style="cursor: pointer; float: right; width: 3em"/>
-						<h4 class="mdl-dialog__title">Debug stuff</h4>
+						<h4 class="mdl-dialog__title">Sharing links between Web Pages</h4>
 						<div class="mdl-dialog__content">
-							wanna know <a href='javascript:void(0)' onclick='displayResolution()'>resolution</a> ?
+							You need to open the AR application on your phone. 
+							The QRCode is likely the easiest way. But here are other ways.
+							<br/>
+							<br/>
+							<input id='arAppURLView' type='text'>
+							<br/>							
+							<br/>
+							You can simply copy paste the link. Up to you to send it to your phone. 
+							You can use twitter, facebook or other. You can even
+							<a id='emailURLtoMeLink' href='#' target='_blank'>email it to yourself</a>.
+							Or simple type it by hand.
+							<br/>
+							<br/>
 							
-							<h5>How to share URL between your phone and your computer</h5>
-							
-							<ul>
-								<li>
-									Copy paste the link ?
-									<input id='arAppURLView' type='text' size='80' >
-								</li>
-								<li>you can do with with a qrcode.see above</li>
-								<li>email it to yourself - <a id='emailURLtoMeLink' href='#' target='_blank'>link</a></li>
-								<li>tweet it to yourself TODO</li>
-								<li>send it to facebook TODO</li>
-								<li>you can do it with history sharing.</li>
-								<li>you can simply type it - low tech</li>
-							</ul>
+
+							Currently the resolution is <span id='markerPageResolution'>unknown</a>
 						</div>
 					</dialog>
 					

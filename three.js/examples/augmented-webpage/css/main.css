@@ -19,7 +19,7 @@ body {
 	top: 1em;
 }
 #infoDialog {
-	min-width: 40%;
+	min-width: 30%;
 }
 
 /* helpButton and helpDialog*/
@@ -29,7 +29,7 @@ body {
 	bottom: 1em;
 }
 #helpDialog {
-	min-width: 40%;
+	min-width: 30%;
 }
 
 
