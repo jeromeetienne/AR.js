@@ -38,6 +38,7 @@
   - https://twitter.com/jerome_etienne/status/861868630883094528
 
 # Ideas
+- IDEA: a snake game in AR. https://twitter.com/jerome_etienne/status/879451002365247489
 - IDEA: A pong game in AR. Do it in augmented screen space. solo or multi-player. Two persons playing together thru #AR. https://twitter.com/jerome_etienne/status/878534742458732544
 - play with camera parameters to optimize it for AR - available in mediastreamtrack
   - https://www.oberhofer.co/mediastreamtrack-and-its-capabilities/
