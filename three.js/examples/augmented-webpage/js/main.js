@@ -1,13 +1,4 @@
-
-
-var dialogs = document.querySelectorAll('dialog');
-for(var i = 0; i < dialogs.length; i++){
-    	dialogPolyfill.registerDialog(dialogs[i]);
-	
-}
-
 googlInit()
-// peerjsInit()
 firebaseInit()
 arAppURLInit()
 markersPageInit()
@@ -15,6 +6,7 @@ fullscreenInit()
 dialogsInit()
 
 
+// kludge to display resolution - used to debug
 ;(function(){
         window.addEventListener('resize', onResize)
         onResize()

@@ -99,19 +99,13 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 	// update the matrix
 	this.object3d.updateMatrix()
 
-	function applyOneSlepStep(){
-		object3d.position.lerp(targetObject3d.position, parameters.lerpPosition)
-		object3d.quaternion.slerp(targetObject3d.quaternion, parameters.lerpQuaternion)
-		object3d.scale.lerp(targetObject3d.scale, parameters.lerpScale)
-	}
-
 	// disable the lerp by directly copying targetObject3d position/quaternion/scale
-	// if( false ){		
-	// 	this.object3d.position.copy( targetObject3d.position )
-	// 	this.object3d.quaternion.copy( targetObject3d.quaternion )
-	// 	this.object3d.scale.copy( targetObject3d.scale )
-	// 	this.object3d.updateMatrix()
-	// }
+	if( false ){		
+		this.object3d.position.copy( targetObject3d.position )
+		this.object3d.quaternion.copy( targetObject3d.quaternion )
+		this.object3d.scale.copy( targetObject3d.scale )
+		this.object3d.updateMatrix()
+	}
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		honor becameVisible/becameUnVisible event
@@ -123,5 +117,13 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 	// honor becameUnVisible event
 	if( wasVisible === true && object3d.visible === false ){
 		this.dispatchEvent({ type: 'becameUnVisible' })
+	}
+	return
+	
+	
+	function applyOneSlepStep(){
+		object3d.position.lerp(targetObject3d.position, parameters.lerpPosition)
+		object3d.quaternion.slerp(targetObject3d.quaternion, parameters.lerpQuaternion)
+		object3d.scale.lerp(targetObject3d.scale, parameters.lerpScale)
 	}
 }
