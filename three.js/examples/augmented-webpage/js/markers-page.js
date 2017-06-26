@@ -58,7 +58,7 @@ function markersPageSetVisibility(visible){
 //		markersPage brightness/contrast
 //////////////////////////////////////////////////////////////////////////////
 var markersPageBrightness = 0
-var markersPageOpacity = 0.5
+var markersPageOpacity = 1.0
 function markersPageUpdateBrightnessOpacity(){
 	// normalize values
 	markersPageBrightness = Math.max(0, Math.min(1, markersPageBrightness))
