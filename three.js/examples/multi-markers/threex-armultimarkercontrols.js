@@ -4,7 +4,8 @@ THREEx.ArMultiMarkerControls = function(arToolkitContext, object3d, subMarkersCo
 	var _this = this
 
 	THREEx.ArBaseControls.call(this, object3d)
-
+	
+	this.object3d.visible = false
 	// copy parameters
 	this.subMarkersControls = subMarkersControls
 	this.subMarkerPoses = subMarkerPoses

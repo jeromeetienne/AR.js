@@ -335,6 +335,7 @@
 		var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
 		averageMatrix.decompose(arWorldRoot.position, arWorldRoot.quaternion, arWorldRoot.scale)		
 		smoothedRoot.add(arWorldRoot)
+		// markerRoot.add(arWorldRoot)
 				
 		var mesh = new THREE.AxisHelper()
 		arWorldRoot.add(mesh)
