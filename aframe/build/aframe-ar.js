@@ -388,12 +388,12 @@ THREEx.ArMarkerControls.prototype.updateWithModelViewMatrix = function(modelView
 	}else console.assert(false)
 
 
-if( this.context.parameters.arBackend !== 'tango' ){
+	if( this.context.parameters.arBackend !== 'tango' ){
 
-	// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
-	var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
-	modelViewMatrix.multiply(markerAxisTransformMatrix)
-}
+		// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
+		var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
+		modelViewMatrix.multiply(markerAxisTransformMatrix)
+	}
 
 	// change markerObject3D.matrix based on parameters.changeMatrixMode
 	if( this.parameters.changeMatrixMode === 'modelViewMatrix' ){
@@ -619,13 +619,14 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 		if( this._visibleStartedAt === null )		this._visibleStartedAt = present
 		var visibleFor = present - this._visibleStartedAt
 		if( visibleFor >= this.parameters.minVisibleDelay ){
-			object3d.visible = true			
+			object3d.visible = true
+			this._visibleStartedAt = null
 		}
-		// console.log('visibleFor', visibleFor)
+		console.log('visibleFor', visibleFor)
 	}
 
 	if( wasVisible === true && targetObject3d.visible === false ){
-		if( this._unvisibleStartedAt === null )	this._unvisibleStartedAt = present
+		if( this._unvisibleStartedAt === null )	this._unvisibleStartedAt = present 
 		var unvisibleFor = present - this._unvisibleStartedAt
 		if( unvisibleFor >= this.parameters.minUnvisibleDelay ){
 			object3d.visible = false			
@@ -657,19 +658,13 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 	// update the matrix
 	this.object3d.updateMatrix()
 
-	function applyOneSlepStep(){
-		object3d.position.lerp(targetObject3d.position, parameters.lerpPosition)
-		object3d.quaternion.slerp(targetObject3d.quaternion, parameters.lerpQuaternion)
-		object3d.scale.lerp(targetObject3d.scale, parameters.lerpScale)
-	}
-
 	// disable the lerp by directly copying targetObject3d position/quaternion/scale
-	// if( false ){		
-	// 	this.object3d.position.copy( targetObject3d.position )
-	// 	this.object3d.quaternion.copy( targetObject3d.quaternion )
-	// 	this.object3d.scale.copy( targetObject3d.scale )
-	// 	this.object3d.updateMatrix()
-	// }
+	if( false ){		
+		this.object3d.position.copy( targetObject3d.position )
+		this.object3d.quaternion.copy( targetObject3d.quaternion )
+		this.object3d.scale.copy( targetObject3d.scale )
+		this.object3d.updateMatrix()
+	}
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		honor becameVisible/becameUnVisible event
@@ -681,6 +676,141 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 	// honor becameUnVisible event
 	if( wasVisible === true && object3d.visible === false ){
 		this.dispatchEvent({ type: 'becameUnVisible' })
+	}
+	return
+	
+	
+	function applyOneSlepStep(){
+		object3d.position.lerp(targetObject3d.position, parameters.lerpPosition)
+		object3d.quaternion.slerp(targetObject3d.quaternion, parameters.lerpQuaternion)
+		object3d.scale.lerp(targetObject3d.scale, parameters.lerpScale)
+	}
+}
+var THREEx = THREEx || {}
+
+/**
+ * - lerp position/quaternino/scale
+ * - minDelayDetected
+ * - minDelayUndetected
+ * @param {[type]} object3d   [description]
+ * @param {[type]} parameters [description]
+ */
+THREEx.ArSmoothedControls = function(object3d, parameters){
+	var _this = this
+	
+	THREEx.ArBaseControls.call(this, object3d)
+	
+	// copy parameters
+	this.object3d.visible = false
+	
+	this._lastLerpStepAt = null
+	this._visibleStartedAt = null
+	this._unvisibleStartedAt = null
+
+	// handle default parameters
+	parameters = parameters || {}
+	this.parameters = {
+		// lerp coeficient for the position - between [0,1] - default to 1
+		lerpPosition: parameters.lerpPosition !== undefined ? parameters.lerpPosition : 0.8,
+		// lerp coeficient for the quaternion - between [0,1] - default to 1
+		lerpQuaternion: parameters.lerpQuaternion !== undefined ? parameters.lerpQuaternion : 0.2,
+		// lerp coeficient for the scale - between [0,1] - default to 1
+		lerpScale: parameters.lerpScale !== undefined ? parameters.lerpScale : 0.7,
+		// delay for lerp fixed steps - in seconds - default to 1/120
+		lerpStepDelay: parameters.fixStepDelay !== undefined ? parameters.fixStepDelay : 1/60,
+		// minimum delay the sub-control must be visible before this controls become visible - default to 0 seconds
+		minVisibleDelay: parameters.minVisibleDelay !== undefined ? parameters.minVisibleDelay : 0.0,
+		// minimum delay the sub-control must be unvisible before this controls become unvisible - default to 0 seconds
+		minUnvisibleDelay: parameters.minUnvisibleDelay !== undefined ? parameters.minUnvisibleDelay : 0.2,
+	}
+}
+	
+THREEx.ArSmoothedControls.prototype = Object.create( THREEx.ArBaseControls.prototype );
+THREEx.ArSmoothedControls.prototype.constructor = THREEx.ArSmoothedControls;
+
+//////////////////////////////////////////////////////////////////////////////
+//		update function
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
+	var object3d = this.object3d
+	var parameters = this.parameters
+	var wasVisible = object3d.visible
+	var present = performance.now()/1000
+
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		handle object3d.visible with minVisibleDelay/minUnvisibleDelay
+	//////////////////////////////////////////////////////////////////////////////
+	if( targetObject3d.visible === false )	this._visibleStartedAt = null
+	if( targetObject3d.visible === true )	this._unvisibleStartedAt = null
+
+	if( targetObject3d.visible === true && this._visibleStartedAt === null )	this._visibleStartedAt = present
+	if( targetObject3d.visible === false && this._unvisibleStartedAt === null )	this._unvisibleStartedAt = present
+
+	if( wasVisible === false && targetObject3d.visible === true ){
+		var visibleFor = present - this._visibleStartedAt
+		if( visibleFor >= this.parameters.minVisibleDelay ){
+			object3d.visible = true
+			snapDirectlyToTarget()
+		}
+		// console.log('visibleFor', visibleFor)
+	}
+
+	if( wasVisible === true && targetObject3d.visible === false ){
+		var unvisibleFor = present - this._unvisibleStartedAt
+		if( unvisibleFor >= this.parameters.minUnvisibleDelay ){
+			object3d.visible = false			
+		}
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		apply lerp on positon/quaternion/scale
+	//////////////////////////////////////////////////////////////////////////////
+
+	// apply lerp steps - require fix time steps to behave the same no matter the fps
+	if( this._lastLerpStepAt === null ){
+		applyOneSlerpStep()
+		this._lastLerpStepAt = present
+	}else{
+		var nStepsToDo = Math.floor( (present - this._lastLerpStepAt)/this.parameters.lerpStepDelay )
+		for(var i = 0; i < nStepsToDo; i++){
+			applyOneSlerpStep()
+			this._lastLerpStepAt += this.parameters.lerpStepDelay
+		}
+	}
+
+	// disable the lerp by directly copying targetObject3d position/quaternion/scale
+	if( false ){		
+		snapDirectlyToTarget()
+	}
+
+	// update the matrix
+	this.object3d.updateMatrix()
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		honor becameVisible/becameUnVisible event
+	//////////////////////////////////////////////////////////////////////////////
+	// honor becameVisible event
+	if( wasVisible === false && object3d.visible === true ){
+		this.dispatchEvent({ type: 'becameVisible' })
+	}
+	// honor becameUnVisible event
+	if( wasVisible === true && object3d.visible === false ){
+		this.dispatchEvent({ type: 'becameUnVisible' })
+	}
+	return
+
+	function snapDirectlyToTarget(){
+		object3d.position.copy( targetObject3d.position )
+		object3d.quaternion.copy( targetObject3d.quaternion )
+		object3d.scale.copy( targetObject3d.scale )
+	}	
+	
+	function applyOneSlerpStep(){
+		object3d.position.lerp(targetObject3d.position, parameters.lerpPosition)
+		object3d.quaternion.slerp(targetObject3d.quaternion, parameters.lerpQuaternion)
+		object3d.scale.lerp(targetObject3d.scale, parameters.lerpScale)
 	}
 }
 var THREEx = THREEx || {}
@@ -1112,7 +1242,7 @@ THREEx.ArToolkitProfile.prototype.performance = function(label) {
 		this.contextParameters.sourceWidth = 80*3
 		this.contextParameters.sourceHeight = 60*3
 
-		this.contextParameters.maxDetectionRate = 15		
+		this.contextParameters.maxDetectionRate = 30		
 	}else {
 		console.assert(false, 'unknonwn label '+label)
 	}

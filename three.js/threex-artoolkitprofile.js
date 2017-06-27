@@ -83,7 +83,7 @@ THREEx.ArToolkitProfile.prototype.performance = function(label) {
 		this.contextParameters.sourceWidth = 80*3
 		this.contextParameters.sourceHeight = 60*3
 
-		this.contextParameters.maxDetectionRate = 15		
+		this.contextParameters.maxDetectionRate = 30		
 	}else {
 		console.assert(false, 'unknonwn label '+label)
 	}

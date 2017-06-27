@@ -212,11 +212,11 @@ THREEx.ArMultiMarkerControls.prototype.updateSmoothedControls = function(smoothe
 		// {lerpPosition: 0.5, lerpQuaternion: 0.2, lerpQuaternion: 0.7}
 		// ]
 		lerpsValues = [
-			[0.4, 0.1, 0.3],
-			[0.4, 0.1, 0.4],
-			[0.4, 0.2, 0.5],
-			[0.4, 0.2, 0.7],
-			[0.4, 0.2, 0.7],
+			[0.1, 0.1, 0.3],
+			[0.2, 0.1, 0.4],
+			[0.2, 0.2, 0.5],
+			[0.3, 0.2, 0.7],
+			[0.3, 0.2, 0.7],
 		]
 	}
 	// count how many subMarkersControls are visible

@@ -50,6 +50,7 @@
 <div style='position: fixed; bottom: 16px; right: 16px; z-index:1';>
 	<img id='recordButton' src="../../../multi-markers/examples/images/record-start.png" width='64px'  height='64px'>
 </div>
+
 <script>
 ;(function(){
 
@@ -149,6 +150,7 @@
 	var artoolkitProfile = new THREEx.ArToolkitProfile()
 	artoolkitProfile.sourceWebcam()
 		// .performance('desktop-fast')
+		// .performance('phone-slow')
 
 	var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)
 
