@@ -44,93 +44,6 @@ THREEx.ArSmoothedControls.prototype.constructor = THREEx.ArSmoothedControls;
 //		update function
 //////////////////////////////////////////////////////////////////////////////
 
-// THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
-// 	var object3d = this.object3d
-// 	var parameters = this.parameters
-// 	var wasVisible = object3d.visible
-// 	var present = performance.now()/1000
-// 
-// 
-// 	//////////////////////////////////////////////////////////////////////////////
-// 	//		handle object3d.visible with minVisibleDelay/minUnvisibleDelay
-// 	//////////////////////////////////////////////////////////////////////////////
-// 	if( targetObject3d.visible === false )	this._visibleStartedAt = null
-// 	if( targetObject3d.visible === true )	this._unvisibleStartedAt = null
-// 
-// 	if( wasVisible === false && targetObject3d.visible === true ){
-// 		if( this._visibleStartedAt === null )		this._visibleStartedAt = present
-// 		var visibleFor = present - this._visibleStartedAt
-// 		if( visibleFor >= this.parameters.minVisibleDelay ){
-// 			object3d.visible = true
-// 		}
-// 		console.log('visibleFor', visibleFor)
-// 	}
-// 
-// 	if( wasVisible === true && targetObject3d.visible === false ){
-// 		if( this._unvisibleStartedAt === null )	this._unvisibleStartedAt = present 
-// 		var unvisibleFor = present - this._unvisibleStartedAt
-// 		if( unvisibleFor >= this.parameters.minUnvisibleDelay ){
-// 			object3d.visible = false			
-// 		}
-// 		// console.log('unvisibleFor', unvisibleFor)
-// 	}
-// 	
-// 	// disabled minVisibleDelay+minUnvisibleDelay
-// 	// if( true ){		
-// 	// 	object3d.visible = targetObject3d.visible
-// 	// }
-// 	
-// 	//////////////////////////////////////////////////////////////////////////////
-// 	//		apply lerp on positon/quaternion/scale
-// 	//////////////////////////////////////////////////////////////////////////////
-// 
-// if( object3d.visible === true && targetObject3d.visible === true ){	
-// 	// apply lerp steps - require fix time steps to behave the same no matter the fps
-// 	if( this._lastLerpStepAt === null ){
-// 		applyOneSlerpStep()
-// 		this._lastLerpStepAt = present
-// 	}else{
-// 		var nStepsToDo = Math.floor( (present - this._lastLerpStepAt)/this.parameters.lerpStepDelay )
-// 		for(var i = 0; i < nStepsToDo; i++){
-// 			applyOneSlerpStep()
-// 			this._lastLerpStepAt += this.parameters.lerpStepDelay
-// 		}
-// 	}
-// 
-// 	// update the matrix
-// 	this.object3d.updateMatrix()
-// }
-// console.log('object3d.position:', object3d.position.x.toFixed(3), targetObject3d.position.x.toFixed(3))
-// 
-// 	// disable the lerp by directly copying targetObject3d position/quaternion/scale
-// 	if( object3d.visible === false ){		
-// console.log('ddd')
-// 		this.object3d.position.copy( targetObject3d.position )
-// 		this.object3d.quaternion.copy( targetObject3d.quaternion )
-// 		this.object3d.scale.copy( targetObject3d.scale )
-// 		this.object3d.updateMatrix()
-// 	}
-// 
-// 	//////////////////////////////////////////////////////////////////////////////
-// 	//		honor becameVisible/becameUnVisible event
-// 	//////////////////////////////////////////////////////////////////////////////
-// 	// honor becameVisible event
-// 	if( wasVisible === false && object3d.visible === true ){
-// 		this.dispatchEvent({ type: 'becameVisible' })
-// 	}
-// 	// honor becameUnVisible event
-// 	if( wasVisible === true && object3d.visible === false ){
-// 		this.dispatchEvent({ type: 'becameUnVisible' })
-// 	}
-// 	return
-// 	
-// 	
-// 	function applyOneSlerpStep(){
-// 		object3d.position.lerp(targetObject3d.position, parameters.lerpPosition)
-// 		object3d.quaternion.slerp(targetObject3d.quaternion, parameters.lerpQuaternion)
-// 		object3d.scale.lerp(targetObject3d.scale, parameters.lerpScale)
-// 	}
-// }
 THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 	var object3d = this.object3d
 	var parameters = this.parameters
@@ -179,14 +92,10 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 		}
 	}
 
-// console.log('object3d.position:', object3d.position.x.toFixed(3), targetObject3d.position.x.toFixed(3))
-// console.log('object3d.position:', object3d.position.x.toFixed(3), targetObject3d.position.x.toFixed(3), targetObject3d.visible)
-
 	// disable the lerp by directly copying targetObject3d position/quaternion/scale
 	if( false ){		
 		snapDirectlyToTarget()
 	}
-
 
 	// update the matrix
 	this.object3d.updateMatrix()
