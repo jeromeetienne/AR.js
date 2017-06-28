@@ -5,5 +5,5 @@
 * [FUTURE](misc/FUTURE.md)
 
 
-# Posts3
+# Posts
 * [post-XX-how-to-use-arjs-with-aframe](posts/post-XX-how-to-use-arjs-with-aframe.md)
