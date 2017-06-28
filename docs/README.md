@@ -1,11 +1,11 @@
 # Table of Contents
 
 * [Read Me](README.md)
-* [CHANGELOG](CHANGELOG.md)
-* [EXAMPLES](EXAMPLES.md)
-* [FAQ](FAQ.md)
-* [FUTURE](FUTURE.md)
+* [CHANGELOG](misc/CHANGELOG.md)
+* [EXAMPLES](misc/EXAMPLES.md)
+* [FAQ](misc/FAQ.md)
+* [FUTURE](misc/FUTURE.md)
 
 
 # Posts
-* [FUTURE](FUTURE.md)
+* [post-XX-how-to-use-arjs-with-aframe](posts/post-XX-how-to-use-arjs-with-aframe.md.md)
