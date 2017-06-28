@@ -31,15 +31,9 @@ function markersPageInit(){
 	})
 	
 	window.addEventListener('popstate', function(event){  
-		var content = "";
-		if(event.state) {
-			if( event.state.plate === 'Markers' ){
-				markersPageEnter()
-			}
-			if( event.state.plate === 'LandingPage' ){
-				markersPageLeave()
-			}
-		}
+		if(event.state === undefined ) return
+		if( event.state.plate === 'MarkersPage' )	markersPageEnter()
+		if( event.state.plate === 'LandingPage' )	markersPageLeave()
 	})
 }
 
@@ -50,15 +44,13 @@ function markersPageInit(){
 function markersPageEnter(){
 	// debugger
 	history.pushState( { 
-		plate_id: 1, 
-		plate: "Markers" 
-	}, null, "markers");
+		plate: "MarkersPage" 
+	}, null, "markers-page");
 	markersPageSetVisibility(true)
 }
 
 function markersPageLeave(){
 	history.pushState( { 
-		plate_id: 2, 
 		plate: "LandingPage" 
 	}, null, ".");
 	markersPageSetVisibility(false)

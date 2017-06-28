@@ -80,8 +80,10 @@ function updateArAppURL(){
 	//		build url and update page
 	//////////////////////////////////////////////////////////////////////////////
 
-	// add options in arAppURL
-	var nextUrl = 'phone-landing/' + '#' + encodeURIComponent(JSON.stringify(urlOptions))
+	// build nextUrl
+	var tmpLink = document.createElement('a');
+	tmpLink.href = 'app/' + '#' + encodeURIComponent(JSON.stringify(urlOptions));
+	var nextUrl = tmpLink.href
 
 	// Should this url be shortened
 	var shouldShortenUrl = true

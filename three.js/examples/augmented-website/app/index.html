@@ -1,6 +1,6 @@
 <!-- three.js library -->
 <script src='../../vendor/three.js/build/three.js'></script>
-<script src='../js/threex-augmentedwebpages.js'></script>
+<script src='js/threex-augmentedwebpages.js'></script>
 <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
 <style type="text/css">
 	body, html{
@@ -33,8 +33,7 @@
 		alert('location.hash MUST Exists')
 	}
 	var urlOptions = JSON.parse(decodeURIComponent(location.hash.substring(1)))
-	history.pushState("", document.title, location.pathname + location.search);
-
+	// history.pushState("", document.title, location.pathname + location.search);
 	// sanity check
 	console.assert( urlOptions.arAppURL !== undefined, 'urlOptions.arAppURL MUST be defined')
 	console.assert( urlOptions.markerPageResolution !== undefined, 'urlOptions.markerPageResolution MUST be defined')
