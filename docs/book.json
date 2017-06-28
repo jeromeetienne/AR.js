@@ -3,24 +3,5 @@
                 "sidebar": {
                         "Homepage": "https://github.com/jeromeetienne/ar.js"
                 }
-        },
-        "plugins": [
-                "edit-link",
-                "github",
-                "anchorjs"
-        ],
-        "pluginsConfig": {
-                "edit-link": {
-                        "base": "https://github.com/jeromeetienne/ar.js/tree/master/docs/",
-                        "label": "Edit This Page"
-                },
-                "github": {
-                        "url": "https://github.com/jeromeetienne/ar.js/"
-                }
-        },
-        "theme-default": {
-                "styles": {
-                        "website": "gitbook/gitbook.css"
-                }
-        }    
+        }
 }
