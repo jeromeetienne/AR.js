@@ -62,54 +62,10 @@
 	if( location.search.substring(1) ){
 		var urlOptions = JSON.parse(decodeURIComponent(location.search.substring(1)))
 	}else{
-		var urlOptions = {
-			trackingBackend : 'artoolkit',
-			//markerPageResolution : '1024x653'
-		}
+		var urlOptions = {}
 	}
 	if( urlOptions.trackingBackend === undefined ) urlOptions.trackingBackend = 'artoolkit'
 	
-
-	// if urlOptions.markerPageResolution, then build ARjsMultiMarkerFile according to it
-	;(function(){
-		if( urlOptions.markerPageResolution === undefined )	return
-		// get resolutionW/resolutionH
-		var matches = urlOptions.markerPageResolution.match(/(\d+)x(\d+)/)
-		console.assert(matches.length === 3)
-		var resolutionW = parseInt(matches[1])
-		var resolutionH = parseInt(matches[2])
-
-		// compute baseURL in absolute
-		var link = document.createElement("a");
-		link.href = "../../../../";
-		THREEx.AugmentedWebpages.baseURL = link.protocol+"//"+link.host+link.pathname
-		// buildAreaFileFromResolution
-		var file = THREEx.AugmentedWebpages.buildAreaFileFromResolution('artoolkit', resolutionW, resolutionH)
-		localStorage.setItem('ARjsMultiMarkerFile', JSON.stringify(file))
-		
-		document.querySelector('#recordButton').style.display = 'none'
-	})()
-
-	;(function(){
-		if( urlOptions.firebasePeerID === undefined )	return
-		var firebasePeerID = urlOptions.firebasePeerID
-		// Initialize Firebase
-		var config = {
-			apiKey: "AIzaSyAKONfp5EmXuAlFmGGtmJcJiWg_Xyjb5SQ",
-			// authDomain: "augmented-webpages.firebaseapp.com",
-			databaseURL: "https://augmented-webpages.firebaseio.com",
-			// projectId: "augmented-webpages",
-			// storageBucket: "augmented-webpages.appspot.com",
-			// messagingSenderId: "128557805583"
-		};
-		var firebaseApp = firebase.initializeApp(config);
-		var rootRef = firebase.database().ref();
-		// Get a reference to the /users/ada node
-		var dataRef = firebase.database().ref('marker-page-'+firebasePeerID);
-		dataRef.update({
-			qrCodeToScan : false
-		})
-	})()
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////

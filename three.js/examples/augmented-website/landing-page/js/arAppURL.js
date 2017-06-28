@@ -16,15 +16,15 @@ function arAppURLInit(){
 	})
 }
 
-function arAppURLUpdatePage(arAppURL){
-	// Update arAppURL in the webpage
-	document.body.querySelector('#arAppURLView').value = arAppURL
-	document.body.querySelector('#arAppURLLink').href = arAppURL
+function arAppURLUpdatePage(url){
+	// Update url in the webpage
+	document.body.querySelector('#arAppURLView').value = url
+	document.body.querySelector('#arAppURLLink').href = url
 
 	// prepare emailURLtoMeLink
 	var mailBody = `DO NOT forget the change the recipient email address before sending it :)
 	
-	The AR.js App is at ${arAppURL}
+	The AR.js App is at ${url}
 	`
 	var mailtoUrl = 'mailto:your-goes-here-name@example.com?subject=Augmented%20Webpages%20URL&body='+encodeURIComponent(mailBody)
 	document.body.querySelector('#emailURLtoMeLink').href = mailtoUrl
@@ -37,7 +37,7 @@ function arAppURLUpdatePage(arAppURL){
 		// }
 	        var container = document.createElement('div')
 	        var qrcode = new QRCode(container, {
-	                text: arAppURL,
+	                text: url,
 	                width: 256,
 	                height: 256,
 	                colorDark : '#000000',
@@ -54,37 +54,41 @@ function arAppURLUpdatePage(arAppURL){
 }
 
 function updateArAppURL(){
+	//////////////////////////////////////////////////////////////////////////////
+	//		build urlOptions
+	//////////////////////////////////////////////////////////////////////////////
 	// build urlOptions
 	var urlOptions = {
 		trackingBackend: 'artoolkit',
 		markerPageResolution: window.innerWidth + 'x' + window.innerHeight,
 	}
+
 	if( typeof(firebasePeerID) !== 'undefined' && firebasePeerID !== null ){
 		urlOptions.firebasePeerID = firebasePeerID
 	}
-	// if( typeof(peerjsPeer) !== 'undefined' && peerjsPeer !== null && peerjsPeer.id !== undefined ){
-	// 	urlOptions.peerjsPeerID = peerjsPeer.id
-	// }
+
 	// build arAppURL
 	if( location.hash.substring(1) ){
-		var arAppURL = location.hash.substring(1)
+		urlOptions.arAppURL = location.hash.substring(1)
 	}else{
 		// build url
 		// FIXME pass from relative to absolute url in a better way
-		arAppURL = location.protocol + '//' + location.host + location.pathname.replace(/[^\/]*$/, '') + 'examples/screenAsPortal/index.html'		
+		urlOptions.arAppURL = location.protocol + '//' + location.host + location.pathname.replace(/[^\/]*$/, '') + 'examples/screenAsPortal/index.html'		
 	}
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		build url and update page
+	//////////////////////////////////////////////////////////////////////////////
+
 	// add options in arAppURL
-	arAppURL = arAppURL + '?' + encodeURIComponent(JSON.stringify(urlOptions))
+	var nextUrl = 'phone-landing/' + '#' + encodeURIComponent(JSON.stringify(urlOptions))
 
-	// arAppURL = 'https://github.com/jeromeetienne/ar.js'
-
+	// Should this url be shortened
 	var shouldShortenUrl = true
 	
-
-	var linkElement = document.createElement('a')
-	linkElement.href = arAppURL
-
 	// if localhost, then goo.gl refuse to minimise
+	var linkElement = document.createElement('a')
+	linkElement.href = nextUrl
 	if( linkElement.hostname === '127.0.0.1' || linkElement.hostname === 'localhost' ){
 		shouldShortenUrl = false
 	}
@@ -94,10 +98,11 @@ function updateArAppURL(){
 		shouldShortenUrl = false
 	}
 	
+	
 	if( shouldShortenUrl === false ){
-		arAppURLUpdatePage(arAppURL)
+		arAppURLUpdatePage(nextUrl)
 	}else{
-		googlMinify(arAppURL, function(shortURL){
+		googlMinify(nextUrl, function(shortURL){
 			arAppURLUpdatePage(shortURL)
 		})
 	}

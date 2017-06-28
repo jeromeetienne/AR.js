@@ -29,6 +29,18 @@ function markersPageInit(){
 		
 		markersPageUpdateBrightnessOpacity()
 	})
+	
+	window.addEventListener('popstate', function(event){  
+		var content = "";
+		if(event.state) {
+			if( event.state.plate === 'Markers' ){
+				markersPageEnter()
+			}
+			if( event.state.plate === 'LandingPage' ){
+				markersPageLeave()
+			}
+		}
+	})
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -36,10 +48,19 @@ function markersPageInit(){
 //////////////////////////////////////////////////////////////////////////////
 
 function markersPageEnter(){
+	// debugger
+	history.pushState( { 
+		plate_id: 1, 
+		plate: "Markers" 
+	}, null, "markers");
 	markersPageSetVisibility(true)
 }
 
 function markersPageLeave(){
+	history.pushState( { 
+		plate_id: 2, 
+		plate: "LandingPage" 
+	}, null, ".");
 	markersPageSetVisibility(false)
 }
 
@@ -72,8 +93,6 @@ function markersPageUpdateBrightnessOpacity(){
 			+ ', ' + (1-markersPageOpacity)
 			+ ')'
 	domElement.style.backgroundColor = colorRgba
-	// debugger
-	console.log('colorRgba', colorRgba)
 
 	// update views1
 	document.querySelector('#markers-page .currentBrightness').innerHTML = markersPageBrightness.toFixed(3)
