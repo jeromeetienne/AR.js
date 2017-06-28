@@ -1,4 +1,4 @@
-* [Read Me](../README.md)
+* [Read Me](README.md)
 * [CHANGELOG](misc/CHANGELOG.md)
 * [EXAMPLES](misc/EXAMPLES.md)
 * [FAQ](misc/FAQ.md)
