@@ -45,7 +45,7 @@ function markersPageEnter(){
 	// debugger
 	history.pushState( { 
 		plate: "MarkersPage" 
-	}, null, "markers-page");
+	}, null, "#markers-page");
 	markersPageSetVisibility(true)
 }
 
