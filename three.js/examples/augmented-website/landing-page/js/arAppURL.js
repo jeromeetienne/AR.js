@@ -73,7 +73,8 @@ function updateArAppURL(){
 	}else{
 		// build url
 		// FIXME pass from relative to absolute url in a better way
-		urlOptions.arAppURL = location.protocol + '//' + location.host + location.pathname.replace(/[^\/]*$/, '') + '../vendor/ar.js/three.js/examples/augmented-website/examples/screenAsPortal/index.html'		
+		// urlOptions.arAppURL = location.protocol + '//' + location.host + location.pathname.replace(/[^\/]*$/, '') + '../vendor/ar.js/three.js/examples/augmented-website/examples/screenAsPortal/index.html'		
+		urlOptions.arAppURL = location.protocol + '//' + location.host + location.pathname.replace(/[^\/]*$/, '') + 'examples/screenAsPortal/index.html'		
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -83,7 +84,7 @@ function updateArAppURL(){
 	// build nextUrl
 	var tmpLink = document.createElement('a');
 	tmpLink.href = 'app/' + '#' + encodeURIComponent(JSON.stringify(urlOptions));
-	tmpLink.href = '../vendor/ar.js/three.js/examples/augmented-website/app/' + '#' + encodeURIComponent(JSON.stringify(urlOptions));
+	// tmpLink.href = '../vendor/ar.js/three.js/examples/augmented-website/app/' + '#' + encodeURIComponent(JSON.stringify(urlOptions));
 	var nextUrl = tmpLink.href
 
 	// Should this url be shortened
