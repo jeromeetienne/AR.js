@@ -1,5 +1,7 @@
 # AR.js - Efficient Augmented Reality for the Web
 
+[![Join the chat at https://gitter.im/AR-js/Lobby](https://badges.gitter.im/AR-js/Lobby.svg)](https://gitter.im/AR-js/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 I am focusing hard on making AR for the web a reality.
 This repository is where I publish the code.
 Contact me anytime [@jerome_etienne](https://twitter.com/jerome_etienne).
