@@ -1,10 +1,7 @@
-- make multi
+- make multi-marker without page reload
 - port webvr-arbackend
 
 - rename THREEx.ArToolkitContext.getProjectionMatrix into .getArtoolkitProjectMatrix
-
-- DONE three.js/vendor/threex-aruco  => three.js/threex/threex-aruco
-
 
 ---
   

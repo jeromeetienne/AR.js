@@ -10,7 +10,6 @@ Dont worry, you can do it with only 8 line of html.
 - like to the pattern generator
 - explain the preset
 
-
 # Explain how to setup your own marker
 We wrote a marker generator to help you build your own markers.
 - https://medium.com/arjs/how-to-create-your-own-marker-44becbec1105
