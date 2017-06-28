@@ -45,9 +45,16 @@ You can try live on [codepen](https://codepen.io/jeromeetienne/pen/mRqqzb).
 </body>
 ```
 
+In this scene, the camera will be moved by AR.js, and the origin of your scene 
+is at the center of the marker. All the rest is normal a-frame. 
+So if you want to add new objects in the augmented reality, just add it 
+close to the ```<a-box>```.
+
+
 - explain the difference with the normal aframe boilerplate
 
-- 
+- Please ignore the body style and a-scene embedded attribute. 
+those are glitch which are meant to disapear shortly. 
 
 # Explain personalise the 3d content
 The most asked questions 
@@ -55,15 +62,29 @@ is "how to load my own model ?"
 - add a text on top as an alternative personalisation
 - Explain how to load a model on top of a marker
 
+
+https://aframe.io/docs/0.5.0/introduction/models.html#sidebar
+
+Here is an example of loading a [gltf](https://www.khronos.org/gltf) model.
+
+```html
+	<!-- define your gltf asset -->
+	<a-assets>
+		<a-asset-item id="tree" src="/path/to/tree.gltf"></a-asset-item>
+	</a-assets>
+	<!-- use your gltf model -->
+	<a-entity gltf-model="#tree"></a-entity>
+```
+
 How to add a text on top of the marker ?
 
 Simple just use [a-text](https://aframe.io/docs/0.5.0/primitives/a-text.html)
 
 ```html
 <a-entity
-  geometry="primitive: plane; width: 4; height: auto"
-  material="color: blue"
-  text="value: This text will be 4 units wide."></a-entity>
+geometry="primitive: plane; width: 4; height: auto"
+material="color: blue"
+text="value: This text will be 4 units wide."></a-entity>
 ```
 
 # Explain how to setup your own marker
@@ -100,7 +121,7 @@ Have you notice the ```type``` attribute ? this is for the type of markers. Ther
 2 kind of markers
 - barcode
 - pattern
-  - it matches a given image
+- it matches a given image
 
 
 http://www.artoolworks.com/support/library/Using_2D-barcode_markers
@@ -126,7 +147,7 @@ matrixCodeType: 3x3
 
 ```html
 <a-scene embedded 
-  artoolkit='sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3;'>
+artoolkit='sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3;'>
 ```
 
 
@@ -138,13 +159,13 @@ matrixCodeType: 3x3
 # Move the camera or the object ?
 - explain the various mode.
 - Typically when you are markers in 3d, you 
-  - the camera is fixed at 0, 0, 0 and looks toward negative z.
-  - it remains fixed during the whole thing.
-  - we move the marker in front of the camera, so somewhere in negative z.
+- the camera is fixed at 0, 0, 0 and looks toward negative z.
+- it remains fixed during the whole thing.
+- we move the marker in front of the camera, so somewhere in negative z.
 - this is fine but its axis is quite counterintuitive.
 - So i added a mode when you get one marker, it is at 0, 0, 0 and instead
-  we move the camera around.
-  
+we move the camera around.
+
 - Those 2 modes are available in AR.js:
-  - changeMatrixMode : 'modelViewMatrix'
-  - changeMatrixMode : 'cameraTranformMatrix'
+- changeMatrixMode : 'modelViewMatrix'
+- changeMatrixMode : 'cameraTranformMatrix'
