@@ -3,26 +3,41 @@ how to make augmented reality with AR.js
 
 Dont worry, you can do it with only 8 line of html.
 
+
+# introduction
+- what is ar.js.
+- work on any device
+- work on android, ios11 and window mobile.
+- totally open source
+- link to the github repo
+
 # Show dont tell 
 - augmented reality in 10 line of html
 - link to codepen
-- take only the aframe relevant information in the mediumn post and past it here
+- explain the difference with the normal aframe boilerplate
 
-# Explain how to load a model on top of a marker
-
-# Explain the 2 type of markers
-- barcode and pattern
-- like to the pattern generator
-- explain the preset
+# Explain personalise the 3d content
+- add a text on top as an alternative personalisation
+- Explain how to load a model on top of a marker
 
 # Explain how to setup your own marker
 We wrote a marker generator to help you build your own markers.
 - https://medium.com/arjs/how-to-create-your-own-marker-44becbec1105
 - https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html
 
+This time dont forget to explain what to do with the generated file
+
+- list complete of options
+
+# Explain the 2 type of markers
+- barcode and pattern
+- like to the pattern generator
+- explain the preset
+
 # How to handle multiple distinct markers
 - link to measure it example
 - video of it
+- what's the use
 
 # Move the camera or the object ?
 - explain the various mode.

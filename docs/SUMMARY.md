@@ -3,8 +3,6 @@
 * [EXAMPLES](misc/EXAMPLES.md)
 * [FAQ](misc/FAQ.md)
 * [FUTURE](misc/FUTURE.md)
-* [MOTIVATION](misc/MOTIVATION.md)
-
 
 # Posts
 * [post-XX-how-to-use-arjs-with-aframe](posts/post-XX-how-to-use-arjs-with-aframe.md)
