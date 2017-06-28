@@ -30,6 +30,8 @@ function markersPageInit(){
 		markersPageUpdateBrightnessOpacity()
 	})
 	
+	// remove location.hash
+	// history.pushState("", document.title, location.pathname + location.search);
 	window.addEventListener('popstate', function(event){  
 		if(event.state === undefined ) return
 		if( event.state.plate === 'MarkersPage' )	markersPageEnter()
