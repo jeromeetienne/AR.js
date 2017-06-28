@@ -31,11 +31,15 @@ You can try live on [codepen](https://codepen.io/jeromeetienne/pen/mRqqzb).
 
 
 ```html
+<!-- include aframe obviously -->
 <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+<!-- include ar.js for a-frame -->
 <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
 <body style='margin : 0px; overflow: hidden;'>
 	<a-scene embedded artoolkit='sourceType: webcam;'>
+		<!-- create your content here. just a box for now -->
 		<a-box position='0 0.5 0' material='opacity: 0.5;'></a-box>
+		<!-- define a camera which will move according to the marker position -->
 		<a-marker-camera preset='hiro'></a-marker-camera>
 	</a-scene>
 </body>
@@ -43,6 +47,7 @@ You can try live on [codepen](https://codepen.io/jeromeetienne/pen/mRqqzb).
 
 - explain the difference with the normal aframe boilerplate
 
+- 
 
 # Explain personalise the 3d content
 The most asked questions 
