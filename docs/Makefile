@@ -1,6 +1,6 @@
 build:
 	gitbook build
 
-serve:
+server:
 	gitbook serve
 	
