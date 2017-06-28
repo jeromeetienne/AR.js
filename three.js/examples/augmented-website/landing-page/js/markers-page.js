@@ -32,8 +32,8 @@ function markersPageInit(){
 	
 	window.addEventListener('popstate', function(event){  
 		if(event.state === undefined ) return
-		if( event.state.plate === 'MarkersPage' )	markersPageEnter()
-		if( event.state.plate === 'LandingPage' )	markersPageLeave()
+		if( event.state.plate === 'MarkersPage' )	markersPageSetVisibility(true)
+		if( event.state.plate === 'LandingPage' )	markersPageSetVisibility(false)
 	})
 }
 
