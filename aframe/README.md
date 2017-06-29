@@ -23,7 +23,7 @@ basic minimal examples. Good to get started
 shows you all the possibilities of aframe-ar. You can play around
 - [marker-camera.html](https://jeromeetienne.github.io/AR.js/aframe/examples/marker-camera.html):
 Move the camera instead of using the usual "camera looking toward negative-z and modelViewMatrix"
-- [multiple-independant-markers.html](https://jeromeetienne.github.io/AR.js/aframe/examples/multiple-independant-markers.html):
+- [multiple-independent-markers.html](https://jeromeetienne.github.io/AR.js/aframe/examples/multiple-independent-markers.html):
 Handle multiple indepant markers in a single scene.
 - [hatsune-minecraft.html](https://jeromeetienne.github.io/AR.js/aframe/examples/minecraft.html): 
 include a hatsune miku or minecraft avatar on the marker
@@ -68,7 +68,7 @@ It changes the camera transform matrix.
 
 This cameraTransform mode seems more instinctive than the modelView mode.
 cameraTransform would fit well a room-scale setup, with *multiple markers connected to each other*.
-modelView is able to provide multiple *independant* markers.
+modelView is able to provide multiple *independent* markers.
 
 ```html
 <!-- add artoolkit into your scene -->

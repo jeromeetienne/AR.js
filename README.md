@@ -74,7 +74,7 @@ With this project, we bring more performance to artoolkit.
 artoolkit is a software with years of experience doing augmented reality. It is able to do a lot!
 
 It is marker based. It supports a wide range of markers: multiple types of markers [pattern](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_training)/[barcode](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_barcode)
-multiple independant markers at the same time, or [multiple markers acting as a single marker](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_multi)
+multiple independent markers at the same time, or [multiple markers acting as a single marker](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_multi)
 up to you to choose.
 
 # What’s New?

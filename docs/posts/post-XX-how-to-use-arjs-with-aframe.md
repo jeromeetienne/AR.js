@@ -29,7 +29,6 @@ Today you can make
 You can try live on [codepen](https://codepen.io/jeromeetienne/pen/mRqqzb).
 
 
-
 ```html
 <!-- include aframe obviously -->
 <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
@@ -51,21 +50,33 @@ So if you want to add new objects in the augmented reality, just add it
 close to the ```<a-box>```.
 
 
+# How to add ar.js in your a-frame 
+This is 2 steps only
+
+1. Tell ar.js to start a-aframe
+2. setup the camera to move according to the markers
+
+So first you include aframe-ar.js, then declare a-scene to 
+add the parameters for artoolkit.
+
+- ```embedded```
+
+
 - explain the difference with the normal aframe boilerplate
 
 - Please ignore the body style and a-scene embedded attribute. 
 those are glitch which are meant to disapear shortly. 
 
-# Explain personalise the 3d content
-The most asked questions 
-is "how to load my own model ?"
-- add a text on top as an alternative personalisation
-- Explain how to load a model on top of a marker
+# Personalize your AR Content
+Now we have a basic cube in AR...
+it would be good to personalise AR a bit. 
 
-
-https://aframe.io/docs/0.5.0/introduction/models.html#sidebar
-
-Here is an example of loading a [gltf](https://www.khronos.org/gltf) model.
+One of the most asked questions has been "how to load my own model in AR?"
+As said before ar.js controls the displacement of the camera, all the rest
+is classic a-frame. So you can load a model exactly as you would in 
+a-frame. 
+Here is an example of loading a [gltf](https://www.khronos.org/gltf) model, just add that in your a-scene.
+For more detail see [a-frame documentation about models](https://aframe.io/docs/0.5.0/introduction/models.html#sidebar).
 
 ```html
 	<!-- define your gltf asset -->
@@ -76,15 +87,17 @@ Here is an example of loading a [gltf](https://www.khronos.org/gltf) model.
 	<a-entity gltf-model="#tree"></a-entity>
 ```
 
-How to add a text on top of the marker ?
-
-Simple just use [a-text](https://aframe.io/docs/0.5.0/primitives/a-text.html)
+Another way to easily personalize your AR is to put a text or an image on top.
+To add a text, simply just use [a-text](https://aframe.io/docs/0.5.0/primitives/a-text.html) as below.
 
 ```html
-<a-entity
-geometry="primitive: plane; width: 4; height: auto"
-material="color: blue"
-text="value: This text will be 4 units wide."></a-entity>
+<a-text value="Hello, World!"></a-text>
+```
+
+To add an image, [a-image](https://aframe.io/docs/0.5.0/primitives/a-image.html) is easy. Just paste this in your a-frame scene.
+
+```html
+<a-image src="another-image.png"></a-image>
 ```
 
 # Explain how to setup your own marker
@@ -151,11 +164,6 @@ artoolkit='sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3
 ```
 
 
-# How to handle multiple distinct markers
-- link to measure it example
-- video of it
-- what's the use
-
 # Move the camera or the object ?
 - explain the various mode.
 - Typically when you are markers in 3d, you 
@@ -169,3 +177,32 @@ we move the camera around.
 - Those 2 modes are available in AR.js:
 - changeMatrixMode : 'modelViewMatrix'
 - changeMatrixMode : 'cameraTranformMatrix'
+
+# How to handle multiple distinct markers
+- link to measure it example
+- video of it
+- what's the use
+
+- e.g. you can see it in this [multiple independent markers example]https://github.com/jeromeetienne/ar.js/aframe/examples/multiple-independent-markers.html)
+
+```html
+<script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+<script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
+<body style='margin : 0px; overflow: hidden;'>
+	<a-scene embedded artoolkit='sourceType: webcam;'>
+		<!-- handle hiro marker -->
+		<a-marker preset='hiro'>
+			<a-box position='0 0.5 0' material='color: blue;'></a-box>
+		</a-marker>
+
+		<!-- handle barcode marker -->
+		<a-marker type='barcode' value='5'>
+			<a-box position='0 0.5 0' material='color: pink;'></a-box>
+		</a-marker>
+
+		<!-- add a simple camera -->
+		<a-entity camera></a-entity>
+	</a-scene>
+</body>
+```
+		

@@ -85,9 +85,9 @@
 - [marker-camera](https://jeromeetienne.github.io/AR.js/aframe/examples/marker-camera.html) :
   a-frame example for marker-camera
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/marker-camera.html))
-- [multiple-indepandent-markers](https://jeromeetienne.github.io/AR.js/aframe/examples/multiple-independant-markers.html) :
+- [multiple-indepandent-markers](https://jeromeetienne.github.io/AR.js/aframe/examples/multiple-independent-markers.html) :
   a-frame example for multiple-indepandent-markers
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/multiple-independant-markers.html))
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/multiple-independent-markers.html))
 - [minimal](https://jeromeetienne.github.io/AR.js/aframe/examples/minimal.html) :
   Want to do Augmented Reality on the web ? You can do it [in less than 10 lines of html now](https://twitter.com/jerome_etienne/status/842192608256512000) :)
   minimal.html is the shortest html file you need if you want to do ar.js with a-frame
