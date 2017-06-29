@@ -71,20 +71,20 @@ those are glitch which are meant to disapear shortly.
 Now we have a basic cube in AR...
 it would be good to personalise AR a bit. 
 
-One of the most asked questions has been "how to load my own model in AR?"
-As said before ar.js controls the displacement of the camera, all the rest
+One of the most asked questions has been "how to load my own model in AR?".
+As said before, ar.js controls the displacement of the camera, all the rest
 is classic a-frame. So you can load a model exactly as you would in 
 a-frame. 
 Here is an example of loading a [gltf](https://www.khronos.org/gltf) model, just add that in your a-scene.
 For more detail see [a-frame documentation about models](https://aframe.io/docs/0.5.0/introduction/models.html#sidebar).
 
 ```html
-	<!-- define your gltf asset -->
-	<a-assets>
-		<a-asset-item id="tree" src="/path/to/tree.gltf"></a-asset-item>
-	</a-assets>
-	<!-- use your gltf model -->
-	<a-entity gltf-model="#tree"></a-entity>
+<!-- define your gltf asset -->
+<a-assets>
+	<a-asset-item id="tree" src="/path/to/tree.gltf"></a-asset-item>
+</a-assets>
+<!-- use your gltf model -->
+<a-entity gltf-model="#tree"></a-entity>
 ```
 
 Another way to easily personalize your AR is to put a text or an image on top.
@@ -100,7 +100,7 @@ To add an image, [a-image](https://aframe.io/docs/0.5.0/primitives/a-image.html)
 <a-image src="another-image.png"></a-image>
 ```
 
-# Explain how to setup your own marker
+# Customize your Marker
 We wrote a marker generator to help you build your own markers.
 - https://medium.com/arjs/how-to-create-your-own-marker-44becbec1105
 - https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html
@@ -177,6 +177,12 @@ we move the camera around.
 - Those 2 modes are available in AR.js:
 - changeMatrixMode : 'modelViewMatrix'
 - changeMatrixMode : 'cameraTranformMatrix'
+
+- in one option, the camera is static and remain at 0,0,0 all the time, while the objects on markers are moving
+- another is to have the camera moving and the marker fixed at 0,0,0
+- the second is more usual for the 3d programmers. So it is the one i choosed first.
+Nevertheless it got some limitations, it can't handle multiple independent markers at once.
+You will need to use <a-marker> for that, see the section below for a detailed explaination.
 
 # How to handle multiple distinct markers
 - link to measure it example
