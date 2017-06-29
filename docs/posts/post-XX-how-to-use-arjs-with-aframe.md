@@ -183,7 +183,7 @@ we move the camera around.
 - video of it
 - what's the use
 
-- e.g. you can see it in this [multiple independent markers example](https://github.com/jeromeetienne/ar.js/aframe/examples/multiple-independent-markers.html)
+- e.g. you can see it in this [multiple independent markers example](https://jeromeetienne.github.io/AR.js/aframe/examples/multiple-independent-markers.html)
 
 ```html
 <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
