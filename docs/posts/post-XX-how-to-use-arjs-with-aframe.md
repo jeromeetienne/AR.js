@@ -190,7 +190,12 @@ we move the camera around.
 <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
 <body style='margin : 0px; overflow: hidden;'>
 	<a-scene embedded artoolkit='sourceType: webcam;'>
-		<!-- handle hiro marker -->
+		<!-- handle marker with your own pattern -->
+		<a-marker type='pattern' patternUrl='path/to/pattern-marker.patt'>
+			<a-box position='0 0.5 0' material='color: red;'></a-box>
+		</a-marker>
+
+		<!-- handle marker with hiro preset -->
 		<a-marker preset='hiro'>
 			<a-box position='0 0.5 0' material='color: blue;'></a-box>
 		</a-marker>

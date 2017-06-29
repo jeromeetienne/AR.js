@@ -39,8 +39,4 @@
 
 - see nice snake in webgl... i would like to have this one on slides for my next talk :) - \[[tweet](https://twitter.com/jerome_etienne/status/879478562377650176)\]
 
-- AR.js mission: "Bring ar to the web" \[[tweet](https://twitter.com/jerome_etienne/status/879574765538869249)\]
-
-
-# Tweets
-- {{ 'https://twitter.com/fr3ino/status/880108156982108160' | noembed }}
+- I found AR.js mission: "Bring ar to the web" \[[tweet](https://twitter.com/jerome_etienne/status/879574765538869249)\]
