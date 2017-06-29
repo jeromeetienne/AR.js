@@ -5,23 +5,19 @@ Dont worry, you can do it with only 8 line of html.
 
 ---
 
-# introduction
-- what is ar.js.
-- work on any device
-- work on android, ios11 and window mobile.
-- totally open source and free of charge
-- link to the github repo
+# Introduction
+AR.js is an efficient Augmented Reality solution on the Web. 
+It runs 100% in your web browser, this means no app to install! 
+There is no need for a specific device either e.g. tango or iphone. 
+You can use it with your own phone. Depending on which device you have, it 
+can run very fast, up to 60fps on 2year-old phones!
 
-AR.js is efficient Augmented Reality for the Web.
+You will not be limited by your OS because AR.js runs on every platforms: Android, iOS11 and Windows mobile. 
+And most importantly, it is open source and free of charge. The code is all available on github.
+I wanted to make sure that AR.js was working well with a-frame. A-frame is very easy to use. 
+Thus, combining a-frame and AR.js it's easier for everybody to create AR content on the web. 
 
-It runs 100% in your web browser.
-no app to install.
-no need for specific devices e.g. tango or iphone.
-It run fast, 60fps on 2year-old phone.
-
-It run on every plateform: android, ios11 and window mobile.
-
-looks good ? let see how to use it 
+Sounds good? Let's see how to use it.  
 
 # Show Dont Tell 
 Today you can make
@@ -101,27 +97,24 @@ To add an image, [a-image](https://aframe.io/docs/0.5.0/primitives/a-image.html)
 ```
 
 # Customize your Marker
-We wrote a marker generator to help you build your own markers.
-- https://medium.com/arjs/how-to-create-your-own-marker-44becbec1105
-- https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html
 
-This time dont forget to explain what to do with the generated file
+We understand that many people want to personalize the marker. It is possible to replace the Hiro pattern with your own image, as long as it is inside the black border.
+We have provided an easy way to this. It is called the [marker generator](https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html).
+We even wrote a whole step by step [post](https://medium.com/arjs/how-to-create-your-own-marker-44becbec1105) to help you get started. 
 
-- list complete of options
+First you upload your own image and generate a pattern file ```pattern-marker.patt```.
+Second, you download the trained marker. And third, potentially print your marker.
+We provide a PDF file to make it easier for you.
 
-In order to make the common case easier, it offers some presets configuration for markers.
-e.g. ```preset: 'hiro'``` to have the classical pattern hiro marker, or ```preset: 'kanji'```
-for kanji.
-
-When you have generator with own markers, the page will provide a ```pattern-marker.patt```.
+What to do with the generated pattern file?
 This file contains the encoded marker that you should reuse in your code.
-So for our case, with ```<a-marker-camera>```, it should be replaced by the following.
+You specify you want a pattern marker and you provide the url to your own marker. 
+So in our case ```<a-marker-camera>``` should be replaced by the following.
 
 ```html
 <a-marker-camera type='pattern' patternUrl='path/to/pattern-marker.patt'></a-marker-camera>
 ```
 
-You specify you want a pattern marker and you give the url to find the one you want.
 Simple enough.
 
 
@@ -129,6 +122,12 @@ Simple enough.
 - barcode and pattern
 - like to the pattern generator
 - explain the preset
+
+**About Presets:**
+In order to make the common case easier, it offers some presets configuration for markers.
+e.g. ```preset: 'hiro'``` to have the classical pattern hiro marker, or ```preset: 'kanji'```
+for kanji.
+
 
 Have you notice the ```type``` attribute ? this is for the type of markers. There is currently 
 2 kind of markers
@@ -164,25 +163,41 @@ artoolkit='sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3
 ```
 
 
-# Move the camera or the object ?
-- explain the various mode.
-- Typically when you are markers in 3d, you 
-- the camera is fixed at 0, 0, 0 and looks toward negative z.
-- it remains fixed during the whole thing.
-- we move the marker in front of the camera, so somewhere in negative z.
-- this is fine but its axis is quite counterintuitive.
-- So i added a mode when you get one marker, it is at 0, 0, 0 and instead
-we move the camera around.
+# Move the camera or the marker ?
 
-- Those 2 modes are available in AR.js:
-- changeMatrixMode : 'modelViewMatrix'
-- changeMatrixMode : 'cameraTranformMatrix'
+When handling augmented reality, you need to decide if you want the 
+3d world origin to be the camera or the marker. Most people will use
+the marker as origin because it is more intuitive. Let's see the details
+of each mode.
 
-- in one option, the camera is static and remain at 0,0,0 all the time, while the objects on markers are moving
-- another is to have the camera moving and the marker fixed at 0,0,0
-- the second is more usual for the 3d programmers. So it is the one i choosed first.
-Nevertheless it got some limitations, it can't handle multiple independent markers at once.
-You will need to use <a-marker> for that, see the section below for a detailed explaination.
+In one mode, you use ```<a-marker-camera>```. In this mode, the camera is moving and the marker is static, fixed at 0,0,0.
+This way to work is more common for 3d programmers, so it is the one I use in most examples.
+
+```html
+<a-marker-camera preset='hiro'></a-marker-camera>
+```
+
+
+In the other mode, you use ```<a-marker>```.
+It behaves the other way around: the camera is static at all times while the objects or markers are moving.
+The camera is fixed at 0,0,0 at all times and looks toward negative-z.
+Nevertheless this mode got a limitation, it can't handle multiple independent markers at once.
+So if you have multiple markers and want to handle them independently from each other 
+e.g. like in [this video](https://www.youtube.com/watch?v=dIEZwmjuaUA&list=PL2oSKUSmuoTECUCvHDvifRhztkOYduQsq&index=10).
+You will need to use ```<a-marker>```, and a simple camera instead. 
+
+
+```html
+<!-- define your markers -->
+<a-marker preset='hiro'>
+	<!-- here define the content to display on top of the marker -->
+	<a-box position='0 0.5 0' material='color: red;'></a-box>
+</a-marker>
+<!-- define a simple camera -->
+<a-entity camera></a-entity>
+```
+
+TODO transition ?
 
 # How to handle multiple distinct markers
 - link to measure it example
@@ -216,4 +231,11 @@ You will need to use <a-marker> for that, see the section below for a detailed e
 	</a-scene>
 </body>
 ```
-		
+
+# Conclusion
+TODO
+
+
+
+# META
+- list complete of options in the docs
