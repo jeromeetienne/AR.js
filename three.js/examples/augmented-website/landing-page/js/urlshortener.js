@@ -1,5 +1,3 @@
-var peerjsPeer = null
-
 function googlInit(){
 	
 	var timerId = setInterval(function(){
@@ -10,6 +8,7 @@ function googlInit(){
 		gapi.client.setApiKey('AIzaSyDehQAfFZ9COHDLsvg8tIv7m4I4ySIc0e4');
 		gapi.client.load('urlshortener', 'v1', function() { 
 			console.log('urlshortener loaded')
+			// TODO do a callback here 
 			updateArAppURL()
 		})
 	}, 1000/10)
