@@ -145,11 +145,11 @@ Very great! the perfect step if you want to start writing AR application today.
 - Great post about [WebAR for designer](http://www.nexusinteractivearts.com/webar/)
 by [nexus interactive arts](http://www.nexusinteractivearts.com/)
 
-# Augmented Webpages
+# Augmented Website
 [Seminal post](https://medium.com/arjs/augmenting-the-web-page-e893f2d199b8) explaining the concept.
 
 
-[![Augmented Webpages](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://jeromeetienne.github.io/AR.js/three.js/examples/augmented-webpages/)
+[![Augmented Website](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://jeromeetienne.github.io/AR.js/three.js/examples/augmented-website/)
 
 
 # Examples
@@ -164,7 +164,7 @@ Some applications:
 - [WebAR Playground](https://jeromeetienne.github.io/webar-playground/) :
   Playground running in WebAR with ar.js/chromiumAR
 
-[ALL EXAMPLES](docs/EXAMPLES.md)
+[ALL EXAMPLES](docs/misc/EXAMPLES.md)
 
 # Folders
 - ```/three.js``` is the extension to use it with [pure three.js](https://threejs.org)

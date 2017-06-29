@@ -7,7 +7,8 @@
         "plugins": [
                 "edit-link",
                 "github",
-                "anchorjs"
+                "anchorjs",
+                "noembed"
         ],
         "pluginsConfig": {
                 "edit-link": {

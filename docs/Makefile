@@ -4,6 +4,9 @@ build:
 server:
 	gitbook serve
 	
+install:
+	gitbook install
+	
 deploy:
 	git pull
 	git checkout gh-pages
