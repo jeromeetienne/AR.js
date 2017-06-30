@@ -58,8 +58,6 @@ function onDeviceMotion(event) {
 	gravity.y = event.accelerationIncludingGravity.y - event.acceleration.y
 	gravity.z = event.accelerationIncludingGravity.z - event.acceleration.z
 	document.querySelector('#gravityLength').innerHTML = gravity.length().toFixed(2)
-	
-
 }
 window.addEventListener("devicemotion", onDeviceMotion, true);
 

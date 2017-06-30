@@ -74,7 +74,7 @@ function updateArAppURL(){
 		// build url
 		// FIXME pass from relative to absolute url in a better way
 		// urlOptions.arAppURL = location.protocol + '//' + location.host + location.pathname.replace(/[^\/]*$/, '') + '../vendor/ar.js/three.js/examples/augmented-website/examples/screenAsPortal/index.html'		
-		urlOptions.arAppURL = location.protocol + '//' + location.host + location.pathname.replace(/[^\/]*$/, '') + 'examples/screenAsPortal/index.html'		
+		urlOptions.arAppURL = location.protocol + '//' + location.host + location.pathname.replace(/[^\/]*$/, '') + '../screenAsPortal/index.html'		
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
