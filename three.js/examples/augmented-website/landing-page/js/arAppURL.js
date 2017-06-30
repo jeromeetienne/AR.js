@@ -54,6 +54,19 @@ function arAppURLUpdatePage(url){
 }
 
 function updateArAppURL(){
+	
+	;(function(){
+		var urlOptions = {
+			trackingBackend: 'artoolkit',
+			markerPageResolution: window.innerWidth + 'x' + window.innerHeight,
+			firebasePeerID: (typeof(firebasePeerID) !== 'undefined' && firebasePeerID !== null) ? firebasePeerID : undefined,
+			arAppURL: 'https://jeromeetienne.github.io/webar-playground/'
+		}
+		var url = 'app/' + '#' + encodeURIComponent(JSON.stringify(urlOptions));
+		document.querySelector('#webARPlaygroundLink').href = url
+	})()
+	
+	
 	//////////////////////////////////////////////////////////////////////////////
 	//		build urlOptions
 	//////////////////////////////////////////////////////////////////////////////
@@ -61,12 +74,13 @@ function updateArAppURL(){
 	var urlOptions = {
 		trackingBackend: 'artoolkit',
 		markerPageResolution: window.innerWidth + 'x' + window.innerHeight,
+		firebasePeerID: (typeof(firebasePeerID) !== 'undefined' && firebasePeerID !== null) ? firebasePeerID : undefined,
 	}
 
-	if( typeof(firebasePeerID) !== 'undefined' && firebasePeerID !== null ){
-		urlOptions.firebasePeerID = firebasePeerID
-	}
-
+	// if( typeof(firebasePeerID) !== 'undefined' && firebasePeerID !== null ){
+	// 	urlOptions.firebasePeerID = firebasePeerID
+	// }
+	// 
 	// build arAppURL
 	if( location.search.substring(1) ){
 		urlOptions.arAppURL = location.search.substring(1)
