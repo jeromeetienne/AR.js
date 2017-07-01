@@ -1161,7 +1161,7 @@ var THREEx = THREEx || {}
 
 /**
  * ArToolkitProfile helps you build parameters for artoolkit
- * - it is fully independant of the rest of the code
+ * - it is fully independent of the rest of the code
  * - all the other classes are still expecting normal parameters
  * - you can use this class to understand how to tune your specific usecase
  * - it is made to help people to build parameters without understanding all the underlying details.

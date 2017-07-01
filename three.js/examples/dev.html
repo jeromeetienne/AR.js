@@ -160,11 +160,9 @@
 	// 	console.log('becameUnVisible event notified')
 	// })
 
-
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
-
 
 	// var arWorldRoot = markerRoot
 	var arWorldRoot = smoothedRoot
@@ -172,14 +170,14 @@
 	var mesh = new THREE.AxisHelper()
 	// markerRoot.add(mesh)
 	arWorldRoot.add(mesh)
-	
-	// add a torus knot	
+
+	// add a torus knot
 	var geometry	= new THREE.CubeGeometry(1,1,1);
 	var material	= new THREE.MeshNormalMaterial({
 		transparent : true,
 		opacity: 0.5,
 		side: THREE.DoubleSide
-	}); 
+	})
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= geometry.parameters.height/2
 	// markerRoot.add( mesh );

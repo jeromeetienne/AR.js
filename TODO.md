@@ -1,3 +1,4 @@
+- TODO add smoother in a-frame!!!
 - make multi-marker without page reload
 - port webvr-arbackend
 
