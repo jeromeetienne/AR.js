@@ -21,6 +21,7 @@ THREEx.ScreenAsPortal = function(multiMarkerFile){
 	boundingBox.max.x += markerSize/2 + whiteMargin
 	boundingBox.max.z += markerSize/2 + whiteMargin
 	var screenSize = boundingBox.getSize()
+// console.log('screenSize', screenSize)
 
 	var screenDepth = screenSize.z
 	initCube()

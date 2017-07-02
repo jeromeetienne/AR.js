@@ -197,7 +197,9 @@ THREEx.ArMultiMarkerControls.computeBoundingBox = function(jsonData){
 
 		boundingBox.expandByPoint(position)
 	})
-
+	
+	console.log('ArMultiMarkerControls.computeBoundingBox', multiMarkerFile, boundingBox)
+debugger
 	return boundingBox
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -305,7 +307,7 @@ THREEx.ArMultiMarkerControls.createDefaultMultiMarkerFile = function(arBackend){
 	// create the base file
 	var file = {
 		meta : {
-			createdBy : "AR.js "+THREEx.ArToolkitContext.REVISION,
+			createdBy : "AR.js Default Marker "+THREEx.ArToolkitContext.REVISION,
 			createdAt : new Date().toJSON(),
 		},
 		arBackend : arBackend,
