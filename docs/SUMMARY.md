@@ -6,7 +6,7 @@
 
 
 * [augmented website](misc/augmented-website.md)
-* [webar playground](misc/webar playground.md)
+* [webar playground](misc/webar-playground.md)
 
 
 # Posts

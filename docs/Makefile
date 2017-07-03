@@ -1,9 +1,9 @@
-build:
-	gitbook build
-
 server:
 	gitbook serve
 	
+build:
+	gitbook build
+
 install:
 	gitbook install
 	
