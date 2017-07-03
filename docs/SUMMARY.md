@@ -5,8 +5,9 @@
 * [FUTURE](misc/FUTURE.md)
 
 
-* [augmented website](misc/augmented-website.md)
-* [webar playground](misc/webar-playground.md)
+# Concepts
+* [augmented website](concepts/augmented-website.md)
+* [webar playground](concepts/webar-playground.md)
 
 
 # Posts
