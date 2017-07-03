@@ -4,4 +4,4 @@
 
 Bring AR to any website
 
-Easy way to share AR experience.
+Easy way to share AR on the internet
