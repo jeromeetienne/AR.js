@@ -1623,7 +1623,10 @@ var THREEx = THREEx || {}
 
 THREEx.ArBaseControls = function(object3d){
 	this.id = THREEx.ArBaseControls.id++
+
 	this.object3d = object3d
+	this.object3d.matrixAutoUpdate = false;
+	this.object3d.visible = false
 
 	// Events to honor
 	// this.dispatchEvent({ type: 'becameVisible' })
@@ -1961,13 +1964,13 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 	// TODO rename that .addMarkerControls
 	context.addMarker(this)
 
-	if( _this.context.parameters.arBackend === 'artoolkit' ){
+	if( _this.context.parameters.trackingBackend === 'artoolkit' ){
 		this._initArtoolkit()
-	}else if( _this.context.parameters.arBackend === 'aruco' ){
+	}else if( _this.context.parameters.trackingBackend === 'aruco' ){
 		// TODO create a ._initAruco
 		// put aruco second
 		this._arucoPosit = new POS.Posit(this.parameters.size, _this.context.arucoContext.canvas.width)
-	}else if( _this.context.parameters.arBackend === 'tango' ){
+	}else if( _this.context.parameters.trackingBackend === 'tango' ){
 		this._initTango()
 	}else console.assert(false)
 }
@@ -1996,20 +1999,20 @@ THREEx.ArMarkerControls.prototype.updateWithModelViewMatrix = function(modelView
 	// mark object as visible
 	markerObject3D.visible = true
 
-	if( this.context.parameters.arBackend === 'artoolkit' ){
+	if( this.context.parameters.trackingBackend === 'artoolkit' ){
 		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
 		var tmpMatrix = new THREE.Matrix4().copy(this.context._artoolkitProjectionAxisTransformMatrix)
 		tmpMatrix.multiply(modelViewMatrix)
 		
 		modelViewMatrix.copy(tmpMatrix)		
-	}else if( this.context.parameters.arBackend === 'aruco' ){
+	}else if( this.context.parameters.trackingBackend === 'aruco' ){
 		// ...
-	}else if( this.context.parameters.arBackend === 'tango' ){
+	}else if( this.context.parameters.trackingBackend === 'tango' ){
 		// ...
 	}else console.assert(false)
 
 
-	if( this.context.parameters.arBackend !== 'tango' ){
+	if( this.context.parameters.trackingBackend !== 'tango' ){
 
 		// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
 		var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
@@ -2444,7 +2447,7 @@ THREEx.ArToolkitContext = function(parameters){
 	// handle default parameters
 	this.parameters = {
 		// AR backend - ['artoolkit', 'aruco', 'tango']
-		arBackend: parameters.arBackend !== undefined ? parameters.arBackend : 'artoolkit',
+		trackingBackend: parameters.trackingBackend !== undefined ? parameters.trackingBackend : 'artoolkit',
 		// debug - true if one should display artoolkit debug canvas, false otherwise
 		debug: parameters.debug !== undefined ? parameters.debug : false,
 		// the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
@@ -2466,7 +2469,7 @@ THREEx.ArToolkitContext = function(parameters){
 		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : false,
 	}
 	// parameters sanity check
-	console.assert(['artoolkit', 'aruco', 'tango'].indexOf(this.parameters.arBackend) !== -1, 'invalid parameter arBackend', this.parameters.arBackend)
+	console.assert(['artoolkit', 'aruco', 'tango'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
 	console.assert(['color', 'color_and_matrix', 'mono', 'mono_and_matrix'].indexOf(this.parameters.detectionMode) !== -1, 'invalid parameter detectionMode', this.parameters.detectionMode)
 	
         this.arController = null;
@@ -2487,11 +2490,11 @@ THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 //		init functions
 //////////////////////////////////////////////////////////////////////////////
 THREEx.ArToolkitContext.prototype.init = function(onCompleted){
-	if( this.parameters.arBackend === 'artoolkit' ){
+	if( this.parameters.trackingBackend === 'artoolkit' ){
 		this._initArtoolkit(onCompleted)
-	}else if( this.parameters.arBackend === 'aruco' ){
+	}else if( this.parameters.trackingBackend === 'aruco' ){
 		this._initAruco(onCompleted)
-	}else if( this.parameters.arBackend === 'tango' ){
+	}else if( this.parameters.trackingBackend === 'tango' ){
 		this._initTango(onCompleted)
 	}else console.assert(false)
 }
@@ -2501,7 +2504,7 @@ THREEx.ArToolkitContext.prototype.init = function(onCompleted){
 THREEx.ArToolkitContext.prototype.update = function(srcElement){
 
 	// be sure arController is fully initialized
-        if (this.parameters.arBackend === 'artoolkit' && this.arController === null) return false;
+        if (this.parameters.trackingBackend === 'artoolkit' && this.arController === null) return false;
 
 	// honor this.parameters.maxDetectionRate
 	var present = performance.now()
@@ -2516,11 +2519,11 @@ THREEx.ArToolkitContext.prototype.update = function(srcElement){
 	})
 
 	// process this frame
-	if(this.parameters.arBackend === 'artoolkit'){
+	if(this.parameters.trackingBackend === 'artoolkit'){
 		this._updateArtoolkit(srcElement)		
-	}else if( this.parameters.arBackend === 'aruco' ){
+	}else if( this.parameters.trackingBackend === 'aruco' ){
 		this._updateAruco(srcElement)
-	}else if( this.parameters.arBackend === 'tango' ){
+	}else if( this.parameters.trackingBackend === 'tango' ){
 		this._updateTango(srcElement)
 	}else{
 		console.assert(false)
@@ -2635,9 +2638,9 @@ THREEx.ArToolkitContext.prototype.getProjectionMatrix = function(srcElement){
 // keep a backward compatibility with a console.warn
 	
 	
-	if( this.parameters.arBackend === 'aruco' ){
+	if( this.parameters.trackingBackend === 'aruco' ){
 		console.assert(false, 'dont call this function with aruco')
-	}else if( this.parameters.arBackend === 'artoolkit' ){
+	}else if( this.parameters.trackingBackend === 'artoolkit' ){
 		console.assert(this.arController, 'arController MUST be initialized to call this function')
 		// get projectionMatrixArr from artoolkit
 		var projectionMatrixArr = this.arController.getCameraMatrix();
@@ -2908,6 +2911,13 @@ THREEx.ArToolkitProfile.prototype.sourceImage = function (url) {
 	this.sourceParameters.sourceType = 'image'
 	this.sourceParameters.sourceUrl = url
 	return this
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		trackingBackend
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArToolkitProfile.prototype.trackingBackend = function (trackingBackend) {
+	this.contextParameters.trackingBackend = trackingBackend
 }
 var THREEx = THREEx || {}
 

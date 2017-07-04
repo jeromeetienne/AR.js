@@ -53,6 +53,8 @@
   learner.html is a example of dynamic learning of a multi markers configuration. It has been designed
   to be reusable.
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multi-markers/examples/player.html))
+- [markers-page](https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/markers-page/) :
+  display multiple markers on a website
 - [backend switcher](https://jeromeetienne.github.io/AR.js/three.js/examples/arbackend-switch.html) :
   Show to easily switch between arBackend 'aruco' or 'jsartoolkit'
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arbackend-switch.html))
