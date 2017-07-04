@@ -58,9 +58,9 @@
 - [backend switcher](https://jeromeetienne.github.io/AR.js/three.js/examples/arbackend-switch.html) :
   Show to easily switch between arBackend 'aruco' or 'jsartoolkit'
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arbackend-switch.html))
-- [Screen as portal](https://jeromeetienne.github.io/AR.js/three.js/examples/screenAsPortal/index.html) :
+- [Screen as portal](https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/examples/screenAsPortal/index.html) :
   screen as portal
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/screenAsPortal/index.html))
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multi-markers/examples/screenAsPortal/index.html))
 
 
 
