@@ -124,6 +124,7 @@ We started a [AR.js blog](https://medium.com/arjs), thus we can write about
 all the crazy ideas related to AR.js.
 
 - ["Area Learning with Multi-Markers in AR.js - For a Larger & More Stable Augmented Reality"](https://medium.com/arjs/area-learning-with-multi-markers-in-ar-js-1ff03a2f9fbe)
+  by [@AndraConnect](https://twitter.com/AndraConnect)
 - ["WebVR for Augmented Reality - Using WebVR to write cross-platform AR applications"](https://medium.com/arjs/webvr-for-augmented-reality-f1e69a505902)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)
 - ["Augmenting The Web Page - Bringing augmenting reality to normal web pages"](https://medium.com/arjs/augmenting-the-web-page-e893f2d199b8)
@@ -147,9 +148,9 @@ by [nexus interactive arts](http://www.nexusinteractivearts.com/)
 
 # Augmented Website
 [Seminal post](https://medium.com/arjs/augmenting-the-web-page-e893f2d199b8) explaining the concept.
+The service is available [webxr.io/augmented-website](https://webxr.io/augmented-website/)
 
-
-[![Augmented Website](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://jeromeetienne.github.io/AR.js/three.js/examples/augmented-website/)
+[![Augmented Website](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://webxr.io/augmented-website/)
 
 
 # Examples

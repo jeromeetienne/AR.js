@@ -23,6 +23,7 @@
 <script src='../../threex-arsmoothedcontrols.js'></script>
 <script>THREEx.ArToolkitContext.baseURL = '../../'</script>
 
+<script src='../multi-markers/threex-armultimarkerutils.js'></script>
 <script src='../multi-markers/threex-armultimarkercontrols.js'></script>
 <script src='../multi-markers/threex-armultimarkerlearning.js'></script>
 
@@ -102,8 +103,6 @@
 
 	var artoolkitProfile = new THREEx.ArToolkitProfile()
 	artoolkitProfile.sourceWebcam()
-		// .performance('desktop-fast')
-		// .performance('phone-slow')
 
 	var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)
 
@@ -135,14 +134,14 @@
 	////////////////////////////////////////////////////////////////////////////////	
 
 	// honor urlOptions.trackingBackend
-	artoolkitProfile.contextParameters.arBackend = urlOptions.trackingBackend
+	artoolkitProfile.contextParameters.trackingBackend = urlOptions.trackingBackend
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
 		// if artoolkit, copy projection matrix to camera
-		if( arToolkitContext.parameters.arBackend === 'artoolkit' ){
+		if( arToolkitContext.parameters.trackingBackend === 'artoolkit' ){
 			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
 		}
 	})
@@ -157,78 +156,9 @@
 	//		init learnerParameters and markersControlsParameters
 	//////////////////////////////////////////////////////////////////////////////
 
-	if( urlOptions.trackingBackend === 'artoolkit' ){
-		// pattern hiro/kanji/a/b/c/f
-		var patternBaseUrl = location.protocol + '//'  + location.host + location.pathname + '/../../../../../'
+	// build a multiMarkerControls
+	var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arToolkitContext, scene, markerRoot, multiMarkerFile)
 		
-		var markersControlsParameters = [
-			{
-				type : 'pattern',
-				patternUrl : patternBaseUrl + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt',
-			},
-			{
-				type : 'pattern',
-				patternUrl : patternBaseUrl + 'examples/marker-training/examples/pattern-files/pattern-kanji.patt',
-			},
-			{
-				type : 'pattern',
-				patternUrl : patternBaseUrl + 'examples/marker-training/examples/pattern-files/pattern-letterA.patt',
-			},
-			{
-				type : 'pattern',
-				patternUrl : patternBaseUrl + 'examples/marker-training/examples/pattern-files/pattern-letterB.patt',
-			},
-			{
-				type : 'pattern',
-				patternUrl : patternBaseUrl + 'examples/marker-training/examples/pattern-files/pattern-letterC.patt',
-			},
-			{
-				type : 'pattern',
-				patternUrl : patternBaseUrl + 'examples/marker-training/examples/pattern-files/pattern-letterF.patt',
-			},
-		]		
-	}else if( urlOptions.trackingBackend === 'aruco' ){
-		var markersControlsParameters = [
-			{
-				type : 'barcode',
-				barcodeValue: 1001,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1002,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1003,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1004,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1005,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1006,
-			},
-		]
-	}else console.assert(false)
-
-	
-	document.querySelector('#recordButton').addEventListener('click', function(){
-		// urlOptions.areaSource = 'localStorage'	
-		// urlOptionsUpdate()
-		// 
-		var learnerParameters = {
-			backURL : location.href,
-			arBackend: urlOptions.trackingBackend,
-			markersControlsParameters: markersControlsParameters,
-		}
-		location.href = THREEx.ArToolkitContext.baseURL + 'examples/multi-markers/examples/learner.html#'+JSON.stringify(learnerParameters)
-	})
-	
 	//////////////////////////////////////////////////////////////////////////////
 	//		get multiMarkerFile
 	//////////////////////////////////////////////////////////////////////////////
@@ -238,7 +168,7 @@
 		THREEx.ArMultiMarkerControls.storeDefaultMultiMarkerFile(urlOptions.trackingBackend)
 	}
 
-	
+	// get multiMarkerFile from localStorage	
 	console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
 	var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
 
@@ -259,17 +189,6 @@
 		subMarkerControls.object3d.add( markerHelper.object3d )				
 		markerHelpers.push(markerHelper)
 	})
-	window.toggleMarkerHelper = toggleMarkerHelper
-	function toggleMarkerHelper(){
-		var wasVisible = markerHelpers[0].object3d.visible;
-
-		document.querySelector('#markerHelpersStatus').innerHTML = wasVisible === false ? 'visible' : 'hidden'
-
-		markerHelpers.forEach(function(markerHelper){
-			markerHelper.object3d.visible = wasVisible ? false : true 
-		})
-	}
-	toggleMarkerHelper()
 
 
 	// build a smoothedControls
@@ -295,6 +214,30 @@
 	var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
 	averageMatrix.decompose(arWorldRoot.position, arWorldRoot.quaternion, arWorldRoot.scale)		
 	smoothedRoot.add(arWorldRoot)
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		toggle marker UI
+	//////////////////////////////////////////////////////////////////////////////
+
+	document.querySelector('#recordButton').addEventListener('click', function(){
+		var learnerURL = THREEx.ArToolkitContext.baseURL + 'examples/multi-markers/examples/learner.html'
+		THREEx.ArMultiMarkerUtils.navigateToLearnerPage(learnerURL, urlOptions.trackingBackend)
+	})
+	
+
+	window.toggleMarkerHelper = toggleMarkerHelper
+	function toggleMarkerHelper(){
+		var wasVisible = markerHelpers[0].object3d.visible;
+
+		document.querySelector('#markerHelpersStatus').innerHTML = wasVisible === false ? 'visible' : 'hidden'
+
+		markerHelpers.forEach(function(markerHelper){
+			markerHelper.object3d.visible = wasVisible ? false : true 
+		})
+	}
+	toggleMarkerHelper()
+
+
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Add simple object on smoothedRoot

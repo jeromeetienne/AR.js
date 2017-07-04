@@ -175,7 +175,7 @@ THREEx.ArMultiMakersLearning.prototype.computeResult = function(){
 			
 			resultChanged = true
 		})
-		console.log('loop')
+		// console.log('loop')
 	}while(resultChanged === true)
 	
 	// debugger
@@ -247,11 +247,11 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 	//////////////////////////////////////////////////////////////////////////////
 	var data = {
 		meta : {
-			createdBy : "AR.js "+THREEx.ArToolkitContext.REVISION,
+			createdBy : "Area Learning - AR.js "+THREEx.ArToolkitContext.REVISION,
 			createdAt : new Date().toJSON(),
 			
 		},
-		arBackend: this._arToolkitContext.parameters.arBackend,
+		trackingBackend: this._arToolkitContext.parameters.trackingBackend,
 		subMarkersControls : [],
 	}
 

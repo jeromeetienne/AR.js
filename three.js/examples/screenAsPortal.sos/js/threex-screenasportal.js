@@ -60,7 +60,7 @@ THREEx.ScreenAsPortal = function(multiMarkerFile){
 		_this.object3d.add(outterCubeMesh)
 
 		// add the inner box
-		var textureBox = new THREE.TextureLoader().load('images/box.png')
+		var textureBox = new THREE.TextureLoader().load(THREEx.ScreenAsPortal.baseURL+'images/box.png')
 		textureBox.wrapS = THREE.RepeatWrapping;
 		textureBox.wrapT = THREE.RepeatWrapping;
 		textureBox.repeat.set(15, 20)
@@ -84,7 +84,7 @@ THREEx.ScreenAsPortal = function(multiMarkerFile){
 		var geometry	= new THREE.PlaneGeometry(0.8,0.8).rotateX(-Math.PI/2)
 		var material	= new THREE.MeshBasicMaterial({
 			side: THREE.DoubleSide,
-			map: new THREE.TextureLoader().load('images/target.png'),
+			map: new THREE.TextureLoader().load(THREEx.ScreenAsPortal.baseURL+'images/target.png'),
 			alphaTest: 0.9,
 		}) 
 		var targetModel	= new THREE.Mesh( geometry, material )
@@ -159,3 +159,5 @@ THREEx.ScreenAsPortal = function(multiMarkerFile){
 		_this.object3d.add(mesh)		
 	}
 }
+
+THREEx.ScreenAsPortal.baseURL = '../'

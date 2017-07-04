@@ -23,6 +23,7 @@
 <script src='../../../threex-arsmoothedcontrols.js'></script>
 <script>THREEx.ArToolkitContext.baseURL = '../../../'</script>
 
+<script src='../threex-armultimarkerutils.js'></script>
 <script src='../threex-armultimarkercontrols.js'></script>
 <script src='../threex-armultimarkerlearning.js'></script>
 
@@ -50,7 +51,7 @@
 </div>
 <div style='position: fixed; bottom: 16px; left: 16px; z-index:2' id='markersStatus';>
 	<div>
-		Backend <span class='labelARBackend'>Unknown</span> - 
+		Tracking <span class='labelTrackingBackend'>Unknown</span> - 
 		Learning <span class='globalStatus'>Stopped</span>
 	</div>
 	<ul></ul>
@@ -90,7 +91,7 @@
 	}else{
 		var urlOptions = {
 			backURL : null,
-			arBackend: 'artookit',
+			trackingBackend: 'artookit',
 			markerControlsParameters : [],
 		}
 		alert('no urlOption - should not happen')
@@ -102,9 +103,9 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// Create a camera
-	if( urlOptions.arBackend === 'aruco' ){
+	if( urlOptions.trackingBackend === 'aruco' ){
 		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
-	}else if( urlOptions.arBackend === 'artoolkit' ){
+	}else if( urlOptions.trackingBackend === 'artoolkit' ){
 		var camera = new THREE.Camera();
 	}else console.assert(false)
 	scene.add(camera);
@@ -132,12 +133,12 @@
 	function onResize(){
 		arToolkitSource.onResize()
 		arToolkitSource.copySizeTo(renderer.domElement)	
-		if( urlOptions.arBackend === 'aruco' ){
+		if( urlOptions.trackingBackend === 'aruco' ){
 			arToolkitSource.copySizeTo(arToolkitContext.arucoContext.canvas)	
 
 			camera.aspect = renderer.domElement.width / renderer.domElement.height;
 			camera.updateProjectionMatrix();			
-		}else if( urlOptions.arBackend === 'artoolkit' ){
+		}else if( urlOptions.trackingBackend === 'artoolkit' ){
 			if( arToolkitContext.arController !== null ){
 				arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
 			}	
@@ -147,15 +148,15 @@
 	//          initialize arToolkitContext
 	////////////////////////////////////////////////////////////////////////////////	
 
-	// honor urlOptions.arBackend
-	artoolkitProfile.contextParameters.arBackend = urlOptions.arBackend
+	// honor urlOptions.trackingBackend
+	artoolkitProfile.contextParameters.trackingBackend = urlOptions.trackingBackend
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
 		// if artoolkit, copy projection matrix to camera
-		if( arToolkitContext.parameters.arBackend === 'artoolkit' ){
+		if( arToolkitContext.parameters.trackingBackend === 'artoolkit' ){
 			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
 		}
 	})
@@ -332,7 +333,7 @@
 	//////////////////////////////////////////////////////////////////////////////
 
 	function createUIMarkersStatus(){
-		document.querySelector('#markersStatus .labelARBackend').innerHTML = urlOptions.arBackend
+		document.querySelector('#markersStatus .labelTrackingBackend').innerHTML = urlOptions.trackingBackend
 
 		multiMarkerLearning.subMarkersControls.forEach(function(subMarkerControls){
 			var container = document.createElement('li')

@@ -38,13 +38,13 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 	// TODO rename that .addMarkerControls
 	context.addMarker(this)
 
-	if( _this.context.parameters.arBackend === 'artoolkit' ){
+	if( _this.context.parameters.trackingBackend === 'artoolkit' ){
 		this._initArtoolkit()
-	}else if( _this.context.parameters.arBackend === 'aruco' ){
+	}else if( _this.context.parameters.trackingBackend === 'aruco' ){
 		// TODO create a ._initAruco
 		// put aruco second
 		this._arucoPosit = new POS.Posit(this.parameters.size, _this.context.arucoContext.canvas.width)
-	}else if( _this.context.parameters.arBackend === 'tango' ){
+	}else if( _this.context.parameters.trackingBackend === 'tango' ){
 		this._initTango()
 	}else console.assert(false)
 }
@@ -73,20 +73,20 @@ THREEx.ArMarkerControls.prototype.updateWithModelViewMatrix = function(modelView
 	// mark object as visible
 	markerObject3D.visible = true
 
-	if( this.context.parameters.arBackend === 'artoolkit' ){
+	if( this.context.parameters.trackingBackend === 'artoolkit' ){
 		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
 		var tmpMatrix = new THREE.Matrix4().copy(this.context._artoolkitProjectionAxisTransformMatrix)
 		tmpMatrix.multiply(modelViewMatrix)
 		
 		modelViewMatrix.copy(tmpMatrix)		
-	}else if( this.context.parameters.arBackend === 'aruco' ){
+	}else if( this.context.parameters.trackingBackend === 'aruco' ){
 		// ...
-	}else if( this.context.parameters.arBackend === 'tango' ){
+	}else if( this.context.parameters.trackingBackend === 'tango' ){
 		// ...
 	}else console.assert(false)
 
 
-	if( this.context.parameters.arBackend !== 'tango' ){
+	if( this.context.parameters.trackingBackend !== 'tango' ){
 
 		// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
 		var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)

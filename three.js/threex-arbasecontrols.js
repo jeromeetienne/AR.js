@@ -2,7 +2,10 @@ var THREEx = THREEx || {}
 
 THREEx.ArBaseControls = function(object3d){
 	this.id = THREEx.ArBaseControls.id++
+
 	this.object3d = object3d
+	this.object3d.matrixAutoUpdate = false;
+	this.object3d.visible = false
 
 	// Events to honor
 	// this.dispatchEvent({ type: 'becameVisible' })

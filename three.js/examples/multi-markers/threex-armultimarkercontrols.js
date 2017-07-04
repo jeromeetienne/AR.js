@@ -1,14 +1,25 @@
 var THREEx = THREEx || {}
 
-THREEx.ArMultiMarkerControls = function(arToolkitContext, object3d, subMarkersControls, subMarkerPoses){
+THREEx.ArMultiMarkerControls = function(arToolkitContext, object3d, parameters){
 	var _this = this
-
 	THREEx.ArBaseControls.call(this, object3d)
 	
+	if( arguments.length > 3 )	console.assert('wrong api for', THREEx.ArMultiMarkerControls)
+
+// have a parameters in argument
+	this.parameters = {
+		// list of controls for each subMarker
+		subMarkersControls: parameters.subMarkersControls,
+		// list of pose for each subMarker relative to the origin
+		subMarkerPoses: parameters.subMarkerPoses,
+		// change matrix mode - [modelViewMatrix, cameraTransformMatrix]
+		changeMatrixMode : parameters.changeMatrixMode !== undefined ? parameters.changeMatrixMode : 'modelViewMatrix',
+	}
+	
 	this.object3d.visible = false
-	// copy parameters
-	this.subMarkersControls = subMarkersControls
-	this.subMarkerPoses = subMarkerPoses
+	// honor obsolete stuff - add a warning to use
+	this.subMarkersControls = this.parameters.subMarkersControls
+	this.subMarkerPoses = this.parameters.subMarkerPoses
 
 	// listen to arToolkitContext event 'sourceProcessed'
 	// - after we fully processed one image, aka when we know all detected poses in it
@@ -46,9 +57,9 @@ THREEx.ArMultiMarkerControls.prototype._onSourceProcessed = function(){
 		},
 	}
 
-	var firstQuaternion = _this.subMarkersControls[0].object3d.quaternion
+	var firstQuaternion = _this.parameters.subMarkersControls[0].object3d.quaternion
 
-	this.subMarkersControls.forEach(function(markerControls, markerIndex){
+	this.parameters.subMarkersControls.forEach(function(markerControls, markerIndex){
 		
 		var markerObject3d = markerControls.object3d
 		// if this marker is not visible, ignore it
@@ -56,7 +67,7 @@ THREEx.ArMultiMarkerControls.prototype._onSourceProcessed = function(){
 
 		// transformation matrix of this.object3d according to this sub-markers
 		var matrix = markerObject3d.matrix.clone()
-		var markerPose = _this.subMarkerPoses[markerIndex]
+		var markerPose = _this.parameters.subMarkerPoses[markerIndex]
 		matrix.multiply(new THREE.Matrix4().getInverse(markerPose))
 
 		// decompose the matrix into .position, .quaternion, .scale
@@ -73,19 +84,32 @@ THREEx.ArMultiMarkerControls.prototype._onSourceProcessed = function(){
 		THREEx.ArMultiMarkerControls.averageVector3(stats.scale.sum, scale, stats.count, stats.scale.average)
 	})
 
-	// if at least one sub-marker has been detected, make the average of all detected markers
-	if( stats.count > 0 ){
-		_this.object3d.position.copy(stats.position.average)
-		_this.object3d.quaternion.copy(stats.quaternion.average)
-		_this.object3d.scale.copy(stats.scale.average)
-	}
-
 	// honor _this.object3d.visible
 	if( stats.count > 0 ){
 		_this.object3d.visible = true
 	}else{
 		_this.object3d.visible = false			
 	}
+
+	// if at least one sub-marker has been detected, make the average of all detected markers
+	if( stats.count > 0 ){
+		// compute modelViewMatrix
+		var modelViewMatrix = new THREE.Matrix4()
+		modelViewMatrix.compose(stats.position.average, stats.quaternion.average, stats.scale.average)
+
+		// change _this.object3d.matrix based on parameters.changeMatrixMode
+		if( this.parameters.changeMatrixMode === 'modelViewMatrix' ){
+			_this.object3d.matrix.copy(modelViewMatrix)
+		}else if( this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
+			_this.object3d.matrix.getInverse( modelViewMatrix )
+		}else {
+			console.assert(false)
+		}
+
+		// decompose - the matrix into .position, .quaternion, .scale
+		_this.object3d.matrix.decompose(_this.object3d.position, _this.object3d.quaternion, _this.object3d.scale)
+	}
+
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -197,9 +221,7 @@ THREEx.ArMultiMarkerControls.computeBoundingBox = function(jsonData){
 
 		boundingBox.expandByPoint(position)
 	})
-	
-	console.log('ArMultiMarkerControls.computeBoundingBox', multiMarkerFile, boundingBox)
-debugger
+
 	return boundingBox
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -223,7 +245,7 @@ THREEx.ArMultiMarkerControls.prototype.updateSmoothedControls = function(smoothe
 	}
 	// count how many subMarkersControls are visible
 	var nVisible = 0
-	this.subMarkersControls.forEach(function(markerControls, markerIndex){
+	this.parameters.subMarkersControls.forEach(function(markerControls, markerIndex){
 		var markerObject3d = markerControls.object3d
 		if( markerObject3d.visible === true )	nVisible ++
 	})
@@ -246,88 +268,54 @@ THREEx.ArMultiMarkerControls.prototype.updateSmoothedControls = function(smoothe
 //		Create THREEx.ArMultiMarkerControls from JSON
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, scene, markerRoot, jsonData){
+THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, parent3D, markerRoot, jsonData, parameters){
 	var multiMarkerFile = JSON.parse(jsonData)
-	// declare the parameters
+	// declare variables
 	var subMarkersControls = []
 	var subMarkerPoses = []
+	// handle default arguments
+	parameters = parameters || {}
 
 	// prepare the parameters
 	multiMarkerFile.subMarkersControls.forEach(function(item){
 		// create a markerRoot
 		var markerRoot = new THREE.Object3D()
-		scene.add(markerRoot)
+		parent3D.add(markerRoot)
 
 		// create markerControls for our markerRoot
 		var subMarkerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, item.parameters)
 
-if( true ){
+// if( true ){
 		// store it in the parameters
 		subMarkersControls.push(subMarkerControls)
 		subMarkerPoses.push(new THREE.Matrix4().fromArray(item.poseMatrix))	
-}else{
-		// build a smoothedControls
-		var smoothedRoot = new THREE.Group()
-		scene.add(smoothedRoot)
-		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
-			lerpPosition : 0.1,
-			lerpQuaternion : 0.1, 
-			lerpScale : 0.1,
-			minVisibleDelay: 0,
-			minUnvisibleDelay: 0,
-		})
-		onRenderFcts.push(function(delta){
-			smoothedControls.update(markerRoot)	// TODO this is a global
-		})
-	
-
-		// store it in the parameters
-		subMarkersControls.push(smoothedControls)
-		subMarkerPoses.push(new THREE.Matrix4().fromArray(item.poseMatrix))
-}
+// }else{
+// 		// build a smoothedControls
+// 		var smoothedRoot = new THREE.Group()
+// 		parent3D.add(smoothedRoot)
+// 		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
+// 			lerpPosition : 0.1,
+// 			lerpQuaternion : 0.1, 
+// 			lerpScale : 0.1,
+// 			minVisibleDelay: 0,
+// 			minUnvisibleDelay: 0,
+// 		})
+// 		onRenderFcts.push(function(delta){
+// 			smoothedControls.update(markerRoot)	// TODO this is a global
+// 		})
+// 	
+// 
+// 		// store it in the parameters
+// 		subMarkersControls.push(smoothedControls)
+// 		subMarkerPoses.push(new THREE.Matrix4().fromArray(item.poseMatrix))
+// }
 	})
+	
+	parameters.subMarkersControls = subMarkersControls
+	parameters.subMarkerPoses = subMarkerPoses
 	// create a new THREEx.ArMultiMarkerControls
-	var multiMarkerControls = new THREEx.ArMultiMarkerControls(arToolkitContext, markerRoot, subMarkersControls, subMarkerPoses)
+	var multiMarkerControls = new THREEx.ArMultiMarkerControls(arToolkitContext, markerRoot, parameters)
 
 	// return it
 	return multiMarkerControls	
-}
-
-//////////////////////////////////////////////////////////////////////////////
-//		storeDefaultMultiMarkerFile
-//////////////////////////////////////////////////////////////////////////////
-
-THREEx.ArMultiMarkerControls.storeDefaultMultiMarkerFile = function(arBackend){
-	var file = THREEx.ArMultiMarkerControls.createDefaultMultiMarkerFile(arBackend)
-	// json.strinfy the value and store it in localStorage
-	localStorage.setItem('ARjsMultiMarkerFile', JSON.stringify(file))
-}
-
-THREEx.ArMultiMarkerControls.createDefaultMultiMarkerFile = function(arBackend){
-	// create the base file
-	var file = {
-		meta : {
-			createdBy : "AR.js Default Marker "+THREEx.ArToolkitContext.REVISION,
-			createdAt : new Date().toJSON(),
-		},
-		arBackend : arBackend,
-		subMarkersControls : [
-			// empty for now...
-		]
-	}
-	// add a subMarkersControls
-	file.subMarkersControls[0] = {
-		parameters: {},
-		poseMatrix: new THREE.Matrix4().makeTranslation(0,0, 0).toArray(),
-	}
-	if( arBackend === 'aruco' ){
-		file.subMarkersControls[0].parameters.type = 'barcode'
-		file.subMarkersControls[0].parameters.barcodeValue = 1001
-	}else if( arBackend === 'artoolkit' ){
-		file.subMarkersControls[0].parameters.type = 'pattern'
-		file.subMarkersControls[0].parameters.patternUrl = THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt'
-	}else console.assert(false)
-	
-	// json.strinfy the value and store it in localStorage
-	return file
 }

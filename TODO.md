@@ -1,4 +1,18 @@
-- TODO add smoother in a-frame!!!
+# aframe-ar.js new
+- aframe-ar.js new version
+  - support smoother 
+  - support multi marker - so augmented-website
+  - 
+- resize doesnt support portraiting a landscape
+- there is a resize every 1/60 seconds
+- how to handle the parameters
+  - i need to have the profile
+  - still it should be possible to change paramteres to offer flexibility
+- support multi trackingBackend
+
+
+
+---
 - port webvr-arbackend
 
 - rename THREEx.ArToolkitContext.getProjectionMatrix into .getArtoolkitProjectMatrix

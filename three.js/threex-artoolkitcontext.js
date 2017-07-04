@@ -8,7 +8,7 @@ THREEx.ArToolkitContext = function(parameters){
 	// handle default parameters
 	this.parameters = {
 		// AR backend - ['artoolkit', 'aruco', 'tango']
-		arBackend: parameters.arBackend !== undefined ? parameters.arBackend : 'artoolkit',
+		trackingBackend: parameters.trackingBackend !== undefined ? parameters.trackingBackend : 'artoolkit',
 		// debug - true if one should display artoolkit debug canvas, false otherwise
 		debug: parameters.debug !== undefined ? parameters.debug : false,
 		// the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
@@ -30,7 +30,7 @@ THREEx.ArToolkitContext = function(parameters){
 		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : false,
 	}
 	// parameters sanity check
-	console.assert(['artoolkit', 'aruco', 'tango'].indexOf(this.parameters.arBackend) !== -1, 'invalid parameter arBackend', this.parameters.arBackend)
+	console.assert(['artoolkit', 'aruco', 'tango'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
 	console.assert(['color', 'color_and_matrix', 'mono', 'mono_and_matrix'].indexOf(this.parameters.detectionMode) !== -1, 'invalid parameter detectionMode', this.parameters.detectionMode)
 	
         this.arController = null;
@@ -51,11 +51,11 @@ THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 //		init functions
 //////////////////////////////////////////////////////////////////////////////
 THREEx.ArToolkitContext.prototype.init = function(onCompleted){
-	if( this.parameters.arBackend === 'artoolkit' ){
+	if( this.parameters.trackingBackend === 'artoolkit' ){
 		this._initArtoolkit(onCompleted)
-	}else if( this.parameters.arBackend === 'aruco' ){
+	}else if( this.parameters.trackingBackend === 'aruco' ){
 		this._initAruco(onCompleted)
-	}else if( this.parameters.arBackend === 'tango' ){
+	}else if( this.parameters.trackingBackend === 'tango' ){
 		this._initTango(onCompleted)
 	}else console.assert(false)
 }
@@ -65,7 +65,7 @@ THREEx.ArToolkitContext.prototype.init = function(onCompleted){
 THREEx.ArToolkitContext.prototype.update = function(srcElement){
 
 	// be sure arController is fully initialized
-        if (this.parameters.arBackend === 'artoolkit' && this.arController === null) return false;
+        if (this.parameters.trackingBackend === 'artoolkit' && this.arController === null) return false;
 
 	// honor this.parameters.maxDetectionRate
 	var present = performance.now()
@@ -80,11 +80,11 @@ THREEx.ArToolkitContext.prototype.update = function(srcElement){
 	})
 
 	// process this frame
-	if(this.parameters.arBackend === 'artoolkit'){
+	if(this.parameters.trackingBackend === 'artoolkit'){
 		this._updateArtoolkit(srcElement)		
-	}else if( this.parameters.arBackend === 'aruco' ){
+	}else if( this.parameters.trackingBackend === 'aruco' ){
 		this._updateAruco(srcElement)
-	}else if( this.parameters.arBackend === 'tango' ){
+	}else if( this.parameters.trackingBackend === 'tango' ){
 		this._updateTango(srcElement)
 	}else{
 		console.assert(false)
@@ -199,9 +199,9 @@ THREEx.ArToolkitContext.prototype.getProjectionMatrix = function(srcElement){
 // keep a backward compatibility with a console.warn
 	
 	
-	if( this.parameters.arBackend === 'aruco' ){
+	if( this.parameters.trackingBackend === 'aruco' ){
 		console.assert(false, 'dont call this function with aruco')
-	}else if( this.parameters.arBackend === 'artoolkit' ){
+	}else if( this.parameters.trackingBackend === 'artoolkit' ){
 		console.assert(this.arController, 'arController MUST be initialized to call this function')
 		// get projectionMatrixArr from artoolkit
 		var projectionMatrixArr = this.arController.getCameraMatrix();

@@ -129,3 +129,10 @@ THREEx.ArToolkitProfile.prototype.sourceImage = function (url) {
 	this.sourceParameters.sourceUrl = url
 	return this
 }
+
+//////////////////////////////////////////////////////////////////////////////
+//		trackingBackend
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArToolkitProfile.prototype.trackingBackend = function (trackingBackend) {
+	this.contextParameters.trackingBackend = trackingBackend
+}
