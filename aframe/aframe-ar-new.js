@@ -12,25 +12,64 @@ AFRAME.registerSystem('arjs', {
 			type: 'boolean',	
 			default: true,
 		},
-		profile : {
+		performanceProfile : {
 			type: 'string',	
 			default: 'default',
 		},
 
 		// old parameters
-		debug : {		type: 'boolean',	default: null},
-		detectionMode : {	type: 'string',		},
-		matrixCodeType : {	type: 'string',		},
-		cameraParametersUrl : {	type: 'string',		},
-		maxDetectionRate : {	type: 'number',		},
-		sourceType : {		type: 'string',		},
-		sourceUrl : {		type: 'string',		},
-		sourceWidth : {		type: 'number',		},
-		sourceHeight : {	type: 'number',		},
-		displayWidth : {	type: 'number',		},
-		displayHeight : {	type: 'number',		},
-		canvasWidth : {		type: 'number',		},
-		canvasHeight : {	type: 'number',		},
+		debug : {
+			type: 'boolean',
+			default: false
+		},
+		detectionMode : {
+			type: 'string',
+			default: '',
+		},
+		matrixCodeType : {
+			type: 'string',
+			default: '',
+		},
+		cameraParametersUrl : {
+			type: 'string',
+			default: '',
+		},
+		maxDetectionRate : {
+			type: 'number',
+			default: -1
+		},
+		sourceType : {
+			type: 'string',
+			default: '',
+		},
+		sourceUrl : {
+			type: 'string',
+			default: '',
+		},
+		sourceWidth : {
+			type: 'number',
+			default: -1
+		},
+		sourceHeight : {
+			type: 'number',
+			default: -1
+		},
+		displayWidth : {
+			type: 'number',
+			default: -1
+		},
+		displayHeight : {
+			type: 'number',
+			default: -1
+		},
+		canvasWidth : {
+			type: 'number',
+			default: -1
+		},
+		canvasHeight : {
+			type: 'number',
+			default: -1
+		},
 	},
 	
 	//////////////////////////////////////////////////////////////////////////////
@@ -40,15 +79,33 @@ AFRAME.registerSystem('arjs', {
 	
 	init: function () {
 		var _this = this
-// TODO support pattern/barcode 
-// smoothed by default
-// support type='area'
-// support for profile
+
+		// setup artoolkitProfile
 		var artoolkitProfile = new THREEx.ArToolkitProfile()
 		artoolkitProfile.sourceWebcam()
 		artoolkitProfile.trackingBackend(this.data.trackingBackend)
+		artoolkitProfile.performance(this.data.performanceProfile)
+
 		
-		// artoolkitProfile.set()
+		//////////////////////////////////////////////////////////////////////////////
+		//		honor this.data
+		//////////////////////////////////////////////////////////////////////////////
+		
+		// honor this.data and push what has been modified into artoolkitProfile
+		if( this.data.debug !== false )			artoolkitProfile.contextParameters.debug = this.data.debug
+		if( this.data.detectionMode !== '' )		artoolkitProfile.contextParameters.detectionMode = this.data.detectionMode
+		if( this.data.matrixCodeType !== '' )		artoolkitProfile.contextParameters.matrixCodeType = this.data.matrixCodeType
+		if( this.data.cameraParametersUrl !== '' )	artoolkitProfile.contextParameters.cameraParametersUrl = this.data.cameraParametersUrl
+		if( this.data.maxDetectionRate !== -1 )		artoolkitProfile.contextParameters.maxDetectionRate = this.data.maxDetectionRate
+
+		if( this.data.sourceType !== '' )		artoolkitProfile.contextParameters.sourceType = this.data.sourceType
+		if( this.data.sourceUrl !== '' )		artoolkitProfile.contextParameters.sourceUrl = this.data.sourceUrl
+		if( this.data.sourceWidth !== -1 )		artoolkitProfile.contextParameters.sourceWidth = this.data.sourceWidth
+		if( this.data.sourceHeight !== -1 )		artoolkitProfile.contextParameters.sourceHeight = this.data.sourceHeight
+		if( this.data.displayWidth !== -1 )		artoolkitProfile.contextParameters.displayWidth = this.data.displayWidth
+		if( this.data.displayHeight !== -1 )		artoolkitProfile.contextParameters.displayHeight = this.data.displayHeight
+		if( this.data.canvasWidth !== -1 )		artoolkitProfile.contextParameters.canvasWidth = this.data.canvasWidth
+		if( this.data.canvasHeight !== -1 )		artoolkitProfile.contextParameters.canvasHeight = this.data.canvasHeight
 
 		////////////////////////////////////////////////////////////////////////////////
 		//          handle arToolkitSource
@@ -108,23 +165,6 @@ AFRAME.registerSystem('arjs', {
 			var learnerURL = THREEx.ArToolkitContext.baseURL + 'examples/multi-markers/examples/learner.html'
 			THREEx.ArMultiMarkerUtils.navigateToLearnerPage(learnerURL, _this.data.trackingBackend)
 		}
-
-		// honor this.data.areaLearningIcon
-		if( this.data.areaLearningIcon === true ){
-			// <img style='position: fixed; bottom: 16px; left: 16px; z-index:1' src="../../three.js/examples/multi-markers/examples/images/record-start.png" width='64px'  height='64px'>
-			var imgElement = document.createElement('img')
-			imgElement.style.position = 'fixed'
-			imgElement.style.bottom = '16px'
-			imgElement.style.left = '16px'
-			imgElement.style.width = '48px'
-			imgElement.style.height = '48px'
-			imgElement.style.zIndex = 1
-			imgElement.src = THREEx.ArToolkitContext.baseURL + "examples/multi-markers/examples/images/record-start.png"
-			document.body.appendChild(imgElement)
-			imgElement.addEventListener('click', function(){
-				_this.navigateToLearnerPage()
-			})					
-		}
 	},
 	
 	tick : function(now, delta){
@@ -149,6 +189,15 @@ AFRAME.registerSystem('arjs', {
 AFRAME.registerComponent('arjsmarker', {
 	dependencies: ['arjs'],
 	schema: {
+		preset: {
+			type: 'string',
+		},
+		markerHelpers : {	// IIF preset === 'area'
+			type: 'boolean',
+			default: false,
+		},
+
+		// controls parameters
 		size: {
 			type: 'number',
 			default: 1
@@ -170,20 +219,14 @@ AFRAME.registerComponent('arjsmarker', {
 			type: 'number',
 			default: 0.6,
 		},
-		preset: {
-			type: 'string',
-		},
-		markerhelpers : {	// IIF preset === 'area'
-			type: 'boolean',
-			default: false,
-		}
 	},
 	init: function () {
 		var _this = this
 		// actually init arMarkerControls
-		var artoolkitContext = this.el.sceneEl.systems.arjs.arToolkitContext
+		var arjsSystem = this.el.sceneEl.systems.arjs
+		var artoolkitContext = arjsSystem.arToolkitContext
 		var scene = this.el.sceneEl.object3D
-
+		
 		// honor this.data.preset
 		if( this.data.preset === 'hiro' ){
 			this.data.type = 'pattern'
@@ -222,11 +265,11 @@ AFRAME.registerComponent('arjsmarker', {
 			})
 
 			// display THREEx.ArMarkerHelper if needed - useful to debug
-			if( this.data.markerhelpers === true ){
+			if( this.data.markerHelpers === true ){
 				this._multiMarkerControls.subMarkersControls.forEach(function(subMarkerControls){
 					// add an helper to visuable each sub-marker
 					var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
-					subMarkerControls.object3d.add( markerHelper.object3d )		
+					scene.add( markerHelper.object3d )	
 				})				
 			}
 		}else if( this.data.type === 'pattern' || this.data.type === 'barcode' ){
@@ -235,6 +278,27 @@ AFRAME.registerComponent('arjsmarker', {
 
 		// build a smoothedControls
 		this.arSmoothedControls = new THREEx.ArSmoothedControls(this.el.object3D)
+		
+		
+
+		// honor arjsSystem.data.areaLearningIcon
+		if( this.data.type === 'area' && arjsSystem.data.areaLearningIcon === true && document.querySelector('#arjsAreaLearningButton') === null ){
+			// TODO put this function in arjsSystem arjsSystem.initAreaLearningButton()
+
+			var imgElement = document.createElement('img')
+			imgElement.id = 'arjsAreaLearningButton'
+			imgElement.style.position = 'fixed'
+			imgElement.style.bottom = '16px'
+			imgElement.style.left = '16px'
+			imgElement.style.width = '48px'
+			imgElement.style.height = '48px'
+			imgElement.style.zIndex = 1
+			imgElement.src = THREEx.ArToolkitContext.baseURL + "examples/multi-markers/examples/images/record-start.png"
+			document.body.appendChild(imgElement)
+			imgElement.addEventListener('click', function(){
+				arjsSystem.navigateToLearnerPage()
+			})					
+		}
 	},
 	remove : function(){
 		// this._arMarkerControls.dispose()
@@ -273,7 +337,7 @@ AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitiv
 		'value': 'arjsmarker.barcodeValue',
 		'preset': 'arjsmarker.preset',
 		'minConfidence': 'arjsmarker.minConfidence',
-		'markerhelpers': 'arjsmarker.markerhelpers',
+		'markerHelpers': 'arjsmarker.markerHelpers',
 	}
 }));
 
@@ -291,6 +355,6 @@ AFRAME.registerPrimitive('a-marker-camera', AFRAME.utils.extendDeep({}, AFRAME.p
 		'value': 'arjsmarker.barcodeValue',
 		'preset': 'arjsmarker.preset',
 		'minConfidence': 'arjsmarker.minConfidence',
-		'markerhelpers': 'arjsmarker.markerhelpers',
+		'markerHelpers': 'arjsmarker.markerHelpers',
 	}
 }));

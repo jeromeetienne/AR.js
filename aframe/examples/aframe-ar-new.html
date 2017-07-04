@@ -15,7 +15,7 @@
 <script src='../../three.js/examples/multi-markers/threex-armultimarkerutils.js'></script>
 <script src='../../three.js/examples/multi-markers/threex-armultimarkercontrols.js'></script>
 <script src='../../three.js/examples/multi-markers/threex-armultimarkerlearning.js'></script>
-<!-- aframe-artoolkit -->
+<!-- aframe-ar.js -->
 <script src="../aframe-ar-new.js"></script>
 <script>THREEx.ArToolkitContext.baseURL = '../../three.js/'</script>
 
@@ -26,13 +26,13 @@
 	Try on <a href='https://webxr.io/augmented-website/?https://webxr.io/webar-playground/platforms/arjs/vendor/ar.js/aframe/examples/aframe-ar-new.html'>augmented website</a>
 </div>
 	<a-scene embedded arjs='sourceType: webcam;'>
-		<a-marker preset='area' markerhelpers='true'>
+		<!-- <a-marker preset='area' markerHelpers='true'>
 			<a-box position='0 0.5 0' material='opacity: 0.5; side: double; color:blue;'></a-box>
 		</a-marker>
-		<a-entity camera></a-entity>
+		<a-entity camera></a-entity> -->
 		
-		<!-- <a-box position='0 0.5 0' material='opacity: 0.5; side: double; color:blue;'></a-box>
-		<a-marker-camera preset='area'></a-marker-camera> -->
+		<a-box position='0 0.5 0' material='opacity: 0.5; side: double; color:blue;'></a-box>
+		<a-marker-camera preset='area'></a-marker-camera>
 	</a-scene>
 </body>
 </html>
