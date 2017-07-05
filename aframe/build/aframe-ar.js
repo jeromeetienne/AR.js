@@ -2597,12 +2597,14 @@ AFRAME.registerSystem('arjs', {
 // TODO this is crappy
 			// kludge to write a 'resize' event
 			var startedAt = Date.now()
-			function tick(){
-				if( Date.now() - startedAt > 10*1000 )	return 
+			var timerId = setInterval(function(){
+				if( Date.now() - startedAt > 10*1000 ){
+					clearInterval(timerId)
+					return 					
+				}
+				// onResize()
 				window.dispatchEvent(new Event('resize'));
-				setTimeout(tick, 1000/60)
-			}
-			setTimeout(tick, 1000/60)
+			}, 1000/30)
 		})
 		
 		// handle resize
@@ -2748,7 +2750,7 @@ AFRAME.registerComponent('arjsmarker', {
 		if( this.data.type === 'area' ){
 			// if no localStorage.ARjsMultiMarkerFile, then write one with default marker
 			if( localStorage.getItem('ARjsMultiMarkerFile') === null ){
-				THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(this.data.trackingBackend)
+				THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(arjsSystem.data.trackingBackend)
 			}
 			
 			// get multiMarkerFile from localStorage
@@ -2759,7 +2761,7 @@ AFRAME.registerComponent('arjsmarker', {
 			this._multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(artoolkitContext, scene, this._markerRoot, multiMarkerFile, {
 				changeMatrixMode : this.data.changeMatrixMode
 			})
-
+console.log('this.data.markerhelpers', this.data.markerhelpers)
 			// display THREEx.ArMarkerHelper if needed - useful to debug
 			if( this.data.markerhelpers === true ){
 				this._multiMarkerControls.subMarkersControls.forEach(function(subMarkerControls){

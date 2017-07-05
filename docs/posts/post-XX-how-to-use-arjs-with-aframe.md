@@ -3,18 +3,27 @@ how to make augmented reality with AR.js
 
 Dont worry, you can do it with only 8 line of html.
 
+
+
+
+# META
+- list complete of options in the docs
+- list the sections which need works
+- find a good title
+- find visual image/video!!!!
+
 ---
 
 # Introduction
 AR.js is an efficient Augmented Reality solution on the Web. 
 It runs 100% in your web browser, this means no app to install! 
 There is no need for a specific device either e.g. tango or iphone. 
-It run on all mobile platforms: Android, iOS11 and Windows mobile.
+It runs on all mobile platforms: Android, iOS11 and Windows mobile.
 You can use it with your own phone. 
 Depending on your device, it can run very fast, up to 60fps on 2year-old phones!
 On top of that, the code is open source and all available on [github](https://github.com/jeromeetienne/ar.js).
 
-A-frame is very easy to use so i wanted to make sure that AR.js was working well with a-frame.
+A-frame is very easy to use so I wanted to make sure that AR.js was working well with a-frame.
 Thus, combining a-frame and AR.js, it's simple for everybody to create AR content on the web. 
 
 Sounds good? Let's see how to use it.  
@@ -23,6 +32,8 @@ Sounds good? Let's see how to use it.
 Today you can make
 [augmented reality in 10 Lines of HTML](https://medium.com/arjs/augmented-reality-in-10-lines-of-html-4e193ea9fdbf), isn't the web amazing ?
 It is really that simple, you can try live on [codepen](https://codepen.io/jeromeetienne/pen/mRqqzb).
+Just put a [hiro marker](https://github.com/jeromeetienne/AR.js/blob/master/data/images/HIRO.jpg) in front
+of the camera and we will add the augmented reality on it.
 
 
 ```html
@@ -40,7 +51,7 @@ It is really that simple, you can try live on [codepen](https://codepen.io/jerom
 </body>
 ```
 
-In this scene, the camera is be moved by AR.js, and 
+In this scene, the camera is being moved by AR.js, and 
 the origin of your scene is at the center of the marker. 
 All the rest is normal a-frame. 
 So if you want to add new objects in the augmented reality, just add it 
@@ -50,7 +61,7 @@ near the ```<a-box>```.
 # How to add AR.js in your A-Frame Project
 This is 2 steps only
 
-1. Tell ar.js to start a-aframe
+1. Tell a-aframe to start ar.js
 2. setup the camera to move according to the markers
 
 So first you include aframe-ar.js, then declare a-scene to 
@@ -68,7 +79,8 @@ those are glitch which are meant to disapear shortly.
 
 # Personalize your AR Content
 Now we have a basic cube in AR...
-it would be good to personalise AR a bit. 
+it would be good to personalise AR a bit. Let's see how to add a text, an image or even your 
+own model in augmented reality.
 
 One of the most asked questions has been "how to load my own model in AR?".
 As said before, ar.js controls the displacement of the camera, all the rest
@@ -251,8 +263,3 @@ This is a lot! Congrats on getting to the end without quitting ;)
 I hope you all start creating amazing things with AR.js and A-Frame. Don't forget it's open source, so your imagination is the limit! 
 
 Thanks for reading. Cheers! 
-
-
-
-# META
-- list complete of options in the docs
