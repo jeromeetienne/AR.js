@@ -155,14 +155,13 @@ binary code. So you modify a-scene as below.
 
 Now that ar.js knows you want to use barcode markers, on each of your marker
 you need to specify which number you will use, e.g. for barcode 5.
-Here is [barcode marker generator](http://www.artoolworks.com/support/applications/marker/) to generate your own.
-
-TODO to include this link
-http://www.artoolworks.com/support/library/Using_2D-barcode_markers
 
 ```html
 <a-marker type='barcode' value='5'></a-marker>
 ```
+
+Here is [barcode marker generator](http://www.artoolworks.com/support/applications/marker/) to generate your own. Up to you to use the [type of matrix code](http://www.artoolworks.com/support/library/Using_2D-barcode_markers) matches you need.
+Sometime such configurations may be painful so to simplify common cases, we used preset.
 
 # Markers Presets for Easier Configuration
 To make it easier and to avoid repeating ourselves, 
@@ -217,19 +216,13 @@ You will need to use ```<a-marker>```, and a simple camera instead.
 <a-entity camera></a-entity>
 ```
 
-TODO transition ?
-
 # How to handle multiple distinct markers
+Now that we have seen various possibilities of [AR.js](https://github.com/jeromeetienne/ar.js),
+let's end with an last examples with multiple distinct markers. Those can be useful in various applications
+e.g. a 'measure it' like below.
+So we will have 3 markers, one with a preset, one with a custom pattern marker, and a barcode.
 
-TODO to complete
-- link to measure it example
-- video of it
-- what's the use
-
-- e.g. you can see it in this [multiple independent markers example](https://jeromeetienne.github.io/AR.js/aframe/examples/multiple-independent-markers.html)
-
-
-![screen shot 2017-07-05 at 14 53 43](https://user-images.githubusercontent.com/6317076/27867514-c85fefb6-6191-11e7-99c4-2091ab0a6fd1.png)
+[![screen shot 2017-07-05 at 14 53 43](https://user-images.githubusercontent.com/6317076/27867514-c85fefb6-6191-11e7-99c4-2091ab0a6fd1.png)](https://www.youtube.com/watch?v=dIEZwmjuaUA&list=PL2oSKUSmuoTECUCvHDvifRhztkOYduQsq&index=10)
 
 ```html
 <script src="https://aframe.io/releases/0.6.0/aframe.min.js"></script>
@@ -243,12 +236,12 @@ TODO to complete
 
 		<!-- handle marker with hiro preset -->
 		<a-marker preset='hiro'>
-			<a-box position='0 0.5 0' material='color: blue;'></a-box>
+			<a-box position='0 0.5 0' material='color: green;'></a-box>
 		</a-marker>
 
 		<!-- handle barcode marker -->
 		<a-marker type='barcode' value='5'>
-			<a-box position='0 0.5 0' material='color: pink;'></a-box>
+			<a-box position='0 0.5 0' material='color: blue;'></a-box>
 		</a-marker>
 
 		<!-- add a simple camera -->
