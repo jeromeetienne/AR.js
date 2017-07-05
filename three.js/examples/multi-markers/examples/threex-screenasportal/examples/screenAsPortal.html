@@ -43,7 +43,7 @@
 	Directly inspired of the <a href='https://www.youtube.com/watch?v=Jd3-eiid-Uw'>cult demo</a> by <a href='https://www.youtube.com/user/jcl5m/videos'>johnny lee</a>
 </div>
 <div style='position: fixed; bottom: 10px; width:100%; text-align: center;z-index:1; color: grey;';>
-	<a href='javascript:void(0)' onclick='toggleMarkerHelper()'>marker helper : <span id='markerHelpersStatus'></span></a>
+	<a id='markerHelpersButton' href='javascript:void(0)'>marker helper : <span>hidden</span></a>
 </div>
 <div style='position: fixed; bottom: 16px; right: 16px; z-index:1';>
 	<img id='recordButton' src="../../../../multi-markers/examples/images/record-start.png" width='64px'  height='64px'>
@@ -133,9 +133,6 @@
 	//          initialize arToolkitContext
 	////////////////////////////////////////////////////////////////////////////////	
 
-	// honor urlOptions.trackingBackend
-	artoolkitProfile.contextParameters.trackingBackend = urlOptions.trackingBackend
-
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
 	// initialize it
@@ -152,25 +149,20 @@
 
 		arToolkitContext.update( arToolkitSource.domElement )
 	})
-	//////////////////////////////////////////////////////////////////////////////
-	//		init learnerParameters and markersControlsParameters
-	//////////////////////////////////////////////////////////////////////////////
 
-	// build a multiMarkerControls
-	var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arToolkitContext, scene, markerRoot, multiMarkerFile)
-		
 	//////////////////////////////////////////////////////////////////////////////
 	//		get multiMarkerFile
 	//////////////////////////////////////////////////////////////////////////////
-
+	
 	// if no localStorage.ARjsMultiMarkerFile, then write one with default marker
 	if( localStorage.getItem('ARjsMultiMarkerFile') === null ){
-		THREEx.ArMultiMarkerControls.storeDefaultMultiMarkerFile(urlOptions.trackingBackend)
+		THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(urlOptions.trackingBackend)
 	}
-
-	// get multiMarkerFile from localStorage	
+	
+	// get multiMarkerFile from localStorage
 	console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
 	var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
+		
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		Create ArMultiMarkerControls
@@ -181,15 +173,6 @@
 	
 	// build a multiMarkerControls
 	var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arToolkitContext, scene, markerRoot, multiMarkerFile)
-
-	// add an THREEx.ArMarkerHelper to visuable each sub-marker
-	var markerHelpers = []
-	multiMarkerControls.subMarkersControls.forEach(function(subMarkerControls){
-		var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
-		subMarkerControls.object3d.add( markerHelper.object3d )				
-		markerHelpers.push(markerHelper)
-	})
-
 
 	// build a smoothedControls
 	var smoothedRoot = new THREE.Group()
@@ -214,6 +197,27 @@
 	var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
 	averageMatrix.decompose(arWorldRoot.position, arWorldRoot.quaternion, arWorldRoot.scale)		
 	smoothedRoot.add(arWorldRoot)
+	//////////////////////////////////////////////////////////////////////////////
+	//		markerHelpers
+	//////////////////////////////////////////////////////////////////////////////
+
+	// display THREEx.ArMarkerHelper if needed - useful to debug
+	var markerHelpers = []
+	multiMarkerControls.subMarkersControls.forEach(function(subMarkerControls){
+		// add an helper to visuable each sub-marker
+		var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
+		markerHelpers.push(markerHelper)
+		subMarkerControls.object3d.add( markerHelper.object3d )		
+	})
+
+	function markerHelpersToggleVisibility(){
+		var wasVisible = markerHelpers[0].object3d.visible 
+		markerHelpers.forEach(function(markerHelper){
+			markerHelper.object3d.visible = wasVisible ? false : true
+		})
+		// update visibility status
+		document.querySelector('#markerHelpersButton span').innerHTML = wasVisible ? 'hidden' : 'visible'
+	}
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		toggle marker UI
@@ -224,21 +228,10 @@
 		THREEx.ArMultiMarkerUtils.navigateToLearnerPage(learnerURL, urlOptions.trackingBackend)
 	})
 	
-
-	window.toggleMarkerHelper = toggleMarkerHelper
-	function toggleMarkerHelper(){
-		var wasVisible = markerHelpers[0].object3d.visible;
-
-		document.querySelector('#markerHelpersStatus').innerHTML = wasVisible === false ? 'visible' : 'hidden'
-
-		markerHelpers.forEach(function(markerHelper){
-			markerHelper.object3d.visible = wasVisible ? false : true 
-		})
-	}
-	toggleMarkerHelper()
-
-
-
+	document.querySelector('#markerHelpersButton').addEventListener('click', function(){
+		markerHelpersToggleVisibility()
+	})
+	markerHelpersToggleVisibility()
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Add simple object on smoothedRoot
 	//////////////////////////////////////////////////////////////////////////////////
