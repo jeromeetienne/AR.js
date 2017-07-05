@@ -15,6 +15,8 @@ Dont worry, you can do it with only 8 line of html.
 ---
 
 # Introduction
+![screen shot 2017-04-01 at 14 36 00](https://user-images.githubusercontent.com/6317076/27866704-452eaed6-618f-11e7-9cdd-2deaef865e3e.png)
+
 AR.js is an efficient Augmented Reality solution on the Web. 
 It runs 100% in your web browser, this means no app to install! 
 There is no need for a specific device either e.g. tango or iphone. 
@@ -29,6 +31,9 @@ Thus, combining a-frame and AR.js, it's simple for everybody to create AR conten
 Sounds good? Let's see how to use it.  
 
 # Show Dont Tell 
+[![screen shot 2017-07-05 at 14 40 01](https://user-images.githubusercontent.com/6317076/27867019-5c4699d4-6190-11e7-831b-e8251711acdf.png)](https://www.youtube.com/watch?v=v_Uj0C8sMi4&feature=youtu.be&utm_content=buffer22f18&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer)
+(OR EMBED VIDEO IN THE POST)
+
 Today you can make
 [augmented reality in 10 Lines of HTML](https://medium.com/arjs/augmented-reality-in-10-lines-of-html-4e193ea9fdbf), isn't the web amazing ?
 It is really that simple, you can try live on [codepen](https://codepen.io/jeromeetienne/pen/mRqqzb).
@@ -59,6 +64,8 @@ near the ```<a-box>```.
 
 
 # How to add AR.js in your A-Frame Project
+![screen shot 2017-07-05 at 14 22 23](https://user-images.githubusercontent.com/6317076/27867071-8833eaf6-6190-11e7-9fb9-9deac93b88bd.png)
+
 This is 2 steps only
 
 1. Tell a-aframe to start ar.js
@@ -78,6 +85,8 @@ TODO to complete
 those are glitch which are meant to disapear shortly. 
 
 # Personalize your AR Content
+![screen shot 2017-07-05 at 14 45 35](https://user-images.githubusercontent.com/6317076/27867143-bf05926e-6190-11e7-855f-a90ab71976fc.png)
+
 Now we have a basic cube in AR...
 it would be good to personalise AR a bit. Let's see how to add a text, an image or even your 
 own model in augmented reality.
@@ -112,6 +121,7 @@ To add an image, [a-image](https://aframe.io/docs/0.5.0/primitives/a-image.html)
 ```
 
 # Customize your Marker
+![arjs marker training](https://user-images.githubusercontent.com/6317076/27867192-e55306b8-6190-11e7-9bd1-7a9dbf4fa76a.png)
 
 We understand that many people want to personalize the marker. It is possible to replace the Hiro pattern with your own image, as long as it is inside the black border.
 We have provided an easy way to this. It is called the [marker generator](https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html).
@@ -135,6 +145,11 @@ Simple enough.
 
 # Explain the 2 type of markers
 
+Pattern Marker 
+![screen shot 2017-07-05 at 14 50 43](https://user-images.githubusercontent.com/6317076/27867388-64baee98-6191-11e7-9fbe-586fd79eba9d.png)
+
+Barcode Marker
+![screen shot 2017-07-05 at 14 50 56](https://user-images.githubusercontent.com/6317076/27867389-64d880d4-6191-11e7-88cb-e7417dee258d.png)
 
 TODO to complete
 
@@ -215,6 +230,8 @@ You will need to use ```<a-marker>```, and a simple camera instead.
 <!-- define a simple camera -->
 <a-entity camera></a-entity>
 ```
+
+![screen shot 2017-07-05 at 14 53 43](https://user-images.githubusercontent.com/6317076/27867514-c85fefb6-6191-11e7-99c4-2091ab0a6fd1.png)
 
 TODO transition ?
 
