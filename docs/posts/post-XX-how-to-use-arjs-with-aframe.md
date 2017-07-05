@@ -12,8 +12,8 @@ There is no need for a specific device either e.g. tango or iphone.
 It run on all mobile platforms: Android, iOS11 and Windows mobile.
 You can use it with your own phone. 
 Depending on your device, it can run very fast, up to 60fps on 2year-old phones!
+On top of that, the code is open source and all available on [github](https://github.com/jeromeetienne/ar.js).
 
-On top of that, it is open source and free of charge. The code is all available on [github](https://github.com/jeromeetienne/ar.js).
 A-frame is very easy to use so i wanted to make sure that AR.js was working well with a-frame.
 Thus, combining a-frame and AR.js, it's simple for everybody to create AR content on the web. 
 
@@ -54,7 +54,9 @@ This is 2 steps only
 2. setup the camera to move according to the markers
 
 So first you include aframe-ar.js, then declare a-scene to 
-add the parameters for artoolkit.
+add the parameters for arjs.
+
+TODO to complete
 
 - ```embedded```
 
@@ -120,6 +122,10 @@ Simple enough.
 
 
 # Explain the 2 type of markers
+
+
+TODO to complete
+
 - barcode and pattern
 - like to the pattern generator
 - explain the preset
@@ -201,6 +207,8 @@ You will need to use ```<a-marker>```, and a simple camera instead.
 TODO transition ?
 
 # How to handle multiple distinct markers
+
+TODO to complete
 - link to measure it example
 - video of it
 - what's the use
