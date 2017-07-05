@@ -1,5 +1,8 @@
 https://medium.com/@sivaniram/c503e796a0c5
 
+TODO past the relevant section in the post
+
+
 There are good reasons to believe that web apps will begin to look more and more like native apps due to these technology trends:
 
 **Progressive Web Apps (PWA)** — PWA are a website building methodology that enables website to be treated by the browser like an app, rather than an old school website. It enables web sites to have live updates, push notifications, launch the web site from the home screen, SEO discoverability, offline usage and more. This circumvents many of the reasons why users prefer apps, which will make it easier for publishers to engage users without the high friction need for app download. Some notable companies who shifted to PWA are AliExpress, The Financial Times and Lyft. Check out the video below to learn more about PWA.

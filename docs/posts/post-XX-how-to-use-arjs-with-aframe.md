@@ -1,28 +1,43 @@
 # post for a-frame blog
-how to make augmented reality with AR.js
+## How To Easily Create Your Own Augmented Reality with AR.js
+### Don't Worry It's Less Than 10 Lines of HTML 
 
-Dont worry, you can do it with only 8 line of html.
+
+
+
+# META
+- list complete of options in the docs
+- list the sections which need works
+- find a good title
+- find visual image/video!!!!
 
 ---
 
 # Introduction
+![screen shot 2017-04-01 at 14 36 00](https://user-images.githubusercontent.com/6317076/27866704-452eaed6-618f-11e7-9cdd-2deaef865e3e.png)
+
 AR.js is an efficient Augmented Reality solution on the Web. 
 It runs 100% in your web browser, this means no app to install! 
 There is no need for a specific device either e.g. tango or iphone. 
-It run on all mobile platforms: Android, iOS11 and Windows mobile.
+It runs on all mobile platforms: Android, iOS11 and Windows mobile.
 You can use it with your own phone. 
 Depending on your device, it can run very fast, up to 60fps on 2year-old phones!
+On top of that, the code is open source and all available on [github](https://github.com/jeromeetienne/ar.js).
 
-On top of that, it is open source and free of charge. The code is all available on [github](https://github.com/jeromeetienne/ar.js).
-A-frame is very easy to use so i wanted to make sure that AR.js was working well with a-frame.
+A-frame is very easy to use so I wanted to make sure that AR.js was working well with a-frame.
 Thus, combining a-frame and AR.js, it's simple for everybody to create AR content on the web. 
 
 Sounds good? Let's see how to use it.  
 
 # Show Dont Tell 
+[![screen shot 2017-07-05 at 14 40 01](https://user-images.githubusercontent.com/6317076/27867019-5c4699d4-6190-11e7-831b-e8251711acdf.png)](https://www.youtube.com/watch?v=v_Uj0C8sMi4&feature=youtu.be&utm_content=buffer22f18&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer)
+(OR EMBED VIDEO IN THE POST)
+
 Today you can make
 [augmented reality in 10 Lines of HTML](https://medium.com/arjs/augmented-reality-in-10-lines-of-html-4e193ea9fdbf), isn't the web amazing ?
 It is really that simple, you can try live on [codepen](https://codepen.io/jeromeetienne/pen/mRqqzb).
+Just put a [hiro marker](https://github.com/jeromeetienne/AR.js/blob/master/data/images/HIRO.jpg) in front
+of the camera and we will add the augmented reality on it.
 
 
 ```html
@@ -40,7 +55,7 @@ It is really that simple, you can try live on [codepen](https://codepen.io/jerom
 </body>
 ```
 
-In this scene, the camera is be moved by AR.js, and 
+In this scene, the camera is being moved by AR.js, and 
 the origin of your scene is at the center of the marker. 
 All the rest is normal a-frame. 
 So if you want to add new objects in the augmented reality, just add it 
@@ -48,13 +63,17 @@ near the ```<a-box>```.
 
 
 # How to add AR.js in your A-Frame Project
+![screen shot 2017-07-05 at 14 22 23](https://user-images.githubusercontent.com/6317076/27867071-8833eaf6-6190-11e7-9fb9-9deac93b88bd.png)
+
 This is 2 steps only
 
-1. Tell ar.js to start a-aframe
+1. Tell a-aframe to start ar.js
 2. setup the camera to move according to the markers
 
 So first you include aframe-ar.js, then declare a-scene to 
-add the parameters for artoolkit.
+add the parameters for arjs.
+
+TODO to complete
 
 - ```embedded```
 
@@ -65,8 +84,11 @@ add the parameters for artoolkit.
 those are glitch which are meant to disapear shortly. 
 
 # Personalize your AR Content
+![screen shot 2017-07-05 at 14 45 35](https://user-images.githubusercontent.com/6317076/27867143-bf05926e-6190-11e7-855f-a90ab71976fc.png)
+
 Now we have a basic cube in AR...
-it would be good to personalise AR a bit. 
+it would be good to personalise AR a bit. Let's see how to add a text, an image or even your 
+own model in augmented reality.
 
 One of the most asked questions has been "how to load my own model in AR?".
 As said before, ar.js controls the displacement of the camera, all the rest
@@ -98,6 +120,7 @@ To add an image, [a-image](https://aframe.io/docs/0.5.0/primitives/a-image.html)
 ```
 
 # Customize your Marker
+![arjs marker training](https://user-images.githubusercontent.com/6317076/27867192-e55306b8-6190-11e7-9bd1-7a9dbf4fa76a.png)
 
 We understand that many people want to personalize the marker. It is possible to replace the Hiro pattern with your own image, as long as it is inside the black border.
 We have provided an easy way to this. It is called the [marker generator](https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html).
@@ -120,6 +143,15 @@ Simple enough.
 
 
 # Explain the 2 type of markers
+
+Pattern Marker 
+![screen shot 2017-07-05 at 14 50 43](https://user-images.githubusercontent.com/6317076/27867388-64baee98-6191-11e7-9fbe-586fd79eba9d.png)
+
+Barcode Marker
+![screen shot 2017-07-05 at 14 50 56](https://user-images.githubusercontent.com/6317076/27867389-64d880d4-6191-11e7-88cb-e7417dee258d.png)
+
+TODO to complete
+
 - barcode and pattern
 - like to the pattern generator
 - explain the preset
@@ -198,9 +230,13 @@ You will need to use ```<a-marker>```, and a simple camera instead.
 <a-entity camera></a-entity>
 ```
 
+![screen shot 2017-07-05 at 14 53 43](https://user-images.githubusercontent.com/6317076/27867514-c85fefb6-6191-11e7-99c4-2091ab0a6fd1.png)
+
 TODO transition ?
 
 # How to handle multiple distinct markers
+
+TODO to complete
 - link to measure it example
 - video of it
 - what's the use
@@ -234,17 +270,12 @@ TODO transition ?
 ```
 
 # Conclusion
-
-So we started out with a binary marker, and we created some cool AR content in the web browser, without installing any app, and running freely on your phone's platform! Whichever it is. 
-
-In this post we have seen how to do efficient Augmented Reality with AR.js, and how to add it to your A-Frame project. We now know how to customize content in AR to make it more personal. We've also learned that it's possible to create your own AR marker, whether its a barcode or a pattern, with an easy-to-use marker generator. Finally, we've learned how to handle the camera and use multiple distinct markers. This is a lot! Congrats on getting to the end of this post without quitting ;)
+In this post we have seen how to do efficient Augmented Reality with AR.js, and how to add it to your A-Frame project. 
+We now know how to customize content in AR and make it more personal. 
+We've also learned that it's possible to create your own marker with an easy-to-use marker generator.
+Finally, we've learned how to handle the camera and use multiple distinct markers. 
+This is a lot! Congrats on getting to the end without quitting ;)
 
 I hope you all start creating amazing things with AR.js and A-Frame. Don't forget it's open source, so your imagination is the limit! 
 
 Thanks for reading. Cheers! 
-
-
-
-
-# META
-- list complete of options in the docs
