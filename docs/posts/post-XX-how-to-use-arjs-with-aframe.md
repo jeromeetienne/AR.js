@@ -234,7 +234,15 @@ TODO transition ?
 ```
 
 # Conclusion
-TODO
+
+So we started out with a binary marker, and we created some cool AR content in the web browser, without installing any app, and running freely on your phone's platform! Whichever it is. 
+
+In this post we have seen how to do efficient Augmented Reality with AR.js, and how to add it to your A-Frame project. We now know how to customize content in AR to make it more personal. We've also learned that it's possible to create your own AR marker, whether its a barcode or a pattern, with an easy-to-use marker generator. Finally, we've learned how to handle the camera and use multiple distinct markers. This is a lot! Congrats on getting to the end of this post without quitting ;)
+
+I hope you all start creating amazing things with AR.js and A-Frame. Don't forget it's open source, so your imagination is the limit! 
+
+Thanks for reading. Cheers! 
+
 
 
 
