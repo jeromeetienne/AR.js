@@ -3,18 +3,18 @@
 //////////////////////////////////////////////////////////////////////////////
 
 // to keep backward compatibility with deprecated code
-AFRAME.registerComponent('arjs', buildSystemParameter())
-AFRAME.registerComponent('artoolkit', buildSystemParameter())
+// AFRAME.registerComponent('arjs', buildSystemParameter())
+// AFRAME.registerComponent('artoolkit', buildSystemParameter())
 
-function buildSystemParameter(){ return {
+// function buildSystemParameter(){ return {
 // AFRAME.registerSystem('arjs', {
-// AFRAME.registerSystem('arjs', {
+AFRAME.registerSystem('arjs', {
 	schema: {
 		trackingBackend : {
 			type: 'string',	
 			default: 'artoolkit',			
 		},
-		areaLearningIcon : {
+		areaLearningButton : {
 			type: 'boolean',	
 			default: true,
 		},
@@ -148,7 +148,6 @@ function buildSystemParameter(){ return {
 		////////////////////////////////////////////////////////////////////////////////
 		//          initialize arToolkitContext
 		////////////////////////////////////////////////////////////////////////////////
-		
 		// create atToolkitContext
 		var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
 		this.arToolkitContext = arToolkitContext
@@ -159,6 +158,10 @@ function buildSystemParameter(){ return {
 			// _this.sceneEl.camera.projectionMatrix.fromArray(projprojectionMatrixArrectionMatrix);
 		})
 		
+		//////////////////////////////////////////////////////////////////////////////
+		//		area learning
+		//////////////////////////////////////////////////////////////////////////////
+		
 		// export function to navigateToLearnerPage
 		this.navigateToLearnerPage = function(){
 			var learnerURL = THREEx.ArToolkitContext.baseURL + 'examples/multi-markers/examples/learner.html'
@@ -167,8 +170,8 @@ function buildSystemParameter(){ return {
 
 		// export function to initAreaLearningButton
 		this.initAreaLearningButton = function(){
-			// honor arjsSystem.data.areaLearningIcon
-			if( this.data.areaLearningIcon === false )	return
+			// honor arjsSystem.data.areaLearningButton
+			if( this.data.areaLearningButton === false )	return
 
 			// if there is already a button, do nothing
 			if( document.querySelector('#arjsAreaLearningButton') !== null )	return
@@ -201,7 +204,7 @@ function buildSystemParameter(){ return {
 		
 		this.arToolkitContext.update( this.arToolkitSource.domElement )
 	},
-}}
+})
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -245,7 +248,6 @@ AFRAME.registerComponent('arjsmarker', {
 		var _this = this
 		// actually init arMarkerControls
 		var arjsSystem = this.el.sceneEl.systems.arjs || this.el.sceneEl.systems.artoolkit
-		var arjsSystem = this.el.components.arjs || this.el.components.artoolkit
 
 		var artoolkitContext = arjsSystem.arToolkitContext
 		var scene = this.el.sceneEl.object3D
@@ -304,7 +306,7 @@ AFRAME.registerComponent('arjsmarker', {
 		
 		
 
-		// honor arjsSystem.data.areaLearningIcon
+		// honor arjsSystem.data.areaLearningButton
 		if( this.data.type === 'area' )	arjsSystem.initAreaLearningButton()
 	},
 	remove : function(){
