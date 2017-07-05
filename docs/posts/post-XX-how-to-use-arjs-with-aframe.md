@@ -1,20 +1,6 @@
-# post for a-frame blog
-## How To Easily Create Your Own Augmented Reality with AR.js
-### Don't Worry It's Less Than 10 Lines of HTML 
+# How To Easily Create Your Own Augmented Reality with AR.js
+## Don't Worry It's Less Than 10 Lines of HTML 
 
-
-
-
-# META
-- list complete of options in the docs
-- list the sections which need works
-- find a good title
-- find visual image/video!!!!
-
----
-
-# Introduction
-![screen shot 2017-04-01 at 14 36 00](https://user-images.githubusercontent.com/6317076/27866704-452eaed6-618f-11e7-9cdd-2deaef865e3e.png)
 
 AR.js is an efficient Augmented Reality solution on the Web. 
 It runs 100% in your web browser, this means no app to install! 
@@ -23,6 +9,8 @@ It runs on all mobile platforms: Android, iOS11 and Windows mobile.
 You can use it with your own phone. 
 Depending on your device, it can run very fast, up to 60fps on 2year-old phones!
 On top of that, the code is open source and all available on [github](https://github.com/jeromeetienne/ar.js).
+
+![screen shot 2017-04-01 at 14 36 00](https://user-images.githubusercontent.com/6317076/27866704-452eaed6-618f-11e7-9cdd-2deaef865e3e.png)
 
 A-frame is very easy to use so I wanted to make sure that AR.js was working well with a-frame.
 Thus, combining a-frame and AR.js, it's simple for everybody to create AR content on the web. 
