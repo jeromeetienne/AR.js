@@ -1,4 +1,4 @@
-# post2 for a-frame blog
+# post for a-frame blog
 how to make augmented reality with AR.js
 
 Dont worry, you can do it with only 8 line of html.
