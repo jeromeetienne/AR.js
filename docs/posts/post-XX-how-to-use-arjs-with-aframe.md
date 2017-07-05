@@ -10,8 +10,7 @@ You can use it with your own phone.
 Depending on your device, it can run very fast, up to 60fps on 2year-old phones!
 On top of that, the code is open source and all available on [github](https://github.com/jeromeetienne/ar.js).
 
-![screen shot 2017-04-01 at 14 36 00](https://user-images.githubusercontent.com/6317076/27866704-452eaed6-618f-11e7-9cdd-2deaef865e3e.png)
-
+[![screen shot 2017-04-01 at 14 36 00](https://user-images.githubusercontent.com/6317076/27866704-452eaed6-618f-11e7-9cdd-2deaef865e3e.png)](https://www.youtube.com/watch?v=0MtvjFg7tik)
 A-frame is very easy to use so I wanted to make sure that AR.js was working well with a-frame.
 Thus, combining a-frame and AR.js, it's simple for everybody to create AR content on the web. 
 
@@ -19,7 +18,6 @@ Sounds good? Let's see how to use it.
 
 # Show Dont Tell 
 [![screen shot 2017-07-05 at 14 40 01](https://user-images.githubusercontent.com/6317076/27867019-5c4699d4-6190-11e7-831b-e8251711acdf.png)](https://www.youtube.com/watch?v=v_Uj0C8sMi4&feature=youtu.be&utm_content=buffer22f18&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer)
-(OR EMBED VIDEO IN THE POST)
 
 Today you can make
 [augmented reality in 10 Lines of HTML](https://medium.com/arjs/augmented-reality-in-10-lines-of-html-4e193ea9fdbf), isn't the web amazing ?
@@ -34,7 +32,7 @@ of the camera and we will add the augmented reality on it.
 <!-- include ar.js for a-frame -->
 <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
 <body style='margin : 0px; overflow: hidden;'>
-	<a-scene embedded arjs='sourceType: webcam;'>
+	<a-scene embedded arjs>
 		<!-- create your content here. just a box for now -->
 		<a-box position='0 0.5 0' material='opacity: 0.5;'></a-box>
 		<!-- define a camera which will move according to the marker position -->
@@ -50,33 +48,30 @@ So if you want to add new objects in the augmented reality, just add it
 near the ```<a-box>```.
 
 
-# How to add AR.js in your A-Frame Project
+# Add Augmented Reality in your A-Frame Project
 ![screen shot 2017-07-05 at 14 22 23](https://user-images.githubusercontent.com/6317076/27867071-8833eaf6-6190-11e7-9fb9-9deac93b88bd.png)
 
-This is 2 steps only
+To include AR.js, you need to include [aframe-ar.js](https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js).
+Then you initialize ar.js in ```<a-scene>```.
 
-1. Tell a-aframe to start ar.js
-2. setup the camera to move according to the markers
+```html
+<a-scene embedded arjs>
+```
 
-So first you include aframe-ar.js, then declare a-scene to 
-add the parameters for arjs.
+Then you tell aframe that you want arjs to controls the camera. For that, you just add
 
-TODO to complete
+```html
+<a-marker-camera preset='hiro'></a-marker-camera>
+```
 
-- ```embedded```
-
-
-- explain the difference with the normal aframe boilerplate
-
-- Please ignore the body style and a-scene embedded attribute. 
-those are glitch which are meant to disapear shortly. 
+Don't forget to add the body style and a-scene embedded attribute. and you are **ALL DONE** 😄
 
 # Personalize your AR Content
-![screen shot 2017-07-05 at 14 45 35](https://user-images.githubusercontent.com/6317076/27867143-bf05926e-6190-11e7-855f-a90ab71976fc.png)
-
 Now we have a basic cube in AR...
 it would be good to personalise AR a bit. Let's see how to add a text, an image or even your 
 own model in augmented reality.
+
+![screen shot 2017-07-05 at 14 45 35](https://user-images.githubusercontent.com/6317076/27867143-bf05926e-6190-11e7-855f-a90ab71976fc.png)
 
 One of the most asked questions has been "how to load my own model in AR?".
 As said before, ar.js controls the displacement of the camera, all the rest
@@ -118,6 +113,9 @@ First you upload your own image and generate a pattern file ```pattern-marker.pa
 Second, you download the trained marker. And third, potentially print your marker.
 We provide a PDF file to make it easier for you.
 
+TODO to include this link
+http://www.artoolworks.com/support/library/Creating_and_training_new_ARToolKit_markers
+
 What to do with the generated pattern file?
 This file contains the encoded marker that you should reuse in your code.
 You specify you want a pattern marker and you provide the url to your own marker. 
@@ -130,61 +128,62 @@ So in our case ```<a-marker-camera>``` should be replaced by the following.
 Simple enough.
 
 
-# Explain the 2 type of markers
+# Different Type of Markers : Pattern and Barcode
+Up to now, we use the 'pattern' marker. But ar.js support another kind of marker, called barcode.
+Each of those markers contains a kindof binary code which encode a number.
+For example below, you can one representing 5.
 
-Pattern Marker 
-![screen shot 2017-07-05 at 14 50 43](https://user-images.githubusercontent.com/6317076/27867388-64baee98-6191-11e7-9fbe-586fd79eba9d.png)
+![5](https://user-images.githubusercontent.com/252962/27870433-c18f6e10-619a-11e7-8479-4cb662798740.png)
 
-Barcode Marker
-![screen shot 2017-07-05 at 14 50 56](https://user-images.githubusercontent.com/6317076/27867389-64d880d4-6191-11e7-88cb-e7417dee258d.png)
+Barcode markers may be very useful for various type of applications, especialy when you have many locations with various markers.
+For examples, 
+[Marcel Freinbichler](https://twitter.com/fr3ino) and [Lisi Linhart](https://twitter.com/lisi_linhart)
+wanted to do a augmented reality application for their school: *"When you go to a room, you point your phone and it shows you in augmented reality the availability of this room."*
+     
+So they choosed to use barcode markers: one barcode per room. Thus when the AR application see the marker, it convert that to a number which match the room. So you do a xmlhttprequest to get the current schedule of the room and display it on top of the marker. 
 
-TODO to complete
+I love this idea! It is useful for other people in the school. It has nice panash with AR. But most of all, it provides relevant informations directly where it needed. This is a key principle for AR applications.
 
-- barcode and pattern
-- like to the pattern generator
-- explain the preset
+# Add Barcode Marker in Your Project
+To add them in your project is rather straight forward.
+First you need to tell ar.js to start detecting them and their type of 
+binary code. So you modify a-scene as below.
 
-**About Presets:**
-In order to make the common case easier, it offers some presets configuration for markers.
-e.g. ```preset: 'hiro'``` to have the classical pattern hiro marker, or ```preset: 'kanji'```
-for kanji.
+```html
+<a-scene arjs='detectionMode: mono_and_matrix; matrixCodeType: 3x3;'></a-scene>
+```
 
+Now that ar.js knows you want to use barcode markers, on each of your marker
+you need to specify which number you will use, e.g. for barcode 5.
+Here is [barcode marker generator](http://www.artoolworks.com/support/applications/marker/) to generate your own.
 
-Have you notice the ```type``` attribute ? this is for the type of markers. There is currently 
-2 kind of markers
-- barcode
-- pattern
-- it matches a given image
-
-
+TODO to include this link
 http://www.artoolworks.com/support/library/Using_2D-barcode_markers
 
-http://www.artoolworks.com/support/library/Creating_and_training_new_ARToolKit_markers
-
-http://www.artoolworks.com/support/applications/marker/
-
-To use a barcode marker, set the type='barcode' and value to
-
 ```html
-<a-marker-camera type='barcode' value='42'></a-marker-camera>
+<a-marker type='barcode' value='5'></a-marker>
 ```
 
-detectionMode: mono_and_matrix; matrixCodeType: 3x3;'
-
-You have to tell AR.js that you are using barcode markers
-
-detectionMode: mono_and_matrix
-
-type of barcode you are using - (TODO what is the list of barcode you can use)
-matrixCodeType: 3x3
+# Markers Presets for Easier Configuration
+To make it easier and to avoid repeating ourselves, 
+it is possible to have preset to configure your markers. 
+Currently there are 2 presets "hiro" and "kanji"
 
 ```html
-<a-scene embedded 
-arjs='sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3;'>
+<!-- here is a hiro preset -->
+<a-marker preset='hiro'></a-marker>
+<!-- it is the same as the marker below -->
+<a-marker type='pattern' url='http://examples.org/hiro.patt'></a-marker>
+
+<!-- here is a kanji preset -->
+<a-marker preset='kanji'></a-marker>
+<!-- it is the same as the marker below -->
+<a-marker type='pattern' url='http://examples.org/kanji.patt'></a-marker>
 ```
 
+![screen shot 2017-07-05 at 14 50 43](https://user-images.githubusercontent.com/6317076/27867388-64baee98-6191-11e7-9fbe-586fd79eba9d.png)
 
-# Move the camera or the marker ?
+# Move the Camera or the Marker ?
 
 When handling augmented reality, you need to decide if you want the 
 3d world origin to be the camera or the marker. Most people will use
@@ -218,8 +217,6 @@ You will need to use ```<a-marker>```, and a simple camera instead.
 <a-entity camera></a-entity>
 ```
 
-![screen shot 2017-07-05 at 14 53 43](https://user-images.githubusercontent.com/6317076/27867514-c85fefb6-6191-11e7-99c4-2091ab0a6fd1.png)
-
 TODO transition ?
 
 # How to handle multiple distinct markers
@@ -230,6 +227,9 @@ TODO to complete
 - what's the use
 
 - e.g. you can see it in this [multiple independent markers example](https://jeromeetienne.github.io/AR.js/aframe/examples/multiple-independent-markers.html)
+
+
+![screen shot 2017-07-05 at 14 53 43](https://user-images.githubusercontent.com/6317076/27867514-c85fefb6-6191-11e7-99c4-2091ab0a6fd1.png)
 
 ```html
 <script src="https://aframe.io/releases/0.6.0/aframe.min.js"></script>
