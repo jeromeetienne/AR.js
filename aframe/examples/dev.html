@@ -4,12 +4,18 @@
 <!-- jsartookit -->
 <script src="../../three.js/vendor/jsartoolkit5/build/artoolkit.min.js"></script>
 <script src="../../three.js/vendor/jsartoolkit5/js/artoolkit.api.js"></script>
-<!-- include threex.artoolkit -->
+<!-- include ar.js -->
 <script src="../../three.js/threex-artoolkitcontext.js"></script>
 <script src="../../three.js/threex-artoolkitsource.js"></script>
+<script src='../../three.js/threex-artoolkitprofile.js'></script>
 <script src="../../three.js/threex-arbasecontrols.js"></script>
 <script src="../../three.js/threex-armarkercontrols.js"></script>
+<script src="../../three.js/threex-armarkerhelper.js"></script>
 <script src="../../three.js/threex-arsmoothedcontrols.js"></script>
+
+<script src='../../three.js/examples/multi-markers/threex-armultimarkerutils.js'></script>
+<script src='../../three.js/examples/multi-markers/threex-armultimarkercontrols.js'></script>
+<script src='../../three.js/examples/multi-markers/threex-armultimarkerlearning.js'></script>
 <!-- aframe-artoolkit -->
 <script src="../aframe-ar.js"></script>
 
@@ -24,7 +30,7 @@
 </div>
 	<!-- <a-scene embedded artoolkit='sourceType: video; sourceUrl:../../data/videos/headtracking.mp4;'> -->
 	<!-- <a-scene embedded artoolkit='sourceType: image; sourceUrl:../../data/images/armchair.jpg;'> -->
-	<a-scene embedded artoolkit='sourceType: webcam;'>
+	<a-scene embedded arjs='sourceType: webcam;'>
 	<!-- <a-scene artoolkit='sourceType: image; sourceUrl:../../data/images/screenshot.png'> -->
 	<!-- <a-scene artoolkit='sourceType: image; sourceUrl:../../data/images/img.jpg'> -->
 	<!-- <a-scene artoolkit='sourceType: webcam'> -->

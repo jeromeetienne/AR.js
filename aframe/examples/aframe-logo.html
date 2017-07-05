@@ -1,15 +1,8 @@
 <!DOCTYPE html>
+<!-- include aframe -->
 <script src="vendor/aframe.min.js"></script>
-<!-- jsartookit -->
-<script src="../../three.js/vendor/jsartoolkit5/build/artoolkit.min.js"></script>
-<script src="../../three.js/vendor/jsartoolkit5/js/artoolkit.api.js"></script>
-<!-- include threex.artoolkit -->
-<script src="../../three.js/threex-artoolkitcontext.js"></script>
-<script src="../../three.js/threex-artoolkitsource.js"></script>
-<script src="../../three.js/threex-arbasecontrols.js"></script>
-<script src="../../three.js/threex-armarkercontrols.js"></script>
-<!-- aframe-artoolkit -->
-<script src="../aframe-ar.js"></script>
+<!-- include ar.js -->
+<script src="../build/aframe-ar.js"></script>
 
 <!-- to load .ply model -->
 <script src="https://rawgit.com/donmccurdy/aframe-extras/v2.1.1/dist/aframe-extras.loaders.min.js"></script>
@@ -20,7 +13,7 @@
 	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div>
 	<!-- <a-scene embedded artoolkit='sourceType: video; sourceUrl:../../data/videos/headtracking.mp4;'> -->
-	<a-scene embedded artoolkit='sourceType: webcam'>
+	<a-scene embedded arjs='sourceType: webcam'>
 	
         <!-- <a-scene embedded artoolkit='sourceType: webcam; sourceWidth: 240; sourceHeight: 180;'> -->		
 	<!-- <a-scene artoolkit='sourceType: image; sourceUrl:../../data/images/screenshot.png'> -->

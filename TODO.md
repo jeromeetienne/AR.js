@@ -1,16 +1,16 @@
 # aframe-ar.js new
+- there is a resize every 1/60 seconds ??
+- test on mobile
 - aframe-ar.js new version
   - support smoother 
   - support multi marker - so augmented-website
   - fixed resize
-- resize doesnt support portraiting a landscape
-- there is a resize every 1/60 seconds ??
-- test on mobile
+- resize doesnt support portraiting a landscape ? still true?
 - how to handle the parameters
   - i need to have the profile
   - still it should be possible to change paramteres to offer flexibility
 - support multi trackingBackend
-
+  - do a aruco example
 
 
 ---

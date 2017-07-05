@@ -48,6 +48,9 @@
 - [parameters-tunning](https://jeromeetienne.github.io/AR.js/three.js/examples/parameters-tunning.html) :
   three.js example for parameters-tunning
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/parameters-tunning.html))
+- [backend switcher](https://jeromeetienne.github.io/AR.js/three.js/examples/arbackend-switch.html) :
+  Show to easily switch between arBackend 'aruco' or 'jsartoolkit'
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arbackend-switch.html))
 - [multi-markers](https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/examples/player.html) :
   multi markers examples - it shows how to dynamically learn a multi markers and then how to use it.
   learner.html is a example of dynamic learning of a multi markers configuration. It has been designed
@@ -55,9 +58,6 @@
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multi-markers/examples/player.html))
 - [markers-page](https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/markers-page/) :
   display multiple markers on a website
-- [backend switcher](https://jeromeetienne.github.io/AR.js/three.js/examples/arbackend-switch.html) :
-  Show to easily switch between arBackend 'aruco' or 'jsartoolkit'
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arbackend-switch.html))
 - [Screen as portal](https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/examples/screenAsPortal/index.html) :
   screen as portal
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multi-markers/examples/screenAsPortal/index.html))
@@ -69,9 +69,6 @@
 - [basic](https://jeromeetienne.github.io/AR.js/aframe/examples/basic.html) :
   a-frame example for basic
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/basic.html))
-- [demo](https://jeromeetienne.github.io/AR.js/aframe/examples/demo.html) :
-  a-frame example for demo
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/demo.html))
 - [aframe-logo](https://jeromeetienne.github.io/AR.js/aframe/examples/aframe-logo.html) :
   a-frame example for aframe-logo
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/aframe-logo.html))
