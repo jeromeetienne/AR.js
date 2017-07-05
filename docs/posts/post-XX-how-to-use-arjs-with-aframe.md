@@ -1,7 +1,6 @@
 # post for a-frame blog
-how to make augmented reality with AR.js
-
-Dont worry, you can do it with only 8 line of html.
+## How To Easily Create Your Own Augmented Reality with AR.js
+### Don't Worry It's Less Than 10 Lines of HTML 
 
 ---
 
