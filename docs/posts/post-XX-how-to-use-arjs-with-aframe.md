@@ -4,14 +4,14 @@
 
 AR.js is an efficient Augmented Reality solution on the Web. 
 It runs 100% in your web browser, this means no app to install! 
-There is no need for a specific device either e.g. tango or iphone. 
+There is no need for a specific device either e.g. Tango or iphone. 
 It runs on all mobile platforms: Android, iOS11 and Windows mobile.
 You can use it with your own phone. 
 Depending on your device, it can run very fast, up to 60fps on 2year-old phones!
 On top of that, the code is open source and all available on [github](https://github.com/jeromeetienne/ar.js).
 
 [![screen shot 2017-04-01 at 14 36 00](https://user-images.githubusercontent.com/6317076/27866704-452eaed6-618f-11e7-9cdd-2deaef865e3e.png)](https://www.youtube.com/watch?v=0MtvjFg7tik)
-A-frame is very easy to use so I wanted to make sure that AR.js was working well with a-frame.
+A-frame is very easy to use so I wanted to make sure that AR.js was working well with it.
 Thus, combining a-frame and AR.js, it's simple for everybody to create AR content on the web. 
 
 Sounds good? Let's see how to use it.  
@@ -58,23 +58,23 @@ Then you initialize ar.js in ```<a-scene>```.
 <a-scene embedded arjs>
 ```
 
-Then you tell aframe that you want arjs to controls the camera. For that, you just add
+Then you tell aframe that you want arjs to control the camera. For that, you just add
 
 ```html
 <a-marker-camera preset='hiro'></a-marker-camera>
 ```
 
-Don't forget to add the body style and a-scene embedded attribute. and you are **ALL DONE** 😄
+Don't forget to add the body style and a-scene embedded attribute. And you are **ALL DONE** 😄
 
 # Personalize your AR Content
 Now we have a basic cube in AR...
-it would be good to personalise AR a bit. Let's see how to add a text, an image or even your 
+It would be good to personalise the AR a bit. Let's see how to add a text, an image or even your 
 own model in augmented reality.
 
 ![screen shot 2017-07-05 at 14 45 35](https://user-images.githubusercontent.com/6317076/27867143-bf05926e-6190-11e7-855f-a90ab71976fc.png)
 
 One of the most asked questions has been "how to load my own model in AR?".
-As said before, ar.js controls the displacement of the camera, all the rest
+As I said before, ar.js controls the displacement of the camera, all the rest
 is classic a-frame. So you can load a model exactly as you would in 
 a-frame. 
 Here is an example of loading a [gltf](https://www.khronos.org/gltf) model, just add that in your a-scene.
@@ -109,12 +109,9 @@ We understand that many people want to personalize the marker. It is possible to
 We have provided an easy way to this. It is called the [marker generator](https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html).
 We even wrote a whole step by step [post](https://medium.com/arjs/how-to-create-your-own-marker-44becbec1105) to help you get started. 
 
-First you upload your own image and generate a pattern file ```pattern-marker.patt```.
+First, you upload your own image and generate a pattern file ```pattern-marker.patt```.
 Second, you download the trained marker. And third, potentially print your marker.
 We provide a PDF file to make it easier for you.
-
-TODO to include this link
-http://www.artoolworks.com/support/library/Creating_and_training_new_ARToolKit_markers
 
 What to do with the generated pattern file?
 This file contains the encoded marker that you should reuse in your code.
@@ -129,24 +126,24 @@ Simple enough.
 
 
 # Different Type of Markers : Pattern and Barcode
-Up to now, we use the 'pattern' marker. But ar.js support another kind of marker, called barcode.
-Each of those markers contains a kindof binary code which encode a number.
-For example below, you can one representing 5.
+Up to now, we use the 'pattern' marker. But AR.js supports another kind of marker, called barcode.
+Each of those markers contains a kind of binary code which encodes a number.
+For example below, you see one representing 5.
 
 ![5](https://user-images.githubusercontent.com/252962/27870433-c18f6e10-619a-11e7-8479-4cb662798740.png)
 
-Barcode markers may be very useful for various type of applications, especialy when you have many locations with various markers.
-For examples, 
+Barcode markers may be very useful for various type of applications, especially when you have many locations with various markers.
+For example, 
 [Marcel Freinbichler](https://twitter.com/fr3ino) and [Lisi Linhart](https://twitter.com/lisi_linhart)
 wanted to do a augmented reality application for their school: *"When you go to a room, you point your phone and it shows you in augmented reality the availability of this room."*
      
-So they choosed to use barcode markers: one barcode per room. Thus when the AR application see the marker, it convert that to a number which match the room. So you do a xmlhttprequest to get the current schedule of the room and display it on top of the marker. 
+So they chosed to use barcode markers: one barcode per room. Thus when the AR application sees the marker, it converts that to into a number which matches the room. So you do a xmlhttprequest to get the current schedule of the room and display it on top of the marker. 
 
-I love this idea! It is useful for other people in the school. It has nice panash with AR. But most of all, it provides relevant informations directly where it needed. This is a key principle for AR applications.
+I love this idea! It is useful for other people in the school. It has nice panash with AR. But most of all, it provides relevant informations directly where and when needed. This is a key principle for AR applications.
 
 # Add Barcode Marker in Your Project
 To add them in your project is rather straight forward.
-First you need to tell ar.js to start detecting them and their type of 
+First you need to tell AR.js to start detecting them and their type of 
 binary code. So you modify a-scene as below.
 
 ```html
@@ -161,7 +158,7 @@ you need to specify which number you will use, e.g. for barcode 5.
 ```
 
 Here is [barcode marker generator](http://www.artoolworks.com/support/applications/marker/) to generate your own. Up to you to use the [type of matrix code](http://www.artoolworks.com/support/library/Using_2D-barcode_markers) matches you need.
-Sometime such configurations may be painful so to simplify common cases, we used preset.
+Sometimes such configurations may be painful so to simplify common cases, we used preset.
 
 # Markers Presets for Easier Configuration
 To make it easier and to avoid repeating ourselves, 
@@ -218,7 +215,7 @@ You will need to use ```<a-marker>```, and a simple camera instead.
 
 # How to handle multiple distinct markers
 Now that we have seen various possibilities of [AR.js](https://github.com/jeromeetienne/ar.js),
-let's end with an last examples with multiple distinct markers. Those can be useful in various applications
+let's end with a last example of multiple distinct markers. Those can be useful in various applications
 e.g. a 'measure it' like below.
 So we will have 3 markers, one with a preset, one with a custom pattern marker, and a barcode.
 
