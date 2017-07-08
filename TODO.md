@@ -8,10 +8,9 @@
 - resize doesnt support portraiting a landscape ? still true?
 - how to handle the parameters
   - i need to have the profile
-  - still it should be possible to change paramteres to offer flexibility
+  - still it should be possible to change parameteres to offer flexibility
 - support multi trackingBackend
   - do a aruco example
-
 
 ---
 - port webvr-arbackend

@@ -50,6 +50,17 @@ Also working from localhost, you can avoid having to use HTTPS since [localhost 
 
 Thanks to [@mritzco](https://gist.github.com/mritzco) for [configuration directions](https://gist.github.com/mritzco/18dfe13096294592d5eb53e7e1a5f63c).
 
+# Which plateform is Supported ?
+it works on any browser with WebRTC and WebGL.
+It run on platforms: android, IOS and window mobile.
+
+As experimentation, it has been on 
+[htc vive](https://twitter.com/jerome_etienne/status/883396955400880129) by [@robenghuse](https://twitter.com/robenghuse) 
+and [hololens](https://twitter.com/jerome_etienne/status/856503929814831108) by [@evhan55](https://twitter.com/evhan55).
+What is interested is that i didn't change a line to run on those devices. AR.js ran out of the box directly
+on htv vive and Hololens, i think it is a clear proof of the web being true cross-platform.
+
+
 # How To Release ?
 
 This one is mainly for [me](@jerome_etienne) to remember :)
