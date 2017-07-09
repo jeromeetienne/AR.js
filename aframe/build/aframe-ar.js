@@ -1239,6 +1239,9 @@ THREEx.ArToolkitProfile.prototype.performance = function(label) {
 	}else if( label === 'phone-normal' ){
 		this.contextParameters.sourceWidth = 80*4
 		this.contextParameters.sourceHeight = 60*4
+alert('dd')
+		this.contextParameters.sourceWidth = 80
+		this.contextParameters.sourceHeight = 60
 
 		this.contextParameters.maxDetectionRate = 30
 	}else if( label === 'phone-slow' ){
@@ -2768,7 +2771,7 @@ console.log('this.data.markerhelpers', this.data.markerhelpers)
 					// add an helper to visuable each sub-marker
 					var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
 					scene.add( markerHelper.object3d )	
-				})				
+				})	
 			}
 		}else if( this.data.type === 'pattern' || this.data.type === 'barcode' || this.data.type === 'unknown' ){
 			this._arMarkerControls = new THREEx.ArMarkerControls(artoolkitContext, this._markerRoot, this.data)

@@ -1,3 +1,15 @@
+- have seen stuff about projection matrix in jsartoolkit
+  - would need to recompiled
+  - would fix the near/far
+  - maybe i can understand the camera calibration number
+  - a pure-js to read camera calibration file would be good
+  - ```ARdouble farPlane = 1000.0;``` in emscripten/ARToolKitJS.cpp
+  - what if i set farPlane in js before everything
+    - check if the value in the projection matrix change
+  - this update the project matrix
+  - ```arglCameraFrustum(&((arc->paramLT)->param), arc->nearPlane, arc->farPlane, arc->cameraLens);```
+  - this should be called in setNearPlane
+
 # aframe-ar.js new
 - there is a resize every 1/60 seconds ??
 - test on mobile
@@ -14,6 +26,9 @@
 
 ---
 - port webvr-arbackend
+  - one example to read webvr data and display them in html
+  - then a full example of 3d webvr tracking
+  - in desktop and in tango 
 
 - rename THREEx.ArToolkitContext.getProjectionMatrix into .getArtoolkitProjectMatrix
 - make multi-marker without page reload

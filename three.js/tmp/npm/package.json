@@ -1,0 +1,19 @@
+{
+  "name": "ar.js",
+  "version": "1.0.0",
+  "description": "Augmented Reality for the Web",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeromeetienne/ar.js.git"
+  },
+  "keywords": [
+    "augmented reality",
+  ],
+  "author": "jerome etienne",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jeromeetienne/ar.js/issues"
+  },
+  "homepage": "https://github.com/jeromeetienne/ar.js"
+}
