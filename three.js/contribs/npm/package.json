@@ -2,7 +2,7 @@
   "name": "ar.js",
   "version": "1.0.1",
   "description": "Augmented Reality for the Web",
-  "main": "index.js",
+  "main": "build/ar.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jeromeetienne/ar.js.git"
@@ -13,5 +13,8 @@
   "bugs": {
     "url": "https://github.com/jeromeetienne/ar.js/issues"
   },
-  "homepage": "https://github.com/jeromeetienne/ar.js"
+  "homepage": "https://github.com/jeromeetienne/ar.js",
+  "dependencies": {
+    "three": "0.86.0"
+  }
 }
