@@ -5,4 +5,7 @@ build:
 	cd ../../ && make build
 	cat scripts/prefix.js ../../build/ar.js scripts/suffix.js > build/ar.js
 
+publish:
+	npm publish
+
 .PHONY: build

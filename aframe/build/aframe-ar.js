@@ -1239,9 +1239,6 @@ THREEx.ArToolkitProfile.prototype.performance = function(label) {
 	}else if( label === 'phone-normal' ){
 		this.contextParameters.sourceWidth = 80*4
 		this.contextParameters.sourceHeight = 60*4
-alert('dd')
-		this.contextParameters.sourceWidth = 80
-		this.contextParameters.sourceHeight = 60
 
 		this.contextParameters.maxDetectionRate = 30
 	}else if( label === 'phone-slow' ){
