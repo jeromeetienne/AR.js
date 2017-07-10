@@ -1,3 +1,5 @@
+var THREE = require('three');
+
 (function(root, factory) {
 	if (typeof define === 'function' && define.amd) {
 		// AMD. Register as an anonymous module.
@@ -41,8 +43,8 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 		The ARController is the main object for doing AR marker detection with JSARToolKit.
 
 		To use an ARController, you need to tell it the dimensions to use for the AR processing canvas and
-		pass it an ARCameraParam to define the camera parameters to use when processing images. 
-		The ARCameraParam defines the lens distortion and aspect ratio of the camera used. 
+		pass it an ARCameraParam to define the camera parameters to use when processing images.
+		The ARCameraParam defines the lens distortion and aspect ratio of the camera used.
 		See https://www.artoolworks.com/support/library/Calibrating_your_camera for more information about AR camera parameteters and how to make and use them.
 
 		If you pass an image as the first argument, the ARController uses that as the image to process,
@@ -58,7 +60,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 
 		@param {number} width The width of the images to process.
 		@param {number} height The height of the images to process.
-		@param {ARCameraParam | string} camera The ARCameraParam to use for image processing. If this is a string, the ARController treats it as an URL and tries to load it as a ARCameraParam definition file, calling ARController#onload on success. 
+		@param {ARCameraParam | string} camera The ARCameraParam to use for image processing. If this is a string, the ARController treats it as an URL and tries to load it as a ARCameraParam definition file, calling ARController#onload on success.
 	*/
 	var ARController = function(width, height, camera) {
 		var id;
@@ -127,7 +129,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 		markers were found in the image. Next, a getMarker event is dispatched for each found marker square.
 		Finally, getMultiMarker is dispatched for every found multimarker, followed by getMultiMarkerSub events
 		dispatched for each of the markers in the multimarker.
-			
+
 			arController.addEventListener('markerNum', function(ev) {
 				console.log("Detected " + ev.data + " markers.")
 			});
@@ -142,15 +144,15 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 			arController.addEventListener('getMultiMarkerSub', function(ev) {
 				console.log("Submarker for " + ev.data.multiMarkerId, ev.data.markerIndex, ev.data.marker);
 			});
-			
-			arController.process(image);	
+
+			arController.process(image);
 
 
 		If no image is given, defaults to this.image.
 
 		If the debugSetup has been called, draws debug markers on the debug canvas.
 
-		@param {ImageElement | VideoElement} image The image to process [optional]. 
+		@param {ImageElement | VideoElement} image The image to process [optional].
 	*/
 	ARController.prototype.process = function(image) {
 		this.detectMarker(image);
@@ -260,7 +262,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 		Adds the given pattern marker ID to the index of tracked IDs.
 		Sets the markerWidth for the pattern marker to markerWidth.
 
-		Used by process() to implement continuous tracking, 
+		Used by process() to implement continuous tracking,
 		keeping track of the marker's transformation matrix
 		and customizable marker widths.
 
@@ -288,7 +290,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 		Adds the given barcode marker ID to the index of tracked IDs.
 		Sets the markerWidth for the pattern marker to markerWidth.
 
-		Used by process() to implement continuous tracking, 
+		Used by process() to implement continuous tracking,
 		keeping track of the marker's transformation matrix
 		and customizable marker widths.
 
@@ -335,7 +337,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 		Add an event listener on this ARController for the named event, calling the callback function
 		whenever that event is dispatched.
 
-		Possible events are: 
+		Possible events are:
 		  * getMarker - dispatched whenever process() finds a square marker
 		  * getMultiMarker - dispatched whenever process() finds a visible registered multimarker
 		  * getMultiMarkerSub - dispatched by process() for each marker in a visible multimarker
@@ -416,10 +418,10 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 	ARController.prototype.loadMultiMarker = function(markerURL, onSuccess, onError) {
 		return artoolkit.addMultiMarker(this.id, markerURL, onSuccess, onError);
 	};
-	
+
 	/**
-	 * Populates the provided float array with the current transformation for the specified marker. After 
-	 * a call to detectMarker, all marker information will be current. Marker transformations can then be 
+	 * Populates the provided float array with the current transformation for the specified marker. After
+	 * a call to detectMarker, all marker information will be current. Marker transformations can then be
 	 * checked.
 	 * @param {number} markerUID	The unique identifier (UID) of the marker to query
 	 * @param {number} markerWidth	The width of the marker
@@ -433,9 +435,9 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 	};
 
 	/**
-	 * Populates the provided float array with the current transformation for the specified marker, using 
-	 * previousMarkerTransform as the previously detected transformation. After 
-	 * a call to detectMarker, all marker information will be current. Marker transformations can then be 
+	 * Populates the provided float array with the current transformation for the specified marker, using
+	 * previousMarkerTransform as the previously detected transformation. After
+	 * a call to detectMarker, all marker information will be current. Marker transformations can then be
 	 * checked.
 	 * @param {number} markerUID	The unique identifier (UID) of the marker to query
 	 * @param {number} markerWidth	The width of the marker
@@ -451,8 +453,8 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 	};
 
 	/**
-	 * Populates the provided float array with the current transformation for the specified multimarker. After 
-	 * a call to detectMarker, all marker information will be current. Marker transformations can then be 
+	 * Populates the provided float array with the current transformation for the specified multimarker. After
+	 * a call to detectMarker, all marker information will be current. Marker transformations can then be
 	 * checked.
 	 *
 	 * @param {number} markerUID	The unique identifier (UID) of the marker to query
@@ -467,8 +469,8 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 	};
 
 	/**
-	 * Populates the provided float array with the current robust transformation for the specified multimarker. After 
-	 * a call to detectMarker, all marker information will be current. Marker transformations can then be 
+	 * Populates the provided float array with the current robust transformation for the specified multimarker. After
+	 * a call to detectMarker, all marker information will be current. Marker transformations can then be
 	 * checked.
 	 * @param {number} markerUID	The unique identifier (UID) of the marker to query
 	 * @param {number} markerWidth	The width of the marker
@@ -490,7 +492,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 		@param {Float64Array} transMat The 3x4 marker transformation matrix.
 		@param {Float64Array} glMat The 4x4 GL transformation matrix.
 		@param {number} scale The scale for the transform.
-	*/ 
+	*/
 	ARController.prototype.transMatToGLMat = function(transMat, glMat, scale) {
 		glMat[0 + 0*4] = transMat[0]; // R1C1
 		glMat[0 + 1*4] = transMat[1]; // R1C2
@@ -520,7 +522,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 		This is the core ARToolKit marker detection function. It calls through to a set of
 		internal functions to perform the key marker detection steps of binarization and
 		labelling, contour extraction, and template matching and/or matrix code extraction.
-        
+
         Typically, the resulting set of detected markers is retrieved by calling arGetMarkerNum
         to get the number of markers detected and arGetMarker to get an array of ARMarkerInfo
         structures with information on each detected marker, followed by a step in which
@@ -540,7 +542,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 
 	/**
 		Get the number of markers detected in a video frame.
-  
+
 	    @return {number}     The number of detected markers in the most recent image passed to arDetectMarker.
     	    Note that this is actually a count, not an index. A better name for this function would be
         	arGetDetectedMarkerCount, but the current name lives on for historical reasons.
@@ -643,7 +645,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 
 
 	/**
-		Returns the 16-element WebGL transformation matrix used by ARController.process to 
+		Returns the 16-element WebGL transformation matrix used by ARController.process to
 		pass marker WebGL matrices to event listeners.
 
 		Unique to each ARController.
@@ -708,7 +710,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 	/**
 		Sets the logging level to use by ARToolKit.
 
-		@param 
+		@param
 	*/
 	ARController.prototype.setLogLevel = function(mode) {
 		return artoolkit.setLogLevel(mode);
@@ -767,14 +769,14 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 
         This function forces sets the threshold value.
         The default value is AR_DEFAULT_LABELING_THRESH which is 100.
-        
+
         The current threshold mode is not affected by this call.
         Typically, this function is used when labeling threshold mode
         is AR_LABELING_THRESH_MODE_MANUAL.
- 
+
         The threshold value is not relevant if threshold mode is
         AR_LABELING_THRESH_MODE_AUTO_ADAPTIVE.
- 
+
         Background: The labeling threshold is the value which
 		the AR library uses to differentiate between black and white
 		portions of an ARToolKit marker. Since the actual brightness,
@@ -878,7 +880,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 
 	/**
 		Select between detection of black markers and white markers.
-	
+
 		ARToolKit's labelling algorithm can work with both black-bordered
 		markers on a white background (AR_LABELING_BLACK_REGION) or
 		white-bordered markers on a black background (AR_LABELING_WHITE_REGION).
@@ -898,7 +900,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 
 	/**
 		Enquire whether detection is looking for black markers or white markers.
-	    
+
 	    See discussion for setLabelingMode.
 
 	    @result {number} The current labeling mode.
@@ -1194,7 +1196,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 				navigator.mediaDevices.getUserMedia({
 					audio: false,
 					video: mediaDevicesConstraints
-				}).then(success, onError); 
+				}).then(success, onError);
 			} else {
 				MediaStreamTrack.getSources(function(sources) {
 					var facingDir = mediaDevicesConstraints.facingMode;
@@ -1230,7 +1232,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 	};
 
 	/**
-		ARController.getUserMediaARController gets an ARController for the device camera video feed and calls the 
+		ARController.getUserMediaARController gets an ARController for the device camera video feed and calls the
 		given onSuccess callback with it.
 
 		To use ARController.getUserMediaARController, call it with an object with the cameraParam attribute set to
@@ -1312,7 +1314,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 	};
 
 
-	/** 
+	/**
 		ARCameraParam is used for loading AR camera parameters for use with ARController.
 		Use by passing in an URL and a callback function.
 
@@ -1325,7 +1327,7 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 
 		@exports ARCameraParam
 		@constructor
-	 
+
 		@param {string} src URL to load camera parameters from.
 		@param {string} onload Onload callback to be called on successful parameter loading.
 		@param {string} onerror Error callback to called when things don't work out.
@@ -1341,10 +1343,10 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 		}
 	};
 
-	/** 
+	/**
 		Loads the given URL as camera parameters definition file into this ARCameraParam.
 
-		Can only be called on an unloaded ARCameraParam instance. 
+		Can only be called on an unloaded ARCameraParam instance.
 
 		@param {string} src URL to load.
 	*/
@@ -1674,7 +1676,7 @@ var THREEx = THREEx || {}
 /**
  * - maybe support .onClickFcts in each object3d
  * - seems an easy light layer for clickable object
- * - up to 
+ * - up to
  */
 
 THREEx.ARClickability = function(sourceElement){
@@ -1682,13 +1684,13 @@ THREEx.ARClickability = function(sourceElement){
 	// Create cameraPicking
 	var fullWidth = parseInt(sourceElement.style.width)
 	var fullHeight = parseInt(sourceElement.style.height)
-	this._cameraPicking = new THREE.PerspectiveCamera(42, fullWidth / fullHeight, 0.1, 100);	
+	this._cameraPicking = new THREE.PerspectiveCamera(42, fullWidth / fullHeight, 0.1, 100);
 }
 
 THREEx.ARClickability.prototype.onResize = function(){
 	var sourceElement = this._sourceElement
 	var cameraPicking = this._cameraPicking
-	
+
 	var fullWidth = parseInt(sourceElement.style.width)
 	var fullHeight = parseInt(sourceElement.style.height)
 	cameraPicking.aspect = fullWidth / fullHeight;
@@ -1708,7 +1710,7 @@ THREEx.ARClickability.prototype.computeIntersects = function(domEvent, objects){
 	var raycaster = new THREE.Raycaster();
 	raycaster.setFromCamera( eventCoords, cameraPicking );
 	var intersects = raycaster.intersectObjects( objects )
-	
+
 	return intersects
 }
 
@@ -1778,7 +1780,7 @@ THREEx.ArMarkerCloak = function(videoTexture){
 		originalsFaceVertexUvs[0][i*4+0][0].set( xMin/2+0.5, yMax/2+0.5 )
 		originalsFaceVertexUvs[0][i*4+0][1].set( xMin/2+0.5, yMin/2+0.5 )
 		originalsFaceVertexUvs[0][i*4+0][2].set( xMax/2+0.5, yMax/2+0.5 )
-		
+
 		originalsFaceVertexUvs[0][i*4+1][0].set( xMin/2+0.5, yMin/2+0.5 )
 		originalsFaceVertexUvs[0][i*4+1][1].set( xMax/2+0.5, yMin/2+0.5 )
 		originalsFaceVertexUvs[0][i*4+1][2].set( xMax/2+0.5, yMax/2+0.5 )
@@ -1787,7 +1789,7 @@ THREEx.ArMarkerCloak = function(videoTexture){
 		originalsFaceVertexUvs[0][i*4+2][0].set( xMin/2+0.5, yMin/2+0.5 )
 		originalsFaceVertexUvs[0][i*4+2][1].set( xMin/2+0.5, yMax/2+0.5 )
 		originalsFaceVertexUvs[0][i*4+2][2].set( xMax/2+0.5, yMin/2+0.5 )
-		
+
 		originalsFaceVertexUvs[0][i*4+3][0].set( xMin/2+0.5, yMax/2+0.5 )
 		originalsFaceVertexUvs[0][i*4+3][1].set( xMax/2+0.5, yMax/2+0.5 )
 		originalsFaceVertexUvs[0][i*4+3][2].set( xMax/2+0.5, yMin/2+0.5 )
@@ -1795,7 +1797,7 @@ THREEx.ArMarkerCloak = function(videoTexture){
 
         if( updateInShaderEnabled === true ){
                 cloakMesh.geometry.faceVertexUvs = originalsFaceVertexUvs
-                cloakMesh.geometry.uvsNeedUpdate = true                
+                cloakMesh.geometry.uvsNeedUpdate = true
         }
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -1829,7 +1831,7 @@ THREEx.ArMarkerCloak = function(videoTexture){
                         updateUvs(modelViewMatrix, cameraProjectionMatrix)
                 }
 	}
-        
+
         return
 
         // update cloakMesh
@@ -1854,7 +1856,7 @@ THREEx.ArMarkerCloak = function(videoTexture){
                                 cloakMesh.geometry.faceVertexUvs[0][faceIndex][uvIndex].set(transformedUv.x, transformedUv.y)
                         })
                 })
-        
+
                 // cloakMesh.geometry.faceVertexUvs = faceVertexUvs
                 cloakMesh.geometry.uvsNeedUpdate = true
         }
@@ -2004,7 +2006,7 @@ THREEx.ArMarkerControls.prototype.dispose = function(){
 //////////////////////////////////////////////////////////////////////////////
 
 /**
- * When you actually got a new modelViewMatrix, you need to perfom a whole bunch 
+ * When you actually got a new modelViewMatrix, you need to perfom a whole bunch
  * of things. it is done here.
  */
 THREEx.ArMarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatrix){
@@ -2017,8 +2019,8 @@ THREEx.ArMarkerControls.prototype.updateWithModelViewMatrix = function(modelView
 		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
 		var tmpMatrix = new THREE.Matrix4().copy(this.context._artoolkitProjectionAxisTransformMatrix)
 		tmpMatrix.multiply(modelViewMatrix)
-		
-		modelViewMatrix.copy(tmpMatrix)		
+
+		modelViewMatrix.copy(tmpMatrix)
 	}else if( this.context.parameters.trackingBackend === 'aruco' ){
 		// ...
 	}else if( this.context.parameters.trackingBackend === 'tango' ){
@@ -2054,7 +2056,7 @@ THREEx.ArMarkerControls.prototype.updateWithModelViewMatrix = function(modelView
 //////////////////////////////////////////////////////////////////////////////
 
 /**
- * provide a name for a marker 
+ * provide a name for a marker
  * - silly heuristic for now
  * - should be improved
  */
@@ -2093,7 +2095,7 @@ THREEx.ArMarkerControls.prototype._initArtoolkit = function(){
 	}, 1000/50)
 
 	return
-	
+
 	function postInit(){
 		// check if arController is init
 		var arController = _this.context.arController
@@ -2113,7 +2115,7 @@ THREEx.ArMarkerControls.prototype._initArtoolkit = function(){
 		}else{
 			console.log(false, 'invalid marker type', _this.parameters.type)
 		}
-		
+
 
 		// listen to the event
 		arController.addEventListener('getMarker', function(event){
@@ -2128,7 +2130,7 @@ THREEx.ArMarkerControls.prototype._initArtoolkit = function(){
 				onMarkerFound(event)
 			}
 		})
-		
+
 	}
 
 	function onMarkerFound(event){
@@ -2185,14 +2187,14 @@ THREEx.ArMarkerHelper = function(markerControls){
 	// var geometry = new THREE.CubeGeometry(1, 1, 1)
 	var geometry = new THREE.PlaneGeometry(1, 1)
 	var material = new THREE.MeshBasicMaterial({
-		map: texture, 
+		map: texture,
 		transparent: true
 	});
 	var mesh = new THREE.Mesh(geometry, material)
 	mesh.rotation.x = -Math.PI/2
 
 	this.object3d.add(mesh)
-	
+
 }
 var THREEx = THREEx || {}
 
@@ -2205,12 +2207,12 @@ var THREEx = THREEx || {}
  */
 THREEx.ArSmoothedControls = function(object3d, parameters){
 	var _this = this
-	
+
 	THREEx.ArBaseControls.call(this, object3d)
-	
+
 	// copy parameters
 	this.object3d.visible = false
-	
+
 	this._lastLerpStepAt = null
 	this._visibleStartedAt = null
 	this._unvisibleStartedAt = null
@@ -2232,7 +2234,7 @@ THREEx.ArSmoothedControls = function(object3d, parameters){
 		minUnvisibleDelay: parameters.minUnvisibleDelay !== undefined ? parameters.minUnvisibleDelay : 0.2,
 	}
 }
-	
+
 THREEx.ArSmoothedControls.prototype = Object.create( THREEx.ArBaseControls.prototype );
 THREEx.ArSmoothedControls.prototype.constructor = THREEx.ArSmoothedControls;
 
@@ -2264,19 +2266,19 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 	}
 
 	if( wasVisible === true && targetObject3d.visible === false ){
-		if( this._unvisibleStartedAt === null )	this._unvisibleStartedAt = present 
+		if( this._unvisibleStartedAt === null )	this._unvisibleStartedAt = present
 		var unvisibleFor = present - this._unvisibleStartedAt
 		if( unvisibleFor >= this.parameters.minUnvisibleDelay ){
-			object3d.visible = false			
+			object3d.visible = false
 		}
 		// console.log('unvisibleFor', unvisibleFor)
 	}
-	
+
 	// disabled minVisibleDelay+minUnvisibleDelay
-	// if( true ){		
+	// if( true ){
 	// 	object3d.visible = targetObject3d.visible
 	// }
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		apply lerp on positon/quaternion/scale
 	//////////////////////////////////////////////////////////////////////////////
@@ -2297,7 +2299,7 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 	this.object3d.updateMatrix()
 
 	// disable the lerp by directly copying targetObject3d position/quaternion/scale
-	if( false ){		
+	if( false ){
 		this.object3d.position.copy( targetObject3d.position )
 		this.object3d.quaternion.copy( targetObject3d.quaternion )
 		this.object3d.scale.copy( targetObject3d.scale )
@@ -2316,8 +2318,8 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 		this.dispatchEvent({ type: 'becameUnVisible' })
 	}
 	return
-	
-	
+
+
 	function applyOneSlepStep(){
 		object3d.position.lerp(targetObject3d.position, parameters.lerpPosition)
 		object3d.quaternion.slerp(targetObject3d.quaternion, parameters.lerpQuaternion)
@@ -2335,12 +2337,12 @@ var THREEx = THREEx || {}
  */
 THREEx.ArSmoothedControls = function(object3d, parameters){
 	var _this = this
-	
+
 	THREEx.ArBaseControls.call(this, object3d)
-	
+
 	// copy parameters
 	this.object3d.visible = false
-	
+
 	this._lastLerpStepAt = null
 	this._visibleStartedAt = null
 	this._unvisibleStartedAt = null
@@ -2362,7 +2364,7 @@ THREEx.ArSmoothedControls = function(object3d, parameters){
 		minUnvisibleDelay: parameters.minUnvisibleDelay !== undefined ? parameters.minUnvisibleDelay : 0.2,
 	}
 }
-	
+
 THREEx.ArSmoothedControls.prototype = Object.create( THREEx.ArBaseControls.prototype );
 THREEx.ArSmoothedControls.prototype.constructor = THREEx.ArSmoothedControls;
 
@@ -2398,10 +2400,10 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 	if( wasVisible === true && targetObject3d.visible === false ){
 		var unvisibleFor = present - this._unvisibleStartedAt
 		if( unvisibleFor >= this.parameters.minUnvisibleDelay ){
-			object3d.visible = false			
+			object3d.visible = false
 		}
 	}
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		apply lerp on positon/quaternion/scale
 	//////////////////////////////////////////////////////////////////////////////
@@ -2419,7 +2421,7 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 	}
 
 	// disable the lerp by directly copying targetObject3d position/quaternion/scale
-	if( false ){		
+	if( false ){
 		snapDirectlyToTarget()
 	}
 
@@ -2443,8 +2445,8 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 		object3d.position.copy( targetObject3d.position )
 		object3d.quaternion.copy( targetObject3d.quaternion )
 		object3d.scale.copy( targetObject3d.scale )
-	}	
-	
+	}
+
 	function applyOneSlerpStep(){
 		object3d.position.lerp(targetObject3d.position, parameters.lerpPosition)
 		object3d.quaternion.slerp(targetObject3d.quaternion, parameters.lerpQuaternion)
@@ -2455,9 +2457,9 @@ var THREEx = THREEx || {}
 
 THREEx.ArToolkitContext = function(parameters){
 	var _this = this
-	
+
 	_this._updatedAt = null
-	
+
 	// handle default parameters
 	this.parameters = {
 		// AR backend - ['artoolkit', 'aruco', 'tango']
@@ -2468,7 +2470,7 @@ THREEx.ArToolkitContext = function(parameters){
 		detectionMode: parameters.detectionMode !== undefined ? parameters.detectionMode : 'color_and_matrix',
 		// type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
 		matrixCodeType: parameters.matrixCodeType !== undefined ? parameters.matrixCodeType : '3x3',
-		
+
 		// url of the camera parameters
 		cameraParametersUrl: parameters.cameraParametersUrl !== undefined ? parameters.cameraParametersUrl : THREEx.ArToolkitContext.baseURL + 'parameters/camera_para.dat',
 
@@ -2477,7 +2479,7 @@ THREEx.ArToolkitContext = function(parameters){
 		// resolution of at which we detect pose in the source image
 		canvasWidth: parameters.canvasWidth !== undefined ? parameters.canvasWidth : 640,
 		canvasHeight: parameters.canvasHeight !== undefined ? parameters.canvasHeight : 480,
-		
+
 		// enable image smoothing or not for canvas copy - default to true
 		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
 		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : false,
@@ -2485,7 +2487,7 @@ THREEx.ArToolkitContext = function(parameters){
 	// parameters sanity check
 	console.assert(['artoolkit', 'aruco', 'tango'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
 	console.assert(['color', 'color_and_matrix', 'mono', 'mono_and_matrix'].indexOf(this.parameters.detectionMode) !== -1, 'invalid parameter detectionMode', this.parameters.detectionMode)
-	
+
         this.arController = null;
         this.arucoContext = null;
 
@@ -2534,7 +2536,7 @@ THREEx.ArToolkitContext.prototype.update = function(srcElement){
 
 	// process this frame
 	if(this.parameters.trackingBackend === 'artoolkit'){
-		this._updateArtoolkit(srcElement)		
+		this._updateArtoolkit(srcElement)
 	}else if( this.parameters.trackingBackend === 'aruco' ){
 		this._updateAruco(srcElement)
 	}else if( this.parameters.trackingBackend === 'tango' ){
@@ -2587,13 +2589,13 @@ THREEx.ArToolkitContext.prototype._initArtoolkit = function(onCompleted){
         	// init controller
                 var arController = new ARController(_this.parameters.canvasWidth, _this.parameters.canvasHeight, cameraParameters);
                 _this.arController = arController
-                
+
 		// honor this.parameters.imageSmoothingEnabled
 		arController.ctx.mozImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
 		arController.ctx.webkitImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
 		arController.ctx.msImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
-		arController.ctx.imageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;			
- 		
+		arController.ctx.imageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+
 		// honor this.parameters.debug
                 if( _this.parameters.debug === true ){
 			arController.debugSetup();
@@ -2627,7 +2629,7 @@ THREEx.ArToolkitContext.prototype._initArtoolkit = function(onCompleted){
 		var matrixCodeType = matrixCodeTypes[_this.parameters.matrixCodeType]
 		console.assert(matrixCodeType !== undefined)
 		arController.setMatrixCodeType(matrixCodeType);
-		
+
 
 		// set thresholding in artoolkit
 		// this seems to be the default
@@ -2637,8 +2639,8 @@ THREEx.ArToolkitContext.prototype._initArtoolkit = function(onCompleted){
 		// arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_AUTO_OTSU)
 
 		// notify
-                onCompleted && onCompleted()                
-        })		
+                onCompleted && onCompleted()
+        })
 	return this
 }
 
@@ -2646,24 +2648,24 @@ THREEx.ArToolkitContext.prototype._initArtoolkit = function(onCompleted){
  * return the projection matrix
  */
 THREEx.ArToolkitContext.prototype.getProjectionMatrix = function(srcElement){
-	
-	
+
+
 // FIXME rename this function to say it is artoolkit specific - getArtoolkitProjectMatrix
 // keep a backward compatibility with a console.warn
-	
-	
+
+
 	if( this.parameters.trackingBackend === 'aruco' ){
 		console.assert(false, 'dont call this function with aruco')
 	}else if( this.parameters.trackingBackend === 'artoolkit' ){
 		console.assert(this.arController, 'arController MUST be initialized to call this function')
 		// get projectionMatrixArr from artoolkit
 		var projectionMatrixArr = this.arController.getCameraMatrix();
-		var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)		
+		var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)
 	}else console.assert(false)
-		
+
 	// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
 	projectionMatrix.multiply(this._artoolkitProjectionAxisTransformMatrix)
-	
+
 	// return the result
 	return projectionMatrix
 }
@@ -2673,11 +2675,11 @@ THREEx.ArToolkitContext.prototype._updateArtoolkit = function(srcElement){
 }
 
 //////////////////////////////////////////////////////////////////////////////
-//		aruco specific 
+//		aruco specific
 //////////////////////////////////////////////////////////////////////////////
 THREEx.ArToolkitContext.prototype._initAruco = function(onCompleted){
 	this.arucoContext = new THREEx.ArucoContext()
-	
+
 	// honor this.parameters.canvasWidth/.canvasHeight
 	this.arucoContext.canvas.width = this.parameters.canvasWidth
 	this.arucoContext.canvas.height = this.parameters.canvasHeight
@@ -2687,9 +2689,9 @@ THREEx.ArToolkitContext.prototype._initAruco = function(onCompleted){
 	// context.mozImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
 	context.webkitImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
 	context.msImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
-	context.imageSmoothingEnabled = this.parameters.imageSmoothingEnabled;			
+	context.imageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
 
-	
+
 	setTimeout(function(){
 		onCompleted && onCompleted()
 	}, 0)
@@ -2701,7 +2703,7 @@ THREEx.ArToolkitContext.prototype._updateAruco = function(srcElement){
 	var _this = this
 	var arMarkersControls = this._arMarkersControls
         var detectedMarkers = this.arucoContext.detect(srcElement)
-	
+
 	detectedMarkers.forEach(function(detectedMarker){
 		var foundControls = null
 		for(var i = 0; i < arMarkersControls.length; i++){
@@ -2722,7 +2724,7 @@ THREEx.ArToolkitContext.prototype._updateAruco = function(srcElement){
 }
 
 //////////////////////////////////////////////////////////////////////////////
-//		tango specific 
+//		tango specific
 //////////////////////////////////////////////////////////////////////////////
 THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 	var _this = this
@@ -2739,7 +2741,7 @@ THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 		vrDisplay: null,
 		frameData: new VRFrameData(),
 	}
-	
+
 
 	// get vrDisplay
 	navigator.getVRDisplays().then(function (vrDisplays) {
@@ -2776,7 +2778,7 @@ THREEx.ArToolkitContext.prototype._updateTango = function(srcElement){
 	// TODO here do a fake search on barcode/1001 ?
 
 	var foundControls = this._arMarkersControls[0]
-	
+
 	var frameData = this._tangoContext.frameData
 
 	// read frameData
@@ -2785,12 +2787,12 @@ THREEx.ArToolkitContext.prototype._updateTango = function(srcElement){
 	// create cameraTransformMatrix
 	var position = new THREE.Vector3().fromArray(frameData.pose.position)
 	var quaternion = new THREE.Quaternion().fromArray(frameData.pose.orientation)
-	var scale = new THREE.Vector3(1,1,1)	
+	var scale = new THREE.Vector3(1,1,1)
 	var cameraTransformMatrix = new THREE.Matrix4().compose(position, quaternion, scale)
 	// compute modelViewMatrix from cameraTransformMatrix
 	var modelViewMatrix = new THREE.Matrix4()
-	modelViewMatrix.getInverse( cameraTransformMatrix )	
-	
+	modelViewMatrix.getInverse( cameraTransformMatrix )
+
 	console.log('position', position)
 
 	foundControls.updateWithModelViewMatrix(modelViewMatrix)
@@ -2819,7 +2821,7 @@ THREEx.ArToolkitProfile.prototype._guessPerformanceLabel = function() {
 			|| navigator.userAgent.match(/iPod/i)
 			|| navigator.userAgent.match(/BlackBerry/i)
 			|| navigator.userAgent.match(/Windows Phone/i)
-			? true : false 
+			? true : false
 	if( isMobile === true ){
 		return 'phone-normal'
 	}
@@ -2835,7 +2837,7 @@ THREEx.ArToolkitProfile.prototype._guessPerformanceLabel = function() {
  */
 THREEx.ArToolkitProfile.prototype.reset = function () {
 	this.sourceParameters = {
-		// to read from the webcam 
+		// to read from the webcam
 		sourceType : 'webcam',
 	}
 
@@ -2880,7 +2882,7 @@ THREEx.ArToolkitProfile.prototype.performance = function(label) {
 		this.contextParameters.sourceWidth = 80*3
 		this.contextParameters.sourceHeight = 60*3
 
-		this.contextParameters.maxDetectionRate = 30		
+		this.contextParameters.maxDetectionRate = 30
 	}else {
 		console.assert(false, 'unknonwn label '+label)
 	}
@@ -2935,18 +2937,18 @@ THREEx.ArToolkitProfile.prototype.trackingBackend = function (trackingBackend) {
 }
 var THREEx = THREEx || {}
 
-THREEx.ArToolkitSource = function(parameters){	
+THREEx.ArToolkitSource = function(parameters){
 	// handle default parameters
 	this.parameters = {
 		// type of source - ['webcam', 'image', 'video']
 		sourceType : parameters.sourceType !== undefined ? parameters.sourceType : 'webcam',
 		// url of the source - valid if sourceType = image|video
 		sourceUrl : parameters.sourceUrl !== undefined ? parameters.sourceUrl : null,
-		
+
 		// resolution of at which we initialize in the source image
 		sourceWidth: parameters.sourceWidth !== undefined ? parameters.sourceWidth : 640,
 		sourceHeight: parameters.sourceHeight !== undefined ? parameters.sourceHeight : 480,
-		// resolution displayed for the source 
+		// resolution displayed for the source
 		displayWidth: parameters.displayWidth !== undefined ? parameters.displayWidth : 640,
 		displayHeight: parameters.displayHeight !== undefined ? parameters.displayHeight : 480,
 	}
@@ -2962,12 +2964,12 @@ THREEx.ArToolkitSource.prototype.init = function(onReady){
 	var _this = this
 
         if( this.parameters.sourceType === 'image' ){
-                var domElement = this._initSourceImage(onSourceReady)                        
+                var domElement = this._initSourceImage(onSourceReady)
         }else if( this.parameters.sourceType === 'video' ){
-                var domElement = this._initSourceVideo(onSourceReady)                        
+                var domElement = this._initSourceVideo(onSourceReady)
         }else if( this.parameters.sourceType === 'webcam' ){
-                // var domElement = this._initSourceWebcamOld(onSourceReady)                        
-                var domElement = this._initSourceWebcam(onSourceReady)                        
+                // var domElement = this._initSourceWebcamOld(onSourceReady)
+                var domElement = this._initSourceWebcam(onSourceReady)
         }else{
                 console.assert(false)
         }
@@ -2987,7 +2989,7 @@ THREEx.ArToolkitSource.prototype.init = function(onReady){
 
 		onReady && onReady()
         }
-} 
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //          init image source
@@ -3011,7 +3013,7 @@ THREEx.ArToolkitSource.prototype._initSourceImage = function(onReady) {
 		clearInterval(interval)
 	}, 1000/50);
 
-	return domElement                
+	return domElement
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3042,7 +3044,7 @@ THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
 	domElement.height = this.parameters.sourceHeight
 	domElement.style.width = this.parameters.displayWidth+'px'
 	domElement.style.height = this.parameters.displayHeight+'px'
-	
+
 	// wait until the video stream is ready
 	var interval = setInterval(function() {
 		if (!domElement.videoWidth)	return;
@@ -3066,10 +3068,10 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 	domElement.style.width = this.parameters.displayWidth+'px'
 	domElement.style.height = this.parameters.displayHeight+'px'
 
-	if (navigator.mediaDevices === undefined 
-			|| navigator.mediaDevices.enumerateDevices === undefined 
+	if (navigator.mediaDevices === undefined
+			|| navigator.mediaDevices.enumerateDevices === undefined
 			|| navigator.mediaDevices.getUserMedia === undefined  ){
-		alert("WebRTC issue! navigator.mediaDevices.enumerateDevices not present in your browser");		
+		alert("WebRTC issue! navigator.mediaDevices.enumerateDevices not present in your browser");
 	}
 
 	navigator.mediaDevices.enumerateDevices().then(function(devices) {
@@ -3128,7 +3130,7 @@ THREEx.ArToolkitSource.prototype.hasMobileTorch = function(){
 
 	var videoTrack = stream.getVideoTracks()[0];
 	var capabilities = videoTrack.getCapabilities()
-	
+
 	return capabilities.torch ? true : false
 }
 
@@ -3149,7 +3151,7 @@ THREEx.ArToolkitSource.prototype.toggleMobileTorch = function(){
 
 	var videoTrack = stream.getVideoTracks()[0];
 	var capabilities = videoTrack.getCapabilities()
-	
+
 	if( !capabilities.torch ){
 		alert('no mobile torch is available on your camera')
 		return
@@ -3184,7 +3186,7 @@ THREEx.ArToolkitSource.prototype.onResize = function(mirrorDomElements){
 	}else{
 		console.assert(false)
 	}
-	
+
 	// compute sourceAspect
 	var sourceAspect = sourceWidth / sourceHeight
 	// compute screenAspect
@@ -3196,7 +3198,7 @@ THREEx.ArToolkitSource.prototype.onResize = function(mirrorDomElements){
 		var newWidth = sourceAspect * screenHeight
 		this.domElement.style.width = newWidth+'px'
 		this.domElement.style.marginLeft = -(newWidth-screenWidth)/2+'px'
-		
+
 		// init style.height/.marginTop to normal value
 		this.domElement.style.height = screenHeight+'px'
 		this.domElement.style.marginTop = '0px'
@@ -3205,16 +3207,16 @@ THREEx.ArToolkitSource.prototype.onResize = function(mirrorDomElements){
 		var newHeight = 1 / (sourceAspect / screenWidth)
 		this.domElement.style.height = newHeight+'px'
 		this.domElement.style.marginTop = -(newHeight-screenHeight)/2+'px'
-		
+
 		// init style.width/.marginLeft to normal value
 		this.domElement.style.width = screenWidth+'px'
 		this.domElement.style.marginLeft = '0px'
 	}
-	
+
 	// honor default parameters
 	// if( mirrorDomElements !== undefined )	console.warn('still use the old resize. fix it')
 	if( mirrorDomElements === undefined )	mirrorDomElements = []
-	if( mirrorDomElements instanceof Array === false )	mirrorDomElements = [mirrorDomElements]	
+	if( mirrorDomElements instanceof Array === false )	mirrorDomElements = [mirrorDomElements]
 
 	// Mirror _this.domElement.style to mirrorDomElements
 	mirrorDomElements.forEach(function(domElement){
@@ -3224,15 +3226,15 @@ THREEx.ArToolkitSource.prototype.onResize = function(mirrorDomElements){
 
 THREEx.ArToolkitSource.prototype.copySizeTo = function(otherElement){
 	otherElement.style.width = this.domElement.style.width
-	otherElement.style.height = this.domElement.style.height	
+	otherElement.style.height = this.domElement.style.height
 	otherElement.style.marginLeft = this.domElement.style.marginLeft
 	otherElement.style.marginTop = this.domElement.style.marginTop
 }
 var THREEx = THREEx || {}
 
-THREEx.ArVideoInWebgl = function(videoTexture){	
+THREEx.ArVideoInWebgl = function(videoTexture){
 	var _this = this
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//	plane always in front of the camera, exactly as big as the viewport
 	//////////////////////////////////////////////////////////////////////////////
@@ -3248,41 +3250,41 @@ THREEx.ArVideoInWebgl = function(videoTexture){
 	var seethruPlane = new THREE.Mesh(geometry, material);
 	this.object3d = seethruPlane
 	// scene.add(seethruPlane);
-	
+
 	// arToolkitSource.domElement.style.visibility = 'hidden'
 
 	// TODO extract the fov from the projectionMatrix
 	// camera.fov = 43.1
 	this.update = function(camera){
 		camera.updateMatrixWorld(true)
-		
+
 		// get seethruPlane position
 		var position = new THREE.Vector3(-0,0,-20)	// TODO how come you got that offset on x ???
 		var position = new THREE.Vector3(-0,0,-20)	// TODO how come you got that offset on x ???
 		seethruPlane.position.copy(position)
 		camera.localToWorld(seethruPlane.position)
-		
+
 		// get seethruPlane quaternion
-		camera.matrixWorld.decompose( camera.position, camera.quaternion, camera.scale );	
+		camera.matrixWorld.decompose( camera.position, camera.quaternion, camera.scale );
 		seethruPlane.quaternion.copy( camera.quaternion )
-		
+
 		// extract the fov from the projectionMatrix
 		var fov = THREE.Math.radToDeg(Math.atan(1/camera.projectionMatrix.elements[5]))*2;
 	// console.log('fov', fov)
-		
+
 		var elementWidth = parseFloat( arToolkitSource.domElement.style.width.replace(/px$/,''), 10 )
 		var elementHeight = parseFloat( arToolkitSource.domElement.style.height.replace(/px$/,''), 10 )
-		
+
 		var aspect = elementWidth / elementHeight
-		
+
 		// camera.fov = fov
 		// if( vrDisplay.isPresenting ){
 		// 	fov *= 2
 		// 	aspect *= 2
 		// }
-		
+
 		// get seethruPlane height relative to fov
-		seethruPlane.scale.y = Math.tan(THREE.Math.DEG2RAD * fov/2)*position.length() 
+		seethruPlane.scale.y = Math.tan(THREE.Math.DEG2RAD * fov/2)*position.length()
 		// get seethruPlane aspect
 		seethruPlane.scale.x = seethruPlane.scale.y * aspect
 	}
@@ -3291,22 +3293,22 @@ THREEx.ArVideoInWebgl = function(videoTexture){
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
 	// var video = arToolkitSource.domElement;
-	// 
+	//
 	// window.addEventListener('resize', function(){
-	// 	updateSeeThruAspectUv(seethruPlane)	
+	// 	updateSeeThruAspectUv(seethruPlane)
 	// })
 	// video.addEventListener('canplaythrough', function(){
 	// 	updateSeeThruAspectUv(seethruPlane)
 	// })
 	// function updateSeeThruAspectUv(plane){
-	// 
+	//
 	// 	// if video isnt yet ready to play
 	// 	if( video.videoWidth === 0 || video.videoHeight === 0 )	return
-	// 
+	//
 	// 	var faceVertexUvs = plane.geometry.faceVertexUvs[0]
 	// 	var screenAspect = window.innerWidth / window.innerHeight
 	// 	var videoAspect = video.videoWidth / video.videoHeight
-	// 	
+	//
 	// 	plane.geometry.uvsNeedUpdate = true
 	// 	if( screenAspect >= videoAspect ){
 	// 		var actualHeight = videoAspect / screenAspect;
@@ -3324,7 +3326,7 @@ THREEx.ArVideoInWebgl = function(videoTexture){
 	// 		faceVertexUvs[0][0].x = 0.5 - actualWidth/2
 	// 		faceVertexUvs[0][1].x = 0.5 - actualWidth/2
 	// 		faceVertexUvs[1][0].x = 0.5 - actualWidth/2
-	// 		
+	//
 	// 		// faceVertexUvs x 1
 	// 		faceVertexUvs[0][2].x = 0.5 + actualWidth/2
 	// 		faceVertexUvs[1][1].x = 0.5 + actualWidth/2
@@ -3338,7 +3340,7 @@ var THREEx = THREEx || {}
 THREEx.ArMultiMarkerControls = function(arToolkitContext, object3d, parameters){
 	var _this = this
 	THREEx.ArBaseControls.call(this, object3d)
-	
+
 	if( arguments.length > 3 )	console.assert('wrong api for', THREEx.ArMultiMarkerControls)
 
 // have a parameters in argument
@@ -3350,7 +3352,7 @@ THREEx.ArMultiMarkerControls = function(arToolkitContext, object3d, parameters){
 		// change matrix mode - [modelViewMatrix, cameraTransformMatrix]
 		changeMatrixMode : parameters.changeMatrixMode !== undefined ? parameters.changeMatrixMode : 'modelViewMatrix',
 	}
-	
+
 	this.object3d.visible = false
 	// honor obsolete stuff - add a warning to use
 	this.subMarkersControls = this.parameters.subMarkersControls
@@ -3395,7 +3397,7 @@ THREEx.ArMultiMarkerControls.prototype._onSourceProcessed = function(){
 	var firstQuaternion = _this.parameters.subMarkersControls[0].object3d.quaternion
 
 	this.parameters.subMarkersControls.forEach(function(markerControls, markerIndex){
-		
+
 		var markerObject3d = markerControls.object3d
 		// if this marker is not visible, ignore it
 		if( markerObject3d.visible === false )	return
@@ -3423,7 +3425,7 @@ THREEx.ArMultiMarkerControls.prototype._onSourceProcessed = function(){
 	if( stats.count > 0 ){
 		_this.object3d.visible = true
 	}else{
-		_this.object3d.visible = false			
+		_this.object3d.visible = false
 	}
 
 	// if at least one sub-marker has been detected, make the average of all detected markers
@@ -3458,7 +3460,7 @@ THREEx.ArMultiMarkerControls.averageQuaternion = function(quaternionSum, newQuat
 	quaternionAverage = quaternionAverage || new THREE.Quaternion()
 	// sanity check
 	console.assert(firstQuaternion instanceof THREE.Quaternion === true)
-	
+
 	// from http://wiki.unity3d.com/index.php/Averaging_Quaternions_and_Vectors
 	if( newQuaternion.dot(firstQuaternion) > 0 ){
 		newQuaternion = new THREE.Quaternion(-newQuaternion.x, -newQuaternion.y, -newQuaternion.z, -newQuaternion.w)
@@ -3468,12 +3470,12 @@ THREEx.ArMultiMarkerControls.averageQuaternion = function(quaternionSum, newQuat
 	quaternionSum.y += newQuaternion.y
 	quaternionSum.z += newQuaternion.z
 	quaternionSum.w += newQuaternion.w
-	
+
 	quaternionAverage.x = quaternionSum.x/count
 	quaternionAverage.y = quaternionSum.y/count
 	quaternionAverage.z = quaternionSum.z/count
 	quaternionAverage.w = quaternionSum.w/count
-	
+
 	quaternionAverage.normalize()
 
 	return quaternionAverage
@@ -3482,15 +3484,15 @@ THREEx.ArMultiMarkerControls.averageQuaternion = function(quaternionSum, newQuat
 
 THREEx.ArMultiMarkerControls.averageVector3 = function(vector3Sum, vector3, count, vector3Average){
 	vector3Average = vector3Average || new THREE.Vector3()
-	
+
 	vector3Sum.x += vector3.x
 	vector3Sum.y += vector3.y
 	vector3Sum.z += vector3.z
-	
+
 	vector3Average.x = vector3Sum.x / count
 	vector3Average.y = vector3Sum.y / count
 	vector3Average.z = vector3Sum.z / count
-	
+
 	return vector3Average
 }
 
@@ -3507,27 +3509,27 @@ THREEx.ArMultiMarkerControls.computeCenter = function(jsonData){
 		count : 0,
 		position : {
 			sum: new THREE.Vector3(0,0,0),
-			average: new THREE.Vector3(0,0,0),						
+			average: new THREE.Vector3(0,0,0),
 		},
 		quaternion : {
 			sum: new THREE.Quaternion(0,0,0,0),
-			average: new THREE.Quaternion(0,0,0,0),						
+			average: new THREE.Quaternion(0,0,0,0),
 		},
 		scale : {
 			sum: new THREE.Vector3(0,0,0),
-			average: new THREE.Vector3(0,0,0),						
+			average: new THREE.Vector3(0,0,0),
 		},
 	}
 	var firstQuaternion = new THREE.Quaternion() // FIXME ???
-	
+
 	multiMarkerFile.subMarkersControls.forEach(function(item){
 		var poseMatrix = new THREE.Matrix4().fromArray(item.poseMatrix)
-		
+
 		var position = new THREE.Vector3
 		var quaternion = new THREE.Quaternion
 		var scale = new THREE.Vector3
 		poseMatrix.decompose(position, quaternion, scale)
-		
+
 		// http://wiki.unity3d.com/index.php/Averaging_Quaternions_and_Vectors
 		stats.count++
 
@@ -3535,7 +3537,7 @@ THREEx.ArMultiMarkerControls.computeCenter = function(jsonData){
 		THREEx.ArMultiMarkerControls.averageQuaternion(stats.quaternion.sum, quaternion, firstQuaternion, stats.count, stats.quaternion.average)
 		THREEx.ArMultiMarkerControls.averageVector3(stats.scale.sum, scale, stats.count, stats.scale.average)
 	})
-	
+
 	var averageMatrix = new THREE.Matrix4()
 	averageMatrix.compose(stats.position.average, stats.quaternion.average, stats.scale.average)
 
@@ -3548,7 +3550,7 @@ THREEx.ArMultiMarkerControls.computeBoundingBox = function(jsonData){
 
 	multiMarkerFile.subMarkersControls.forEach(function(item){
 		var poseMatrix = new THREE.Matrix4().fromArray(item.poseMatrix)
-		
+
 		var position = new THREE.Vector3
 		var quaternion = new THREE.Quaternion
 		var scale = new THREE.Vector3
@@ -3623,14 +3625,14 @@ THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, parent3D, mar
 // if( true ){
 		// store it in the parameters
 		subMarkersControls.push(subMarkerControls)
-		subMarkerPoses.push(new THREE.Matrix4().fromArray(item.poseMatrix))	
+		subMarkerPoses.push(new THREE.Matrix4().fromArray(item.poseMatrix))
 // }else{
 // 		// build a smoothedControls
 // 		var smoothedRoot = new THREE.Group()
 // 		parent3D.add(smoothedRoot)
 // 		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
 // 			lerpPosition : 0.1,
-// 			lerpQuaternion : 0.1, 
+// 			lerpQuaternion : 0.1,
 // 			lerpScale : 0.1,
 // 			minVisibleDelay: 0,
 // 			minUnvisibleDelay: 0,
@@ -3638,21 +3640,21 @@ THREEx.ArMultiMarkerControls.fromJSON = function(arToolkitContext, parent3D, mar
 // 		onRenderFcts.push(function(delta){
 // 			smoothedControls.update(markerRoot)	// TODO this is a global
 // 		})
-// 	
-// 
+//
+//
 // 		// store it in the parameters
 // 		subMarkersControls.push(smoothedControls)
 // 		subMarkerPoses.push(new THREE.Matrix4().fromArray(item.poseMatrix))
 // }
 	})
-	
+
 	parameters.subMarkersControls = subMarkersControls
 	parameters.subMarkerPoses = subMarkerPoses
 	// create a new THREEx.ArMultiMarkerControls
 	var multiMarkerControls = new THREEx.ArMultiMarkerControls(arToolkitContext, markerRoot, parameters)
 
 	// return it
-	return multiMarkerControls	
+	return multiMarkerControls
 }
 var THREEx = THREEx || {}
 
@@ -3663,7 +3665,7 @@ THREEx.ArMultiMakersLearning = function(arToolkitContext, subMarkersControls){
 	// Init variables
 	this.subMarkersControls = subMarkersControls
 	this.enabled = true
-		
+
 	// listen to arToolkitContext event 'sourceProcessed'
 	// - after we fully processed one image, aka when we know all detected poses in it
 	arToolkitContext.addEventListener('sourceProcessed', function(){
@@ -3681,8 +3683,8 @@ THREEx.ArMultiMakersLearning = function(arToolkitContext, subMarkersControls){
  */
 THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 	var originQuaternion = this.subMarkersControls[0].object3d.quaternion
-	// here collect the statistic on relative positioning 
-	
+	// here collect the statistic on relative positioning
+
 	// honor this.enabled
 	if( this.enabled === false )	return
 
@@ -3697,7 +3699,7 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 	var quaternionDelta = new THREE.Quaternion()
 	var scaleDelta = new THREE.Vector3()
 	var tmpMatrix = new THREE.Matrix4()
-	
+
 	// go thru all the visibleMarkerControls
 	for(var i = 0; i < count; i++){
 		var markerControls1 = visibleMarkerControls[i]
@@ -3723,29 +3725,29 @@ THREEx.ArMultiMakersLearning.prototype._onSourceProcessed = function(){
 					count : 0,
 					position : {
 						sum: new THREE.Vector3(0,0,0),
-						average: new THREE.Vector3(0,0,0),						
+						average: new THREE.Vector3(0,0,0),
 					},
 					quaternion : {
 						sum: new THREE.Quaternion(0,0,0,0),
-						average: new THREE.Quaternion(0,0,0,0),						
+						average: new THREE.Quaternion(0,0,0,0),
 					},
 					scale : {
 						sum: new THREE.Vector3(0,0,0),
-						average: new THREE.Vector3(0,0,0),						
+						average: new THREE.Vector3(0,0,0),
 					},
 				}
 			}
 
-			
+
 			//////////////////////////////////////////////////////////////////////////////
 			//		Compute markerControls2 position relative to markerControls1
 			//////////////////////////////////////////////////////////////////////////////
-			
+
 			// compute markerControls2 position/quaternion/scale in relation with markerControls1
 			tmpMatrix.getInverse(markerControls1.object3d.matrix)
 			tmpMatrix.multiply(markerControls2.object3d.matrix)
 			tmpMatrix.decompose(positionDelta, quaternionDelta, scaleDelta)
-			
+
 			//////////////////////////////////////////////////////////////////////////////
 			//		update statistics
 			//////////////////////////////////////////////////////////////////////////////
@@ -3777,8 +3779,8 @@ THREEx.ArMultiMakersLearning.prototype.computeResult = function(){
 		confidenceFactor: 1,
 	}
 	// TODO here check if the originSubControls has been seen at least once!!
-	
-	
+
+
 	/**
 	 * ALGO in pseudo code
 	 *
@@ -3787,13 +3789,13 @@ THREEx.ArMultiMakersLearning.prototype.computeResult = function(){
 	 * Start Looping
 	 * - For a given sub marker, skip it if it already has a result.
 	 * - if no result, check all seen couple and find n ones which has a progress of 1 or more.
-	 * - So the other seen sub markers, got a valid transformation matrix. 
-	 * - So take local averages position/orientation/scale, compose a transformation matrix. 
+	 * - So the other seen sub markers, got a valid transformation matrix.
+	 * - So take local averages position/orientation/scale, compose a transformation matrix.
 	 *   - aka transformation matrix from parent matrix * transf matrix pos/orientation/scale
-	 * - Multiple it by the other seen marker matrix. 
+	 * - Multiple it by the other seen marker matrix.
 	 * - Loop on the array until one pass could not compute any new sub marker
 	 */
-	
+
 	do{
 		var resultChanged = false
 		// loop over each subMarkerControls
@@ -3803,21 +3805,21 @@ THREEx.ArMultiMakersLearning.prototype.computeResult = function(){
 			var result = subMarkerControls.object3d.userData.result
 			var isLearned = (result !== undefined && result.confidenceFactor >= 1) ? true : false
 			if( isLearned === true )	return
-			
+
 			// console.log('compute subMarkerControls', subMarkerControls.name())
 			var otherSubControlsID = _this._getLearnedCoupleStats(subMarkerControls)
 			if( otherSubControlsID === null ){
 				// console.log('no learnedCoupleStats')
 				return
 			}
-			
+
 			var otherSubControls = _this._getSubMarkerControlsByID(otherSubControlsID)
 
 			var seenCoupleStats = subMarkerControls.object3d.userData.seenCouples[otherSubControlsID]
-			
+
 			var averageMatrix = new THREE.Matrix4()
 			averageMatrix.compose(seenCoupleStats.position.average, seenCoupleStats.quaternion.average, seenCoupleStats.scale.average)
-				
+
 			var otherAverageMatrix = otherSubControls.object3d.userData.result.averageMatrix
 
 			var matrix = new THREE.Matrix4().getInverse(otherAverageMatrix).multiply(averageMatrix)
@@ -3828,12 +3830,12 @@ THREEx.ArMultiMakersLearning.prototype.computeResult = function(){
 				averageMatrix: matrix,
 				confidenceFactor: 1
 			}
-			
+
 			resultChanged = true
 		})
 		// console.log('loop')
 	}while(resultChanged === true)
-	
+
 	// debugger
 	// console.log('json:', this.toJSON())
 	// this.subMarkersControls.forEach(function(subMarkerControls){
@@ -3846,14 +3848,14 @@ THREEx.ArMultiMakersLearning.prototype.computeResult = function(){
 //		Utility function
 //////////////////////////////////////////////////////////////////////////////
 
-/** 
+/**
  * get a _this.subMarkersControls id based on markerControls.id
  */
 THREEx.ArMultiMakersLearning.prototype._getLearnedCoupleStats	= function(subMarkerControls){
 
 	// if this subMarkerControls has never been seen with another subMarkerControls
 	if( subMarkerControls.object3d.userData.seenCouples === undefined )	return null
-	
+
 	var seenCouples = subMarkerControls.object3d.userData.seenCouples
 	var coupleControlsIDs = Object.keys(seenCouples).map(Number)
 
@@ -3861,7 +3863,7 @@ THREEx.ArMultiMakersLearning.prototype._getLearnedCoupleStats	= function(subMark
 		var otherSubControlsID = coupleControlsIDs[i]
 		// get otherSubControls
 		var otherSubControls = this._getSubMarkerControlsByID(otherSubControlsID)
-			
+
 		// if otherSubControls isnt learned, skip it
 		var result = otherSubControls.object3d.userData.result
 		var isLearned = (result !== undefined && result.confidenceFactor >= 1) ? true : false
@@ -3870,12 +3872,12 @@ THREEx.ArMultiMakersLearning.prototype._getLearnedCoupleStats	= function(subMark
 		// return this seenCouplesStats
 		return otherSubControlsID
 	}
-	
+
 	// if none is found, return null
 	return null
 }
 
-/** 
+/**
  * get a _this.subMarkersControls based on markerControls.id
  */
 THREEx.ArMultiMakersLearning.prototype._getSubMarkerControlsByID	= function(controlsID){
@@ -3905,7 +3907,7 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 		meta : {
 			createdBy : "Area Learning - AR.js "+THREEx.ArToolkitContext.REVISION,
 			createdAt : new Date().toJSON(),
-			
+
 		},
 		trackingBackend: this._arToolkitContext.parameters.trackingBackend,
 		subMarkersControls : [],
@@ -3914,13 +3916,13 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 	var originSubControls = this.subMarkersControls[0]
 	var originMatrixInverse = new THREE.Matrix4().getInverse(originSubControls.object3d.matrix)
 	this.subMarkersControls.forEach(function(subMarkerControls, index){
-		
+
 		// if a subMarkerControls has no result, ignore it
 		if( subMarkerControls.object3d.userData.result === undefined )	return
 
 		var poseMatrix = subMarkerControls.object3d.userData.result.averageMatrix
 		console.assert(poseMatrix instanceof THREE.Matrix4)
-		
+
 
 		// build the info
 		var info = {
@@ -3941,8 +3943,8 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 	})
 
 	var strJSON = JSON.stringify(data, null, '\t');
-	
-	
+
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		round matrix elements to ease readability - for debug
 	//////////////////////////////////////////////////////////////////////////////
@@ -3957,8 +3959,8 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
 		})
 		strJSON = JSON.stringify(tmp, null, '\t');
 	}
-	
-	return strJSON;	
+
+	return strJSON;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -3970,7 +3972,7 @@ THREEx.ArMultiMakersLearning.prototype.toJSON = function(){
  */
 THREEx.ArMultiMakersLearning.prototype.resetStats = function(){
 	this.deleteResult()
-	
+
 	this.subMarkersControls.forEach(function(markerControls){
 		delete markerControls.object3d.userData.seenCouples
 	})
@@ -4033,7 +4035,7 @@ THREEx.ArMultiMarkerUtils.createDefaultMultiMarkerFile = function(trackingBacken
 		file.subMarkersControls[0].parameters.type = 'barcode'
 		file.subMarkersControls[0].parameters.barcodeValue = 1001
 	}else console.assert(false)
-	
+
 	// json.strinfy the value and store it in localStorage
 	return file
 }
@@ -4073,7 +4075,7 @@ THREEx.ArMultiMarkerUtils.createDefaultMarkersControlsParameters = function(trac
 				type : 'pattern',
 				patternUrl : absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterF.patt',
 			},
-		]		
+		]
 	}else if( trackingBackend === 'aruco' ){
 		var markersControlsParameters = [
 			{
