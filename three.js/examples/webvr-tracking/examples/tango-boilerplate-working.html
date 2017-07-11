@@ -82,7 +82,7 @@
                 
                 // init camera
                 var camera = new THREE.PerspectiveCamera( 42, window.innerWidth / window.innerHeight, 0.01, 20 );
-                if( vrDisplay ){
+                if (vrDisplay) {
                         THREE.WebAR.resizeVRSeeThroughCamera(vrDisplay, camera);
                 }                
                 var controls = new THREE.VRControls(camera);
