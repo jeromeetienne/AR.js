@@ -49,7 +49,7 @@
   - maybe cached in a ARtoolkit specific function
   - projectionAxisTransformMatrix renamed as artoolkitprojectionAxisTransformMatrix
   - simple, no risk and make it clear it is artoolkit - 
-- DONE in arbackend-switch put the backend in hash. and offer to switch
+- DONE in trackingbackend-switch put the backend in hash. and offer to switch
   - good for testing
 - DONE all this testing about aruco or jsartoolkit it crappy
   - in artoolkitContext.backend === 'aruco' || 'artoolkit'

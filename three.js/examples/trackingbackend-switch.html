@@ -21,7 +21,6 @@
 <script src='../threex-arsmoothedcontrols.js'></script>
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
-
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
 	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - switching between backend
 	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
@@ -31,7 +30,7 @@
 	/
 	<a href='../../../three.js/threex/threex-aruco/examples/images/1001.png' target='_blank'>1001 for aruco</a>
 	<br/>
-	<strong>Backend:</strong>
+	<strong>Tracking Backend:</strong>
 		switch to : 
 		<a href='#artoolkit' onclick='location.reload()'>artoolkit</a>
 		/ 
@@ -41,8 +40,8 @@
 	-
 	current : <span id='currentArBackend'>unknown</a>
 </div><script>
-	var arBackend = location.hash.substring(1) ? location.hash.substring(1) : 'artoolkit'
-	document.querySelector('#currentArBackend').innerHTML = arBackend
+	var trackingBackend = location.hash.substring(1) ? location.hash.substring(1) : 'artoolkit'
+	document.querySelector('#currentArBackend').innerHTML = trackingBackend
 	
 	var changeMatrixMode = 'cameraTransformMatrix'
 	// var changeMatrixMode = 'modelViewMatrix'
@@ -74,13 +73,13 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// Create a camera
-	if( arBackend === 'artoolkit' ){
+	if( trackingBackend === 'artoolkit' ){
 		var camera = new THREE.Camera();
-	}else if( arBackend === 'aruco' ){
+	}else if( trackingBackend === 'aruco' ){
 		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
-	}else if( arBackend === 'tango' ){
+	}else if( trackingBackend === 'tango' ){
 		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 1000);
-		console.log('TODO here init tango arBackend')
+		console.log('TODO here init tango trackingBackend')
 	}else console.assert(false)
 	scene.add(camera);
 
@@ -88,13 +87,13 @@
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
 
-	if( arBackend === 'artoolkit' ){
+	if( trackingBackend === 'artoolkit' ){
 		var sourceParameters = {
 			// to read from an image
 			sourceType : 'image',
 			sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
 		}
-	}else if( arBackend === 'aruco' ){
+	}else if( trackingBackend === 'aruco' ){
 		var sourceParameters = {
 			// to read from an image
 			sourceType : 'image',
@@ -114,16 +113,16 @@
 	function onResize(){
 		arToolkitSource.onResize()
 		arToolkitSource.copySizeTo(renderer.domElement)	
-		if( arBackend === 'artoolkit' ){
+		if( trackingBackend === 'artoolkit' ){
 			if( arToolkitContext.arController !== null ){
 				arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
 			}
-		}else if( arBackend === 'aruco' ){
+		}else if( trackingBackend === 'aruco' ){
 			arToolkitSource.copySizeTo(arToolkitContext.arucoContext.canvas)	
 
 			camera.aspect = renderer.domElement.width / renderer.domElement.height;
 			camera.updateProjectionMatrix();			
-		}else if( arBackend === 'tango' ){
+		}else if( trackingBackend === 'tango' ){
 			// console.log('here resize for tango')
 			camera.aspect = renderer.domElement.width / renderer.domElement.height;
 			camera.updateProjectionMatrix();			
@@ -139,13 +138,13 @@
 	var arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
 		detectionMode: 'mono',
-		arBackend: arBackend,
+		trackingBackend: trackingBackend,
 	})
 
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
 		// if artoolkit, copy projection matrix to camera
-		if( arToolkitContext.parameters.arBackend === 'artoolkit' ){
+		if( arToolkitContext.parameters.trackingBackend === 'artoolkit' ){
 			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
 		}
 	})
@@ -166,13 +165,13 @@
 		// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
 		changeMatrixMode: changeMatrixMode
 	}		
-	if( arToolkitContext.parameters.arBackend === 'artoolkit' ){
+	if( arToolkitContext.parameters.trackingBackend === 'artoolkit' ){
 		controlsParameters.type = 'pattern'
 		controlsParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
-	}else if( arToolkitContext.parameters.arBackend === 'aruco' ){
+	}else if( arToolkitContext.parameters.trackingBackend === 'aruco' ){
 		controlsParameters.type = 'barcode'
 		controlsParameters.barcodeValue = 1001
-	}else if( arToolkitContext.parameters.arBackend === 'tango' ){
+	}else if( arToolkitContext.parameters.trackingBackend === 'tango' ){
 		controlsParameters.type = 'barcode'
 		controlsParameters.barcodeValue = 1001
 	}else console.assert(false)
