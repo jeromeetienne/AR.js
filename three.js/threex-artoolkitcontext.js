@@ -12,7 +12,7 @@ THREEx.ArToolkitContext = function(parameters){
 		// debug - true if one should display artoolkit debug canvas, false otherwise
 		debug: parameters.debug !== undefined ? parameters.debug : false,
 		// the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
-		detectionMode: parameters.detectionMode !== undefined ? parameters.detectionMode : 'color_and_matrix',
+		detectionMode: parameters.detectionMode !== undefined ? parameters.detectionMode : 'mono',
 		// type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
 		matrixCodeType: parameters.matrixCodeType !== undefined ? parameters.matrixCodeType : '3x3',
 		
@@ -51,13 +51,25 @@ THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 //		init functions
 //////////////////////////////////////////////////////////////////////////////
 THREEx.ArToolkitContext.prototype.init = function(onCompleted){
+	var _this = this
 	if( this.parameters.trackingBackend === 'artoolkit' ){
-		this._initArtoolkit(onCompleted)
+		this._initArtoolkit(done)
 	}else if( this.parameters.trackingBackend === 'aruco' ){
-		this._initAruco(onCompleted)
+		this._initAruco(done)
 	}else if( this.parameters.trackingBackend === 'tango' ){
-		this._initTango(onCompleted)
+		this._initTango(done)
 	}else console.assert(false)
+	return
+	
+	function done(){
+		// dispatch event
+		_this.dispatchEvent({
+			type: 'initialized'
+		});
+
+		onCompleted && onCompleted()
+	}
+
 }
 ////////////////////////////////////////////////////////////////////////////////
 //          update function
@@ -184,7 +196,7 @@ THREEx.ArToolkitContext.prototype._initArtoolkit = function(onCompleted){
 		// arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_AUTO_OTSU)
 
 		// notify
-                onCompleted && onCompleted()                
+                onCompleted()                
         })		
 	return this
 }
@@ -238,7 +250,7 @@ THREEx.ArToolkitContext.prototype._initAruco = function(onCompleted){
 
 	
 	setTimeout(function(){
-		onCompleted && onCompleted()
+		onCompleted()
 	}, 0)
 }
 
@@ -295,16 +307,14 @@ THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 		_this._tangoContext.vrDisplay = vrDisplay
 		console.log('vrDisplays.displayName :', vrDisplay.displayName)
 
-
+		// FIXME not sure it is necessary
 		var canvasElement = document.createElement('canvas')
 		document.body.appendChild(canvasElement)
-		var layers = [{ source: canvasElement }]
-// 		vrDisplay.requestPresent(layers).then(function() {
-// 			console.log('vrdisplay request accepted')
-// 		});
-// window.vrDisplay = vrDisplay
-
-		onCompleted && onCompleted()
+		vrDisplay.requestPresent([{ source: canvasElement }]).then(function() {
+			console.log('vrdisplay request accepted')
+		});
+		
+		onCompleted()
 	});
 }
 
@@ -332,13 +342,18 @@ THREEx.ArToolkitContext.prototype._updateTango = function(srcElement){
 	// create cameraTransformMatrix
 	var position = new THREE.Vector3().fromArray(frameData.pose.position)
 	var quaternion = new THREE.Quaternion().fromArray(frameData.pose.orientation)
-	var scale = new THREE.Vector3(1,1,1)	
+	var scale = new THREE.Vector3(1,1,1)
 	var cameraTransformMatrix = new THREE.Matrix4().compose(position, quaternion, scale)
 	// compute modelViewMatrix from cameraTransformMatrix
 	var modelViewMatrix = new THREE.Matrix4()
 	modelViewMatrix.getInverse( cameraTransformMatrix )	
 	
-	console.log('position', position)
+	// console.log('position', position)
+	if( position.x !== 0 ||  position.y !== 0 ||  position.z !== 0 ){		
+		console.log('vrDisplay tracking')
+	}else{
+		console.log('vrDisplay NOT tracking')
+	}
 
 	foundControls.updateWithModelViewMatrix(modelViewMatrix)
 }

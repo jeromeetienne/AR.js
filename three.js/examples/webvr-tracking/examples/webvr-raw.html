@@ -1,11 +1,11 @@
 <div>Position x = <span id='position-x'></span></div>
 <div>Position y = <span id='position-y'></span></div>
 <div>Position z = <span id='position-z'></span></div>
-<canvas id="fakeVrCanvas" width="300" height="300"></canvas>
-<script type="text/javascript">
+<script>
 
 // check webvr is available
 if (navigator.getVRDisplays) {
+	// Do nothing
 } else if (navigator.getVRDevices) {
 	alert("Your browser supports WebVR but not the latest version. See <a href='http://webvr.info'>webvr.info</a> for more info.");
 } else {
@@ -23,8 +23,10 @@ navigator.getVRDisplays().then(function (vrDisplays) {
 	vrDisplay = vrDisplays[0]
 	console.log('vrDisplays.displayName :', vrDisplay.displayName)
 
-	var layers = [{ source: document.querySelector('#fakeVrCanvas') }]
-	vrDisplay.requestPresent(layers).then(function() {
+	var canvasElement = document.createElement('canvas')
+	document.body.appendChild(canvasElement)
+
+	vrDisplay.requestPresent([{ source: canvasElement }]).then(function() {
 		console.log('vrdisplay request accepted')
 	});
 });

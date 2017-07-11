@@ -1,7 +1,7 @@
 - suppport for any webvr - thus coding on desktop is possible
   - what is causing issue when doing desktop work
-  
-- remove as much black magic as possible
+
+
 
 
 ---
@@ -12,4 +12,15 @@
 - the video is in the rendering
   - just another way to render thing
   - see how to change the default
-- experiment in the trackingBackend-switch.html
+- experiment in the trackingBackend-switch.html ?
+- nah something simpler to start with
+  - likely dev.html forked
+
+
+
+- arjsContext => init the whole vrDisplay stuff
+- how to update the camera projection matrix
+- controlsmarker is vrcontrols
+
+
+---

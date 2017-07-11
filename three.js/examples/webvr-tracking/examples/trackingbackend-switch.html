@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<!-- three.js library -->
+<!-- <script src='../../vendor/three.js/build/three.js'></script> -->
+<script src="vendor/three.js/three.js"></script>
+<!-- jsartookit -->
+<script src='../../../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
+<script src='../../../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
+<!-- aruco -->
+<script src='../../../vendor/js-aruco/src/svd.js'></script> 
+<script src='../../../vendor/js-aruco/src/posit1.js'></script> 
+<script src='../../../vendor/js-aruco/src/cv.js'></script> 
+<script src='../../../vendor/js-aruco/src/aruco.js'></script> 
+<script src='../../../threex/threex-aruco/threex-arucocontext.js'></script> 
+<script src='../../../threex/threex-aruco/threex-arucodebug.js'></script>
+<!-- include threex.artoolkit -->
+<script src='../../../threex-artoolkitsource.js'></script>
+<script src='../../../threex-artoolkitcontext.js'></script>
+<script src='../../../threex-artoolkitprofile.js'></script>
+<script src='../../../threex-arbasecontrols.js'></script>
+<script src='../../../threex-armarkercontrols.js'></script>
+<script src='../../../threex-arsmoothedcontrols.js'></script>
+<script>THREEx.ArToolkitContext.baseURL = '../../../'</script>
+
+<script src="../vendor/chromium-tango/THREE.WebAR.js"></script>
+
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
+	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - switching between backend
+	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+	<br/>
+	Marker image 
+	<a href='../../../data/images/hiro.jpg' target='_blank'>hiro for artoolkit</a>
+	/
+	<a href='../../../three.js/threex/threex-aruco/examples/images/1001.png' target='_blank'>1001 for aruco</a>
+	<br/>
+	<strong>Tracking Backend:</strong>
+	switch to : 
+	<a href='#artoolkit' onclick='location.reload()'>artoolkit</a>
+	/ 
+	<a href='#aruco' onclick='location.reload()'>aruco</a>
+	/ 
+	<a href='#tango' onclick='location.reload()'>tango</a>
+	-
+	current : <span id='currentArBackend'>unknown</a>
+	</div><script>
+	var trackingBackend = location.hash.substring(1) ? location.hash.substring(1) : 'artoolkit'
+	document.querySelector('#currentArBackend').innerHTML = trackingBackend
+	
+	// if we are running on tango device, ensure trackingBackend is 'tango'
+	if( trackingBackend !== 'tango' && navigator.userAgent.match('Chrome/57.0.2987.5') ){
+		location.hash = '#tango'
+		location.reload()
+	}
+	
+	
+	var changeMatrixMode = 'cameraTransformMatrix'
+	// var changeMatrixMode = 'modelViewMatrix'
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Init
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	// init renderer
+	var renderer	= new THREE.WebGLRenderer({
+		// antialias: true,
+		alpha: true
+	});
+	renderer.autoClear = false;
+	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+	renderer.setSize( 640, 480 );
+	renderer.domElement.style.position = 'absolute'
+	renderer.domElement.style.top = '0px'
+	renderer.domElement.style.left = '0px'
+	document.body.appendChild( renderer.domElement );
+	
+	// array of functions for the rendering loop
+	var onRenderFcts= [];
+	
+	// init scene and camera
+	var scene	= new THREE.Scene();
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//                handle videoPlane 
+	//////////////////////////////////////////////////////////////////////////////
+	
+	// Create the see through camera scene and camera
+	var sceneOrtho = new THREE.Scene()
+	var cameraOrtho = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 100 )
+	
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Initialize a basic camera
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	// Create a camera
+	if( trackingBackend === 'artoolkit' ){
+		var camera = new THREE.Camera();
+	}else if( trackingBackend === 'aruco' ){
+		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
+	}else if( trackingBackend === 'tango' ){
+		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
+	}else console.assert(false)
+	scene.add(camera);
+	
+	////////////////////////////////////////////////////////////////////////////////
+	//          handle arToolkitSource
+	////////////////////////////////////////////////////////////////////////////////
+	
+	if( trackingBackend === 'artoolkit' ){
+		var sourceParameters = {
+			sourceType : 'webcam',
+			// // to read from an image
+			// sourceType : 'image',
+			// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
+		}
+	}else if( trackingBackend === 'aruco' ){
+		var sourceParameters = {
+			sourceType : 'webcam',
+			// // to read from an image
+			// sourceType : 'image',
+			// sourceUrl : THREEx.ArToolkitContext.baseURL + 'threex/threex-aruco/examples/images/screenshot-marker-aruco.png',		
+		}
+	}else if( trackingBackend === 'tango' ){
+		// FIXME temporary placeholder - to reevaluate later
+		var sourceParameters = {
+			// to read from an image
+			sourceType : 'image',
+			sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
+		}
+	}else console.assert(false)
+	var arToolkitSource = new THREEx.ArToolkitSource(sourceParameters)
+	
+	arToolkitSource.init(function onReady(){
+		onResize()
+	})
+	
+	// handle resize
+	window.addEventListener('resize', function(){
+		onResize()
+	})
+	function onResize(){
+		if( trackingBackend === 'artoolkit' ){
+			arToolkitSource.onResize()
+			arToolkitSource.copySizeTo(renderer.domElement)	
+
+			if( arToolkitContext.arController !== null ){
+				arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
+			}
+		}else if( trackingBackend === 'aruco' ){
+			arToolkitSource.onResize()
+			arToolkitSource.copySizeTo(renderer.domElement)	
+
+			arToolkitSource.copySizeTo(arToolkitContext.arucoContext.canvas)	
+			
+			camera.aspect = renderer.domElement.width / renderer.domElement.height;
+			camera.updateProjectionMatrix();			
+		}else if( trackingBackend === 'tango' ){
+			renderer.setSize( window.innerWidth, window.innerHeight )
+			// camera handling is necessary in tango... but not here
+			var vrDisplay = arToolkitContext._tangoContext.vrDisplay
+			// make camera fit vrDisplay
+			if( vrDisplay )	THREE.WebAR.resizeVRSeeThroughCamera(vrDisplay, camera)
+		}else console.assert(false, 'unhandled trackingBackend '+trackingBackend)
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	//          initialize arToolkitContext
+	////////////////////////////////////////////////////////////////////////////////
+	
+	
+	// create atToolkitContext
+	var arToolkitContext = new THREEx.ArToolkitContext({
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
+		trackingBackend: trackingBackend,
+	})
+	
+	// initialize it
+	arToolkitContext.init()
+	
+	arToolkitContext.addEventListener('initialized', function(event){
+		// if artoolkit, copy projection matrix to camera
+		if( arToolkitContext.parameters.trackingBackend === 'artoolkit' ){
+			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
+		}else if( arToolkitContext.parameters.trackingBackend === 'aruco' ){
+			// no nothing
+		}else if( arToolkitContext.parameters.trackingBackend === 'tango' ){
+			var vrDisplay = arToolkitContext._tangoContext.vrDisplay
+			console.assert(vrDisplay)
+			
+			// make camera fit vrDisplay
+			THREE.WebAR.resizeVRSeeThroughCamera(vrDisplay, camera)
+			// init videoPlane
+			var videoPlane = THREE.WebAR.createVRSeeThroughCameraMesh(vrDisplay, 'videos/sintel.webm')
+			sceneOrtho.add(videoPlane)
+			onRenderFcts.push(function(){
+				// Make sure that the camera is correctly displayed depending on the device and camera orientations.
+				THREE.WebAR.updateCameraMeshOrientation(vrDisplay, videoPlane)                        
+			})		
+		}else console.assert(false, 'unhandled trackingBackend '+trackingBackend)	
+	})
+	
+	// update artoolkit on every frame
+	onRenderFcts.push(function(){
+		if( arToolkitSource.ready === false )	return
+		
+		arToolkitContext.update( arToolkitSource.domElement )
+	})
+	
+	////////////////////////////////////////////////////////////////////////////////
+	//          Create a ArMarkerControls
+	////////////////////////////////////////////////////////////////////////////////
+	
+	// init controls for camera
+	var controlsParameters = {
+		// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
+		changeMatrixMode: changeMatrixMode
+	}		
+	if( arToolkitContext.parameters.trackingBackend === 'artoolkit' ){
+		controlsParameters.type = 'pattern'
+		controlsParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+	}else if( arToolkitContext.parameters.trackingBackend === 'aruco' ){
+		controlsParameters.type = 'barcode'
+		controlsParameters.barcodeValue = 1001
+	}else if( arToolkitContext.parameters.trackingBackend === 'tango' ){
+		// FIXME temporary placeholder - to reevaluate later
+		controlsParameters.type = 'barcode'
+		controlsParameters.barcodeValue = 1001
+	}else console.assert(false)
+	
+	if( changeMatrixMode === 'modelViewMatrix' ){
+		var markerRoot = new THREE.Group
+		scene.add(markerRoot)
+		var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, controlsParameters)		
+	}else if( changeMatrixMode === 'cameraTransformMatrix' ){
+		var markerRoot = scene
+		var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, controlsParameters)
+		onRenderFcts.push(function(){
+			// update scene.visible if the marker is seen
+			arWorldRoot.visible = camera.visible
+		})
+	}else console.assert(false)
+	
+	// build a smoothedControls
+	var smoothedRoot = new THREE.Group()
+	scene.add(smoothedRoot)
+	var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
+	onRenderFcts.push(function(delta){
+		smoothedControls.update(markerRoot)
+	})
+	var arWorldRoot = smoothedRoot
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		add an object in the scene
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	var mesh = new THREE.AxisHelper()
+	arWorldRoot.add(mesh)
+	
+	// add a torus knot	
+	var geometry	= new THREE.CubeGeometry(1,1,1);
+	var material	= new THREE.MeshNormalMaterial({
+		transparent : true,
+		opacity: 0.5,
+		side: THREE.DoubleSide
+	}); 
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.y	= geometry.parameters.height/2
+	arWorldRoot.add( mesh );
+	
+	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
+	var material	= new THREE.MeshNormalMaterial(); 
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.y	= 0.5
+	arWorldRoot.add( mesh );
+	
+	onRenderFcts.push(function(delta){
+		mesh.rotation.x += Math.PI*delta
+	})
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		render the whole thing on the page
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	// render the scene
+	onRenderFcts.push(function(){
+		// Render the see through camera scene
+		renderer.clear()
+		
+		if( arToolkitContext.parameters.trackingBackend === 'tango'){                                
+			renderer.render( sceneOrtho, cameraOrtho )
+			// Render the perspective scene
+			renderer.clearDepth()
+		}
+		
+		renderer.render( scene, camera );
+	})
+	
+	// run the rendering loop
+	var lastTimeMsec= null
+	requestAnimationFrame(function animate(nowMsec){
+		// keep looping
+		requestAnimationFrame( animate );
+		// measure time
+		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+		lastTimeMsec	= nowMsec
+		// call each update function
+		onRenderFcts.forEach(function(onRenderFct){
+			onRenderFct(deltaMsec/1000, nowMsec/1000)
+		})
+	})
+	</script></body>
