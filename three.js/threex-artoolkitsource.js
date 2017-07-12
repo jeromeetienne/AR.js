@@ -327,8 +327,7 @@ THREEx.ArToolkitSource.prototype.onResize2	= function(arToolkitContext, renderer
 		camera.updateProjectionMatrix();			
 	}else if( trackingBackend === 'tango' ){
 		var vrDisplay = arToolkitContext._tangoContext.vrDisplay
-		console.assert(vrDisplay)
 		// make camera fit vrDisplay
-		THREE.WebAR.resizeVRSeeThroughCamera(vrDisplay, camera)
+		if( vrDisplay ) THREE.WebAR.resizeVRSeeThroughCamera(vrDisplay, camera)
 	}else console.assert(false, 'unhandled trackingBackend '+trackingBackend)	
 }

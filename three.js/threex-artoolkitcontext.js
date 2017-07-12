@@ -47,6 +47,24 @@ THREEx.ArToolkitContext.baseURL = 'https://jeromeetienne.github.io/AR.js/three.j
 THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 
 
+/**
+ * Create a default camera for this trackingBackend
+ * @param {string} trackingBackend - the tracking to user
+ * @return {THREE.Camera} the created camera
+ */
+THREEx.ArToolkitContext.createDefaultCamera = function(trackingBackend){
+	// Create a camera
+	if( trackingBackend === 'artoolkit' ){
+		var camera = new THREE.Camera();
+	}else if( trackingBackend === 'aruco' ){
+		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
+	}else if( trackingBackend === 'tango' ){
+		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
+	}else console.assert(false)
+	return camera
+}
+
+
 //////////////////////////////////////////////////////////////////////////////
 //		init functions
 //////////////////////////////////////////////////////////////////////////////
@@ -306,11 +324,11 @@ THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 		console.log('vrDisplays.displayName :', vrDisplay.displayName)
 
 		// FIXME not sure it is necessary
-		var canvasElement = document.createElement('canvas')
-		document.body.appendChild(canvasElement)
-		vrDisplay.requestPresent([{ source: canvasElement }]).then(function() {
-			console.log('vrdisplay request accepted')
-		});
+		// var canvasElement = document.createElement('canvas')
+		// document.body.appendChild(canvasElement)
+		// vrDisplay.requestPresent([{ source: canvasElement }]).then(function() {
+		// 	console.log('vrdisplay request accepted')
+		// });
 		
 		onCompleted()
 	});
@@ -337,6 +355,9 @@ THREEx.ArToolkitContext.prototype._updateTango = function(srcElement){
 	// read frameData
 	tangoContext.vrDisplay.getFrameData(frameData);
 
+	if( frameData.pose.position === null )		return
+	if( frameData.pose.orientation === null )	return
+
 	// create cameraTransformMatrix
 	var position = new THREE.Vector3().fromArray(frameData.pose.position)
 	var quaternion = new THREE.Quaternion().fromArray(frameData.pose.orientation)
@@ -345,13 +366,14 @@ THREEx.ArToolkitContext.prototype._updateTango = function(srcElement){
 	// compute modelViewMatrix from cameraTransformMatrix
 	var modelViewMatrix = new THREE.Matrix4()
 	modelViewMatrix.getInverse( cameraTransformMatrix )	
-	
-	// console.log('position', position)
-	if( position.x !== 0 ||  position.y !== 0 ||  position.z !== 0 ){		
-		console.log('vrDisplay tracking')
-	}else{
-		console.log('vrDisplay NOT tracking')
-	}
 
 	foundControls.updateWithModelViewMatrix(modelViewMatrix)
+		
+	// console.log('position', position)
+	// if( position.x !== 0 ||  position.y !== 0 ||  position.z !== 0 ){		
+	// 	console.log('vrDisplay tracking')
+	// }else{
+	// 	console.log('vrDisplay NOT tracking')
+	// }
+
 }
