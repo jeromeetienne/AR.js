@@ -92,21 +92,6 @@ THREEx.ArToolkitProfile.prototype.performance = function(label) {
 //////////////////////////////////////////////////////////////////////////////
 //		Marker
 //////////////////////////////////////////////////////////////////////////////
-// THREEx.ArToolkitProfile.prototype.kanjiMarker = function () {
-// 	this.contextParameters.detectionMode = 'mono'
-// 
-// 	this.defaultMarkerParameters.type = 'pattern'
-// 	this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji'
-// 	return this
-// }
-// 
-// THREEx.ArToolkitProfile.prototype.hiroMarker = function () {
-// 	this.contextParameters.detectionMode = 'mono'
-// 
-// 	this.defaultMarkerParameters.type = 'pattern'
-// 	this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
-// 	return this
-// }
 
 
 THREEx.ArToolkitProfile.prototype.defaultMarker = function (trackingBackend) {

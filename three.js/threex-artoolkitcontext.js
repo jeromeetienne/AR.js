@@ -320,14 +320,14 @@ THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 	// get vrDisplay
 	navigator.getVRDisplays().then(function (vrDisplays) {
 		if( vrDisplays.length === 0 )	alert('no vrDisplays available')
-		var vrDisplay = vrDisplays[0]
-		_this._tangoContext.vrDisplay = vrDisplay
-		console.log('vrDisplays.displayName :', vrDisplay.displayName)
+		_this._tangoContext.vrDisplay = vrDisplays[0]
 
-		// FIXME not sure it is necessary
+		console.log('vrDisplays.displayName :', _this._tangoContext.vrDisplay.displayName)
+
+		// NOTE it doesnt seem necessary and it fails on tango
 		// var canvasElement = document.createElement('canvas')
 		// document.body.appendChild(canvasElement)
-		// vrDisplay.requestPresent([{ source: canvasElement }]).then(function() {
+		// _this._tangoContext.requestPresent([{ source: canvasElement }]).then(function() {
 		// 	console.log('vrdisplay request accepted')
 		// });
 		

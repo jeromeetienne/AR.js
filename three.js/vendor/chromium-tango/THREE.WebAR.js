@@ -178,7 +178,7 @@ THREE.WebAR.createVRSeeThroughCameraMesh = function(vrDisplay,
 
     if (!seeThroughCamera) 
       throw "ERROR: Could not get the see through camera!";
-    console.dir(seeThroughCamera)
+    
     video = seeThroughCamera;
     // HACK: Needed to tell the THREE.VideoTexture that the video is ready and
     // that the texture needs update.

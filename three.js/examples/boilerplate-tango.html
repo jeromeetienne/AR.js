@@ -1,5 +1,5 @@
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
 <style>
         #info {
                 color: #fff;
@@ -19,12 +19,12 @@
 
 
 <!-- include three.js dependancy -->
-<script src="../../vendor/three.js/build/three.js"></script>
-<script src="../../vendor/three.js/examples/js/controls/VRControls.js"></script>
-<script src="../../vendor/three.js/examples/js/libs/stats.min.js"></script>
-<script src="../../vendor/three.js/examples/js/libs/dat.gui.min.js"></script>
+<script src='vendor/three.js/build/three.js'></script>
+<script src='vendor/three.js/examples/js/controls/VRControls.js'></script>
+<script src='vendor/three.js/examples/js/libs/stats.min.js'></script>
+<script src='vendor/three.js/examples/js/libs/dat.gui.min.js'></script>
 
-<script src="../../../vendor/chromium-tango/THREE.WebAR.js"></script>
+<script src='../vendor/chromium-tango/THREE.WebAR.js'></script>
         
 <script>
 	// array of functions for the rendering loop
@@ -111,9 +111,9 @@
 
         // Initialize the dat.GUI.
         var datGUI = new dat.GUI()
-        datGUI.add(parameters, "showSeeThroughCamera").name("Show seethrough camera")
-        datGUI.add(parameters, "continuousPicking").name("Continuous picking")
-        datGUI.add(parameters, "pointsToSkip", 0, 10).name("Points to skip")
+        datGUI.add(parameters, 'showSeeThroughCamera').name('Show seethrough camera')
+        datGUI.add(parameters, 'continuousPicking').name('Continuous picking')
+        datGUI.add(parameters, 'pointsToSkip', 0, 10).name('Points to skip')
                 
         //////////////////////////////////////////////////////////////////////////////
         //                vrDisplay
@@ -122,19 +122,19 @@
         
         // WebAR is currently based on the WebVR API so try to find the right VRDisplay instance.
         if( navigator.getVRDisplays === undefined ){
-                alert("No navigator.getVRDisplays. PANIC!!")
+                alert('No navigator.getVRDisplays. PANIC!!')
         }
 
         var vrDisplay = null
         navigator.getVRDisplays().then(function(vrDisplays){
                 for( var i = 0; i < vrDisplays.length; i++ ){
-                        if( vrDisplays[i].displayName === "Tango VR Device" ){
+                        if( vrDisplays[i].displayName === 'Tango VR Device' ){
                                 vrDisplay = vrDisplays[i];
                                 break;
                         }
                 }
                 if( vrDisplay === null ){
-                        console.warn("No Tango WebAR VRDisplay found. Falling back to a video.")
+                        console.warn('No Tango WebAR VRDisplay found. Falling back to a video.')
                 }
                 initVrDisplay(vrDisplay)
         })
@@ -178,10 +178,10 @@
                         vrPointCloud.update(parameters.showPointCloud, parameters.pointsToSkip)                        
                 })
                 // handle datGUI
-                datGUI.add(parameters, "showPointCloud").onFinishChange(function(value) {
+                datGUI.add(parameters, 'showPointCloud').onFinishChange(function(value) {
                         if( value )     scene.add(pointsObject)
                         else            scene.remove(pointsObject)
-                }).name("Show Point Cloud")
+                }).name('Show Point Cloud')
         }
 
                         
@@ -191,7 +191,7 @@
 
         // Wherever the user clicks in the screen, place the model.
         var mousePosition = new THREE.Vector3()
-        renderer.domElement.addEventListener("click", function(event) {
+        renderer.domElement.addEventListener('click', function(event) {
                 // set mousePosition
                 mousePosition.x = event.pageX / window.innerWidth;
                 mousePosition.y = event.pageY / window.innerHeight;
@@ -215,7 +215,7 @@
 
                 var pointAndPlane = vrDisplay.getPickingPointAndPlaneInPointCloud(mousePosition.x, mousePosition.y)
                 if( pointAndPlane == null ) {
-                        console.warn("Could not retrieve the correct point and plane.")
+                        console.warn('Could not retrieve the correct point and plane.')
                         return
                 }
 

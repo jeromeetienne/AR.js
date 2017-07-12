@@ -234,7 +234,7 @@ THREEx.ArToolkitSource.prototype.toggleMobileTorch = function(){
 //          handle resize
 ////////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArToolkitSource.prototype.onResize = function(mirrorDomElements){
+THREEx.ArToolkitSource.prototype.onResizeElement = function(mirrorDomElements){
 	var _this = this
 	var screenWidth = window.innerWidth
 	var screenHeight = window.innerHeight
@@ -276,6 +276,8 @@ THREEx.ArToolkitSource.prototype.onResize = function(mirrorDomElements){
 		this.domElement.style.marginLeft = '0px'
 	}
 	
+	
+	if( arguments.length !== 0 )	console.warn('use bad signature for arToolkitSource.copyElementSizeTo')
 	// honor default parameters
 	// if( mirrorDomElements !== undefined )	console.warn('still use the old resize. fix it')
 	if( mirrorDomElements === undefined )	mirrorDomElements = []
@@ -287,11 +289,25 @@ THREEx.ArToolkitSource.prototype.onResize = function(mirrorDomElements){
 	})
 }
 
-THREEx.ArToolkitSource.prototype.copySizeTo = function(otherElement){
+THREEx.ArToolkitSource.prototype.copyElementSizeTo = function(otherElement){
 	otherElement.style.width = this.domElement.style.width
 	otherElement.style.height = this.domElement.style.height	
 	otherElement.style.marginLeft = this.domElement.style.marginLeft
 	otherElement.style.marginTop = this.domElement.style.marginTop
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.ArToolkitSource.prototype.copySizeTo = function(){
+	console.warn('obsolete function arToolkitSource.copySizeTo. Use arToolkitSource.copyElementSizeTo' )
+	this.copyElementSizeTo.apply(this, arguments)
+}
+
+THREEx.ArToolkitSource.prototype.onResize = function(){
+	console.warn('obsolete function arToolkitSource.onResizeElement. Use arToolkitSource.onResizeElement' )
+	this.onResizeElement.apply(this, arguments)
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -328,6 +344,6 @@ THREEx.ArToolkitSource.prototype.onResize2	= function(arToolkitContext, renderer
 	}else if( trackingBackend === 'tango' ){
 		var vrDisplay = arToolkitContext._tangoContext.vrDisplay
 		// make camera fit vrDisplay
-		if( vrDisplay ) THREE.WebAR.resizeVRSeeThroughCamera(vrDisplay, camera)
+		if( vrDisplay && vrDisplay.displayName === "Tango VR Device" ) THREE.WebAR.resizeVRSeeThroughCamera(vrDisplay, camera)
 	}else console.assert(false, 'unhandled trackingBackend '+trackingBackend)	
 }

@@ -98,7 +98,8 @@
 
 
 
-	var arProfile = new THREEx.ArToolkitProfile().sourceWebcam()
+	var arProfile = new THREEx.ArToolkitProfile()
+		.sourceWebcam()
 		.trackingBackend(trackingBackend)
 		.defaultMarker(trackingBackend)
 
@@ -106,7 +107,6 @@
 	if( trackingBackend === 'tango' ){
 		arProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg')
 	}	
-	
 	var arToolkitSource = new THREEx.ArToolkitSource(arProfile.sourceParameters)	
 	
 	arToolkitSource.init(function onReady(){
@@ -135,7 +135,8 @@
 		// special case for trackingBackend tango
 		if( arToolkitContext.parameters.trackingBackend === 'tango' ){
 			var vrDisplay = arToolkitContext._tangoContext.vrDisplay
-			console.assert(vrDisplay)
+			// if vrDisplay isnt for tango
+			if( vrDisplay === null || vrDisplay.displayName !== "Tango VR Device" )	return
 			// init videoPlane
 			var videoPlane = THREE.WebAR.createVRSeeThroughCameraMesh(vrDisplay, 'videos/sintel.webm')
 			sceneOrtho.add(videoPlane)
