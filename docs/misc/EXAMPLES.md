@@ -48,8 +48,8 @@
 - [parameters-tunning](https://jeromeetienne.github.io/AR.js/three.js/examples/parameters-tunning.html) :
   three.js example for parameters-tunning
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/parameters-tunning.html))
-- [backend switcher](https://jeromeetienne.github.io/AR.js/three.js/examples/trackingbackend-switch.html) :
-  Show to easily switch between arBackend 'aruco' or 'jsartoolkit'
+- [tracking switcher](https://jeromeetienne.github.io/AR.js/three.js/examples/trackingbackend-switch.html) :
+  Show to easily switch between tracking backends: jsartoolkit/aruco/tango
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/trackingbackend-switch.html))
 - [multi-markers](https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/examples/player.html) :
   multi markers examples - it shows how to dynamically learn a multi markers and then how to use it.
