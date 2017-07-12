@@ -173,7 +173,6 @@ THREEx.ArMarkerControls.prototype._initArtoolkit = function(){
 		}else{
 			console.log(false, 'invalid marker type', _this.parameters.type)
 		}
-		
 
 		// listen to the event
 		arController.addEventListener('getMarker', function(event){

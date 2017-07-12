@@ -303,6 +303,7 @@ THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 	var _this = this
 	// check webvr is available
 	if (navigator.getVRDisplays) {
+		// do nothing
 	} else if (navigator.getVRDevices) {
 		alert("Your browser supports WebVR but not the latest version. See <a href='http://webvr.info'>webvr.info</a> for more info.");
 	} else {
