@@ -92,22 +92,42 @@ THREEx.ArToolkitProfile.prototype.performance = function(label) {
 //////////////////////////////////////////////////////////////////////////////
 //		Marker
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitProfile.prototype.kanjiMarker = function () {
-	this.contextParameters.detectionMode = 'mono'
+// THREEx.ArToolkitProfile.prototype.kanjiMarker = function () {
+// 	this.contextParameters.detectionMode = 'mono'
+// 
+// 	this.defaultMarkerParameters.type = 'pattern'
+// 	this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji'
+// 	return this
+// }
+// 
+// THREEx.ArToolkitProfile.prototype.hiroMarker = function () {
+// 	this.contextParameters.detectionMode = 'mono'
+// 
+// 	this.defaultMarkerParameters.type = 'pattern'
+// 	this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+// 	return this
+// }
 
-	this.defaultMarkerParameters.type = 'pattern'
-	this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji'
+
+THREEx.ArToolkitProfile.prototype.defaultMarker = function (trackingBackend) {
+	trackingBackend = trackingBackend || this.contextParameters.trackingBackend
+
+	if( trackingBackend === 'artoolkit' ){
+		this.contextParameters.detectionMode = 'mono'
+		this.defaultMarkerParameters.type = 'pattern'
+		this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+	}else if( trackingBackend === 'aruco' ){
+		this.contextParameters.detectionMode = 'mono'
+		this.defaultMarkerParameters.type = 'barcode'
+		this.defaultMarkerParameters.barcodeValue = 1001
+	}else if( trackingBackend === 'tango' ){
+		// FIXME temporary placeholder - to reevaluate later
+		this.defaultMarkerParameters.type = 'barcode'
+		this.defaultMarkerParameters.barcodeValue = 1001
+	}else console.assert(false)
+
 	return this
 }
-
-THREEx.ArToolkitProfile.prototype.hiroMarker = function () {
-	this.contextParameters.detectionMode = 'mono'
-
-	this.defaultMarkerParameters.type = 'pattern'
-	this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
-	return this
-}
-
 //////////////////////////////////////////////////////////////////////////////
 //		Source
 //////////////////////////////////////////////////////////////////////////////
@@ -135,4 +155,5 @@ THREEx.ArToolkitProfile.prototype.sourceImage = function (url) {
 //////////////////////////////////////////////////////////////////////////////
 THREEx.ArToolkitProfile.prototype.trackingBackend = function (trackingBackend) {
 	this.contextParameters.trackingBackend = trackingBackend
+	return this
 }

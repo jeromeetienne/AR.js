@@ -293,3 +293,42 @@ THREEx.ArToolkitSource.prototype.copySizeTo = function(otherElement){
 	otherElement.style.marginLeft = this.domElement.style.marginLeft
 	otherElement.style.marginTop = this.domElement.style.marginTop
 }
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.ArToolkitSource.prototype.onResize2	= function(arToolkitContext, renderer, camera){
+	var trackingBackend = arToolkitContext.parameters.trackingBackend
+
+	// RESIZE DOMELEMENT
+	if( trackingBackend === 'artoolkit' ){
+		this.onResize()
+		this.copySizeTo(renderer.domElement)	
+
+		if( arToolkitContext.arController !== null ){
+			this.copySizeTo(arToolkitContext.arController.canvas)	
+		}
+	}else if( trackingBackend === 'aruco' ){
+		this.onResize()
+		this.copySizeTo(renderer.domElement)	
+
+		this.copySizeTo(arToolkitContext.arucoContext.canvas)	
+	}else if( trackingBackend === 'tango' ){
+		renderer.setSize( window.innerWidth, window.innerHeight )
+	}else console.assert(false, 'unhandled trackingBackend '+trackingBackend)
+
+
+	// RESIZE CAMERA
+	if( trackingBackend === 'artoolkit' ){
+		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
+	}else if( trackingBackend === 'aruco' ){	
+		camera.aspect = renderer.domElement.width / renderer.domElement.height;
+		camera.updateProjectionMatrix();			
+	}else if( trackingBackend === 'tango' ){
+		var vrDisplay = arToolkitContext._tangoContext.vrDisplay
+		console.assert(vrDisplay)
+		// make camera fit vrDisplay
+		THREE.WebAR.resizeVRSeeThroughCamera(vrDisplay, camera)
+	}else console.assert(false, 'unhandled trackingBackend '+trackingBackend)	
+}

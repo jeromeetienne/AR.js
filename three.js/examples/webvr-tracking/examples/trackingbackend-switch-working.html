@@ -111,27 +111,70 @@
 
 
 	var artoolkitProfile = new THREEx.ArToolkitProfile()
-	artoolkitProfile
 		.sourceWebcam()
 		.trackingBackend(trackingBackend)
 		.defaultMarker(trackingBackend)
-
-	// FIXME temporary placeholder - to reevaluate later
-	if( trackingBackend === 'tango' ){
-		artoolkitProfile.sourceParameters.sourceType = 'image'
-		artoolkitProfile.sourceParameters.sourceUrl = THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg'
-	}	
 	
-	var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)	
+	if( trackingBackend === 'artoolkit' ){
+		var sourceParameters = {
+			sourceType : 'webcam',
+			// // to read from an image
+			// sourceType : 'image',
+			// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
+		}
+	}else if( trackingBackend === 'aruco' ){
+		var sourceParameters = {
+			sourceType : 'webcam',
+			// // to read from an image
+			// sourceType : 'image',
+			// sourceUrl : THREEx.ArToolkitContext.baseURL + 'threex/threex-aruco/examples/images/screenshot-marker-aruco.png',		
+		}
+	}else if( trackingBackend === 'tango' ){
+		// FIXME temporary placeholder - to reevaluate later
+		var sourceParameters = {
+			// to read from an image
+			sourceType : 'image',
+			sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',
+		}
+	}else console.assert(false)
+	var arToolkitSource = new THREEx.ArToolkitSource(sourceParameters)
+
 	
 	arToolkitSource.init(function onReady(){
-		arToolkitSource.onResize2(arToolkitContext, renderer, camera)
+		onResize()
 	})
 	
 	// handle resize
 	window.addEventListener('resize', function(){
-		arToolkitSource.onResize2(arToolkitContext, renderer, camera)
+		onResize()
 	})
+	function onResize(){
+// FIXME put all that in a function
+// arToolkitSource.onResize(arToolkitContext, renderer, camera)
+		
+		if( trackingBackend === 'artoolkit' ){
+			arToolkitSource.onResize()
+			arToolkitSource.copySizeTo(renderer.domElement)	
+
+			if( arToolkitContext.arController !== null ){
+				arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
+			}
+		}else if( trackingBackend === 'aruco' ){
+			arToolkitSource.onResize()
+			arToolkitSource.copySizeTo(renderer.domElement)	
+
+			arToolkitSource.copySizeTo(arToolkitContext.arucoContext.canvas)	
+			
+			camera.aspect = renderer.domElement.width / renderer.domElement.height;
+			camera.updateProjectionMatrix();			
+		}else if( trackingBackend === 'tango' ){
+			renderer.setSize( window.innerWidth, window.innerHeight )
+			// camera handling is necessary in tango... but not here
+			var vrDisplay = arToolkitContext._tangoContext.vrDisplay
+			// make camera fit vrDisplay
+			if( vrDisplay )	THREE.WebAR.resizeVRSeeThroughCamera(vrDisplay, camera)
+		}else console.assert(false, 'unhandled trackingBackend '+trackingBackend)
+	}
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
@@ -148,7 +191,19 @@
 	arToolkitContext.init()
 	
 	arToolkitContext.addEventListener('initialized', function(event){
-		arToolkitSource.onResize2(arToolkitContext, renderer, camera)
+// NOTE: reduce this. put it in a function ? arToolkitContext.resizeCamera(camera)
+// - all but the special case to get video in tango
+		// if artoolkit, copy projection matrix to camera
+		if( arToolkitContext.parameters.trackingBackend === 'artoolkit' ){
+			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
+		}else if( arToolkitContext.parameters.trackingBackend === 'aruco' ){
+			// no nothing
+		}else if( arToolkitContext.parameters.trackingBackend === 'tango' ){
+			var vrDisplay = arToolkitContext._tangoContext.vrDisplay
+			console.assert(vrDisplay)
+			// make camera fit vrDisplay
+			THREE.WebAR.resizeVRSeeThroughCamera(vrDisplay, camera)
+		}else console.assert(false, 'unhandled trackingBackend '+trackingBackend)
 
 		// special case for trackingBackend tango
 		if( arToolkitContext.parameters.trackingBackend === 'tango' ){
@@ -175,17 +230,32 @@
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
 	
-	// honor changeMatrixMode
-	artoolkitProfile.defaultMarkerParameters.changeMatrixMode = changeMatrixMode
-
+	// init controls for camera
+	var controlsParameters = {
+		// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
+		changeMatrixMode: changeMatrixMode
+	}		
+// TODO handle that in the profile
+	if( arToolkitContext.parameters.trackingBackend === 'artoolkit' ){
+		controlsParameters.type = 'pattern'
+		controlsParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+	}else if( arToolkitContext.parameters.trackingBackend === 'aruco' ){
+		controlsParameters.type = 'barcode'
+		controlsParameters.barcodeValue = 1001
+	}else if( arToolkitContext.parameters.trackingBackend === 'tango' ){
+		// FIXME temporary placeholder - to reevaluate later
+		controlsParameters.type = 'barcode'
+		controlsParameters.barcodeValue = 1001
+	}else console.assert(false)
+	
 	// FIXME do i need this ?
 	if( changeMatrixMode === 'modelViewMatrix' ){
 		var markerRoot = new THREE.Group
 		scene.add(markerRoot)
-		var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, artoolkitProfile.defaultMarkerParameters)		
+		var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, controlsParameters)		
 	}else if( changeMatrixMode === 'cameraTransformMatrix' ){
 		var markerRoot = scene
-		var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, artoolkitProfile.defaultMarkerParameters)
+		var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, controlsParameters)
 		onRenderFcts.push(function(){
 			// update scene.visible if the marker is seen
 			arWorldRoot.visible = camera.visible
