@@ -87,7 +87,6 @@
 	var sceneOrtho = new THREE.Scene()
 	var cameraOrtho = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 100 )
 	
-	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize the camera
 	//////////////////////////////////////////////////////////////////////////////////
@@ -150,7 +149,7 @@
 		})		
 	})
 
-	// picking tango specific
+	// picking to set object position - tango only
         renderer.domElement.addEventListener("click", function(event) {
 		if( trackingBackend !== 'tango' )	return
 
