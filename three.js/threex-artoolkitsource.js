@@ -306,7 +306,7 @@ THREEx.ArToolkitSource.prototype.copySizeTo = function(){
 }
 
 THREEx.ArToolkitSource.prototype.onResize = function(){
-	console.warn('obsolete function arToolkitSource.onResizeElement. Use arToolkitSource.onResizeElement' )
+	console.warn('obsolete function arToolkitSource.onResize. Use arToolkitSource.onResizeElement' )
 	this.onResizeElement.apply(this, arguments)
 }
 
@@ -319,17 +319,17 @@ THREEx.ArToolkitSource.prototype.onResize2	= function(arToolkitContext, renderer
 
 	// RESIZE DOMELEMENT
 	if( trackingBackend === 'artoolkit' ){
-		this.onResize()
-		this.copySizeTo(renderer.domElement)	
+		this.onResizeElement()
+		this.copyElementSizeTo(renderer.domElement)	
 
 		if( arToolkitContext.arController !== null ){
-			this.copySizeTo(arToolkitContext.arController.canvas)	
+			this.copyElementSizeTo(arToolkitContext.arController.canvas)	
 		}
 	}else if( trackingBackend === 'aruco' ){
-		this.onResize()
-		this.copySizeTo(renderer.domElement)	
+		this.onResizeElement()
+		this.copyElementSizeTo(renderer.domElement)	
 
-		this.copySizeTo(arToolkitContext.arucoContext.canvas)	
+		this.copyElementSizeTo(arToolkitContext.arucoContext.canvas)	
 	}else if( trackingBackend === 'tango' ){
 		renderer.setSize( window.innerWidth, window.innerHeight )
 	}else console.assert(false, 'unhandled trackingBackend '+trackingBackend)
