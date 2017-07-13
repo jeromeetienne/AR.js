@@ -327,7 +327,9 @@ THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 		console.log('vrDisplays.displayName :', vrDisplay.displayName)
 
 		// init vrPointCloud
-                _this._tangoContext.vrPointCloud = new THREE.WebAR.VRPointCloud(vrDisplay, true)
+		if( vrDisplay.displayName === "Tango VR Device" ){
+                	_this._tangoContext.vrPointCloud = new THREE.WebAR.VRPointCloud(vrDisplay, true)
+		}
 
 		// NOTE it doesnt seem necessary and it fails on tango
 		// var canvasElement = document.createElement('canvas')
@@ -353,10 +355,12 @@ THREEx.ArToolkitContext.prototype._updateTango = function(srcElement){
 
 
         // Update the point cloud. Only if the point cloud will be shown the geometry is also updated.
-        var showPointCloud = true
-	var pointsToSkip = 0
-        _this._tangoContext.vrPointCloud.update(showPointCloud, pointsToSkip)                        
-		
+	if( vrDisplay.displayName === "Tango VR Device" ){
+	        var showPointCloud = true
+		var pointsToSkip = 0
+	        _this._tangoContext.vrPointCloud.update(showPointCloud, pointsToSkip)                        		
+	}
+
 
 	if( this._arMarkersControls.length === 0 )	return
 

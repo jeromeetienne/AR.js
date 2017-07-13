@@ -79,20 +79,22 @@
 	// init scene and camera
 	var scene	= new THREE.Scene();
 	
-	//////////////////////////////////////////////////////////////////////////////
-	//                handle videoPlane 
-	//////////////////////////////////////////////////////////////////////////////
-	
-	// Create the see through camera scene and camera
-	var sceneOrtho = new THREE.Scene()
-	var cameraOrtho = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 100 )
-	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize the camera
 	//////////////////////////////////////////////////////////////////////////////////
 
 	var camera = ARjs.Utils.createDefaultCamera(trackingBackend)
 	scene.add(camera);
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//                handle rendering for tango video
+	//////////////////////////////////////////////////////////////////////////////
+	
+	if( trackingBackend === 'tango' ){
+		// Create the see through camera scene and camera
+		var sceneOrtho = new THREE.Scene()
+		var cameraOrtho = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 100 )		
+	}
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//          handle arToolkitSource
@@ -245,7 +247,7 @@
 		// Render the see through camera scene
 		renderer.clear()
 		
-		if( arContext.parameters.trackingBackend === 'tango'){                                
+		if( trackingBackend === 'tango'){                                
 			renderer.render( sceneOrtho, cameraOrtho )
 			// Render the perspective scene
 			renderer.clearDepth()
