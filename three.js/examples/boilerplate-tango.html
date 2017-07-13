@@ -145,7 +145,7 @@
                 THREE.WebAR.resizeVRSeeThroughCamera(vrDisplay, camera)
 
                 // init videoPlane
-                var videoPlane = THREE.WebAR.createVRSeeThroughCameraMesh(vrDisplay, 'videos/sintel.webm')
+                var videoPlane = THREE.WebAR.createVRSeeThroughCameraMesh(vrDisplay)
                 sceneOrtho.add(videoPlane)
                 onRenderFcts.push(function(){
                         // Make sure that the camera is correctly displayed depending on the
@@ -166,8 +166,7 @@
                 var geometry = vrPointCloud.getBufferGeometry()
 
                 var pointsObject = new THREE.Points(geometry, material)
-                // Points are changing all the time so calculating the frustum culling
-                // volume is not very convenient.
+                // Points are changing all the time so calculating the frustum culling volume is not very convenient.
                 pointsObject.frustumCulled = false;
                 pointsObject.renderDepth = 0;
                 if( parameters.showPointCloud === true )   scene.add(pointsObject)

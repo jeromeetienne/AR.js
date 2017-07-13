@@ -52,7 +52,8 @@ THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
  * @param {string} trackingBackend - the tracking to user
  * @return {THREE.Camera} the created camera
  */
-THREEx.ArToolkitContext.createDefaultCamera = function(trackingBackend){
+THREEx.ArToolkitContext.createDefaultCamera = function( trackingBackend ){
+	console.assert(false, 'use ARjs.Utils.createDefaultCamera instead')
 	// Create a camera
 	if( trackingBackend === 'artoolkit' ){
 		var camera = new THREE.Camera();
@@ -313,6 +314,7 @@ THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 
 	this._tangoContext = {
 		vrDisplay: null,
+		vrPointCloud: null,
 		frameData: new VRFrameData(),
 	}
 	
@@ -320,9 +322,12 @@ THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 	// get vrDisplay
 	navigator.getVRDisplays().then(function (vrDisplays) {
 		if( vrDisplays.length === 0 )	alert('no vrDisplays available')
-		_this._tangoContext.vrDisplay = vrDisplays[0]
+		var vrDisplay = _this._tangoContext.vrDisplay = vrDisplays[0]
 
-		console.log('vrDisplays.displayName :', _this._tangoContext.vrDisplay.displayName)
+		console.log('vrDisplays.displayName :', vrDisplay.displayName)
+
+		// init vrPointCloud
+                _this._tangoContext.vrPointCloud = new THREE.WebAR.VRPointCloud(vrDisplay, true)
 
 		// NOTE it doesnt seem necessary and it fails on tango
 		// var canvasElement = document.createElement('canvas')
@@ -330,7 +335,7 @@ THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 		// _this._tangoContext.requestPresent([{ source: canvasElement }]).then(function() {
 		// 	console.log('vrdisplay request accepted')
 		// });
-		
+
 		onCompleted()
 	});
 }
@@ -341,9 +346,17 @@ THREEx.ArToolkitContext.prototype._updateTango = function(srcElement){
 	var _this = this
 	var arMarkersControls = this._arMarkersControls
 	var tangoContext= this._tangoContext
+	var vrDisplay = this._tangoContext.vrDisplay
 
 	// check vrDisplay is already initialized
-	if( tangoContext.vrDisplay === null )	return
+	if( vrDisplay === null )	return
+
+
+        // Update the point cloud. Only if the point cloud will be shown the geometry is also updated.
+        var showPointCloud = true
+	var pointsToSkip = 0
+        _this._tangoContext.vrPointCloud.update(showPointCloud, pointsToSkip)                        
+		
 
 	if( this._arMarkersControls.length === 0 )	return
 
@@ -354,7 +367,7 @@ THREEx.ArToolkitContext.prototype._updateTango = function(srcElement){
 	var frameData = this._tangoContext.frameData
 
 	// read frameData
-	tangoContext.vrDisplay.getFrameData(frameData);
+	vrDisplay.getFrameData(frameData);
 
 	if( frameData.pose.position === null )		return
 	if( frameData.pose.orientation === null )	return

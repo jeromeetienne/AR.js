@@ -5,7 +5,6 @@ var THREEx = THREEx || {}
  * - seems an easy light layer for clickable object
  * - up to 
  */
-
 THREEx.ARClickability = function(sourceElement){
 	this._sourceElement = sourceElement
 	// Create cameraPicking
@@ -43,4 +42,37 @@ THREEx.ARClickability.prototype.computeIntersects = function(domEvent, objects){
 
 THREEx.ARClickability.prototype.update = function(){
 
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.ARClickability.tangoPickingPointCloud = function(artoolkitContext, mouseX, mouseY){
+	var vrDisplay = artoolkitContext._tangoContext.vrDisplay
+        if (vrDisplay === null ) return
+        var pointAndPlane = vrDisplay.getPickingPointAndPlaneInPointCloud(mouseX, mouseY)
+        if( pointAndPlane == null ) {
+                console.warn('Could not retrieve the correct point and plane.')
+                return null
+        }
+	
+	// FIXME not sure what this is
+	var boundingSphereRadius = 0.01	
+	
+	// the bigger the number the likeliest it crash chromium-webar
+
+        // Orient and position the model in the picking point according
+        // to the picking plane. The offset is half of the model size.
+        var object3d = new THREE.Object3D
+        THREE.WebAR.positionAndRotateObject3DWithPickingPointAndPlaneInPointCloud(
+                pointAndPlane, object3d, boundingSphereRadius
+        )
+	object3d.rotateZ(-Math.PI/2)
+
+	// return the result
+	var result = {}
+	result.position = object3d.position
+	result.quaternion = object3d.quaternion
+	return result
 }
