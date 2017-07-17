@@ -61,6 +61,9 @@
 - [Screen as portal](https://jeromeetienne.github.io/AR.js/three.js/examples/multi-markers/examples/screenAsPortal/index.html) :
   screen as portal
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/multi-markers/examples/screenAsPortal/index.html))
+- [face tracking](https://jeromeetienne.github.io/AR.js/three.js/examples/face-tracking/manual.html) :
+  face tracking experiment with tracking.js
+  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/face-tracking/manual.html))
 
 
 
