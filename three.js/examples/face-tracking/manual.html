@@ -10,8 +10,17 @@
 <script src='vendor/tracking.js/src/alignment/training/Landmarks.js'></script>
 <script src='vendor/tracking.js/src/alignment/training/Regressor.js'></script>
 
-<body>
-<script>
+<link rel="stylesheet" href="/css/main.css">
+<!-- for video source -->
+<!-- <video id='videoWebcam' width="368" height="288" autoplay loop>
+	<source src="./assets/franck.mp4" type="video/mp4"/>
+	<source src="./assets/franck.ogv" type="video/ogg"/>
+</video> -->
+<!-- for webcam -->
+<video id="videoWebcam" preload autoplay loop muted></video>
+<canvas id="canvasDetection"></canvas>        
+
+<body><script>
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////
@@ -98,30 +107,6 @@
 	})
 </script>
 
-<style>
-        #videoWebcam {
-                position: absolute;
-                top: 0px;
-                left: 0px;
-                width : 320px;
-                height: auto;
-                zoom: 3;
-        }
-        #canvasDetection {
-                position: absolute;
-                top: 0px;
-                left: 0px;
-                width : 320px;
-                height: auto;
-                zoom: 3;
-        }
-</style>
-<!-- <video id='videoWebcam' width="368" height="288" autoplay loop>
-	<source src="./assets/franck.mp4" type="video/mp4"/>
-	<source src="./assets/franck.ogv" type="video/ogg"/>
-</video> -->
-<video id="videoWebcam" preload autoplay loop muted></video>
-<canvas id="canvasDetection"></canvas>        
 <script>
         var canvasDetection = document.querySelector('#canvasDetection');
         canvasDetection.width = 320
@@ -134,8 +119,8 @@
         tracker.setInitialScale(4);
         tracker.setStepSize(2);
 
-        tracker.setInitialScale(2);
-        tracker.setStepSize(1);
+        tracker.setInitialScale(1);
+        tracker.setStepSize(2);
 
         
         var gui = new dat.GUI();
@@ -143,8 +128,9 @@
         gui.add(tracker, 'initialScale', 1.0, 10.0).step(0.1).listen();
         gui.add(tracker, 'stepSize', 0.5, 5).step(0.1).listen();
         
-
+	// for video file
         // tracking.track(videoElement, tracker);
+        // for video webcam
         var videoElement = document.querySelector('#videoWebcam')
         tracking.track(videoElement, tracker, { camera: true });
         
@@ -232,6 +218,14 @@
                         
                         // display each faceLandmarks
                         displayFaceLandmarksDot(lerpedFacesLandmarks)
+			
+			var topNose = lerpedFacesLandmarks[15]
+			var positionX = (topNose[0]/canvasDetection.width - 0.5) * 2
+			var positionY = (topNose[1]/canvasDetection.height - 0.5) * 2
+			// console.log('topNose', topNose[0]/canvasDetection.width)
+			camera.position.x = - positionX * 2
+			camera.position.y = - positionY * 2
+			camera.lookAt(scene.position)
                 });
         })
 
