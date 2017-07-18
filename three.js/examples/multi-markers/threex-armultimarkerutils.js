@@ -5,6 +5,13 @@ THREEx.ArMultiMarkerUtils = {}
 //////////////////////////////////////////////////////////////////////////////
 //		navigateToLearnerPage
 //////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Navigate to the multi-marker learner page
+ * 
+ * @param {String} learnerBaseURL  - the base url for the learner
+ * @param {String} trackingBackend - the tracking backend to use
+ */
 THREEx.ArMultiMarkerUtils.navigateToLearnerPage = function(learnerBaseURL, trackingBackend){
 	var learnerParameters = {
 		backURL : location.href,
@@ -17,6 +24,12 @@ THREEx.ArMultiMarkerUtils.navigateToLearnerPage = function(learnerBaseURL, track
 //////////////////////////////////////////////////////////////////////////////
 //		DefaultMultiMarkerFile
 //////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Create and store a default multi-marker file
+ * 
+ * @param {String} trackingBackend - the tracking backend to use
+ */
 THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile = function(trackingBackend){
 	var file = THREEx.ArMultiMarkerUtils.createDefaultMultiMarkerFile(trackingBackend)
 	// json.strinfy the value and store it in localStorage
@@ -24,7 +37,15 @@ THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile = function(trackingBackend
 }
 
 
+
+/**
+ * Create a default multi-marker file
+ * @param {String} trackingBackend - the tracking backend to use
+ * @return {Object} - json object of the multi-marker file
+ */
 THREEx.ArMultiMarkerUtils.createDefaultMultiMarkerFile = function(trackingBackend){
+	console.assert(trackingBackend)
+	if( trackingBackend === undefined )	debugger
 	// create the base file
 	var file = {
 		meta : {
@@ -33,7 +54,7 @@ THREEx.ArMultiMarkerUtils.createDefaultMultiMarkerFile = function(trackingBacken
 		},
 		trackingBackend : trackingBackend,
 		subMarkersControls : [
-			// empty for now...
+			// empty for now... being filled 
 		]
 	}
 	// add a subMarkersControls
@@ -57,6 +78,12 @@ THREEx.ArMultiMarkerUtils.createDefaultMultiMarkerFile = function(trackingBacken
 //		createDefaultMarkersControlsParameters
 //////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Create a default controls parameters for the multi-marker learner
+ * 
+ * @param {String} trackingBackend - the tracking backend to use
+ * @return {Object} - json object containing the controls parameters
+ */
 THREEx.ArMultiMarkerUtils.createDefaultMarkersControlsParameters = function(trackingBackend){
 	var link = document.createElement('a')
 	link.href = THREEx.ArToolkitContext.baseURL
