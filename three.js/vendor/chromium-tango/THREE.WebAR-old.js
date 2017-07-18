@@ -49,7 +49,7 @@ THREE.WebAR.VRPointCloud = function(vrDisplay) {
   var positions = null;
   if (vrDisplay) {
     this._pointCloud = new VRPointCloud();
-    vrDisplay.getPointCloud(this._pointCloud, false, 0, false);
+    vrDisplay.getPointCloud(this._pointCloud, false, 0);
     positions = this._pointCloud.points;
   }
   else {
@@ -100,13 +100,12 @@ THREE.WebAR.VRPointCloud.prototype.getBufferGeometry = function() {
 * Update the point cloud. The THREE.BufferGeometry that this class provides will automatically be updated with the point cloud retrieved by the underlying hardware.
 * @param {boolean} updateBufferGeometry A flag to indicate if the underlying THREE.BufferGeometry should also be updated. Updating the THREE.BufferGeometry is very cost innefficient so it is better to only do it if necessary (only if the buffer geometry is going to be rendered for example). If this flag is set to false,  then the underlying point cloud is updated but not buffer geometry that represents it. Updating the point cloud is important to be able to call functions that operate with it, like the getPickingPointAndPlaneInPointCloud function.
 * @param {number} pointsToSkip A positive integer from 0-N that specifies the number of points to skip when returning the point cloud. If the updateBufferGeometry flag is activated (true) then this parameter allows to specify the density of the point cloud. A values of 0 means all the detected points need to be returned. A number of 1 means that 1 every other point needs to be skipped and thus, half of the detected points will be retrieved, and so on. If the parameter is not specified, 0 is considered.
-* @param {boolean} transformPoints A flag to specify if the points should be transformed in the native side or not. If the points are not transformed in the native side, they should be transformed in the JS side (in a vertex shader for example).
 */
-THREE.WebAR.VRPointCloud.prototype.update = function(updateBufferGeometry, pointsToSkip, transformPoints) {
+THREE.WebAR.VRPointCloud.prototype.update = function(updateBufferGeometry, pointsToSkip) {
   if (!this._vrDisplay) return;
   this._vrDisplay.getPointCloud(this._pointCloud, 
     !updateBufferGeometry, typeof(pointsToSkip) === "number" ? 
-      pointsToSkip : 0, !!transformPoints);
+      pointsToSkip : 0);
   if (!updateBufferGeometry) return;
   if (this._pointCloud.numberOfPoints > 0) {
     this._positions.needsUpdate = true;
@@ -438,11 +437,6 @@ THREE.WebAR.rotateObject3D = function(normal1, normal2, object3d) {
   object3d.quaternion.setFromRotationMatrix(THREE.WebAR._rotationMatrix);
 };
 
-/**
-* Transform a given THREE.Object3D instance to be correctly oriented according to a given plane normal.
-* @param {THREE.Vector3|THREE.Vector4|Float32Array} plane A vector that represents the normal of the plane to be used to orient the object3d.
-* @param {THREE.Object3D} object3d The object3d to be transformed so it is oriented according to the given plane.
-*/
 THREE.WebAR.rotateObject3DWithPickingPlane = function(plane, object3d) {
   if (plane instanceof THREE.Vector3 || plane instanceof THREE.Vector4) {
     THREE.WebAR._planeNormal.set(plane.x, plane.y, plane.z);
@@ -475,11 +469,6 @@ THREE.WebAR.rotateObject3DWithPickingPlane = function(plane, object3d) {
   object3d.quaternion.setFromRotationMatrix(THREE.WebAR._rotationMatrix);
 };
 
-/**
-* Transform a given THREE.Object3D instance to be correctly positioned according to a given point position.
-* @param {THREE.Vector3|THREE.Vector4|Float32Array} point A vector that represents the position where the object3d should be positioned.
-* @param {THREE.Object3D} object3d The object3d to be transformed so it is positioned according to the given point.
-*/
 THREE.WebAR.positionObject3DWithPickingPoint = function(point, object3d) {
   if (point instanceof THREE.Vector3 || point instanceof THREE.Vector4) {
     object3d.position.set(point.x, point.y, point.z);
@@ -493,8 +482,8 @@ THREE.WebAR.positionObject3DWithPickingPoint = function(point, object3d) {
 };
 
 /**
-* Transform a given THREE.Object3D instance to be correctly positioned and oriented according to a given VRPickingPointAndPlane and a scale (half the size of the object3d for example).
-* @param {VRPickingPointandPlane} pointAndPlane The point and plane retrieved using the VRDisplay.getPickingPointAndPlaneInPointCloud function.
+* Transform a given THREE.Object3D instance to be correctly positioned and oriented according to a given VRPickingPointAndPlane and a scale (half the size of the object3d).
+* @param {VRPickingPointandPlane} pointAndPlane - The point and plane retrieved using the VRDisplay.getPickingPointAndPlaneInPointCloud function.
 * @param {THREE.Object3D} object3d The object3d to be transformed so it is positioned and oriented according to the given point and plane.
 * @param {number} scale The value the object3d will be positioned in the direction of the normal of the plane to be correctly positioned. Objects usually have their position value referenced as the center of the geometry. In this case, positioning the object in the picking point would lead to have the object3d positioned in the plane, not on top of it. this scale value will allow to correctly position the object in the picking point and in the direction of the normal of the plane. Half the size of the object3d would be a correct value in this case.
 */
@@ -505,12 +494,6 @@ THREE.WebAR.positionAndRotateObject3DWithPickingPointAndPlaneInPointCloud =
   object3d.position.add(THREE.WebAR._planeNormal.multiplyScalar(scale));
 };
 
-/**
-* Transform a given THREE.Object3D instance to be correctly positioned and oriented according to an axis formed by 2 plane normals, a position and a scale (half the size of the object3d for example).
-* @param {VRPickingPointandPlane} pointAndPlane The point and plane retrieved using the VRDisplay.getPickingPointAndPlaneInPointCloud function.
-* @param {THREE.Object3D} object3d The object3d to be transformed so it is positioned and oriented according to the given point and plane.
-* @param {number} scale The value the object3d will be positioned in the direction of the normal of the plane to be correctly positioned. Objects usually have their position value referenced as the center of the geometry. In this case, positioning the object in the picking point would lead to have the object3d positioned in the plane, not on top of it. this scale value will allow to correctly position the object in the picking point and in the direction of the normal of the plane. Half the size of the object3d would be a correct value in this case.
-*/
 THREE.WebAR.positionAndRotateObject3D = 
   function(position, normal1, normal2, object3d, scale) {
   THREE.WebAR.rotateObject3D(normal1, normal2, object3d);
