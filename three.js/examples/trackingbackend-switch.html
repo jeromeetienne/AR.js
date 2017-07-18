@@ -134,6 +134,7 @@
 		arToolkitSource.onResize2(arContext, renderer, camera)
 	})
 
+	// tango only - init cameraMesh
 	arContext.addEventListener('initialized', function(event){
 		if( trackingBackend !== 'tango' )	return
 		var vrDisplay = arContext._tangoContext.vrDisplay
@@ -151,7 +152,7 @@
 		})		
 	})
 
-	// picking to set object position - tango only
+	// tango only - picking to set object position
         renderer.domElement.addEventListener("click", function(event) {
 		if( trackingBackend !== 'tango' )	return
 
