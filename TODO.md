@@ -10,6 +10,11 @@
   - ```arglCameraFrustum(&((arc->paramLT)->param), arc->nearPlane, arc->farPlane, arc->cameraLens);```
   - this should be called in setNearPlane
 
+- do test with a special webrtc emulation layer
+  - so i can download video and/or image - better for testing
+- handle pwa stuff - useful for phone
+  - https://twitter.com/jerome_etienne/status/888008537984708608
+
 # aframe-ar.js new
 - there is a resize every 1/60 seconds ??
 - test on mobile

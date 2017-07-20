@@ -41,7 +41,6 @@ var THREEx = THREEx || {}
  * - seems an easy light layer for clickable object
  * - up to 
  */
-
 THREEx.ARClickability = function(sourceElement){
 	this._sourceElement = sourceElement
 	// Create cameraPicking
@@ -79,6 +78,39 @@ THREEx.ARClickability.prototype.computeIntersects = function(domEvent, objects){
 
 THREEx.ARClickability.prototype.update = function(){
 
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.ARClickability.tangoPickingPointCloud = function(artoolkitContext, mouseX, mouseY){
+	var vrDisplay = artoolkitContext._tangoContext.vrDisplay
+        if (vrDisplay === null ) return
+        var pointAndPlane = vrDisplay.getPickingPointAndPlaneInPointCloud(mouseX, mouseY)
+        if( pointAndPlane == null ) {
+                console.warn('Could not retrieve the correct point and plane.')
+                return null
+        }
+	
+	// FIXME not sure what this is
+	var boundingSphereRadius = 0.01	
+	
+	// the bigger the number the likeliest it crash chromium-webar
+
+        // Orient and position the model in the picking point according
+        // to the picking plane. The offset is half of the model size.
+        var object3d = new THREE.Object3D
+        THREE.WebAR.positionAndRotateObject3DWithPickingPointAndPlaneInPointCloud(
+                pointAndPlane, object3d, boundingSphereRadius
+        )
+	object3d.rotateZ(-Math.PI/2)
+
+	// return the result
+	var result = {}
+	result.position = object3d.position
+	result.quaternion = object3d.quaternion
+	return result
 }
 var THREEx = THREEx || {}
 /**
@@ -478,7 +510,6 @@ THREEx.ArMarkerControls.prototype._initArtoolkit = function(){
 		}else{
 			console.log(false, 'invalid marker type', _this.parameters.type)
 		}
-		
 
 		// listen to the event
 		arController.addEventListener('getMarker', function(event){
@@ -558,136 +589,6 @@ THREEx.ArMarkerHelper = function(markerControls){
 
 	this.object3d.add(mesh)
 	
-}
-var THREEx = THREEx || {}
-
-/**
- * - lerp position/quaternino/scale
- * - minDelayDetected
- * - minDelayUndetected
- * @param {[type]} object3d   [description]
- * @param {[type]} parameters [description]
- */
-THREEx.ArSmoothedControls = function(object3d, parameters){
-	var _this = this
-	
-	THREEx.ArBaseControls.call(this, object3d)
-	
-	// copy parameters
-	this.object3d.visible = false
-	
-	this._lastLerpStepAt = null
-	this._visibleStartedAt = null
-	this._unvisibleStartedAt = null
-
-	// handle default parameters
-	parameters = parameters || {}
-	this.parameters = {
-		// lerp coeficient for the position - between [0,1] - default to 1
-		lerpPosition: parameters.lerpPosition !== undefined ? parameters.lerpPosition : 0.8,
-		// lerp coeficient for the quaternion - between [0,1] - default to 1
-		lerpQuaternion: parameters.lerpQuaternion !== undefined ? parameters.lerpQuaternion : 0.2,
-		// lerp coeficient for the scale - between [0,1] - default to 1
-		lerpScale: parameters.lerpScale !== undefined ? parameters.lerpScale : 0.7,
-		// delay for lerp fixed steps - in seconds - default to 1/120
-		lerpStepDelay: parameters.fixStepDelay !== undefined ? parameters.fixStepDelay : 1/60,
-		// minimum delay the sub-control must be visible before this controls become visible - default to 0 seconds
-		minVisibleDelay: parameters.minVisibleDelay !== undefined ? parameters.minVisibleDelay : 0.0,
-		// minimum delay the sub-control must be unvisible before this controls become unvisible - default to 0 seconds
-		minUnvisibleDelay: parameters.minUnvisibleDelay !== undefined ? parameters.minUnvisibleDelay : 0.2,
-	}
-}
-	
-THREEx.ArSmoothedControls.prototype = Object.create( THREEx.ArBaseControls.prototype );
-THREEx.ArSmoothedControls.prototype.constructor = THREEx.ArSmoothedControls;
-
-//////////////////////////////////////////////////////////////////////////////
-//		update function
-//////////////////////////////////////////////////////////////////////////////
-
-THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
-	var object3d = this.object3d
-	var parameters = this.parameters
-	var wasVisible = object3d.visible
-	var present = performance.now()/1000
-
-
-	//////////////////////////////////////////////////////////////////////////////
-	//		handle object3d.visible with minVisibleDelay/minUnvisibleDelay
-	//////////////////////////////////////////////////////////////////////////////
-	if( targetObject3d.visible === false )	this._visibleStartedAt = null
-	if( targetObject3d.visible === true )	this._unvisibleStartedAt = null
-
-	if( wasVisible === false && targetObject3d.visible === true ){
-		if( this._visibleStartedAt === null )		this._visibleStartedAt = present
-		var visibleFor = present - this._visibleStartedAt
-		if( visibleFor >= this.parameters.minVisibleDelay ){
-			object3d.visible = true
-			this._visibleStartedAt = null
-		}
-		console.log('visibleFor', visibleFor)
-	}
-
-	if( wasVisible === true && targetObject3d.visible === false ){
-		if( this._unvisibleStartedAt === null )	this._unvisibleStartedAt = present 
-		var unvisibleFor = present - this._unvisibleStartedAt
-		if( unvisibleFor >= this.parameters.minUnvisibleDelay ){
-			object3d.visible = false			
-		}
-		// console.log('unvisibleFor', unvisibleFor)
-	}
-	
-	// disabled minVisibleDelay+minUnvisibleDelay
-	// if( true ){		
-	// 	object3d.visible = targetObject3d.visible
-	// }
-	
-	//////////////////////////////////////////////////////////////////////////////
-	//		apply lerp on positon/quaternion/scale
-	//////////////////////////////////////////////////////////////////////////////
-
-	// apply lerp steps - require fix time steps to behave the same no matter the fps
-	if( this._lastLerpStepAt === null ){
-		applyOneSlepStep()
-		this._lastLerpStepAt = present
-	}else{
-		var nStepsToDo = Math.floor( (present - this._lastLerpStepAt)/this.parameters.lerpStepDelay )
-		for(var i = 0; i < nStepsToDo; i++){
-			applyOneSlepStep()
-			this._lastLerpStepAt += this.parameters.lerpStepDelay
-		}
-	}
-
-	// update the matrix
-	this.object3d.updateMatrix()
-
-	// disable the lerp by directly copying targetObject3d position/quaternion/scale
-	if( false ){		
-		this.object3d.position.copy( targetObject3d.position )
-		this.object3d.quaternion.copy( targetObject3d.quaternion )
-		this.object3d.scale.copy( targetObject3d.scale )
-		this.object3d.updateMatrix()
-	}
-
-	//////////////////////////////////////////////////////////////////////////////
-	//		honor becameVisible/becameUnVisible event
-	//////////////////////////////////////////////////////////////////////////////
-	// honor becameVisible event
-	if( wasVisible === false && object3d.visible === true ){
-		this.dispatchEvent({ type: 'becameVisible' })
-	}
-	// honor becameUnVisible event
-	if( wasVisible === true && object3d.visible === false ){
-		this.dispatchEvent({ type: 'becameUnVisible' })
-	}
-	return
-	
-	
-	function applyOneSlepStep(){
-		object3d.position.lerp(targetObject3d.position, parameters.lerpPosition)
-		object3d.quaternion.slerp(targetObject3d.quaternion, parameters.lerpQuaternion)
-		object3d.scale.lerp(targetObject3d.scale, parameters.lerpScale)
-	}
 }
 var THREEx = THREEx || {}
 
@@ -830,7 +731,7 @@ THREEx.ArToolkitContext = function(parameters){
 		// debug - true if one should display artoolkit debug canvas, false otherwise
 		debug: parameters.debug !== undefined ? parameters.debug : false,
 		// the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
-		detectionMode: parameters.detectionMode !== undefined ? parameters.detectionMode : 'color_and_matrix',
+		detectionMode: parameters.detectionMode !== undefined ? parameters.detectionMode : 'mono',
 		// type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
 		matrixCodeType: parameters.matrixCodeType !== undefined ? parameters.matrixCodeType : '3x3',
 		
@@ -865,17 +766,48 @@ THREEx.ArToolkitContext.baseURL = 'https://jeromeetienne.github.io/AR.js/three.j
 THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 
 
+/**
+ * Create a default camera for this trackingBackend
+ * @param {string} trackingBackend - the tracking to user
+ * @return {THREE.Camera} the created camera
+ */
+THREEx.ArToolkitContext.createDefaultCamera = function( trackingBackend ){
+	console.assert(false, 'use ARjs.Utils.createDefaultCamera instead')
+	// Create a camera
+	if( trackingBackend === 'artoolkit' ){
+		var camera = new THREE.Camera();
+	}else if( trackingBackend === 'aruco' ){
+		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
+	}else if( trackingBackend === 'tango' ){
+		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
+	}else console.assert(false)
+	return camera
+}
+
+
 //////////////////////////////////////////////////////////////////////////////
 //		init functions
 //////////////////////////////////////////////////////////////////////////////
 THREEx.ArToolkitContext.prototype.init = function(onCompleted){
+	var _this = this
 	if( this.parameters.trackingBackend === 'artoolkit' ){
-		this._initArtoolkit(onCompleted)
+		this._initArtoolkit(done)
 	}else if( this.parameters.trackingBackend === 'aruco' ){
-		this._initAruco(onCompleted)
+		this._initAruco(done)
 	}else if( this.parameters.trackingBackend === 'tango' ){
-		this._initTango(onCompleted)
+		this._initTango(done)
 	}else console.assert(false)
+	return
+	
+	function done(){
+		// dispatch event
+		_this.dispatchEvent({
+			type: 'initialized'
+		});
+
+		onCompleted && onCompleted()
+	}
+
 }
 ////////////////////////////////////////////////////////////////////////////////
 //          update function
@@ -917,8 +849,6 @@ THREEx.ArToolkitContext.prototype.update = function(srcElement){
 	// return true as we processed the frame
 	return true;
 }
-
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //          Add/Remove markerControls
@@ -1002,7 +932,7 @@ THREEx.ArToolkitContext.prototype._initArtoolkit = function(onCompleted){
 		// arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_AUTO_OTSU)
 
 		// notify
-                onCompleted && onCompleted()                
+                onCompleted()                
         })		
 	return this
 }
@@ -1056,7 +986,7 @@ THREEx.ArToolkitContext.prototype._initAruco = function(onCompleted){
 
 	
 	setTimeout(function(){
-		onCompleted && onCompleted()
+		onCompleted()
 	}, 0)
 }
 
@@ -1093,6 +1023,7 @@ THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 	var _this = this
 	// check webvr is available
 	if (navigator.getVRDisplays) {
+		// do nothing
 	} else if (navigator.getVRDevices) {
 		alert("Your browser supports WebVR but not the latest version. See <a href='http://webvr.info'>webvr.info</a> for more info.");
 	} else {
@@ -1102,6 +1033,7 @@ THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 
 	this._tangoContext = {
 		vrDisplay: null,
+		vrPointCloud: null,
 		frameData: new VRFrameData(),
 	}
 	
@@ -1109,20 +1041,23 @@ THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 	// get vrDisplay
 	navigator.getVRDisplays().then(function (vrDisplays) {
 		if( vrDisplays.length === 0 )	alert('no vrDisplays available')
-		var vrDisplay = vrDisplays[0]
-		_this._tangoContext.vrDisplay = vrDisplay
+		var vrDisplay = _this._tangoContext.vrDisplay = vrDisplays[0]
+
 		console.log('vrDisplays.displayName :', vrDisplay.displayName)
 
+		// init vrPointCloud
+		if( vrDisplay.displayName === "Tango VR Device" ){
+                	_this._tangoContext.vrPointCloud = new THREE.WebAR.VRPointCloud(vrDisplay, true)
+		}
 
-		var canvasElement = document.createElement('canvas')
-		document.body.appendChild(canvasElement)
-		var layers = [{ source: canvasElement }]
-// 		vrDisplay.requestPresent(layers).then(function() {
-// 			console.log('vrdisplay request accepted')
-// 		});
-// window.vrDisplay = vrDisplay
+		// NOTE it doesnt seem necessary and it fails on tango
+		// var canvasElement = document.createElement('canvas')
+		// document.body.appendChild(canvasElement)
+		// _this._tangoContext.requestPresent([{ source: canvasElement }]).then(function() {
+		// 	console.log('vrdisplay request accepted')
+		// });
 
-		onCompleted && onCompleted()
+		onCompleted()
 	});
 }
 
@@ -1132,9 +1067,19 @@ THREEx.ArToolkitContext.prototype._updateTango = function(srcElement){
 	var _this = this
 	var arMarkersControls = this._arMarkersControls
 	var tangoContext= this._tangoContext
+	var vrDisplay = this._tangoContext.vrDisplay
 
 	// check vrDisplay is already initialized
-	if( tangoContext.vrDisplay === null )	return
+	if( vrDisplay === null )	return
+
+
+        // Update the point cloud. Only if the point cloud will be shown the geometry is also updated.
+	if( vrDisplay.displayName === "Tango VR Device" ){
+	        var showPointCloud = true
+		var pointsToSkip = 0
+	        _this._tangoContext.vrPointCloud.update(showPointCloud, pointsToSkip, true)                        		
+	}
+
 
 	if( this._arMarkersControls.length === 0 )	return
 
@@ -1145,20 +1090,29 @@ THREEx.ArToolkitContext.prototype._updateTango = function(srcElement){
 	var frameData = this._tangoContext.frameData
 
 	// read frameData
-	tangoContext.vrDisplay.getFrameData(frameData);
+	vrDisplay.getFrameData(frameData);
+
+	if( frameData.pose.position === null )		return
+	if( frameData.pose.orientation === null )	return
 
 	// create cameraTransformMatrix
 	var position = new THREE.Vector3().fromArray(frameData.pose.position)
 	var quaternion = new THREE.Quaternion().fromArray(frameData.pose.orientation)
-	var scale = new THREE.Vector3(1,1,1)	
+	var scale = new THREE.Vector3(1,1,1)
 	var cameraTransformMatrix = new THREE.Matrix4().compose(position, quaternion, scale)
 	// compute modelViewMatrix from cameraTransformMatrix
 	var modelViewMatrix = new THREE.Matrix4()
 	modelViewMatrix.getInverse( cameraTransformMatrix )	
-	
-	console.log('position', position)
 
 	foundControls.updateWithModelViewMatrix(modelViewMatrix)
+		
+	// console.log('position', position)
+	// if( position.x !== 0 ||  position.y !== 0 ||  position.z !== 0 ){		
+	// 	console.log('vrDisplay tracking')
+	// }else{
+	// 	console.log('vrDisplay NOT tracking')
+	// }
+
 }
 var THREEx = THREEx || {}
 
@@ -1254,22 +1208,27 @@ THREEx.ArToolkitProfile.prototype.performance = function(label) {
 //////////////////////////////////////////////////////////////////////////////
 //		Marker
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitProfile.prototype.kanjiMarker = function () {
-	this.contextParameters.detectionMode = 'mono'
 
-	this.defaultMarkerParameters.type = 'pattern'
-	this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji'
+
+THREEx.ArToolkitProfile.prototype.defaultMarker = function (trackingBackend) {
+	trackingBackend = trackingBackend || this.contextParameters.trackingBackend
+
+	if( trackingBackend === 'artoolkit' ){
+		this.contextParameters.detectionMode = 'mono'
+		this.defaultMarkerParameters.type = 'pattern'
+		this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+	}else if( trackingBackend === 'aruco' ){
+		this.contextParameters.detectionMode = 'mono'
+		this.defaultMarkerParameters.type = 'barcode'
+		this.defaultMarkerParameters.barcodeValue = 1001
+	}else if( trackingBackend === 'tango' ){
+		// FIXME temporary placeholder - to reevaluate later
+		this.defaultMarkerParameters.type = 'barcode'
+		this.defaultMarkerParameters.barcodeValue = 1001
+	}else console.assert(false)
+
 	return this
 }
-
-THREEx.ArToolkitProfile.prototype.hiroMarker = function () {
-	this.contextParameters.detectionMode = 'mono'
-
-	this.defaultMarkerParameters.type = 'pattern'
-	this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
-	return this
-}
-
 //////////////////////////////////////////////////////////////////////////////
 //		Source
 //////////////////////////////////////////////////////////////////////////////
@@ -1297,6 +1256,7 @@ THREEx.ArToolkitProfile.prototype.sourceImage = function (url) {
 //////////////////////////////////////////////////////////////////////////////
 THREEx.ArToolkitProfile.prototype.trackingBackend = function (trackingBackend) {
 	this.contextParameters.trackingBackend = trackingBackend
+	return this
 }
 var THREEx = THREEx || {}
 
@@ -1534,7 +1494,7 @@ THREEx.ArToolkitSource.prototype.toggleMobileTorch = function(){
 //          handle resize
 ////////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArToolkitSource.prototype.onResize = function(mirrorDomElements){
+THREEx.ArToolkitSource.prototype.onResizeElement = function(mirrorDomElements){
 	var _this = this
 	var screenWidth = window.innerWidth
 	var screenHeight = window.innerHeight
@@ -1576,6 +1536,11 @@ THREEx.ArToolkitSource.prototype.onResize = function(mirrorDomElements){
 		this.domElement.style.marginLeft = '0px'
 	}
 	
+	
+	if( arguments.length !== 0 ){
+		debugger
+		console.warn('use bad signature for arToolkitSource.copyElementSizeTo')
+	}
 	// honor default parameters
 	// if( mirrorDomElements !== undefined )	console.warn('still use the old resize. fix it')
 	if( mirrorDomElements === undefined )	mirrorDomElements = []
@@ -1583,15 +1548,67 @@ THREEx.ArToolkitSource.prototype.onResize = function(mirrorDomElements){
 
 	// Mirror _this.domElement.style to mirrorDomElements
 	mirrorDomElements.forEach(function(domElement){
-		_this.copySizeTo(domElement)
+		_this.copyElementSizeTo(domElement)
 	})
 }
 
-THREEx.ArToolkitSource.prototype.copySizeTo = function(otherElement){
+THREEx.ArToolkitSource.prototype.copyElementSizeTo = function(otherElement){
 	otherElement.style.width = this.domElement.style.width
 	otherElement.style.height = this.domElement.style.height	
 	otherElement.style.marginLeft = this.domElement.style.marginLeft
 	otherElement.style.marginTop = this.domElement.style.marginTop
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.ArToolkitSource.prototype.copySizeTo = function(){
+	console.warn('obsolete function arToolkitSource.copySizeTo. Use arToolkitSource.copyElementSizeTo' )
+	this.copyElementSizeTo.apply(this, arguments)
+}
+
+THREEx.ArToolkitSource.prototype.onResize = function(){
+	console.warn('obsolete function arToolkitSource.onResize. Use arToolkitSource.onResizeElement' )
+	this.onResizeElement.apply(this, arguments)
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.ArToolkitSource.prototype.onResize2	= function(arToolkitContext, renderer, camera){
+	var trackingBackend = arToolkitContext.parameters.trackingBackend
+
+	// RESIZE DOMELEMENT
+	if( trackingBackend === 'artoolkit' ){
+		this.onResizeElement()
+		this.copyElementSizeTo(renderer.domElement)	
+
+		if( arToolkitContext.arController !== null ){
+			this.copyElementSizeTo(arToolkitContext.arController.canvas)	
+		}
+	}else if( trackingBackend === 'aruco' ){
+		this.onResizeElement()
+		this.copyElementSizeTo(renderer.domElement)	
+
+		this.copyElementSizeTo(arToolkitContext.arucoContext.canvas)	
+	}else if( trackingBackend === 'tango' ){
+		renderer.setSize( window.innerWidth, window.innerHeight )
+	}else console.assert(false, 'unhandled trackingBackend '+trackingBackend)
+
+
+	// RESIZE CAMERA
+	if( trackingBackend === 'artoolkit' ){
+		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
+	}else if( trackingBackend === 'aruco' ){	
+		camera.aspect = renderer.domElement.width / renderer.domElement.height;
+		camera.updateProjectionMatrix();			
+	}else if( trackingBackend === 'tango' ){
+		var vrDisplay = arToolkitContext._tangoContext.vrDisplay
+		// make camera fit vrDisplay
+		if( vrDisplay && vrDisplay.displayName === "Tango VR Device" ) THREE.WebAR.resizeVRSeeThroughCamera(vrDisplay, camera)
+	}else console.assert(false, 'unhandled trackingBackend '+trackingBackend)	
 }
 var THREEx = THREEx || {}
 
@@ -2355,6 +2372,13 @@ THREEx.ArMultiMarkerUtils = {}
 //////////////////////////////////////////////////////////////////////////////
 //		navigateToLearnerPage
 //////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Navigate to the multi-marker learner page
+ * 
+ * @param {String} learnerBaseURL  - the base url for the learner
+ * @param {String} trackingBackend - the tracking backend to use
+ */
 THREEx.ArMultiMarkerUtils.navigateToLearnerPage = function(learnerBaseURL, trackingBackend){
 	var learnerParameters = {
 		backURL : location.href,
@@ -2367,6 +2391,12 @@ THREEx.ArMultiMarkerUtils.navigateToLearnerPage = function(learnerBaseURL, track
 //////////////////////////////////////////////////////////////////////////////
 //		DefaultMultiMarkerFile
 //////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Create and store a default multi-marker file
+ * 
+ * @param {String} trackingBackend - the tracking backend to use
+ */
 THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile = function(trackingBackend){
 	var file = THREEx.ArMultiMarkerUtils.createDefaultMultiMarkerFile(trackingBackend)
 	// json.strinfy the value and store it in localStorage
@@ -2374,7 +2404,15 @@ THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile = function(trackingBackend
 }
 
 
+
+/**
+ * Create a default multi-marker file
+ * @param {String} trackingBackend - the tracking backend to use
+ * @return {Object} - json object of the multi-marker file
+ */
 THREEx.ArMultiMarkerUtils.createDefaultMultiMarkerFile = function(trackingBackend){
+	console.assert(trackingBackend)
+	if( trackingBackend === undefined )	debugger
 	// create the base file
 	var file = {
 		meta : {
@@ -2383,7 +2421,7 @@ THREEx.ArMultiMarkerUtils.createDefaultMultiMarkerFile = function(trackingBacken
 		},
 		trackingBackend : trackingBackend,
 		subMarkersControls : [
-			// empty for now...
+			// empty for now... being filled 
 		]
 	}
 	// add a subMarkersControls
@@ -2407,6 +2445,12 @@ THREEx.ArMultiMarkerUtils.createDefaultMultiMarkerFile = function(trackingBacken
 //		createDefaultMarkersControlsParameters
 //////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Create a default controls parameters for the multi-marker learner
+ * 
+ * @param {String} trackingBackend - the tracking backend to use
+ * @return {Object} - json object containing the controls parameters
+ */
 THREEx.ArMultiMarkerUtils.createDefaultMarkersControlsParameters = function(trackingBackend){
 	var link = document.createElement('a')
 	link.href = THREEx.ArToolkitContext.baseURL
@@ -2594,7 +2638,7 @@ AFRAME.registerSystem('arjs', {
 			// handle resize of renderer
 			onResize()
 			
-// TODO this is crappy
+// TODO this is crappy - code an exponential backoff - max 1 seconds
 			// kludge to write a 'resize' event
 			var startedAt = Date.now()
 			var timerId = setInterval(function(){
@@ -2611,7 +2655,8 @@ AFRAME.registerSystem('arjs', {
 		window.addEventListener('resize', onResize)
 		function onResize(){
 			// ugly kludge to get resize on aframe... not even sure it works
-			arToolkitSource.onResize(document.body)		
+			arToolkitSource.onResizeElement()		
+			arToolkitSource.copyElementSizeTo(document.body)
 			
 			var buttonElement = document.querySelector('.a-enter-vr')
 			if( buttonElement ){
@@ -2734,7 +2779,6 @@ AFRAME.registerComponent('arjsmarker', {
 			this.data.patternUrl = THREEx.ArToolkitContext.baseURL+'examples/marker-training/examples/pattern-files/pattern-kanji.patt'
 		}else if( this.data.preset === 'area' ){
 			this.data.type = 'area'
-			// fall through
 		}else {
 			console.assert( this.data.preset === '', 'illegal preset value '+this.data.preset)
 		}

@@ -122,18 +122,20 @@ AFRAME.registerSystem('arjs', {
 		arToolkitSource.init(function onReady(){
 			// handle resize of renderer
 			onResize()
-			
-// TODO this is crappy - code an exponential backoff - max 1 seconds
-			// kludge to write a 'resize' event
+
+			// kludge to write a 'resize' event - use exponentialBackoff delay
 			var startedAt = Date.now()
-			var timerId = setInterval(function(){
-				if( Date.now() - startedAt > 10*1000 ){
-					clearInterval(timerId)
-					return 					
-				}
-				// onResize()
+			var exponentialBackoffDelay = 1000/60
+			setTimeout(function callback(){
+				if( Date.now() - startedAt > 5*1000 )	return 					
+				// update delay
+				exponentialBackoffDelay *= 1.2;
+				exponentialBackoffDelay = Math.min(exponentialBackoffDelay, 1*1000)
+				setTimeout(callback, exponentialBackoffDelay)
+				// trigger a resize
 				window.dispatchEvent(new Event('resize'));
-			}, 1000/30)
+				console.log('trigger a resize', exponentialBackoffDelay)
+			}, exponentialBackoffDelay)
 		})
 		
 		// handle resize

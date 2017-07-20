@@ -277,7 +277,10 @@ THREEx.ArToolkitSource.prototype.onResizeElement = function(mirrorDomElements){
 	}
 	
 	
-	if( arguments.length !== 0 )	console.warn('use bad signature for arToolkitSource.copyElementSizeTo')
+	if( arguments.length !== 0 ){
+		debugger
+		console.warn('use bad signature for arToolkitSource.copyElementSizeTo')
+	}
 	// honor default parameters
 	// if( mirrorDomElements !== undefined )	console.warn('still use the old resize. fix it')
 	if( mirrorDomElements === undefined )	mirrorDomElements = []
@@ -285,7 +288,7 @@ THREEx.ArToolkitSource.prototype.onResizeElement = function(mirrorDomElements){
 
 	// Mirror _this.domElement.style to mirrorDomElements
 	mirrorDomElements.forEach(function(domElement){
-		_this.copySizeTo(domElement)
+		_this.copyElementSizeTo(domElement)
 	})
 }
 

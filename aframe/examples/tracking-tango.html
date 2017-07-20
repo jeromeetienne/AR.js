@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!-- include a-frame -->
+<script src="vendor/aframe.min.js"></script>
+<!-- include aframe-ar.js -->
+<script src="../aframe-ar-new.js"></script>
+<!-- jsartookit -->
+<script src="../../three.js/vendor/jsartoolkit5/build/artoolkit.min.js"></script>
+<script src="../../three.js/vendor/jsartoolkit5/js/artoolkit.api.js"></script>
+<!-- include ar.js -->
+<script src="../../three.js/threex-artoolkitcontext.js"></script>
+<script src="../../three.js/threex-artoolkitsource.js"></script>
+<script src='../../three.js/threex-artoolkitprofile.js'></script>
+<script src="../../three.js/threex-arbasecontrols.js"></script>
+<script src="../../three.js/threex-armarkercontrols.js"></script>
+<script src="../../three.js/threex-armarkerhelper.js"></script>
+<script src="../../three.js/threex-arsmoothedcontrols.js"></script>
+<!-- include for tango trackingBackend -->
+<script src='../../three.js/vendor/chromium-tango/THREE.WebAR.js'></script>
+
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: fixed; top: 10px; width:inherit; text-align: center; z-index: 1;'>
+	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - tango example for a-frame by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+</div>
+
+	<a-scene embedded arjs='sourceType: webcam; trackingBackend: artoolkit;'>
+		<a-box position='0 0.5 0' material='opacity: 0.5; side: double; color: blue;'>
+			<a-torus-knot radius='0.26' radius-tubular='0.05'>
+				<a-animation attribute="rotation" to="360 0 0" dur="3000" easing='linear' repeat="indefinite"></a-animation>
+			</a-torus-knot>
+		</a-box>
+		<a-marker-camera preset='hiro'></a-marker-camera>
+	</a-scene>
+
+	<!-- <a-scene embedded arjs='sourceType: webcam; trackingBackend: tango;'>
+		<a-box position='0 0.5 0' material='opacity: 0.5; side: double;color:pink;'>
+			<a-torus-knot radius='0.26' radius-tubular='0.05'>
+				<a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
+			</a-torus-knot>
+		</a-box>
+		<a-marker-camera preset='tango'></a-marker-camera>
+	</a-scene> -->
+
+
+</body>
+</html>
