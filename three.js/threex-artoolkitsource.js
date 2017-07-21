@@ -202,10 +202,13 @@ THREEx.ArToolkitSource.prototype.hasMobileTorch = function(){
 }
 
 /**
- * - toggle the flash/torch of the mobile fun if applicable
+ * toggle the flash/torch of the mobile fun if applicable.
  * Great post about it https://www.oberhofer.co/mediastreamtrack-and-its-capabilities/
  */
 THREEx.ArToolkitSource.prototype.toggleMobileTorch = function(){
+	// sanity check
+	console.assert(this.hasMobileTorch() === true)
+		
 	var stream = arToolkitSource.domElement.srcObject
 	if( stream instanceof MediaStream === false ){
 		alert('enabling mobile torch is available only on webcam')
