@@ -192,6 +192,10 @@ THREEx.ArToolkitSource.prototype.hasMobileTorch = function(){
 	}
 
 	var videoTrack = stream.getVideoTracks()[0];
+
+	// if videoTrack.getCapabilities() doesnt exist, return false now
+	if( videoTrack.getCapabilities === undefined )	return false
+
 	var capabilities = videoTrack.getCapabilities()
 	
 	return capabilities.torch ? true : false
