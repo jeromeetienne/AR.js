@@ -1582,8 +1582,15 @@ THREEx.ArToolkitSource.prototype.onResize2	= function(arToolkitContext, renderer
 
 	// RESIZE DOMELEMENT
 	if( trackingBackend === 'artoolkit' ){
+
 		this.onResizeElement()
-		this.copyElementSizeTo(renderer.domElement)	
+		
+		var isAframe = renderer.domElement.dataset.aframeCanvas ? true : false
+		if( isAframe === false ){
+			this.copyElementSizeTo(renderer.domElement)	
+		}else{
+			
+		}
 
 		if( arToolkitContext.arController !== null ){
 			this.copyElementSizeTo(arToolkitContext.arController.canvas)	
@@ -1598,7 +1605,7 @@ THREEx.ArToolkitSource.prototype.onResize2	= function(arToolkitContext, renderer
 	}else console.assert(false, 'unhandled trackingBackend '+trackingBackend)
 
 
-	// RESIZE CAMERA
+	// UPDATE CAMERA
 	if( trackingBackend === 'artoolkit' ){
 		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
 	}else if( trackingBackend === 'aruco' ){	

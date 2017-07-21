@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!-- include a-frame -->
+<script src="vendor/aframe.min.js"></script>
+<!-- include aframe-ar.js -->
+<script src="../aframe-ar-new.js"></script>
+<!-- include for artookit tracking -->
+<script src="../../three.js/vendor/jsartoolkit5/build/artoolkit.min.js"></script>
+<script src="../../three.js/vendor/jsartoolkit5/js/artoolkit.api.js"></script>
+<!-- include for aruco tracking -->
+<script src='../../three.js/vendor/js-aruco/src/svd.js'></script> 
+<script src='../../three.js/vendor/js-aruco/src/posit1.js'></script> 
+<script src='../../three.js/vendor/js-aruco/src/cv.js'></script> 
+<script src='../../three.js/vendor/js-aruco/src/aruco.js'></script> 
+<script src='../../three.js/threex/threex-aruco/threex-arucocontext.js'></script> 
+<script src='../../three.js/threex/threex-aruco/threex-arucodebug.js'></script>
+<!-- include for tango tracking -->
+<script src='../../three.js/vendor/chromium-tango/THREE.WebAR.js'></script>
+<!-- include ar.js -->
+<script src="../../three.js/threex-artoolkitcontext.js"></script>
+<script src="../../three.js/threex-artoolkitsource.js"></script>
+<script src='../../three.js/threex-artoolkitprofile.js'></script>
+<script src="../../three.js/threex-arbasecontrols.js"></script>
+<script src="../../three.js/threex-armarkercontrols.js"></script>
+<script src="../../three.js/threex-armarkerhelper.js"></script>
+<script src="../../three.js/threex-arsmoothedcontrols.js"></script>
+<script src='../../three.js/examples/multi-markers/threex-armultimarkerutils.js'></script>
+<script src='../../three.js/examples/multi-markers/threex-armultimarkercontrols.js'></script>
+<script src='../../three.js/examples/multi-markers/threex-armultimarkerlearning.js'></script>
+
+
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: fixed; top: 10px; width:inherit; text-align: center; z-index: 1;'>
+	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - multi markers example for a-frame by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+	<br/>	
+	Try with <a href='javascript:void(0)' id='augmentedWebsiteButton' target='_blank'>augmented-website</a>
+	<script type="text/javascript">
+		document.querySelector('#augmentedWebsiteButton').addEventListener('click', function(){
+			var arjsSystem = document.querySelector('a-scene').systems.arjs
+			arjsSystem.navigateToLearnerPage()
+		})
+	</script>
+</div>
+	<a-scene embedded arjs='sourceType: webcam;'>
+		<a-marker preset='area' markerhelpers=true>
+			<a-box position='0 0.5 0' material='opacity: 0.5; side: double;color:red;'></a-box>
+		</a-marker>
+		<!-- add a simple camera -->
+		<a-entity camera></a-entity>
+
+		<!-- <a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:blue;'></a-box>
+		<a-marker-camera preset='area'></a-marker-camera> -->
+	</a-scene>
+</body>
+</html>

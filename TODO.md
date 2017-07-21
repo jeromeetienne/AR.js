@@ -4,6 +4,8 @@
   - maybe i can understand the camera calibration number
   - a pure-js to read camera calibration file would be good
   - ```ARdouble farPlane = 1000.0;``` in emscripten/ARToolKitJS.cpp
+  - what about replacing it directly in artoolkit.min.js ? it should contain it somewhere
+    - ```this.setProjectionFarPlane(1000)```
   - what if i set farPlane in js before everything
     - check if the value in the projection matrix change
   - this update the project matrix
