@@ -11,9 +11,9 @@ ARjs.Utils.createDefaultCamera = function(trackingBackend){
 	if( trackingBackend === 'artoolkit' ){
 		var camera = new THREE.Camera();
 	}else if( trackingBackend === 'aruco' ){
-		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
+		var camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.01, 100);
 	}else if( trackingBackend === 'tango' ){
-		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
+		var camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.01, 100);
 	}else console.assert(false, 'unknown trackingBackend: '+trackingBackend)
 
 	return camera

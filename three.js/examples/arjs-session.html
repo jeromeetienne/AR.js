@@ -18,6 +18,7 @@
 <script src='../arjs-utils.js'></script>
 <script src='../arjs-session.js'></script>
 <script src='../arjs-anchor.js'></script>
+<script src='../arjs-tangovideomesh.js'></script>
 <script src='../threex-artoolkitsource.js'></script>
 <script src='../threex-artoolkitcontext.js'></script>
 <script src='../threex-artoolkitprofile.js'></script>
@@ -26,6 +27,11 @@
 <script src='../threex-arsmoothedcontrols.js'></script>
 <script src='../threex-arclickability.js'></script>
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
+
+<script src='multi-markers/threex-armultimarkerutils.js'></script>
+<script src='multi-markers/threex-armultimarkercontrols.js'></script>
+<script src='multi-markers/threex-armultimarkerlearning.js'></script>
+
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
 	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - switching between backend
@@ -45,6 +51,8 @@
 	/ 
 	<a href='#tango' onclick='location.reload()'>tango</a>
 </div><script>
+;(function(){
+	
 	var trackingBackend = location.hash.substring(1) ? location.hash.substring(1) : 'artoolkit'
 	document.querySelector('#currentTracking').innerHTML = trackingBackend
 	
@@ -54,7 +62,6 @@
 		location.reload()
 	}
 	
-	// TODO make the multi-markers too
 	// - aruco-area
 	// - artoolkit-area
 	// - trackingMethod=
@@ -114,37 +121,19 @@
 	if( trackingBackend === 'tango' ){
 		arProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg')
 	}	
-	var arToolkitSource = new THREEx.ArToolkitSource(arProfile.sourceParameters)	
-	
-	arToolkitSource.init(function onReady(){
-		arToolkitSource.onResize2(arContext, renderer, camera)
+
+
+	var arSession = new ARjs.Session({
+		scene: scene,
+		renderer: renderer,
+		camera: camera,
+		sourceParameters: arProfile.sourceParameters,
+		contextParameters: arProfile.contextParameters		
 	})
-	
-	// handle resize
-	window.addEventListener('resize', function(){
-		arToolkitSource.onResize2(arContext, renderer, camera)
-	})
-	
-	////////////////////////////////////////////////////////////////////////////////
-	//          initialize arContext
-	////////////////////////////////////////////////////////////////////////////////
-	
-	// create atToolkitContext
-	var arContext = new THREEx.ArToolkitContext(arProfile.contextParameters)
-	
-	// initialize it
-	arContext.init()
-	
-	arContext.addEventListener('initialized', function(event){
-		arToolkitSource.onResize2(arContext, renderer, camera)
-	})
-	
-	// update artoolkit on every frame
 	onRenderFcts.push(function(){
-		if( arToolkitSource.ready === false )	return
-		
-		arContext.update( arToolkitSource.domElement )
+		arSession.update()
 	})
+	var arContext = arSession.arContext
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
@@ -153,66 +142,19 @@
 	// honor changeMatrixMode
 	arProfile.defaultMarkerParameters.changeMatrixMode = changeMatrixMode
 
-	var markerRoot = new THREE.Group
-	scene.add(markerRoot)
-
-	if( changeMatrixMode === 'modelViewMatrix' ){
-		var markerControls = new THREEx.ArMarkerControls(arContext, markerRoot, arProfile.defaultMarkerParameters)		
-	}else if( changeMatrixMode === 'cameraTransformMatrix' ){
-		var markerControls = new THREEx.ArMarkerControls(arContext, camera, arProfile.defaultMarkerParameters)
-	}else console.assert(false)
-// FIXME tango - the pickability is on the marker
-// - aka handle the object positioning in a special function of ArMarkerControls
-// - arkitanchor is like ArMarkerControls
-// - make it generic to work on plane too, if the marker is markerBased
-// - rename it ArAnchorControls ?
-// - thus it is clear it isnt a marker - good for arkit and tango
-
-	if( changeMatrixMode === 'cameraTransformMatrix' ){
-		onRenderFcts.push(function(){
-			// update scene.visible if the marker is seen
-			arWorldRoot.visible = smoothedRoot.visible
-		})
-	}
-	
-	// build a smoothedControls
-	var smoothedRoot = new THREE.Group()
-	scene.add(smoothedRoot)
-	var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
-	onRenderFcts.push(function(delta){
-		smoothedControls.update(markerRoot)
+	var arAnchor = new ARjs.Anchor(arSession, arProfile.defaultMarkerParameters)
+	onRenderFcts.push(function(){
+		arAnchor.update()
 	})
-
-	// var arWorldRoot = smoothedRoot
-	var arWorldRoot = new THREE.Group()
-	// markerRoot.add(arWorldRoot)
-	smoothedRoot.add(arWorldRoot)
-
 
 	//////////////////////////////////////////////////////////////////////////////
 	//                handle videoMesh for tango
 	//////////////////////////////////////////////////////////////////////////////
 	
 	if( trackingBackend === 'tango' ){
-		// Create the see through camera scene and camera
-		var sceneVideoMesh = new THREE.Scene()
-		var cameraVideoMesh = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 100 )		
-		// tango only - init cameraMesh
-		arContext.addEventListener('initialized', function(event){
-			// sanity check
-			console.assert( arContext.parameters.trackingBackend === 'tango' )
-			// variable declaration
-			var vrDisplay = arContext._tangoContext.vrDisplay
-			console.assert(vrDisplay, 'vrDisplay MUST be defined')
-			// if vrDisplay isnt for tango, do nothing. It may be another vrDisplay (e.g. webvr emulator in chrome)
-			if( vrDisplay.displayName !== "Tango VR Device" )	return
-			// init videoPlane
-			var videoMesh = THREE.WebAR.createVRSeeThroughCameraMesh(vrDisplay)
-			sceneVideoMesh.add(videoMesh)
-			onRenderFcts.push(function(){
-				// Make sure that the camera is correctly displayed depending on the device and camera orientations.
-				THREE.WebAR.updateCameraMeshOrientation(vrDisplay, videoMesh)                        
-			})
+		var videoMeshTango = new ARjs.TangoVideoMesh(arSession)
+		onRenderFcts.push(function(){
+			videoMeshTango.update()
 		})
 	}
 
@@ -220,16 +162,15 @@
         renderer.domElement.addEventListener("click", function(event) {
 		if( arContext.parameters.trackingBackend !== 'tango' )	return
 
-		var mousePosition = new THREE.Vector3();
-                mousePosition.x = event.pageX / window.innerWidth;
-                mousePosition.y = event.pageY / window.innerHeight;
+		var mousePosition = new THREE.Vector3()
+                mousePosition.x = event.pageX / window.innerWidth
+                mousePosition.y = event.pageY / window.innerHeight
+		
+		var hitTestResults = arSession.hitTest(mousePosition.x, mousePosition.y)
+		if( hitTestResults.length === 0 )	return
 
-		var result = THREEx.ARClickability.tangoPickingPointCloud(arContext, mousePosition.x, mousePosition.y)
-		if( result === null )	return
-
-		arWorldRoot.position.copy(result.position)
-		arWorldRoot.quaternion.copy(result.quaternion)
-		arWorldRoot.scale.set(1,1,1).multiplyScalar(0.1)
+		var hitTestResult = hitTestResults[0]
+		arAnchor.applyHitTestResult(hitTestResult)
 	})
 	
 	//////////////////////////////////////////////////////////////////////////////////
@@ -237,7 +178,7 @@
 	//////////////////////////////////////////////////////////////////////////////////
 	
 	var mesh = new THREE.AxisHelper()
-	arWorldRoot.add(mesh)
+	arAnchor.object3d.add(mesh)
 	
 	// add a torus knot	
 	var geometry	= new THREE.CubeGeometry(1,1,1);
@@ -248,13 +189,13 @@
 	}); 
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= geometry.parameters.height/2
-	arWorldRoot.add( mesh );
+	arAnchor.object3d.add( mesh );
 	
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= 0.5
-	arWorldRoot.add( mesh );
+	arAnchor.object3d.add( mesh );
 	
 	onRenderFcts.push(function(delta){
 		mesh.rotation.x += Math.PI*delta
@@ -270,10 +211,8 @@
 		renderer.clear()
 		
 		// render videoMesh for tango
-		if( arContext.parameters.trackingBackend === 'tango'){                                
-			renderer.render( sceneVideoMesh, cameraVideoMesh )
-			// Render the perspective scene
-			renderer.clearDepth()
+		if( arContext.parameters.trackingBackend === 'tango'){
+			videoMeshTango.render()
 		}
 		
 		renderer.render( scene, camera );
@@ -293,4 +232,5 @@
 			onRenderFct(deltaMsec/1000, nowMsec/1000)
 		})
 	})
+})()
 </script></body>

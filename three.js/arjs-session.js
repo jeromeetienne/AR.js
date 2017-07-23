@@ -29,6 +29,12 @@ ARjs.Session = function(parameters){
 	this.renderer = parameters.renderer
 	this.camera = parameters.camera
 	this.scene = parameters.scene
+	
+	// for multi marker
+	if( localStorage.getItem('ARjsMultiMarkerFile') === null && parameters.contextParameters.trackingBackend !== 'tango' ){
+		THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(trackingBackend)
+	}
+
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		init arSource
@@ -36,12 +42,12 @@ ARjs.Session = function(parameters){
 	var arSource = _this.arSource = new THREEx.ArToolkitSource(parameters.sourceParameters)
 
 	arSource.init(function onReady(){
-		arSource.onResize2(arContext, renderer, camera)
+		arSource.onResize2(arContext, _this.renderer, _this.camera)
 	})
 	
 	// handle resize
 	window.addEventListener('resize', function(){
-		arSource.onResize2(arContext, renderer, camera)
+		arSource.onResize2(arContext, _this.renderer, _this.camera)
 	})	
 	
 	//////////////////////////////////////////////////////////////////////////////
@@ -55,15 +61,16 @@ ARjs.Session = function(parameters){
 	_this.arContext.init()
 	
 	arContext.addEventListener('initialized', function(event){
-		arSource.onResize2(arContext, renderer, camera)
+		arSource.onResize2(arContext, _this.renderer, _this.camera)
 	})
 	
+	
 	// update artoolkit on every frame
-	onRenderFcts.push(function(){
+	this.update = function(){
 		if( arSource.ready === false )	return
 		
 		arContext.update( arSource.domElement )
-	})
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -78,8 +85,15 @@ ARjs.Session = function(parameters){
  * @return {[ARjs.Session.HitTestResult]} - array of HitTestResult
  */
 ARjs.Session.prototype.hitTest = function(mouseX, mouseY){
+	var intersects = []
+	
+	var result = THREEx.ARClickability.tangoPickingPointCloud(this.arContext, mouseX, mouseY)
+	if( result !== null ){
+		intersects.push(new ARjs.Session.HitTestResult(result.position, result.quaternion, new THREE.Vector3(1,1,1).multiplyScalar(0.1)))
+	}
+			
 	// TODO use clickability
-	return []
+	return intersects
 }
 
 /**

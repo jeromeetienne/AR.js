@@ -1,4 +1,17 @@
-# New API - no three.js dependancy
+## New API
+- make each 
+- arjs-session.html - with a select input on trackingMethod
+
+- trackingMethod
+  - area-aruco
+  - area-artoolkit
+  - aruco
+  - artoolkit
+  - tango
+  - arkit
+  - best
+
+## New API - no three.js dependancy
 - first remove it externally
 - then remove it internally
 - get ride of three.js dependancy 
