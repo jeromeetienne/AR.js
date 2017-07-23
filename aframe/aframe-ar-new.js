@@ -164,12 +164,31 @@ AFRAME.registerSystem('arjs', {
 		var arContext = new THREEx.ArToolkitContext(arProfile.contextParameters)
 		this.arContext = arContext
 		// initialize it
-		arContext.init(function onCompleted(){
-			// // copy projection matrix to camera
-			// var projectionMatrixArr = arContext.arController.getCameraMatrix();
-			// _this.sceneEl.camera.projectionMatrix.fromArray(projprojectionMatrixArrectionMatrix);
+		arContext.init()
+		
+		arContext.addEventListener('initialized', function(event){
+			onResize()
 		})
 		
+		
+		// tango only - init cameraMesh
+		arContext.addEventListener('initialized', function(event){
+			if( _this.data.trackingBackend  !== 'tango' )	return
+			var vrDisplay = arContext._tangoContext.vrDisplay
+			console.assert(vrDisplay, 'vrDisplay MUST be defined')
+			// special case for trackingBackend tango
+			if( arContext.parameters.trackingBackend !== 'tango' )	return
+			// if vrDisplay isnt for tango do nothing
+			if( vrDisplay.displayName !== "Tango VR Device" )	return
+			// init videoPlane
+			var videoPlane = THREE.WebAR.createVRSeeThroughCameraMesh(vrDisplay)
+			sceneOrtho.add(videoPlane)
+			onRenderFcts.push(function(){
+				// Make sure that the camera is correctly displayed depending on the device and camera orientations.
+				THREE.WebAR.updateCameraMeshOrientation(vrDisplay, videoPlane)                        
+			})		
+		})
+
 		//////////////////////////////////////////////////////////////////////////////
 		//		area learning
 		//////////////////////////////////////////////////////////////////////////////

@@ -14,12 +14,16 @@ ARjs.Utils.createDefaultCamera = function(trackingBackend){
 		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
 	}else if( trackingBackend === 'tango' ){
 		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
-	}else console.assert(false)
+	}else console.assert(false, 'unknown trackingBackend: '+trackingBackend)
 
 	return camera
 }
 
-
+/**
+ * test if the code is running on tango
+ * 
+ * @return {boolean} - true if running on tango, false otherwise
+ */
 ARjs.Utils.isTango = function(){
 	var isTango = navigator.userAgent.match('Chrome/57.0.2987.5') !== null ? true : false
 	return isTango

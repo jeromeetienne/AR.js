@@ -1,3 +1,21 @@
+# New API - no three.js dependancy
+- first remove it externally
+- then remove it internally
+- get ride of three.js dependancy 
+  - first arjs session API not to use any three.js specific
+  - vector3 as array, same for quaternion
+  - some matrix as array too - projection matrix, localMatrix
+- as im rewriting the highlevel API, im thinking about removing the three.js 
+  dependancy. aka to make AR.js easily usable by other than three.js
+  this could be osg.js (sketchfab stuff), this could be babylon.js
+  this would clean things up and this isnt too hard to do on my side.
+  Just using another math library and to do some THREE.Object3d emulation
+- use gl-matrix.js - it is good code - it is from somebody rigurous - it is well maintained
+- ARjs.Camera inherit from ARjs.Object3D - projectionMatrix
+- ARjs.Object3D : position, quaternion, scale
+
+
+--- 
 - have seen stuff about projection matrix in jsartoolkit
   - would need to recompiled
   - would fix the near/far
@@ -11,10 +29,12 @@
   - this update the project matrix
   - ```arglCameraFrustum(&((arc->paramLT)->param), arc->nearPlane, arc->farPlane, arc->cameraLens);```
   - this should be called in setNearPlane
+  - TRY TO MODIFY THE JS DIRECTLY ?
 
 - do test with a special webrtc emulation layer
   - so i can download video and/or image - better for testing
 - handle pwa stuff - useful for phone
+  - some work done in webar-playground
   - https://twitter.com/jerome_etienne/status/888008537984708608
 
 # aframe-ar.js new
