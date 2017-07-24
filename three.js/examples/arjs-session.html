@@ -59,6 +59,14 @@
 	<a href='#tango' onclick='location.reload()'>tango</a>
 	/ 
 	<a href='#best' onclick='location.reload()'>best</a>
+	<br/>
+	<a href='javascript:void(0)' id='buttonTangoTogglePointCloud'>toggle point cloud</a>
+	-
+	<a href='javascript:void(0)' id='buttonToggleMarkerHelpers'>toggle marker helper</a>
+	-
+	<a href='javascript:void(0)' id='buttonMarkersAreaLearner'>Learn new marker area</a>
+	-
+	<a href='javascript:void(0)' id='buttonMarkersAreaReset'>Reset marker area</a>
 </div><script>
 ;(function(){
 // TODO put that in a function
@@ -121,8 +129,8 @@
 	}	
 	
 	// honor changeMatrixMode
-	arProfile.defaultMarkerParameters.changeMatrixMode = 'cameraTransformMatrix'
-	// arProfile.defaultMarkerParameters.changeMatrixMode = 'modelViewMatrix'
+	// arProfile.defaultMarkerParameters.changeMatrixMode = 'cameraTransformMatrix'
+	arProfile.defaultMarkerParameters.changeMatrixMode = 'modelViewMatrix'
 
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -180,6 +188,46 @@
 		var tangoPointCloud = new ARjs.TangoPointCloud(arSession)
 		scene.add(tangoPointCloud.object3d)
 	}
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+	
+	if( trackingMethod === 'tango' ){
+		document.querySelector('#buttonTangoTogglePointCloud').addEventListener('click', function(){
+			if( tangoPointCloud.object3d.parent ){
+				scene.remove(tangoPointCloud.object3d)
+			}else{
+				scene.add(tangoPointCloud.object3d)			
+			}
+		})
+	}else{
+		document.querySelector('#buttonTangoTogglePointCloud').style.display = 'none'
+	}
+	
+	if( arAnchor.parameters.markersAreaEnabled ){
+		var subMarkerHelpersVisible = false
+		document.querySelector('#buttonToggleMarkerHelpers').addEventListener('click', function(){
+			subMarkerHelpersVisible = subMarkerHelpersVisible ? false : true
+			arAnchor.markersArea.setSubMarkersVisibility(subMarkerHelpersVisible)
+		})
+
+
+		document.querySelector('#buttonMarkersAreaReset').addEventListener('click', function(){
+			THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(trackingBackend)
+			location.reload()
+		})
+
+		document.querySelector('#buttonMarkersAreaLearner').addEventListener('click', function(){
+			var learnerBaseURL = 'multi-markers/examples/learner.html'
+			THREEx.ArMultiMarkerUtils.navigateToLearnerPage(learnerBaseURL, trackingBackend)
+		})		
+	}else{
+		document.querySelector('#buttonToggleMarkerHelpers').style.display = 'none'
+		document.querySelector('#buttonMarkersAreaReset').style.display = 'none'
+		document.querySelector('#buttonMarkersAreaLearner').style.display = 'none'
+	}
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////

@@ -12,14 +12,13 @@
   - changeMatrixMode
   - tango point cloud fails in cameraTransformMatrix
 
+- button tangoonly pointcloudtoggle
+
 - full markers area
   - THREEx.ArMultiMarkerUtils
-  - why duplicate it ?
-  - function in arAnchor.markersArea.navigateToLearner
-  - link to learner
-  - option: markerhelper visibility
-  - reset area
-  - store defaultareaifneeded
+  - button - reset-markers-area
+  - button - toggle-marker-helper
+  - button - goto-learner
 
 - in tango
   - make point cloud or not an live option

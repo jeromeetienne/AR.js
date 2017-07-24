@@ -12,6 +12,8 @@ ARjs.Anchor = function(arSession, markerParameters){
 	var arContext = arSession.arContext
 	var scene = arSession.scene
 	var camera = arSession.camera
+	
+	this.parameters = markerParameters
 
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
