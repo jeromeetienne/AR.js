@@ -42,11 +42,13 @@ ARjs.Anchor = function(arSession, markerParameters){
 			// add it to markerHelpers
 			markerHelpers.push(markerHelper)
 		})
-		this.setSubMarkersVisibility = function(visible){
+		this.markersArea = {}
+		this.markersArea.setSubMarkersVisibility = function(visible){
 			markerHelpers.forEach(function(markerHelper){
 				markerHelper.object3d.visible = visible
 			})
 		}
+
 	}
 	
 	this.object3d = new THREE.Group()
@@ -97,6 +99,8 @@ ARjs.Anchor = function(arSession, markerParameters){
  * @param {ARjs.HitTester.Result} hitTestResult - the result to apply
  */
 ARjs.Anchor.prototype.applyHitTestResult = function(hitTestResult){
+	
+	
 	this.object3d.position.copy(hitTestResult.position)
 	this.object3d.quaternion.copy(hitTestResult.quaternion)
 	this.object3d.scale.copy(hitTestResult.scale)

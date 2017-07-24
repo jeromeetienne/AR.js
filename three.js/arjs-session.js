@@ -14,7 +14,7 @@ ARjs.Session = function(parameters){
 	
 	// for multi marker
 	if( localStorage.getItem('ARjsMultiMarkerFile') === null && parameters.contextParameters.trackingBackend !== 'tango' ){
-		THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(trackingBackend)
+		THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(parameters.contextParameters.trackingBackend)
 	}
 
 

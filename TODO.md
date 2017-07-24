@@ -1,13 +1,22 @@
 ## New API
 - pick real world with all trackingMethod
   - hit tester with plane
+  - DONE ?
 
 - build a aframe version of that to see how it fit
+  - when api is stable enougth ?
+  - when all the bugs are sorted out
 
 - check it works on all cases
   - no special cases incompatibilities
+  - changeMatrixMode
+  - tango point cloud fails in cameraTransformMatrix
+
 - full markers area
-  - learner 
+  - THREEx.ArMultiMarkerUtils
+  - why duplicate it ?
+  - function in arAnchor.markersArea.navigateToLearner
+  - link to learner
   - option: markerhelper visibility
   - reset area
   - store defaultareaifneeded

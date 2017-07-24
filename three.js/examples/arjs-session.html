@@ -152,6 +152,22 @@
 	//////////////////////////////////////////////////////////////////////////////
 	//                handle videoMesh for tango
 	//////////////////////////////////////////////////////////////////////////////
+
+	
+	var hitTester = new ARjs.HitTester(arSession)
+	onRenderFcts.push(function(){
+		hitTester.update(camera, arAnchor.object3d)
+	})
+
+	// tango only - picking to set object position
+        renderer.domElement.addEventListener("click", function(domEvent) {
+		var hitTestResults = hitTester.testDomEvent(domEvent)
+		if( hitTestResults.length === 0 )	return
+
+		var hitTestResult = hitTestResults[0]
+		arAnchor.applyHitTestResult(hitTestResult)
+	})
+
 	
 	if( trackingMethod === 'tango' ){
 		var tangoVideoMesh = new ARjs.TangoVideoMesh(arSession)
@@ -164,25 +180,6 @@
 		var tangoPointCloud = new ARjs.TangoPointCloud(arSession)
 		scene.add(tangoPointCloud.object3d)
 	}
-	
-	var hitTester = new ARjs.HitTester(arSession)
-
-	// tango only - picking to set object position
-        renderer.domElement.addEventListener("click", function(event) {
-		var arContext = arSession.arContext
-		
-		if( arContext.parameters.trackingBackend !== 'tango' )	return
-
-                var mouseX = event.pageX / window.innerWidth
-                var mouseY = event.pageY / window.innerHeight
-		
-		var hitTestResults = hitTester.test(mouseX, mouseY)
-		if( hitTestResults.length === 0 )	return
-
-		var hitTestResult = hitTestResults[0]
-		arAnchor.applyHitTestResult(hitTestResult)
-	})
-	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////

@@ -35,6 +35,9 @@ THREEx.ArToolkitContext = function(parameters){
 	
         this.arController = null;
         this.arucoContext = null;
+	
+	_this.initialized = false
+
 
 	this._arMarkersControls = []
 }
@@ -86,6 +89,8 @@ THREEx.ArToolkitContext.prototype.init = function(onCompleted){
 			type: 'initialized'
 		});
 
+		_this.initialized = true
+		
 		onCompleted && onCompleted()
 	}
 
