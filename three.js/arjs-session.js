@@ -1,23 +1,5 @@
 var ARjs = ARjs || {}
 
-function arSession_usage_example(){
-	var arSession = new ARjs.Session({
-		scene: scene,
-		renderer: renderer,
-		camera: camera,
-		sourceParameters: sourceParameters,
-		contextParameters: contextParameters
-	})
-	
-	var arAnchor = new ARjs.Anchor(arSession, parameters)
-
-
-	var intersects = asSession.hitTest(mouseX, mouseY)
-	// intersects is an array of ARjs.HitTestingResult = function(position, quaternion, scale){}
-	// similar intersects that three.js raycasting
-	arAnchor.applyHitTestResult(intersects[0])
-}
-
 /**
  * define a ARjs.Session
  * 
@@ -71,41 +53,4 @@ ARjs.Session = function(parameters){
 		
 		arContext.update( arSource.domElement )
 	}
-}
-
-//////////////////////////////////////////////////////////////////////////////
-//		Hit Testing
-//////////////////////////////////////////////////////////////////////////////
-
-/**
- * Test the real world for intersections.
- * 
- * @param {Number} mouseX - position X of the hit [-1, +1]
- * @param {Number} mouseY - position Y of the hit [-1, +1]
- * @return {[ARjs.Session.HitTestResult]} - array of HitTestResult
- */
-ARjs.Session.prototype.hitTest = function(mouseX, mouseY){
-	var intersects = []
-	
-	var result = THREEx.ARClickability.tangoPickingPointCloud(this.arContext, mouseX, mouseY)
-	if( result !== null ){
-		intersects.push(new ARjs.Session.HitTestResult(result.position, result.quaternion, new THREE.Vector3(1,1,1).multiplyScalar(0.1)))
-	}
-			
-	// TODO use clickability
-	return intersects
-}
-
-/**
- * Contains the result of arSession.hitTest.
- * 
- * @param {THREE.Vector3} position - position to use
- * @param {THREE.Quaternion} quaternion - quaternion to use
- * @param {THREE.Vector3} scale - scale
- * @return {[type]} [description]
- */
-ARjs.Session.HitTestResult = function(position, quaternion, scale){
-	this.position = position
-	this.quaternion = quaternion
-	this.scale = scale
 }

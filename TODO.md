@@ -1,8 +1,23 @@
 ## New API
-- make each 
-- arjs-session.html - with a select input on trackingMethod
+- pick real world with all trackingMethod
+  - hit tester with plane
 
-- trackingMethod
+- build a aframe version of that to see how it fit
+
+- check it works on all cases
+  - no special cases incompatibilities
+- full markers area
+  - learner 
+  - option: markerhelper visibility
+  - reset area
+  - store defaultareaifneeded
+
+- in tango
+  - make point cloud or not an live option
+  
+
+- DONE tango point cloud visible
+- how to handle trackingMethod
   - area-aruco
   - area-artoolkit
   - aruco
@@ -10,6 +25,8 @@
   - tango
   - arkit
   - best
+
+
 
 ## New API - no three.js dependancy
 - first remove it externally

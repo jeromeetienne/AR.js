@@ -25,6 +25,10 @@ ARjs.TangoVideoMesh = function(arSession){
 		sceneOrtho.add(videoMesh)
 	})
 	
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+	
 	this.update = function(){
 		// sanity check
 		console.assert( arContext.parameters.trackingBackend === 'tango' )
@@ -33,6 +37,10 @@ ARjs.TangoVideoMesh = function(arSession){
 		// Make sure that the camera is correctly displayed depending on the device and camera orientations.
 		THREE.WebAR.updateCameraMeshOrientation(vrDisplay, videoMesh)                        		
 	}
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
 	
 	this.render = function(){
 		// sanity check

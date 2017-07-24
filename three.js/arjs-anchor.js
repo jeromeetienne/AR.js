@@ -17,44 +17,84 @@ ARjs.Anchor = function(arSession, markerParameters){
 	scene.add(markerRoot)
 
 	if( markerParameters.changeMatrixMode === 'modelViewMatrix' ){
-		var markerControls = new THREEx.ArMarkerControls(arContext, markerRoot, markerParameters)		
+		var controlledObject = markerRoot
 	}else if( markerParameters.changeMatrixMode === 'cameraTransformMatrix' ){
-		var markerControls = new THREEx.ArMarkerControls(arContext, camera, markerParameters)
+		var controlledObject = camera
 	}else console.assert(false)
 
-// FIXME tango - the pickability is on the marker
-// - aka handle the object positioning in a special function of ArMarkerControls
-// - arkitanchor is like ArMarkerControls
-// - make it generic to work on plane too, if the marker is markerBased
+	if( markerParameters.markersAreaEnabled === false ){
+		var markerControls = new THREEx.ArMarkerControls(arContext, controlledObject, markerParameters)		
+	}else{
+		// get multiMarkerFile from localStorage
+		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
+		var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
 
+		// build a multiMarkerControls
+		var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arContext, scene, markerRoot, multiMarkerFile)
 
-	// build a smoothedControls
-	var smoothedRoot = new THREE.Group()
-	scene.add(smoothedRoot)
-	var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
+		// create ArMarkerHelper - useful to debug
+		var markerHelpers = []
+		multiMarkerControls.subMarkersControls.forEach(function(subMarkerControls){
+			// add an helper to visuable each sub-marker
+			var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
+			markerHelper.object3d.visible = false
+			subMarkerControls.object3d.add( markerHelper.object3d )		
+			// add it to markerHelpers
+			markerHelpers.push(markerHelper)
+		})
+		this.setSubMarkersVisibility = function(visible){
+			markerHelpers.forEach(function(markerHelper){
+				markerHelper.object3d.visible = visible
+			})
+		}
+	}
 	
 	this.object3d = new THREE.Group()
-	// markerRoot.add(arWorldRoot)
-	smoothedRoot.add(this.object3d)	
-
-
-	this.update = function(){
-		// update scene.visible if the marker is seen
-		if( markerParameters.changeMatrixMode === 'cameraTransformMatrix' ){
-			_this.object3d.visible = smoothedRoot.visible
-		}
 		
-		// update smoothedControls
-		smoothedControls.update(markerRoot)
+	//////////////////////////////////////////////////////////////////////////////
+	//		THREEx.ArSmoothedControls
+	//////////////////////////////////////////////////////////////////////////////
+	
+	var shouldBeSmoothed = true
+	if( arContext.parameters.trackingBackend === 'tango' ) shouldBeSmoothed = false 
+
+	if( shouldBeSmoothed === true ){
+		// build a smoothedControls
+		var smoothedRoot = new THREE.Group()
+		scene.add(smoothedRoot)
+		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
+		smoothedRoot.add(this.object3d)	
+	}else{
+		markerRoot.add(this.object3d)
 	}
 
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+	this.update = function(){	
+		// update scene.visible if the marker is seen
+		if( markerParameters.changeMatrixMode === 'cameraTransformMatrix' ){
+			_this.object3d.visible = controlledObject.visible
+		}
+		
+		if( smoothedControls !== undefined ){
+			// update smoothedControls parameters depending on how many markers are visible in multiMarkerControls
+			if( multiMarkerControls !== undefined ){
+				multiMarkerControls.updateSmoothedControls(smoothedControls)
+			}
+
+			// update smoothedControls
+			smoothedControls.update(markerRoot)			
+		}
+	}
 }
 
 
 /**
  * Apply ARjs.Session.HitTestResult to the controlled object3d
  * 
- * @param {ARjs.Session.HitTestResult} hitTestResult - the result to apply
+ * @param {ARjs.HitTester.Result} hitTestResult - the result to apply
  */
 ARjs.Anchor.prototype.applyHitTestResult = function(hitTestResult){
 	this.object3d.position.copy(hitTestResult.position)

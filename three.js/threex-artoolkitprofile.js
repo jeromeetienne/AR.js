@@ -48,7 +48,8 @@ THREEx.ArToolkitProfile.prototype.reset = function () {
 	}
 	this.defaultMarkerParameters = {
 		type : 'pattern',
-		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+		changeMatrixMode: 'modelViewMatrix',
 	}
 	return this
 };
@@ -139,6 +140,26 @@ THREEx.ArToolkitProfile.prototype.sourceImage = function (url) {
 //		trackingBackend
 //////////////////////////////////////////////////////////////////////////////
 THREEx.ArToolkitProfile.prototype.trackingBackend = function (trackingBackend) {
+	console.warn('use profile.trackingBackend() obsolete function')
+	this.contextParameters.trackingBackend = trackingBackend
+	return this
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
+//		trackingBackend
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArToolkitProfile.prototype.trackingMethod = function (trackingMethod) {
+
+	if( trackingMethod.startsWith('area-') ){
+		var trackingBackend = trackingMethod.replace('area-', '')
+		var markersAreaEnabled = true
+	}else{
+		var trackingBackend = trackingMethod
+		var markersAreaEnabled = false
+	}
+
+	this.defaultMarkerParameters.markersAreaEnabled = markersAreaEnabled
 	this.contextParameters.trackingBackend = trackingBackend
 	return this
 }

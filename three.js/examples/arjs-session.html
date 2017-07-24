@@ -18,12 +18,15 @@
 <script src='../arjs-utils.js'></script>
 <script src='../arjs-session.js'></script>
 <script src='../arjs-anchor.js'></script>
+<script src='../arjs-hittester.js'></script>
 <script src='../arjs-tangovideomesh.js'></script>
+<script src='../arjs-tangopointcloud.js'></script>
 <script src='../threex-artoolkitsource.js'></script>
 <script src='../threex-artoolkitcontext.js'></script>
 <script src='../threex-artoolkitprofile.js'></script>
 <script src='../threex-arbasecontrols.js'></script>
 <script src='../threex-armarkercontrols.js'></script>
+<script src='../threex-armarkerhelper.js'></script>
 <script src='../threex-arsmoothedcontrols.js'></script>
 <script src='../threex-arclickability.js'></script>
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
@@ -42,41 +45,36 @@
 	/
 	<a href='../../three.js/threex/threex-aruco/examples/images/1001.png' target='_blank'>1001 for aruco</a>
 	<br/>
-	<strong>Tracking Backend:</strong> <span id='currentTracking'>unknown</span>
+	<strong>Tracking Method:</strong> <span id='trackingMethod'>unknown</span>
 	- 
 	Switch to : 
 	<a href='#artoolkit' onclick='location.reload()'>artoolkit</a>
 	/ 
 	<a href='#aruco' onclick='location.reload()'>aruco</a>
 	/ 
+	<a href='#area-artoolkit' onclick='location.reload()'>area artoolkit</a>
+	/ 
+	<a href='#area-aruco' onclick='location.reload()'>area aruco</a>
+	/ 
 	<a href='#tango' onclick='location.reload()'>tango</a>
+	/ 
+	<a href='#best' onclick='location.reload()'>best</a>
 </div><script>
 ;(function(){
-	
-	var trackingBackend = location.hash.substring(1) ? location.hash.substring(1) : 'artoolkit'
-	document.querySelector('#currentTracking').innerHTML = trackingBackend
-	
-	// if we are running on tango device, ensure trackingBackend is 'tango'
-	if( trackingBackend !== 'tango' && ARjs.Utils.isTango() === true ){
-		location.hash = '#tango'
-		location.reload()
+// TODO put that in a function
+	var trackingMethod = location.hash.substring(1) ? location.hash.substring(1) : 'best'
+
+	if( trackingMethod === 'best' ){
+		var trackingMethod = ARjs.Utils.isTango() ? 'tango' : 'area-artoolkit'
 	}
 	
-	// - aruco-area
-	// - artoolkit-area
-	// - trackingMethod=
-	// - trackingBackend=
-	// 
-	// - thus you got the whole stack available here
-	// - it dramatically reduce the boilerplate
-	// - it is the base of the aframe ar.js, the base of webar-playground
-	// - maybe put all that in a class
-	// - this is the base of a typical AR.js application - aka support all tracking transparantly
-	// 
+	if( trackingMethod.startsWith('area-') ){
+		var trackingBackend = trackingMethod.replace('area-', '')
+	}else{
+		var trackingBackend = trackingMethod
+	}
 	
-	// TODO is that required ?
-	var changeMatrixMode = 'cameraTransformMatrix'
-	// var changeMatrixMode = 'modelViewMatrix'
+	document.querySelector('#trackingMethod').innerHTML = trackingMethod
 	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
@@ -89,7 +87,7 @@
 	});
 	renderer.autoClear = false;
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-	renderer.setSize( 640, 480 );
+	renderer.setSize( window.innerWidth, window.innerHeight );
 	renderer.domElement.style.position = 'absolute'
 	renderer.domElement.style.top = '0px'
 	renderer.domElement.style.left = '0px'
@@ -105,7 +103,7 @@
 	//		Initialize the camera
 	//////////////////////////////////////////////////////////////////////////////////
 
-	var camera = ARjs.Utils.createDefaultCamera(trackingBackend)
+	var camera = ARjs.Utils.createDefaultCamera(trackingMethod)
 	scene.add(camera);
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -114,14 +112,22 @@
 
 	var arProfile = new THREEx.ArToolkitProfile()
 		.sourceWebcam()
-		.trackingBackend(trackingBackend)
-		.defaultMarker(trackingBackend)
+		.trackingMethod(trackingMethod)
+		.defaultMarker()
 
 	// FIXME temporary placeholder - to reevaluate later
-	if( trackingBackend === 'tango' ){
+	if( trackingMethod === 'tango' ){
 		arProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg')
 	}	
+	
+	// honor changeMatrixMode
+	arProfile.defaultMarkerParameters.changeMatrixMode = 'cameraTransformMatrix'
+	// arProfile.defaultMarkerParameters.changeMatrixMode = 'modelViewMatrix'
 
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		build ARjs.Session
+	//////////////////////////////////////////////////////////////////////////////
 
 	var arSession = new ARjs.Session({
 		scene: scene,
@@ -133,14 +139,10 @@
 	onRenderFcts.push(function(){
 		arSession.update()
 	})
-	var arContext = arSession.arContext
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
-	
-	// honor changeMatrixMode
-	arProfile.defaultMarkerParameters.changeMatrixMode = changeMatrixMode
 
 	var arAnchor = new ARjs.Anchor(arSession, arProfile.defaultMarkerParameters)
 	onRenderFcts.push(function(){
@@ -151,22 +153,30 @@
 	//                handle videoMesh for tango
 	//////////////////////////////////////////////////////////////////////////////
 	
-	if( trackingBackend === 'tango' ){
-		var videoMeshTango = new ARjs.TangoVideoMesh(arSession)
+	if( trackingMethod === 'tango' ){
+		var tangoVideoMesh = new ARjs.TangoVideoMesh(arSession)
 		onRenderFcts.push(function(){
-			videoMeshTango.update()
+			tangoVideoMesh.update()
 		})
 	}
+	
+	if( trackingMethod === 'tango' ){
+		var tangoPointCloud = new ARjs.TangoPointCloud(arSession)
+		scene.add(tangoPointCloud.object3d)
+	}
+	
+	var hitTester = new ARjs.HitTester(arSession)
 
 	// tango only - picking to set object position
         renderer.domElement.addEventListener("click", function(event) {
+		var arContext = arSession.arContext
+		
 		if( arContext.parameters.trackingBackend !== 'tango' )	return
 
-		var mousePosition = new THREE.Vector3()
-                mousePosition.x = event.pageX / window.innerWidth
-                mousePosition.y = event.pageY / window.innerHeight
+                var mouseX = event.pageX / window.innerWidth
+                var mouseY = event.pageY / window.innerHeight
 		
-		var hitTestResults = arSession.hitTest(mousePosition.x, mousePosition.y)
+		var hitTestResults = hitTester.test(mouseX, mouseY)
 		if( hitTestResults.length === 0 )	return
 
 		var hitTestResult = hitTestResults[0]
@@ -211,8 +221,8 @@
 		renderer.clear()
 		
 		// render videoMesh for tango
-		if( arContext.parameters.trackingBackend === 'tango'){
-			videoMeshTango.render()
+		if( trackingMethod === 'tango' ){
+			tangoVideoMesh.render()
 		}
 		
 		renderer.render( scene, camera );

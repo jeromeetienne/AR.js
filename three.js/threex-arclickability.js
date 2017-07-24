@@ -1,5 +1,7 @@
 var THREEx = THREEx || {}
 
+// TODO this is useless - prefere arjs-hittester.js
+
 /**
  * - maybe support .onClickFcts in each object3d
  * - seems an easy light layer for clickable object
@@ -11,6 +13,8 @@ THREEx.ARClickability = function(sourceElement){
 	var fullWidth = parseInt(sourceElement.style.width)
 	var fullHeight = parseInt(sourceElement.style.height)
 	this._cameraPicking = new THREE.PerspectiveCamera(42, fullWidth / fullHeight, 0.1, 100);	
+
+console.warn('THREEx.ARClickability works only in modelViewMatrix')
 }
 
 THREEx.ARClickability.prototype.onResize = function(){
@@ -50,7 +54,7 @@ THREEx.ARClickability.prototype.update = function(){
 
 THREEx.ARClickability.tangoPickingPointCloud = function(artoolkitContext, mouseX, mouseY){
 	var vrDisplay = artoolkitContext._tangoContext.vrDisplay
-        if (vrDisplay === null ) return
+        if (vrDisplay === null ) return null
         var pointAndPlane = vrDisplay.getPickingPointAndPlaneInPointCloud(mouseX, mouseY)
         if( pointAndPlane == null ) {
                 console.warn('Could not retrieve the correct point and plane.')

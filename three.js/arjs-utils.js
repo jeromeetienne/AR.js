@@ -6,7 +6,8 @@ ARjs.Utils = {}
  * @param {string} trackingBackend - the tracking to user
  * @return {THREE.Camera} the created camera
  */
-ARjs.Utils.createDefaultCamera = function(trackingBackend){
+ARjs.Utils.createDefaultCamera = function(trackingMethod){
+	var trackingBackend = this.parseTrackingMethod(trackingMethod).trackingBackend
 	// Create a camera
 	if( trackingBackend === 'artoolkit' ){
 		var camera = new THREE.Camera();
@@ -27,4 +28,19 @@ ARjs.Utils.createDefaultCamera = function(trackingBackend){
 ARjs.Utils.isTango = function(){
 	var isTango = navigator.userAgent.match('Chrome/57.0.2987.5') !== null ? true : false
 	return isTango
+}
+
+
+ARjs.Utils.parseTrackingMethod = function(trackingMethod){
+	if( trackingMethod.startsWith('area-') ){
+		return {
+			trackingBackend : trackingMethod.replace('area-', ''),
+			markersAreaEnabled : true,
+		}
+	}else{
+		return {
+			trackingBackend : trackingMethod,
+			markersAreaEnabled : false,
+		}
+	}
 }
