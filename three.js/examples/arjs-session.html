@@ -16,11 +16,11 @@
 <script src='../vendor/chromium-tango/THREE.WebAR.js'></script>
 <!-- include ar.js -->
 <script src='../arjs-utils.js'></script>
-<script src='../arjs-session.js'></script>
-<script src='../arjs-anchor.js'></script>
-<script src='../arjs-hittester.js'></script>
-<script src='../arjs-tangovideomesh.js'></script>
-<script src='../arjs-tangopointcloud.js'></script>
+<script src='../src/newAPI/arjs-session.js'></script>
+<script src='../src/newAPI/arjs-anchor.js'></script>
+<script src='../src/newAPI/arjs-hittester.js'></script>
+<script src='../src/newAPI/arjs-tangovideomesh.js'></script>
+<script src='../src/newAPI/arjs-tangopointcloud.js'></script>
 <script src='../threex-artoolkitsource.js'></script>
 <script src='../threex-artoolkitcontext.js'></script>
 <script src='../threex-artoolkitprofile.js'></script>
@@ -60,28 +60,14 @@
 	/ 
 	<a href='#best' onclick='location.reload()'>best</a>
 	<br/>
-	<a href='javascript:void(0)' id='buttonTangoTogglePointCloud'>toggle point cloud</a>
-	-
-	<a href='javascript:void(0)' id='buttonToggleMarkerHelpers'>toggle marker helper</a>
-	-
-	<a href='javascript:void(0)' id='buttonMarkersAreaLearner'>Learn new marker area</a>
-	-
-	<a href='javascript:void(0)' id='buttonMarkersAreaReset'>Reset marker area</a>
+	<a href='javascript:void(0)' id='buttonTangoTogglePointCloud'>toggle-point-cloud</a>
+	<a href='javascript:void(0)' id='buttonToggleMarkerHelpers'>toggle-marker-helper</a>
+	<a href='javascript:void(0)' id='buttonMarkersAreaLearner'>Learn-new-marker-area</a>
+	<a href='javascript:void(0)' id='buttonMarkersAreaReset'>Reset-marker-area</a>
 </div><script>
 ;(function(){
-// TODO put that in a function
+	// get tracking method from location.hash
 	var trackingMethod = location.hash.substring(1) ? location.hash.substring(1) : 'best'
-
-	if( trackingMethod === 'best' ){
-		var trackingMethod = ARjs.Utils.isTango() ? 'tango' : 'area-artoolkit'
-	}
-	
-	if( trackingMethod.startsWith('area-') ){
-		var trackingBackend = trackingMethod.replace('area-', '')
-	}else{
-		var trackingBackend = trackingMethod
-	}
-	
 	document.querySelector('#trackingMethod').innerHTML = trackingMethod
 	
 	//////////////////////////////////////////////////////////////////////////////////
@@ -112,26 +98,19 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 	var camera = ARjs.Utils.createDefaultCamera(trackingMethod)
-	scene.add(camera);
+	scene.add(camera)
 	
 	////////////////////////////////////////////////////////////////////////////////
-	//          handle arToolkitSource
+	//          	Set up Arjs.Profile
 	////////////////////////////////////////////////////////////////////////////////
 
-	var arProfile = new THREEx.ArToolkitProfile()
+	var arProfile = new ARjs.Profile()
 		.sourceWebcam()
 		.trackingMethod(trackingMethod)
+		// .changeMatrixMode('modelViewMatrix')
+		.changeMatrixMode('cameraTransformMatrix')
 		.defaultMarker()
-
-	// FIXME temporary placeholder - to reevaluate later
-	if( trackingMethod === 'tango' ){
-		arProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg')
-	}	
-	
-	// honor changeMatrixMode
-	// arProfile.defaultMarkerParameters.changeMatrixMode = 'cameraTransformMatrix'
-	arProfile.defaultMarkerParameters.changeMatrixMode = 'modelViewMatrix'
-
+		.checkIfValid()
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		build ARjs.Session
@@ -149,7 +128,7 @@
 	})
 	
 	////////////////////////////////////////////////////////////////////////////////
-	//          Create a ArMarkerControls
+	//          Create a ARjs.Anchor
 	////////////////////////////////////////////////////////////////////////////////
 
 	var arAnchor = new ARjs.Anchor(arSession, arProfile.defaultMarkerParameters)
@@ -158,7 +137,7 @@
 	})
 
 	//////////////////////////////////////////////////////////////////////////////
-	//                handle videoMesh for tango
+	//                handle Hit Tester
 	//////////////////////////////////////////////////////////////////////////////
 
 	
@@ -168,7 +147,7 @@
 	})
 
 	// tango only - picking to set object position
-        renderer.domElement.addEventListener("click", function(domEvent) {
+        renderer.domElement.addEventListener("click", function(domEvent){
 		var hitTestResults = hitTester.testDomEvent(domEvent)
 		if( hitTestResults.length === 0 )	return
 
@@ -176,21 +155,53 @@
 		arAnchor.applyHitTestResult(hitTestResult)
 	})
 
+	//////////////////////////////////////////////////////////////////////////////
+	//		tango specifics
+	//////////////////////////////////////////////////////////////////////////////
 	
 	if( trackingMethod === 'tango' ){
+		// init tangoVideoMesh
 		var tangoVideoMesh = new ARjs.TangoVideoMesh(arSession)
 		onRenderFcts.push(function(){
 			tangoVideoMesh.update()
 		})
-	}
-	
-	if( trackingMethod === 'tango' ){
+		// init tangoPointCloud
 		var tangoPointCloud = new ARjs.TangoPointCloud(arSession)
 		scene.add(tangoPointCloud.object3d)
 	}
 	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		add an object to the arAnchor
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	var arWorldRoot = arAnchor.object3d
+	
+	var mesh = new THREE.AxisHelper()
+	arWorldRoot.add(mesh)
+	
+	// add a torus knot	
+	var geometry	= new THREE.CubeGeometry(1,1,1);
+	var material	= new THREE.MeshNormalMaterial({
+		transparent : true,
+		opacity: 0.5,
+		side: THREE.DoubleSide
+	}); 
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.y	= geometry.parameters.height/2
+	arWorldRoot.add( mesh );
+	
+	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
+	var material	= new THREE.MeshNormalMaterial(); 
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.y	= 0.5
+	arWorldRoot.add( mesh );
+	
+	onRenderFcts.push(function(delta){
+		mesh.rotation.x += Math.PI*delta
+	})
+	
 	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
+	//		Handle UI
 	//////////////////////////////////////////////////////////////////////////////
 	
 	if( trackingMethod === 'tango' ){
@@ -214,12 +225,14 @@
 
 
 		document.querySelector('#buttonMarkersAreaReset').addEventListener('click', function(){
+			var trackingBackend = arProfile.contextParameters.trackingBackend
 			THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(trackingBackend)
 			location.reload()
 		})
 
 		document.querySelector('#buttonMarkersAreaLearner').addEventListener('click', function(){
 			var learnerBaseURL = 'multi-markers/examples/learner.html'
+			var trackingBackend = arProfile.contextParameters.trackingBackend
 			THREEx.ArMultiMarkerUtils.navigateToLearnerPage(learnerBaseURL, trackingBackend)
 		})		
 	}else{
@@ -229,34 +242,6 @@
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////
-	//		add an object in the scene
-	//////////////////////////////////////////////////////////////////////////////////
-	
-	var mesh = new THREE.AxisHelper()
-	arAnchor.object3d.add(mesh)
-	
-	// add a torus knot	
-	var geometry	= new THREE.CubeGeometry(1,1,1);
-	var material	= new THREE.MeshNormalMaterial({
-		transparent : true,
-		opacity: 0.5,
-		side: THREE.DoubleSide
-	}); 
-	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= geometry.parameters.height/2
-	arAnchor.object3d.add( mesh );
-	
-	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	var material	= new THREE.MeshNormalMaterial(); 
-	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= 0.5
-	arAnchor.object3d.add( mesh );
-	
-	onRenderFcts.push(function(delta){
-		mesh.rotation.x += Math.PI*delta
-	})
-	
-	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
 	//////////////////////////////////////////////////////////////////////////////////
 	
@@ -265,7 +250,7 @@
 		// Render the see through camera scene
 		renderer.clear()
 		
-		// render videoMesh for tango
+		// render tangoVideoMesh
 		if( trackingMethod === 'tango' ){
 			tangoVideoMesh.render()
 		}

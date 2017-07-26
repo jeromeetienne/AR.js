@@ -1,3 +1,5 @@
+var ARjs = ARjs || {}
+
 var THREEx = THREEx || {}
 
 /**
@@ -7,14 +9,14 @@ var THREEx = THREEx || {}
  * - you can use this class to understand how to tune your specific usecase
  * - it is made to help people to build parameters without understanding all the underlying details.
  */
-THREEx.ArToolkitProfile = function(){
+ARjs.Profile = THREEx.ArToolkitProfile = function(){
 	this.reset()
 
 	this.performance('default')
 }
 
 
-THREEx.ArToolkitProfile.prototype._guessPerformanceLabel = function() {
+ARjs.Profile.prototype._guessPerformanceLabel = function() {
 	var isMobile = navigator.userAgent.match(/Android/i)
 			|| navigator.userAgent.match(/webOS/i)
 			|| navigator.userAgent.match(/iPhone/i)
@@ -36,7 +38,7 @@ THREEx.ArToolkitProfile.prototype._guessPerformanceLabel = function() {
 /**
  * reset all parameters
  */
-THREEx.ArToolkitProfile.prototype.reset = function () {
+ARjs.Profile.prototype.reset = function () {
 	this.sourceParameters = {
 		// to read from the webcam 
 		sourceType : 'webcam',
@@ -60,7 +62,7 @@ THREEx.ArToolkitProfile.prototype.reset = function () {
 
 
 
-THREEx.ArToolkitProfile.prototype.performance = function(label) {
+ARjs.Profile.prototype.performance = function(label) {
 	if( label === 'default' ){
 		label = this._guessPerformanceLabel()
 	}
@@ -95,7 +97,7 @@ THREEx.ArToolkitProfile.prototype.performance = function(label) {
 //////////////////////////////////////////////////////////////////////////////
 
 
-THREEx.ArToolkitProfile.prototype.defaultMarker = function (trackingBackend) {
+ARjs.Profile.prototype.defaultMarker = function (trackingBackend) {
 	trackingBackend = trackingBackend || this.contextParameters.trackingBackend
 
 	if( trackingBackend === 'artoolkit' ){
@@ -117,20 +119,19 @@ THREEx.ArToolkitProfile.prototype.defaultMarker = function (trackingBackend) {
 //////////////////////////////////////////////////////////////////////////////
 //		Source
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitProfile.prototype.sourceWebcam = function () {
+ARjs.Profile.prototype.sourceWebcam = function () {
 	this.sourceParameters.sourceType = 'webcam'
 	delete this.sourceParameters.sourceUrl
 	return this
 }
 
-
-THREEx.ArToolkitProfile.prototype.sourceVideo = function (url) {
+ARjs.Profile.prototype.sourceVideo = function (url) {
 	this.sourceParameters.sourceType = 'video'
 	this.sourceParameters.sourceUrl = url
 	return this
 }
 
-THREEx.ArToolkitProfile.prototype.sourceImage = function (url) {
+ARjs.Profile.prototype.sourceImage = function (url) {
 	this.sourceParameters.sourceType = 'image'
 	this.sourceParameters.sourceUrl = url
 	return this
@@ -139,27 +140,36 @@ THREEx.ArToolkitProfile.prototype.sourceImage = function (url) {
 //////////////////////////////////////////////////////////////////////////////
 //		trackingBackend
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitProfile.prototype.trackingBackend = function (trackingBackend) {
-	console.warn('use profile.trackingBackend() obsolete function')
+ARjs.Profile.prototype.trackingBackend = function (trackingBackend) {
+	console.warn('stop profile.trackingBackend() obsolete function. use .trackingMethod instead')
 	this.contextParameters.trackingBackend = trackingBackend
 	return this
 }
 
+//////////////////////////////////////////////////////////////////////////////
+//		trackingBackend
+//////////////////////////////////////////////////////////////////////////////
+ARjs.Profile.prototype.changeMatrixMode = function (changeMatrixMode) {
+	this.defaultMarkerParameters.changeMatrixMode = changeMatrixMode
+	return this
+}
 
 //////////////////////////////////////////////////////////////////////////////
 //		trackingBackend
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitProfile.prototype.trackingMethod = function (trackingMethod) {
+ARjs.Profile.prototype.trackingMethod = function (trackingMethod) {
+	var data = ARjs.Utils.parseTrackingMethod(trackingMethod)
+	this.defaultMarkerParameters.markersAreaEnabled = data.markersAreaEnabled
+	this.contextParameters.trackingBackend = data.trackingBackend
+	return this
+}
 
-	if( trackingMethod.startsWith('area-') ){
-		var trackingBackend = trackingMethod.replace('area-', '')
-		var markersAreaEnabled = true
-	}else{
-		var trackingBackend = trackingMethod
-		var markersAreaEnabled = false
+/**
+ * check if the profile is valid. Throw an exception is not valid
+ */
+ARjs.Profile.prototype.checkIfValid = function () {
+	if( this.contextParameters.trackingBackend === 'tango' ){
+		this.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg')
 	}
-
-	this.defaultMarkerParameters.markersAreaEnabled = markersAreaEnabled
-	this.contextParameters.trackingBackend = trackingBackend
 	return this
 }

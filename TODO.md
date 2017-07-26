@@ -1,30 +1,23 @@
 ## New API
-- pick real world with all trackingMethod
-  - hit tester with plane
-  - DONE ?
 
 - build a aframe version of that to see how it fit
   - when api is stable enougth ?
   - when all the bugs are sorted out
+    - currently only something about displaying point cloud in tango - very minor
 
-- check it works on all cases
+- Check it works on all cases
   - no special cases incompatibilities
   - changeMatrixMode
   - tango point cloud fails in cameraTransformMatrix
 
-- button tangoonly pointcloudtoggle
+- move three.js/arjs-.js in three.js/src/newApi/
+- later rename file/class
+  - move all THREEx for ar.js as ARjs.
+  - remove artoolkit in the name when it is multi backend
+  - require to check/change all code 
+  - can i do a compatibility layer for all the classes
+  - thus it is only about changing the files
 
-- full markers area
-  - THREEx.ArMultiMarkerUtils
-  - button - reset-markers-area
-  - button - toggle-marker-helper
-  - button - goto-learner
-
-- in tango
-  - make point cloud or not an live option
-  
-
-- DONE tango point cloud visible
 - how to handle trackingMethod
   - area-aruco
   - area-artoolkit
@@ -34,6 +27,15 @@
   - arkit
   - best
 
+- DONE pick real world with all trackingMethod
+  - hit tester with plane
+- DONE button tangoonly pointcloudtoggle
+- DONE full markers area
+  - THREEx.ArMultiMarkerUtils
+  - button - reset-markers-area
+  - button - toggle-marker-helper
+  - button - goto-learner
+- DONE tango point cloud visible
 
 
 ## New API - no three.js dependancy
@@ -54,6 +56,10 @@
 
 
 --- 
+- remove the arcode generator + marker generator, now that they are in webxr.io
+- move docs/ into its own repository
+  - thus no conflict with main repo
+  - and it is considered secondery
 - have seen stuff about projection matrix in jsartoolkit
   - would need to recompiled
   - would fix the near/far

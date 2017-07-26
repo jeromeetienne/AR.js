@@ -3,6 +3,7 @@ ARjs.Utils = {}
 
 /**
  * Create a default rendering camera for this trackingBackend. They may be modified later. to fit physical camera parameters
+ * 
  * @param {string} trackingBackend - the tracking to user
  * @return {THREE.Camera} the created camera
  */
@@ -26,12 +27,24 @@ ARjs.Utils.createDefaultCamera = function(trackingMethod){
  * @return {boolean} - true if running on tango, false otherwise
  */
 ARjs.Utils.isTango = function(){
+	// FIXME: this test is super bad
 	var isTango = navigator.userAgent.match('Chrome/57.0.2987.5') !== null ? true : false
 	return isTango
 }
 
 
+/**
+ * parse tracking method
+ * 
+ * @param {String} trackingMethod - the tracking method to parse
+ * @return {Object} - various field of the tracking method
+ */
 ARjs.Utils.parseTrackingMethod = function(trackingMethod){
+
+	if( trackingMethod === 'best' ){
+		trackingMethod = ARjs.Utils.isTango() ? 'tango' : 'area-artoolkit'
+	}	
+
 	if( trackingMethod.startsWith('area-') ){
 		return {
 			trackingBackend : trackingMethod.replace('area-', ''),

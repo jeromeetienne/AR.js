@@ -1,7 +1,0 @@
-# Augmented Website
-
-[Augmented Website](http://webxr.io/augmented-website)
-
-Bring AR to any website
-
-Easy way to share AR on the internet

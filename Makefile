@@ -7,7 +7,4 @@ minify:
 test:
 	(cd test && make test)
 
-deploy:
-	(cd docs && make deploy)
-
 .PHONY: test

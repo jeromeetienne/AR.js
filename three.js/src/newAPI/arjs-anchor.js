@@ -50,7 +50,6 @@ ARjs.Anchor = function(arSession, markerParameters){
 				markerHelper.object3d.visible = visible
 			})
 		}
-
 	}
 	
 	this.object3d = new THREE.Group()
@@ -59,6 +58,7 @@ ARjs.Anchor = function(arSession, markerParameters){
 	//		THREEx.ArSmoothedControls
 	//////////////////////////////////////////////////////////////////////////////
 	
+	// TODO should be part of trackingMethod parsing
 	var shouldBeSmoothed = true
 	if( arContext.parameters.trackingBackend === 'tango' ) shouldBeSmoothed = false 
 
