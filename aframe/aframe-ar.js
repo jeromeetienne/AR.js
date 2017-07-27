@@ -304,7 +304,13 @@ console.log('this.data.markerhelpers', this.data.markerhelpers)
 		}else 	console.assert(false)
 
 		// build a smoothedControls
-		this.arSmoothedControls = new THREEx.ArSmoothedControls(this.el.object3D)
+		this.arSmoothedControls = new THREEx.ArSmoothedControls(this.el.object3D,{
+			lerpPosition : 0.1,
+			lerpQuaternion : 0.1, 
+			lerpScale : 0.1,
+			// minVisibleDelay: 0,
+			// minUnvisibleDelay: 0,
+		})
 		
 		
 

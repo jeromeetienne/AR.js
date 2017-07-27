@@ -354,7 +354,9 @@ THREEx.ArToolkitSource.prototype.onResize2	= function(arToolkitContext, renderer
 
 	// UPDATE CAMERA
 	if( trackingBackend === 'artoolkit' ){
-		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
+		if( arToolkitContext.arController !== null ){
+			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
+		}
 	}else if( trackingBackend === 'aruco' ){	
 		camera.aspect = renderer.domElement.width / renderer.domElement.height;
 		camera.updateProjectionMatrix();			

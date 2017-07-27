@@ -8,26 +8,26 @@ THREEx.ArToolkitContext = function(parameters){
 	// handle default parameters
 	this.parameters = {
 		// AR backend - ['artoolkit', 'aruco', 'tango']
-		trackingBackend: parameters.trackingBackend !== undefined ? parameters.trackingBackend : 'artoolkit',
+		trackingBackend: 'artoolkit',
 		// debug - true if one should display artoolkit debug canvas, false otherwise
-		debug: parameters.debug !== undefined ? parameters.debug : false,
+		debug: false,
 		// the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
-		detectionMode: parameters.detectionMode !== undefined ? parameters.detectionMode : 'mono',
+		detectionMode: 'mono',
 		// type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
-		matrixCodeType: parameters.matrixCodeType !== undefined ? parameters.matrixCodeType : '3x3',
+		matrixCodeType: '3x3',
 		
 		// url of the camera parameters
-		cameraParametersUrl: parameters.cameraParametersUrl !== undefined ? parameters.cameraParametersUrl : THREEx.ArToolkitContext.baseURL + 'parameters/camera_para.dat',
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + 'parameters/camera_para.dat',
 
 		// tune the maximum rate of pose detection in the source image
-		maxDetectionRate: parameters.maxDetectionRate !== undefined ? parameters.maxDetectionRate : 60,
+		maxDetectionRate: 60,
 		// resolution of at which we detect pose in the source image
-		canvasWidth: parameters.canvasWidth !== undefined ? parameters.canvasWidth : 640,
-		canvasHeight: parameters.canvasHeight !== undefined ? parameters.canvasHeight : 480,
+		canvasWidth: 640,
+		canvasHeight: 480,
 		
 		// enable image smoothing or not for canvas copy - default to true
 		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
-		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : false,
+		imageSmoothingEnabled : false,
 	}
 	// parameters sanity check
 	console.assert(['artoolkit', 'aruco', 'tango'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
@@ -40,6 +40,8 @@ THREEx.ArToolkitContext = function(parameters){
 
 
 	this._arMarkersControls = []
+	
+	this._setParameters(parameters)
 }
 
 Object.assign( THREEx.ArToolkitContext.prototype, THREE.EventDispatcher.prototype );
@@ -49,6 +51,33 @@ Object.assign( THREEx.ArToolkitContext.prototype, THREE.EventDispatcher.prototyp
 THREEx.ArToolkitContext.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
 THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 
+
+/**
+ * set parameters
+ * @param {[type]} values [description]
+ * @return {[type]} [description]
+ */
+THREEx.ArToolkitContext.prototype._setParameters = function (values){
+	if ( values === undefined ) return;
+
+	for( var key in values ){
+		var newValue = values[ key ];
+
+		if( newValue === undefined ){
+			console.warn( "THREEx.ArToolkitContext: '" + key + "' parameter is undefined." );
+			continue;
+		}
+
+		var currentValue = this.parameters[ key ];
+
+		if( currentValue === undefined ){
+			console.warn( "THREEx.ArToolkitContext: '" + key + "' is not a property of this material." );
+			continue;
+		}
+
+		this.parameters[ key ] = newValue;
+	}
+};
 
 /**
  * Create a default camera for this trackingBackend
@@ -101,7 +130,7 @@ THREEx.ArToolkitContext.prototype.init = function(onCompleted){
 THREEx.ArToolkitContext.prototype.update = function(srcElement){
 
 	// be sure arController is fully initialized
-        if (this.parameters.trackingBackend === 'artoolkit' && this.arController === null) return false;
+        if(this.parameters.trackingBackend === 'artoolkit' && this.arController === null) return false;
 
 	// honor this.parameters.maxDetectionRate
 	var present = performance.now()
@@ -164,7 +193,7 @@ THREEx.ArToolkitContext.prototype._initArtoolkit = function(onCompleted){
 	this._artoolkitProjectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
 
 	// get cameraParameters
-        var cameraParameters = new ARCameraParam(_this.parameters.cameraParametersUrl, function() {
+        var cameraParameters = new ARCameraParam(_this.parameters.cameraParametersUrl, function(){
         	// init controller
                 var arController = new ARController(_this.parameters.canvasWidth, _this.parameters.canvasHeight, cameraParameters);
                 _this.arController = arController
@@ -308,9 +337,9 @@ THREEx.ArToolkitContext.prototype._updateAruco = function(srcElement){
 THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 	var _this = this
 	// check webvr is available
-	if (navigator.getVRDisplays) {
+	if (navigator.getVRDisplays){
 		// do nothing
-	} else if (navigator.getVRDevices) {
+	} else if (navigator.getVRDevices){
 		alert("Your browser supports WebVR but not the latest version. See <a href='http://webvr.info'>webvr.info</a> for more info.");
 	} else {
 		alert("Your browser does not support WebVR. See <a href='http://webvr.info'>webvr.info</a> for assistance.");
@@ -325,7 +354,7 @@ THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 	
 
 	// get vrDisplay
-	navigator.getVRDisplays().then(function (vrDisplays) {
+	navigator.getVRDisplays().then(function (vrDisplays){
 		if( vrDisplays.length === 0 )	alert('no vrDisplays available')
 		var vrDisplay = _this._tangoContext.vrDisplay = vrDisplays[0]
 
@@ -339,7 +368,7 @@ THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 		// NOTE it doesnt seem necessary and it fails on tango
 		// var canvasElement = document.createElement('canvas')
 		// document.body.appendChild(canvasElement)
-		// _this._tangoContext.requestPresent([{ source: canvasElement }]).then(function() {
+		// _this._tangoContext.requestPresent([{ source: canvasElement }]).then(function(){
 		// 	console.log('vrdisplay request accepted')
 		// });
 

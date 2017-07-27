@@ -63,33 +63,35 @@ ARjs.Profile.prototype.reset = function () {
 
 
 ARjs.Profile.prototype.performance = function(label) {
+
 	if( label === 'default' ){
 		label = this._guessPerformanceLabel()
 	}
 
 	if( label === 'desktop-fast' ){
-		this.contextParameters.sourceWidth = 640*3
-		this.contextParameters.sourceHeight = 480*3
+		this.contextParameters.canvasWidth = 640*3
+		this.contextParameters.canvasHeight = 480*3
 
 		this.contextParameters.maxDetectionRate = 30
 	}else if( label === 'desktop-normal' ){
-		this.contextParameters.sourceWidth = 640
-		this.contextParameters.sourceHeight = 480
+		this.contextParameters.canvasWidth = 640
+		this.contextParameters.canvasHeight = 480
 
 		this.contextParameters.maxDetectionRate = 60
 	}else if( label === 'phone-normal' ){
-		this.contextParameters.sourceWidth = 80*4
-		this.contextParameters.sourceHeight = 60*4
+		this.contextParameters.canvasWidth = 80*4
+		this.contextParameters.canvasHeight = 60*4
 
 		this.contextParameters.maxDetectionRate = 30
 	}else if( label === 'phone-slow' ){
-		this.contextParameters.sourceWidth = 80*3
-		this.contextParameters.sourceHeight = 60*3
+		this.contextParameters.canvasWidth = 80*3
+		this.contextParameters.canvasHeight = 60*3
 
 		this.contextParameters.maxDetectionRate = 30		
 	}else {
 		console.assert(false, 'unknonwn label '+label)
 	}
+	return this
 }
 
 //////////////////////////////////////////////////////////////////////////////

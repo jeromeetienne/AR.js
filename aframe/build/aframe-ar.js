@@ -36,6 +36,8 @@ THREEx.ArBaseControls.prototype.name = function(){
 }
 var THREEx = THREEx || {}
 
+// TODO this is useless - prefere arjs-hittester.js
+
 /**
  * - maybe support .onClickFcts in each object3d
  * - seems an easy light layer for clickable object
@@ -47,6 +49,9 @@ THREEx.ARClickability = function(sourceElement){
 	var fullWidth = parseInt(sourceElement.style.width)
 	var fullHeight = parseInt(sourceElement.style.height)
 	this._cameraPicking = new THREE.PerspectiveCamera(42, fullWidth / fullHeight, 0.1, 100);	
+
+console.warn('THREEx.ARClickability works only in modelViewMatrix')
+// TODO just push camera in computeIntersects
 }
 
 THREEx.ARClickability.prototype.onResize = function(){
@@ -86,7 +91,7 @@ THREEx.ARClickability.prototype.update = function(){
 
 THREEx.ARClickability.tangoPickingPointCloud = function(artoolkitContext, mouseX, mouseY){
 	var vrDisplay = artoolkitContext._tangoContext.vrDisplay
-        if (vrDisplay === null ) return
+        if (vrDisplay === null ) return null
         var pointAndPlane = vrDisplay.getPickingPointAndPlaneInPointCloud(mouseX, mouseY)
         if( pointAndPlane == null ) {
                 console.warn('Could not retrieve the correct point and plane.')
@@ -727,26 +732,26 @@ THREEx.ArToolkitContext = function(parameters){
 	// handle default parameters
 	this.parameters = {
 		// AR backend - ['artoolkit', 'aruco', 'tango']
-		trackingBackend: parameters.trackingBackend !== undefined ? parameters.trackingBackend : 'artoolkit',
+		trackingBackend: 'artoolkit',
 		// debug - true if one should display artoolkit debug canvas, false otherwise
-		debug: parameters.debug !== undefined ? parameters.debug : false,
+		debug: false,
 		// the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
-		detectionMode: parameters.detectionMode !== undefined ? parameters.detectionMode : 'mono',
+		detectionMode: 'mono',
 		// type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
-		matrixCodeType: parameters.matrixCodeType !== undefined ? parameters.matrixCodeType : '3x3',
+		matrixCodeType: '3x3',
 		
 		// url of the camera parameters
-		cameraParametersUrl: parameters.cameraParametersUrl !== undefined ? parameters.cameraParametersUrl : THREEx.ArToolkitContext.baseURL + 'parameters/camera_para.dat',
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + 'parameters/camera_para.dat',
 
 		// tune the maximum rate of pose detection in the source image
-		maxDetectionRate: parameters.maxDetectionRate !== undefined ? parameters.maxDetectionRate : 60,
+		maxDetectionRate: 60,
 		// resolution of at which we detect pose in the source image
-		canvasWidth: parameters.canvasWidth !== undefined ? parameters.canvasWidth : 640,
-		canvasHeight: parameters.canvasHeight !== undefined ? parameters.canvasHeight : 480,
+		canvasWidth: 640,
+		canvasHeight: 480,
 		
 		// enable image smoothing or not for canvas copy - default to true
 		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
-		imageSmoothingEnabled : parameters.imageSmoothingEnabled !== undefined ? parameters.imageSmoothingEnabled : false,
+		imageSmoothingEnabled : false,
 	}
 	// parameters sanity check
 	console.assert(['artoolkit', 'aruco', 'tango'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
@@ -754,8 +759,13 @@ THREEx.ArToolkitContext = function(parameters){
 	
         this.arController = null;
         this.arucoContext = null;
+	
+	_this.initialized = false
+
 
 	this._arMarkersControls = []
+	
+	this._setParameters(parameters)
 }
 
 Object.assign( THREEx.ArToolkitContext.prototype, THREE.EventDispatcher.prototype );
@@ -765,6 +775,33 @@ Object.assign( THREEx.ArToolkitContext.prototype, THREE.EventDispatcher.prototyp
 THREEx.ArToolkitContext.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
 THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 
+
+/**
+ * set parameters
+ * @param {[type]} values [description]
+ * @return {[type]} [description]
+ */
+THREEx.ArToolkitContext.prototype._setParameters = function (values){
+	if ( values === undefined ) return;
+
+	for( var key in values ){
+		var newValue = values[ key ];
+
+		if( newValue === undefined ){
+			console.warn( "THREEx.ArToolkitContext: '" + key + "' parameter is undefined." );
+			continue;
+		}
+
+		var currentValue = this.parameters[ key ];
+
+		if( currentValue === undefined ){
+			console.warn( "THREEx.ArToolkitContext: '" + key + "' is not a property of this material." );
+			continue;
+		}
+
+		this.parameters[ key ] = newValue;
+	}
+};
 
 /**
  * Create a default camera for this trackingBackend
@@ -805,6 +842,8 @@ THREEx.ArToolkitContext.prototype.init = function(onCompleted){
 			type: 'initialized'
 		});
 
+		_this.initialized = true
+		
 		onCompleted && onCompleted()
 	}
 
@@ -815,7 +854,7 @@ THREEx.ArToolkitContext.prototype.init = function(onCompleted){
 THREEx.ArToolkitContext.prototype.update = function(srcElement){
 
 	// be sure arController is fully initialized
-        if (this.parameters.trackingBackend === 'artoolkit' && this.arController === null) return false;
+        if(this.parameters.trackingBackend === 'artoolkit' && this.arController === null) return false;
 
 	// honor this.parameters.maxDetectionRate
 	var present = performance.now()
@@ -878,7 +917,7 @@ THREEx.ArToolkitContext.prototype._initArtoolkit = function(onCompleted){
 	this._artoolkitProjectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
 
 	// get cameraParameters
-        var cameraParameters = new ARCameraParam(_this.parameters.cameraParametersUrl, function() {
+        var cameraParameters = new ARCameraParam(_this.parameters.cameraParametersUrl, function(){
         	// init controller
                 var arController = new ARController(_this.parameters.canvasWidth, _this.parameters.canvasHeight, cameraParameters);
                 _this.arController = arController
@@ -1022,9 +1061,9 @@ THREEx.ArToolkitContext.prototype._updateAruco = function(srcElement){
 THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 	var _this = this
 	// check webvr is available
-	if (navigator.getVRDisplays) {
+	if (navigator.getVRDisplays){
 		// do nothing
-	} else if (navigator.getVRDevices) {
+	} else if (navigator.getVRDevices){
 		alert("Your browser supports WebVR but not the latest version. See <a href='http://webvr.info'>webvr.info</a> for more info.");
 	} else {
 		alert("Your browser does not support WebVR. See <a href='http://webvr.info'>webvr.info</a> for assistance.");
@@ -1039,7 +1078,7 @@ THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 	
 
 	// get vrDisplay
-	navigator.getVRDisplays().then(function (vrDisplays) {
+	navigator.getVRDisplays().then(function (vrDisplays){
 		if( vrDisplays.length === 0 )	alert('no vrDisplays available')
 		var vrDisplay = _this._tangoContext.vrDisplay = vrDisplays[0]
 
@@ -1053,7 +1092,7 @@ THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 		// NOTE it doesnt seem necessary and it fails on tango
 		// var canvasElement = document.createElement('canvas')
 		// document.body.appendChild(canvasElement)
-		// _this._tangoContext.requestPresent([{ source: canvasElement }]).then(function() {
+		// _this._tangoContext.requestPresent([{ source: canvasElement }]).then(function(){
 		// 	console.log('vrdisplay request accepted')
 		// });
 
@@ -1114,6 +1153,8 @@ THREEx.ArToolkitContext.prototype._updateTango = function(srcElement){
 	// }
 
 }
+var ARjs = ARjs || {}
+
 var THREEx = THREEx || {}
 
 /**
@@ -1123,14 +1164,14 @@ var THREEx = THREEx || {}
  * - you can use this class to understand how to tune your specific usecase
  * - it is made to help people to build parameters without understanding all the underlying details.
  */
-THREEx.ArToolkitProfile = function(){
+ARjs.Profile = THREEx.ArToolkitProfile = function(){
 	this.reset()
 
 	this.performance('default')
 }
 
 
-THREEx.ArToolkitProfile.prototype._guessPerformanceLabel = function() {
+ARjs.Profile.prototype._guessPerformanceLabel = function() {
 	var isMobile = navigator.userAgent.match(/Android/i)
 			|| navigator.userAgent.match(/webOS/i)
 			|| navigator.userAgent.match(/iPhone/i)
@@ -1152,7 +1193,7 @@ THREEx.ArToolkitProfile.prototype._guessPerformanceLabel = function() {
 /**
  * reset all parameters
  */
-THREEx.ArToolkitProfile.prototype.reset = function () {
+ARjs.Profile.prototype.reset = function () {
 	this.sourceParameters = {
 		// to read from the webcam 
 		sourceType : 'webcam',
@@ -1164,7 +1205,8 @@ THREEx.ArToolkitProfile.prototype.reset = function () {
 	}
 	this.defaultMarkerParameters = {
 		type : 'pattern',
-		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+		changeMatrixMode: 'modelViewMatrix',
 	}
 	return this
 };
@@ -1175,34 +1217,36 @@ THREEx.ArToolkitProfile.prototype.reset = function () {
 
 
 
-THREEx.ArToolkitProfile.prototype.performance = function(label) {
+ARjs.Profile.prototype.performance = function(label) {
+
 	if( label === 'default' ){
 		label = this._guessPerformanceLabel()
 	}
 
 	if( label === 'desktop-fast' ){
-		this.contextParameters.sourceWidth = 640*3
-		this.contextParameters.sourceHeight = 480*3
+		this.contextParameters.canvasWidth = 640*3
+		this.contextParameters.canvasHeight = 480*3
 
 		this.contextParameters.maxDetectionRate = 30
 	}else if( label === 'desktop-normal' ){
-		this.contextParameters.sourceWidth = 640
-		this.contextParameters.sourceHeight = 480
+		this.contextParameters.canvasWidth = 640
+		this.contextParameters.canvasHeight = 480
 
 		this.contextParameters.maxDetectionRate = 60
 	}else if( label === 'phone-normal' ){
-		this.contextParameters.sourceWidth = 80*4
-		this.contextParameters.sourceHeight = 60*4
+		this.contextParameters.canvasWidth = 80*4
+		this.contextParameters.canvasHeight = 60*4
 
 		this.contextParameters.maxDetectionRate = 30
 	}else if( label === 'phone-slow' ){
-		this.contextParameters.sourceWidth = 80*3
-		this.contextParameters.sourceHeight = 60*3
+		this.contextParameters.canvasWidth = 80*3
+		this.contextParameters.canvasHeight = 60*3
 
 		this.contextParameters.maxDetectionRate = 30		
 	}else {
 		console.assert(false, 'unknonwn label '+label)
 	}
+	return this
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -1210,7 +1254,7 @@ THREEx.ArToolkitProfile.prototype.performance = function(label) {
 //////////////////////////////////////////////////////////////////////////////
 
 
-THREEx.ArToolkitProfile.prototype.defaultMarker = function (trackingBackend) {
+ARjs.Profile.prototype.defaultMarker = function (trackingBackend) {
 	trackingBackend = trackingBackend || this.contextParameters.trackingBackend
 
 	if( trackingBackend === 'artoolkit' ){
@@ -1232,20 +1276,19 @@ THREEx.ArToolkitProfile.prototype.defaultMarker = function (trackingBackend) {
 //////////////////////////////////////////////////////////////////////////////
 //		Source
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitProfile.prototype.sourceWebcam = function () {
+ARjs.Profile.prototype.sourceWebcam = function () {
 	this.sourceParameters.sourceType = 'webcam'
 	delete this.sourceParameters.sourceUrl
 	return this
 }
 
-
-THREEx.ArToolkitProfile.prototype.sourceVideo = function (url) {
+ARjs.Profile.prototype.sourceVideo = function (url) {
 	this.sourceParameters.sourceType = 'video'
 	this.sourceParameters.sourceUrl = url
 	return this
 }
 
-THREEx.ArToolkitProfile.prototype.sourceImage = function (url) {
+ARjs.Profile.prototype.sourceImage = function (url) {
 	this.sourceParameters.sourceType = 'image'
 	this.sourceParameters.sourceUrl = url
 	return this
@@ -1254,8 +1297,37 @@ THREEx.ArToolkitProfile.prototype.sourceImage = function (url) {
 //////////////////////////////////////////////////////////////////////////////
 //		trackingBackend
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitProfile.prototype.trackingBackend = function (trackingBackend) {
+ARjs.Profile.prototype.trackingBackend = function (trackingBackend) {
+	console.warn('stop profile.trackingBackend() obsolete function. use .trackingMethod instead')
 	this.contextParameters.trackingBackend = trackingBackend
+	return this
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		trackingBackend
+//////////////////////////////////////////////////////////////////////////////
+ARjs.Profile.prototype.changeMatrixMode = function (changeMatrixMode) {
+	this.defaultMarkerParameters.changeMatrixMode = changeMatrixMode
+	return this
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		trackingBackend
+//////////////////////////////////////////////////////////////////////////////
+ARjs.Profile.prototype.trackingMethod = function (trackingMethod) {
+	var data = ARjs.Utils.parseTrackingMethod(trackingMethod)
+	this.defaultMarkerParameters.markersAreaEnabled = data.markersAreaEnabled
+	this.contextParameters.trackingBackend = data.trackingBackend
+	return this
+}
+
+/**
+ * check if the profile is valid. Throw an exception is not valid
+ */
+ARjs.Profile.prototype.checkIfValid = function () {
+	if( this.contextParameters.trackingBackend === 'tango' ){
+		this.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg')
+	}
 	return this
 }
 var THREEx = THREEx || {}
@@ -1452,16 +1524,23 @@ THREEx.ArToolkitSource.prototype.hasMobileTorch = function(){
 	}
 
 	var videoTrack = stream.getVideoTracks()[0];
+
+	// if videoTrack.getCapabilities() doesnt exist, return false now
+	if( videoTrack.getCapabilities === undefined )	return false
+
 	var capabilities = videoTrack.getCapabilities()
 	
 	return capabilities.torch ? true : false
 }
 
 /**
- * - toggle the flash/torch of the mobile fun if applicable
+ * toggle the flash/torch of the mobile fun if applicable.
  * Great post about it https://www.oberhofer.co/mediastreamtrack-and-its-capabilities/
  */
 THREEx.ArToolkitSource.prototype.toggleMobileTorch = function(){
+	// sanity check
+	console.assert(this.hasMobileTorch() === true)
+		
 	var stream = arToolkitSource.domElement.srcObject
 	if( stream instanceof MediaStream === false ){
 		alert('enabling mobile torch is available only on webcam')
@@ -1607,7 +1686,9 @@ THREEx.ArToolkitSource.prototype.onResize2	= function(arToolkitContext, renderer
 
 	// UPDATE CAMERA
 	if( trackingBackend === 'artoolkit' ){
-		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
+		if( arToolkitContext.arController !== null ){
+			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
+		}
 	}else if( trackingBackend === 'aruco' ){	
 		camera.aspect = renderer.domElement.width / renderer.domElement.height;
 		camera.updateProjectionMatrix();			
@@ -2826,7 +2907,13 @@ console.log('this.data.markerhelpers', this.data.markerhelpers)
 		}else 	console.assert(false)
 
 		// build a smoothedControls
-		this.arSmoothedControls = new THREEx.ArSmoothedControls(this.el.object3D)
+		this.arSmoothedControls = new THREEx.ArSmoothedControls(this.el.object3D,{
+			lerpPosition : 0.1,
+			lerpQuaternion : 0.1, 
+			lerpScale : 0.1,
+			// minVisibleDelay: 0,
+			// minUnvisibleDelay: 0,
+		})
 		
 		
 
@@ -2909,10 +2996,6 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 
 // EMSCRIPTEN_END_ASM
 (Module.asmGlobalArg,Module.asmLibraryArg,buffer);var _i64Subtract=Module["_i64Subtract"]=asm["_i64Subtract"];var __GLOBAL__sub_I_bind_cpp=Module["__GLOBAL__sub_I_bind_cpp"]=asm["__GLOBAL__sub_I_bind_cpp"];var _fflush=Module["_fflush"]=asm["_fflush"];var __GLOBAL__sub_I_ARToolKitJS_cpp=Module["__GLOBAL__sub_I_ARToolKitJS_cpp"]=asm["__GLOBAL__sub_I_ARToolKitJS_cpp"];var _i64Add=Module["_i64Add"]=asm["_i64Add"];var _memset=Module["_memset"]=asm["_memset"];var runPostSets=Module["runPostSets"]=asm["runPostSets"];var _malloc=Module["_malloc"]=asm["_malloc"];var _memcpy=Module["_memcpy"]=asm["_memcpy"];var ___getTypeName=Module["___getTypeName"]=asm["___getTypeName"];var _bitshift64Lshr=Module["_bitshift64Lshr"]=asm["_bitshift64Lshr"];var _free=Module["_free"]=asm["_free"];var ___errno_location=Module["___errno_location"]=asm["___errno_location"];var _bitshift64Shl=Module["_bitshift64Shl"]=asm["_bitshift64Shl"];var dynCall_iiii=Module["dynCall_iiii"]=asm["dynCall_iiii"];var dynCall_viiiii=Module["dynCall_viiiii"]=asm["dynCall_viiiii"];var dynCall_dii=Module["dynCall_dii"]=asm["dynCall_dii"];var dynCall_vid=Module["dynCall_vid"]=asm["dynCall_vid"];var dynCall_di=Module["dynCall_di"]=asm["dynCall_di"];var dynCall_i=Module["dynCall_i"]=asm["dynCall_i"];var dynCall_vi=Module["dynCall_vi"]=asm["dynCall_vi"];var dynCall_vii=Module["dynCall_vii"]=asm["dynCall_vii"];var dynCall_ii=Module["dynCall_ii"]=asm["dynCall_ii"];var dynCall_viii=Module["dynCall_viii"]=asm["dynCall_viii"];var dynCall_v=Module["dynCall_v"]=asm["dynCall_v"];var dynCall_viid=Module["dynCall_viid"]=asm["dynCall_viid"];var dynCall_iiiii=Module["dynCall_iiiii"]=asm["dynCall_iiiii"];var dynCall_viiiiii=Module["dynCall_viiiiii"]=asm["dynCall_viiiiii"];var dynCall_iii=Module["dynCall_iii"]=asm["dynCall_iii"];var dynCall_viiii=Module["dynCall_viiii"]=asm["dynCall_viiii"];Runtime.stackAlloc=asm["stackAlloc"];Runtime.stackSave=asm["stackSave"];Runtime.stackRestore=asm["stackRestore"];Runtime.establishStackSpace=asm["establishStackSpace"];Runtime.setTempRet0=asm["setTempRet0"];Runtime.getTempRet0=asm["getTempRet0"];function ExitStatus(status){this.name="ExitStatus";this.message="Program terminated with exit("+status+")";this.status=status}ExitStatus.prototype=new Error;ExitStatus.prototype.constructor=ExitStatus;var initialStackTop;var preloadStartTime=null;var calledMain=false;dependenciesFulfilled=function runCaller(){if(!Module["calledRun"])run();if(!Module["calledRun"])dependenciesFulfilled=runCaller};Module["callMain"]=Module.callMain=function callMain(args){assert(runDependencies==0,"cannot call main when async dependencies remain! (listen on __ATMAIN__)");assert(__ATPRERUN__.length==0,"cannot call main when preRun functions remain to be called");args=args||[];ensureInitRuntime();var argc=args.length+1;function pad(){for(var i=0;i<4-1;i++){argv.push(0)}}var argv=[allocate(intArrayFromString(Module["thisProgram"]),"i8",ALLOC_NORMAL)];pad();for(var i=0;i<argc-1;i=i+1){argv.push(allocate(intArrayFromString(args[i]),"i8",ALLOC_NORMAL));pad()}argv.push(0);argv=allocate(argv,"i32",ALLOC_NORMAL);try{var ret=Module["_main"](argc,argv,0);exit(ret,true)}catch(e){if(e instanceof ExitStatus){return}else if(e=="SimulateInfiniteLoop"){Module["noExitRuntime"]=true;return}else{if(e&&typeof e==="object"&&e.stack)Module.printErr("exception thrown: "+[e,e.stack]);throw e}}finally{calledMain=true}};function run(args){args=args||Module["arguments"];if(preloadStartTime===null)preloadStartTime=Date.now();if(runDependencies>0){return}preRun();if(runDependencies>0)return;if(Module["calledRun"])return;function doRun(){if(Module["calledRun"])return;Module["calledRun"]=true;if(ABORT)return;ensureInitRuntime();preMain();if(Module["onRuntimeInitialized"])Module["onRuntimeInitialized"]();if(Module["_main"]&&shouldRunNow)Module["callMain"](args);postRun()}if(Module["setStatus"]){Module["setStatus"]("Running...");setTimeout((function(){setTimeout((function(){Module["setStatus"]("")}),1);doRun()}),1)}else{doRun()}}Module["run"]=Module.run=run;function exit(status,implicit){if(implicit&&Module["noExitRuntime"]){return}if(Module["noExitRuntime"]){}else{ABORT=true;EXITSTATUS=status;STACKTOP=initialStackTop;exitRuntime();if(Module["onExit"])Module["onExit"](status)}if(ENVIRONMENT_IS_NODE){process["stdout"]["once"]("drain",(function(){process["exit"](status)}));console.log(" ");setTimeout((function(){process["exit"](status)}),500)}else if(ENVIRONMENT_IS_SHELL&&typeof quit==="function"){quit(status)}throw new ExitStatus(status)}Module["exit"]=Module.exit=exit;var abortDecorators=[];function abort(what){if(what!==undefined){Module.print(what);Module.printErr(what);what=JSON.stringify(what)}else{what=""}ABORT=true;EXITSTATUS=1;var extra="\nIf this abort() is unexpected, build with -s ASSERTIONS=1 which can give more information.";var output="abort("+what+") at "+stackTrace()+extra;if(abortDecorators){abortDecorators.forEach((function(decorator){output=decorator(output,what)}))}throw output}Module["abort"]=Module.abort=abort;if(Module["preInit"]){if(typeof Module["preInit"]=="function")Module["preInit"]=[Module["preInit"]];while(Module["preInit"].length>0){Module["preInit"].pop()()}}var shouldRunNow=true;if(Module["noInitialRun"]){shouldRunNow=false}run()
-
-
-
-
 ;(function() {
 	'use strict'
 
