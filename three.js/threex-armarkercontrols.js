@@ -9,17 +9,17 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 	// handle default parameters
 	this.parameters = {
 		// size of the marker in meter
-		size : parameters.size !== undefined ? parameters.size : 1,
+		size : 1,
 		// type of marker - ['pattern', 'barcode', 'unknown' ]
-		type : parameters.type !== undefined ? parameters.type : 'unknown',
+		type : 'unknown',
 		// url of the pattern - IIF type='pattern'
-		patternUrl : parameters.patternUrl !== undefined ? parameters.patternUrl : null,
+		patternUrl : null,
 		// value of the barcode - IIF type='barcode'
-		barcodeValue : parameters.barcodeValue !== undefined ? parameters.barcodeValue : null,
+		barcodeValue : null,
 		// change matrix mode - [modelViewMatrix, cameraTransformMatrix]
-		changeMatrixMode : parameters.changeMatrixMode !== undefined ? parameters.changeMatrixMode : 'modelViewMatrix',
+		changeMatrixMode : 'modelViewMatrix',
 		// minimal confidence in the marke recognition - between [0, 1] - default to 1
-		minConfidence: parameters.minConfidence !== undefined ? parameters.minConfidence : 0.6,
+		minConfidence: 0.6,
 	}
 
 	// sanity check
@@ -33,6 +33,31 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 	this.object3d = object3d
 	this.object3d.matrixAutoUpdate = false;
 	this.object3d.visible = false
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		setParameters
+	//////////////////////////////////////////////////////////////////////////////
+	setParameters(parameters)
+	function setParameters(parameters){
+		if( parameters === undefined )	return
+		for( var key in parameters ){
+			var newValue = parameters[ key ]
+
+			if( newValue === undefined ){
+				console.warn( "THREEx.ArMarkerControls: '" + key + "' parameter is undefined." )
+				continue
+			}
+
+			var currentValue = _this.parameters[ key ]
+
+			if( currentValue === undefined ){
+				console.warn( "THREEx.ArMarkerControls: '" + key + "' is not a property of this material." )
+				continue
+			}
+
+			_this.parameters[ key ] = newValue
+		}
+	}
 
 	// add this marker to artoolkitsystem
 	// TODO rename that .addMarkerControls

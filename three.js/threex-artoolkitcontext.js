@@ -41,7 +41,30 @@ THREEx.ArToolkitContext = function(parameters){
 
 	this._arMarkersControls = []
 	
-	this._setParameters(parameters)
+	//////////////////////////////////////////////////////////////////////////////
+	//		setParameters
+	//////////////////////////////////////////////////////////////////////////////
+	setParameters(parameters)
+	function setParameters(parameters){
+		if( parameters === undefined )	return
+		for( var key in parameters ){
+			var newValue = parameters[ key ]
+
+			if( newValue === undefined ){
+				console.warn( "THREEx.ArToolkitContext: '" + key + "' parameter is undefined." )
+				continue
+			}
+
+			var currentValue = _this.parameters[ key ]
+
+			if( currentValue === undefined ){
+				console.warn( "THREEx.ArToolkitContext: '" + key + "' is not a property of this material." )
+				continue
+			}
+
+			_this.parameters[ key ] = newValue
+		}
+	}
 }
 
 Object.assign( THREEx.ArToolkitContext.prototype, THREE.EventDispatcher.prototype );
@@ -52,32 +75,6 @@ THREEx.ArToolkitContext.baseURL = 'https://jeromeetienne.github.io/AR.js/three.j
 THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 
 
-/**
- * set parameters
- * @param {[type]} values [description]
- * @return {[type]} [description]
- */
-THREEx.ArToolkitContext.prototype._setParameters = function (values){
-	if ( values === undefined ) return;
-
-	for( var key in values ){
-		var newValue = values[ key ];
-
-		if( newValue === undefined ){
-			console.warn( "THREEx.ArToolkitContext: '" + key + "' parameter is undefined." );
-			continue;
-		}
-
-		var currentValue = this.parameters[ key ];
-
-		if( currentValue === undefined ){
-			console.warn( "THREEx.ArToolkitContext: '" + key + "' is not a property of this material." );
-			continue;
-		}
-
-		this.parameters[ key ] = newValue;
-	}
-};
 
 /**
  * Create a default camera for this trackingBackend

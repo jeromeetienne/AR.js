@@ -351,17 +351,17 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 	// handle default parameters
 	this.parameters = {
 		// size of the marker in meter
-		size : parameters.size !== undefined ? parameters.size : 1,
+		size : 1,
 		// type of marker - ['pattern', 'barcode', 'unknown' ]
-		type : parameters.type !== undefined ? parameters.type : 'unknown',
+		type : 'unknown',
 		// url of the pattern - IIF type='pattern'
-		patternUrl : parameters.patternUrl !== undefined ? parameters.patternUrl : null,
+		patternUrl : null,
 		// value of the barcode - IIF type='barcode'
-		barcodeValue : parameters.barcodeValue !== undefined ? parameters.barcodeValue : null,
+		barcodeValue : null,
 		// change matrix mode - [modelViewMatrix, cameraTransformMatrix]
-		changeMatrixMode : parameters.changeMatrixMode !== undefined ? parameters.changeMatrixMode : 'modelViewMatrix',
+		changeMatrixMode : 'modelViewMatrix',
 		// minimal confidence in the marke recognition - between [0, 1] - default to 1
-		minConfidence: parameters.minConfidence !== undefined ? parameters.minConfidence : 0.6,
+		minConfidence: 0.6,
 	}
 
 	// sanity check
@@ -375,6 +375,31 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 	this.object3d = object3d
 	this.object3d.matrixAutoUpdate = false;
 	this.object3d.visible = false
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		setParameters
+	//////////////////////////////////////////////////////////////////////////////
+	setParameters(parameters)
+	function setParameters(parameters){
+		if( parameters === undefined )	return
+		for( var key in parameters ){
+			var newValue = parameters[ key ]
+
+			if( newValue === undefined ){
+				console.warn( "THREEx.ArToolkitContext: '" + key + "' parameter is undefined." )
+				continue
+			}
+
+			var currentValue = _this.parameters[ key ]
+
+			if( currentValue === undefined ){
+				console.warn( "THREEx.ArToolkitContext: '" + key + "' is not a property of this material." )
+				continue
+			}
+
+			_this.parameters[ key ] = newValue
+		}
+	}
 
 	// add this marker to artoolkitsystem
 	// TODO rename that .addMarkerControls
@@ -620,17 +645,42 @@ THREEx.ArSmoothedControls = function(object3d, parameters){
 	parameters = parameters || {}
 	this.parameters = {
 		// lerp coeficient for the position - between [0,1] - default to 1
-		lerpPosition: parameters.lerpPosition !== undefined ? parameters.lerpPosition : 0.8,
+		lerpPosition: 0.8,
 		// lerp coeficient for the quaternion - between [0,1] - default to 1
-		lerpQuaternion: parameters.lerpQuaternion !== undefined ? parameters.lerpQuaternion : 0.2,
+		lerpQuaternion: 0.2,
 		// lerp coeficient for the scale - between [0,1] - default to 1
-		lerpScale: parameters.lerpScale !== undefined ? parameters.lerpScale : 0.7,
+		lerpScale: 0.7,
 		// delay for lerp fixed steps - in seconds - default to 1/120
-		lerpStepDelay: parameters.fixStepDelay !== undefined ? parameters.fixStepDelay : 1/60,
+		lerpStepDelay: 1/60,
 		// minimum delay the sub-control must be visible before this controls become visible - default to 0 seconds
-		minVisibleDelay: parameters.minVisibleDelay !== undefined ? parameters.minVisibleDelay : 0.0,
+		minVisibleDelay: 0.0,
 		// minimum delay the sub-control must be unvisible before this controls become unvisible - default to 0 seconds
-		minUnvisibleDelay: parameters.minUnvisibleDelay !== undefined ? parameters.minUnvisibleDelay : 0.2,
+		minUnvisibleDelay: 0.2,
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		setParameters
+	//////////////////////////////////////////////////////////////////////////////
+	setParameters(parameters)
+	function setParameters(parameters){
+		if( parameters === undefined )	return
+		for( var key in parameters ){
+			var newValue = parameters[ key ]
+
+			if( newValue === undefined ){
+				console.warn( "THREEx.ArToolkitContext: '" + key + "' parameter is undefined." )
+				continue
+			}
+
+			var currentValue = _this.parameters[ key ]
+
+			if( currentValue === undefined ){
+				console.warn( "THREEx.ArToolkitContext: '" + key + "' is not a property of this material." )
+				continue
+			}
+
+			_this.parameters[ key ] = newValue
+		}
 	}
 }
 	
@@ -765,7 +815,30 @@ THREEx.ArToolkitContext = function(parameters){
 
 	this._arMarkersControls = []
 	
-	this._setParameters(parameters)
+	//////////////////////////////////////////////////////////////////////////////
+	//		setParameters
+	//////////////////////////////////////////////////////////////////////////////
+	setParameters(parameters)
+	function setParameters(parameters){
+		if( parameters === undefined )	return
+		for( var key in parameters ){
+			var newValue = parameters[ key ]
+
+			if( newValue === undefined ){
+				console.warn( "THREEx.ArToolkitContext: '" + key + "' parameter is undefined." )
+				continue
+			}
+
+			var currentValue = _this.parameters[ key ]
+
+			if( currentValue === undefined ){
+				console.warn( "THREEx.ArToolkitContext: '" + key + "' is not a property of this material." )
+				continue
+			}
+
+			_this.parameters[ key ] = newValue
+		}
+	}
 }
 
 Object.assign( THREEx.ArToolkitContext.prototype, THREE.EventDispatcher.prototype );
@@ -776,32 +849,6 @@ THREEx.ArToolkitContext.baseURL = 'https://jeromeetienne.github.io/AR.js/three.j
 THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
 
 
-/**
- * set parameters
- * @param {[type]} values [description]
- * @return {[type]} [description]
- */
-THREEx.ArToolkitContext.prototype._setParameters = function (values){
-	if ( values === undefined ) return;
-
-	for( var key in values ){
-		var newValue = values[ key ];
-
-		if( newValue === undefined ){
-			console.warn( "THREEx.ArToolkitContext: '" + key + "' parameter is undefined." );
-			continue;
-		}
-
-		var currentValue = this.parameters[ key ];
-
-		if( currentValue === undefined ){
-			console.warn( "THREEx.ArToolkitContext: '" + key + "' is not a property of this material." );
-			continue;
-		}
-
-		this.parameters[ key ] = newValue;
-	}
-};
 
 /**
  * Create a default camera for this trackingBackend
