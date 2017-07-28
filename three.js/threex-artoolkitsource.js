@@ -23,16 +23,16 @@ THREEx.ArToolkitSource = function(parameters){
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitSource.prototype.init = function(onReady){
+THREEx.ArToolkitSource.prototype.init = function(onReady, onError){
 	var _this = this
 
         if( this.parameters.sourceType === 'image' ){
-                var domElement = this._initSourceImage(onSourceReady)                        
+                var domElement = this._initSourceImage(onSourceReady, onError)                        
         }else if( this.parameters.sourceType === 'video' ){
-                var domElement = this._initSourceVideo(onSourceReady)                        
+                var domElement = this._initSourceVideo(onSourceReady, onError)                        
         }else if( this.parameters.sourceType === 'webcam' ){
                 // var domElement = this._initSourceWebcamOld(onSourceReady)                        
-                var domElement = this._initSourceWebcam(onSourceReady)                        
+                var domElement = this._initSourceWebcam(onSourceReady, onError)                        
         }else{
                 console.assert(false)
         }
@@ -121,8 +121,12 @@ THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
 //          handle webcam source
 ////////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
+THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady, onError) {
 	var _this = this
+	// init default value
+	onError = onError || function(error){	
+		alert('Cant init webcam due to '+error.message)
+	}
 
 	var domElement = document.createElement('video');
 	domElement.setAttribute('autoplay', '');
@@ -134,7 +138,8 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 	if (navigator.mediaDevices === undefined 
 			|| navigator.mediaDevices.enumerateDevices === undefined 
 			|| navigator.mediaDevices.getUserMedia === undefined  ){
-		alert("WebRTC issue! navigator.mediaDevices.enumerateDevices not present in your browser");		
+		onError("WebRTC issue! navigator.mediaDevices.enumerateDevices not present in your browser")
+		return
 	}
 
 	navigator.mediaDevices.enumerateDevices().then(function(devices) {
@@ -170,11 +175,14 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady) {
 				clearInterval(interval)
 			}, 1000/50);
 		}).catch(function(error) {
-			console.log("Can't access user media", error);
-			alert("Can't access user media :()");
+			onError({
+				message: "Can't access user media :()"
+			});
 		});
-	}).catch(function(err) {
-		console.log(err.name + ": " + err.message);
+	}).catch(function(error) {
+		onError({
+			message: error.message
+		});
 	});
 
 	return domElement
