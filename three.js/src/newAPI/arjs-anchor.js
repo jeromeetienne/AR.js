@@ -18,9 +18,7 @@ ARjs.Anchor = function(arSession, markerParameters){
 	
 	this.parameters = markerParameters
 	
-	console.log('ARjs.Anchor -', 'changeMatrixMode:', this.parameters.changeMatrixMode
-	, 'trackingMethod:', (markerParameters.markersAreaEnabled ? 'area-' : '')+arContext.parameters.trackingBackend)
-
+	console.log('ARjs.Anchor -', 'changeMatrixMode:', this.parameters.changeMatrixMode, 'markersAreaEnabled:', markerParameters.markersAreaEnabled)
 
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
@@ -34,6 +32,13 @@ ARjs.Anchor = function(arSession, markerParameters){
 	if( markerParameters.markersAreaEnabled === false ){
 		var markerControls = new THREEx.ArMarkerControls(arContext, controlledObject, markerParameters)		
 	}else{
+		// sanity check
+		console.assert( arContext.parameters.trackingBackend === 'artoolkit' || arContext.parameters.trackingBackend === 'aruco' )
+		// for multi marker
+		if( localStorage.getItem('ARjsMultiMarkerFile') === null ){
+			THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(arContext.parameters.trackingBackend)
+		}
+		
 		// get multiMarkerFile from localStorage
 		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
 		var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
@@ -65,7 +70,6 @@ ARjs.Anchor = function(arSession, markerParameters){
 	//		THREEx.ArSmoothedControls
 	//////////////////////////////////////////////////////////////////////////////
 	
-	// TODO should be part of trackingMethod parsing
 	var shouldBeSmoothed = true
 	if( arContext.parameters.trackingBackend === 'tango' ) shouldBeSmoothed = false 
 

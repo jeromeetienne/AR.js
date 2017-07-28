@@ -138,11 +138,13 @@ AFRAME.registerSystem('arjs', {
 		this._arSession = null
 
 		_this.initialised = false
+		_this.needsOverride = true
+
+		// wait until the renderer is initialised
 		this.el.sceneEl.addEventListener('renderstart', function(){
-			var sceneEl = _this.el.sceneEl
-			var scene = sceneEl.object3D
-			var camera = sceneEl.camera
-			var renderer = sceneEl.renderer
+			var scene = _this.el.sceneEl.object3D
+			var camera = _this.el.sceneEl.camera
+			var renderer = _this.el.sceneEl.renderer
 
 			//////////////////////////////////////////////////////////////////////////////
 			//		build ARjs.Session
@@ -154,21 +156,6 @@ AFRAME.registerSystem('arjs', {
 				sourceParameters: arProfile.sourceParameters,
 				contextParameters: arProfile.contextParameters		
 			})
-
-			// KLUDGE
-			window.addEventListener('resize', onResize)
-			function onResize(){
-				var arSource = _this._arSession.arSource
-				// ugly kludge to get resize on aframe... not even sure it works
-				arSource.copyElementSizeTo(document.body)
-				
-				var buttonElement = document.querySelector('.a-enter-vr')
-				if( buttonElement ){
-					buttonElement.style.position = 'fixed'
-				}
-			}
-
-			_this.initialised = true
 
 			//////////////////////////////////////////////////////////////////////////////
 			//		tango specifics
@@ -182,6 +169,44 @@ AFRAME.registerSystem('arjs', {
 				// init tangoPointCloud
 				var tangoPointCloud = _this._tangoPointCloud = new ARjs.TangoPointCloud(arSession)
 				scene.add(tangoPointCloud.object3d)
+
+				// override renderer.render
+				var rendererRenderFct = renderer.render;
+				renderer.render = function customRender(scene, camera, renderTarget, forceClear) {
+					renderer.autoClear = false;
+
+					// clear it all
+					renderer.clear()
+					// render tangoVideoMesh
+					if( arProfile.contextParameters.trackingBackend === 'tango' ){
+						// render sceneOrtho
+						rendererRenderFct.call(renderer, tangoVideoMesh._sceneOrtho, tangoVideoMesh._cameraOrtho, renderTarget, forceClear)
+						// Render the perspective scene
+						renderer.clearDepth()		
+					}
+
+					// render 3d scene
+					rendererRenderFct.call(renderer, scene, camera, renderTarget, forceClear);
+				}
+
+			}
+
+			_this.initialised = true
+
+			//////////////////////////////////////////////////////////////////////////////
+			//		awefull resize trick
+			//////////////////////////////////////////////////////////////////////////////
+			// KLUDGE
+			window.addEventListener('resize', onResize)
+			function onResize(){
+				var arSource = _this._arSession.arSource
+				// ugly kludge to get resize on aframe... not even sure it works
+				arSource.copyElementSizeTo(document.body)
+				
+				var buttonElement = document.querySelector('.a-enter-vr')
+				if( buttonElement ){
+					buttonElement.style.position = 'fixed'
+				}
 			}
 
 
@@ -218,15 +243,20 @@ AFRAME.registerSystem('arjs', {
 			// onResize()
 			window.dispatchEvent(new Event('resize'));
 		}, 1000/30)
+		
+		
 	},
 	
 	tick : function(now, delta){
 		var _this = this
+
 		// skip it if not yet isInitialised
 		if( this.initialised === false )	return
 
-
 		var arSession = this._arSession
+
+
+
 
 		// update arSession
 		this._arSession.update()
@@ -234,11 +264,7 @@ AFRAME.registerSystem('arjs', {
 		if( _this._tangoVideoMesh !== null )	_this._tangoVideoMesh.update()
 
 		// copy projection matrix to camera
-		// TODO just call a this._arSession.onResize()
-		var camera = this.el.sceneEl.camera
-		var renderer = this.el.sceneEl.renderer
-		var arContext = this._arSession.arContext
-		this._arSession.arSource.onResize2(arContext, renderer, camera)
+		this._arSession.onResize()
 	},
 })
 
@@ -293,11 +319,14 @@ AFRAME.registerComponent('arjsmarker', {
 		_this.initialised = false
 		_this._arAnchor = null
 
+		// honor object visibility
 		if( _this.data.changeMatrixMode === 'modelViewMatrix' ){
 			_this.el.object3D.visible = false
 		}else if( _this.data.changeMatrixMode === 'cameraTransformMatrix' ){
  			_this.el.sceneEl.object3D.visible = false
 		}else console.assert(false)
+
+
 
 		// trick to wait until arjsSystem is initialised
 		var startedAt = Date.now()
@@ -316,6 +345,22 @@ AFRAME.registerComponent('arjsmarker', {
 			arProfile.changeMatrixMode(_this.data.changeMatrixMode)
 
 			var arProfile = arjsSystem._arProfile
+			
+			// honor this.data.preset
+			if( _this.data.preset === 'hiro' ){
+				arProfile.defaultMarkerParameters.type = 'pattern'
+				arProfile.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL+'examples/marker-training/examples/pattern-files/pattern-hiro.patt'
+				arProfile.defaultMarkerParameters.markersAreaEnabled = false
+			}else if( _this.data.preset === 'kanji' ){
+				arProfile.defaultMarkerParameters.type = 'pattern'
+				arProfile.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL+'examples/marker-training/examples/pattern-files/pattern-kanji.patt'
+				arProfile.defaultMarkerParameters.markersAreaEnabled = false
+			}else if( _this.data.preset === 'area' ){
+				arProfile.defaultMarkerParameters.markersAreaEnabled = true
+			}else {
+				// console.assert( this.data.preset === '', 'illegal preset value '+this.data.preset)
+			}		
+			
 			var arSession = arjsSystem._arSession
 
 			var arAnchor = _this._arAnchor = new ARjs.Anchor(arSession, arProfile.defaultMarkerParameters)

@@ -1,18 +1,29 @@
 ## New API - aframe
-- TODO put the UI in the plugin
-  - do a special function for it, and call this function from javascript
-  - or more like a data in the system
-- remove arSession.onResize2() - thus the API is cleaner
-  - do a onResize with a test on argument.length - if not good number call old stuff
+
+- honor marker preset
 
 - artoolkit modelViewMatrix/cameraTransformMatrix works
+
 - area-artoolkit fails in cameraTransformMatrix
+  - wtf ??? so issue upstream ? how to reproduce in three.js
+
 - aruco got perspective issue - likely camera init
-- tango video fails 
-  - TODO initialize it and display it
+
+- tango video fails
+  - 4TODO initialize it and display it
   - how to by pass the renderer from a-frame
+  - some post processing in aframe.js - https://github.com/wizgrav/aframe-effects/blob/master/systems/effects.js
+  - it seems to override renderer.render by its own function... not super clean but if it works ok
+  - it can be changed later
+
 - tango tracking is working ? i think so
-  - test in both mode
+  - test in both mode   
+
+- DONE remove arSession.onResize2() - thus the API is cleaner
+  - do a onResize with a test on argument.length - if not good number call old stuff
+- DONE put the UI in the plugin
+  - do a special function for it, and call this function from javascript
+  - or more like a data in the system
 
 ## New API
 

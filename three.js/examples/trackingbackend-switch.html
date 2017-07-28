@@ -115,12 +115,12 @@
 	var arToolkitSource = new THREEx.ArToolkitSource(arProfile.sourceParameters)	
 	
 	arToolkitSource.init(function onReady(){
-		arToolkitSource.onResize2(arContext, renderer, camera)
+		arToolkitSource.onResize(arContext, renderer, camera)
 	})
 	
 	// handle resize
 	window.addEventListener('resize', function(){
-		arToolkitSource.onResize2(arContext, renderer, camera)
+		arToolkitSource.onResize(arContext, renderer, camera)
 	})
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -134,7 +134,7 @@
 	arContext.init()
 	
 	arContext.addEventListener('initialized', function(event){
-		arToolkitSource.onResize2(arContext, renderer, camera)
+		arToolkitSource.onResize(arContext, renderer, camera)
 	})
 	
 	// update artoolkit on every frame

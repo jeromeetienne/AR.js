@@ -11,6 +11,9 @@ ARjs.TangoVideoMesh = function(arSession){
 	// Create the see through camera scene and camera
 	var sceneOrtho = new THREE.Scene()
 	var cameraOrtho = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 100 )		
+this._sceneOrtho = sceneOrtho
+this._cameraOrtho = cameraOrtho
+
 	// tango only - init cameraMesh
 	arContext.addEventListener('initialized', function(event){
 		// sanity check
@@ -45,8 +48,6 @@ ARjs.TangoVideoMesh = function(arSession){
 	this.render = function(){
 		// sanity check
 		console.assert( arContext.parameters.trackingBackend === 'tango' )
-		// if not yet initialized, return now
-		if( videoMesh === null )	return
 		// render sceneOrtho
 		renderer.render( sceneOrtho, cameraOrtho )
 		// Render the perspective scene

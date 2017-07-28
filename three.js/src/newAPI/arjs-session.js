@@ -14,11 +14,6 @@ ARjs.Session = function(parameters){
 	
 	// log the version
 	console.log('AR.js', THREEx.ArToolkitContext.REVISION, '- trackingBackend:', parameters.contextParameters.trackingBackend)
-	
-	// for multi marker
-	if( localStorage.getItem('ARjsMultiMarkerFile') === null && parameters.contextParameters.trackingBackend !== 'tango' ){
-		THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(parameters.contextParameters.trackingBackend)
-	}
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		init arSource
@@ -26,12 +21,12 @@ ARjs.Session = function(parameters){
 	var arSource = _this.arSource = new THREEx.ArToolkitSource(parameters.sourceParameters)
 
 	arSource.init(function onReady(){
-		arSource.onResize2(arContext, _this.renderer, _this.camera)
+		arSource.onResize(arContext, _this.renderer, _this.camera)
 	})
 	
 	// handle resize
 	window.addEventListener('resize', function(){
-		arSource.onResize2(arContext, _this.renderer, _this.camera)
+		arSource.onResize(arContext, _this.renderer, _this.camera)
 	})	
 	
 	//////////////////////////////////////////////////////////////////////////////
@@ -45,10 +40,12 @@ ARjs.Session = function(parameters){
 	_this.arContext.init()
 	
 	arContext.addEventListener('initialized', function(event){
-		arSource.onResize2(arContext, _this.renderer, _this.camera)
+		arSource.onResize(arContext, _this.renderer, _this.camera)
 	})
 	
-	
+	//////////////////////////////////////////////////////////////////////////////
+	//		update function
+	//////////////////////////////////////////////////////////////////////////////
 	// update artoolkit on every frame
 	this.update = function(){
 		if( arSource.ready === false )	return
@@ -56,3 +53,7 @@ ARjs.Session = function(parameters){
 		arContext.update( arSource.domElement )
 	}
 }
+
+ARjs.Session.prototype.onResize = function () {
+	this.arSource.onResize(this.arContext, this.renderer, this.camera)	
+};
