@@ -1,3 +1,19 @@
+## New API - aframe
+- TODO put the UI in the plugin
+  - do a special function for it, and call this function from javascript
+  - or more like a data in the system
+- remove arSession.onResize2() - thus the API is cleaner
+  - do a onResize with a test on argument.length - if not good number call old stuff
+
+- artoolkit modelViewMatrix/cameraTransformMatrix works
+- area-artoolkit fails in cameraTransformMatrix
+- aruco got perspective issue - likely camera init
+- tango video fails 
+  - TODO initialize it and display it
+  - how to by pass the renderer from a-frame
+- tango tracking is working ? i think so
+  - test in both mode
+
 ## New API
 
 - build a aframe version of that to see how it fit

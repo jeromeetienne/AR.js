@@ -1,6 +1,9 @@
 // @namespace
 var ARjs = ARjs || {}
 
+// TODO this is a controls... should i give the object3d here ?
+// not according to 'no three.js dependancy'
+
 /**
  * Create an anchor in the real world
  * 
@@ -14,6 +17,10 @@ ARjs.Anchor = function(arSession, markerParameters){
 	var camera = arSession.camera
 	
 	this.parameters = markerParameters
+	
+	console.log('ARjs.Anchor -', 'changeMatrixMode:', this.parameters.changeMatrixMode
+	, 'trackingMethod:', (markerParameters.markersAreaEnabled ? 'area-' : '')+arContext.parameters.trackingBackend)
+
 
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)

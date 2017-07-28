@@ -60,7 +60,6 @@
 	/ 
 	<a href='#best' onclick='location.reload()'>best</a>
 	<br/>
-	<a href='javascript:void(0)' id='buttonTangoTogglePointCloud'>toggle-point-cloud</a>
 	<a href='javascript:void(0)' id='buttonToggleMarkerHelpers'>toggle-marker-helper</a>
 	<a href='javascript:void(0)' id='buttonMarkersAreaLearner'>Learn-new-marker-area</a>
 	<a href='javascript:void(0)' id='buttonMarkersAreaReset'>Reset-marker-area</a>
@@ -68,7 +67,7 @@
 ;(function(){
 	// get tracking method from location.hash
 	var trackingMethod = location.hash.substring(1) ? location.hash.substring(1) : 'best'
-	document.querySelector('#trackingMethod').innerHTML = trackingMethod
+	
 	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
@@ -131,6 +130,7 @@
 	//          Create a ARjs.Anchor
 	////////////////////////////////////////////////////////////////////////////////
 
+
 	var arAnchor = new ARjs.Anchor(arSession, arProfile.defaultMarkerParameters)
 	onRenderFcts.push(function(){
 		arAnchor.update()
@@ -159,7 +159,7 @@
 	//		tango specifics
 	//////////////////////////////////////////////////////////////////////////////
 	
-	if( trackingMethod === 'tango' ){
+	if( arProfile.contextParameters.trackingBackend === 'tango' ){
 		// init tangoVideoMesh
 		var tangoVideoMesh = new ARjs.TangoVideoMesh(arSession)
 		onRenderFcts.push(function(){
@@ -173,9 +173,8 @@
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object to the arAnchor
 	//////////////////////////////////////////////////////////////////////////////////
-	
 	var arWorldRoot = arAnchor.object3d
-	
+
 	var mesh = new THREE.AxisHelper()
 	arWorldRoot.add(mesh)
 	
@@ -203,8 +202,9 @@
 	//////////////////////////////////////////////////////////////////////////////
 	//		Handle UI
 	//////////////////////////////////////////////////////////////////////////////
-	
-	if( trackingMethod === 'tango' ){
+
+	document.querySelector('#trackingMethod').innerHTML = trackingMethod
+	if( arProfile.contextParameters.trackingBackend === 'tango' ){
 		document.querySelector('#buttonTangoTogglePointCloud').addEventListener('click', function(){
 			if( tangoPointCloud.object3d.parent ){
 				scene.remove(tangoPointCloud.object3d)
@@ -231,7 +231,7 @@
 		})
 
 		document.querySelector('#buttonMarkersAreaLearner').addEventListener('click', function(){
-			var learnerBaseURL = 'multi-markers/examples/learner.html'
+			var learnerBaseURL = THREEx.ArToolkitContext.baseURL + 'examples/multi-markers/examples/learner.html'
 			var trackingBackend = arProfile.contextParameters.trackingBackend
 			THREEx.ArMultiMarkerUtils.navigateToLearnerPage(learnerBaseURL, trackingBackend)
 		})		
@@ -251,7 +251,7 @@
 		renderer.clear()
 		
 		// render tangoVideoMesh
-		if( trackingMethod === 'tango' ){
+		if( arProfile.contextParameters.trackingBackend === 'tango' ){
 			tangoVideoMesh.render()
 		}
 		

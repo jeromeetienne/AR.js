@@ -12,6 +12,9 @@ ARjs.Session = function(parameters){
 	this.camera = parameters.camera
 	this.scene = parameters.scene
 	
+	// log the version
+	console.log('AR.js', THREEx.ArToolkitContext.REVISION, '- trackingBackend:', parameters.contextParameters.trackingBackend)
+	
 	// for multi marker
 	if( localStorage.getItem('ARjsMultiMarkerFile') === null && parameters.contextParameters.trackingBackend !== 'tango' ){
 		THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(parameters.contextParameters.trackingBackend)
