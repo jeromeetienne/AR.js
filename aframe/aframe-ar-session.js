@@ -10,9 +10,9 @@
 // AFRAME.registerSystem('arjs', {
 AFRAME.registerSystem('arjs', {
 	schema: {
-		trackingBackend : {
+		trackingMethod : {
 			type: 'string',	
-			default: 'artoolkit',			
+			default: 'best',			
 		},
 		areaLearningButton : {
 			type: 'boolean',	
@@ -86,81 +86,123 @@ AFRAME.registerSystem('arjs', {
 	init: function () {
 		var _this = this
 
-		// setup artoolkitProfile
-		var artoolkitProfile = new THREEx.ArToolkitProfile()
-		artoolkitProfile.sourceWebcam()
-		artoolkitProfile.trackingBackend(this.data.trackingBackend)
-		artoolkitProfile.performance(this.data.performanceProfile)
+		// setup arProfile
+		var arProfile = new ARjs.Profile()
+			.sourceWebcam()
+			.trackingMethod(this.data.trackingMethod)
+			.performance(this.data.performanceProfile)
+			// .changeMatrixMode('modelViewMatrix')
+			// .changeMatrixMode('cameraTransformMatrix')
+			.defaultMarker()
+			.checkIfValid()
 
-		
 		//////////////////////////////////////////////////////////////////////////////
 		//		honor this.data
 		//////////////////////////////////////////////////////////////////////////////
 		
-		// honor this.data and push what has been modified into artoolkitProfile
-		if( this.data.debug !== false )			artoolkitProfile.contextParameters.debug = this.data.debug
-		if( this.data.detectionMode !== '' )		artoolkitProfile.contextParameters.detectionMode = this.data.detectionMode
-		if( this.data.matrixCodeType !== '' )		artoolkitProfile.contextParameters.matrixCodeType = this.data.matrixCodeType
-		if( this.data.cameraParametersUrl !== '' )	artoolkitProfile.contextParameters.cameraParametersUrl = this.data.cameraParametersUrl
-		if( this.data.maxDetectionRate !== -1 )		artoolkitProfile.contextParameters.maxDetectionRate = this.data.maxDetectionRate
+		// honor this.data and push what has been modified into arProfile
+		if( this.data.debug !== false )			arProfile.contextParameters.debug = this.data.debug
+		if( this.data.detectionMode !== '' )		arProfile.contextParameters.detectionMode = this.data.detectionMode
+		if( this.data.matrixCodeType !== '' )		arProfile.contextParameters.matrixCodeType = this.data.matrixCodeType
+		if( this.data.cameraParametersUrl !== '' )	arProfile.contextParameters.cameraParametersUrl = this.data.cameraParametersUrl
+		if( this.data.maxDetectionRate !== -1 )		arProfile.contextParameters.maxDetectionRate = this.data.maxDetectionRate
 
-		if( this.data.sourceType !== '' )		artoolkitProfile.contextParameters.sourceType = this.data.sourceType
-		if( this.data.sourceUrl !== '' )		artoolkitProfile.contextParameters.sourceUrl = this.data.sourceUrl
-		if( this.data.sourceWidth !== -1 )		artoolkitProfile.contextParameters.sourceWidth = this.data.sourceWidth
-		if( this.data.sourceHeight !== -1 )		artoolkitProfile.contextParameters.sourceHeight = this.data.sourceHeight
-		if( this.data.displayWidth !== -1 )		artoolkitProfile.contextParameters.displayWidth = this.data.displayWidth
-		if( this.data.displayHeight !== -1 )		artoolkitProfile.contextParameters.displayHeight = this.data.displayHeight
-		if( this.data.canvasWidth !== -1 )		artoolkitProfile.contextParameters.canvasWidth = this.data.canvasWidth
-		if( this.data.canvasHeight !== -1 )		artoolkitProfile.contextParameters.canvasHeight = this.data.canvasHeight
+		if( this.data.sourceType !== '' )		arProfile.contextParameters.sourceType = this.data.sourceType
+		if( this.data.sourceUrl !== '' )		arProfile.contextParameters.sourceUrl = this.data.sourceUrl
+		if( this.data.sourceWidth !== -1 )		arProfile.contextParameters.sourceWidth = this.data.sourceWidth
+		if( this.data.sourceHeight !== -1 )		arProfile.contextParameters.sourceHeight = this.data.sourceHeight
+		if( this.data.displayWidth !== -1 )		arProfile.contextParameters.displayWidth = this.data.displayWidth
+		if( this.data.displayHeight !== -1 )		arProfile.contextParameters.displayHeight = this.data.displayHeight
+		if( this.data.canvasWidth !== -1 )		arProfile.contextParameters.canvasWidth = this.data.canvasWidth
+		if( this.data.canvasHeight !== -1 )		arProfile.contextParameters.canvasHeight = this.data.canvasHeight
+
+		//////////////////////////////////////////////////////////////////////////////
+		//		build ARjs.Session
+		//////////////////////////////////////////////////////////////////////////////
+
+		var arSession = new ARjs.Session({
+			scene: scene,
+			renderer: renderer,
+			camera: camera,
+			sourceParameters: arProfile.sourceParameters,
+			contextParameters: arProfile.contextParameters		
+		})
+		onRenderFcts.push(function(){
+			arSession.update()
+		})
 
 		////////////////////////////////////////////////////////////////////////////////
-		//          handle arToolkitSource
+		//          handle arSource
 		////////////////////////////////////////////////////////////////////////////////
 		
-		var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)
-		this.arToolkitSource = arToolkitSource
-		arToolkitSource.init(function onReady(){
+		var arSource = new THREEx.ArToolkitSource(arProfile.sourceParameters)
+		this.arSource = arSource
+		arSource.init(function onReady(){
 			// handle resize of renderer
 			onResize()
-			
-// TODO this is crappy - code an exponential backoff - max 1 seconds
-			// kludge to write a 'resize' event
+
+			// kludge to write a 'resize' event - use exponentialBackoff delay
 			var startedAt = Date.now()
-			var timerId = setInterval(function(){
-				if( Date.now() - startedAt > 10*1000 ){
-					clearInterval(timerId)
-					return 					
-				}
-				// onResize()
+			var exponentialBackoffDelay = 1000/60
+			setTimeout(function callback(){
+				if( Date.now() - startedAt > 5*1000 )	return 					
+				// update delay
+				exponentialBackoffDelay *= 1.5;
+				exponentialBackoffDelay = Math.min(exponentialBackoffDelay, 1*1000)
+				setTimeout(callback, exponentialBackoffDelay)
+				// trigger a resize
 				window.dispatchEvent(new Event('resize'));
-			}, 1000/30)
+			}, exponentialBackoffDelay)
 		})
-		
+
+
 		// handle resize
 		window.addEventListener('resize', onResize)
 		function onResize(){
+			// console.log(_this.el.sceneEl.camera)
+			var camera = _this.el.sceneEl.camera
+			var renderer = _this.el.sceneEl.renderer
+			arSource.onResize2(arContext, renderer, camera)
+
 			// ugly kludge to get resize on aframe... not even sure it works
-			arToolkitSource.onResizeElement()		
-			arToolkitSource.copyElementSizeTo(document.body)
+			arSource.copyElementSizeTo(document.body)
 			
+			// change css of 'enter-vr' button
 			var buttonElement = document.querySelector('.a-enter-vr')
-			if( buttonElement ){
-				buttonElement.style.position = 'fixed'
-			}
+			if( buttonElement )	buttonElement.style.position = 'fixed'
 		}
 		////////////////////////////////////////////////////////////////////////////////
-		//          initialize arToolkitContext
+		//          initialize arContext
 		////////////////////////////////////////////////////////////////////////////////
 		// create atToolkitContext
-		var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
-		this.arToolkitContext = arToolkitContext
+		var arContext = new THREEx.ArToolkitContext(arProfile.contextParameters)
+		this.arContext = arContext
 		// initialize it
-		arToolkitContext.init(function onCompleted(){
-			// // copy projection matrix to camera
-			// var projectionMatrixArr = arToolkitContext.arController.getCameraMatrix();
-			// _this.sceneEl.camera.projectionMatrix.fromArray(projprojectionMatrixArrectionMatrix);
+		arContext.init()
+		
+		arContext.addEventListener('initialized', function(event){
+			onResize()
 		})
 		
+		
+		// tango only - init cameraMesh
+		arContext.addEventListener('initialized', function(event){
+			if( _this.data.trackingBackend  !== 'tango' )	return
+			var vrDisplay = arContext._tangoContext.vrDisplay
+			console.assert(vrDisplay, 'vrDisplay MUST be defined')
+			// special case for trackingBackend tango
+			if( arContext.parameters.trackingBackend !== 'tango' )	return
+			// if vrDisplay isnt for tango do nothing
+			if( vrDisplay.displayName !== "Tango VR Device" )	return
+			// init videoPlane
+			var videoPlane = THREE.WebAR.createVRSeeThroughCameraMesh(vrDisplay)
+			sceneOrtho.add(videoPlane)
+			onRenderFcts.push(function(){
+				// Make sure that the camera is correctly displayed depending on the device and camera orientations.
+				THREE.WebAR.updateCameraMeshOrientation(vrDisplay, videoPlane)                        
+			})		
+		})
+
 		//////////////////////////////////////////////////////////////////////////////
 		//		area learning
 		//////////////////////////////////////////////////////////////////////////////
@@ -198,14 +240,15 @@ AFRAME.registerSystem('arjs', {
 	},
 	
 	tick : function(now, delta){
-		if( this.arToolkitSource.ready === false )	return
+		if( this.arSource.ready === false )	return
 
 		// copy projection matrix to camera
-		if( this.arToolkitContext.arController !== null ){
-			this.el.sceneEl.camera.projectionMatrix.copy( this.arToolkitContext.getProjectionMatrix() );
-		}
+		var camera = this.el.sceneEl.camera
+		var renderer = this.el.sceneEl.renderer
+		this.arSource.onResize2(this.arContext, renderer, camera)
 		
-		this.arToolkitContext.update( this.arToolkitSource.domElement )
+		// update arContext
+		this.arContext.update( this.arSource.domElement )
 	},
 })
 
@@ -252,7 +295,7 @@ AFRAME.registerComponent('arjsmarker', {
 		// actually init arMarkerControls
 		var arjsSystem = this.el.sceneEl.systems.arjs || this.el.sceneEl.systems.artoolkit
 
-		var artoolkitContext = arjsSystem.arToolkitContext
+		var artoolkitContext = arjsSystem.arContext
 		var scene = this.el.sceneEl.object3D
 		
 		// honor this.data.preset
@@ -290,7 +333,7 @@ AFRAME.registerComponent('arjsmarker', {
 			this._multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(artoolkitContext, scene, this._markerRoot, multiMarkerFile, {
 				changeMatrixMode : this.data.changeMatrixMode
 			})
-console.log('this.data.markerhelpers', this.data.markerhelpers)
+
 			// display THREEx.ArMarkerHelper if needed - useful to debug
 			if( this.data.markerhelpers === true ){
 				this._multiMarkerControls.subMarkersControls.forEach(function(subMarkerControls){
@@ -304,13 +347,7 @@ console.log('this.data.markerhelpers', this.data.markerhelpers)
 		}else 	console.assert(false)
 
 		// build a smoothedControls
-		this.arSmoothedControls = new THREEx.ArSmoothedControls(this.el.object3D,{
-			lerpPosition : 0.1,
-			lerpQuaternion : 0.1, 
-			lerpScale : 0.1,
-			// minVisibleDelay: 0,
-			// minUnvisibleDelay: 0,
-		})
+		this.arSmoothedControls = new THREEx.ArSmoothedControls(this.el.object3D)
 		
 		
 
