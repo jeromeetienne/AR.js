@@ -1,23 +1,49 @@
 var THREEx = THREEx || {}
 
 THREEx.ArToolkitSource = function(parameters){	
-	// handle default parameters
-	this.parameters = {
-		// type of source - ['webcam', 'image', 'video']
-		sourceType : parameters.sourceType !== undefined ? parameters.sourceType : 'webcam',
-		// url of the source - valid if sourceType = image|video
-		sourceUrl : parameters.sourceUrl !== undefined ? parameters.sourceUrl : null,
-		
-		// resolution of at which we initialize in the source image
-		sourceWidth: parameters.sourceWidth !== undefined ? parameters.sourceWidth : 640,
-		sourceHeight: parameters.sourceHeight !== undefined ? parameters.sourceHeight : 480,
-		// resolution displayed for the source 
-		displayWidth: parameters.displayWidth !== undefined ? parameters.displayWidth : 640,
-		displayHeight: parameters.displayHeight !== undefined ? parameters.displayHeight : 480,
-	}
+	var _this = this
 
 	this.ready = false
         this.domElement = null
+
+	// handle default parameters
+	this.parameters = {
+		// type of source - ['webcam', 'image', 'video']
+		sourceType : 'webcam',
+		// url of the source - valid if sourceType = image|video
+		sourceUrl : null,
+		
+		// resolution of at which we initialize in the source image
+		sourceWidth: 640,
+		sourceHeight: 480,
+		// resolution displayed for the source 
+		displayWidth: 640,
+		displayHeight: 480,
+	}
+	//////////////////////////////////////////////////////////////////////////////
+	//		setParameters
+	//////////////////////////////////////////////////////////////////////////////
+	setParameters(parameters)
+	function setParameters(parameters){
+		if( parameters === undefined )	return
+		for( var key in parameters ){
+			var newValue = parameters[ key ]
+
+			if( newValue === undefined ){
+				console.warn( "THREEx.ArToolkitSource: '" + key + "' parameter is undefined." )
+				continue
+			}
+
+			var currentValue = _this.parameters[ key ]
+
+			if( currentValue === undefined ){
+				console.warn( "THREEx.ArToolkitSource: '" + key + "' is not a property of this material." )
+				continue
+			}
+
+			_this.parameters[ key ] = newValue
+		}
+	}	
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -123,9 +149,10 @@ THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
 
 THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady, onError) {
 	var _this = this
+
 	// init default value
 	onError = onError || function(error){	
-		alert('Cant init webcam due to '+error.message)
+		alert('Webcam Error\nName: '+error.name + '\nMessage: '+error.message)
 	}
 
 	var domElement = document.createElement('video');
@@ -135,13 +162,18 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady, onError) 
 	domElement.style.width = this.parameters.displayWidth+'px'
 	domElement.style.height = this.parameters.displayHeight+'px'
 
+	// check API is available
 	if (navigator.mediaDevices === undefined 
 			|| navigator.mediaDevices.enumerateDevices === undefined 
 			|| navigator.mediaDevices.getUserMedia === undefined  ){
-		onError("WebRTC issue! navigator.mediaDevices.enumerateDevices not present in your browser")
+		onError({
+			name: '',
+			message: 'WebRTC issue! navigator.mediaDevices.enumerateDevices not present in your browser'
+		})
 		return
 	}
 
+	// get available devices
 	navigator.mediaDevices.enumerateDevices().then(function(devices) {
                 var userMediaConstraints = {
 			audio: false,
@@ -159,6 +191,7 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady, onError) 
 				}
 		  	}
                 }
+		// get a device which satisfy the constraints
 		navigator.mediaDevices.getUserMedia(userMediaConstraints).then(function success(stream) {
 			// set the .src of the domElement
 			domElement.srcObject = stream;
@@ -167,6 +200,7 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady, onError) 
 				domElement.play();
 			})
 			// domElement.play();
+
 // TODO listen to loadedmetadata instead
 			// wait until the video stream is ready
 			var interval = setInterval(function() {
@@ -176,7 +210,8 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady, onError) 
 			}, 1000/50);
 		}).catch(function(error) {
 			onError({
-				message: "Can't access user media :()"
+				name: error.name,
+				message: error.message
 			});
 		});
 	}).catch(function(error) {

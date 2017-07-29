@@ -179,6 +179,7 @@ AFRAME.registerSystem('arjs', {
 					renderer.clear()
 					// render tangoVideoMesh
 					if( arProfile.contextParameters.trackingBackend === 'tango' ){
+			// FIXME fails somewhere
 						// render sceneOrtho
 						rendererRenderFct.call(renderer, tangoVideoMesh._sceneOrtho, tangoVideoMesh._cameraOrtho, renderTarget, forceClear)
 						// Render the perspective scene

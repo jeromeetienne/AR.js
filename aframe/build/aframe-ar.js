@@ -1502,6 +1502,7 @@ THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
 
 THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady, onError) {
 	var _this = this
+debugger
 	// init default value
 	onError = onError || function(error){	
 		alert('Cant init webcam due to '+error.message)
@@ -1702,17 +1703,17 @@ THREEx.ArToolkitSource.prototype.copySizeTo = function(){
 	this.copyElementSizeTo.apply(this, arguments)
 }
 
-THREEx.ArToolkitSource.prototype.onResize = function(){
-	console.warn('obsolete function arToolkitSource.onResize. Use arToolkitSource.onResizeElement' )
-	this.onResizeElement.apply(this, arguments)
-}
-
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArToolkitSource.prototype.onResize2	= function(arToolkitContext, renderer, camera){
+THREEx.ArToolkitSource.prototype.onResize	= function(arToolkitContext, renderer, camera){
 	var trackingBackend = arToolkitContext.parameters.trackingBackend
+	
+	if( arguments.length !== 3 ){
+		console.warn('obsolete function arToolkitSource.onResize. Use arToolkitSource.onResizeElement' )
+		return this.onResizeElement.apply(this, arguments)
+	}
 
 	// RESIZE DOMELEMENT
 	if( trackingBackend === 'artoolkit' ){

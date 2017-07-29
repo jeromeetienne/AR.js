@@ -10,14 +10,13 @@
 - aruco got perspective issue - likely camera init
 
 - tango video fails
-  - 4TODO initialize it and display it
-  - how to by pass the renderer from a-frame
   - some post processing in aframe.js - https://github.com/wizgrav/aframe-effects/blob/master/systems/effects.js
   - it seems to override renderer.render by its own function... not super clean but if it works ok
   - it can be changed later
 
 - tango tracking is working ? i think so
   - test in both mode   
+  - tracking only tho, clearly no video
 
 - DONE remove arSession.onResize2() - thus the API is cleaner
   - do a onResize with a test on argument.length - if not good number call old stuff
