@@ -3,10 +3,10 @@ watch: build
 
 .PHONY: build
 build: 
-	(cd threex/threex-aruco && make build)
+	(cd src/threex/threex-aruco && make build)
 	cat 	vendor/jsartoolkit5/build/artoolkit.min.js	\
 		vendor/jsartoolkit5/js/artoolkit.api.js		\
-		threex/threex-aruco/build/threex-aruco.js	\
+		src/threex/threex-aruco/build/threex-aruco.js	\
 		vendor/chromium-tango/THREE.WebAR.js		\
 		src/threex/*.js					\
 		src/new-api/*.js 				\

@@ -1,5 +1,16 @@
 ## New API - aframe
 
+- implement picking in aframe
+  - first make it works
+  - then find a good API
+  - <ar-hittester enabled='true' renderDebug='false'> inside the controlled object
+- buttons aframe doesnt work 
+  - how to create the scene dynamically in aframe
+  - handle that with a reload
+
+
+
+
 - honor marker preset
   - hiro + kanji and area
   - old issue with the same markers ?? deep in jsartoolkit
@@ -11,15 +22,6 @@
 - aframe api ? there is marker everywhere... change that ?
   - <ar-camera> ?
   - <ar-anchor>
-
-- implement picking in aframe
-  - first make it works
-  - then find a good API
-  - <ar-hittester enabled='true' renderDebug='false'> inside the controlled object
-
-- buttons aframe doesnt work 
-  - how to create the scene dynamically in aframe
-  - handle that with a reload
 
 - REFACTOR trackingMethod - should i put changeMatrixMode into trackingMethod ?
   - it is needed for all the test and all
@@ -45,16 +47,16 @@
 
 - in arjs.session.js - TODO change that to a usual this.parameters
 
-- tango video fails
-  - some post processing in aframe.js - https://github.com/wizgrav/aframe-effects/blob/master/systems/effects.js
-  - it seems to override renderer.render by its own function... not super clean but if it works ok
-  - it can be changed later
-- tango tracking is working ? i think so
-  - test in both mode
-  - tracking only tho, clearly no video
 
 - LATER aruco got perspective issue - likely camera init
 - DONE markerhelper fails IF changeMatrixMode===cameraTransformMatrix
+- DONE tango video fails
+  - some post processing in aframe.js - https://github.com/wizgrav/aframe-effects/blob/master/systems/effects.js
+  - it seems to override renderer.render by its own function... not super clean but if it works ok
+  - it can be changed later
+- DONE tango tracking is working ? i think so
+  - test in both mode
+  - tracking only tho, clearly no video
 
 
 ## New API
