@@ -49,10 +49,16 @@ ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile = function(trackingBackend){
 ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile = function(trackingBackend){
 	console.assert(trackingBackend)
 	if( trackingBackend === undefined )	debugger
+	
+	// create absoluteBaseURL
+	var link = document.createElement('a')
+	link.href = ARjs.Context.baseURL
+	var absoluteBaseURL = link.href
+
 	// create the base file
 	var file = {
 		meta : {
-			createdBy : "AR.js Default Marker "+THREEx.ArToolkitContext.REVISION,
+			createdBy : "AR.js Default Marker "+ARjs.Context.REVISION,
 			createdAt : new Date().toJSON(),
 		},
 		trackingBackend : trackingBackend,
@@ -67,7 +73,7 @@ ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile = function(trackingBackend){
 	}
 	if( trackingBackend === 'artoolkit' ){
 		file.subMarkersControls[0].parameters.type = 'pattern'
-		file.subMarkersControls[0].parameters.patternUrl = THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt'
+		file.subMarkersControls[0].parameters.patternUrl = absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt'
 	}else if( trackingBackend === 'aruco' ){
 		file.subMarkersControls[0].parameters.type = 'barcode'
 		file.subMarkersControls[0].parameters.barcodeValue = 1001
@@ -88,9 +94,12 @@ ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile = function(trackingBackend){
  * @return {Object} - json object containing the controls parameters
  */
 ARjs.MarkersAreaUtils.createDefaultMarkersControlsParameters = function(trackingBackend){
+	// create absoluteBaseURL
 	var link = document.createElement('a')
-	link.href = THREEx.ArToolkitContext.baseURL
+	link.href = ARjs.Context.baseURL
 	var absoluteBaseURL = link.href
+
+
 	if( trackingBackend === 'artoolkit' ){
 		// pattern hiro/kanji/a/b/c/f
 		var markersControlsParameters = [

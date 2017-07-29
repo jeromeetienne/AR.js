@@ -39,67 +39,9 @@
 <script>ARjs.Context.baseURL = '../../three.js/'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace; background-color: black;'>
-	<div style='position: fixed; top: 10px; width:inherit; text-align: center; z-index: 1;'>
-		<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - tango example for a-frame by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
-		<br/>
-		<strong>Tracking Method:</strong> <span id='trackingMethod'>unknown</span>
-		- 
-		Switch to : 
-		<a href='#artoolkit' onclick='location.reload()'>artoolkit</a>
-		/ 
-		<a href='#aruco' onclick='location.reload()'>aruco</a>
-		/ 
-		<a href='#area-artoolkit' onclick='location.reload()'>area artoolkit</a>
-		/ 
-		<a href='#area-aruco' onclick='location.reload()'>area aruco</a>
-		/ 
-		<a href='#tango' onclick='location.reload()'>tango</a>
-		/ 
-		<a href='#best' onclick='location.reload()'>best</a>
-		<br/>
-		<a href='javascript:void(0)' id='buttonTangoTogglePointCloud'>toggle-point-cloud</a>
-		<a href='javascript:void(0)' id='buttonToggleMarkerHelpers'>toggle-marker-helper</a>
-		<a href='javascript:void(0)' id='buttonMarkersAreaLearner'>Learn-new-marker-area</a>
-		<a href='javascript:void(0)' id='buttonMarkersAreaReset'>Reset-marker-area</a>
-	</div>
-
-	<!-- <a-scene embedded arjs='trackingMethod: best; debugUIEnabled: true;'>
-		<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
-		<a-marker-camera></a-marker-camera>
-	</a-scene> -->
-
-
-	<!-- artoolkit modelViewMatrix : OK -->
-	<!-- <a-scene embedded arjs='trackingMethod: area-artoolkit; debugUIEnabled: true;'>
-		<a-marker preset='area'>
-			<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
-		</a-marker>
-		<a-entity camera></a-entity>
-	</a-scene> -->
-
-	<!-- artoolkit cameraTransformMatrix : OK -->
-	<!-- <a-scene embedded arjs='trackingMethod: area-artoolkit; debugUIEnabled: true;'>
-		<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
-		<a-marker-camera preset='area'></a-marker-camera>
-	</a-scene> -->
-
-	<!-- artoolkit cameraTransformMatrix : FAILS -->
-	<!-- <a-scene embedded arjs='trackingMethod: artoolkit;'>
-		<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
-		<a-marker-camera preset='kanji'></a-marker-camera>
-	</a-scene> -->
-
-	<!-- tango cameraTransformMatrix : OK -->
-	<a-scene embedded arjs='trackingMethod: tango'>
+	<a-scene embedded arjs>
 		<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
 		<a-marker-camera></a-marker-camera>
 	</a-scene>
-
-	<!-- <a-scene embedded arjs='trackingMethod: tango'>
-		<a-marker>
-			<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
-		</a-marker>
-		<a-entity camera></a-entity>
-	</a-scene> -->
 </body>
 </html>

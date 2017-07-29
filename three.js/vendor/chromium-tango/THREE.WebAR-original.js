@@ -385,11 +385,8 @@ THREE.WebAR.resizeVRSeeThroughCamera = function(vrDisplay, camera) {
       var bottom = yscale * -height / 2.0 - yoffset;
       var top = yscale * height / 2.0 - yoffset;
 
-      // camera.projectionMatrix.makeFrustum(
-      //   left, right, bottom, top, camera.near, camera.far);
-
-      camera.projectionMatrix.makePerspective(
-        left, right, top, bottom, camera.near, camera.far);
+      camera.projectionMatrix.makeFrustum(
+        left, right, bottom, top, camera.near, camera.far);
 
       // Recalculate the fov as threejs is not doing it.
       camera.fov = THREE.Math.radToDeg(

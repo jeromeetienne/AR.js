@@ -35,6 +35,11 @@ AFRAME.registerSystem('arjs', {
 			type: 'string',	
 			default: 'default',
 		},
+		
+		tangoPointCloudEnabled : {
+			type: 'boolean',
+			default: false,			
+		},
 
 		// old parameters
 		debug : {
@@ -160,39 +165,47 @@ AFRAME.registerSystem('arjs', {
 			})
 
 			//////////////////////////////////////////////////////////////////////////////
-			//		tango specifics
+			//		tango specifics - _tangoPointCloud
 			//////////////////////////////////////////////////////////////////////////////
-			_this._tangoVideoMesh = null
+
 			_this._tangoPointCloud = null
+			if( arProfile.contextParameters.trackingBackend === 'tango' && _this.data.tangoPointCloudEnabled ){
+				// init tangoPointCloud
+				var tangoPointCloud = _this._tangoPointCloud = new ARjs.TangoPointCloud(arSession)
+				scene.add(tangoPointCloud.object3d)
+			}
+
+			//////////////////////////////////////////////////////////////////////////////
+			//		tango specifics - _tangoVideoMesh
+			//////////////////////////////////////////////////////////////////////////////
+
+			_this._tangoVideoMesh = null
 			if( arProfile.contextParameters.trackingBackend === 'tango' ){
 				// init tangoVideoMesh
 				var tangoVideoMesh = _this._tangoVideoMesh = new ARjs.TangoVideoMesh(arSession)
 				
-				// init tangoPointCloud
-				var tangoPointCloud = _this._tangoPointCloud = new ARjs.TangoPointCloud(arSession)
-				scene.add(tangoPointCloud.object3d)
-
-				// override renderer.render
+				// override renderer.render to render tangoVideoMesh
 				var rendererRenderFct = renderer.render;
 				renderer.render = function customRender(scene, camera, renderTarget, forceClear) {
 					renderer.autoClear = false;
-
 					// clear it all
 					renderer.clear()
-			// 		// render tangoVideoMesh
-			// 		if( arProfile.contextParameters.trackingBackend === 'tango' ){
-			// // FIXME fails somewhere
-			// 			// render sceneOrtho
-			// 			rendererRenderFct.call(renderer, tangoVideoMesh._sceneOrtho, tangoVideoMesh._cameraOrtho, renderTarget, forceClear)
-			// 			// Render the perspective scene
-						// renderer.clearDepth()		
-			// 		}
-
+					// render tangoVideoMesh
+					if( arProfile.contextParameters.trackingBackend === 'tango' ){
+						// FIXME fails on three.js r84
+						// render sceneOrtho
+						rendererRenderFct.call(renderer, tangoVideoMesh._sceneOrtho, tangoVideoMesh._cameraOrtho, renderTarget, forceClear)
+						// Render the perspective scene
+						renderer.clearDepth()		
+					}
 					// render 3d scene
 					rendererRenderFct.call(renderer, scene, camera, renderTarget, forceClear);
 				}
-
 			}
+			
+			//////////////////////////////////////////////////////////////////////////////
+			//		Code Separator
+			//////////////////////////////////////////////////////////////////////////////
 
 			_this.initialised = true
 
@@ -203,8 +216,11 @@ AFRAME.registerSystem('arjs', {
 			window.addEventListener('resize', onResize)
 			function onResize(){
 				var arSource = _this._arSession.arSource
-				// ugly kludge to get resize on aframe... not even sure it works
-				arSource.copyElementSizeTo(document.body)
+
+				// ugly kludge to get resize on aframe... not even sure it works				
+				if( arProfile.contextParameters.trackingBackend !== 'tango' ){
+					arSource.copyElementSizeTo(document.body)
+				}
 				
 				var buttonElement = document.querySelector('.a-enter-vr')
 				if( buttonElement ){
@@ -218,7 +234,7 @@ AFRAME.registerSystem('arjs', {
 			//////////////////////////////////////////////////////////////////////////////
 			if( _this.data.debugUIEnabled ){
 				document.querySelector('#trackingMethod').innerHTML = _this.data.trackingMethod
-				if( arProfile.contextParameters.trackingBackend === 'tango' ){
+				if( arProfile.contextParameters.trackingBackend === 'tango' && _this.data.tangoPointCloudEnabled ){
 					document.querySelector('#buttonTangoTogglePointCloud').addEventListener('click', function(){
 						if( tangoPointCloud.object3d.parent ){
 							scene.remove(tangoPointCloud.object3d)
@@ -246,8 +262,6 @@ AFRAME.registerSystem('arjs', {
 			// onResize()
 			window.dispatchEvent(new Event('resize'));
 		}, 1000/30)
-		
-		
 	},
 	
 	tick : function(now, delta){

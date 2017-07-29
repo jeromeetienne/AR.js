@@ -3,10 +3,10 @@ watch: build
 	
 .PHONY: build
 build:
-	cat vendor/js-aruco/src/aruco.js \
-		vendor/js-aruco/src/cv.js \
-		vendor/js-aruco/src/posit1.js \
-		vendor/js-aruco/src/svd.js \
+	cat 	../../vendor/js-aruco/src/aruco.js \
+		../../vendor/js-aruco/src/cv.js \
+		../../vendor/js-aruco/src/posit1.js \
+		../../vendor/js-aruco/src/svd.js \
 	 	threex-*.js > build/threex-aruco.js
 
 minify: build

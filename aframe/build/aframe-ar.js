@@ -1615,1605 +1615,2740 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 	}
 
 })();
-;(function() {
-	'use strict'
-
-	/**
-		The ARController is the main object for doing AR marker detection with JSARToolKit.
-
-		To use an ARController, you need to tell it the dimensions to use for the AR processing canvas and
-		pass it an ARCameraParam to define the camera parameters to use when processing images. 
-		The ARCameraParam defines the lens distortion and aspect ratio of the camera used. 
-		See https://www.artoolworks.com/support/library/Calibrating_your_camera for more information about AR camera parameteters and how to make and use them.
-
-		If you pass an image as the first argument, the ARController uses that as the image to process,
-		using the dimensions of the image as AR processing canvas width and height. If the first argument
-		to ARController is an image, the second argument is used as the camera param.
-
-		The camera parameters argument can be either an ARCameraParam or an URL to a camera definition file.
-		If the camera argument is an URL, it is loaded into a new ARCameraParam, and the ARController dispatches
-		a 'load' event and calls the onload method if it is defined.
-
-	 	@exports ARController
-	 	@constructor
-
-		@param {number} width The width of the images to process.
-		@param {number} height The height of the images to process.
-		@param {ARCameraParam | string} camera The ARCameraParam to use for image processing. If this is a string, the ARController treats it as an URL and tries to load it as a ARCameraParam definition file, calling ARController#onload on success. 
-	*/
-	var ARController = function(width, height, camera) {
-		var id;
-		var w = width, h = height;
-
-		this.orientation = 'landscape';
-
-		this.listeners = {};
-
-		if (typeof width !== 'number') {
-			var image = width;
-			camera = height;
-			w = image.videoWidth || image.width;
-			h = image.videoHeight || image.height;
-			this.image = image;
-		}
-
-		this.defaultMarkerWidth = 1;
-		this.patternMarkers = {};
-		this.barcodeMarkers = {};
-		this.transform_mat = new Float32Array(16);
-
-		this.canvas = document.createElement('canvas');
-		this.canvas.width = w;
-		this.canvas.height = h;
-		this.ctx = this.canvas.getContext('2d');
-
-		this.videoWidth = w;
-		this.videoHeight = h;
-
-		if (typeof camera === 'string') {
-
-			var self = this;
-			this.cameraParam = new ARCameraParam(camera, function() {
-				self._initialize();
-			}, function(err) {
-				console.error("ARController: Failed to load ARCameraParam", err);
-			});
-
-		} else {
-
-			this.cameraParam = camera;
-			this._initialize();
-
-		}
-	};
-
-	/**
-		Destroys the ARController instance and frees all associated resources.
-		After calling dispose, the ARController can't be used any longer. Make a new one if you need one.
-
-		Calling this avoids leaking Emscripten memory, which may be important if you're using multiple ARControllers.
-	*/
-	ARController.prototype.dispose = function() {
-		artoolkit.teardown(this.id);
-
-		for (var t in this) {
-			this[t] = null;
-		}
-	};
-
-	/**
-		Detects markers in the given image. The process method dispatches marker detection events during its run.
-
-		The marker detection process proceeds by first dispatching a markerNum event that tells you how many
-		markers were found in the image. Next, a getMarker event is dispatched for each found marker square.
-		Finally, getMultiMarker is dispatched for every found multimarker, followed by getMultiMarkerSub events
-		dispatched for each of the markers in the multimarker.
-			
-			arController.addEventListener('markerNum', function(ev) {
-				console.log("Detected " + ev.data + " markers.")
-			});
-			arController.addEventListener('getMarker', function(ev) {
-				console.log("Detected marker with ids:", ev.data.marker.id, ev.data.marker.idPatt, ev.data.marker.idMatrix);
-				console.log("Marker data", ev.data.marker);
-				console.log("Marker transform matrix:", [].join.call(ev.data.matrix, ', '));
-			});
-			arController.addEventListener('getMultiMarker', function(ev) {
-				console.log("Detected multimarker with id:", ev.data.multiMarkerId);
-			});
-			arController.addEventListener('getMultiMarkerSub', function(ev) {
-				console.log("Submarker for " + ev.data.multiMarkerId, ev.data.markerIndex, ev.data.marker);
-			});
-			
-			arController.process(image);	
-
-
-		If no image is given, defaults to this.image.
-
-		If the debugSetup has been called, draws debug markers on the debug canvas.
-
-		@param {ImageElement | VideoElement} image The image to process [optional]. 
-	*/
-	ARController.prototype.process = function(image) {
-		this.detectMarker(image);
-
-		var markerNum = this.getMarkerNum();
-		var k,o;
-		for (k in this.patternMarkers) {
-			o = this.patternMarkers[k]
-			o.inPrevious = o.inCurrent;
-			o.inCurrent = false;
-		}
-		for (k in this.barcodeMarkers) {
-			o = this.barcodeMarkers[k]
-			o.inPrevious = o.inCurrent;
-			o.inCurrent = false;
-		}
-
-		for (var i=0; i<markerNum; i++) {
-			var markerInfo = this.getMarker(i);
-
-			var markerType = artoolkit.UNKNOWN_MARKER;
-			var visible = this.trackPatternMarkerId(-1);
-
-			if (markerInfo.idPatt > -1 && (markerInfo.id === markerInfo.idPatt || markerInfo.idMatrix === -1)) {
-				visible = this.trackPatternMarkerId(markerInfo.idPatt);
-				markerType = artoolkit.PATTERN_MARKER;
-
-				if (markerInfo.dir !== markerInfo.dirPatt) {
-					this.setMarkerInfoDir(i, markerInfo.dirPatt);
-				}
-
-			} else if (markerInfo.idMatrix > -1) {
-				visible = this.trackBarcodeMarkerId(markerInfo.idMatrix);
-				markerType = artoolkit.BARCODE_MARKER;
-
-				if (markerInfo.dir !== markerInfo.dirMatrix) {
-					this.setMarkerInfoDir(i, markerInfo.dirMatrix);
-				}
-			}
-
-			if (markerType !== artoolkit.UNKNOWN_MARKER && visible.inPrevious) {
-				this.getTransMatSquareCont(i, visible.markerWidth, visible.matrix, visible.matrix);
-			} else {
-				this.getTransMatSquare(i, visible.markerWidth, visible.matrix);
-			}
-// this.getTransMatSquare(i, visible.markerWidth, visible.matrix);
-
-			visible.inCurrent = true;
-			this.transMatToGLMat(visible.matrix, this.transform_mat);
-			this.dispatchEvent({
-				name: 'getMarker',
-				target: this,
-				data: {
-					index: i,
-					type: markerType,
-					marker: markerInfo,
-					matrix: this.transform_mat
-				}
-			});
-		}
-
-		var multiMarkerCount = this.getMultiMarkerCount();
-		for (var i=0; i<multiMarkerCount; i++) {
-			var subMarkerCount = this.getMultiMarkerPatternCount(i);
-			var visible = false;
-
-			artoolkit.getTransMatMultiSquareRobust(this.id, i);
-			this.transMatToGLMat(this.marker_transform_mat, this.transform_mat);
-			for (var j=0; j<subMarkerCount; j++) {
-				var multiEachMarkerInfo = this.getMultiEachMarker(i, j);
-				if (multiEachMarkerInfo.visible >= 0) {
-					visible = true;
-					this.dispatchEvent({
-						name: 'getMultiMarker',
-						target: this,
-						data: {
-							multiMarkerId: i,
-							matrix: this.transform_mat
-						}
-					});
-					break;
-				}
-			}
-			if (visible) {
-				for (var j=0; j<subMarkerCount; j++) {
-					var multiEachMarkerInfo = this.getMultiEachMarker(i, j);
-					this.transMatToGLMat(this.marker_transform_mat, this.transform_mat);
-					this.dispatchEvent({
-						name: 'getMultiMarkerSub',
-						target: this,
-						data: {
-							multiMarkerId: i,
-							markerIndex: j,
-							marker: multiEachMarkerInfo,
-							matrix: this.transform_mat
-						}
-					});
-				}
-			}
-		}
-		if (this._bwpointer) {
-			this.debugDraw();
-		}
-	};
-
-	/**
-		Adds the given pattern marker ID to the index of tracked IDs.
-		Sets the markerWidth for the pattern marker to markerWidth.
-
-		Used by process() to implement continuous tracking, 
-		keeping track of the marker's transformation matrix
-		and customizable marker widths.
-
-		@param {number} id ID of the pattern marker to track.
-		@param {number} markerWidth The width of the marker to track.
-		@return {Object} The marker tracking object.
-	*/
-	ARController.prototype.trackPatternMarkerId = function(id, markerWidth) {
-		var obj = this.patternMarkers[id];
-		if (!obj) {
-			this.patternMarkers[id] = obj = {
-				inPrevious: false,
-				inCurrent: false,
-				matrix: new Float32Array(12),
-				markerWidth: markerWidth || this.defaultMarkerWidth
-			};
-		}
-		if (markerWidth) {
-			obj.markerWidth = markerWidth;
-		}
-		return obj;
-	};
-
-	/**
-		Adds the given barcode marker ID to the index of tracked IDs.
-		Sets the markerWidth for the pattern marker to markerWidth.
-
-		Used by process() to implement continuous tracking, 
-		keeping track of the marker's transformation matrix
-		and customizable marker widths.
-
-		@param {number} id ID of the barcode marker to track.
-		@param {number} markerWidth The width of the marker to track.
-		@return {Object} The marker tracking object.
-	*/
-	ARController.prototype.trackBarcodeMarkerId = function(id, markerWidth) {
-		var obj = this.barcodeMarkers[id];
-		if (!obj) {
-			this.barcodeMarkers[id] = obj = {
-				inPrevious: false,
-				inCurrent: false,
-				matrix: new Float32Array(12),
-				markerWidth: markerWidth || this.defaultMarkerWidth
-			};
-		}
-		if (markerWidth) {
-			obj.markerWidth = markerWidth;
-		}
-		return obj;
-	};
-
-	/**
-		Returns the number of multimarkers registered on this ARController.
-
-		@return {number} Number of multimarkers registered.
-	*/
-	ARController.prototype.getMultiMarkerCount = function() {
-		return artoolkit.getMultiMarkerCount(this.id);
-	};
-
-	/**
-		Returns the number of markers in the multimarker registered for the given multiMarkerId.
-
-		@param {number} multiMarkerId The id number of the multimarker to access. Given by loadMultiMarker.
-		@return {number} Number of markers in the multimarker. Negative value indicates failure to find the multimarker.
-	*/
-	ARController.prototype.getMultiMarkerPatternCount = function(multiMarkerId) {
-		return artoolkit.getMultiMarkerNum(this.id, multiMarkerId);
-	};
-
-	/**
-		Add an event listener on this ARController for the named event, calling the callback function
-		whenever that event is dispatched.
-
-		Possible events are: 
-		  * getMarker - dispatched whenever process() finds a square marker
-		  * getMultiMarker - dispatched whenever process() finds a visible registered multimarker
-		  * getMultiMarkerSub - dispatched by process() for each marker in a visible multimarker
-		  * load - dispatched when the ARController is ready to use (useful if passing in a camera URL in the constructor)
-
-		@param {string} name Name of the event to listen to.
-		@param {function} callback Callback function to call when an event with the given name is dispatched.
-	*/
-	ARController.prototype.addEventListener = function(name, callback) {
-       if (!this.listeners[name]) {
-			this.listeners[name] = [];
-		}
-		this.listeners[name].push(callback);
-	};
-
-	/**
-		Remove an event listener from the named event.
-
-		@param {string} name Name of the event to stop listening to.
-		@param {function} callback Callback function to remove from the listeners of the named event.
-	*/
-	ARController.prototype.removeEventListener = function(name, callback) {
-		if (this.listeners[name]) {
-			var index = this.listeners[name].indexOf(callback);
-			if (index > -1) {
-				this.listeners[name].splice(index, 1);
-			}
-		}
-	};
-
-	/**
-		Dispatches the given event to all registered listeners on event.name.
-
-		@param {Object} event Event to dispatch.
-	*/
-	ARController.prototype.dispatchEvent = function(event) {
-		var listeners = this.listeners[event.name];
-		if (listeners) {
-			for (var i=0; i<listeners.length; i++) {
-				listeners[i].call(this, event);
-			}
-		}
-	};
-
-	/**
-		Sets up a debug canvas for the AR detection. Draws a red marker on top of each detected square in the image.
-
-		The debug canvas is added to document.body.
-	*/
-	ARController.prototype.debugSetup = function() {
-		document.body.appendChild(this.canvas)
-		this.setDebugMode(1);
-		this._bwpointer = this.getProcessingImage();
-	};
-
-	/**
-		Loads a pattern marker from the given URL and calls the onSuccess callback with the UID of the marker.
-
-		arController.loadMarker(markerURL, onSuccess, onError);
-
-		@param {string} markerURL - The URL of the marker pattern file to load.
-		@param {function} onSuccess - The success callback. Called with the id of the loaded marker on a successful load.
-		@param {function} onError - The error callback. Called with the encountered error if the load fails.
-	*/
-	ARController.prototype.loadMarker = function(markerURL, onSuccess, onError) {
-		return artoolkit.addMarker(this.id, markerURL, onSuccess, onError);
-	};
-
-	/**
-		Loads a multimarker from the given URL and calls the onSuccess callback with the UID of the marker.
-
-		arController.loadMultiMarker(markerURL, onSuccess, onError);
-
-		@param {string} markerURL - The URL of the multimarker pattern file to load.
-		@param {function} onSuccess - The success callback. Called with the id and the number of sub-markers of the loaded marker on a successful load.
-		@param {function} onError - The error callback. Called with the encountered error if the load fails.
-	*/
-	ARController.prototype.loadMultiMarker = function(markerURL, onSuccess, onError) {
-		return artoolkit.addMultiMarker(this.id, markerURL, onSuccess, onError);
-	};
-	
-	/**
-	 * Populates the provided float array with the current transformation for the specified marker. After 
-	 * a call to detectMarker, all marker information will be current. Marker transformations can then be 
-	 * checked.
-	 * @param {number} markerUID	The unique identifier (UID) of the marker to query
-	 * @param {number} markerWidth	The width of the marker
-	 * @param {Float64Array} dst	The float array to populate with the 3x4 marker transformation matrix
-	 * @return	{Float64Array} The dst array.
-	 */
-	ARController.prototype.getTransMatSquare = function(markerIndex, markerWidth, dst) {
-		artoolkit.getTransMatSquare(this.id, markerIndex, markerWidth);
-		dst.set(this.marker_transform_mat);
-		return dst;
-	};
-
-	/**
-	 * Populates the provided float array with the current transformation for the specified marker, using 
-	 * previousMarkerTransform as the previously detected transformation. After 
-	 * a call to detectMarker, all marker information will be current. Marker transformations can then be 
-	 * checked.
-	 * @param {number} markerUID	The unique identifier (UID) of the marker to query
-	 * @param {number} markerWidth	The width of the marker
-	 * @param {Float64Array} previousMarkerTransform	The float array to use as the previous 3x4 marker transformation matrix
-	 * @param {Float64Array} dst	The float array to populate with the 3x4 marker transformation matrix
-	 * @return	{Float64Array} The dst array.
-	 */
-	ARController.prototype.getTransMatSquareCont = function(markerIndex, markerWidth, previousMarkerTransform, dst) {
-		this.marker_transform_mat.set(previousMarkerTransform)
-		artoolkit.getTransMatSquareCont(this.id, markerIndex, markerWidth);
-		dst.set(this.marker_transform_mat);
-		return dst;
-	};
-
-	/**
-	 * Populates the provided float array with the current transformation for the specified multimarker. After 
-	 * a call to detectMarker, all marker information will be current. Marker transformations can then be 
-	 * checked.
-	 *
-	 * @param {number} markerUID	The unique identifier (UID) of the marker to query
-	 * @param {number} markerWidth	The width of the marker
-	 * @param {Float64Array} dst	The float array to populate with the 3x4 marker transformation matrix
-	 * @return	{Float64Array} The dst array.
-	 */
-	ARController.prototype.getTransMatMultiSquare = function(multiMarkerId, dst) {
-		artoolkit.getTransMatMultiSquare(this.id, multiMarkerId);
-		dst.set(this.marker_transform_mat);
-		return dst;
-	};
-
-	/**
-	 * Populates the provided float array with the current robust transformation for the specified multimarker. After 
-	 * a call to detectMarker, all marker information will be current. Marker transformations can then be 
-	 * checked.
-	 * @param {number} markerUID	The unique identifier (UID) of the marker to query
-	 * @param {number} markerWidth	The width of the marker
-	 * @param {Float64Array} dst	The float array to populate with the 3x4 marker transformation matrix
-	 * @return	{Float64Array} The dst array.
-	 */
-	ARController.prototype.getTransMatMultiSquareRobust = function(multiMarkerId, dst) {
-		artoolkit.getTransMatMultiSquare(this.id, multiMarkerId);
-		dst.set(this.marker_transform_mat);
-		return dst;
-	};
-
-	/**
-		Converts the given 3x4 marker transformation matrix in the 12-element transMat array
-		into a 4x4 WebGL matrix and writes the result into the 16-element glMat array.
-
-		If scale parameter is given, scales the transform of the glMat by the scale parameter.
-
-		@param {Float64Array} transMat The 3x4 marker transformation matrix.
-		@param {Float64Array} glMat The 4x4 GL transformation matrix.
-		@param {number} scale The scale for the transform.
-	*/ 
-	ARController.prototype.transMatToGLMat = function(transMat, glMat, scale) {
-		glMat[0 + 0*4] = transMat[0]; // R1C1
-		glMat[0 + 1*4] = transMat[1]; // R1C2
-		glMat[0 + 2*4] = transMat[2];
-		glMat[0 + 3*4] = transMat[3];
-		glMat[1 + 0*4] = transMat[4]; // R2
-		glMat[1 + 1*4] = transMat[5];
-		glMat[1 + 2*4] = transMat[6];
-		glMat[1 + 3*4] = transMat[7];
-		glMat[2 + 0*4] = transMat[8]; // R3
-		glMat[2 + 1*4] = transMat[9];
-		glMat[2 + 2*4] = transMat[10];
-		glMat[2 + 3*4] = transMat[11];
-		glMat[3 + 0*4] = 0.0;
-		glMat[3 + 1*4] = 0.0;
-		glMat[3 + 2*4] = 0.0;
-		glMat[3 + 3*4] = 1.0;
-		if (scale != undefined && scale !== 0.0) {
-			glMat[12] *= scale;
-			glMat[13] *= scale;
-			glMat[14] *= scale;
-		}
-		return glMat;
-	};
-
-	/**
-		This is the core ARToolKit marker detection function. It calls through to a set of
-		internal functions to perform the key marker detection steps of binarization and
-		labelling, contour extraction, and template matching and/or matrix code extraction.
+/*
+Copyright (c) 2011 Juan Mellado
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+/*
+References:
+- "ArUco: a minimal library for Augmented Reality applications based on OpenCv"
+http://www.uco.es/investiga/grupos/ava/node/26
+*/
+
+var AR = AR || {};
+
+AR.Marker = function(id, corners){
+        this.id = id;
+        this.corners = corners;
+};
+
+AR.Detector = function(){
+        this.grey = new CV.Image();
+        this.thres = new CV.Image();
+        this.homography = new CV.Image();
+        this.binary = [];
+        this.contours = [];
+        this.polys = [];
+        this.candidates = [];
+};
+
+AR.Detector.prototype.detect = function(image){
+        CV.grayscale(image, this.grey);
+        CV.adaptiveThreshold(this.grey, this.thres, 2, 7);
         
-        Typically, the resulting set of detected markers is retrieved by calling arGetMarkerNum
-        to get the number of markers detected and arGetMarker to get an array of ARMarkerInfo
-        structures with information on each detected marker, followed by a step in which
-        detected markers are possibly examined for some measure of goodness of match (e.g. by
-        examining the match confidence value) and pose extraction.
-
-		@param {image} Image to be processed to detect markers.
-		@return {number}     0 if the function proceeded without error, or a value less than 0 in case of error.
-			A result of 0 does not however, imply any markers were detected.
-	*/
-	ARController.prototype.detectMarker = function(image) {
-		if (this._copyImageToHeap(image)) {
-			return artoolkit.detectMarker(this.id);
-		}
-		return -99;
-	};
-
-	/**
-		Get the number of markers detected in a video frame.
-  
-	    @return {number}     The number of detected markers in the most recent image passed to arDetectMarker.
-    	    Note that this is actually a count, not an index. A better name for this function would be
-        	arGetDetectedMarkerCount, but the current name lives on for historical reasons.
-    */
-	ARController.prototype.getMarkerNum = function() {
-		return artoolkit.getMarkerNum(this.id);
-	};
-
-	/**
-		Get the marker info struct for the given marker index in detected markers.
-
-		Call this.detectMarker first, then use this.getMarkerNum to get the detected marker count.
-
-		The returned object is the global artoolkit.markerInfo object and will be overwritten
-		by subsequent calls. If you need to hang on to it, create a copy using this.cloneMarkerInfo();
-
-		Returns undefined if no marker was found.
-
-		A markerIndex of -1 is used to access the global custom marker.
-
-		The fields of the markerInfo struct are:
-		    @field      area Area in pixels of the largest connected region, comprising the marker border and regions connected to it. Note that this is
-		        not the same as the actual onscreen area inside the marker border.
-			@field      id If pattern detection mode is either pattern mode OR matrix but not both, will be marker ID (>= 0) if marker is valid, or -1 if invalid.
-			@field      idPatt If pattern detection mode includes a pattern mode, will be marker ID (>= 0) if marker is valid, or -1 if invalid.
-		    @field      idMatrix If pattern detection mode includes a matrix mode, will be marker ID (>= 0) if marker is valid, or -1 if invalid.
-			@field      dir If pattern detection mode is either pattern mode OR matrix but not both, and id != -1, will be marker direction (range 0 to 3, inclusive).
-			@field      dirPatt If pattern detection mode includes a pattern mode, and id != -1, will be marker direction (range 0 to 3, inclusive).
-			@field      dirMatrix If pattern detection mode includes a matrix mode, and id != -1, will be marker direction (range 0 to 3, inclusive).
-			@field      cf If pattern detection mode is either pattern mode OR matrix but not both, will be marker matching confidence (range 0.0 to 1.0 inclusive) if marker is valid, or -1.0 if marker is invalid.
-			@field      cfPatt If pattern detection mode includes a pattern mode, will be marker matching confidence (range 0.0 to 1.0 inclusive) if marker is valid, or -1.0 if marker is invalid.
-			@field      cfMatrix If pattern detection mode includes a matrix mode, will be marker matching confidence (range 0.0 to 1.0 inclusive) if marker is valid, or -1.0 if marker is invalid.
-			@field      pos 2D position (in camera image coordinates, origin at top-left) of the centre of the marker.
-			@field      line Line equations for the 4 sides of the marker.
-			@field      vertex 2D positions (in camera image coordinates, origin at top-left) of the corners of the marker. vertex[(4 - dir)%4][] is the top-left corner of the marker. Other vertices proceed clockwise from this. These are idealised coordinates (i.e. the onscreen position aligns correctly with the undistorted camera image.)
-
-
-		@param {number} markerIndex The index of the marker to query.
-		@returns {Object} The markerInfo struct.
-	*/
-	ARController.prototype.getMarker = function(markerIndex) {
-		if (0 === artoolkit.getMarker(this.id, markerIndex)) {
-			return artoolkit.markerInfo;
-		}
-	};
-
-	/**
-		Set marker vertices to the given vertexData[4][2] array.
-
-		Sets the marker pos to the center of the vertices.
-
-		Useful for building custom markers for getTransMatSquare.
-
-		A markerIndex of -1 is used to access the global custom marker.
-
-		@param {number} markerIndex The index of the marker to edit.
-	*/
-	ARController.prototype.setMarkerInfoVertex = function(markerIndex, vertexData) {
-		for (var i=0; i<vertexData.length; i++) {
-			this.marker_transform_mat[i*2+0] = vertexData[i][0];
-			this.marker_transform_mat[i*2+1] = vertexData[i][1];
-		}
-		return artoolkit.setMarkerInfoVertex(this.id, markerIndex);
-	};
-
-	/**
-		Makes a deep copy of the given marker info.
-
-		@param {Object} markerInfo The marker info object to copy.
-		@return {Object} The new copy of the marker info.
-	*/
-	ARController.prototype.cloneMarkerInfo = function(markerInfo) {
-		return JSON.parse(JSON.stringify(markerInfo));
-	};
-
-	/**
-		Get the marker info struct for the given marker index in detected markers.
-
-		Call this.detectMarker first, then use this.getMarkerNum to get the detected marker count.
-
-		The returned object is the global artoolkit.markerInfo object and will be overwritten
-		by subsequent calls. If you need to hang on to it, create a copy using this.cloneMarkerInfo();
-
-		Returns undefined if no marker was found.
-
-		@field {number} pattId The index of the marker.
-		@field {number} pattType The type of the marker. Either AR_MULTI_PATTERN_TYPE_TEMPLATE or AR_MULTI_PATTERN_TYPE_MATRIX.
-		@field {number} visible 0 or larger if the marker is visible
-		@field {number} width The width of the marker.
-
-		@param {number} multiMarkerId The multimarker to query.
-		@param {number} markerIndex The index of the marker to query.
-		@returns {Object} The markerInfo struct.
-	*/
-	ARController.prototype.getMultiEachMarker = function(multiMarkerId, markerIndex) {
-		if (0 === artoolkit.getMultiEachMarker(this.id, multiMarkerId, markerIndex)) {
-			return artoolkit.multiEachMarkerInfo;
-		}
-	};
-
-
-	/**
-		Returns the 16-element WebGL transformation matrix used by ARController.process to 
-		pass marker WebGL matrices to event listeners.
-
-		Unique to each ARController.
-
-		@return {Float64Array} The 16-element WebGL transformation matrix used by the ARController.
-	*/
-	ARController.prototype.getTransformationMatrix = function() {
-		return this.transform_mat;
-	};
-
-	/**
-	 * Returns the projection matrix computed from camera parameters for the ARController.
-	 *
-	 * @return {Float64Array} The 16-element WebGL camera matrix for the ARController camera parameters.
-	 */
-	ARController.prototype.getCameraMatrix = function() {
-		return this.camera_mat;
-	};
-
-	/**
-		Returns the shared ARToolKit 3x4 marker transformation matrix, used for passing and receiving
-		marker transforms to/from the Emscripten side.
-
-		@return {Float64Array} The 12-element 3x4 row-major marker transformation matrix used by ARToolKit.
-	*/
-	ARController.prototype.getMarkerTransformationMatrix = function() {
-		return this.marker_transform_mat;
-	};
-
-
-	/* Setter / Getter Proxies */
-
-	/**
-	 * Enables or disables debug mode in the tracker. When enabled, a black and white debug
-	 * image is generated during marker detection. The debug image is useful for visualising
-	 * the binarization process and choosing a threshold value.
-	 * @param {number} debug		true to enable debug mode, false to disable debug mode
-	 * @see				getDebugMode()
-	 */
-	ARController.prototype.setDebugMode = function(mode) {
-		return artoolkit.setDebugMode(this.id, mode);
-	};
-
-	/**
-	 * Returns whether debug mode is currently enabled.
-	 * @return			true when debug mode is enabled, false when debug mode is disabled
-	 * @see				setDebugMode()
-	 */
-	ARController.prototype.getDebugMode = function() {
-		return artoolkit.getDebugMode(this.id);
-	};
-
-	/**
-		Returns the Emscripten HEAP offset to the debug processing image used by ARToolKit.
-
-		@return {number} HEAP offset to the debug processing image.
-	*/
-	ARController.prototype.getProcessingImage = function() {
-		return artoolkit.getProcessingImage(this.id);
-	}
-
-	/**
-		Sets the logging level to use by ARToolKit.
-
-		@param 
-	*/
-	ARController.prototype.setLogLevel = function(mode) {
-		return artoolkit.setLogLevel(mode);
-	};
-
-	ARController.prototype.getLogLevel = function() {
-		return artoolkit.getLogLevel();
-	};
-
-	ARController.prototype.setMarkerInfoDir = function(markerIndex, dir) {
-		return artoolkit.setMarkerInfoDir(this.id, markerIndex, dir);
-	};
-
-	ARController.prototype.setProjectionNearPlane = function(value) {
-		return artoolkit.setProjectionNearPlane(this.id, value);
-	};
-
-	ARController.prototype.getProjectionNearPlane = function() {
-		return artoolkit.getProjectionNearPlane(this.id);
-	};
-
-	ARController.prototype.setProjectionFarPlane = function(value) {
-		return artoolkit.setProjectionFarPlane(this.id, value);
-	};
-
-	ARController.prototype.getProjectionFarPlane = function() {
-		return artoolkit.getProjectionFarPlane(this.id);
-	};
-
-
-	/**
-	    Set the labeling threshold mode (auto/manual).
-
-	    @param {number}		mode An integer specifying the mode. One of:
-	        AR_LABELING_THRESH_MODE_MANUAL,
-	        AR_LABELING_THRESH_MODE_AUTO_MEDIAN,
-	        AR_LABELING_THRESH_MODE_AUTO_OTSU,
-	        AR_LABELING_THRESH_MODE_AUTO_ADAPTIVE,
-	        AR_LABELING_THRESH_MODE_AUTO_BRACKETING
-	 */
- 	ARController.prototype.setThresholdMode = function(mode) {
-		return artoolkit.setThresholdMode(this.id, mode);
-	};
-
-	/**
-	 * Gets the current threshold mode used for image binarization.
-	 * @return	{number}		The current threshold mode
-	 * @see				getVideoThresholdMode()
-	 */
-	ARController.prototype.getThresholdMode = function() {
-		return artoolkit.getThresholdMode(this.id);
-	};
-
-	/**
-    	Set the labeling threshhold.
-
-        This function forces sets the threshold value.
-        The default value is AR_DEFAULT_LABELING_THRESH which is 100.
+        this.contours = CV.findContours(this.thres, this.binary);
         
-        The current threshold mode is not affected by this call.
-        Typically, this function is used when labeling threshold mode
-        is AR_LABELING_THRESH_MODE_MANUAL.
- 
-        The threshold value is not relevant if threshold mode is
-        AR_LABELING_THRESH_MODE_AUTO_ADAPTIVE.
- 
-        Background: The labeling threshold is the value which
-		the AR library uses to differentiate between black and white
-		portions of an ARToolKit marker. Since the actual brightness,
-		contrast, and gamma of incoming images can vary signficantly
-		between different cameras and lighting conditions, this
-		value typically needs to be adjusted dynamically to a
-		suitable midpoint between the observed values for black
-		and white portions of the markers in the image.
+        this.candidates = this.findCandidates(this.contours, image.width * 0.20, 0.05, 10);
+        this.candidates = this.clockwiseCorners(this.candidates);
+        this.candidates = this.notTooNear(this.candidates, 10);
+        
+        return this.findMarkers(this.grey, this.candidates, 49);
+};
 
-		@param {number}     thresh An integer in the range [0,255] (inclusive).
-	*/
-	ARController.prototype.setThreshold = function(threshold) {
-		return artoolkit.setThreshold(this.id, threshold);
-	};
+AR.Detector.prototype.findCandidates = function(contours, minSize, epsilon, minLength){
+        var candidates = [], len = contours.length, contour, poly, i;
+        
+        this.polys = [];
+        
+        for (i = 0; i < len; ++ i){
+                contour = contours[i];
+                
+                if (contour.length >= minSize){
+                        poly = CV.approxPolyDP(contour, contour.length * epsilon);
+                        
+                        this.polys.push(poly);
+                        
+                        if ( (4 === poly.length) && ( CV.isContourConvex(poly) ) ){
+                                
+                                if ( CV.minEdgeLength(poly) >= minLength){
+                                        candidates.push(poly);
+                                }
+                        }
+                }
+        }
+        
+        return candidates;
+};
 
-	/**
-	    Get the current labeling threshold.
+AR.Detector.prototype.clockwiseCorners = function(candidates){
+        var len = candidates.length, dx1, dx2, dy1, dy2, swap, i;
+        
+        for (i = 0; i < len; ++ i){
+                dx1 = candidates[i][1].x - candidates[i][0].x;
+                dy1 = candidates[i][1].y - candidates[i][0].y;
+                dx2 = candidates[i][2].x - candidates[i][0].x;
+                dy2 = candidates[i][2].y - candidates[i][0].y;
+                
+                if ( (dx1 * dy2 - dy1 * dx2) < 0){
+                        swap = candidates[i][1];
+                        candidates[i][1] = candidates[i][3];
+                        candidates[i][3] = swap;
+                }
+        }
+        
+        return candidates;
+};
 
-		This function queries the current labeling threshold. For,
-		AR_LABELING_THRESH_MODE_AUTO_MEDIAN, AR_LABELING_THRESH_MODE_AUTO_OTSU,
-		and AR_LABELING_THRESH_MODE_AUTO_BRACKETING
-		the threshold value is only valid until the next auto-update.
+AR.Detector.prototype.notTooNear = function(candidates, minDist){
+        var notTooNear = [], len = candidates.length, dist, dx, dy, i, j, k;
+        
+        for (i = 0; i < len; ++ i){
+                
+                for (j = i + 1; j < len; ++ j){
+                        dist = 0;
+                        
+                        for (k = 0; k < 4; ++ k){
+                                dx = candidates[i][k].x - candidates[j][k].x;
+                                dy = candidates[i][k].y - candidates[j][k].y;
+                                
+                                dist += dx * dx + dy * dy;
+                        }
+                        
+                        if ( (dist / 4) < (minDist * minDist) ){
+                                
+                                if ( CV.perimeter( candidates[i] ) < CV.perimeter( candidates[j] ) ){
+                                        candidates[i].tooNear = true;
+                                }else{
+                                        candidates[j].tooNear = true;
+                                }
+                        }
+                }
+        }
+        
+        for (i = 0; i < len; ++ i){
+                if ( !candidates[i].tooNear ){
+                        notTooNear.push( candidates[i] );
+                }
+        }
+        
+        return notTooNear;
+};
 
-		The current threshold mode is not affected by this call.
+AR.Detector.prototype.findMarkers = function(imageSrc, candidates, warpSize){
+        var markers = [], len = candidates.length, candidate, marker, i;
+        
+        for (i = 0; i < len; ++ i){
+                candidate = candidates[i];
+                
+                CV.warp(imageSrc, this.homography, candidate, warpSize);
+                
+                CV.threshold(this.homography, this.homography, CV.otsu(this.homography) );
+                
+                marker = this.getMarker(this.homography, candidate);
+                if (marker){
+                        markers.push(marker);
+                }
+        }
+        
+        return markers;
+};
 
-		The threshold value is not relevant if threshold mode is
-		AR_LABELING_THRESH_MODE_AUTO_ADAPTIVE.
+AR.Detector.prototype.getMarker = function(imageSrc, candidate){
+        var width = (imageSrc.width / 7) >>> 0,
+        minZero = (width * width) >> 1,
+        bits = [], rotations = [], distances = [],
+        square, pair, inc, i, j;
+        
+        for (i = 0; i < 7; ++ i){
+                inc = (0 === i || 6 === i)? 1: 6;
+                
+                for (j = 0; j < 7; j += inc){
+                        square = {x: j * width, y: i * width, width: width, height: width};
+                        if ( CV.countNonZero(imageSrc, square) > minZero){
+                                return null;
+                        }
+                }
+        }
+        
+        for (i = 0; i < 5; ++ i){
+                bits[i] = [];
+                
+                for (j = 0; j < 5; ++ j){
+                        square = {x: (j + 1) * width, y: (i + 1) * width, width: width, height: width};
+                        
+                        bits[i][j] = CV.countNonZero(imageSrc, square) > minZero? 1: 0;
+                }
+        }
+        
+        rotations[0] = bits;
+        distances[0] = this.hammingDistance( rotations[0] );
+        
+        pair = {first: distances[0], second: 0};
+        
+        for (i = 1; i < 4; ++ i){
+                rotations[i] = this.rotate( rotations[i - 1] );
+                distances[i] = this.hammingDistance( rotations[i] );
+                
+                if (distances[i] < pair.first){
+                        pair.first = distances[i];
+                        pair.second = i;
+                }
+        }
+        
+        if (0 !== pair.first){
+                return null;
+        }
+        
+        return new AR.Marker(
+                this.mat2id( rotations[pair.second] ), 
+                this.rotate2(candidate, 4 - pair.second) 
+        );
+};
 
-	    @return {number} The current threshold value.
-	*/
-	ARController.prototype.getThreshold = function() {
-		return artoolkit.getThreshold(this.id);
-	};
+AR.Detector.prototype.hammingDistance = function(bits){
+        var ids = [ [1,0,0,0,0], [1,0,1,1,1], [0,1,0,0,1], [0,1,1,1,0] ],
+        dist = 0, sum, minSum, i, j, k;
+        
+        for (i = 0; i < 5; ++ i){
+                minSum = Infinity;
+                
+                for (j = 0; j < 4; ++ j){
+                        sum = 0;
+                        
+                        for (k = 0; k < 5; ++ k){
+                                sum += bits[i][k] === ids[j][k]? 0: 1;
+                        }
+                        
+                        if (sum < minSum){
+                                minSum = sum;
+                        }
+                }
+                
+                dist += minSum;
+        }
+        
+        return dist;
+};
+
+AR.Detector.prototype.mat2id = function(bits){
+        var id = 0, i;
+        
+        for (i = 0; i < 5; ++ i){
+                id <<= 1;
+                id |= bits[i][1];
+                id <<= 1;
+                id |= bits[i][3];
+        }
+        
+        return id;
+};
+
+AR.Detector.prototype.rotate = function(src){
+        var dst = [], len = src.length, i, j;
+        
+        for (i = 0; i < len; ++ i){
+                dst[i] = [];
+                for (j = 0; j < src[i].length; ++ j){
+                        dst[i][j] = src[src[i].length - j - 1][i];
+                }
+        }
+        
+        return dst;
+};
+
+AR.Detector.prototype.rotate2 = function(src, rotation){
+        var dst = [], len = src.length, i;
+        
+        for (i = 0; i < len; ++ i){
+                dst[i] = src[ (rotation + i) % len ];
+        }
+        
+        return dst;
+};
+/*
+Copyright (c) 2011 Juan Mellado
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+/*
+References:
+- "OpenCV: Open Computer Vision Library"
+http://sourceforge.net/projects/opencvlibrary/
+- "Stack Blur: Fast But Goodlooking"
+http://incubator.quasimondo.com/processing/fast_blur_deluxe.php
+*/
+
+var CV = CV || {};
+
+CV.Image = function(width, height, data){
+        this.width = width || 0;
+        this.height = height || 0;
+        this.data = data || [];
+};
+
+CV.grayscale = function(imageSrc, imageDst){
+        var src = imageSrc.data, dst = imageDst.data, len = src.length,
+        i = 0, j = 0;
+        
+        for (; i < len; i += 4){
+                dst[j ++] =
+                (src[i] * 0.299 + src[i + 1] * 0.587 + src[i + 2] * 0.114 + 0.5) & 0xff;
+        }
+        
+        imageDst.width = imageSrc.width;
+        imageDst.height = imageSrc.height;
+        
+        return imageDst;
+};
+
+CV.threshold = function(imageSrc, imageDst, threshold){
+        var src = imageSrc.data, dst = imageDst.data,
+        len = src.length, tab = [], i;
+        
+        for (i = 0; i < 256; ++ i){
+                tab[i] = i <= threshold? 0: 255;
+        }
+        
+        for (i = 0; i < len; ++ i){
+                dst[i] = tab[ src[i] ];
+        }
+        
+        imageDst.width = imageSrc.width;
+        imageDst.height = imageSrc.height;
+        
+        return imageDst;
+};
+
+CV.adaptiveThreshold = function(imageSrc, imageDst, kernelSize, threshold){
+        var src = imageSrc.data, dst = imageDst.data, len = src.length, tab = [], i;
+        
+        CV.stackBoxBlur(imageSrc, imageDst, kernelSize);
+        
+        for (i = 0; i < 768; ++ i){
+                tab[i] = (i - 255 <= -threshold)? 255: 0;
+        }
+        
+        for (i = 0; i < len; ++ i){
+                dst[i] = tab[ src[i] - dst[i] + 255 ];
+        }
+        
+        imageDst.width = imageSrc.width;
+        imageDst.height = imageSrc.height;
+        
+        return imageDst;
+};
+
+CV.otsu = function(imageSrc){
+        var src = imageSrc.data, len = src.length, hist = [],
+        threshold = 0, sum = 0, sumB = 0, wB = 0, wF = 0, max = 0,
+        mu, between, i;
+        
+        for (i = 0; i < 256; ++ i){
+                hist[i] = 0;
+        }
+        
+        for (i = 0; i < len; ++ i){
+                hist[ src[i] ] ++;
+        }
+        
+        for (i = 0; i < 256; ++ i){
+                sum += hist[i] * i;
+        }
+        
+        for (i = 0; i < 256; ++ i){
+                wB += hist[i];
+                if (0 !== wB){
+                        
+                        wF = len - wB;
+                        if (0 === wF){
+                                break;
+                        }
+                        
+                        sumB += hist[i] * i;
+                        
+                        mu = (sumB / wB) - ( (sum - sumB) / wF );
+                        
+                        between = wB * wF * mu * mu;
+                        
+                        if (between > max){
+                                max = between;
+                                threshold = i;
+                        }
+                }
+        }
+        
+        return threshold;
+};
+
+CV.stackBoxBlurMult =
+[1, 171, 205, 293, 57, 373, 79, 137, 241, 27, 391, 357, 41, 19, 283, 265];
+
+CV.stackBoxBlurShift =
+[0, 9, 10, 11, 9, 12, 10, 11, 12, 9, 13, 13, 10, 9, 13, 13];
+
+CV.BlurStack = function(){
+        this.color = 0;
+        this.next = null;
+};
+
+CV.stackBoxBlur = function(imageSrc, imageDst, kernelSize){
+        var src = imageSrc.data, dst = imageDst.data,
+        height = imageSrc.height, width = imageSrc.width,
+        heightMinus1 = height - 1, widthMinus1 = width - 1,
+        size = kernelSize + kernelSize + 1, radius = kernelSize + 1,
+        mult = CV.stackBoxBlurMult[kernelSize],
+        shift = CV.stackBoxBlurShift[kernelSize],
+        stack, stackStart, color, sum, pos, start, p, x, y, i;
+        
+        stack = stackStart = new CV.BlurStack();
+        for (i = 1; i < size; ++ i){
+                stack = stack.next = new CV.BlurStack();
+        }
+        stack.next = stackStart;
+        
+        pos = 0;
+        
+        for (y = 0; y < height; ++ y){
+                start = pos;
+                
+                color = src[pos];
+                sum = radius * color;
+                
+                stack = stackStart;
+                for (i = 0; i < radius; ++ i){
+                        stack.color = color;
+                        stack = stack.next;
+                }
+                for (i = 1; i < radius; ++ i){
+                        stack.color = src[pos + i];
+                        sum += stack.color;
+                        stack = stack.next;
+                }
+                
+                stack = stackStart;
+                for (x = 0; x < width; ++ x){
+                        dst[pos ++] = (sum * mult) >>> shift;
+                        
+                        p = x + radius;
+                        p = start + (p < widthMinus1? p: widthMinus1);
+                        sum -= stack.color - src[p];
+                        
+                        stack.color = src[p];
+                        stack = stack.next;
+                }
+        }
+        
+        for (x = 0; x < width; ++ x){
+                pos = x;
+                start = pos + width;
+                
+                color = dst[pos];
+                sum = radius * color;
+                
+                stack = stackStart;
+                for (i = 0; i < radius; ++ i){
+                        stack.color = color;
+                        stack = stack.next;
+                }
+                for (i = 1; i < radius; ++ i){
+                        stack.color = dst[start];
+                        sum += stack.color;
+                        stack = stack.next;
+                        
+                        start += width;
+                }
+                
+                stack = stackStart;
+                for (y = 0; y < height; ++ y){
+                        dst[pos] = (sum * mult) >>> shift;
+                        
+                        p = y + radius;
+                        p = x + ( (p < heightMinus1? p: heightMinus1) * width );
+                        sum -= stack.color - dst[p];
+                        
+                        stack.color = dst[p];
+                        stack = stack.next;
+                        
+                        pos += width;
+                }
+        }
+        
+        return imageDst;
+};
+
+CV.gaussianBlur = function(imageSrc, imageDst, imageMean, kernelSize){
+        var kernel = CV.gaussianKernel(kernelSize);
+        
+        imageDst.width = imageSrc.width;
+        imageDst.height = imageSrc.height;
+        
+        imageMean.width = imageSrc.width;
+        imageMean.height = imageSrc.height;
+        
+        CV.gaussianBlurFilter(imageSrc, imageMean, kernel, true);
+        CV.gaussianBlurFilter(imageMean, imageDst, kernel, false);
+        
+        return imageDst;
+};
+
+CV.gaussianBlurFilter = function(imageSrc, imageDst, kernel, horizontal){
+        var src = imageSrc.data, dst = imageDst.data,
+        height = imageSrc.height, width = imageSrc.width,
+        pos = 0, limit = kernel.length >> 1,
+        cur, value, i, j, k;
+        
+        for (i = 0; i < height; ++ i){
+                
+                for (j = 0; j < width; ++ j){
+                        value = 0.0;
+                        
+                        for (k = -limit; k <= limit; ++ k){
+                                
+                                if (horizontal){
+                                        cur = pos + k;
+                                        if (j + k < 0){
+                                                cur = pos;
+                                        }
+                                        else if (j + k >= width){
+                                                cur = pos;
+                                        }
+                                }else{
+                                        cur = pos + (k * width);
+                                        if (i + k < 0){
+                                                cur = pos;
+                                        }
+                                        else if (i + k >= height){
+                                                cur = pos;
+                                        }
+                                }
+                                
+                                value += kernel[limit + k] * src[cur];
+                        }
+                        
+                        dst[pos ++] = horizontal? value: (value + 0.5) & 0xff;
+                }
+        }
+        
+        return imageDst;
+};
+
+CV.gaussianKernel = function(kernelSize){
+        var tab =
+        [ [1],
+        [0.25, 0.5, 0.25],
+        [0.0625, 0.25, 0.375, 0.25, 0.0625],
+        [0.03125, 0.109375, 0.21875, 0.28125, 0.21875, 0.109375, 0.03125] ],
+        kernel = [], center, sigma, scale2X, sum, x, i;
+        
+        if ( (kernelSize <= 7) && (kernelSize % 2 === 1) ){
+                kernel = tab[kernelSize >> 1];
+        }else{
+                center = (kernelSize - 1.0) * 0.5;
+                sigma = 0.8 + (0.3 * (center - 1.0) );
+                scale2X = -0.5 / (sigma * sigma);
+                sum = 0.0;
+                for (i = 0; i < kernelSize; ++ i){
+                        x = i - center;
+                        sum += kernel[i] = Math.exp(scale2X * x * x);
+                }
+                sum = 1 / sum;
+                for (i = 0; i < kernelSize; ++ i){
+                        kernel[i] *= sum;
+                }  
+        }
+        
+        return kernel;
+};
+
+CV.findContours = function(imageSrc, binary){
+        var width = imageSrc.width, height = imageSrc.height, contours = [],
+        src, deltas, pos, pix, nbd, outer, hole, i, j;
+        
+        src = CV.binaryBorder(imageSrc, binary);
+        
+        deltas = CV.neighborhoodDeltas(width + 2);
+        
+        pos = width + 3;
+        nbd = 1;
+        
+        for (i = 0; i < height; ++ i, pos += 2){
+                
+                for (j = 0; j < width; ++ j, ++ pos){
+                        pix = src[pos];
+                        
+                        if (0 !== pix){
+                                outer = hole = false;
+                                
+                                if (1 === pix && 0 === src[pos - 1]){
+                                        outer = true;
+                                }
+                                else if (pix >= 1 && 0 === src[pos + 1]){
+                                        hole = true;
+                                }
+                                
+                                if (outer || hole){
+                                        ++ nbd;
+                                        
+                                        contours.push( CV.borderFollowing(src, pos, nbd, {x: j, y: i}, hole, deltas) );
+                                }
+                        }
+                }
+        }  
+        
+        return contours;
+};
+
+CV.borderFollowing = function(src, pos, nbd, point, hole, deltas){
+        var contour = [], pos1, pos3, pos4, s, s_end, s_prev;
+        
+        contour.hole = hole;
+        
+        s = s_end = hole? 0: 4;
+        do{
+                s = (s - 1) & 7;
+                pos1 = pos + deltas[s];
+                if (src[pos1] !== 0){
+                        break;
+                }
+        }while(s !== s_end);
+        
+        if (s === s_end){
+                src[pos] = -nbd;
+                contour.push( {x: point.x, y: point.y} );
+                
+        }else{
+                pos3 = pos;
+                s_prev = s ^ 4;
+                
+                while(true){
+                        s_end = s;
+                        
+                        do{
+                                pos4 = pos3 + deltas[++ s];
+                        }while(src[pos4] === 0);
+                        
+                        s &= 7;
+                        
+                        if ( ( (s - 1) >>> 0) < (s_end >>> 0) ){
+                                src[pos3] = -nbd;
+                        }
+                        else if (src[pos3] === 1){
+                                src[pos3] = nbd;
+                        }
+                        
+                        contour.push( {x: point.x, y: point.y} );
+                        
+                        s_prev = s;
+                        
+                        point.x += CV.neighborhood[s][0];
+                        point.y += CV.neighborhood[s][1];
+                        
+                        if ( (pos4 === pos) && (pos3 === pos1) ){
+                                break;
+                        }
+                        
+                        pos3 = pos4;
+                        s = (s + 4) & 7;
+                }
+        }
+        
+        return contour;
+};
+
+CV.neighborhood = 
+[ [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1], [0, 1], [1, 1] ];
+
+CV.neighborhoodDeltas = function(width){
+        var deltas = [], len = CV.neighborhood.length, i = 0;
+        
+        for (; i < len; ++ i){
+                deltas[i] = CV.neighborhood[i][0] + (CV.neighborhood[i][1] * width);
+        }
+        
+        return deltas.concat(deltas);
+};
+
+CV.approxPolyDP = function(contour, epsilon){
+        var slice = {start_index: 0, end_index: 0},
+        right_slice = {start_index: 0, end_index: 0},
+        poly = [], stack = [], len = contour.length,
+        pt, start_pt, end_pt, dist, max_dist, le_eps,
+        dx, dy, i, j, k;
+        
+        epsilon *= epsilon;
+        
+        k = 0;
+        
+        for (i = 0; i < 3; ++ i){
+                max_dist = 0;
+                
+                k = (k + right_slice.start_index) % len;
+                start_pt = contour[k];
+                if (++ k === len) {k = 0;}
+                
+                for (j = 1; j < len; ++ j){
+                        pt = contour[k];
+                        if (++ k === len) {k = 0;}
+                        
+                        dx = pt.x - start_pt.x;
+                        dy = pt.y - start_pt.y;
+                        dist = dx * dx + dy * dy;
+                        
+                        if (dist > max_dist){
+                                max_dist = dist;
+                                right_slice.start_index = j;
+                        }
+                }
+        }
+        
+        if (max_dist <= epsilon){
+                poly.push( {x: start_pt.x, y: start_pt.y} );
+                
+        }else{
+                slice.start_index = k;
+                slice.end_index = (right_slice.start_index += slice.start_index);
+                
+                right_slice.start_index -= right_slice.start_index >= len? len: 0;
+                right_slice.end_index = slice.start_index;
+                if (right_slice.end_index < right_slice.start_index){
+                        right_slice.end_index += len;
+                }
+                
+                stack.push( {start_index: right_slice.start_index, end_index: right_slice.end_index} );
+                stack.push( {start_index: slice.start_index, end_index: slice.end_index} );
+        }
+        
+        while(stack.length !== 0){
+                slice = stack.pop();
+                
+                end_pt = contour[slice.end_index % len];
+                start_pt = contour[k = slice.start_index % len];
+                if (++ k === len) {k = 0;}
+                
+                if (slice.end_index <= slice.start_index + 1){
+                        le_eps = true;
+                        
+                }else{
+                        max_dist = 0;
+                        
+                        dx = end_pt.x - start_pt.x;
+                        dy = end_pt.y - start_pt.y;
+                        
+                        for (i = slice.start_index + 1; i < slice.end_index; ++ i){
+                                pt = contour[k];
+                                if (++ k === len) {k = 0;}
+                                
+                                dist = Math.abs( (pt.y - start_pt.y) * dx - (pt.x - start_pt.x) * dy);
+                                
+                                if (dist > max_dist){
+                                        max_dist = dist;
+                                        right_slice.start_index = i;
+                                }
+                        }
+                        
+                        le_eps = max_dist * max_dist <= epsilon * (dx * dx + dy * dy);
+                }
+                
+                if (le_eps){
+                        poly.push( {x: start_pt.x, y: start_pt.y} );
+                        
+                }else{
+                        right_slice.end_index = slice.end_index;
+                        slice.end_index = right_slice.start_index;
+                        
+                        stack.push( {start_index: right_slice.start_index, end_index: right_slice.end_index} );
+                        stack.push( {start_index: slice.start_index, end_index: slice.end_index} );
+                }
+        }
+        
+        return poly;
+};
+
+CV.warp = function(imageSrc, imageDst, contour, warpSize){
+        var src = imageSrc.data, dst = imageDst.data,
+        width = imageSrc.width, height = imageSrc.height,
+        pos = 0,
+        sx1, sx2, dx1, dx2, sy1, sy2, dy1, dy2, p1, p2, p3, p4,
+        m, r, s, t, u, v, w, x, y, i, j;
+        
+        m = CV.getPerspectiveTransform(contour, warpSize - 1);
+        
+        r = m[8];
+        s = m[2];
+        t = m[5];
+        
+        for (i = 0; i < warpSize; ++ i){
+                r += m[7];
+                s += m[1];
+                t += m[4];
+                
+                u = r;
+                v = s;
+                w = t;
+                
+                for (j = 0; j < warpSize; ++ j){
+                        u += m[6];
+                        v += m[0];
+                        w += m[3];
+                        
+                        x = v / u;
+                        y = w / u;
+                        
+                        sx1 = x >>> 0;
+                        sx2 = (sx1 === width - 1)? sx1: sx1 + 1;
+                        dx1 = x - sx1;
+                        dx2 = 1.0 - dx1;
+                        
+                        sy1 = y >>> 0;
+                        sy2 = (sy1 === height - 1)? sy1: sy1 + 1;
+                        dy1 = y - sy1;
+                        dy2 = 1.0 - dy1;
+                        
+                        p1 = p2 = sy1 * width;
+                        p3 = p4 = sy2 * width;
+                        
+                        dst[pos ++] = 
+                        (dy2 * (dx2 * src[p1 + sx1] + dx1 * src[p2 + sx2]) +
+                        dy1 * (dx2 * src[p3 + sx1] + dx1 * src[p4 + sx2]) ) & 0xff;
+                        
+                }
+        }
+        
+        imageDst.width = warpSize;
+        imageDst.height = warpSize;
+        
+        return imageDst;
+};
+
+CV.getPerspectiveTransform = function(src, size){
+        var rq = CV.square2quad(src);
+        
+        rq[0] /= size;
+        rq[1] /= size;
+        rq[3] /= size;
+        rq[4] /= size;
+        rq[6] /= size;
+        rq[7] /= size;
+        
+        return rq;
+};
+
+CV.square2quad = function(src){
+        var sq = [], px, py, dx1, dx2, dy1, dy2, den;
+        
+        px = src[0].x - src[1].x + src[2].x - src[3].x;
+        py = src[0].y - src[1].y + src[2].y - src[3].y;
+        
+        if (0 === px && 0 === py){
+                sq[0] = src[1].x - src[0].x;
+                sq[1] = src[2].x - src[1].x;
+                sq[2] = src[0].x;
+                sq[3] = src[1].y - src[0].y;
+                sq[4] = src[2].y - src[1].y;
+                sq[5] = src[0].y;
+                sq[6] = 0;
+                sq[7] = 0;
+                sq[8] = 1;
+                
+        }else{
+                dx1 = src[1].x - src[2].x;
+                dx2 = src[3].x - src[2].x;
+                dy1 = src[1].y - src[2].y;
+                dy2 = src[3].y - src[2].y;
+                den = dx1 * dy2 - dx2 * dy1;
+                
+                sq[6] = (px * dy2 - dx2 * py) / den;
+                sq[7] = (dx1 * py - px * dy1) / den;
+                sq[8] = 1;
+                sq[0] = src[1].x - src[0].x + sq[6] * src[1].x;
+                sq[1] = src[3].x - src[0].x + sq[7] * src[3].x;
+                sq[2] = src[0].x;
+                sq[3] = src[1].y - src[0].y + sq[6] * src[1].y;
+                sq[4] = src[3].y - src[0].y + sq[7] * src[3].y;
+                sq[5] = src[0].y;
+        }
+        
+        return sq;
+};
+
+CV.isContourConvex = function(contour){
+        var orientation = 0, convex = true,
+        len = contour.length, i = 0, j = 0,
+        cur_pt, prev_pt, dxdy0, dydx0, dx0, dy0, dx, dy;
+        
+        prev_pt = contour[len - 1];
+        cur_pt = contour[0];
+        
+        dx0 = cur_pt.x - prev_pt.x;
+        dy0 = cur_pt.y - prev_pt.y;
+        
+        for (; i < len; ++ i){
+                if (++ j === len) {j = 0;}
+                
+                prev_pt = cur_pt;
+                cur_pt = contour[j];
+                
+                dx = cur_pt.x - prev_pt.x;
+                dy = cur_pt.y - prev_pt.y;
+                dxdy0 = dx * dy0;
+                dydx0 = dy * dx0;
+                
+                orientation |= dydx0 > dxdy0? 1: (dydx0 < dxdy0? 2: 3);
+                
+                if (3 === orientation){
+                        convex = false;
+                        break;
+                }
+                
+                dx0 = dx;
+                dy0 = dy;
+        }
+        
+        return convex;
+};
+
+CV.perimeter = function(poly){
+        var len = poly.length, i = 0, j = len - 1,
+        p = 0.0, dx, dy;
+        
+        for (; i < len; j = i ++){
+                dx = poly[i].x - poly[j].x;
+                dy = poly[i].y - poly[j].y;
+                
+                p += Math.sqrt(dx * dx + dy * dy) ;
+        }
+        
+        return p;
+};
+
+CV.minEdgeLength = function(poly){
+        var len = poly.length, i = 0, j = len - 1, 
+        min = Infinity, d, dx, dy;
+        
+        for (; i < len; j = i ++){
+                dx = poly[i].x - poly[j].x;
+                dy = poly[i].y - poly[j].y;
+                
+                d = dx * dx + dy * dy;
+                
+                if (d < min){
+                        min = d;
+                }
+        }
+        
+        return Math.sqrt(min);
+};
+
+CV.countNonZero = function(imageSrc, square){
+        var src = imageSrc.data, height = square.height, width = square.width,
+        pos = square.x + (square.y * imageSrc.width),
+        span = imageSrc.width - width,
+        nz = 0, i, j;
+        
+        for (i = 0; i < height; ++ i){
+                
+                for (j = 0; j < width; ++ j){
+                        
+                        if ( 0 !== src[pos ++] ){
+                                ++ nz;
+                        }
+                }
+                
+                pos += span;
+        }
+        
+        return nz;
+};
+
+CV.binaryBorder = function(imageSrc, dst){
+        var src = imageSrc.data, height = imageSrc.height, width = imageSrc.width,
+        posSrc = 0, posDst = 0, i, j;
+        
+        for (j = -2; j < width; ++ j){
+                dst[posDst ++] = 0;
+        }
+        
+        for (i = 0; i < height; ++ i){
+                dst[posDst ++] = 0;
+                
+                for (j = 0; j < width; ++ j){
+                        dst[posDst ++] = (0 === src[posSrc ++]? 0: 1);
+                }
+                
+                dst[posDst ++] = 0;
+        }
+        
+        for (j = -2; j < width; ++ j){
+                dst[posDst ++] = 0;
+        }
+        
+        return dst;
+};
+/*
+Copyright (c) 2012 Juan Mellado
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+/*
+References:
+- "Iterative Pose Estimation using Coplanar Feature Points"
+Denis Oberkampf, Daniel F. DeMenthon, Larry S. Davis
+http://www.cfar.umd.edu/~daniel/daniel_papersfordownload/CoplanarPts.pdf
+*/
+
+var POS = POS || {};
+
+POS.Posit = function(modelSize, focalLength){
+        this.objectPoints = this.buildModel(modelSize);
+        this.focalLength = focalLength;
+        
+        this.objectVectors = [];
+        this.objectNormal = [];
+        this.objectMatrix = [[],[],[]];
+        
+        this.init();
+};
+
+POS.Posit.prototype.buildModel = function(modelSize){
+        var half = modelSize / 2.0;
+        
+        return [
+                [-half,  half, 0.0],
+                [ half,  half, 0.0],
+                [ half, -half, 0.0],
+                [-half, -half, 0.0] 
+        ];
+};
+
+POS.Posit.prototype.init = function(){
+        var np = this.objectPoints.length,
+        vectors = [], n = [], len = 0.0, row = 2, i;
+        
+        for (i = 0; i < np; ++ i){
+                this.objectVectors[i] = [this.objectPoints[i][0] - this.objectPoints[0][0],
+                this.objectPoints[i][1] - this.objectPoints[0][1],
+                this.objectPoints[i][2] - this.objectPoints[0][2]];
+                
+                vectors[i] = [this.objectVectors[i][0],
+                this.objectVectors[i][1],
+                this.objectVectors[i][2]];
+        }
+        
+        while(0.0 === len){
+                n[0] = this.objectVectors[1][1] * this.objectVectors[row][2] -
+                this.objectVectors[1][2] * this.objectVectors[row][1];
+                n[1] = this.objectVectors[1][2] * this.objectVectors[row][0] -
+                this.objectVectors[1][0] * this.objectVectors[row][2];
+                n[2] = this.objectVectors[1][0] * this.objectVectors[row][1] -
+                this.objectVectors[1][1] * this.objectVectors[row][0];
+                
+                len = Math.sqrt(n[0] * n[0] + n[1] * n[1] + n[2] * n[2]);
+                
+                ++ row;
+        }
+        
+        for (i = 0; i < 3; ++ i){
+                this.objectNormal[i] = n[i] / len;
+        }
+        
+        POS.pseudoInverse(vectors, np, this.objectMatrix);
+};
+
+POS.Posit.prototype.pose = function(imagePoints){
+        var posRotation1 = [[],[],[]], posRotation2 = [[],[],[]], posTranslation = [],
+        rotation1 = [[],[],[]], rotation2 = [[],[],[]], translation1 = [], translation2 = [],
+        error1, error2, valid1, valid2, i, j;
+        
+        this.pos(imagePoints, posRotation1, posRotation2, posTranslation);
+        
+        valid1 = this.isValid(posRotation1, posTranslation);
+        if (valid1){
+                error1 = this.iterate(imagePoints, posRotation1, posTranslation, rotation1, translation1);
+        }else{
+                error1 = {euclidean: -1.0, pixels: -1, maximum: -1.0};
+        }
+        
+        valid2 = this.isValid(posRotation2, posTranslation);
+        if (valid2){
+                error2 = this.iterate(imagePoints, posRotation2, posTranslation, rotation2, translation2);
+        }else{
+                error2 = {euclidean: -1.0, pixels: -1, maximum: -1.0};
+        }
+        
+        for (i = 0; i < 3; ++ i){
+                for (j = 0; j < 3; ++ j){
+                        if (valid1){
+                                translation1[i] -= rotation1[i][j] * this.objectPoints[0][j];
+                        }
+                        if (valid2){
+                                translation2[i] -= rotation2[i][j] * this.objectPoints[0][j];
+                        }
+                }
+        }
+        
+        return error1.euclidean < error2.euclidean?
+        new POS.Pose(error1.pixels, rotation1, translation1, error2.pixels, rotation2, translation2):
+        new POS.Pose(error2.pixels, rotation2, translation2, error1.pixels, rotation1, translation1);
+};
+
+POS.Posit.prototype.pos = function(imagePoints, rotation1, rotation2, translation){
+        var np = this.objectPoints.length, imageVectors = [],
+        i0 = [], j0 = [], ivec = [], jvec = [], row1 = [], row2 = [], row3 = [],
+        i0i0, j0j0, i0j0, delta, q, lambda, mu, scale, i, j;
+        
+        for (i = 0; i < np; ++ i){
+                imageVectors[i] = [imagePoints[i].x - imagePoints[0].x,
+                imagePoints[i].y - imagePoints[0].y];
+        }
+        
+        //i0 and j0
+        for (i = 0; i < 3; ++ i){
+                i0[i] = 0.0;
+                j0[i] = 0.0;
+                for (j = 0; j < np; ++ j){
+                        i0[i] += this.objectMatrix[i][j] * imageVectors[j][0];
+                        j0[i] += this.objectMatrix[i][j] * imageVectors[j][1];
+                }
+        }
+        
+        i0i0 = i0[0] * i0[0] + i0[1] * i0[1] + i0[2] * i0[2];
+        j0j0 = j0[0] * j0[0] + j0[1] * j0[1] + j0[2] * j0[2];
+        i0j0 = i0[0] * j0[0] + i0[1] * j0[1] + i0[2] * j0[2];
+        
+        //Lambda and mu
+        delta = (j0j0 - i0i0) * (j0j0 - i0i0) + 4.0 * (i0j0 * i0j0);
+        
+        if (j0j0 - i0i0 >= 0.0){
+                q = (j0j0 - i0i0 + Math.sqrt(delta) ) / 2.0;
+        }else{
+                q = (j0j0 - i0i0 - Math.sqrt(delta) ) / 2.0;
+        }
+        
+        if (q >= 0.0){
+                lambda = Math.sqrt(q);
+                if (0.0 === lambda){
+                        mu = 0.0;
+                }else{
+                        mu = -i0j0 / lambda;
+                }
+        }else{
+                lambda = Math.sqrt( -(i0j0 * i0j0) / q);
+                if (0.0 === lambda){
+                        mu = Math.sqrt(i0i0 - j0j0);
+                }else{
+                        mu = -i0j0 / lambda;
+                }
+        }
+        
+        //First rotation
+        for (i = 0; i < 3; ++ i){
+                ivec[i] = i0[i] + lambda * this.objectNormal[i];
+                jvec[i] = j0[i] + mu * this.objectNormal[i];
+        }
+        
+        scale = Math.sqrt(ivec[0] * ivec[0] + ivec[1] * ivec[1] + ivec[2] * ivec[2]);
+        
+        for (i = 0; i < 3; ++ i){
+                row1[i] = ivec[i] / scale;
+                row2[i] = jvec[i] / scale;
+        }
+        
+        row3[0] = row1[1] * row2[2] - row1[2] * row2[1];
+        row3[1] = row1[2] * row2[0] - row1[0] * row2[2];
+        row3[2] = row1[0] * row2[1] - row1[1] * row2[0];
+        
+        for (i = 0; i < 3; ++ i){
+                rotation1[0][i] = row1[i];
+                rotation1[1][i] = row2[i];
+                rotation1[2][i] = row3[i];
+        }
+        
+        //Second rotation
+        for (i = 0; i < 3; ++ i){
+                ivec[i] = i0[i] - lambda * this.objectNormal[i];
+                jvec[i] = j0[i] - mu * this.objectNormal[i];
+        }
+        
+        for (i = 0; i < 3; ++ i){
+                row1[i] = ivec[i] / scale;
+                row2[i] = jvec[i] / scale;
+        }
+        
+        row3[0] = row1[1] * row2[2] - row1[2] * row2[1];
+        row3[1] = row1[2] * row2[0] - row1[0] * row2[2];
+        row3[2] = row1[0] * row2[1] - row1[1] * row2[0];
+        
+        for (i = 0; i < 3; ++ i){
+                rotation2[0][i] = row1[i];
+                rotation2[1][i] = row2[i];
+                rotation2[2][i] = row3[i];
+        }
+        
+        //Translation
+        translation[0] = imagePoints[0].x / scale;
+        translation[1] = imagePoints[0].y / scale;
+        translation[2] = this.focalLength / scale;
+};
+
+POS.Posit.prototype.isValid = function(rotation, translation){
+        var np = this.objectPoints.length, zmin = Infinity, i = 0, zi;
+        
+        for (; i < np; ++ i){
+                zi = translation[2] +
+                (rotation[2][0] * this.objectVectors[i][0] +
+                        rotation[2][1] * this.objectVectors[i][1] +
+                        rotation[2][2] * this.objectVectors[i][2]
+                );
+                if (zi < zmin){
+                        zmin = zi;
+                }
+        }
+        
+        return zmin >= 0.0;
+};
+
+POS.Posit.prototype.iterate = function(imagePoints, posRotation, posTranslation, rotation, translation){
+        var np = this.objectPoints.length,
+        oldSopImagePoints = [], sopImagePoints = [],
+        rotation1 = [[],[],[]], rotation2 = [[],[],[]],
+        translation1 = [], translation2 = [],
+        converged = false, iteration = 0,
+        oldImageDifference, imageDifference, factor,
+        error, error1, error2, delta, i, j;
+        
+        for (i = 0; i < np; ++ i){
+                oldSopImagePoints[i] = {x: imagePoints[i].x,
+                        y: imagePoints[i].y
+                };
+        }
+        
+        for (i = 0; i < 3; ++ i){
+                for (j = 0; j < 3; ++ j){
+                        rotation[i][j] = posRotation[i][j];
+                }
+                translation[i] = posTranslation[i];
+        }
+        
+        for (i = 0; i < np; ++ i){
+                factor = 0.0;
+                for (j = 0; j < 3; ++ j){
+                        factor += this.objectVectors[i][j] * rotation[2][j] / translation[2];
+                }
+                sopImagePoints[i] = {x: (1.0 + factor) * imagePoints[i].x,
+                        y: (1.0 + factor) * imagePoints[i].y
+                };
+        }
+        
+        imageDifference = 0.0;
+        
+        for (i = 0; i < np; ++ i){
+                imageDifference += Math.abs(sopImagePoints[i].x - oldSopImagePoints[i].x);
+                imageDifference += Math.abs(sopImagePoints[i].y - oldSopImagePoints[i].y);
+        }
+        
+        for (i = 0; i < 3; ++ i){
+                translation1[i] = translation[i] -
+                (rotation[i][0] * this.objectPoints[0][0] +
+                        rotation[i][1] * this.objectPoints[0][1] +
+                        rotation[i][2] * this.objectPoints[0][2]
+                );
+        }
+        
+        error = error1 = this.error(imagePoints, rotation, translation1);
+        
+        //Convergence
+        converged = (0.0 === error1.pixels) || (imageDifference < 0.01);
+        
+        while( iteration ++ < 100 && !converged ){
+                
+                for (i = 0; i < np; ++ i){
+                        oldSopImagePoints[i].x = sopImagePoints[i].x;
+                        oldSopImagePoints[i].y = sopImagePoints[i].y;
+                }
+                
+                this.pos(sopImagePoints, rotation1, rotation2, translation);
+                
+                for (i = 0; i < 3; ++ i){
+                        translation1[i] = translation[i] -
+                        (rotation1[i][0] * this.objectPoints[0][0] +
+                                rotation1[i][1] * this.objectPoints[0][1] +
+                                rotation1[i][2] * this.objectPoints[0][2]
+                        );
+                        
+                        translation2[i] = translation[i] -
+                        (rotation2[i][0] * this.objectPoints[0][0] +
+                                rotation2[i][1] * this.objectPoints[0][1] +
+                                rotation2[i][2] * this.objectPoints[0][2]
+                        );
+                }
+                
+                error1 = this.error(imagePoints, rotation1, translation1);
+                error2 = this.error(imagePoints, rotation2, translation2);
+                
+                if ( (error1.euclidean >= 0.0) && (error2.euclidean >= 0.0) ){
+                        if (error2.euclidean < error1.euclidean){
+                                error = error2;
+                                for (i = 0; i < 3; ++ i){
+                                        for (j = 0; j < 3; ++ j){
+                                                rotation[i][j] = rotation2[i][j];
+                                        }
+                                }
+                        }else{
+                                error = error1;
+                                for (i = 0; i < 3; ++ i){
+                                        for (j = 0; j < 3; ++ j){
+                                                rotation[i][j] = rotation1[i][j];
+                                        }
+                                }
+                        }
+                }
+                
+                if ( (error1.euclidean < 0.0) && (error2.euclidean >= 0.0) ){
+                        error = error2;
+                        for (i = 0; i < 3; ++ i){
+                                for (j = 0; j < 3; ++ j){
+                                        rotation[i][j] = rotation2[i][j];
+                                }
+                        }
+                }
+                
+                if ( (error2.euclidean < 0.0) && (error1.euclidean >= 0.0) ){
+                        error = error1;
+                        for (i = 0; i < 3; ++ i){
+                                for (j = 0; j < 3; ++ j){
+                                        rotation[i][j] = rotation1[i][j];
+                                }
+                        }
+                }
+                
+                for (i = 0; i < np; ++ i){
+                        factor = 0.0;
+                        for (j = 0; j < 3; ++ j){
+                                factor += this.objectVectors[i][j] * rotation[2][j] / translation[2];
+                        }
+                        sopImagePoints[i].x = (1.0 + factor) * imagePoints[i].x;
+                        sopImagePoints[i].y = (1.0 + factor) * imagePoints[i].y;
+                }
+                
+                oldImageDifference = imageDifference;
+                imageDifference = 0.0;
+                
+                for (i = 0; i < np; ++ i){
+                        imageDifference += Math.abs(sopImagePoints[i].x - oldSopImagePoints[i].x);
+                        imageDifference += Math.abs(sopImagePoints[i].y - oldSopImagePoints[i].y);
+                }
+                
+                delta = Math.abs(imageDifference - oldImageDifference);
+                
+                converged = (0.0 === error.pixels) || (delta < 0.01);
+        }
+        
+        return error;
+};
+
+POS.Posit.prototype.error = function(imagePoints, rotation, translation){
+        var np = this.objectPoints.length,
+        move = [], projection = [], errorvec = [],
+        euclidean = 0.0, pixels = 0.0, maximum = 0.0,
+        i, j, k;
+        
+        if ( !this.isValid(rotation, translation) ){
+                return {euclidean: -1.0, pixels: -1, maximum: -1.0};
+        }
+        
+        for (i = 0; i < np; ++ i){
+                move[i] = [];
+                for (j = 0; j < 3; ++ j){
+                        move[i][j] = translation[j];
+                }
+        }
+        
+        for (i = 0; i < np; ++ i){
+                for (j = 0; j < 3; ++ j){
+                        for (k = 0; k < 3; ++ k){
+                                move[i][j] += rotation[j][k] * this.objectPoints[i][k];
+                        }
+                }
+        }
+        
+        for (i = 0; i < np; ++ i){
+                projection[i] = [];
+                for (j = 0; j < 2; ++ j){
+                        projection[i][j] = this.focalLength * move[i][j] / move[i][2];
+                }
+        }
+        
+        for (i = 0; i < np; ++ i){
+                errorvec[i] = [projection[i][0] - imagePoints[i].x,
+                projection[i][1] - imagePoints[i].y];
+        }
+        
+        for (i = 0; i < np; ++ i){
+                euclidean += Math.sqrt(errorvec[i][0] * errorvec[i][0] +
+                        errorvec[i][1] * errorvec[i][1]
+                );
+                
+                pixels += Math.abs( Math.round(projection[i][0]) - Math.round(imagePoints[i].x) ) +
+                Math.abs( Math.round(projection[i][1]) - Math.round(imagePoints[i].y) );
+                
+                if (Math.abs(errorvec[i][0]) > maximum){
+                        maximum = Math.abs(errorvec[i][0]);
+                }
+                if (Math.abs(errorvec[i][1]) > maximum){
+                        maximum = Math.abs(errorvec[i][1]);
+                }
+        }
+        
+        return {euclidean: euclidean / np, pixels: pixels, maximum: maximum};
+};
+
+POS.pseudoInverse = function(a, n, b){
+        var w = [], v = [[],[],[]], s = [[],[],[]],
+        wmax = 0.0, cn = 0,
+        i, j, k;
+        
+        SVD.svdcmp(a, n, 3, w, v);
+        
+        for (i = 0; i < 3; ++ i){
+                if (w[i] > wmax){
+                        wmax = w[i];
+                }
+        }
+        
+        wmax *= 0.01;
+        
+        for (i = 0; i < 3; ++ i){
+                if (w[i] < wmax){
+                        w[i] = 0.0;
+                }
+        }
+        
+        for (j = 0; j < 3; ++ j){
+                if (0.0 === w[j]){
+                        ++ cn;
+                        for (k = j; k < 2; ++ k){
+                                for (i = 0; i < n; ++ i){
+                                        a[i][k] = a[i][k + 1];
+                                }
+                                for (i = 0; i < 3; ++ i){
+                                        v[i][k] = v[i][k + 1];
+                                }
+                        }
+                }
+        }
+        
+        for (j = 0; j < 2; ++ j){
+                if (0.0 === w[j]){
+                        w[j] = w[j + 1];
+                }
+        }
+        
+        for (i = 0; i < 3; ++ i){
+                for (j = 0; j < 3 - cn; ++ j){
+                        s[i][j] = v[i][j] / w[j];
+                }
+        }
+        
+        for (i = 0; i < 3; ++ i){
+                for (j = 0; j < n; ++ j){
+                        b[i][j] = 0.0;
+                        for (k = 0; k < 3 - cn; ++ k){
+                                b[i][j] += s[i][k] * a[j][k];
+                        }
+                }
+        }
+};
+
+POS.Pose = function(error1, rotation1, translation1, error2, rotation2, translation2){
+        this.bestError = error1;
+        this.bestRotation = rotation1;
+        this.bestTranslation = translation1;
+        this.alternativeError = error2;
+        this.alternativeRotation = rotation2;
+        this.alternativeTranslation = translation2;
+};
+/*
+Copyright (c) 2012 Juan Mellado
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+/*
+References:
+- "Numerical Recipes in C - Second Edition"
+  http://www.nr.com/
+*/
+
+var SVD = SVD || {};
+
+SVD.svdcmp = function(a, m, n, w, v){
+  var flag, i, its, j, jj, k, l, nm,
+      anorm = 0.0, c, f, g = 0.0, h, s, scale = 0.0, x, y, z, rv1 = [];
+      
+  //Householder reduction to bidiagonal form
+  for (i = 0; i < n; ++ i){
+    l = i + 1;
+    rv1[i] = scale * g;
+    g = s = scale = 0.0;
+    if (i < m){
+      for (k = i; k < m; ++ k){
+        scale += Math.abs( a[k][i] );
+      }
+      if (0.0 !== scale){
+        for (k = i; k < m; ++ k){
+          a[k][i] /= scale;
+          s += a[k][i] * a[k][i];
+        }
+        f = a[i][i];
+        g = -SVD.sign( Math.sqrt(s), f );
+        h = f * g - s;
+        a[i][i] = f - g;
+        for (j = l; j < n; ++ j){
+          for (s = 0.0, k = i; k < m; ++ k){
+            s += a[k][i] * a[k][j];
+          }
+          f = s / h;
+          for (k = i; k < m; ++ k){
+            a[k][j] += f * a[k][i];
+          }
+        }
+        for (k = i; k < m; ++ k){
+          a[k][i] *= scale;
+        }
+      }
+    }
+    w[i] = scale * g;
+    g = s = scale = 0.0;
+    if ( (i < m) && (i !== n - 1) ){
+      for (k = l; k < n; ++ k){
+        scale += Math.abs( a[i][k] );
+      }
+      if (0.0 !== scale){
+        for (k = l; k < n; ++ k){
+          a[i][k] /= scale;
+          s += a[i][k] * a[i][k];
+        }
+        f = a[i][l];
+        g = -SVD.sign( Math.sqrt(s), f );
+        h = f * g - s;
+        a[i][l] = f - g;
+        for (k = l; k < n; ++ k){
+          rv1[k] = a[i][k] / h;
+        }
+        for (j = l; j < m; ++ j){
+          for (s = 0.0, k = l; k < n; ++ k){
+            s += a[j][k] * a[i][k];
+          }
+          for (k = l; k < n; ++ k){
+            a[j][k] += s * rv1[k];
+          }
+        }
+        for (k = l; k < n; ++ k){
+          a[i][k] *= scale;
+        }
+      }
+    }
+    anorm = Math.max(anorm, ( Math.abs( w[i] ) + Math.abs( rv1[i] ) ) );
+  }
+
+  //Acumulation of right-hand transformation
+  for (i = n - 1; i >= 0; -- i){
+    if (i < n - 1){
+      if (0.0 !== g){
+        for (j = l; j < n; ++ j){
+          v[j][i] = ( a[i][j] / a[i][l] ) / g;
+        }
+        for (j = l; j < n; ++ j){
+          for (s = 0.0, k = l; k < n; ++ k){
+            s += a[i][k] * v[k][j];
+          }
+          for (k = l; k < n; ++ k){
+            v[k][j] += s * v[k][i];
+          }
+        }
+      }
+      for (j = l; j < n; ++ j){
+        v[i][j] = v[j][i] = 0.0;
+      }
+    }
+    v[i][i] = 1.0;
+    g = rv1[i];
+    l = i;
+  }
+
+  //Acumulation of left-hand transformation
+  for (i = Math.min(n, m) - 1; i >= 0; -- i){
+    l = i + 1;
+    g = w[i];
+    for (j = l; j < n; ++ j){
+      a[i][j] = 0.0;
+    }
+    if (0.0 !== g){
+      g = 1.0 / g;
+      for (j = l; j < n; ++ j){
+        for (s = 0.0, k = l; k < m; ++ k){
+          s += a[k][i] * a[k][j];
+        }
+        f = (s / a[i][i]) * g;
+        for (k = i; k < m; ++ k){
+          a[k][j] += f * a[k][i];
+        }
+      }
+      for (j = i; j < m; ++ j){
+        a[j][i] *= g;
+      }
+    }else{
+        for (j = i; j < m; ++ j){
+          a[j][i] = 0.0;
+        }
+    }
+    ++ a[i][i];
+  }
+
+  //Diagonalization of the bidiagonal form
+  for (k = n - 1; k >= 0; -- k){
+    for (its = 1; its <= 30; ++ its){
+      flag = true;
+      for (l = k; l >= 0; -- l){
+        nm = l - 1;
+        if ( Math.abs( rv1[l] ) + anorm === anorm ){
+          flag = false;
+          break;
+        }
+        if ( Math.abs( w[nm] ) + anorm === anorm ){
+          break;
+        }
+      }
+      if (flag){
+        c = 0.0;
+        s = 1.0;
+        for (i = l; i <= k; ++ i){
+          f = s * rv1[i];
+          if ( Math.abs(f) + anorm === anorm ){
+            break;
+          }
+          g = w[i];
+          h = SVD.pythag(f, g);
+          w[i] = h;
+          h = 1.0 / h;
+          c = g * h;
+          s = -f * h;
+          for (j = 1; j <= m; ++ j){
+            y = a[j][nm];
+            z = a[j][i];
+            a[j][nm] = y * c + z * s;
+            a[j][i] = z * c - y * s;
+          }
+        }
+      }
+
+      //Convergence
+      z = w[k];
+      if (l === k){
+        if (z < 0.0){
+          w[k] = -z;
+          for (j = 0; j < n; ++ j){
+            v[j][k] = -v[j][k];
+          }
+        }
+        break;
+      }
+
+      if (30 === its){
+        return false;
+      }
+
+      //Shift from bottom 2-by-2 minor
+      x = w[l];
+      nm = k - 1;
+      y = w[nm];
+      g = rv1[nm];
+      h = rv1[k];
+      f = ( (y - z) * (y + z) + (g - h) * (g + h) ) / (2.0 * h * y);
+      g = SVD.pythag( f, 1.0 );
+      f = ( (x - z) * (x + z) + h * ( (y / (f + SVD.sign(g, f) ) ) - h) ) / x;
+
+      //Next QR transformation
+      c = s = 1.0;
+      for (j = l; j <= nm; ++ j){
+        i = j + 1;
+        g = rv1[i];
+        y = w[i];
+        h = s * g;
+        g = c * g;
+        z = SVD.pythag(f, h);
+        rv1[j] = z;
+        c = f / z;
+        s = h / z;
+        f = x * c + g * s;
+        g = g * c - x * s;
+        h = y * s;
+        y *= c;
+        for (jj = 0; jj < n; ++ jj){
+          x = v[jj][j];
+          z = v[jj][i];
+          v[jj][j] = x * c + z * s;
+          v[jj][i] = z * c - x * s;
+        }
+        z = SVD.pythag(f, h);
+        w[j] = z;
+        if (0.0 !== z){
+          z = 1.0 / z;
+          c = f * z;
+          s = h * z;
+        }
+        f = c * g + s * y;
+        x = c * y - s * g;
+        for (jj = 0; jj < m; ++ jj){
+          y = a[jj][j];
+          z = a[jj][i];
+          a[jj][j] = y * c + z * s;
+          a[jj][i] = z * c - y * s;
+        }
+      }
+      rv1[l] = 0.0;
+      rv1[k] = f;
+      w[k] = x;
+    }
+  }
+
+  return true;
+};
+
+SVD.pythag = function(a, b){
+  var at = Math.abs(a), bt = Math.abs(b), ct;
+
+  if (at > bt){
+    ct = bt / at;
+    return at * Math.sqrt(1.0 + ct * ct);
+  }
+    
+  if (0.0 === bt){
+    return 0.0;
+  }
+
+  ct = at / bt;
+  return bt * Math.sqrt(1.0 + ct * ct);
+};
+
+SVD.sign = function(a, b){
+  return b >= 0.0? Math.abs(a): -Math.abs(a);
+};
+var THREEx = THREEx || {}
+
+THREEx.ArucoContext = function(parameters){
+	// handle default parameters
+	parameters = parameters || {}
+	this.parameters = {
+		// debug - true if one should display artoolkit debug canvas, false otherwise
+		debug: parameters.debug !== undefined ? parameters.debug : false,
+		// resolution of at which we detect pose in the source image
+		canvasWidth: parameters.canvasWidth !== undefined ? parameters.canvasWidth : 640,
+		canvasHeight: parameters.canvasHeight !== undefined ? parameters.canvasHeight : 480,
+	}
 
 
-	/**
-		Set the pattern detection mode
-
-		The pattern detection determines the method by which ARToolKit
-		matches detected squares in the video image to marker templates
-		and/or IDs. ARToolKit v4.x can match against pictorial "template" markers,
-		whose pattern files are created with the mk_patt utility, in either colour
-		or mono, and additionally can match against 2D-barcode-type "matrix"
-		markers, which have an embedded marker ID. Two different two-pass modes
-		are also available, in which a matrix-detection pass is made first,
-		followed by a template-matching pass.
-
-		@param {number} mode
-			Options for this field are:
-			AR_TEMPLATE_MATCHING_COLOR
-			AR_TEMPLATE_MATCHING_MONO
-			AR_MATRIX_CODE_DETECTION
-			AR_TEMPLATE_MATCHING_COLOR_AND_MATRIX
-			AR_TEMPLATE_MATCHING_MONO_AND_MATRIX
-			The default mode is AR_TEMPLATE_MATCHING_COLOR.
-	*/
-	ARController.prototype.setPatternDetectionMode = function(value) {
-		return artoolkit.setPatternDetectionMode(this.id, value);
-	};
-
-	/**
-		Returns the current pattern detection mode.
-
-		@return {number} The current pattern detection mode.
-	*/
-	ARController.prototype.getPatternDetectionMode = function() {
-		return artoolkit.getPatternDetectionMode(this.id);
-	};
-
-	/**
-		Set the size and ECC algorithm to be used for matrix code (2D barcode) marker detection.
-
-		When matrix-code (2D barcode) marker detection is enabled (see arSetPatternDetectionMode)
-		then the size of the barcode pattern and the type of error checking and correction (ECC)
-		with which the markers were produced can be set via this function.
-
-		This setting is global to a given ARHandle; It is not possible to have two different matrix
-		code types in use at once.
-
-	    @param      type The type of matrix code (2D barcode) in use. Options include:
-	        AR_MATRIX_CODE_3x3
-	        AR_MATRIX_CODE_3x3_HAMMING63
-	        AR_MATRIX_CODE_3x3_PARITY65
-	        AR_MATRIX_CODE_4x4
-	        AR_MATRIX_CODE_4x4_BCH_13_9_3
-	        AR_MATRIX_CODE_4x4_BCH_13_5_5
-	        The default mode is AR_MATRIX_CODE_3x3.
-	*/
-	ARController.prototype.setMatrixCodeType = function(value) {
-		return artoolkit.setMatrixCodeType(this.id, value);
-	};
-
-	/**
-		Returns the current matrix code (2D barcode) marker detection type.
-
-		@return {number} The current matrix code type.
-	*/
-	ARController.prototype.getMatrixCodeType = function() {
-		return artoolkit.getMatrixCodeType(this.id);
-	};
-
-	/**
-		Select between detection of black markers and white markers.
+        this.canvas = document.createElement('canvas');
+                
+        this.detector = new AR.Detector()
+        
+        // setup THREEx.ArucoDebug if needed
+        this.debug = null
+        if( parameters.debug == true ){
+                this.debug = new THREEx.ArucoDebug(this)
+        }
 	
-		ARToolKit's labelling algorithm can work with both black-bordered
-		markers on a white background (AR_LABELING_BLACK_REGION) or
-		white-bordered markers on a black background (AR_LABELING_WHITE_REGION).
-		This function allows you to specify the type of markers to look for.
-		Note that this does not affect the pattern-detection algorith
-		which works on the interior of the marker.
+	// honor parameters.canvasWidth/.canvasHeight
+	this.setSize(this.parameters.canvasWidth, this.parameters.canvasHeight)
+}
 
-		@param {number}      mode
-			Options for this field are:
-			AR_LABELING_WHITE_REGION
-			AR_LABELING_BLACK_REGION
-			The default mode is AR_LABELING_BLACK_REGION.
-	*/
-	ARController.prototype.setLabelingMode = function(value) {
-		return artoolkit.setLabelingMode(this.id, value);
-	};
+THREEx.ArucoContext.prototype.setSize = function (width, height) {
+        this.canvas.width = width
+        this.canvas.height = height
+        if( this.debug !== null ){
+                this.debug.setSize(width, height)
+        }
+}
 
-	/**
-		Enquire whether detection is looking for black markers or white markers.
-	    
-	    See discussion for setLabelingMode.
+THREEx.ArucoContext.prototype.detect = function (videoElement) {
+	var _this = this
+        var canvas = this.canvas
+        
+        // get imageData from videoElement
+        var context = canvas.getContext('2d');
+        context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+        var imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+        
+        // detect markers in imageData
+        var detectedMarkers = this.detector.detect(imageData);
+	return detectedMarkers
+};
 
-	    @result {number} The current labeling mode.
-	*/
-	ARController.prototype.getLabelingMode = function() {
-		return artoolkit.getLabelingMode(this.id);
-	};
+/**
+ * crappy function to update a object3d with a detectedMarker - super crappy
+ */
+THREEx.ArucoContext.prototype.updateObject3D = function(object3D, arucoPosit, markerSize, detectedMarker){
+        var markerCorners = detectedMarker.corners;
+        var canvas = this.canvas
 
-	/**
-		Set the width/height of the marker pattern space, as a proportion of marker width/height.
-
-	    @param {number}		pattRatio The the width/height of the marker pattern space, as a proportion of marker
-	        width/height. To set the default, pass AR_PATT_RATIO.
-	        If compatibility with ARToolKit verions 1.0 through 4.4 is required, this value
-	        must be 0.5.
-	 */
- 	ARController.prototype.setPattRatio = function(value) {
-		return artoolkit.setPattRatio(this.id, value);
-	};
-
-	/**
-		Returns the current ratio of the marker pattern to the total marker size.
-
-		@return {number} The current pattern ratio.
-	*/
-	ARController.prototype.getPattRatio = function() {
-		return artoolkit.getPattRatio(this.id);
-	};
-
-	/**
-	    Set the image processing mode.
-
-        When the image processing mode is AR_IMAGE_PROC_FRAME_IMAGE,
-        ARToolKit processes all pixels in each incoming image
-        to locate markers. When the mode is AR_IMAGE_PROC_FIELD_IMAGE,
-        ARToolKit processes pixels in only every second pixel row and
-        column. This is useful both for handling images from interlaced
-        video sources (where alternate lines are assembled from alternate
-        fields and thus have one field time-difference, resulting in a
-        "comb" effect) such as Digital Video cameras.
-        The effective reduction by 75% in the pixels processed also
-        has utility in accelerating tracking by effectively reducing
-        the image size to one quarter size, at the cost of pose accuraccy.
-
-	    @param {number} mode
-			Options for this field are:
-			AR_IMAGE_PROC_FRAME_IMAGE
-			AR_IMAGE_PROC_FIELD_IMAGE
-			The default mode is AR_IMAGE_PROC_FRAME_IMAGE.
-	*/
-	ARController.prototype.setImageProcMode = function(value) {
-		return artoolkit.setImageProcMode(this.id, value);
-	};
-
-	/**
-	    Get the image processing mode.
-
-		See arSetImageProcMode() for a complete description.
-
-	    @return {number} The current image processing mode.
-	*/
-	ARController.prototype.getImageProcMode = function() {
-		return artoolkit.getImageProcMode(this.id);
-	};
+        // convert the corners
+        var poseCorners = new Array(markerCorners.length)
+        for (var i = 0; i < markerCorners.length; ++ i){
+                var markerCorner = markerCorners[i];        
+                poseCorners[i] = {
+                        x:  markerCorner.x - (canvas.width / 2),
+                        y: -markerCorner.y + (canvas.height/ 2)
+                }
+        }
+        
+        // estimate pose from corners
+        var pose = arucoPosit.pose(poseCorners);
 
 
-	/**
-		Draw the black and white image and debug markers to the ARController canvas.
+	var rotation    = pose.bestRotation
+	var translation = pose.bestTranslation
+	
+        object3D.position.x =  translation[0];
+        object3D.position.y =  translation[1];
+        object3D.position.z = -translation[2];
+        
+        object3D.rotation.x = -Math.asin(-rotation[1][2]);
+        object3D.rotation.y = -Math.atan2(rotation[0][2], rotation[2][2]);
+        object3D.rotation.z =  Math.atan2(rotation[1][0], rotation[1][1]);
+        
+        object3D.scale.x = markerSize;
+        object3D.scale.y = markerSize;
+        object3D.scale.z = markerSize;
+}
+var THREEx	= THREEx || {};
 
-		See setDebugMode.
-	*/
-	ARController.prototype.debugDraw = function() {
-		var debugBuffer = new Uint8ClampedArray(Module.HEAPU8.buffer, this._bwpointer, this.framesize);
-		var id = new ImageData(debugBuffer, this.canvas.width, this.canvas.height)
-		this.ctx.putImageData(id, 0, 0)
 
-		var marker_num = this.getMarkerNum();
-		for (var i=0; i<marker_num; i++) {
-			this._debugMarker(this.getMarker(i));
+//////////////////////////////////////////////////////////////////////////////
+//		monkey patch AR.Detector
+//////////////////////////////////////////////////////////////////////////////
+
+AR.Detector.prototype.detect = function(image){
+	var opts = this.datGUIOptions
+
+        CV.grayscale(image, this.grey);
+        CV.adaptiveThreshold(this.grey, this.thres, opts.adaptativeThreshold.kernelSize, opts.adaptativeThreshold.threshold);
+        
+        this.contours = CV.findContours(this.thres, this.binary);
+        
+        this.candidates = this.findCandidates(this.contours, image.width * opts.candidates.minSize, opts.candidates.epsilon, opts.candidates.minLength);
+        this.candidates = this.clockwiseCorners(this.candidates);
+        this.candidates = this.notTooNear(this.candidates, opts.notTooNear.minDist);
+        
+        return this.findMarkers(this.grey, this.candidates, opts.findMarkers.warpSize);
+};
+
+// make names explicits - make unit explicit too
+AR.Detector.prototype.datGUIOptions = {
+	adaptativeThreshold : {
+		kernelSize: 2,
+		threshold: 7,
+	},
+	candidates: {
+		minSize: 0.20,
+		epsilon: 0.05,
+		minLength: 10,
+	},
+	notTooNear : {
+		minDist: 10,
+	},
+	findMarkers : {
+		warpSize: 49,
+	}
+}
+
+// see https://github.com/jeromeetienne/threex.geometricglow/blob/master/threex.atmospherematerialdatgui.js
+
+THREEx.addArucoDatGui	= function(arucoContext, datGui){
+	var datGUIOptions = arucoContext.detector.datGUIOptions
+	var options  = {
+		resolution: '640x480',
+	}
+	var onChange = function(){
+		// honor option resolution
+		var matches = options.resolution.match(/(\d+)x(\d+)/)
+		var width = parseInt(matches[1])
+		var height = parseInt(matches[2])
+		arucoContext.setSize(width, height)
+	}
+	onChange();
+
+	datGui.add( options, 'resolution', [ '320x240', '640x480' ]).onChange( onChange )
+	
+	var folder = datGui.addFolder('Adaptative Threshold')
+	folder.open()
+	folder.add( arucoContext.detector.datGUIOptions.adaptativeThreshold, 'kernelSize').min(0).step(1)
+		.onChange( onChange )
+	folder.add( arucoContext.detector.datGUIOptions.adaptativeThreshold, 'threshold').min(0).step(1)
+		.onChange( onChange )
+	
+	var folder = datGui.addFolder('Candidates')
+	folder.open()
+	folder.add( arucoContext.detector.datGUIOptions.candidates, 'minSize').min(0).max(1)
+		.onChange( onChange )
+	folder.add( arucoContext.detector.datGUIOptions.candidates, 'epsilon').min(0)
+		.onChange( onChange )
+	folder.add( arucoContext.detector.datGUIOptions.candidates, 'minLength').min(0).step(1)
+		.onChange( onChange )
+
+	var folder = datGui.addFolder('notTooNear')
+	folder.open()
+	folder.add( arucoContext.detector.datGUIOptions.notTooNear, 'minDist').min(0).step(1)
+		.onChange( onChange )
+		
+	var folder = datGui.addFolder('findMarkers')
+	folder.open()
+	folder.add( arucoContext.detector.datGUIOptions.findMarkers, 'warpSize').min(0).step(1)
+		.onChange( onChange )
+}
+var THREEx = THREEx || {}
+
+THREEx.ArucoDebug = function(arucoContext){
+	this.arucoContext = arucoContext
+
+// TODO to rename canvasElement into canvas
+	this.canvasElement = document.createElement('canvas');
+	this.canvasElement.width = this.arucoContext.canvas.width
+	this.canvasElement.height = this.arucoContext.canvas.height
+}
+
+THREEx.ArucoDebug.prototype.setSize = function (width, height) {
+        if( this.canvasElement.width !== width )	this.canvasElement.width = width
+        if( this.canvasElement.height !== height )	this.canvasElement.height = height
+}
+
+
+THREEx.ArucoDebug.prototype.clear = function(){
+	var canvas = this.canvasElement
+	var context = canvas.getContext('2d');
+	context.clearRect(0,0,canvas.width, canvas.height)
+	
+}
+	
+THREEx.ArucoDebug.prototype.drawContoursContours = function(){
+	var contours = this.arucoContext.detector.contours
+	var canvas = this.canvasElement
+	this.drawContours(contours, 0, 0, canvas.width, canvas.height, function(hole){
+		return hole? "magenta": "blue"
+	})
+}
+
+THREEx.ArucoDebug.prototype.drawContoursPolys = function(){
+	var contours = this.arucoContext.detector.polys
+	var canvas = this.canvasElement
+	this.drawContours(contours, 0, 0, canvas.width, canvas.height, function(){
+		return 'green'
+	})
+}
+
+
+THREEx.ArucoDebug.prototype.drawContoursCandidates = function(){
+	var contours = this.arucoContext.detector.candidates
+	var canvas = this.canvasElement
+	this.drawContours(contours, 0, 0, canvas.width, canvas.height, function(){
+		return 'red'
+	})
+}
+
+THREEx.ArucoDebug.prototype.drawContours = function(contours, x, y, width, height, fn){
+	var i = contours.length, j, contour, point;
+	var canvas = this.canvasElement
+	var context = canvas.getContext('2d');
+	
+	context.save();
+	while(i --){
+		contour = contours[i];
+		context.strokeStyle = fn(contour.hole);
+		context.beginPath();
+		for (j = 0; j < contour.length; ++ j){
+			point = contour[j];
+			context.moveTo(x + point.x, y + point.y);
+			point = contour[(j + 1) % contour.length];
+			context.lineTo(x + point.x, y + point.y);
 		}
-	};
+		
+		context.stroke();
+		context.closePath();
+	}
+	context.restore();
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////    
+
+THREEx.ArucoDebug.prototype.drawDetectorGrey = function(){
+	var cvImage = arucoContext.detector.grey
+        this.drawCVImage( cvImage )
+}
+
+THREEx.ArucoDebug.prototype.drawDetectorThreshold = function(){
+	var cvImage = arucoContext.detector.thres
+        this.drawCVImage( cvImage )
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArucoDebug.prototype.drawCVImage = function(cvImage){
+	var detector = this.arucoContext.detector
+
+	var canvas = this.canvasElement
+	var context = canvas.getContext('2d');
+
+	var imageData = context.createImageData(canvas.width, canvas.height);
+	this.copyCVImage2ImageData(cvImage, imageData)
+	context.putImageData( imageData, 0, 0);
+}
 
 
-	// private
+THREEx.ArucoDebug.prototype.copyCVImage2ImageData = function(cvImage, imageData){
+	var i = cvImage.data.length, j = (i * 4) + 3;
+	
+	while(i --){
+		imageData.data[j -= 4] = 255;
+		imageData.data[j - 1] = imageData.data[j - 2] = imageData.data[j - 3] = cvImage.data[i];
+	}
+	
+	return imageData;
+};
 
-	ARController.prototype._initialize = function() {
-		this.id = artoolkit.setup(this.canvas.width, this.canvas.height, this.cameraParam.id);
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArucoDebug.prototype.drawVideo = function(videoElement){
+	var canvas = this.canvasElement
+	var context = canvas.getContext('2d');
+	context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+}
 
-		var params = artoolkit.frameMalloc;
-		this.framepointer = params.framepointer;
-		this.framesize = params.framesize;
-
-		this.dataHeap = new Uint8Array(Module.HEAPU8.buffer, this.framepointer, this.framesize);
-
-		this.camera_mat = new Float64Array(Module.HEAPU8.buffer, params.camera, 16);
-		this.marker_transform_mat = new Float64Array(Module.HEAPU8.buffer, params.transform, 12);
-
-		this.setProjectionNearPlane(0.1)
-		this.setProjectionFarPlane(1000);
-
-		var self = this;
-		setTimeout(function() {
-			if (self.onload) {
-				self.onload();
-			}
-			self.dispatchEvent({
-				name: 'load',
-				target: self
-			});
-		}, 1);
-	};
-
-	ARController.prototype._copyImageToHeap = function(image) {
-		if (!image) {
-			image = this.image;
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArucoDebug.prototype.drawMarkerIDs = function(markers){
+	var canvas = this.canvasElement
+	var context = canvas.getContext('2d');
+	var corners, corner, x, y, i, j;
+	
+	context.save();
+	context.strokeStyle = "blue";
+	context.lineWidth = 1;
+	
+	for (i = 0; i !== markers.length; ++ i){
+		corners = markers[i].corners;
+		
+		x = Infinity;
+		y = Infinity;
+		
+		for (j = 0; j !== corners.length; ++ j){
+			corner = corners[j];
+			
+			x = Math.min(x, corner.x);
+			y = Math.min(y, corner.y);
 		}
-
-
-		if (this.orientation === 'portrait') {
-			this.ctx.save();
-			this.ctx.translate(this.canvas.width, 0);
-			this.ctx.rotate(Math.PI/2);
-			this.ctx.drawImage(image, 0, 0, this.canvas.height, this.canvas.width); // draw video
-			this.ctx.restore();
-		} else {
-			this.ctx.drawImage(image, 0, 0, this.canvas.width, this.canvas.height); // draw video
-		}
-
-		var imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
-		var data = imageData.data;
-
-		if (this.dataHeap) {
-			this.dataHeap.set( data );
-			return true;
-		}
-		return false;
-	};
-
-	ARController.prototype._debugMarker = function(marker) {
-		var vertex, pos;
-		vertex = marker.vertex;
-		var ctx = this.ctx;
-		ctx.strokeStyle = 'red';
-
-		ctx.beginPath()
-		ctx.moveTo(vertex[0][0], vertex[0][1])
-		ctx.lineTo(vertex[1][0], vertex[1][1])
-		ctx.stroke();
-
-		ctx.beginPath()
-		ctx.moveTo(vertex[2][0], vertex[2][1])
-		ctx.lineTo(vertex[3][0], vertex[3][1])
-		ctx.stroke()
-
-		ctx.strokeStyle = 'green';
-		ctx.beginPath()
-		ctx.lineTo(vertex[1][0], vertex[1][1])
-		ctx.lineTo(vertex[2][0], vertex[2][1])
-		ctx.stroke();
-
-		ctx.beginPath()
-		ctx.moveTo(vertex[3][0], vertex[3][1])
-		ctx.lineTo(vertex[0][0], vertex[0][1])
-		ctx.stroke();
-
-		pos = marker.pos
-		ctx.beginPath()
-		ctx.arc(pos[0], pos[1], 8, 0, Math.PI * 2)
-		ctx.fillStyle = 'red'
-		ctx.fill()
-	};
-
-
-	// static
-
-	/**
-		ARController.getUserMedia gets a device camera video feed and calls the given onSuccess callback with it.
-
-		Tries to start playing the video. Playing the video can fail on Chrome for Android,
-		so ARController.getUserMedia adds user input event listeners to the window
-		that try to start playing the video. On success, the event listeners are removed.
-
-		To use ARController.getUserMedia, call it with an object with the onSuccess attribute set to a callback function.
-
-			ARController.getUserMedia({
-				onSuccess: function(video) {
-					console.log("Got video", video);
-				}
-			});
-
-		The configuration object supports the following attributes:
-
-			{
-				onSuccess : function(video),
-				onError : function(error),
-
-				width : number | {min: number, ideal: number, max: number},
-				height : number | {min: number, ideal: number, max: number},
-
-				facingMode : 'environment' | 'user' | 'left' | 'right' | { exact: 'environment' | ... }
-			}
-
-		See https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia for more information about the
-		width, height and facingMode attributes.
-
-		@param {object} configuration The configuration object.
-		@return {VideoElement} Returns the created video element.
-	*/
-	ARController.getUserMedia = function(configuration) {
-		var facing = configuration.facingMode || 'environment';
-
-		var onSuccess = configuration.onSuccess;
-		var onError = configuration.onError || function(err) { console.error("ARController.getUserMedia", err); };
-
-		var video = document.createElement('video');
-
-		var initProgress = function() {
-			if (this.videoWidth !== 0) {
-				onSuccess(video);
-			}
-		};
-
-		var readyToPlay = false;
-		var eventNames = [
-			'touchstart', 'touchend', 'touchmove', 'touchcancel',
-			'click', 'mousedown', 'mouseup', 'mousemove',
-			'keydown', 'keyup', 'keypress', 'scroll'
-		];
-		var play = function(ev) {
-			if (readyToPlay) {
-				video.play();
-				if (!video.paused) {
-					eventNames.forEach(function(eventName) {
-						window.removeEventListener(eventName, play, true);
-					});
-				}
-			}
-		};
-		eventNames.forEach(function(eventName) {
-			window.addEventListener(eventName, play, true);
-		});
-
-		var success = function(stream) {
-			video.addEventListener('loadedmetadata', initProgress, false);
-			video.src = window.URL.createObjectURL(stream);
-			readyToPlay = true;
-			play(); // Try playing without user input, should work on non-Android Chrome
-		};
-
-		var constraints = {};
-		var mediaDevicesConstraints = {};
-		if (configuration.width) {
-			mediaDevicesConstraints.width = configuration.width;
-			if (typeof configuration.width === 'object') {
-				if (configuration.width.max) {
-					constraints.maxWidth = configuration.width.max;
-				}
-				if (configuration.width.min) {
-					constraints.minWidth = configuration.width.max;
-				}
-			} else {
-				constraints.maxWidth = configuration.width;
-			}
-		}
-
-		if (configuration.height) {
-			mediaDevicesConstraints.height = configuration.height;
-			if (typeof configuration.height === 'object') {
-				if (configuration.height.max) {
-					constraints.maxHeight = configuration.height.max;
-				}
-				if (configuration.height.min) {
-					constraints.minHeight = configuration.height.max;
-				}
-			} else {
-				constraints.maxHeight = configuration.height;
-			}
-		}
-
-		mediaDevicesConstraints.facingMode = facing;
-
-		navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-		var hdConstraints = {
-			audio: false,
-			video: {
-				mandatory: constraints
-		  	}
-		};
-
-		if ( false ) {
-		// if ( navigator.mediaDevices || window.MediaStreamTrack) {
-			if (navigator.mediaDevices) {
-				navigator.mediaDevices.getUserMedia({
-					audio: false,
-					video: mediaDevicesConstraints
-				}).then(success, onError); 
-			} else {
-				MediaStreamTrack.getSources(function(sources) {
-					var facingDir = mediaDevicesConstraints.facingMode;
-					if (facing && facing.exact) {
-						facingDir = facing.exact;
-					}
-					for (var i=0; i<sources.length; i++) {
-						if (sources[i].kind === 'video' && sources[i].facing === facingDir) {
-							hdConstraints.video.mandatory.sourceId = sources[i].id;
-							break;
-						}
-					}
-					if (facing && facing.exact && !hdConstraints.video.mandatory.sourceId) {
-						onError('Failed to get camera facing the wanted direction');
-					} else {
-						if (navigator.getUserMedia) {
-							navigator.getUserMedia(hdConstraints, success, onError);
-						} else {
-							onError('navigator.getUserMedia is not supported on your browser');
-						}
-					}
-				});
-			}
-		} else {
-			if (navigator.getUserMedia) {
-				navigator.getUserMedia(hdConstraints, success, onError);
-			} else {
-				onError('navigator.getUserMedia is not supported on your browser');
-			}
-		}
-
-		return video;
-	};
-
-	/**
-		ARController.getUserMediaARController gets an ARController for the device camera video feed and calls the 
-		given onSuccess callback with it.
-
-		To use ARController.getUserMediaARController, call it with an object with the cameraParam attribute set to
-		a camera parameter file URL, and the onSuccess attribute set to a callback function.
-
-			ARController.getUserMediaARController({
-				cameraParam: 'Data/camera_para.dat',
-				onSuccess: function(arController, arCameraParam) {
-					console.log("Got ARController", arController);
-					console.log("Got ARCameraParam", arCameraParam);
-					console.log("Got video", arController.image);
-				}
-			});
-
-		The configuration object supports the following attributes:
-
-			{
-				onSuccess : function(ARController, ARCameraParam),
-				onError : function(error),
-
-				cameraParam: url, // URL to camera parameters definition file.
-				maxARVideoSize: number, // Maximum max(width, height) for the AR processing canvas.
-
-				width : number | {min: number, ideal: number, max: number},
-				height : number | {min: number, ideal: number, max: number},
-
-				facingMode : 'environment' | 'user' | 'left' | 'right' | { exact: 'environment' | ... }
-			}
-
-		See https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia for more information about the
-		width, height and facingMode attributes.
-
-		The orientation attribute of the returned ARController is set to "portrait" if the userMedia video has larger
-		height than width. Otherwise it's set to "landscape". The videoWidth and videoHeight attributes of the arController
-		are set to be always in landscape configuration so that width is larger than height.
-
-		@param {object} configuration The configuration object.
-		@return {VideoElement} Returns the created video element.
-	*/
-	ARController.getUserMediaARController = function(configuration) {
-		var obj = {};
-		for (var i in configuration) {
-			obj[i] = configuration[i];
-		}
-		var onSuccess = configuration.onSuccess;
-		var cameraParamURL = configuration.cameraParam;
-
-		obj.onSuccess = function() {
-			new ARCameraParam(cameraParamURL, function() {
-				var arCameraParam = this;
-				var maxSize = configuration.maxARVideoSize || Math.max(video.videoWidth, video.videoHeight);
-				var f = maxSize / Math.max(video.videoWidth, video.videoHeight);
-				var w = f * video.videoWidth;
-				var h = f * video.videoHeight;
-				if (video.videoWidth < video.videoHeight) {
-					var tmp = w;
-					w = h;
-					h = tmp;
-				}
-				var arController = new ARController(w, h, arCameraParam);
-				arController.image = video;
-				if (video.videoWidth < video.videoHeight) {
-					arController.orientation = 'portrait';
-					arController.videoWidth = video.videoHeight;
-					arController.videoHeight = video.videoWidth;
-				} else {
-					arController.orientation = 'landscape';
-					arController.videoWidth = video.videoWidth;
-					arController.videoHeight = video.videoHeight;
-				}
-				onSuccess(arController, arCameraParam);
-			}, function(err) {
-				console.error("ARController: Failed to load ARCameraParam", err);
-			});
-		};
-
-		var video = this.getUserMedia(obj);
-		return video;
-	};
-
-
-	/** 
-		ARCameraParam is used for loading AR camera parameters for use with ARController.
-		Use by passing in an URL and a callback function.
-
-			var camera = new ARCameraParam('Data/camera_para.dat', function() {
-				console.log('loaded camera', this.id);
-			},
-			function(err) {
-				console.log('failed to load camera', err);
-			});
-
-		@exports ARCameraParam
-		@constructor
-	 
-		@param {string} src URL to load camera parameters from.
-		@param {string} onload Onload callback to be called on successful parameter loading.
-		@param {string} onerror Error callback to called when things don't work out.
-	*/
-	var ARCameraParam = function(src, onload, onerror) {
-		this.id = -1;
-		this._src = '';
-		this.complete = false;
-		this.onload = onload;
-		this.onerror = onerror;
-		if (src) {
-			this.load(src);
-		}
-	};
-
-	/** 
-		Loads the given URL as camera parameters definition file into this ARCameraParam.
-
-		Can only be called on an unloaded ARCameraParam instance. 
-
-		@param {string} src URL to load.
-	*/
-	ARCameraParam.prototype.load = function(src) {
-		if (this._src !== '') {
-			throw("ARCameraParam: Trying to load camera parameters twice.")
-		}
-		this._src = src;
-		if (src) {
-			var self = this;
-			artoolkit.loadCamera(src, function(id) {
-				self.id = id;
-				self.complete = true;
-				self.onload();
-			}, function(err) {
-				self.onerror(err);
-			});
-		}
-	};
-
-	Object.defineProperty(ARCameraParam.prototype, 'src', {
-		set: function(src) {
-			this.load(src);
-		},
-		get: function() {
-			return this._src;
-		}
-	});
-
-	/**
-		Destroys the camera parameter and frees associated Emscripten resources.
-
-	*/
-	ARCameraParam.prototype.dispose = function() {
-		if (this.id !== -1) {
-			artoolkit.deleteCamera(this.id);
-		}
-		this.id = -1;
-		this._src = '';
-		this.complete = false;
-	};
-
-
-
-	// ARToolKit exported JS API
-	//
-	var artoolkit = {
-
-		UNKNOWN_MARKER: -1,
-		PATTERN_MARKER: 0,
-		BARCODE_MARKER: 1,
-
-		loadCamera: loadCamera,
-
-		addMarker: addMarker,
-		addMultiMarker: addMultiMarker,
-
-	};
-
-	var FUNCTIONS = [
-		'setup',
-		'teardown',
-
-		'setLogLevel',
-		'getLogLevel',
-
-		'setDebugMode',
-		'getDebugMode',
-
-		'getProcessingImage',
-
-		'setMarkerInfoDir',
-		'setMarkerInfoVertex',
-
-		'getTransMatSquare',
-		'getTransMatSquareCont',
-
-		'getTransMatMultiSquare',
-		'getTransMatMultiSquareRobust',
-
-		'getMultiMarkerNum',
-		'getMultiMarkerCount',
-
-		'detectMarker',
-		'getMarkerNum',
-
-		'getMarker',
-		'getMultiEachMarker',
-
-		'setProjectionNearPlane',
-		'getProjectionNearPlane',
-
-		'setProjectionFarPlane',
-		'getProjectionFarPlane',
-
-		'setThresholdMode',
-		'getThresholdMode',
-
-		'setThreshold',
-		'getThreshold',
-
-		'setPatternDetectionMode',
-		'getPatternDetectionMode',
-
-		'setMatrixCodeType',
-		'getMatrixCodeType',
-
-		'setLabelingMode',
-		'getLabelingMode',
-
-		'setPattRatio',
-		'getPattRatio',
-
-		'setImageProcMode',
-		'getImageProcMode',
-	];
-
-	function runWhenLoaded() {
-		FUNCTIONS.forEach(function(n) {
-			artoolkit[n] = Module[n];
-		})
-
-		for (var m in Module) {
-			if (m.match(/^AR/))
-			artoolkit[m] = Module[m];
+		context.strokeText(markers[i].id, x, y)
+	}
+	context.restore();
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArucoDebug.prototype.drawMarkerCorners = function(markers){
+	var canvas = this.canvasElement
+        var corners, corner, i, j;
+        var context = canvas.getContext('2d');
+	context.save();
+        context.lineWidth = 3;
+        
+        for (i = 0; i < markers.length; ++ i){
+                corners = markers[i].corners;
+                
+                context.strokeStyle = 'red';
+                context.beginPath();
+                
+                for (j = 0; j < corners.length; ++ j){
+                        corner = corners[j];
+                        context.moveTo(corner.x, corner.y);
+                        corner = corners[(j + 1) % corners.length];
+                        context.lineTo(corner.x, corner.y);
+                }
+                
+                context.stroke();
+                context.closePath();
+                
+                context.strokeStyle = 'green';
+                context.strokeRect(corners[0].x - 2, corners[0].y - 2, 4, 4);
+        }
+	context.restore();
+
+}
+var THREEx = THREEx || {}
+
+THREEx.ArucoMarkerGenerator = function(){
+	
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArucoMarkerGenerator.createSVG = function(markerId, svgSize){
+	var domElement = document.createElement('div');
+	domElement.innerHTML = new ArucoMarker(markerId).toSVG(svgSize);	
+	return domElement
+}
+
+THREEx.ArucoMarkerGenerator.createImage = function(markerId, width){
+	// create canvas
+	var canvas = this.createCanvas(markerId, width)
+	var imageURL = canvas.toDataURL()
+
+	// create imageElement
+	var imageElement = document.createElement('img');
+	imageElement.src = imageURL
+
+	// return imageElement
+	return imageElement;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+THREEx.ArucoMarkerGenerator.createCanvas = function(markerId, width){
+	var canvas = document.createElement('canvas');
+	var context = canvas.getContext('2d')
+	canvas.width = width
+	canvas.height = width
+
+	var arucoMarker = new ArucoMarker(markerId)
+	var marker = arucoMarker.markerMatrix()
+	
+	var margin = canvas.width*0.1
+	var innerW = width-margin*2
+	var squareW = innerW/7
+	
+	context.fillStyle = 'white'
+	context.fillRect(0, 0, canvas.width, canvas.height)
+	context.fillStyle = 'black'
+	context.fillRect(margin, margin, canvas.width-margin*2, canvas.height-margin*2)
+
+	for(var y = 0; y < 5; y++){
+		for(var x = 0; x < 5; x++){
+			if (marker[x][y] !== 1) continue
+			context.fillStyle = 'white'
+			context.fillRect(margin+(x+1)*squareW, margin+(y+1)*squareW, squareW+1, squareW+1)
 		}
 	}
+	
+	return canvas
+}
+/*
+ * Copyright 2017 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-	var marker_count = 0;
-	function addMarker(arId, url, callback) {
-		var filename = '/marker_' + marker_count++;
-		ajax(url, filename, function() {
-			var id = Module._addMarker(arId, filename);
-			if (callback) callback(id);
-		});
-	}
+/**
+* @namespace
+*/
+var THREE = THREE || require("three");
 
-	function bytesToString(array) {
-		return String.fromCharCode.apply(String, array);
-	}
+/**
+* The WebAR namespace inside the THREE namespace. This namespace includes different utilities to be able to handle WebAR functionalities on top of the ThreeJS framework/engine in an easier way.
+* 
+* NOTE: As a coding standard all the variables/functions starting with an underscore '_' are considered as private and should not be used/called outside of the namespace/class they are defined in.
+* @namespace
+*/
+THREE.WebAR = {};
 
-	function parseMultiFile(bytes) {
-		var str = bytesToString(bytes);
+THREE.WebAR.MAX_FLOAT32_VALUE = 3.4028e38;
 
-		var lines = str.split('\n');
+/**
+* A class that allows to manage the point cloud acquisition and representation in ThreeJS. A buffer geometry is generated to represent the point cloud. The point cloud is provided using a VRDisplay instance that shows the capability to do so. The point cloud is actually exposed using a TypedArray. The array includes 3 values per point in the cloud. There are 2 ways of exposing this array:
+* 1.- Using a new TypedArray for every frame/update. The advantage is that the TypedArray is always of the correct size depending on the number of points detected. The disadvantage is that there is a performance hit from the creation and copying of the array (and future garbage collection).
+* 2.- Using the same reference to a single TypedArray. The advantage is that the performance is as good as it can get with no creation/destruction and copy penalties. The disadvantage is that the size of the array is the biggest possible point cloud provided by the underlying hardware. The non used values are filled with THREE.WebAR.MAX_FLOAT32_VALUE.
+* @constructor
+* @param {window.VRDisplay} vrDisplay The reference to the VRDisplay instance that is capable of providing the point cloud.
+*
+* NOTE: The buffer geometry that can be retrieved from instances of this class can be used along with THREE.Point and THREE.PointMaterial to render the point cloud using points. This class represents the vertices colors with the color white.
+*/
+THREE.WebAR.VRPointCloud = function(vrDisplay) {
 
-		var files = [];
+  this._vrDisplay = vrDisplay;
 
-		var state = 0; // 0 - read,
-		var markers = 0;
+  this._numberOfPointsInLastPointCloud = 0;
 
-		lines.forEach(function(line) {
-			line = line.trim();
-			if (!line || line.startsWith('#')) return;
+  this._bufferGeometry = new THREE.BufferGeometry();
+  this._bufferGeometry.frustumCulled = false;
 
-			switch (state) {
-				case 0:
-					markers = +line;
-					state = 1;
-					return;
-				case 1: // filename or barcode
-					if (!line.match(/^\d+$/)) {
-						files.push(line);
-					}
-				case 2: // width
-				case 3: // matrices
-				case 4:
-					state++;
-					return;
-				case 5:
-					state = 1;
-					return;
-			}
-		});
+  var positions = null;
+  if (vrDisplay) {
+    this._pointCloud = new VRPointCloud();
+    vrDisplay.getPointCloud(this._pointCloud, false, 0, false);
+    positions = this._pointCloud.points;
+  }
+  else {
+    positions = new Float32Array(
+      [-1, 1, -2, 1, 1, -2, 1, -1, -2, -1, -1, -2 ]);
+  }
+  var colors = new Float32Array( positions.length );
 
-		return files;
-	}
+  var color = new THREE.Color();
 
-	var multi_marker_count = 0;
+  for ( var i = 0; i < colors.length; i += 3 ) {
+    if (vrDisplay) {
+      positions[ i ]     = THREE.WebAR.MAX_FLOAT32_VALUE;
+      positions[ i + 1 ] = THREE.WebAR.MAX_FLOAT32_VALUE;
+      positions[ i + 2 ] = THREE.WebAR.MAX_FLOAT32_VALUE;
+    }
+    color.setRGB( 1, 1, 1 );
+    colors[ i ]     = color.r;
+    colors[ i + 1 ] = color.g;
+    colors[ i + 2 ] = color.b;
+  }
 
-	function addMultiMarker(arId, url, callback) {
-		var filename = '/multi_marker_' + multi_marker_count++;
-		ajax(url, filename, function(bytes) {
-			var files = parseMultiFile(bytes);
+  this._positions = new THREE.BufferAttribute( positions, 3 );
+  this._bufferGeometry.addAttribute( 'position', this._positions );
+  this._colors = new THREE.BufferAttribute( colors, 3 );
+  this._bufferGeometry.addAttribute( 'color', this._colors );
 
-			function ok() {
-				var markerID = Module._addMultiMarker(arId, filename);
-				var markerNum = Module.getMultiMarkerNum(arId, markerID);
-				if (callback) callback(markerID, markerNum);
-			}
+  this._bufferGeometry.computeBoundingSphere();
 
-			if (!files.length) return ok();
+  return this;
+};
 
-			var path = url.split('/').slice(0, -1).join('/')
-			files = files.map(function(file) {
-				// FIXME super kludge - remove it
-				// console.assert(file !== '')
-				if( file === 'patt.hiro' || file === 'patt.kanji' || file === 'patt2.hiro' || file === 'patt2.kanji' ){
-					// debugger
-					return ['http://127.0.0.1:8080/data/data/' + file, file]
-				}
-				return [path + '/' + file, file]
-			})
-			ajaxDependencies(files, ok);
-		});
-	}
+/**
+* Returns the THREE.BufferGeometry instance that represents the points in the pont cloud.
+* @return {THREE.BufferGeometry} The buffer geometry that represents the points in the point cloud.
+*
+* NOTE: A possible way to render the point cloud could be to use the THREE.BufferGeometry instance returned by this method along with THREE.Points and THREE.PointMaterial.
 
-	var camera_count = 0;
-	function loadCamera(url, callback) {
-		var filename = '/camera_param_' + camera_count++;
-		var writeCallback = function() {
-			var id = Module._loadCamera(filename);
-			if (callback) callback(id);
-		};
-		if (typeof url === 'object') { // Maybe it's a byte array
-			writeByteArrayToFS(filename, url, writeCallback);
-		} else if (url.indexOf("\n") > -1) { // Or a string with the camera param
-			writeStringToFS(filename, url, writeCallback);
-		} else {
-			ajax(url, filename, writeCallback);
-		}
-	}
+  var pointCloud = new THREE.VRPointCloud(vrDisplay, true);
+  var material = new THREE.PointsMaterial( { size: 0.01, vertexColors: THREE.VertexColors } );
+  var points = new THREE.Points( pointCloud.getBufferGeometry(), material );
+*/
+THREE.WebAR.VRPointCloud.prototype.getBufferGeometry = function() {
+  return this._bufferGeometry;
+};
 
+/**
+* Update the point cloud. The THREE.BufferGeometry that this class provides will automatically be updated with the point cloud retrieved by the underlying hardware.
+* @param {boolean} updateBufferGeometry A flag to indicate if the underlying THREE.BufferGeometry should also be updated. Updating the THREE.BufferGeometry is very cost innefficient so it is better to only do it if necessary (only if the buffer geometry is going to be rendered for example). If this flag is set to false,  then the underlying point cloud is updated but not buffer geometry that represents it. Updating the point cloud is important to be able to call functions that operate with it, like the getPickingPointAndPlaneInPointCloud function.
+* @param {number} pointsToSkip A positive integer from 0-N that specifies the number of points to skip when returning the point cloud. If the updateBufferGeometry flag is activated (true) then this parameter allows to specify the density of the point cloud. A values of 0 means all the detected points need to be returned. A number of 1 means that 1 every other point needs to be skipped and thus, half of the detected points will be retrieved, and so on. If the parameter is not specified, 0 is considered.
+* @param {boolean} transformPoints A flag to specify if the points should be transformed in the native side or not. If the points are not transformed in the native side, they should be transformed in the JS side (in a vertex shader for example).
+*/
+THREE.WebAR.VRPointCloud.prototype.update = function(updateBufferGeometry, pointsToSkip, transformPoints) {
+  if (!this._vrDisplay) return;
+  this._vrDisplay.getPointCloud(this._pointCloud, 
+    !updateBufferGeometry, typeof(pointsToSkip) === "number" ? 
+      pointsToSkip : 0, !!transformPoints);
+  if (!updateBufferGeometry) return;
+  if (this._pointCloud.numberOfPoints > 0) {
+    this._positions.needsUpdate = true;
+  }
+};
 
-	// transfer image
+/**
+* Provides an index based on an orientation angle. The corresponding index to the angle is:
+* orientation =   0 <-> index = 0
+* orientation =  90 <-> index = 1
+* orientation = 180 <-> index = 2
+* orientation = 270 <-> index = 3
+* @param {number} orientation The orientation angle. Values are: 0, 90, 180, 270.
+* @return {number} An index from 0 to 3 that corresponds to the give orientation angle.
+*/
+THREE.WebAR.getIndexFromOrientation = function(orientation) {
+  var index = 0;
+  switch (orientation) {
+    case 90:
+      index = 1;
+      break;
+    case 180:
+      index = 2;
+      break;
+    case 270:
+      index = 3;
+      break;
+    default:
+      index = 0;
+      break;
+  }
+  return index;
+};
 
-	function writeStringToFS(target, string, callback) {
-		var byteArray = new Uint8Array(string.length);
-		for (var i=0; i<byteArray.length; i++) {
-			byteArray[i] = string.charCodeAt(i) & 0xff;
-		}
-		writeByteArrayToFS(target, byteArray, callback);
-	}
+/**
+* Returns an index that is based on the combination between the display orientation and the see through camera orientation. This index will always be device natural orientation independent.
+* @param {VRDisplay} vrDisplay The VRDisplay that is capable to provide a correct VRSeeThroughCamera instance.
+* @return {number} The index from 0 to 3 that represents the combination of the device and see through camera orientations.
+*/
+THREE.WebAR.getIndexFromScreenAndSeeThroughCameraOrientations = function(vrDisplay) {
+  var screenOrientation = screen.orientation.angle;
+  var seeThroughCamera = vrDisplay ? vrDisplay.getSeeThroughCamera() : null;
+  var seeThroughCameraOrientation = seeThroughCamera ? 
+    seeThroughCamera.orientation : 0;
+  var seeThroughCameraOrientationIndex = 
+    THREE.WebAR.getIndexFromOrientation(seeThroughCameraOrientation);
+  var screenOrientationIndex = 
+    THREE.WebAR.getIndexFromOrientation(screenOrientation);
+  ret = screenOrientationIndex - seeThroughCameraOrientationIndex;
+  if (ret < 0) {
+    ret += 4;
+  }
+  return (ret % 4);
+}
 
-	function writeByteArrayToFS(target, byteArray, callback) {
-		FS.writeFile(target, byteArray, { encoding: 'binary' });
-		// console.log('FS written', target);
+/**
+* A utility function that helps create a THREE.Mesh instance to be able to show the VRSeeThroughCamera as a background quad with the correct texture coordinates and a THREE.VideoTexture instance.
+* @param {VRDisplay} vrDisplay The VRDisplay that is capable to provide a correct VRSeeThroughCamera instance. It can be null/undefined.
+* @param {string} fallbackVideoPath The path to a video in case there is no vrDisplay. If this parameter is not provided, a default video at path "../resources/sintel.webm" will be used.
+* @return {THREE.Mesh} The THREE.Mesh instance that represents a quad to be able to present the see through camera.
+*/
+THREE.WebAR.createVRSeeThroughCameraMesh = function(vrDisplay,
+  fallbackVideoPath) {
+  var video;
+  var geometry = new THREE.BufferGeometry();
 
-		callback(byteArray);
-	}
+  // The camera or video and the texture coordinates may vary depending if the vrDisplay has the see through camera.
+  if (vrDisplay) {
+    var seeThroughCamera = vrDisplay.getSeeThroughCamera();
 
-	// Eg.
-	//	ajax('../bin/Data2/markers.dat', '/Data2/markers.dat', callback);
-	//	ajax('../bin/Data/patt.hiro', '/patt.hiro', callback);
+    if (!seeThroughCamera) 
+      throw "ERROR: Could not get the see through camera!";
+    
+    video = seeThroughCamera;
+    // HACK: Needed to tell the THREE.VideoTexture that the video is ready and
+    // that the texture needs update.
+    video.readyState = 2;
+    video.HAVE_CURRENT_DATA = 2;
 
-	function ajax(url, target, callback) {
-		var oReq = new XMLHttpRequest();
-		oReq.open('GET', url, true);
-		oReq.responseType = 'arraybuffer'; // blob arraybuffer
+    // All the possible texture coordinates for the 4 possible orientations.
+    // The ratio between the texture size and the camera size is used in order
+    // to be compatible with the YUV to RGB conversion option (not recommended
+    // but still available).
+    var u = seeThroughCamera.width / seeThroughCamera.textureWidth;
+    var v = seeThroughCamera.height / seeThroughCamera.textureHeight;
+    geometry.WebAR_textureCoords = [
+      new Float32Array([ 
+        0.0, 0.0,
+        0.0, v,
+        u, 0.0,
+        u, v
+      ]),
+      new Float32Array([ 
+        u, 0.0,
+        0.0, 0.0,
+        u, v,
+        0.0, v
+      ]),
+      new Float32Array([
+        u, v,
+        u, 0.0,
+        0.0, v,
+        0.0, 0.0
+      ]),
+      new Float32Array([
+        0.0, v,
+        u, v,
+        0.0, 0.0,
+        u, 0.0
+      ])
+    ];
+  }
+  else {
+    var video = document.createElement("video");
+    video.src = typeof(fallbackVideoPath) === "string" ? 
+      fallbackVideoPath : "../../resources/videos/sintel.webm";
+    video.play();
 
-		oReq.onload = function(oEvent) {
-			// console.log('ajax done for ', url);
-			var arrayBuffer = oReq.response;
-			var byteArray = new Uint8Array(arrayBuffer);
-	// console.log('writeByteArrayToFS', target, byteArray.length, 'byte. url', url)
-			writeByteArrayToFS(target, byteArray, callback);
-		};
+    // All the possible texture coordinates for the 4 possible orientations.
+    geometry.WebAR_textureCoords = [
+      new Float32Array([0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0]),
+      new Float32Array([1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0]),
+      new Float32Array([1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0]),
+      new Float32Array([0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0])
+    ];
+  }
 
-		oReq.send();
-	}
+  geometry.addAttribute("position", new THREE.BufferAttribute( 
+    new Float32Array([
+    -1.0,  1.0, 0.0, 
+    -1.0, -1.0, 0.0,
+     1.0,  1.0, 0.0, 
+     1.0, -1.0, 0.0
+  ]), 3));
 
-	function ajaxDependencies(files, callback) {
-		var next = files.pop();
-		if (next) {
-			ajax(next[0], next[1], function() {
-				ajaxDependencies(files, callback);
-			});
-		} else {
-			callback();
-		}
-	}
+  geometry.setIndex(new THREE.BufferAttribute(
+    new Uint16Array([0, 1, 2, 2, 1, 3]), 1));
+  geometry.WebAR_textureCoordIndex = 
+    THREE.WebAR.getIndexFromScreenAndSeeThroughCameraOrientations(vrDisplay);
+  var textureCoords = 
+    geometry.WebAR_textureCoords[geometry.WebAR_textureCoordIndex];
 
-	/* Exports */
-	window.artoolkit = artoolkit;
-	window.ARController = ARController;
-	window.ARCameraParam = ARCameraParam;
+  geometry.addAttribute("uv", new THREE.BufferAttribute(
+    new Float32Array(textureCoords), 2 ));
+  geometry.computeBoundingSphere();
 
-	if (window.Module) {
-		runWhenLoaded();
-	} else {
-		window.Module = {
-			onRuntimeInitialized: function() {
-				runWhenLoaded();
-			}
-		};
-	}
+  var videoTexture = new THREE.VideoTexture(video);
+  videoTexture.minFilter = THREE.NearestFilter;
+  videoTexture.magFilter = THREE.NearestFilter;
+  videoTexture.format = THREE.RGBFormat;
+  videoTexture.flipY = false;
 
-})();
+  // The material is different if the see through camera is provided inside the vrDisplay or not.
+  var material;
+  if (vrDisplay) {
+    var vertexShaderSource = [
+      'attribute vec3 position;',
+      'attribute vec2 uv;',
+      '',
+      'uniform mat4 modelViewMatrix;',
+      'uniform mat4 projectionMatrix;',
+      '',
+      'varying vec2 vUV;',
+      '',
+      'void main(void) {',
+      '    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);',
+      '    vUV = uv;',
+      '}'
+    ];
+
+    var fragmentShaderSource = [
+      '#extension GL_OES_EGL_image_external : require',
+      'precision mediump float;',
+      '',
+      'varying vec2 vUV;',
+      '',
+      'uniform samplerExternalOES map;',
+      '',
+      'void main(void) {',
+      '   gl_FragColor = texture2D(map, vUV);',
+      '}'
+    ];
+
+    material = new THREE.RawShaderMaterial({
+      uniforms: {
+        map: {type: 't', value: videoTexture},
+      },
+      vertexShader: vertexShaderSource.join( '\r\n' ),
+      fragmentShader: fragmentShaderSource.join( '\r\n' ),
+      side: THREE.DoubleSide,
+    });
+  }
+  else {
+    material = new THREE.MeshBasicMaterial( 
+      {color: 0xFFFFFF, side: THREE.DoubleSide, map: videoTexture } );
+  }
+
+  var mesh = new THREE.Mesh(geometry, material);
+
+  return mesh;
+};
+
+/**
+* Updates the camera mesh texture coordinates depending on the orientation of the current screen and the see through camera.
+* @param {VRDisplay} vrDisplay The VRDisplay that holds the VRSeeThroughCamera. If could be null/undefined.
+* @param {THREE.Mesh} cameraMesh The ThreeJS mesh that represents the camera quad that needs to be updated/rotated depending on the device and camera orientations. This instance should have been created by calling THREE.WebAR.createVRSeeThroughCameraMesh.
+*/
+THREE.WebAR.updateCameraMeshOrientation = function(vrDisplay, cameraMesh) {
+  var textureCoordIndex = THREE.WebAR.getIndexFromScreenAndSeeThroughCameraOrientations(vrDisplay);
+  if (textureCoordIndex != cameraMesh.geometry.WebAR_textureCoordIndex) {
+    var uvs = cameraMesh.geometry.getAttribute("uv");
+    var textureCoords = 
+      cameraMesh.geometry.WebAR_textureCoords[textureCoordIndex];
+    cameraMesh.geometry.WebAR_textureCoordIndex = textureCoordIndex;
+    for (var i = 0; i < uvs.length; i++) {
+      uvs.array[i] = textureCoords[i];
+    }
+    uvs.needsUpdate = true;
+  }
+};
+
+/**
+* A utility function to create a THREE.Camera instance with as frustum that is obtainer from the underlying vrdisplay see through camera information. This camera can be used to correctly render 3D objects on top of the underlying camera image.
+* @param {VRDisplay} vrDisplay - The VRDisplay that is capable to provide a correct VRSeeThroughCamera instance in order to obtain the camera lens information and create the correct projection matrix/frustum. It could be null/undefined.
+* @param {number} near The near plane value to be used to create the correct projection matrix frustum.
+* @param {number} far The far plane value to be used to create the correct projection matrix frustum.
+* @return {THREE.Camera} A camera instance to be used to correctly render a scene on top of the camera video feed.
+*/
+THREE.WebAR.createVRSeeThroughCamera = function(vrDisplay, near, far) {
+  var camera = new THREE.PerspectiveCamera( 60, 
+    window.innerWidth / window.innerHeight, near, far );
+  if (vrDisplay) {
+    THREE.WebAR.resizeVRSeeThroughCamera(vrDisplay, camera);
+  }
+  return camera;
+};
+
+/**
+* Recalculate a camera projection matrix depending on the current device and see through camera orientation and specification.
+* @param {VRDisplay} vrDisplay The VRDisplay that handles the see through camera.
+* @param {THREE.Camera} camera The ThreeJS camera instance to update its projection matrix depending on the current device orientation and see through camera properties.
+*/
+THREE.WebAR.resizeVRSeeThroughCamera = function(vrDisplay, camera) {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  if (vrDisplay) {
+    var windowWidthBiggerThanHeight = window.innerWidth > window.innerHeight;
+    var seeThroughCamera = vrDisplay.getSeeThroughCamera();
+    if (seeThroughCamera) {
+      var cameraWidthBiggerThanHeight = 
+        seeThroughCamera.width > seeThroughCamera.height;
+      var swapWidthAndHeight = 
+        !(windowWidthBiggerThanHeight && cameraWidthBiggerThanHeight);
+
+      var width = swapWidthAndHeight ? 
+        seeThroughCamera.height : seeThroughCamera.width;
+      var height = swapWidthAndHeight ? 
+        seeThroughCamera.width : seeThroughCamera.height;
+      var fx = swapWidthAndHeight ? 
+        seeThroughCamera.focalLengthY : seeThroughCamera.focalLengthX;
+      var fy = swapWidthAndHeight ? 
+        seeThroughCamera.focalLengthX : seeThroughCamera.focalLengthY;
+      var cx = swapWidthAndHeight ? 
+        seeThroughCamera.pointY : seeThroughCamera.pointX;
+      var cy = swapWidthAndHeight ? 
+        seeThroughCamera.pointX : seeThroughCamera.pointY;
+
+      var xscale = camera.near / fx;
+      var yscale = camera.near / fy;
+
+      var xoffset = (cx - (width / 2.0)) * xscale;
+      // Color camera's coordinates has Y pointing downwards so we negate this term.
+      var yoffset = -(cy - (height / 2.0)) * yscale;
+
+      var left = xscale * -width / 2.0 - xoffset;
+      var right = xscale * width / 2.0 - xoffset;
+      var bottom = yscale * -height / 2.0 - yoffset;
+      var top = yscale * height / 2.0 - yoffset;
+
+      // camera.projectionMatrix.makeFrustum(
+      //   left, right, bottom, top, camera.near, camera.far);
+
+      camera.projectionMatrix.makePerspective(
+        left, right, top, bottom, camera.near, camera.far);
+
+      // Recalculate the fov as threejs is not doing it.
+      camera.fov = THREE.Math.radToDeg(
+        Math.atan((top * camera.zoom) / camera.near)) * 2.0;
+    }
+  }
+  else {
+    camera.updateProjectionMatrix();
+  }
+}
+
+// Some precalculated private objects to avoid garbage collection
+THREE.WebAR._worldUp = new THREE.Vector3(0.0, 1.0, 0.0);
+THREE.WebAR._normalY = new THREE.Vector3();
+THREE.WebAR._normalZ = new THREE.Vector3();
+THREE.WebAR._rotationMatrix = new THREE.Matrix4();
+THREE.WebAR._planeNormal = new THREE.Vector3();
+
+THREE.WebAR.rotateObject3D = function(normal1, normal2, object3d) {
+  if (normal1 instanceof THREE.Vector3 || normal1 instanceof THREE.Vector4) {
+    THREE.WebAR._planeNormal.set(normal1.x, normal1.y, normal1.z);
+  }
+  else if (normal1 instanceof Float32Array) {
+    THREE.WebAR._planeNormal.set(normal1[0], normal1[1], normal1[2]);
+  }
+  else {
+    throw "Unknown normal1 type.";
+  }
+  if (normal2 instanceof THREE.Vector3 || normal2 instanceof THREE.Vector4) {
+    THREE.WebAR._normalZ.set(normal2.x, normal2.y, normal2.z);
+  }
+  else if (normal1 instanceof Float32Array) {
+    THREE.WebAR._normalZ.set(normal2[0], normal2[1], normal2[2]);
+  }
+  else {
+    throw "Unknown normal2 type.";
+  }
+  THREE.WebAR._normalY.crossVectors(THREE.WebAR._planeNormal, 
+    THREE.WebAR._normalZ).normalize();
+  THREE.WebAR._rotationMatrix.elements[ 0] = THREE.WebAR._planeNormal.x;
+  THREE.WebAR._rotationMatrix.elements[ 1] = THREE.WebAR._planeNormal.y;
+  THREE.WebAR._rotationMatrix.elements[ 2] = THREE.WebAR._planeNormal.z;
+  THREE.WebAR._rotationMatrix.elements[ 4] = THREE.WebAR._normalZ.x;
+  THREE.WebAR._rotationMatrix.elements[ 5] = THREE.WebAR._normalZ.y;
+  THREE.WebAR._rotationMatrix.elements[ 6] = THREE.WebAR._normalZ.z;
+  THREE.WebAR._rotationMatrix.elements[ 8] = THREE.WebAR._normalY.x;
+  THREE.WebAR._rotationMatrix.elements[ 9] = THREE.WebAR._normalY.y;
+  THREE.WebAR._rotationMatrix.elements[10] = THREE.WebAR._normalY.z;
+  object3d.quaternion.setFromRotationMatrix(THREE.WebAR._rotationMatrix);
+};
+
+/**
+* Transform a given THREE.Object3D instance to be correctly oriented according to a given plane normal.
+* @param {THREE.Vector3|THREE.Vector4|Float32Array} plane A vector that represents the normal of the plane to be used to orient the object3d.
+* @param {THREE.Object3D} object3d The object3d to be transformed so it is oriented according to the given plane.
+*/
+THREE.WebAR.rotateObject3DWithPickingPlane = function(plane, object3d) {
+  if (plane instanceof THREE.Vector3 || plane instanceof THREE.Vector4) {
+    THREE.WebAR._planeNormal.set(plane.x, plane.y, plane.z);
+  }
+  else if (plane instanceof Float32Array) {
+    THREE.WebAR._planeNormal.set(plane[0], plane[1], plane[2]);
+  }
+  else {
+    throw "Unknown plane type.";
+  }
+  THREE.WebAR._normalY.set(0.0, 1.0, 0.0);
+  var threshold = 0.5;
+  if (Math.abs(THREE.WebAR._planeNormal.dot(THREE.WebAR._worldUp)) > 
+    threshold) {
+    THREE.WebAR._normalY.set(0.0, 0.0, 1.0);
+  }
+  THREE.WebAR._normalZ.crossVectors(THREE.WebAR._planeNormal, 
+    THREE.WebAR._normalY).normalize();
+  THREE.WebAR._normalY.crossVectors(THREE.WebAR._normalZ, 
+    THREE.WebAR._planeNormal).normalize();
+  THREE.WebAR._rotationMatrix.elements[ 0] = THREE.WebAR._planeNormal.x;
+  THREE.WebAR._rotationMatrix.elements[ 1] = THREE.WebAR._planeNormal.y;
+  THREE.WebAR._rotationMatrix.elements[ 2] = THREE.WebAR._planeNormal.z;
+  THREE.WebAR._rotationMatrix.elements[ 4] = THREE.WebAR._normalY.x;
+  THREE.WebAR._rotationMatrix.elements[ 5] = THREE.WebAR._normalY.y;
+  THREE.WebAR._rotationMatrix.elements[ 6] = THREE.WebAR._normalY.z;
+  THREE.WebAR._rotationMatrix.elements[ 8] = THREE.WebAR._normalZ.x;
+  THREE.WebAR._rotationMatrix.elements[ 9] = THREE.WebAR._normalZ.y;
+  THREE.WebAR._rotationMatrix.elements[10] = THREE.WebAR._normalZ.z;
+  object3d.quaternion.setFromRotationMatrix(THREE.WebAR._rotationMatrix);
+};
+
+/**
+* Transform a given THREE.Object3D instance to be correctly positioned according to a given point position.
+* @param {THREE.Vector3|THREE.Vector4|Float32Array} point A vector that represents the position where the object3d should be positioned.
+* @param {THREE.Object3D} object3d The object3d to be transformed so it is positioned according to the given point.
+*/
+THREE.WebAR.positionObject3DWithPickingPoint = function(point, object3d) {
+  if (point instanceof THREE.Vector3 || point instanceof THREE.Vector4) {
+    object3d.position.set(point.x, point.y, point.z);
+  }
+  else if (point instanceof Float32Array) {
+    object3d.position.set(point[0], point[1], point[2]);
+  }
+  else {
+    throw "Unknown point type.";
+  }
+};
+
+/**
+* Transform a given THREE.Object3D instance to be correctly positioned and oriented according to a given VRPickingPointAndPlane and a scale (half the size of the object3d for example).
+* @param {VRPickingPointandPlane} pointAndPlane The point and plane retrieved using the VRDisplay.getPickingPointAndPlaneInPointCloud function.
+* @param {THREE.Object3D} object3d The object3d to be transformed so it is positioned and oriented according to the given point and plane.
+* @param {number} scale The value the object3d will be positioned in the direction of the normal of the plane to be correctly positioned. Objects usually have their position value referenced as the center of the geometry. In this case, positioning the object in the picking point would lead to have the object3d positioned in the plane, not on top of it. this scale value will allow to correctly position the object in the picking point and in the direction of the normal of the plane. Half the size of the object3d would be a correct value in this case.
+*/
+THREE.WebAR.positionAndRotateObject3DWithPickingPointAndPlaneInPointCloud = 
+  function(pointAndPlane, object3d, scale) {
+  THREE.WebAR.rotateObject3DWithPickingPlane(pointAndPlane.plane, object3d);
+  THREE.WebAR.positionObject3DWithPickingPoint(pointAndPlane.point, object3d);
+  object3d.position.add(THREE.WebAR._planeNormal.multiplyScalar(scale));
+};
+
+/**
+* Transform a given THREE.Object3D instance to be correctly positioned and oriented according to an axis formed by 2 plane normals, a position and a scale (half the size of the object3d for example).
+* @param {VRPickingPointandPlane} pointAndPlane The point and plane retrieved using the VRDisplay.getPickingPointAndPlaneInPointCloud function.
+* @param {THREE.Object3D} object3d The object3d to be transformed so it is positioned and oriented according to the given point and plane.
+* @param {number} scale The value the object3d will be positioned in the direction of the normal of the plane to be correctly positioned. Objects usually have their position value referenced as the center of the geometry. In this case, positioning the object in the picking point would lead to have the object3d positioned in the plane, not on top of it. this scale value will allow to correctly position the object in the picking point and in the direction of the normal of the plane. Half the size of the object3d would be a correct value in this case.
+*/
+THREE.WebAR.positionAndRotateObject3D = 
+  function(position, normal1, normal2, object3d, scale) {
+  THREE.WebAR.rotateObject3D(normal1, normal2, object3d);
+  THREE.WebAR.positionObject3DWithPickingPoint(position, object3d);
+  object3d.position.add(THREE.WebAR._planeNormal.multiplyScalar(scale));
+};
+
+// UMD
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define(['WebAR'], factory);
+  } else if (typeof exports === 'object') {
+    module.exports = factory();
+  } else {
+    root.WebAR = factory();
+  }
+}(this, function() {
+    return THREE.WebAR;
+}));
 var THREEx = THREEx || {}
 
 THREEx.ArBaseControls = function(object3d){
@@ -6400,10 +7535,16 @@ ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile = function(trackingBackend){
 ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile = function(trackingBackend){
 	console.assert(trackingBackend)
 	if( trackingBackend === undefined )	debugger
+	
+	// create absoluteBaseURL
+	var link = document.createElement('a')
+	link.href = ARjs.Context.baseURL
+	var absoluteBaseURL = link.href
+
 	// create the base file
 	var file = {
 		meta : {
-			createdBy : "AR.js Default Marker "+THREEx.ArToolkitContext.REVISION,
+			createdBy : "AR.js Default Marker "+ARjs.Context.REVISION,
 			createdAt : new Date().toJSON(),
 		},
 		trackingBackend : trackingBackend,
@@ -6418,7 +7559,7 @@ ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile = function(trackingBackend){
 	}
 	if( trackingBackend === 'artoolkit' ){
 		file.subMarkersControls[0].parameters.type = 'pattern'
-		file.subMarkersControls[0].parameters.patternUrl = THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt'
+		file.subMarkersControls[0].parameters.patternUrl = absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt'
 	}else if( trackingBackend === 'aruco' ){
 		file.subMarkersControls[0].parameters.type = 'barcode'
 		file.subMarkersControls[0].parameters.barcodeValue = 1001
@@ -6439,9 +7580,12 @@ ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile = function(trackingBackend){
  * @return {Object} - json object containing the controls parameters
  */
 ARjs.MarkersAreaUtils.createDefaultMarkersControlsParameters = function(trackingBackend){
+	// create absoluteBaseURL
 	var link = document.createElement('a')
-	link.href = THREEx.ArToolkitContext.baseURL
+	link.href = ARjs.Context.baseURL
 	var absoluteBaseURL = link.href
+
+
 	if( trackingBackend === 'artoolkit' ){
 		// pattern hiro/kanji/a/b/c/f
 		var markersControlsParameters = [
