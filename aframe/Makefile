@@ -5,6 +5,7 @@ watch: build
 build:
 	cat ../three.js/threex*.js \
 		../three.js/examples/multi-markers/threex*.js \
+		../three.js/src/newAPI/*.js \
 		aframe-ar.js \
 		../three.js/vendor/jsartoolkit5/build/artoolkit.min.js \
 		../three.js/vendor/jsartoolkit5/js/artoolkit.api.js \
@@ -12,16 +13,3 @@ build:
 
 minify: build
 	uglifyjs build/aframe-ar.js > build/aframe-ar.min.js
-
-#####
-
-build0:
-	cat ../three.js/threex*.js \
-		../three.js/examples/multi-markers/threex*.js \
-		aframe-ar.js \
-		../three.js/vendor/jsartoolkit5/build/artoolkit.min.js \
-		../three.js/vendor/jsartoolkit5/js/artoolkit.api.js \
-		> build/aframe-ar0.js 
-
-minify0: build0
-	uglifyjs build/aframe-ar0.js > build/aframe-ar0.min.js

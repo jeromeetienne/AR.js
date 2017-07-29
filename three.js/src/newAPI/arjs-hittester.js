@@ -9,16 +9,19 @@ var ARjs = ARjs || {}
  */
 ARjs.HitTester = function(arSession){
 	var _this = this
-	this.arSession = arSession
-
-	var arContext = this.arSession.arContext
+	var arContext = arSession.arContext
 	var trackingBackend = arContext.parameters.trackingBackend
 
+	this.arSession = arSession
+	this._hitTesterPlane = null
+	this._hitTesterTango = null
+
+
 	if( trackingBackend === 'tango' ){
-		// Do nothing...
+		_this._hitTesterTango = new THREEx.HitTesterTango()
 	}else{
 		arContext.addEventListener('initialized', function(event){
-			_this._arClickability = new THREEx.ARClickability(arSession.arSource.domElement)
+			_this._hitTesterPlane = new THREEx.HitTesterPlane(arSession.arSource.domElement)
 			_this._pickingScene = new THREE.Scene
 			
 			var geometry = new THREE.PlaneGeometry(20,20,19,19).rotateX(-Math.PI/2)
@@ -33,24 +36,33 @@ ARjs.HitTester = function(arSession){
 			_this._pickingScene.add(_this._pickingPlane)
 		})		
 	}
-
-
 }
 
-
+//////////////////////////////////////////////////////////////////////////////
+//		update function
+//////////////////////////////////////////////////////////////////////////////
+/**
+ * update
+ * 
+ * @param {THREE.Camera} camera   - the camera to use
+ * @param {THREE.Object3D} object3d - 
+ */
 ARjs.HitTester.prototype.update = function (camera, object3d) {
 	var arContext = this.arSession.arContext
 	var trackingBackend = arContext.parameters.trackingBackend
 
-	if( trackingBackend === 'tango' ){
-		// Do nothing...
-	}else{
+	if( this._hitTesterTango !== null ){
+		this._hitTesterTango.update()
+	}else if( this._hitTesterPlane !== null ){
+		
+		// TODO put that in a .update
+
 		if( arContext.initialized === false )	return
 
-		this._arClickability.onResize()
+		this._hitTesterPlane.onResize()
 		
 		// // set cameraPicking position
-		var cameraPicking = this._arClickability._cameraPicking
+		var cameraPicking = this._hitTesterPlane._cameraPicking
 		// camera.updateMatrixWorld()
 		// cameraPicking.matrix.copy(object3d.matrixWorld)
 		// cameraPicking.matrix.decompose(cameraPicking.position, cameraPicking.quaternion, cameraPicking.scale)				
@@ -70,8 +82,12 @@ ARjs.HitTester.prototype.update = function (camera, object3d) {
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////////
+//		actual hit testing
+//////////////////////////////////////////////////////////////////////////////
+
 /**
- * Test the real world for intersections.
+ * Test the real world for intersections directly from a DomEvent
  * 
  * @param {Number} mouseX - position X of the hit [-1, +1]
  * @param {Number} mouseY - position Y of the hit [-1, +1]
@@ -120,7 +136,7 @@ ARjs.HitTester.prototype.test = function(mouseX, mouseY){
 		// compute intersections between mouseVector3 and pickingPlane
 		var raycaster = new THREE.Raycaster();
 		var mouseVector3 = new THREE.Vector3(mouseX, mouseY, 1);
-		raycaster.setFromCamera( mouseVector3, this._arClickability._cameraPicking );
+		raycaster.setFromCamera( mouseVector3, this._hitTesterPlane._cameraPicking );
 		var intersects = raycaster.intersectObjects( [this._pickingPlane] )
 	
 		// if no intersection occurs, return now
@@ -140,7 +156,6 @@ ARjs.HitTester.prototype.test = function(mouseX, mouseY){
 	// TODO use clickability
 	return hitTestResults
 }
-
 
 //////////////////////////////////////////////////////////////////////////////
 //		ARjs.HitTester.Result

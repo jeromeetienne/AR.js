@@ -1,42 +1,43 @@
 ## New API - aframe
-
 - honor marker preset
 
 - artoolkit modelViewMatrix/cameraTransformMatrix works
 
-- area-artoolkit fails in cameraTransformMatrix
-  - wtf ??? so issue upstream ? how to reproduce in three.js
-
-- aruco got perspective issue - likely camera init
+- put multi-markers in /src/markers-area
+  - /examples/markers-area/ - here all the examples
+  - put marker page in this directory too
+  - three.js/examples/multi-markers/\*.js in /src/markers-area
+- refactor threex-screenasportal as a demo in /examples/markers-area/demo-screen-as-portal
+  - this is not a threex
 
 - tango video fails
   - some post processing in aframe.js - https://github.com/wizgrav/aframe-effects/blob/master/systems/effects.js
   - it seems to override renderer.render by its own function... not super clean but if it works ok
   - it can be changed later
-
 - tango tracking is working ? i think so
-  - test in both mode   
+  - test in both mode
   - tracking only tho, clearly no video
 
-- DONE remove arSession.onResize2() - thus the API is cleaner
-  - do a onResize with a test on argument.length - if not good number call old stuff
-- DONE put the UI in the plugin
-  - do a special function for it, and call this function from javascript
-  - or more like a data in the system
+- LATER aruco got perspective issue - likely camera init
+
 
 ## New API
 
-- build a aframe version of that to see how it fit
-  - when api is stable enougth ?
-  - when all the bugs are sorted out
-    - currently only something about displaying point cloud in tango - very minor
+- clickability works IIF changeMatrixMode === modelViewMatrix
+  - change that
+  - not a bug, it is just not implemented
+  - arjs-hittester and threex-arclickability are messy
+  - clean those 2. no need for 2 class ?
+  - which API will remain
+  - hittester-plane
+  - hittester-tango
+  - replace ARClickability with something better and port arjs-hittester on top
 
 - Check it works on all cases
   - no special cases incompatibilities
   - changeMatrixMode
   - tango point cloud fails in cameraTransformMatrix
 
-- move three.js/arjs-.js in three.js/src/newApi/
 - later rename file/class
   - move all THREEx for ar.js as ARjs.
   - remove artoolkit in the name when it is multi backend
@@ -53,6 +54,17 @@
   - arkit
   - best
 
+- DONE area-artoolkit fails in cameraTransformMatrix
+  - wtf ??? so issue upstream ? how to reproduce in three.js
+  - is the error in three.js level, or aframe level
+  - apparently setting cameraTransformMatrix or modelViewMatrix in changeMatrixMode doesnt change a thing in area-artoolkit
+  - area-artoolkit seems to react as if it was always modelViewMatrix
+- DONE remove arSession.onResize2() - thus the API is cleaner
+  - do a onResize with a test on argument.length - if not good number call old stuff
+- DONE put the UI in the plugin
+  - do a special function for it, and call this function from javascript
+  - or more like a data in the system
+- DONE move three.js/arjs-.js in three.js/src/newApi/
 - DONE pick real world with all trackingMethod
   - hit tester with plane
 - DONE button tangoonly pointcloudtoggle

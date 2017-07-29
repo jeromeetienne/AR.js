@@ -2389,9 +2389,10 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 		object3d.scale.lerp(targetObject3d.scale, parameters.lerpScale)
 	}
 }
+var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
-THREEx.ArToolkitContext = function(parameters){
+ARjs.Context = THREEx.ArToolkitContext = function(parameters){
 	var _this = this
 	
 	_this._updatedAt = null
@@ -2408,7 +2409,7 @@ THREEx.ArToolkitContext = function(parameters){
 		matrixCodeType: '3x3',
 		
 		// url of the camera parameters
-		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + 'parameters/camera_para.dat',
+		cameraParametersUrl: ARjs.Context.baseURL + 'parameters/camera_para.dat',
 
 		// tune the maximum rate of pose detection in the source image
 		maxDetectionRate: 60,
@@ -2458,12 +2459,12 @@ THREEx.ArToolkitContext = function(parameters){
 	}
 }
 
-Object.assign( THREEx.ArToolkitContext.prototype, THREE.EventDispatcher.prototype );
+Object.assign( ARjs.Context.prototype, THREE.EventDispatcher.prototype );
 
-// THREEx.ArToolkitContext.baseURL = '../'
+// ARjs.Context.baseURL = '../'
 // default to github page
-THREEx.ArToolkitContext.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
-THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
+ARjs.Context.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
+ARjs.Context.REVISION = '1.0.1-dev'
 
 
 
@@ -2472,7 +2473,7 @@ THREEx.ArToolkitContext.REVISION = '1.0.1-dev'
  * @param {string} trackingBackend - the tracking to user
  * @return {THREE.Camera} the created camera
  */
-THREEx.ArToolkitContext.createDefaultCamera = function( trackingBackend ){
+ARjs.Context.createDefaultCamera = function( trackingBackend ){
 	console.assert(false, 'use ARjs.Utils.createDefaultCamera instead')
 	// Create a camera
 	if( trackingBackend === 'artoolkit' ){
@@ -2489,7 +2490,7 @@ THREEx.ArToolkitContext.createDefaultCamera = function( trackingBackend ){
 //////////////////////////////////////////////////////////////////////////////
 //		init functions
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitContext.prototype.init = function(onCompleted){
+ARjs.Context.prototype.init = function(onCompleted){
 	var _this = this
 	if( this.parameters.trackingBackend === 'artoolkit' ){
 		this._initArtoolkit(done)
@@ -2515,7 +2516,7 @@ THREEx.ArToolkitContext.prototype.init = function(onCompleted){
 ////////////////////////////////////////////////////////////////////////////////
 //          update function
 ////////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitContext.prototype.update = function(srcElement){
+ARjs.Context.prototype.update = function(srcElement){
 
 	// be sure arController is fully initialized
         if(this.parameters.trackingBackend === 'artoolkit' && this.arController === null) return false;
@@ -2556,12 +2557,12 @@ THREEx.ArToolkitContext.prototype.update = function(srcElement){
 ////////////////////////////////////////////////////////////////////////////////
 //          Add/Remove markerControls
 ////////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitContext.prototype.addMarker = function(arMarkerControls){
+ARjs.Context.prototype.addMarker = function(arMarkerControls){
 	console.assert(arMarkerControls instanceof THREEx.ArMarkerControls)
 	this._arMarkersControls.push(arMarkerControls)
 }
 
-THREEx.ArToolkitContext.prototype.removeMarker = function(arMarkerControls){
+ARjs.Context.prototype.removeMarker = function(arMarkerControls){
 	console.assert(arMarkerControls instanceof THREEx.ArMarkerControls)
 	// console.log('remove marker for', arMarkerControls)
 	var index = this.arMarkerControlss.indexOf(artoolkitMarker);
@@ -2572,7 +2573,7 @@ THREEx.ArToolkitContext.prototype.removeMarker = function(arMarkerControls){
 //////////////////////////////////////////////////////////////////////////////
 //		artoolkit specific
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitContext.prototype._initArtoolkit = function(onCompleted){
+ARjs.Context.prototype._initArtoolkit = function(onCompleted){
         var _this = this
 
 	// set this._artoolkitProjectionAxisTransformMatrix to change artoolkit projection matrix axis to match usual webgl one
@@ -2643,7 +2644,7 @@ THREEx.ArToolkitContext.prototype._initArtoolkit = function(onCompleted){
 /**
  * return the projection matrix
  */
-THREEx.ArToolkitContext.prototype.getProjectionMatrix = function(srcElement){
+ARjs.Context.prototype.getProjectionMatrix = function(srcElement){
 	
 	
 // FIXME rename this function to say it is artoolkit specific - getArtoolkitProjectMatrix
@@ -2666,14 +2667,14 @@ THREEx.ArToolkitContext.prototype.getProjectionMatrix = function(srcElement){
 	return projectionMatrix
 }
 
-THREEx.ArToolkitContext.prototype._updateArtoolkit = function(srcElement){
+ARjs.Context.prototype._updateArtoolkit = function(srcElement){
 	this.arController.process(srcElement)
 }
 
 //////////////////////////////////////////////////////////////////////////////
 //		aruco specific 
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitContext.prototype._initAruco = function(onCompleted){
+ARjs.Context.prototype._initAruco = function(onCompleted){
 	this.arucoContext = new THREEx.ArucoContext()
 	
 	// honor this.parameters.canvasWidth/.canvasHeight
@@ -2694,7 +2695,7 @@ THREEx.ArToolkitContext.prototype._initAruco = function(onCompleted){
 }
 
 
-THREEx.ArToolkitContext.prototype._updateAruco = function(srcElement){
+ARjs.Context.prototype._updateAruco = function(srcElement){
 	// console.log('update aruco here')
 	var _this = this
 	var arMarkersControls = this._arMarkersControls
@@ -2722,7 +2723,7 @@ THREEx.ArToolkitContext.prototype._updateAruco = function(srcElement){
 //////////////////////////////////////////////////////////////////////////////
 //		tango specific 
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
+ARjs.Context.prototype._initTango = function(onCompleted){
 	var _this = this
 	// check webvr is available
 	if (navigator.getVRDisplays){
@@ -2765,7 +2766,7 @@ THREEx.ArToolkitContext.prototype._initTango = function(onCompleted){
 }
 
 
-THREEx.ArToolkitContext.prototype._updateTango = function(srcElement){
+ARjs.Context.prototype._updateTango = function(srcElement){
 	// console.log('update aruco here')
 	var _this = this
 	var arMarkersControls = this._arMarkersControls
@@ -2818,7 +2819,6 @@ THREEx.ArToolkitContext.prototype._updateTango = function(srcElement){
 
 }
 var ARjs = ARjs || {}
-
 var THREEx = THREEx || {}
 
 /**
@@ -2994,32 +2994,59 @@ ARjs.Profile.prototype.checkIfValid = function () {
 	}
 	return this
 }
+var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
-THREEx.ArToolkitSource = function(parameters){	
-	// handle default parameters
-	this.parameters = {
-		// type of source - ['webcam', 'image', 'video']
-		sourceType : parameters.sourceType !== undefined ? parameters.sourceType : 'webcam',
-		// url of the source - valid if sourceType = image|video
-		sourceUrl : parameters.sourceUrl !== undefined ? parameters.sourceUrl : null,
-		
-		// resolution of at which we initialize in the source image
-		sourceWidth: parameters.sourceWidth !== undefined ? parameters.sourceWidth : 640,
-		sourceHeight: parameters.sourceHeight !== undefined ? parameters.sourceHeight : 480,
-		// resolution displayed for the source 
-		displayWidth: parameters.displayWidth !== undefined ? parameters.displayWidth : 640,
-		displayHeight: parameters.displayHeight !== undefined ? parameters.displayHeight : 480,
-	}
+ARjs.Source = THREEx.ArToolkitSource = function(parameters){	
+	var _this = this
 
 	this.ready = false
         this.domElement = null
+
+	// handle default parameters
+	this.parameters = {
+		// type of source - ['webcam', 'image', 'video']
+		sourceType : 'webcam',
+		// url of the source - valid if sourceType = image|video
+		sourceUrl : null,
+		
+		// resolution of at which we initialize in the source image
+		sourceWidth: 640,
+		sourceHeight: 480,
+		// resolution displayed for the source 
+		displayWidth: 640,
+		displayHeight: 480,
+	}
+	//////////////////////////////////////////////////////////////////////////////
+	//		setParameters
+	//////////////////////////////////////////////////////////////////////////////
+	setParameters(parameters)
+	function setParameters(parameters){
+		if( parameters === undefined )	return
+		for( var key in parameters ){
+			var newValue = parameters[ key ]
+
+			if( newValue === undefined ){
+				console.warn( "THREEx.ArToolkitSource: '" + key + "' parameter is undefined." )
+				continue
+			}
+
+			var currentValue = _this.parameters[ key ]
+
+			if( currentValue === undefined ){
+				console.warn( "THREEx.ArToolkitSource: '" + key + "' is not a property of this material." )
+				continue
+			}
+
+			_this.parameters[ key ] = newValue
+		}
+	}	
 }
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitSource.prototype.init = function(onReady, onError){
+ARjs.Source.prototype.init = function(onReady, onError){
 	var _this = this
 
         if( this.parameters.sourceType === 'image' ){
@@ -3055,7 +3082,7 @@ THREEx.ArToolkitSource.prototype.init = function(onReady, onError){
 ////////////////////////////////////////////////////////////////////////////////
 
 
-THREEx.ArToolkitSource.prototype._initSourceImage = function(onReady) {
+ARjs.Source.prototype._initSourceImage = function(onReady) {
 	// TODO make it static
         var domElement = document.createElement('img')
 	domElement.src = this.parameters.sourceUrl
@@ -3080,7 +3107,7 @@ THREEx.ArToolkitSource.prototype._initSourceImage = function(onReady) {
 ////////////////////////////////////////////////////////////////////////////////
 
 
-THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
+ARjs.Source.prototype._initSourceVideo = function(onReady) {
 	// TODO make it static
 	var domElement = document.createElement('video');
 	domElement.src = this.parameters.sourceUrl
@@ -3117,12 +3144,12 @@ THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
 //          handle webcam source
 ////////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady, onError) {
+ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
 	var _this = this
-debugger
+
 	// init default value
 	onError = onError || function(error){	
-		alert('Cant init webcam due to '+error.message)
+		alert('Webcam Error\nName: '+error.name + '\nMessage: '+error.message)
 	}
 
 	var domElement = document.createElement('video');
@@ -3132,13 +3159,18 @@ debugger
 	domElement.style.width = this.parameters.displayWidth+'px'
 	domElement.style.height = this.parameters.displayHeight+'px'
 
+	// check API is available
 	if (navigator.mediaDevices === undefined 
 			|| navigator.mediaDevices.enumerateDevices === undefined 
 			|| navigator.mediaDevices.getUserMedia === undefined  ){
-		onError("WebRTC issue! navigator.mediaDevices.enumerateDevices not present in your browser")
+		onError({
+			name: '',
+			message: 'WebRTC issue! navigator.mediaDevices.enumerateDevices not present in your browser'
+		})
 		return
 	}
 
+	// get available devices
 	navigator.mediaDevices.enumerateDevices().then(function(devices) {
                 var userMediaConstraints = {
 			audio: false,
@@ -3156,6 +3188,7 @@ debugger
 				}
 		  	}
                 }
+		// get a device which satisfy the constraints
 		navigator.mediaDevices.getUserMedia(userMediaConstraints).then(function success(stream) {
 			// set the .src of the domElement
 			domElement.srcObject = stream;
@@ -3164,6 +3197,7 @@ debugger
 				domElement.play();
 			})
 			// domElement.play();
+
 // TODO listen to loadedmetadata instead
 			// wait until the video stream is ready
 			var interval = setInterval(function() {
@@ -3173,7 +3207,8 @@ debugger
 			}, 1000/50);
 		}).catch(function(error) {
 			onError({
-				message: "Can't access user media :()"
+				name: error.name,
+				message: error.message
 			});
 		});
 	}).catch(function(error) {
@@ -3188,7 +3223,7 @@ debugger
 //////////////////////////////////////////////////////////////////////////////
 //		Handle Mobile Torch
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitSource.prototype.hasMobileTorch = function(){
+ARjs.Source.prototype.hasMobileTorch = function(){
 	var stream = arToolkitSource.domElement.srcObject
 	if( stream instanceof MediaStream === false )	return false
 
@@ -3210,7 +3245,7 @@ THREEx.ArToolkitSource.prototype.hasMobileTorch = function(){
  * toggle the flash/torch of the mobile fun if applicable.
  * Great post about it https://www.oberhofer.co/mediastreamtrack-and-its-capabilities/
  */
-THREEx.ArToolkitSource.prototype.toggleMobileTorch = function(){
+ARjs.Source.prototype.toggleMobileTorch = function(){
 	// sanity check
 	console.assert(this.hasMobileTorch() === true)
 		
@@ -3246,7 +3281,7 @@ THREEx.ArToolkitSource.prototype.toggleMobileTorch = function(){
 //          handle resize
 ////////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArToolkitSource.prototype.onResizeElement = function(mirrorDomElements){
+ARjs.Source.prototype.onResizeElement = function(mirrorDomElements){
 	var _this = this
 	var screenWidth = window.innerWidth
 	var screenHeight = window.innerHeight
@@ -3304,7 +3339,7 @@ THREEx.ArToolkitSource.prototype.onResizeElement = function(mirrorDomElements){
 	})
 }
 
-THREEx.ArToolkitSource.prototype.copyElementSizeTo = function(otherElement){
+ARjs.Source.prototype.copyElementSizeTo = function(otherElement){
 	otherElement.style.width = this.domElement.style.width
 	otherElement.style.height = this.domElement.style.height	
 	otherElement.style.marginLeft = this.domElement.style.marginLeft
@@ -3315,7 +3350,7 @@ THREEx.ArToolkitSource.prototype.copyElementSizeTo = function(otherElement){
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArToolkitSource.prototype.copySizeTo = function(){
+ARjs.Source.prototype.copySizeTo = function(){
 	console.warn('obsolete function arToolkitSource.copySizeTo. Use arToolkitSource.copyElementSizeTo' )
 	this.copyElementSizeTo.apply(this, arguments)
 }
@@ -3324,13 +3359,14 @@ THREEx.ArToolkitSource.prototype.copySizeTo = function(){
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArToolkitSource.prototype.onResize	= function(arToolkitContext, renderer, camera){
-	var trackingBackend = arToolkitContext.parameters.trackingBackend
-	
+ARjs.Source.prototype.onResize	= function(arToolkitContext, renderer, camera){
 	if( arguments.length !== 3 ){
 		console.warn('obsolete function arToolkitSource.onResize. Use arToolkitSource.onResizeElement' )
 		return this.onResizeElement.apply(this, arguments)
 	}
+
+	var trackingBackend = arToolkitContext.parameters.trackingBackend
+	
 
 	// RESIZE DOMELEMENT
 	if( trackingBackend === 'artoolkit' ){

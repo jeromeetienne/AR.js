@@ -28,7 +28,8 @@
 <script src='../threex-armarkercontrols.js'></script>
 <script src='../threex-armarkerhelper.js'></script>
 <script src='../threex-arsmoothedcontrols.js'></script>
-<script src='../threex-arclickability.js'></script>
+<script src='../threex-hittester-plane.js'></script>
+<script src='../threex-hittester-tango.js'></script>
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
 <script src='multi-markers/threex-armultimarkerutils.js'></script>
@@ -37,8 +38,8 @@
 
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
-	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - switching between backend
-	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Session API demo with multi tracking and hit testing
+	- by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 	<br/>
 	Marker image 
 	<a href='../../data/images/hiro.jpg' target='_blank'>hiro for artoolkit</a>
@@ -65,7 +66,7 @@
 	<a href='javascript:void(0)' id='buttonMarkersAreaLearner'>Learn-new-marker-area</a>
 	<a href='javascript:void(0)' id='buttonMarkersAreaReset'>Reset-marker-area</a>
 </div><script>
-;(function(){
+// ;(function(){
 	// get tracking method from location.hash
 	var trackingMethod = location.hash.substring(1) ? location.hash.substring(1) : 'best'
 	
@@ -107,8 +108,8 @@
 	var arProfile = new ARjs.Profile()
 		.sourceWebcam()
 		.trackingMethod(trackingMethod)
-		// .changeMatrixMode('modelViewMatrix')
-		.changeMatrixMode('cameraTransformMatrix')
+		.changeMatrixMode('modelViewMatrix')
+		// .changeMatrixMode('cameraTransformMatrix')
 		.defaultMarker()
 		.checkIfValid()
 
@@ -131,7 +132,6 @@
 	//          Create a ARjs.Anchor
 	////////////////////////////////////////////////////////////////////////////////
 
-
 	var arAnchor = new ARjs.Anchor(arSession, arProfile.defaultMarkerParameters)
 	onRenderFcts.push(function(){
 		arAnchor.update()
@@ -140,7 +140,6 @@
 	//////////////////////////////////////////////////////////////////////////////
 	//                handle Hit Tester
 	//////////////////////////////////////////////////////////////////////////////
-
 	
 	var hitTester = new ARjs.HitTester(arSession)
 	onRenderFcts.push(function(){
@@ -195,11 +194,11 @@
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= 0.5
 	arWorldRoot.add( mesh );
-	
+
 	onRenderFcts.push(function(delta){
 		mesh.rotation.x += Math.PI*delta
 	})
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		Handle UI
 	//////////////////////////////////////////////////////////////////////////////
@@ -216,7 +215,7 @@
 	}else{
 		document.querySelector('#buttonTangoTogglePointCloud').style.display = 'none'
 	}
-	
+
 	if( arAnchor.parameters.markersAreaEnabled ){
 		var subMarkerHelpersVisible = false
 		document.querySelector('#buttonToggleMarkerHelpers').addEventListener('click', function(){
@@ -273,5 +272,5 @@
 			onRenderFct(deltaMsec/1000, nowMsec/1000)
 		})
 	})
-})()
+// })()
 </script></body>

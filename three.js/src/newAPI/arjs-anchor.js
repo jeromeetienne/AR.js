@@ -18,11 +18,14 @@ ARjs.Anchor = function(arSession, markerParameters){
 	
 	this.parameters = markerParameters
 	
-	console.log('ARjs.Anchor -', 'changeMatrixMode:', this.parameters.changeMatrixMode, 'markersAreaEnabled:', markerParameters.markersAreaEnabled)
+	// log to debug
+	console.log('ARjs.Anchor -', 'changeMatrixMode:', this.parameters.changeMatrixMode, '/ markersAreaEnabled:', markerParameters.markersAreaEnabled)
+
 
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
 
+	// set controlledObject depending on changeMatrixMode
 	if( markerParameters.changeMatrixMode === 'modelViewMatrix' ){
 		var controlledObject = markerRoot
 	}else if( markerParameters.changeMatrixMode === 'cameraTransformMatrix' ){
@@ -32,7 +35,7 @@ ARjs.Anchor = function(arSession, markerParameters){
 	if( markerParameters.markersAreaEnabled === false ){
 		var markerControls = new THREEx.ArMarkerControls(arContext, controlledObject, markerParameters)		
 	}else{
-		// sanity check
+		// sanity check - MUST be a trackingBackend with markers
 		console.assert( arContext.parameters.trackingBackend === 'artoolkit' || arContext.parameters.trackingBackend === 'aruco' )
 		// for multi marker
 		if( localStorage.getItem('ARjsMultiMarkerFile') === null ){
@@ -44,7 +47,10 @@ ARjs.Anchor = function(arSession, markerParameters){
 		var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
 
 		// build a multiMarkerControls
-		var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arContext, scene, markerRoot, multiMarkerFile)
+		var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arContext, scene, controlledObject, multiMarkerFile)
+		
+		// honor markerParameters.changeMatrixMode
+		multiMarkerControls.parameters.changeMatrixMode = markerParameters.changeMatrixMode
 
 		// create ArMarkerHelper - useful to debug
 		var markerHelpers = []
@@ -56,6 +62,7 @@ ARjs.Anchor = function(arSession, markerParameters){
 			// add it to markerHelpers
 			markerHelpers.push(markerHelper)
 		})
+		// define API specific to markersArea
 		this.markersArea = {}
 		this.markersArea.setSubMarkersVisibility = function(visible){
 			markerHelpers.forEach(function(markerHelper){
