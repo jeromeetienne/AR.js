@@ -1,5 +1,4 @@
 var ARjs = ARjs || {}
-
 var THREEx = THREEx || {}
 
 /**

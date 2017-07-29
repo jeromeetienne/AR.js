@@ -1,6 +1,7 @@
+var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
-THREEx.ArToolkitSource = function(parameters){	
+ARjs.Source = THREEx.ArToolkitSource = function(parameters){	
 	var _this = this
 
 	this.ready = false
@@ -49,7 +50,7 @@ THREEx.ArToolkitSource = function(parameters){
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitSource.prototype.init = function(onReady, onError){
+ARjs.Source.prototype.init = function(onReady, onError){
 	var _this = this
 
         if( this.parameters.sourceType === 'image' ){
@@ -85,7 +86,7 @@ THREEx.ArToolkitSource.prototype.init = function(onReady, onError){
 ////////////////////////////////////////////////////////////////////////////////
 
 
-THREEx.ArToolkitSource.prototype._initSourceImage = function(onReady) {
+ARjs.Source.prototype._initSourceImage = function(onReady) {
 	// TODO make it static
         var domElement = document.createElement('img')
 	domElement.src = this.parameters.sourceUrl
@@ -110,7 +111,7 @@ THREEx.ArToolkitSource.prototype._initSourceImage = function(onReady) {
 ////////////////////////////////////////////////////////////////////////////////
 
 
-THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
+ARjs.Source.prototype._initSourceVideo = function(onReady) {
 	// TODO make it static
 	var domElement = document.createElement('video');
 	domElement.src = this.parameters.sourceUrl
@@ -147,7 +148,7 @@ THREEx.ArToolkitSource.prototype._initSourceVideo = function(onReady) {
 //          handle webcam source
 ////////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady, onError) {
+ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
 	var _this = this
 
 	// init default value
@@ -226,7 +227,7 @@ THREEx.ArToolkitSource.prototype._initSourceWebcam = function(onReady, onError) 
 //////////////////////////////////////////////////////////////////////////////
 //		Handle Mobile Torch
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArToolkitSource.prototype.hasMobileTorch = function(){
+ARjs.Source.prototype.hasMobileTorch = function(){
 	var stream = arToolkitSource.domElement.srcObject
 	if( stream instanceof MediaStream === false )	return false
 
@@ -248,7 +249,7 @@ THREEx.ArToolkitSource.prototype.hasMobileTorch = function(){
  * toggle the flash/torch of the mobile fun if applicable.
  * Great post about it https://www.oberhofer.co/mediastreamtrack-and-its-capabilities/
  */
-THREEx.ArToolkitSource.prototype.toggleMobileTorch = function(){
+ARjs.Source.prototype.toggleMobileTorch = function(){
 	// sanity check
 	console.assert(this.hasMobileTorch() === true)
 		
@@ -284,7 +285,7 @@ THREEx.ArToolkitSource.prototype.toggleMobileTorch = function(){
 //          handle resize
 ////////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArToolkitSource.prototype.onResizeElement = function(mirrorDomElements){
+ARjs.Source.prototype.onResizeElement = function(mirrorDomElements){
 	var _this = this
 	var screenWidth = window.innerWidth
 	var screenHeight = window.innerHeight
@@ -342,7 +343,7 @@ THREEx.ArToolkitSource.prototype.onResizeElement = function(mirrorDomElements){
 	})
 }
 
-THREEx.ArToolkitSource.prototype.copyElementSizeTo = function(otherElement){
+ARjs.Source.prototype.copyElementSizeTo = function(otherElement){
 	otherElement.style.width = this.domElement.style.width
 	otherElement.style.height = this.domElement.style.height	
 	otherElement.style.marginLeft = this.domElement.style.marginLeft
@@ -353,7 +354,7 @@ THREEx.ArToolkitSource.prototype.copyElementSizeTo = function(otherElement){
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArToolkitSource.prototype.copySizeTo = function(){
+ARjs.Source.prototype.copySizeTo = function(){
 	console.warn('obsolete function arToolkitSource.copySizeTo. Use arToolkitSource.copyElementSizeTo' )
 	this.copyElementSizeTo.apply(this, arguments)
 }
@@ -362,13 +363,14 @@ THREEx.ArToolkitSource.prototype.copySizeTo = function(){
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArToolkitSource.prototype.onResize	= function(arToolkitContext, renderer, camera){
-	var trackingBackend = arToolkitContext.parameters.trackingBackend
-	
+ARjs.Source.prototype.onResize	= function(arToolkitContext, renderer, camera){
 	if( arguments.length !== 3 ){
 		console.warn('obsolete function arToolkitSource.onResize. Use arToolkitSource.onResizeElement' )
 		return this.onResizeElement.apply(this, arguments)
 	}
+
+	var trackingBackend = arToolkitContext.parameters.trackingBackend
+	
 
 	// RESIZE DOMELEMENT
 	if( trackingBackend === 'artoolkit' ){
