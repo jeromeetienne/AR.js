@@ -51,7 +51,7 @@ THREEx.ARClickability = function(sourceElement){
 	this._cameraPicking = new THREE.PerspectiveCamera(42, fullWidth / fullHeight, 0.1, 100);	
 
 console.warn('THREEx.ARClickability works only in modelViewMatrix')
-// TODO just push camera in computeIntersects
+console.warn('OBSOLETE OBSOLETE! instead use THREEx.HitTesterPlane or THREEx.HitTesterTango')
 }
 
 THREEx.ARClickability.prototype.onResize = function(){
@@ -90,6 +90,9 @@ THREEx.ARClickability.prototype.update = function(){
 //////////////////////////////////////////////////////////////////////////////
 
 THREEx.ARClickability.tangoPickingPointCloud = function(artoolkitContext, mouseX, mouseY){
+	
+// THIS IS CRAP!!!! use THREEx.HitTesterTango
+	
 	var vrDisplay = artoolkitContext._tangoContext.vrDisplay
         if (vrDisplay === null ) return null
         var pointAndPlane = vrDisplay.getPickingPointAndPlaneInPointCloud(mouseX, mouseY)
@@ -1897,6 +1900,187 @@ THREEx.ArVideoInWebgl = function(videoTexture){
 }
 var THREEx = THREEx || {}
 
+// TODO this is useless - prefere arjs-hittester.js
+
+/**
+ * - maybe support .onClickFcts in each object3d
+ * - seems an easy light layer for clickable object
+ * - up to 
+ */
+THREEx.HitTesterPlane = function(sourceElement){
+	this._sourceElement = sourceElement
+
+	// create _pickingScene
+	this._pickingScene = new THREE.Scene
+	
+	// create _pickingPlane
+	var geometry = new THREE.PlaneGeometry(20,20,19,19).rotateX(-Math.PI/2)
+	var geometry = new THREE.PlaneGeometry(20,20).rotateX(-Math.PI/2)
+	var material = new THREE.MeshBasicMaterial({
+		// opacity: 0.5,
+		// transparent: true,
+		wireframe: true
+	})
+	material.visible = false
+	this._pickingPlane = new THREE.Mesh(geometry, material)
+	this._pickingScene.add(this._pickingPlane)
+
+	// Create pickingCamera
+	var fullWidth = parseInt(sourceElement.style.width)
+	var fullHeight = parseInt(sourceElement.style.height)
+	// TODO hardcoded fov - couch
+	this._pickingCamera = new THREE.PerspectiveCamera(42, fullWidth / fullHeight, 0.1, 30);	
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+
+
+THREEx.HitTesterPlane.prototype.update = function(camera, pickingRoot, changeMatrixMode){
+
+	this.onResize()
+	
+
+	if( changeMatrixMode === 'modelViewMatrix' ){
+		// set pickingPlane position
+		var pickingPlane = this._pickingPlane
+		pickingRoot.parent.updateMatrixWorld()
+		pickingPlane.matrix.copy(pickingRoot.parent.matrixWorld)
+		// set position/quaternion/scale from pickingPlane.matrix
+		pickingPlane.matrix.decompose(pickingPlane.position, pickingPlane.quaternion, pickingPlane.scale)
+	}else if( changeMatrixMode === 'cameraTransformMatrix' ){
+		// set pickingPlane position
+		var pickingCamera = this._pickingCamera
+		camera.updateMatrixWorld()
+		pickingCamera.matrix.copy(camera.matrixWorld)
+		// set position/quaternion/scale from pickingCamera.matrix
+		pickingCamera.matrix.decompose(pickingCamera.position, pickingCamera.quaternion, pickingCamera.scale)
+	}else console.assert(false)
+
+
+// var position = this._pickingPlane.position
+// console.log('pickingPlane position', position.x.toFixed(2), position.y.toFixed(2), position.z.toFixed(2))
+// var position = this._pickingCamera.position
+// console.log('his._pickingCamera position', position.x.toFixed(2), position.y.toFixed(2), position.z.toFixed(2))
+	
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		resize camera
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.HitTesterPlane.prototype.onResize = function(){
+	var sourceElement = this._sourceElement
+	var pickingCamera = this._pickingCamera
+	
+// FIXME why using css here ??? not even computed style
+// should get the size of the elment directly independantly 
+	var fullWidth = parseInt(sourceElement.style.width)
+	var fullHeight = parseInt(sourceElement.style.height)
+	pickingCamera.aspect = fullWidth / fullHeight
+
+	pickingCamera.updateProjectionMatrix()
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Perform test
+//////////////////////////////////////////////////////////////////////////////
+THREEx.HitTesterPlane.prototype.test = function(mouseX, mouseY){
+	// convert mouseX, mouseY to [-1, +1]
+	mouseX = (mouseX-0.5)*2
+	mouseY =-(mouseY-0.5)*2
+	
+	this._pickingScene.updateMatrixWorld(true)
+
+	// compute intersections between mouseVector3 and pickingPlane
+	var raycaster = new THREE.Raycaster();
+	var mouseVector3 = new THREE.Vector3(mouseX, mouseY, 1);
+	raycaster.setFromCamera( mouseVector3, this._pickingCamera )
+	var intersects = raycaster.intersectObjects( [this._pickingPlane] )
+
+	if( intersects.length === 0 )	return null
+
+	// set new demoRoot position
+	var position = this._pickingPlane.worldToLocal( intersects[0].point.clone() )
+	// TODO here do a look at the camera ?
+	var quaternion = new THREE.Quaternion
+	var scale = new THREE.Vector3(1,1,1)//.multiplyScalar(1)
+	
+	return {
+		position : position,
+		quaternion : quaternion,
+		scale : scale
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		render the pickingPlane for debug
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.HitTesterPlane.prototype.renderDebug = function(renderer){
+	// render sceneOrtho
+	renderer.render( this._pickingScene, this._pickingCamera )
+}
+var THREEx = THREEx || {}
+
+/**
+ * @class
+ * 
+ * @return {[type]} [description]
+ */
+THREEx.HitTesterTango = function(arContext){
+	this._arContext = arContext
+	// seems to be the object bounding sphere for picking
+	this.boundingSphereRadius = 0.01
+	// default result scale
+	this.resultScale = new THREE.Vector3(1,1,1).multiplyScalar(0.1)
+}
+
+/**
+ * do the actual testing
+ * 
+ * @param {ARjs.Context} arContext - context to use
+ * @param {Number} mouseX    - mouse x coordinate in [0, 1]
+ * @param {Numer} mouseY    - mouse y coordinate in [0, 1]
+ * @return {Object} - result
+ */
+THREEx.HitTesterTango.test = function(mouseX, mouseY){
+	var vrDisplay = this._arContext._tangoContext.vrDisplay
+        if (vrDisplay === null ) return null
+	
+	if( vrDisplay.displayName !== "Tango VR Device" )	return null
+	
+        var pointAndPlane = vrDisplay.getPickingPointAndPlaneInPointCloud(mouseX, mouseY)
+        if( pointAndPlane == null ) {
+                console.warn('Could not retrieve the correct point and plane.')
+                return null
+        }
+	
+	// FIXME not sure what this is
+	var boundingSphereRadius = 0.01	
+	
+	// the bigger the number the likeliest it crash chromium-webar
+
+        // Orient and position the model in the picking point according
+        // to the picking plane. The offset is half of the model size.
+        var object3d = new THREE.Object3D
+        THREE.WebAR.positionAndRotateObject3DWithPickingPointAndPlaneInPointCloud(
+                pointAndPlane, object3d, this.boundingSphereRadius
+        )
+	object3d.rotateZ(-Math.PI/2)
+
+	// return the result
+	var result = {
+		position : object3d.position,
+		quaternion : object3d.quaternion,
+		scale : object3d.scale,
+	}
+
+	return result
+}
+var THREEx = THREEx || {}
+
 THREEx.ArMultiMarkerControls = function(arToolkitContext, object3d, parameters){
 	var _this = this
 	THREEx.ArBaseControls.call(this, object3d)
@@ -2833,82 +3017,57 @@ var ARjs = ARjs || {}
  */
 ARjs.HitTester = function(arSession){
 	var _this = this
-	this.arSession = arSession
-
-	var arContext = this.arSession.arContext
+	var arContext = arSession.arContext
 	var trackingBackend = arContext.parameters.trackingBackend
 
-	if( trackingBackend === 'tango' ){
-		// Do nothing...
-	}else{
-		arContext.addEventListener('initialized', function(event){
-			_this._arClickability = new THREEx.ARClickability(arSession.arSource.domElement)
-			_this._pickingScene = new THREE.Scene
-			
-			var geometry = new THREE.PlaneGeometry(20,20,19,19).rotateX(-Math.PI/2)
-			var geometry = new THREE.PlaneGeometry(20,20).rotateX(-Math.PI/2)
-			var material = new THREE.MeshBasicMaterial({
-				opacity: 0.5,
-				transparent: true,
-				wireframe: true
-			})
-			material.visible = false
-			_this._pickingPlane = new THREE.Mesh(geometry, material)
-			_this._pickingScene.add(_this._pickingPlane)
-		})		
-	}
-
-
-}
-
-
-ARjs.HitTester.prototype.update = function (camera, object3d) {
-	var arContext = this.arSession.arContext
-	var trackingBackend = arContext.parameters.trackingBackend
+	this._arSession = arSession
+	this._hitTesterPlane = null
+	this._hitTesterTango = null
 
 	if( trackingBackend === 'tango' ){
-		// Do nothing...
+		_this._hitTesterTango = new THREEx.HitTesterTango(arContext)
 	}else{
-		if( arContext.initialized === false )	return
-
-		this._arClickability.onResize()
-		
-		// // set cameraPicking position
-		var cameraPicking = this._arClickability._cameraPicking
-		// camera.updateMatrixWorld()
-		// cameraPicking.matrix.copy(object3d.matrixWorld)
-		// cameraPicking.matrix.decompose(cameraPicking.position, cameraPicking.quaternion, cameraPicking.scale)				
-
-
-		// set pickingPlane position
-		var pickingPlane = this._pickingPlane
-		object3d.parent.updateMatrixWorld()
-		pickingPlane.matrix.copy(object3d.parent.matrixWorld)
-		pickingPlane.matrix.decompose(pickingPlane.position, pickingPlane.quaternion, pickingPlane.scale)				
-
-// var position = pickingPlane.position
-// console.log('this._pickingPlane position', position.x.toFixed(2), position.y.toFixed(2), position.z.toFixed(2))
-// var position = cameraPicking.position
-// console.log('this.cameraPicking position', position.x.toFixed(2), position.y.toFixed(2), position.z.toFixed(2))
-
+		_this._hitTesterPlane = new THREEx.HitTesterPlane(arSession.arSource.domElement)
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////////
+//		update function
+//////////////////////////////////////////////////////////////////////////////
+/**
+ * update
+ * 
+ * @param {THREE.Camera} camera   - the camera to use
+ * @param {THREE.Object3D} object3d - 
+ */
+ARjs.HitTester.prototype.update = function (camera, pickingRoot, changeMatrixMode) {
+	if( this._hitTesterTango !== null ){
+		this._hitTesterTango.update()
+	}else if( this._hitTesterPlane !== null ){
+		this._hitTesterPlane.update(camera, pickingRoot, changeMatrixMode)
+	}else console.assert(false)
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		actual hit testing
+//////////////////////////////////////////////////////////////////////////////
 
 /**
- * Test the real world for intersections.
+ * Test the real world for intersections directly from a DomEvent
  * 
  * @param {Number} mouseX - position X of the hit [-1, +1]
  * @param {Number} mouseY - position Y of the hit [-1, +1]
  * @return {[ARjs.HitTester.Result]} - array of result
  */
 ARjs.HitTester.prototype.testDomEvent = function(domEvent){
-	var trackingBackend = this.arSession.arContext.parameters.trackingBackend
-	var arSource = this.arSession.arSource
+	var trackingBackend = this._arSession.arContext.parameters.trackingBackend
+	var arSource = this._arSession.arSource
 	
 	if( trackingBackend === 'tango' ){
         	var mouseX = domEvent.pageX / window.innerWidth
         	var mouseY = domEvent.pageY / window.innerHeight
 	}else{		
+		// FIXME should not use css!!!
 		var mouseX = domEvent.layerX / parseInt(arSource.domElement.style.width)
 		var mouseY = domEvent.layerY / parseInt(arSource.domElement.style.height)
 	}
@@ -2924,47 +3083,26 @@ ARjs.HitTester.prototype.testDomEvent = function(domEvent){
  * @return {[ARjs.HitTester.Result]} - array of result
  */
 ARjs.HitTester.prototype.test = function(mouseX, mouseY){
-	var arContext = this.arSession.arContext
+	var arContext = this._arSession.arContext
 	var trackingBackend = arContext.parameters.trackingBackend
 	var hitTestResults = []
 
+	var result = null
 	if( trackingBackend === 'tango' ){
-		var result = THREEx.ARClickability.tangoPickingPointCloud(arContext, mouseX, mouseY)
-		if( result !== null ){
-			var scale = new THREE.Vector3(1,1,1).multiplyScalar(0.1)
-			var hitTestResult = new ARjs.HitTester.Result(result.position, result.quaternion, scale)
-			hitTestResults.push(hitTestResult)
-		}		
+		var result = this._hitTesterTango.test(arContext, mouseX, mouseY)
 	}else{
-		
-		mouseX = (mouseX-0.5)*2
-		mouseY =-(mouseY-0.5)*2
-		
-		this._pickingScene.updateMatrixWorld(true)
-		// compute intersections between mouseVector3 and pickingPlane
-		var raycaster = new THREE.Raycaster();
-		var mouseVector3 = new THREE.Vector3(mouseX, mouseY, 1);
-		raycaster.setFromCamera( mouseVector3, this._arClickability._cameraPicking );
-		var intersects = raycaster.intersectObjects( [this._pickingPlane] )
-	
-		// if no intersection occurs, return now
-		if( intersects.length > 0 ){
-			// console.log('mouseX', mouseX, 'mouseY', mouseY)
-			// console.log(intersects[0].point)
-			// set new demoRoot position
-			var newPosition = this._pickingPlane.worldToLocal( intersects[0].point.clone() )
-			// console.log(newPosition)
-
-			var scale = new THREE.Vector3(1,1,1).multiplyScalar(1)
-			var hitTestResult = new ARjs.HitTester.Result(newPosition, new THREE.Quaternion, scale)
-			hitTestResults.push(hitTestResult)
-		}
+		var result = this._hitTesterPlane.test(mouseX, mouseY)
 	}
 			
-	// TODO use clickability
+	// if no result is found, return now
+	if( result === null )	return hitTestResults
+
+	// build a ARjs.HitTester.Result
+	var hitTestResult = new ARjs.HitTester.Result(result.position, result.quaternion, result.scale)
+	hitTestResults.push(hitTestResult)
+	
 	return hitTestResults
 }
-
 
 //////////////////////////////////////////////////////////////////////////////
 //		ARjs.HitTester.Result
@@ -2991,17 +3129,18 @@ var ARjs = ARjs || {}
 ARjs.Session = function(parameters){
 	var _this = this
 
+// TODO change that to a usual this.parameters
 	this.renderer = parameters.renderer
 	this.camera = parameters.camera
 	this.scene = parameters.scene
 	
 	// log the version
-	console.log('AR.js', THREEx.ArToolkitContext.REVISION, '- trackingBackend:', parameters.contextParameters.trackingBackend)
+	console.log('AR.js', ARjs.Context.REVISION, '- trackingBackend:', parameters.contextParameters.trackingBackend)
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		init arSource
 	//////////////////////////////////////////////////////////////////////////////
-	var arSource = _this.arSource = new THREEx.ArToolkitSource(parameters.sourceParameters)
+	var arSource = _this.arSource = new ARjs.Source(parameters.sourceParameters)
 
 	arSource.init(function onReady(){
 		arSource.onResize(arContext, _this.renderer, _this.camera)
@@ -3017,7 +3156,7 @@ ARjs.Session = function(parameters){
 	//////////////////////////////////////////////////////////////////////////////
 
 	// create atToolkitContext
-	var arContext = _this.arContext = new THREEx.ArToolkitContext(parameters.contextParameters)
+	var arContext = _this.arContext = new ARjs.Context(parameters.contextParameters)
 	
 	// initialize it
 	_this.arContext.init()

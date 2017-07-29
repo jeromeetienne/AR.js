@@ -8,17 +8,18 @@ var ARjs = ARjs || {}
 ARjs.Session = function(parameters){
 	var _this = this
 
+// TODO change that to a usual this.parameters
 	this.renderer = parameters.renderer
 	this.camera = parameters.camera
 	this.scene = parameters.scene
 	
 	// log the version
-	console.log('AR.js', THREEx.ArToolkitContext.REVISION, '- trackingBackend:', parameters.contextParameters.trackingBackend)
+	console.log('AR.js', ARjs.Context.REVISION, '- trackingBackend:', parameters.contextParameters.trackingBackend)
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		init arSource
 	//////////////////////////////////////////////////////////////////////////////
-	var arSource = _this.arSource = new THREEx.ArToolkitSource(parameters.sourceParameters)
+	var arSource = _this.arSource = new ARjs.Source(parameters.sourceParameters)
 
 	arSource.init(function onReady(){
 		arSource.onResize(arContext, _this.renderer, _this.camera)
@@ -34,7 +35,7 @@ ARjs.Session = function(parameters){
 	//////////////////////////////////////////////////////////////////////////////
 
 	// create atToolkitContext
-	var arContext = _this.arContext = new THREEx.ArToolkitContext(parameters.contextParameters)
+	var arContext = _this.arContext = new ARjs.Context(parameters.contextParameters)
 	
 	// initialize it
 	_this.arContext.init()

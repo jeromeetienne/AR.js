@@ -31,7 +31,7 @@
 <script src='../threex-hittester-plane.js'></script>
 <script src='../threex-hittester-tango.js'></script>
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
-
+<!-- include markers-area -->
 <script src='multi-markers/threex-armultimarkerutils.js'></script>
 <script src='multi-markers/threex-armultimarkercontrols.js'></script>
 <script src='multi-markers/threex-armultimarkerlearning.js'></script>
@@ -66,7 +66,7 @@
 	<a href='javascript:void(0)' id='buttonMarkersAreaLearner'>Learn-new-marker-area</a>
 	<a href='javascript:void(0)' id='buttonMarkersAreaReset'>Reset-marker-area</a>
 </div><script>
-// ;(function(){
+;(function(){
 	// get tracking method from location.hash
 	var trackingMethod = location.hash.substring(1) ? location.hash.substring(1) : 'best'
 	
@@ -143,7 +143,7 @@
 	
 	var hitTester = new ARjs.HitTester(arSession)
 	onRenderFcts.push(function(){
-		hitTester.update(camera, arAnchor.object3d)
+		hitTester.update(camera, arAnchor.object3d, arAnchor.parameters.changeMatrixMode)
 	})
 
 	// tango only - picking to set object position
@@ -255,6 +255,8 @@
 			tangoVideoMesh.render()
 		}
 		
+		hitTester._hitTesterPlane.renderDebug(renderer)
+		
 		renderer.render( scene, camera );
 	})
 	
@@ -272,5 +274,5 @@
 			onRenderFct(deltaMsec/1000, nowMsec/1000)
 		})
 	})
-// })()
+})()
 </script></body>

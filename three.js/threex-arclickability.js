@@ -15,7 +15,7 @@ THREEx.ARClickability = function(sourceElement){
 	this._cameraPicking = new THREE.PerspectiveCamera(42, fullWidth / fullHeight, 0.1, 100);	
 
 console.warn('THREEx.ARClickability works only in modelViewMatrix')
-// TODO just push camera in computeIntersects
+console.warn('OBSOLETE OBSOLETE! instead use THREEx.HitTesterPlane or THREEx.HitTesterTango')
 }
 
 THREEx.ARClickability.prototype.onResize = function(){
@@ -54,6 +54,9 @@ THREEx.ARClickability.prototype.update = function(){
 //////////////////////////////////////////////////////////////////////////////
 
 THREEx.ARClickability.tangoPickingPointCloud = function(artoolkitContext, mouseX, mouseY){
+	
+// THIS IS CRAP!!!! use THREEx.HitTesterTango
+	
 	var vrDisplay = artoolkitContext._tangoContext.vrDisplay
         if (vrDisplay === null ) return null
         var pointAndPlane = vrDisplay.getPickingPointAndPlaneInPointCloud(mouseX, mouseY)

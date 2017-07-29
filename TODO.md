@@ -10,6 +10,8 @@
 - refactor threex-screenasportal as a demo in /examples/markers-area/demo-screen-as-portal
   - this is not a threex
 
+- in arjs.session.js - TODO change that to a usual this.parameters
+
 - tango video fails
   - some post processing in aframe.js - https://github.com/wizgrav/aframe-effects/blob/master/systems/effects.js
   - it seems to override renderer.render by its own function... not super clean but if it works ok

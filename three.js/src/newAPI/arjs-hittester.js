@@ -12,29 +12,14 @@ ARjs.HitTester = function(arSession){
 	var arContext = arSession.arContext
 	var trackingBackend = arContext.parameters.trackingBackend
 
-	this.arSession = arSession
+	this._arSession = arSession
 	this._hitTesterPlane = null
 	this._hitTesterTango = null
 
-
 	if( trackingBackend === 'tango' ){
-		_this._hitTesterTango = new THREEx.HitTesterTango()
+		_this._hitTesterTango = new THREEx.HitTesterTango(arContext)
 	}else{
-		arContext.addEventListener('initialized', function(event){
-			_this._hitTesterPlane = new THREEx.HitTesterPlane(arSession.arSource.domElement)
-			_this._pickingScene = new THREE.Scene
-			
-			var geometry = new THREE.PlaneGeometry(20,20,19,19).rotateX(-Math.PI/2)
-			var geometry = new THREE.PlaneGeometry(20,20).rotateX(-Math.PI/2)
-			var material = new THREE.MeshBasicMaterial({
-				opacity: 0.5,
-				transparent: true,
-				wireframe: true
-			})
-			material.visible = false
-			_this._pickingPlane = new THREE.Mesh(geometry, material)
-			_this._pickingScene.add(_this._pickingPlane)
-		})		
+		_this._hitTesterPlane = new THREEx.HitTesterPlane(arSession.arSource.domElement)
 	}
 }
 
@@ -47,39 +32,12 @@ ARjs.HitTester = function(arSession){
  * @param {THREE.Camera} camera   - the camera to use
  * @param {THREE.Object3D} object3d - 
  */
-ARjs.HitTester.prototype.update = function (camera, object3d) {
-	var arContext = this.arSession.arContext
-	var trackingBackend = arContext.parameters.trackingBackend
-
+ARjs.HitTester.prototype.update = function (camera, pickingRoot, changeMatrixMode) {
 	if( this._hitTesterTango !== null ){
 		this._hitTesterTango.update()
 	}else if( this._hitTesterPlane !== null ){
-		
-		// TODO put that in a .update
-
-		if( arContext.initialized === false )	return
-
-		this._hitTesterPlane.onResize()
-		
-		// // set cameraPicking position
-		var cameraPicking = this._hitTesterPlane._cameraPicking
-		// camera.updateMatrixWorld()
-		// cameraPicking.matrix.copy(object3d.matrixWorld)
-		// cameraPicking.matrix.decompose(cameraPicking.position, cameraPicking.quaternion, cameraPicking.scale)				
-
-
-		// set pickingPlane position
-		var pickingPlane = this._pickingPlane
-		object3d.parent.updateMatrixWorld()
-		pickingPlane.matrix.copy(object3d.parent.matrixWorld)
-		pickingPlane.matrix.decompose(pickingPlane.position, pickingPlane.quaternion, pickingPlane.scale)				
-
-// var position = pickingPlane.position
-// console.log('this._pickingPlane position', position.x.toFixed(2), position.y.toFixed(2), position.z.toFixed(2))
-// var position = cameraPicking.position
-// console.log('this.cameraPicking position', position.x.toFixed(2), position.y.toFixed(2), position.z.toFixed(2))
-
-	}
+		this._hitTesterPlane.update(camera, pickingRoot, changeMatrixMode)
+	}else console.assert(false)
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -94,13 +52,14 @@ ARjs.HitTester.prototype.update = function (camera, object3d) {
  * @return {[ARjs.HitTester.Result]} - array of result
  */
 ARjs.HitTester.prototype.testDomEvent = function(domEvent){
-	var trackingBackend = this.arSession.arContext.parameters.trackingBackend
-	var arSource = this.arSession.arSource
+	var trackingBackend = this._arSession.arContext.parameters.trackingBackend
+	var arSource = this._arSession.arSource
 	
 	if( trackingBackend === 'tango' ){
         	var mouseX = domEvent.pageX / window.innerWidth
         	var mouseY = domEvent.pageY / window.innerHeight
 	}else{		
+		// FIXME should not use css!!!
 		var mouseX = domEvent.layerX / parseInt(arSource.domElement.style.width)
 		var mouseY = domEvent.layerY / parseInt(arSource.domElement.style.height)
 	}
@@ -116,44 +75,24 @@ ARjs.HitTester.prototype.testDomEvent = function(domEvent){
  * @return {[ARjs.HitTester.Result]} - array of result
  */
 ARjs.HitTester.prototype.test = function(mouseX, mouseY){
-	var arContext = this.arSession.arContext
+	var arContext = this._arSession.arContext
 	var trackingBackend = arContext.parameters.trackingBackend
 	var hitTestResults = []
 
+	var result = null
 	if( trackingBackend === 'tango' ){
-		var result = THREEx.ARClickability.tangoPickingPointCloud(arContext, mouseX, mouseY)
-		if( result !== null ){
-			var scale = new THREE.Vector3(1,1,1).multiplyScalar(0.1)
-			var hitTestResult = new ARjs.HitTester.Result(result.position, result.quaternion, scale)
-			hitTestResults.push(hitTestResult)
-		}		
+		var result = this._hitTesterTango.test(arContext, mouseX, mouseY)
 	}else{
-		
-		mouseX = (mouseX-0.5)*2
-		mouseY =-(mouseY-0.5)*2
-		
-		this._pickingScene.updateMatrixWorld(true)
-		// compute intersections between mouseVector3 and pickingPlane
-		var raycaster = new THREE.Raycaster();
-		var mouseVector3 = new THREE.Vector3(mouseX, mouseY, 1);
-		raycaster.setFromCamera( mouseVector3, this._hitTesterPlane._cameraPicking );
-		var intersects = raycaster.intersectObjects( [this._pickingPlane] )
-	
-		// if no intersection occurs, return now
-		if( intersects.length > 0 ){
-			// console.log('mouseX', mouseX, 'mouseY', mouseY)
-			// console.log(intersects[0].point)
-			// set new demoRoot position
-			var newPosition = this._pickingPlane.worldToLocal( intersects[0].point.clone() )
-			// console.log(newPosition)
-
-			var scale = new THREE.Vector3(1,1,1).multiplyScalar(1)
-			var hitTestResult = new ARjs.HitTester.Result(newPosition, new THREE.Quaternion, scale)
-			hitTestResults.push(hitTestResult)
-		}
+		var result = this._hitTesterPlane.test(mouseX, mouseY)
 	}
 			
-	// TODO use clickability
+	// if no result is found, return now
+	if( result === null )	return hitTestResults
+
+	// build a ARjs.HitTester.Result
+	var hitTestResult = new ARjs.HitTester.Result(result.position, result.quaternion, result.scale)
+	hitTestResults.push(hitTestResult)
+	
 	return hitTestResults
 }
 
