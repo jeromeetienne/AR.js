@@ -3,8 +3,8 @@
 */
 
 importScripts("../../vendor/jsartoolkit5/build/artoolkit.debug.js");
-importScripts("../../threex-artoolkitcontext.js");
-importScripts("../../threex-armarkercontrols.js");
+importScripts("../../src/threex/threex-artoolkitcontext.js");
+importScripts("../../src/threex/threex-armarkercontrols.js");
 
 
 onmessage = function(event) {

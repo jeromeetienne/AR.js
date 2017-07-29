@@ -8,7 +8,7 @@ build:
 		vendor/jsartoolkit5/js/artoolkit.api.js		\
 		threex/threex-aruco/build/threex-aruco.js	\
 		vendor/chromium-tango/THREE.WebAR.js		\
-		threex-*.js 					\
+		src/threex/*.js					\
 		src/new-api/*.js 				\
 		src/markers-area/*.js 				\
 		> build/ar.js
