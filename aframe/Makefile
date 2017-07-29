@@ -3,12 +3,9 @@ watch: build
 	
 .PHONY: build
 build:
-	cat ../three.js/threex*.js \
-		../three.js/examples/multi-markers/threex*.js \
-		../three.js/src/newAPI/*.js \
-		aframe-ar.js \
-		../three.js/vendor/jsartoolkit5/build/artoolkit.min.js \
-		../three.js/vendor/jsartoolkit5/js/artoolkit.api.js \
+	(cd ../three.js/ && make build)
+	cat 	../three.js/build/ar.js	\
+		aframe-ar.js 		\
 		> build/aframe-ar.js 
 
 minify: build

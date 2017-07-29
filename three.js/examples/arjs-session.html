@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
 <!-- three.js library -->
-<script src='../examples/vendor/three.js/build/three.min.js'></script>
+<script src='../examples/vendor/three.js/build/three.js'></script>
 <!-- include for artoolkit trackingBackend -->
 <script src='../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
 <script src='../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
@@ -15,12 +15,6 @@
 <!-- include for tango trackingBackend -->
 <script src='../vendor/chromium-tango/THREE.WebAR.js'></script>
 <!-- include ar.js -->
-<script src='../arjs-utils.js'></script>
-<script src='../src/newAPI/arjs-session.js'></script>
-<script src='../src/newAPI/arjs-anchor.js'></script>
-<script src='../src/newAPI/arjs-hittester.js'></script>
-<script src='../src/newAPI/arjs-tangovideomesh.js'></script>
-<script src='../src/newAPI/arjs-tangopointcloud.js'></script>
 <script src='../threex-artoolkitsource.js'></script>
 <script src='../threex-artoolkitcontext.js'></script>
 <script src='../threex-artoolkitprofile.js'></script>
@@ -30,12 +24,16 @@
 <script src='../threex-arsmoothedcontrols.js'></script>
 <script src='../threex-hittester-plane.js'></script>
 <script src='../threex-hittester-tango.js'></script>
-<script>THREEx.ArToolkitContext.baseURL = '../'</script>
-<!-- include markers-area -->
-<script src='multi-markers/threex-armultimarkerutils.js'></script>
-<script src='multi-markers/threex-armultimarkercontrols.js'></script>
-<script src='multi-markers/threex-armultimarkerlearning.js'></script>
-
+<script src='../arjs-utils.js'></script>
+<script src='../src/new-api/arjs-session.js'></script>
+<script src='../src/new-api/arjs-anchor.js'></script>
+<script src='../src/new-api/arjs-hittester.js'></script>
+<script src='../src/new-api/arjs-tangovideomesh.js'></script>
+<script src='../src/new-api/arjs-tangopointcloud.js'></script>
+<script src='../src/markers-area/threex-armultimarkerutils.js'></script>
+<script src='../src/markers-area/threex-armultimarkercontrols.js'></script>
+<script src='../src/markers-area/threex-armultimarkerlearning.js'></script>
+<script>ARjs.Context.baseURL = '../'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
 	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Session API demo with multi tracking and hit testing
@@ -77,8 +75,8 @@
 	
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
-		antialias: true,
-		alpha: true
+		antialias : true,
+		alpha : true
 	});
 	renderer.autoClear = false;
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
@@ -108,10 +106,16 @@
 	var arProfile = new ARjs.Profile()
 		.sourceWebcam()
 		.trackingMethod(trackingMethod)
-		.changeMatrixMode('modelViewMatrix')
+		// .changeMatrixMode(trackingMethod !== 'tango' ? 'modelViewMatrix' : 'cameraTransformMatrix')
+		// .changeMatrixMode('modelViewMatrix')
 		// .changeMatrixMode('cameraTransformMatrix')
 		.defaultMarker()
 		.checkIfValid()
+
+
+	if( arProfile.contextParameters.trackingBackend === 'tango' ){
+		arProfile.changeMatrixMode('cameraTransformMatrix')
+	}
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		build ARjs.Session
@@ -255,7 +259,11 @@
 			tangoVideoMesh.render()
 		}
 		
-		hitTester._hitTesterPlane.renderDebug(renderer)
+		// render hitTester pickingPlane - for debug
+		var renderHitTesterPickingPlane = true 
+		if( renderHitTesterPickingPlane && hitTester._hitTesterPlane){
+			hitTester._hitTesterPlane.renderDebug(renderer)
+		}
 		
 		renderer.render( scene, camera );
 	})

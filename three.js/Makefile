@@ -5,8 +5,10 @@ watch: build
 build: 
 	cat 	vendor/jsartoolkit5/build/artoolkit.min.js	\
 		vendor/jsartoolkit5/js/artoolkit.api.js		\
+		vendor/jsartoolkit5/js/artoolkit.api.js		\
 		threex-*.js 					\
-		examples/multi-markers/threex*.js		\
+		src/new-api/*.js 				\
+		src/markers-area/*.js 				\
 		> build/ar.js
 
 minify: build

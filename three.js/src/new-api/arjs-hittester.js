@@ -81,7 +81,7 @@ ARjs.HitTester.prototype.test = function(mouseX, mouseY){
 
 	var result = null
 	if( trackingBackend === 'tango' ){
-		var result = this._hitTesterTango.test(arContext, mouseX, mouseY)
+		var result = this._hitTesterTango.test(mouseX, mouseY)
 	}else{
 		var result = this._hitTesterPlane.test(mouseX, mouseY)
 	}

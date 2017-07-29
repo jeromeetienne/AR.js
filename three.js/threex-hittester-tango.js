@@ -13,6 +13,16 @@ THREEx.HitTesterTango = function(arContext){
 	this.resultScale = new THREE.Vector3(1,1,1).multiplyScalar(0.1)
 }
 
+//////////////////////////////////////////////////////////////////////////////
+//		update function
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.HitTesterTango.prototype.update = function(){
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
 /**
  * do the actual testing
  * 
@@ -21,7 +31,7 @@ THREEx.HitTesterTango = function(arContext){
  * @param {Numer} mouseY    - mouse y coordinate in [0, 1]
  * @return {Object} - result
  */
-THREEx.HitTesterTango.test = function(mouseX, mouseY){
+THREEx.HitTesterTango.prototype.test = function(mouseX, mouseY){
 	var vrDisplay = this._arContext._tangoContext.vrDisplay
         if (vrDisplay === null ) return null
 	
@@ -50,7 +60,7 @@ THREEx.HitTesterTango.test = function(mouseX, mouseY){
 	var result = {
 		position : object3d.position,
 		quaternion : object3d.quaternion,
-		scale : object3d.scale,
+		scale : this.resultScale,
 	}
 
 	return result

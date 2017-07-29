@@ -109,6 +109,8 @@ AFRAME.registerSystem('arjs', {
 			.performance(this.data.performanceProfile)
 			.defaultMarker()
 
+
+
 		//////////////////////////////////////////////////////////////////////////////
 		//		honor this.data and setup arProfile with it
 		//////////////////////////////////////////////////////////////////////////////
@@ -177,14 +179,14 @@ AFRAME.registerSystem('arjs', {
 
 					// clear it all
 					renderer.clear()
-					// render tangoVideoMesh
-					if( arProfile.contextParameters.trackingBackend === 'tango' ){
-			// FIXME fails somewhere
-						// render sceneOrtho
-						rendererRenderFct.call(renderer, tangoVideoMesh._sceneOrtho, tangoVideoMesh._cameraOrtho, renderTarget, forceClear)
-						// Render the perspective scene
-						renderer.clearDepth()		
-					}
+			// 		// render tangoVideoMesh
+			// 		if( arProfile.contextParameters.trackingBackend === 'tango' ){
+			// // FIXME fails somewhere
+			// 			// render sceneOrtho
+			// 			rendererRenderFct.call(renderer, tangoVideoMesh._sceneOrtho, tangoVideoMesh._cameraOrtho, renderTarget, forceClear)
+			// 			// Render the perspective scene
+						// renderer.clearDepth()		
+			// 		}
 
 					// render 3d scene
 					rendererRenderFct.call(renderer, scene, camera, renderTarget, forceClear);
@@ -357,6 +359,8 @@ AFRAME.registerComponent('arjsmarker', {
 				arProfile.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL+'examples/marker-training/examples/pattern-files/pattern-kanji.patt'
 				arProfile.defaultMarkerParameters.markersAreaEnabled = false
 			}else if( _this.data.preset === 'area' ){
+				arProfile.defaultMarkerParameters.type = 'barcode'
+				arProfile.defaultMarkerParameters.barcodeValue = 1001	
 				arProfile.defaultMarkerParameters.markersAreaEnabled = true
 			}else {
 				// console.assert( this.data.preset === '', 'illegal preset value '+this.data.preset)

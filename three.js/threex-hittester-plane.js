@@ -15,13 +15,13 @@ THREEx.HitTesterPlane = function(sourceElement){
 	
 	// create _pickingPlane
 	var geometry = new THREE.PlaneGeometry(20,20,19,19).rotateX(-Math.PI/2)
-	var geometry = new THREE.PlaneGeometry(20,20).rotateX(-Math.PI/2)
+	// var geometry = new THREE.PlaneGeometry(20,20).rotateX(-Math.PI/2)
 	var material = new THREE.MeshBasicMaterial({
 		// opacity: 0.5,
 		// transparent: true,
 		wireframe: true
 	})
-	material.visible = false
+	// material.visible = false
 	this._pickingPlane = new THREE.Mesh(geometry, material)
 	this._pickingScene.add(this._pickingPlane)
 
@@ -33,9 +33,8 @@ THREEx.HitTesterPlane = function(sourceElement){
 }
 
 //////////////////////////////////////////////////////////////////////////////
-//		Code Separator
+//		update function
 //////////////////////////////////////////////////////////////////////////////
-
 
 THREEx.HitTesterPlane.prototype.update = function(camera, pickingRoot, changeMatrixMode){
 

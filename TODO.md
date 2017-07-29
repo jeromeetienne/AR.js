@@ -1,5 +1,37 @@
 ## New API - aframe
 - honor marker preset
+  - hiro + kanji and area
+  - old issue with the same markers ?? deep in jsartoolkit
+  
+- it seems there is a track where stuff works better
+  - modelViewMatrix if not tango
+  - cameraTransformMatrix if tango
+
+- aframe api ? there is marker everywhere... change that ?
+  - <ar-camera> ?
+  - <ar-anchor>
+
+- implement picking in aframe
+  - first make it works
+  - then find a good API
+  - <ar-hittester enabled='true' renderDebug='false'> inside the controlled object
+
+- buttons aframe doesnt work 
+  - how to create the scene dynamically in aframe
+  - handle that with a reload
+
+- REFACTOR trackingMethod - should i put changeMatrixMode into trackingMethod ?
+  - it is needed for all the test and all
+  - what is trackingMethod ? it is unclear and messy
+  - it need to be sorted out
+  - currently it is only in arProfile... could it be like a profile-string - a preset
+  - not something real... it seems too magic/hackish
+  - markers-area and changeMatrixMode are about arAnchor
+    - hiro-cameraTransformMatrix
+    - area-artoolkit-modelViewMatrix
+    - area-aruco-cameraTransformMatrix
+    - what is it on tango ? some fictuous barcode ?
+  - trackingBackend is about the session
 
 - artoolkit modelViewMatrix/cameraTransformMatrix works
 
@@ -21,6 +53,7 @@
   - tracking only tho, clearly no video
 
 - LATER aruco got perspective issue - likely camera init
+- DONE markerhelper fails IF changeMatrixMode===cameraTransformMatrix
 
 
 ## New API
@@ -77,8 +110,14 @@
   - button - goto-learner
 - DONE tango point cloud visible
 
+## New build with multiple tracking
+- support all tracking but split the build
+- ar.js itself
+- ar-tracking-artoolkit.js
+- ar-tracking-aruco.js
+- ar-tracking-tango.js
 
-## New API - no three.js dependancy
+## Remove three.js dependancy
 - first remove it externally
 - then remove it internally
 - get ride of three.js dependancy 

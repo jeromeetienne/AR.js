@@ -61,44 +61,46 @@
 		<a href='javascript:void(0)' id='buttonMarkersAreaLearner'>Learn-new-marker-area</a>
 		<a href='javascript:void(0)' id='buttonMarkersAreaReset'>Reset-marker-area</a>
 	</div>
+<script>
+	var trackingMethod = 'best'
+	
 
-	<!-- <a-scene embedded arjs='trackingMethod: best; debugUIEnabled: true;'>
-		<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
-		<a-marker-camera></a-marker-camera>
-	</a-scene> -->
+	var sceneEl = document.createElement('a-scene')
+	sceneEl.setAttribute('embedded', 'true')
+	sceneEl.setAttribute('arjs', 'trackingMethod: '+trackingMethod)
 
 
-	<!-- artoolkit modelViewMatrix : OK -->
-	<!-- <a-scene embedded arjs='trackingMethod: area-artoolkit; debugUIEnabled: true;'>
-		<a-marker preset='area'>
-			<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
-		</a-marker>
-		<a-entity camera></a-entity>
-	</a-scene> -->
+	var parsedTrackingMethod = ARjs.Utils.parseTrackingMethod(trackingMethod)
+	if( parsedTrackingMethod.trackingBackend === 'tango' ){
+		var changeMatrixMode = 'cameraTransformMatrix'
+	}else{
+		var changeMatrixMode = 'modelViewMatrix'		
+	}
 
-	<!-- artoolkit cameraTransformMatrix : OK -->
-	<!-- <a-scene embedded arjs='trackingMethod: area-artoolkit; debugUIEnabled: true;'>
-		<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
-		<a-marker-camera preset='area'></a-marker-camera>
-	</a-scene> -->
+	if( changeMatrixMode === 'modelViewMatrix' ){
+		var markerEl = document.createElement('a-marker')
+		sceneEl.appendChild(markerEl)
 
-	<!-- artoolkit cameraTransformMatrix : FAILS -->
-	<!-- <a-scene embedded arjs='trackingMethod: artoolkit;'>
-		<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
-		<a-marker-camera preset='kanji'></a-marker-camera>
-	</a-scene> -->
+		var boxEl = document.createElement('a-box')
+		boxEl.setAttribute('position', '0 0.5 0')
+		boxEl.setAttribute('material', 'opacity: 0.5; side:double; color:red;')
+		markerEl.appendChild(boxEl)
+		
+		var cameraEl = document.createElement('a-entity')
+		cameraEl.setAttribute('camera', '')
+		sceneEl.appendChild(cameraEl)
+	}else if( changeMatrixMode === 'cameraTransformMatrix' ){
+		var boxEl = document.createElement('a-box')
+		boxEl.setAttribute('position', '0 0.5 0')
+		boxEl.setAttribute('material', 'opacity: 0.5; side:double; color:red;')
+		sceneEl.appendChild(boxEl)
+		
+		var cameraEl = document.createElement('a-marker-camera')
+		sceneEl.appendChild(cameraEl)
+	}else console.assert(false)
 
-	<!-- tango cameraTransformMatrix : OK -->
-	<a-scene embedded arjs='trackingMethod: tango'>
-		<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
-		<a-marker-camera></a-marker-camera>
-	</a-scene>
-
-	<!-- <a-scene embedded arjs='trackingMethod: tango'>
-		<a-marker>
-			<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
-		</a-marker>
-		<a-entity camera></a-entity>
-	</a-scene> -->
+	
+	document.body.appendChild(sceneEl)
+</script>
 </body>
 </html>

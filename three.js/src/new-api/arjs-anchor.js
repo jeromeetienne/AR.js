@@ -39,15 +39,22 @@ ARjs.Anchor = function(arSession, markerParameters){
 		console.assert( arContext.parameters.trackingBackend === 'artoolkit' || arContext.parameters.trackingBackend === 'aruco' )
 		// for multi marker
 		if( localStorage.getItem('ARjsMultiMarkerFile') === null ){
-			THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(arContext.parameters.trackingBackend)
+			ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile(arContext.parameters.trackingBackend)
 		}
 		
 		// get multiMarkerFile from localStorage
 		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
 		var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
 
+		// set controlledObject depending on changeMatrixMode
+		if( markerParameters.changeMatrixMode === 'modelViewMatrix' ){
+			var parent3D = scene
+		}else if( markerParameters.changeMatrixMode === 'cameraTransformMatrix' ){
+			var parent3D = camera
+		}else console.assert(false)
+	
 		// build a multiMarkerControls
-		var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arContext, scene, controlledObject, multiMarkerFile)
+		var multiMarkerControls = ARjs.MarkersAreaControls.fromJSON(arContext, parent3D, controlledObject, multiMarkerFile)
 		
 		// honor markerParameters.changeMatrixMode
 		multiMarkerControls.parameters.changeMatrixMode = markerParameters.changeMatrixMode
@@ -58,6 +65,7 @@ ARjs.Anchor = function(arSession, markerParameters){
 			// add an helper to visuable each sub-marker
 			var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
 			markerHelper.object3d.visible = false
+			// subMarkerControls.object3d.add( markerHelper.object3d )		
 			subMarkerControls.object3d.add( markerHelper.object3d )		
 			// add it to markerHelpers
 			markerHelpers.push(markerHelper)
