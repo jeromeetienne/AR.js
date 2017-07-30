@@ -7,7 +7,8 @@
 - buttons aframe doesnt work 
   - how to create the scene dynamically in aframe
   - handle that with a reload
-
+- better handling of the area stuff
+  - 
 
 
 
@@ -26,10 +27,15 @@
 - REFACTOR trackingMethod - should i put changeMatrixMode into trackingMethod ?
   - it is needed for all the test and all
   - what is trackingMethod ? it is unclear and messy
+  - trackingMethod = trackingBackend + defaultAnchorDefinition
+  - why single string ? when it is actually 2 things
+  - {trackingBackend}/{defaultAnchorType}-{changeMatrixMode}-{smoothed}
+  - smoothed controls need to be a parameter
   - it need to be sorted out
   - currently it is only in arProfile... could it be like a profile-string - a preset
   - not something real... it seems too magic/hackish
   - markers-area and changeMatrixMode are about arAnchor
+    - (artoolkit|aruco|tango)-(area|hiro|kanji)(modelViewMatrix|cameraTransformMatrix)(-Smoothed)+
     - hiro-cameraTransformMatrix
     - area-artoolkit-modelViewMatrix
     - area-aruco-cameraTransformMatrix
