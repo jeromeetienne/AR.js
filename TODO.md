@@ -7,9 +7,10 @@
 - buttons aframe doesnt work 
   - how to create the scene dynamically in aframe
   - handle that with a reload
-- better handling of the area stuff
+- better handling of the area stuff in trackingMethod
   - 
-
+- FIXME in aframe, i define .initialised but aframe defined .initialized..!?!?! super error prone
+  - rename as in isReady ? better than nothing. good for now
 
 
 - honor marker preset
@@ -128,6 +129,8 @@
 
 ## Remove three.js dependancy
 - first remove it externally
+  - find all dependancy to three.js in the ar-session API
+  - 
 - then remove it internally
 - get ride of three.js dependancy 
   - first arjs session API not to use any three.js specific
