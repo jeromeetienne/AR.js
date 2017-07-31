@@ -3,6 +3,7 @@
   - make one build for external tracking
   - one build for pure ar.js
   - would that work ?
+  - it worked beofre... with aframe. why it doesnt work anymore ?
 
 - do a button - display-hittester-plane
   - in three.js and in aframe.js

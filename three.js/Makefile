@@ -7,13 +7,10 @@ build:
 	cat	src/threex/*.js					\
 		src/new-api/*.js 				\
 		src/markers-area/*.js 				>> build/ar.js
-	# cat 	vendor/jsartoolkit5/build/artoolkit.min.js	\
-	# 	vendor/jsartoolkit5/js/artoolkit.api.js		>> build/ar.js
-	# cat	src/threex/threex-aruco/build/threex-aruco.js	>> build/ar.js
-	# cat	vendor/chromium-tango/THREE.WebAR.js		>> build/ar.js
 	cat 	vendor/jsartoolkit5/build/artoolkit.min.js	\
-		vendor/jsartoolkit5/js/artoolkit.api.js		\
-		> build/ar-tracking-artoolkit.js
+		vendor/jsartoolkit5/js/artoolkit.api.js		>> build/ar.js
+	cat	src/threex/threex-aruco/build/threex-aruco.js	>> build/ar.js
+	cat	vendor/chromium-tango/THREE.WebAR.js		>> build/ar.js
 
 .PHONY: build
 
