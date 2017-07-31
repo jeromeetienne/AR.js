@@ -3,9 +3,6 @@
   - make one build for external tracking
   - one build for pure ar.js
   - would that work ?
-- <a-anchor hit-testing-enabled='true'>
-  </a-anchor>
-
 
 - do a button - display-hittester-plane
   - in three.js and in aframe.js
@@ -70,6 +67,7 @@
 - refactor threex-screenasportal as a demo in /examples/markers-area/demo-screen-as-portal
   - this is not a threex
 
+- DONE <a-anchor hit-testing-enabled='true'></a-anchor>
 - DONE implement picking in aframe
   - first make it works, then find a good API
   - <ar-hittester enabled='true' renderDebug='false'> inside the controlled object

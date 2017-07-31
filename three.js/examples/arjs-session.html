@@ -4,18 +4,18 @@
 <script src='../examples/vendor/three.js/build/three.js'></script>
 <!-- include for artoolkit trackingBackend -->
 <script src='../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
-<script src='../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
+<!-- <script src='../vendor/jsartoolkit5/js/artoolkit.api.js'></script> -->
 <!-- include for aruco trackingBackend -->
-<script src='../vendor/js-aruco/src/svd.js'></script>
+<!-- <script src='../vendor/js-aruco/src/svd.js'></script>
 <script src='../vendor/js-aruco/src/posit1.js'></script>
 <script src='../vendor/js-aruco/src/cv.js'></script>
 <script src='../vendor/js-aruco/src/aruco.js'></script>
 <script src='../src/threex/threex-aruco/threex-arucocontext.js'></script>
-<script src='../src/threex/threex-aruco/threex-arucodebug.js'></script>
+<script src='../src/threex/threex-aruco/threex-arucodebug.js'></script> -->
 <!-- include for tango trackingBackend -->
-<script src='../vendor/chromium-tango/THREE.WebAR.js'></script>
+<!-- <script src='../vendor/chromium-tango/THREE.WebAR.js'></script> -->
 <!-- include ar.js -->
-<script src='../src/threex/threex-artoolkitsource.js'></script>
+<!-- <script src='../src/threex/threex-artoolkitsource.js'></script>
 <script src='../src/threex/threex-artoolkitcontext.js'></script>
 <script src='../src/threex/threex-artoolkitprofile.js'></script>
 <script src='../src/threex/threex-arbasecontrols.js'></script>
@@ -33,8 +33,10 @@
 <script src='../src/new-api/arjs-debugui.js'></script>
 <script src='../src/markers-area/threex-armultimarkerutils.js'></script>
 <script src='../src/markers-area/threex-armultimarkercontrols.js'></script>
-<script src='../src/markers-area/threex-armultimarkerlearning.js'></script>
+<script src='../src/markers-area/threex-armultimarkerlearning.js'></script> -->
 
+<!-- <script src="../build/ar-tracking-artoolkit.js"></script> -->
+<script src="../build/ar.js"></script>
 
 <script>ARjs.Context.baseURL = '../'</script>
 
@@ -47,9 +49,7 @@
 	/
 	<a href='../../three.js/threex/threex-aruco/examples/images/1001.png' target='_blank'>1001 for aruco</a>
 	<br/>
-	<strong>Tracking Method:</strong> <span id='trackingMethod'>unknown</span>
-	- 
-	Switch to : 
+	<strong>Tracking Backend:</strong> 
 	<a href='#artoolkit' onclick='location.reload()'>artoolkit</a>
 	/ 
 	<a href='#aruco' onclick='location.reload()'>aruco</a>
@@ -61,8 +61,7 @@
 	<a href='#tango' onclick='location.reload()'>tango</a>
 	/ 
 	<a href='#best' onclick='location.reload()'>best</a>
-	<br/>
-	<div id="debugUIContainer"></div>
+	<div id="arjsDebugUIContainer"></div>
 </div><script>
 ;(function(){
 	// get tracking method from location.hash
@@ -210,10 +209,10 @@
 	//////////////////////////////////////////////////////////////////////////////
 
 	var sessionDebugUI = new ARjs.SessionDebugUI(arSession)
-	document.querySelector('#debugUIContainer').appendChild(sessionDebugUI.domElement)
+	document.querySelector('#arjsDebugUIContainer').appendChild(sessionDebugUI.domElement)
 
 	var anchorDebugUI = new ARjs.AnchorDebugUI(arAnchor)
-	document.querySelector('#debugUIContainer').appendChild(anchorDebugUI.domElement)
+	document.querySelector('#arjsDebugUIContainer').appendChild(anchorDebugUI.domElement)
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
