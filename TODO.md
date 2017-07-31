@@ -3,17 +3,19 @@
   - how to create the scene dynamically in aframe
   - handle that with a reload
 
-- rename HitTester into HitTesting
-
 - do a button - display-hittester-plane
   - in three.js and in aframe.js
 
 - maybe a class arjs-session-debugui.js
   - create the UI
   - let user attach it to the dom
-  
-- rename arjsmarker aframe component into arjs-anchor
-  - with backward compatibility ? no need
+
+
+- FIXME in aframe, i define .initialised but aframe defined .initialized..!?!?! super error prone
+  - rename as in isReady ? better than nothing. good for now
+
+- aframe - make hit-testing a arjs-anchor property
+  - not a full component  
 
 - implement working build
   - apparently some issue if artoolkit is included in the build
@@ -21,24 +23,13 @@
   - what if i change the order of the scripts
 
 
-- implement picking in aframe
-  - first make it works
-  - then find a good API
-  - <ar-hittester enabled='true' renderDebug='false'> inside the controlled object
-
 - better handling of the area stuff in trackingMethod
 
-- FIXME in aframe, i define .initialised but aframe defined .initialized..!?!?! super error prone
-  - rename as in isReady ? better than nothing. good for now
 
 - honor marker preset
   - hiro + kanji and area
   - old issue with the same markers ?? deep in jsartoolkit
   
-- it seems there is a track where stuff works better
-  - modelViewMatrix if not tango
-  - cameraTransformMatrix if tango
-
 - aframe api ? there is marker everywhere... change that ?
   - <ar-camera> ?
   - <ar-anchor>
@@ -71,10 +62,13 @@
 - refactor threex-screenasportal as a demo in /examples/markers-area/demo-screen-as-portal
   - this is not a threex
 
-- in arjs.session.js - TODO change that to a usual this.parameters
+- DONE implement picking in aframe
+  - first make it works, then find a good API
+  - <ar-hittester enabled='true' renderDebug='false'> inside the controlled object
+- DONE in arjs.session.js - TODO change that to a usual this.parameters
   - do emulation layer with display
-
-
+- DONE rename arjsmarker aframe component into arjs-anchor
+- DONE rename HitTester into HitTesting
 - LATER aruco got perspective issue - likely camera init
 - DONE markerhelper fails IF changeMatrixMode===cameraTransformMatrix
 - DONE tango video fails

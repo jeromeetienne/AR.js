@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////////
-//		arjsmarker
+//		arjs-hit-testing
 //////////////////////////////////////////////////////////////////////////////
 AFRAME.registerComponent('arjs-hit-testing', {
 	dependencies: ['arjs', 'artoolkit'],
@@ -27,7 +27,7 @@ AFRAME.registerComponent('arjs-hit-testing', {
 		var startedAt = Date.now()
 		var timerId = setInterval(function(){
 			var anchorEl = _this.el
-			var arjsMarker = anchorEl.components.arjsmarker
+			var arjsMarker = anchorEl.components['arjs-anchor']
 			// wait until arjsMarker is initialised
 			if( arjsMarker === undefined || arjsMarker.initialised === false )	return
 
@@ -67,7 +67,7 @@ AFRAME.registerComponent('arjs-hit-testing', {
 		var arSession = arjsSystem._arSession
 
 		var anchorEl = _this.el
-		var arjsMarker = anchorEl.components.arjsmarker
+		var arjsMarker = anchorEl.components['arjs-anchor']
 		var arAnchor = arjsMarker._arAnchor
 		
 

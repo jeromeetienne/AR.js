@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////
-//		arjsmarker
+//		arjs-anchor
 //////////////////////////////////////////////////////////////////////////////
-AFRAME.registerComponent('arjsmarker', {
+AFRAME.registerComponent('arjs-anchor', {
 	dependencies: ['arjs', 'artoolkit'],
 	schema: {
 		preset: {
@@ -176,34 +176,34 @@ AFRAME.registerComponent('arjsmarker', {
 
 AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
 	defaultComponents: {
-		'arjsmarker': {},
+		'arjs-anchor': {},
 	},
 	mappings: {
-		'type': 'arjsmarker.type',
-		'size': 'arjsmarker.size',
-		'url': 'arjsmarker.patternUrl',
-		'value': 'arjsmarker.barcodeValue',
-		'preset': 'arjsmarker.preset',
-		'minConfidence': 'arjsmarker.minConfidence',
-		'markerhelpers': 'arjsmarker.markerhelpers',
+		'type': 'arjs-anchor.type',
+		'size': 'arjs-anchor.size',
+		'url': 'arjs-anchor.patternUrl',
+		'value': 'arjs-anchor.barcodeValue',
+		'preset': 'arjs-anchor.preset',
+		'minConfidence': 'arjs-anchor.minConfidence',
+		'markerhelpers': 'arjs-anchor.markerhelpers',
 	}
 }));
 
 AFRAME.registerPrimitive('a-marker-camera', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
 	defaultComponents: {
-		'arjsmarker': {
+		'arjs-anchor': {
 			changeMatrixMode: 'cameraTransformMatrix'
 		},
 		'camera': {},
 	},
 	mappings: {
-		'type': 'arjsmarker.type',
-		'size': 'arjsmarker.size',
-		'url': 'arjsmarker.patternUrl',
-		'value': 'arjsmarker.barcodeValue',
-		'preset': 'arjsmarker.preset',
-		'minConfidence': 'arjsmarker.minConfidence',
-		'markerhelpers': 'arjsmarker.markerhelpers',
+		'type': 'arjs-anchor.type',
+		'size': 'arjs-anchor.size',
+		'url': 'arjs-anchor.patternUrl',
+		'value': 'arjs-anchor.barcodeValue',
+		'preset': 'arjs-anchor.preset',
+		'minConfidence': 'arjs-anchor.minConfidence',
+		'markerhelpers': 'arjs-anchor.markerhelpers',
 	}
 }));
 
