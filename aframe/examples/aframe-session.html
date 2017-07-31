@@ -30,6 +30,7 @@
 <script src='../../three.js/src/new-api/arjs-hittesting.js'></script>
 <script src='../../three.js/src/new-api/arjs-tangovideomesh.js'></script>
 <script src='../../three.js/src/new-api/arjs-tangopointcloud.js'></script>
+<script src='../../three.js/src/new-api/arjs-debugui.js'></script>
 <script src='../../three.js/src/markers-area/threex-armultimarkerutils.js'></script>
 <script src='../../three.js/src/markers-area/threex-armultimarkercontrols.js'></script>
 <script src='../../three.js/src/markers-area/threex-armultimarkerlearning.js'></script>
@@ -59,30 +60,15 @@
 		/ 
 		<a href='#best' onclick='location.reload()'>best</a>
 		<br/>
-		<a href='javascript:void(0)' id='buttonTangoTogglePointCloud'>toggle-point-cloud</a>
-		<a href='javascript:void(0)' id='buttonToggleMarkerHelpers'>toggle-marker-helper</a>
-		<a href='javascript:void(0)' id='buttonMarkersAreaLearner'>Learn-new-marker-area</a>
-		<a href='javascript:void(0)' id='buttonMarkersAreaReset'>Reset-marker-area</a>
+		<br/>
+		<div id="arjsDebugUIContainer"></div>
 	</div>
 
-	<a-scene embedded arjs='trackingMethod: best; debugUIEnabled: true;'>
-
-		<a-entity arjs-anchor arjs-hit-testing>
-			<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
-		</a-entity>
-
-		<a-entity camera></a-entity>
-
-
-		<!-- <a-anchor hit-testing='false'>
+	<a-scene embedded arjs='trackingMethod: best'>
+		<a-anchor hit-testing-enabled='true'>
 			<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
 		</a-anchor>
-		<a-camera-static></a-camera-static> -->
-
-		<!-- <a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
-		<a-marker-camera preset='area'>
-			<a-hit-tester/>
-		</a-marker-camera> -->
+		<a-camera-static/>
 	</a-scene>
 
 

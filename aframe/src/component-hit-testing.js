@@ -38,7 +38,7 @@ AFRAME.registerComponent('arjs-hit-testing', {
 			//////////////////////////////////////////////////////////////////////////////
 			var arAnchor = arjsMarker._arAnchor
 			var arSession = arjsSystem._arSession
-			var renderer = arSession.renderer
+			var renderer = arSession.parameters.renderer
 
 			var hitTester = _this._arHitTesting = new ARjs.HitTesting(arSession)
 			
@@ -77,17 +77,3 @@ AFRAME.registerComponent('arjs-hit-testing', {
 		hitTester.update(camera, arAnchor.object3d, arAnchor.parameters.changeMatrixMode)
 	}
 });
-
-//////////////////////////////////////////////////////////////////////////////
-//                define some primitives shortcuts
-//////////////////////////////////////////////////////////////////////////////
-
-AFRAME.registerPrimitive('a-hit-testing', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
-	defaultComponents: {
-		'arjs-hit-testing': {},
-	},
-	mappings: {
-		'enabled': 'arjs-hit-testing.enabled',
-		'renderDebug': 'arjs-hit-testing.renderDebug',
-	}
-}));

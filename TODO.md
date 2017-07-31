@@ -1,27 +1,35 @@
 ## New API - aframe
-- buttons aframe doesnt work 
-  - how to create the scene dynamically in aframe
-  - handle that with a reload
+- to fix build file...
+  - make one build for external tracking
+  - one build for pure ar.js
+  - would that work ?
+- <a-anchor hit-testing-enabled='true'>
+  </a-anchor>
+
 
 - do a button - display-hittester-plane
   - in three.js and in aframe.js
+- remove the area from the trackingMethod
 
 - maybe a class arjs-session-debugui.js
   - create the UI
   - let user attach it to the dom
 
+- buttons aframe doesnt work 
+  - in arjs system, debugUIEnabled = true/false
+  - how to create the scene dynamically in aframe
+  - handle that with a reload
 
 - FIXME in aframe, i define .initialised but aframe defined .initialized..!?!?! super error prone
   - rename as in isReady ? better than nothing. good for now
 
 - aframe - make hit-testing a arjs-anchor property
-  - not a full component  
+  - not a full component. easier for the user
 
 - implement working build
   - apparently some issue if artoolkit is included in the build
   - it worked in aframe before... what is happening
   - what if i change the order of the scripts
-
 
 - better handling of the area stuff in trackingMethod
 

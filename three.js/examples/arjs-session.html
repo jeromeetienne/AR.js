@@ -30,6 +30,7 @@
 <script src='../src/new-api/arjs-hittesting.js'></script>
 <script src='../src/new-api/arjs-tangovideomesh.js'></script>
 <script src='../src/new-api/arjs-tangopointcloud.js'></script>
+<script src='../src/new-api/arjs-debugui.js'></script>
 <script src='../src/markers-area/threex-armultimarkerutils.js'></script>
 <script src='../src/markers-area/threex-armultimarkercontrols.js'></script>
 <script src='../src/markers-area/threex-armultimarkerlearning.js'></script>
@@ -61,11 +62,7 @@
 	/ 
 	<a href='#best' onclick='location.reload()'>best</a>
 	<br/>
-	<a href='javascript:void(0)' id='buttonTangoTogglePointCloud'>toggle-point-cloud</a>
-	<a href='javascript:void(0)' id='buttonToggleMarkerHelpers'>toggle-marker-helper</a>
-	<a href='javascript:void(0)' id='buttonMarkersAreaLearner'>Learn-new-marker-area</a>
-	<a href='javascript:void(0)' id='buttonMarkersAreaReset'>Reset-marker-area</a>
-	<a href='javascript:void(0)' id='displayHittestingPlane'>Display-hit-testing-plane</a>
+	<div id="debugUIContainer"></div>
 </div><script>
 ;(function(){
 	// get tracking method from location.hash
@@ -109,7 +106,6 @@
 	var arProfile = new ARjs.Profile()
 		.sourceWebcam()
 		.trackingMethod(trackingMethod)
-		// .changeMatrixMode(trackingMethod !== 'tango' ? 'modelViewMatrix' : 'cameraTransformMatrix')
 		// .changeMatrixMode('modelViewMatrix')
 		// .changeMatrixMode('cameraTransformMatrix')
 		.defaultMarker()
@@ -208,48 +204,16 @@
 	onRenderFcts.push(function(delta){
 		mesh.rotation.x += Math.PI*delta
 	})
-
+	
 	//////////////////////////////////////////////////////////////////////////////
-	//		Handle UI
+	//		DebugUI
 	//////////////////////////////////////////////////////////////////////////////
 
-	document.querySelector('#trackingMethod').innerHTML = trackingMethod
-	if( arProfile.contextParameters.trackingBackend === 'tango' ){
-		document.querySelector('#buttonTangoTogglePointCloud').addEventListener('click', function(){
-			if( tangoPointCloud.object3d.parent ){
-				scene.remove(tangoPointCloud.object3d)
-			}else{
-				scene.add(tangoPointCloud.object3d)			
-			}
-		})
-	}else{
-		document.querySelector('#buttonTangoTogglePointCloud').style.display = 'none'
-	}
+	var sessionDebugUI = new ARjs.SessionDebugUI(arSession)
+	document.querySelector('#debugUIContainer').appendChild(sessionDebugUI.domElement)
 
-	if( arAnchor.parameters.markersAreaEnabled ){
-		var subMarkerHelpersVisible = false
-		document.querySelector('#buttonToggleMarkerHelpers').addEventListener('click', function(){
-			subMarkerHelpersVisible = subMarkerHelpersVisible ? false : true
-			arAnchor.markersArea.setSubMarkersVisibility(subMarkerHelpersVisible)
-		})
-
-
-		document.querySelector('#buttonMarkersAreaReset').addEventListener('click', function(){
-			var trackingBackend = arProfile.contextParameters.trackingBackend
-			ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile(trackingBackend)
-			location.reload()
-		})
-
-		document.querySelector('#buttonMarkersAreaLearner').addEventListener('click', function(){
-			var learnerBaseURL = THREEx.ArToolkitContext.baseURL + 'examples/multi-markers/examples/learner.html'
-			var trackingBackend = arProfile.contextParameters.trackingBackend
-			ARjs.MarkersAreaUtils.navigateToLearnerPage(learnerBaseURL, trackingBackend)
-		})
-	}else{
-		document.querySelector('#buttonToggleMarkerHelpers').style.display = 'none'
-		document.querySelector('#buttonMarkersAreaReset').style.display = 'none'
-		document.querySelector('#buttonMarkersAreaLearner').style.display = 'none'
-	}
+	var anchorDebugUI = new ARjs.AnchorDebugUI(arAnchor)
+	document.querySelector('#debugUIContainer').appendChild(anchorDebugUI.domElement)
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page

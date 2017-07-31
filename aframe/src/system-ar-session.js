@@ -214,18 +214,19 @@ AFRAME.registerSystem('arjs', {
 			//		honor .debugUIEnabled
 			//////////////////////////////////////////////////////////////////////////////
 			if( _this.data.debugUIEnabled ){
-				document.querySelector('#trackingMethod').innerHTML = _this.data.trackingMethod
-				if( arProfile.contextParameters.trackingBackend === 'tango' && _this.data.tangoPointCloudEnabled ){
-					document.querySelector('#buttonTangoTogglePointCloud').addEventListener('click', function(){
-						if( tangoPointCloud.object3d.parent ){
-							scene.remove(tangoPointCloud.object3d)
-						}else{
-							scene.add(tangoPointCloud.object3d)			
-						}
-					})
-				}else{
-					document.querySelector('#buttonTangoTogglePointCloud').style.display = 'none'
-				}				
+				console.warn('debugUIEnabled not yet implemented¡')
+				// document.querySelector('#trackingMethod').innerHTML = _this.data.trackingMethod
+				// if( arProfile.contextParameters.trackingBackend === 'tango' && _this.data.tangoPointCloudEnabled ){
+				// 	document.querySelector('#buttonTangoTogglePointCloud').addEventListener('click', function(){
+				// 		if( tangoPointCloud.object3d.parent ){
+				// 			scene.remove(tangoPointCloud.object3d)
+				// 		}else{
+				// 			scene.add(tangoPointCloud.object3d)			
+				// 		}
+				// 	})
+				// }else{
+				// 	document.querySelector('#buttonTangoTogglePointCloud').style.display = 'none'
+				// }				
 			}
 		})
 

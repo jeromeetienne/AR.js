@@ -104,30 +104,31 @@ AFRAME.registerComponent('arjs-anchor', {
 			//		honor .debugUIEnabled
 			//////////////////////////////////////////////////////////////////////////////
 			if( arjsSystem.data.debugUIEnabled ){
-				if( arAnchor.parameters.markersAreaEnabled ){
-					var subMarkerHelpersVisible = false
-					document.querySelector('#buttonToggleMarkerHelpers').addEventListener('click', function(){
-						subMarkerHelpersVisible = subMarkerHelpersVisible ? false : true
-						arAnchor.markersArea.setSubMarkersVisibility(subMarkerHelpersVisible)
-					})
-
-
-					document.querySelector('#buttonMarkersAreaReset').addEventListener('click', function(){
-						var trackingBackend = arProfile.contextParameters.trackingBackend
-						THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(trackingBackend)
-						location.reload()
-					})
-
-					document.querySelector('#buttonMarkersAreaLearner').addEventListener('click', function(){
-						var learnerBaseURL = THREEx.ArToolkitContext.baseURL + 'examples/multi-markers/examples/learner.html'
-						var trackingBackend = arProfile.contextParameters.trackingBackend
-						THREEx.ArMultiMarkerUtils.navigateToLearnerPage(learnerBaseURL, trackingBackend)
-					})		
-				}else{
-					document.querySelector('#buttonToggleMarkerHelpers').style.display = 'none'
-					document.querySelector('#buttonMarkersAreaReset').style.display = 'none'
-					document.querySelector('#buttonMarkersAreaLearner').style.display = 'none'
-				}
+				console.warn('debugUIEnabled not yet implemented¡')
+				// if( arAnchor.parameters.markersAreaEnabled ){
+				// 	var subMarkerHelpersVisible = false
+				// 	document.querySelector('#buttonToggleMarkerHelpers').addEventListener('click', function(){
+				// 		subMarkerHelpersVisible = subMarkerHelpersVisible ? false : true
+				// 		arAnchor.markersArea.setSubMarkersVisibility(subMarkerHelpersVisible)
+				// 	})
+				// 
+				// 
+				// 	document.querySelector('#buttonMarkersAreaReset').addEventListener('click', function(){
+				// 		var trackingBackend = arProfile.contextParameters.trackingBackend
+				// 		THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(trackingBackend)
+				// 		location.reload()
+				// 	})
+				// 
+				// 	document.querySelector('#buttonMarkersAreaLearner').addEventListener('click', function(){
+				// 		var learnerBaseURL = THREEx.ArToolkitContext.baseURL + 'examples/multi-markers/examples/learner.html'
+				// 		var trackingBackend = arProfile.contextParameters.trackingBackend
+				// 		THREEx.ArMultiMarkerUtils.navigateToLearnerPage(learnerBaseURL, trackingBackend)
+				// 	})		
+				// }else{
+				// 	document.querySelector('#buttonToggleMarkerHelpers').style.display = 'none'
+				// 	document.querySelector('#buttonMarkersAreaReset').style.display = 'none'
+				// 	document.querySelector('#buttonMarkersAreaLearner').style.display = 'none'
+				// }
 			}
 		}, 1000/60)
 	},
@@ -174,9 +175,10 @@ AFRAME.registerComponent('arjs-anchor', {
 //                define some primitives shortcuts
 //////////////////////////////////////////////////////////////////////////////
 
-AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
+AFRAME.registerPrimitive('a-anchor', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
 	defaultComponents: {
 		'arjs-anchor': {},
+		'arjs-hit-testing': {},
 	},
 	mappings: {
 		'type': 'arjs-anchor.type',
@@ -186,6 +188,42 @@ AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitiv
 		'preset': 'arjs-anchor.preset',
 		'minConfidence': 'arjs-anchor.minConfidence',
 		'markerhelpers': 'arjs-anchor.markerhelpers',
+
+		'hit-testing-renderDebug': 'arjs-hit-testing.renderDebug',
+		'hit-testing-enabled': 'arjs-hit-testing.enabled',
+	}
+}));
+
+
+
+AFRAME.registerPrimitive('a-camera-static', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
+	defaultComponents: {
+		'camera': {},
+	},
+	mappings: {
+	}
+}));
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+// FIXME 
+AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
+	defaultComponents: {
+		'arjs-anchor': {},
+		'arjs-hit-testing': {},
+	},
+	mappings: {
+		'type': 'arjs-anchor.type',
+		'size': 'arjs-anchor.size',
+		'url': 'arjs-anchor.patternUrl',
+		'value': 'arjs-anchor.barcodeValue',
+		'preset': 'arjs-anchor.preset',
+		'minConfidence': 'arjs-anchor.minConfidence',
+		'markerhelpers': 'arjs-anchor.markerhelpers',
+
+		'hit-testing-renderDebug': 'arjs-hit-testing.renderDebug',
+		'hit-testing-enabled': 'arjs-hit-testing.enabled',
 	}
 }));
 
@@ -204,14 +242,5 @@ AFRAME.registerPrimitive('a-marker-camera', AFRAME.utils.extendDeep({}, AFRAME.p
 		'preset': 'arjs-anchor.preset',
 		'minConfidence': 'arjs-anchor.minConfidence',
 		'markerhelpers': 'arjs-anchor.markerhelpers',
-	}
-}));
-
-
-AFRAME.registerPrimitive('a-camera-static', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
-	defaultComponents: {
-		'camera': {},
-	},
-	mappings: {
 	}
 }));

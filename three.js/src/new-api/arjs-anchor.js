@@ -16,6 +16,7 @@ ARjs.Anchor = function(arSession, markerParameters){
 	var scene = arSession.parameters.scene
 	var camera = arSession.parameters.camera
 	
+	this.arSession = arSession
 	this.parameters = markerParameters
 	
 	// log to debug
