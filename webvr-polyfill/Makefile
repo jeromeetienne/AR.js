@@ -3,9 +3,8 @@ watch: build
 
 .PHONY: build
 build: 
-	cat 	../three.js/vendor/jsartoolkit5/build/artoolkit.min.js	\
-		../three.js/vendor/jsartoolkit5/js/artoolkit.api.js	\
-		../three.js/threex-*.js 			\
+	(cd ../three.js/ && make build)
+	cat 	../three.js/build/ar.js	\
 		src/artoolkit-framedata.js 			\
 		src/generic-webvr-polyfill.js 			\
 		src/main.js 					\
