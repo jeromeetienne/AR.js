@@ -1,13 +1,13 @@
 var THREEx = THREEx || {}
 
-// TODO this is useless - prefere arjs-hittester.js
+// TODO this is useless - prefere arjs-HitTesting.js
 
 /**
  * - maybe support .onClickFcts in each object3d
  * - seems an easy light layer for clickable object
  * - up to 
  */
-THREEx.HitTesterPlane = function(sourceElement){
+THREEx.HitTestingPlane = function(sourceElement){
 	this._sourceElement = sourceElement
 
 	// create _pickingScene
@@ -36,7 +36,7 @@ THREEx.HitTesterPlane = function(sourceElement){
 //		update function
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.HitTesterPlane.prototype.update = function(camera, pickingRoot, changeMatrixMode){
+THREEx.HitTestingPlane.prototype.update = function(camera, pickingRoot, changeMatrixMode){
 
 	this.onResize()
 	
@@ -69,7 +69,7 @@ THREEx.HitTesterPlane.prototype.update = function(camera, pickingRoot, changeMat
 //		resize camera
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.HitTesterPlane.prototype.onResize = function(){
+THREEx.HitTestingPlane.prototype.onResize = function(){
 	var sourceElement = this._sourceElement
 	var pickingCamera = this._pickingCamera
 	
@@ -85,7 +85,7 @@ THREEx.HitTesterPlane.prototype.onResize = function(){
 //////////////////////////////////////////////////////////////////////////////
 //		Perform test
 //////////////////////////////////////////////////////////////////////////////
-THREEx.HitTesterPlane.prototype.test = function(mouseX, mouseY){
+THREEx.HitTestingPlane.prototype.test = function(mouseX, mouseY){
 	// convert mouseX, mouseY to [-1, +1]
 	mouseX = (mouseX-0.5)*2
 	mouseY =-(mouseY-0.5)*2
@@ -117,7 +117,7 @@ THREEx.HitTesterPlane.prototype.test = function(mouseX, mouseY){
 //		render the pickingPlane for debug
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.HitTesterPlane.prototype.renderDebug = function(renderer){
+THREEx.HitTestingPlane.prototype.renderDebug = function(renderer){
 	// render sceneOrtho
 	renderer.render( this._pickingScene, this._pickingCamera )
 }

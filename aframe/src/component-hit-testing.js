@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////
 //		arjsmarker
 //////////////////////////////////////////////////////////////////////////////
-AFRAME.registerComponent('arjs-hit-tester', {
+AFRAME.registerComponent('arjs-hit-testing', {
 	dependencies: ['arjs', 'artoolkit'],
 	schema: {
 		enabled : {
@@ -21,7 +21,7 @@ AFRAME.registerComponent('arjs-hit-tester', {
 // 
 		_this.initialised = false
 		_this._arAnchor = null
-		_this._arHitTester = null
+		_this._arHitTesting = null
 
 		// trick to wait until arjsSystem is initialised
 		var startedAt = Date.now()
@@ -40,7 +40,7 @@ AFRAME.registerComponent('arjs-hit-tester', {
 			var arSession = arjsSystem._arSession
 			var renderer = arSession.renderer
 
-			var hitTester = _this._arHitTester = new ARjs.HitTester(arSession)
+			var hitTester = _this._arHitTesting = new ARjs.HitTesting(arSession)
 			
 			// tango only - picking to set object position
 			renderer.domElement.addEventListener("click", function(domEvent){
@@ -71,8 +71,8 @@ AFRAME.registerComponent('arjs-hit-tester', {
 		var arAnchor = arjsMarker._arAnchor
 		
 
-		var hitTester = this._arHitTester
-		var camera = arSession.camera
+		var hitTester = this._arHitTesting
+		var camera = arSession.parameters.camera
 // console.log(camera.position)
 		hitTester.update(camera, arAnchor.object3d, arAnchor.parameters.changeMatrixMode)
 	}
@@ -82,12 +82,12 @@ AFRAME.registerComponent('arjs-hit-tester', {
 //                define some primitives shortcuts
 //////////////////////////////////////////////////////////////////////////////
 
-AFRAME.registerPrimitive('a-hit-tester', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
+AFRAME.registerPrimitive('a-hit-testing', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
 	defaultComponents: {
-		'arjs-hit-tester': {},
+		'arjs-hit-testing': {},
 	},
 	mappings: {
-		'enabled': 'arjs-hit-tester.enabled',
-		'renderDebug': 'arjs-hit-tester.renderDebug',
+		'enabled': 'arjs-hit-testing.enabled',
+		'renderDebug': 'arjs-hit-testing.renderDebug',
 	}
 }));

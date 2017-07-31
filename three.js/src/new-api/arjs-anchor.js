@@ -13,8 +13,8 @@ var ARjs = ARjs || {}
 ARjs.Anchor = function(arSession, markerParameters){
 	var _this = this
 	var arContext = arSession.arContext
-	var scene = arSession.scene
-	var camera = arSession.camera
+	var scene = arSession.parameters.scene
+	var camera = arSession.parameters.camera
 	
 	this.parameters = markerParameters
 	
@@ -124,7 +124,7 @@ ARjs.Anchor = function(arSession, markerParameters){
 /**
  * Apply ARjs.Session.HitTestResult to the controlled object3d
  * 
- * @param {ARjs.HitTester.Result} hitTestResult - the result to apply
+ * @param {ARjs.HitTesting.Result} hitTestResult - the result to apply
  */
 ARjs.Anchor.prototype.applyHitTestResult = function(hitTestResult){
 	

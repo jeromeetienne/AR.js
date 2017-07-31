@@ -1,17 +1,35 @@
 ## New API - aframe
+- buttons aframe doesnt work 
+  - how to create the scene dynamically in aframe
+  - handle that with a reload
+
+- rename HitTester into HitTesting
+
+- do a button - display-hittester-plane
+  - in three.js and in aframe.js
+
+- maybe a class arjs-session-debugui.js
+  - create the UI
+  - let user attach it to the dom
+  
+- rename arjsmarker aframe component into arjs-anchor
+  - with backward compatibility ? no need
+
+- implement working build
+  - apparently some issue if artoolkit is included in the build
+  - it worked in aframe before... what is happening
+  - what if i change the order of the scripts
+
 
 - implement picking in aframe
   - first make it works
   - then find a good API
   - <ar-hittester enabled='true' renderDebug='false'> inside the controlled object
-- buttons aframe doesnt work 
-  - how to create the scene dynamically in aframe
-  - handle that with a reload
+
 - better handling of the area stuff in trackingMethod
-  - 
+
 - FIXME in aframe, i define .initialised but aframe defined .initialized..!?!?! super error prone
   - rename as in isReady ? better than nothing. good for now
-
 
 - honor marker preset
   - hiro + kanji and area
@@ -26,6 +44,7 @@
   - <ar-anchor>
 
 - REFACTOR trackingMethod - should i put changeMatrixMode into trackingMethod ?
+  - should just drop it ? ??? why insit. it seems trouble
   - it is needed for all the test and all
   - what is trackingMethod ? it is unclear and messy
   - trackingMethod = trackingBackend + defaultAnchorDefinition
@@ -53,6 +72,7 @@
   - this is not a threex
 
 - in arjs.session.js - TODO change that to a usual this.parameters
+  - do emulation layer with display
 
 
 - LATER aruco got perspective issue - likely camera init

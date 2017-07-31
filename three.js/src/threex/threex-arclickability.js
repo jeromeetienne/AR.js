@@ -1,6 +1,6 @@
 var THREEx = THREEx || {}
 
-// TODO this is useless - prefere arjs-hittester.js
+// TODO this is useless - prefere arjs-HitTesting.js
 
 /**
  * - maybe support .onClickFcts in each object3d
@@ -15,7 +15,7 @@ THREEx.ARClickability = function(sourceElement){
 	this._cameraPicking = new THREE.PerspectiveCamera(42, fullWidth / fullHeight, 0.1, 100);	
 
 console.warn('THREEx.ARClickability works only in modelViewMatrix')
-console.warn('OBSOLETE OBSOLETE! instead use THREEx.HitTesterPlane or THREEx.HitTesterTango')
+console.warn('OBSOLETE OBSOLETE! instead use THREEx.HitTestingPlane or THREEx.HitTestingTango')
 }
 
 THREEx.ARClickability.prototype.onResize = function(){
@@ -55,7 +55,7 @@ THREEx.ARClickability.prototype.update = function(){
 
 THREEx.ARClickability.tangoPickingPointCloud = function(artoolkitContext, mouseX, mouseY){
 	
-// THIS IS CRAP!!!! use THREEx.HitTesterTango
+// THIS IS CRAP!!!! use THREEx.HitTestingTango
 	
 	var vrDisplay = artoolkitContext._tangoContext.vrDisplay
         if (vrDisplay === null ) return null

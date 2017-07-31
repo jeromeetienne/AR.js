@@ -7,19 +7,20 @@ var ARjs = ARjs || {}
  * @param {ARjs.Session} arSession - the session on which we create the anchor
  * @param {Object} markerParameters - parameter of this anchor
  */
-ARjs.HitTester = function(arSession){
+ARjs.HitTesting = function(arSession){
 	var _this = this
 	var arContext = arSession.arContext
 	var trackingBackend = arContext.parameters.trackingBackend
 
+	this.enabled = true
 	this._arSession = arSession
-	this._hitTesterPlane = null
-	this._hitTesterTango = null
+	this._hitTestingPlane = null
+	this._hitTestingTango = null
 
 	if( trackingBackend === 'tango' ){
-		_this._hitTesterTango = new THREEx.HitTesterTango(arContext)
+		_this._hitTestingTango = new THREEx.HitTestingTango(arContext)
 	}else{
-		_this._hitTesterPlane = new THREEx.HitTesterPlane(arSession.arSource.domElement)
+		_this._hitTestingPlane = new THREEx.HitTestingPlane(arSession.arSource.domElement)
 	}
 }
 
@@ -32,11 +33,14 @@ ARjs.HitTester = function(arSession){
  * @param {THREE.Camera} camera   - the camera to use
  * @param {THREE.Object3D} object3d - 
  */
-ARjs.HitTester.prototype.update = function (camera, pickingRoot, changeMatrixMode) {
-	if( this._hitTesterTango !== null ){
-		this._hitTesterTango.update()
-	}else if( this._hitTesterPlane !== null ){
-		this._hitTesterPlane.update(camera, pickingRoot, changeMatrixMode)
+ARjs.HitTesting.prototype.update = function (camera, pickingRoot, changeMatrixMode) {
+	// if it isnt enabled, do nothing
+	if( this.enabled === false )	return
+
+	if( this._hitTestingTango !== null ){
+		this._hitTestingTango.update()
+	}else if( this._hitTestingPlane !== null ){
+		this._hitTestingPlane.update(camera, pickingRoot, changeMatrixMode)
 	}else console.assert(false)
 }
 
@@ -49,11 +53,14 @@ ARjs.HitTester.prototype.update = function (camera, pickingRoot, changeMatrixMod
  * 
  * @param {Number} mouseX - position X of the hit [-1, +1]
  * @param {Number} mouseY - position Y of the hit [-1, +1]
- * @return {[ARjs.HitTester.Result]} - array of result
+ * @return {[ARjs.HitTesting.Result]} - array of result
  */
-ARjs.HitTester.prototype.testDomEvent = function(domEvent){
+ARjs.HitTesting.prototype.testDomEvent = function(domEvent){
 	var trackingBackend = this._arSession.arContext.parameters.trackingBackend
 	var arSource = this._arSession.arSource
+
+	// if it isnt enabled, do nothing
+	if( this.enabled === false )	return
 	
 	if( trackingBackend === 'tango' ){
         	var mouseX = domEvent.pageX / window.innerWidth
@@ -72,41 +79,44 @@ ARjs.HitTester.prototype.testDomEvent = function(domEvent){
  * 
  * @param {Number} mouseX - position X of the hit [0, +1]
  * @param {Number} mouseY - position Y of the hit [0, +1]
- * @return {[ARjs.HitTester.Result]} - array of result
+ * @return {[ARjs.HitTesting.Result]} - array of result
  */
-ARjs.HitTester.prototype.test = function(mouseX, mouseY){
+ARjs.HitTesting.prototype.test = function(mouseX, mouseY){
 	var arContext = this._arSession.arContext
 	var trackingBackend = arContext.parameters.trackingBackend
 	var hitTestResults = []
 
+	// if it isnt enabled, do nothing
+	if( this.enabled === false )	return
+
 	var result = null
 	if( trackingBackend === 'tango' ){
-		var result = this._hitTesterTango.test(mouseX, mouseY)
+		var result = this._hitTestingTango.test(mouseX, mouseY)
 	}else{
-		var result = this._hitTesterPlane.test(mouseX, mouseY)
+		var result = this._hitTestingPlane.test(mouseX, mouseY)
 	}
 			
 	// if no result is found, return now
 	if( result === null )	return hitTestResults
 
-	// build a ARjs.HitTester.Result
-	var hitTestResult = new ARjs.HitTester.Result(result.position, result.quaternion, result.scale)
+	// build a ARjs.HitTesting.Result
+	var hitTestResult = new ARjs.HitTesting.Result(result.position, result.quaternion, result.scale)
 	hitTestResults.push(hitTestResult)
 	
 	return hitTestResults
 }
 
 //////////////////////////////////////////////////////////////////////////////
-//		ARjs.HitTester.Result
+//		ARjs.HitTesting.Result
 //////////////////////////////////////////////////////////////////////////////
 /**
- * Contains the result of ARjs.HitTester.test()
+ * Contains the result of ARjs.HitTesting.test()
  * 
  * @param {THREE.Vector3} position - position to use
  * @param {THREE.Quaternion} quaternion - quaternion to use
  * @param {THREE.Vector3} scale - scale
  */
-ARjs.HitTester.Result = function(position, quaternion, scale){
+ARjs.HitTesting.Result = function(position, quaternion, scale){
 	this.position = position
 	this.quaternion = quaternion
 	this.scale = scale

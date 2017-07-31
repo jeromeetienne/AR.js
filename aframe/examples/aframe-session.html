@@ -21,13 +21,13 @@
 <script src='../../three.js/src/threex/threex-arbasecontrols.js'></script>
 <script src='../../three.js/src/threex/threex-armarkercontrols.js'></script>
 <script src='../../three.js/src/threex/threex-arsmoothedcontrols.js'></script>
-<script src='../../three.js/src/threex/threex-hittester-plane.js'></script>
-<script src='../../three.js/src/threex/threex-hittester-tango.js'></script>
+<script src='../../three.js/src/threex/threex-hittesting-plane.js'></script>
+<script src='../../three.js/src/threex/threex-hittesting-tango.js'></script>
 <script src='../../three.js/src/threex/threex-armarkerhelper.js'></script>
 <script src='../../three.js/src/new-api/arjs-utils.js'></script>
 <script src='../../three.js/src/new-api/arjs-session.js'></script>
 <script src='../../three.js/src/new-api/arjs-anchor.js'></script>
-<script src='../../three.js/src/new-api/arjs-hittester.js'></script>
+<script src='../../three.js/src/new-api/arjs-hittesting.js'></script>
 <script src='../../three.js/src/new-api/arjs-tangovideomesh.js'></script>
 <script src='../../three.js/src/new-api/arjs-tangopointcloud.js'></script>
 <script src='../../three.js/src/markers-area/threex-armultimarkerutils.js'></script>
@@ -36,7 +36,7 @@
 <!-- include aframe-ar.js -->
 <script src="../src/system-ar-session.js"></script>
 <script src="../src/component-anchor.js"></script>
-<script src="../src/component-hit-tester.js"></script>
+<script src="../src/component-hit-testing.js"></script>
 
 <script>ARjs.Context.baseURL = '../../three.js/'</script>
 
@@ -66,9 +66,11 @@
 	</div>
 
 	<a-scene embedded arjs='trackingMethod: best; debugUIEnabled: true;'>
-		<a-entity arjsmarker arjs-hit-tester>
+
+		<a-entity arjsmarker arjs-hit-testing>
 			<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
 		</a-entity>
+
 		<a-entity camera></a-entity>
 
 

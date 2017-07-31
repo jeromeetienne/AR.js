@@ -5,7 +5,7 @@ var THREEx = THREEx || {}
  * 
  * @return {[type]} [description]
  */
-THREEx.HitTesterTango = function(arContext){
+THREEx.HitTestingTango = function(arContext){
 	this._arContext = arContext
 	// seems to be the object bounding sphere for picking
 	this.boundingSphereRadius = 0.01
@@ -17,7 +17,7 @@ THREEx.HitTesterTango = function(arContext){
 //		update function
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.HitTesterTango.prototype.update = function(){
+THREEx.HitTestingTango.prototype.update = function(){
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -31,7 +31,7 @@ THREEx.HitTesterTango.prototype.update = function(){
  * @param {Numer} mouseY    - mouse y coordinate in [0, 1]
  * @return {Object} - result
  */
-THREEx.HitTesterTango.prototype.test = function(mouseX, mouseY){
+THREEx.HitTestingTango.prototype.test = function(mouseX, mouseY){
 	var vrDisplay = this._arContext._tangoContext.vrDisplay
         if (vrDisplay === null ) return null
 	

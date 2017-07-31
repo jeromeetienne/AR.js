@@ -6,11 +6,11 @@
 <script src='../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
 <script src='../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
 <!-- include for aruco trackingBackend -->
-<script src='../vendor/js-aruco/src/svd.js'></script> 
-<script src='../vendor/js-aruco/src/posit1.js'></script> 
-<script src='../vendor/js-aruco/src/cv.js'></script> 
-<script src='../vendor/js-aruco/src/aruco.js'></script> 
-<script src='../src/threex/threex-aruco/threex-arucocontext.js'></script> 
+<script src='../vendor/js-aruco/src/svd.js'></script>
+<script src='../vendor/js-aruco/src/posit1.js'></script>
+<script src='../vendor/js-aruco/src/cv.js'></script>
+<script src='../vendor/js-aruco/src/aruco.js'></script>
+<script src='../src/threex/threex-aruco/threex-arucocontext.js'></script>
 <script src='../src/threex/threex-aruco/threex-arucodebug.js'></script>
 <!-- include for tango trackingBackend -->
 <script src='../vendor/chromium-tango/THREE.WebAR.js'></script>
@@ -22,17 +22,19 @@
 <script src='../src/threex/threex-armarkercontrols.js'></script>
 <script src='../src/threex/threex-armarkerhelper.js'></script>
 <script src='../src/threex/threex-arsmoothedcontrols.js'></script>
-<script src='../src/threex/threex-hittester-plane.js'></script>
-<script src='../src/threex/threex-hittester-tango.js'></script>
+<script src='../src/threex/threex-hittesting-plane.js'></script>
+<script src='../src/threex/threex-hittesting-tango.js'></script>
 <script src='../src/new-api/arjs-utils.js'></script>
 <script src='../src/new-api/arjs-session.js'></script>
 <script src='../src/new-api/arjs-anchor.js'></script>
-<script src='../src/new-api/arjs-hittester.js'></script>
+<script src='../src/new-api/arjs-hittesting.js'></script>
 <script src='../src/new-api/arjs-tangovideomesh.js'></script>
 <script src='../src/new-api/arjs-tangopointcloud.js'></script>
 <script src='../src/markers-area/threex-armultimarkerutils.js'></script>
 <script src='../src/markers-area/threex-armultimarkercontrols.js'></script>
 <script src='../src/markers-area/threex-armultimarkerlearning.js'></script>
+
+
 <script>ARjs.Context.baseURL = '../'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
@@ -63,6 +65,7 @@
 	<a href='javascript:void(0)' id='buttonToggleMarkerHelpers'>toggle-marker-helper</a>
 	<a href='javascript:void(0)' id='buttonMarkersAreaLearner'>Learn-new-marker-area</a>
 	<a href='javascript:void(0)' id='buttonMarkersAreaReset'>Reset-marker-area</a>
+	<a href='javascript:void(0)' id='displayHittestingPlane'>Display-hit-testing-plane</a>
 </div><script>
 ;(function(){
 	// get tracking method from location.hash
@@ -145,14 +148,14 @@
 	//                handle Hit Tester
 	//////////////////////////////////////////////////////////////////////////////
 	
-	var hitTester = new ARjs.HitTester(arSession)
+	var hitTesting = new ARjs.HitTesting(arSession)
 	onRenderFcts.push(function(){
-		hitTester.update(camera, arAnchor.object3d, arAnchor.parameters.changeMatrixMode)
+		hitTesting.update(camera, arAnchor.object3d, arAnchor.parameters.changeMatrixMode)
 	})
 
 	// tango only - picking to set object position
         renderer.domElement.addEventListener("click", function(domEvent){
-		var hitTestResults = hitTester.testDomEvent(domEvent)
+		var hitTestResults = hitTesting.testDomEvent(domEvent)
 		if( hitTestResults.length === 0 )	return
 
 		var hitTestResult = hitTestResults[0]
@@ -169,6 +172,9 @@
 		onRenderFcts.push(function(){
 			tangoVideoMesh.update()
 		})
+	}
+
+	if( arProfile.contextParameters.trackingBackend === 'tango' ){
 		// init tangoPointCloud
 		var tangoPointCloud = new ARjs.TangoPointCloud(arSession)
 		scene.add(tangoPointCloud.object3d)
@@ -238,7 +244,7 @@
 			var learnerBaseURL = THREEx.ArToolkitContext.baseURL + 'examples/multi-markers/examples/learner.html'
 			var trackingBackend = arProfile.contextParameters.trackingBackend
 			ARjs.MarkersAreaUtils.navigateToLearnerPage(learnerBaseURL, trackingBackend)
-		})		
+		})
 	}else{
 		document.querySelector('#buttonToggleMarkerHelpers').style.display = 'none'
 		document.querySelector('#buttonMarkersAreaReset').style.display = 'none'
@@ -259,10 +265,10 @@
 			tangoVideoMesh.render()
 		}
 		
-		// render hitTester pickingPlane - for debug
-		var renderHitTesterPickingPlane = true 
-		if( renderHitTesterPickingPlane && hitTester._hitTesterPlane){
-			hitTester._hitTesterPlane.renderDebug(renderer)
+		// render hitTesting pickingPlane - for debug
+		var renderHitTestingPickingPlane = true 
+		if( renderHitTestingPickingPlane && hitTesting._hitTestingPlane){
+			hitTesting._hitTestingPlane.renderDebug(renderer)
 		}
 		
 		renderer.render( scene, camera );
