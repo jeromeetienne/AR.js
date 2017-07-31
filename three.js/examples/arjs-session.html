@@ -34,6 +34,7 @@
 <script src='../src/markers-area/threex-armultimarkerutils.js'></script>
 <script src='../src/markers-area/threex-armultimarkercontrols.js'></script>
 <script src='../src/markers-area/threex-armultimarkerlearning.js'></script>
+
 <script>ARjs.Context.baseURL = '../'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
@@ -204,7 +205,7 @@
 	//		DebugUI
 	//////////////////////////////////////////////////////////////////////////////
 
-	var sessionDebugUI = new ARjs.SessionDebugUI(arSession)
+	var sessionDebugUI = new ARjs.SessionDebugUI(arSession, tangoPointCloud)
 	document.querySelector('#arjsDebugUIContainer').appendChild(sessionDebugUI.domElement)
 
 	var anchorDebugUI = new ARjs.AnchorDebugUI(arAnchor)

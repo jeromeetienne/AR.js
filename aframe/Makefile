@@ -5,7 +5,8 @@ watch: build
 build:
 	(cd ../three.js/ && make build)
 	cat 	../three.js/build/ar.js	\
-		src/aframe-ar.js	\
+		src/component-*.js	\
+		src/system-arjs*.js	\
 		> build/aframe-ar.js 
 
 minify: build

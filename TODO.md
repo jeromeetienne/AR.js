@@ -4,42 +4,22 @@
   - one build for pure ar.js
   - would that work ?
   - it worked beofre... with aframe. why it doesnt work anymore ?
-
+- multi-marker learner doesnt work on firefox
 - do a button - display-hittester-plane
   - in three.js and in aframe.js
-- remove the area from the trackingMethod
-
-- maybe a class arjs-session-debugui.js
-  - create the UI
-  - let user attach it to the dom
-
-- buttons aframe doesnt work 
-  - in arjs system, debugUIEnabled = true/false
-  - how to create the scene dynamically in aframe
-  - handle that with a reload
 
 - FIXME in aframe, i define .initialised but aframe defined .initialized..!?!?! super error prone
   - rename as in isReady ? better than nothing. good for now
-
-- aframe - make hit-testing a arjs-anchor property
-  - not a full component. easier for the user
 
 - implement working build
   - apparently some issue if artoolkit is included in the build
   - it worked in aframe before... what is happening
   - what if i change the order of the scripts
 
+
+
+- remove the area from the trackingMethod
 - better handling of the area stuff in trackingMethod
-
-
-- honor marker preset
-  - hiro + kanji and area
-  - old issue with the same markers ?? deep in jsartoolkit
-  
-- aframe api ? there is marker everywhere... change that ?
-  - <ar-camera> ?
-  - <ar-anchor>
-
 - REFACTOR trackingMethod - should i put changeMatrixMode into trackingMethod ?
   - should just drop it ? ??? why insit. it seems trouble
   - it is needed for all the test and all
@@ -59,15 +39,23 @@
     - what is it on tango ? some fictuous barcode ?
   - trackingBackend is about the session
 
-- artoolkit modelViewMatrix/cameraTransformMatrix works
+- honor marker preset
+  - hiro + kanji and area
+  - old issue with the same markers ?? deep in jsartoolkit
+  
+- aframe api ? there is marker everywhere... change that ?
+  - <ar-camera> ?
+  - <ar-anchor>
 
-- put multi-markers in /src/markers-area
-  - /examples/markers-area/ - here all the examples
-  - put marker page in this directory too
-  - three.js/examples/multi-markers/\*.js in /src/markers-area
-- refactor threex-screenasportal as a demo in /examples/markers-area/demo-screen-as-portal
-  - this is not a threex
 
+
+- DONE maybe a class arjs-session-debugui.js
+  - create the UI
+  - let user attach it to the dom
+- DONE buttons aframe doesnt work 
+  - in arjs system, debugUIEnabled = true/false
+  - how to create the scene dynamically in aframe
+  - handle that with a reload
 - DONE <a-anchor hit-testing-enabled='true'></a-anchor>
 - DONE implement picking in aframe
   - first make it works, then find a good API
@@ -168,6 +156,13 @@
 
 
 --- 
+- put multi-markers in /src/markers-area
+  - /examples/markers-area/ - here all the examples
+  - put marker page in this directory too
+  - three.js/examples/multi-markers/\*.js in /src/markers-area
+- refactor threex-screenasportal as a demo in /examples/markers-area/demo-screen-as-portal
+  - this is not a threex
+
 - remove the arcode generator + marker generator, now that they are in webxr.io
 - move docs/ into its own repository
   - thus no conflict with main repo

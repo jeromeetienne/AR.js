@@ -1,18 +1,22 @@
 <!-- include a-frame -->
 <script src="vendor/aframe-v0.6.1-three-r86.js"></script>
 <!-- include ar.js for aframe -->
-<script src="../build/aframe-ar.js"></script>
-
+<script src='../build/aframe-ar.js'></script>
 <script>ARjs.Context.baseURL = '../../three.js/'</script>
 
 <body style='margin : 0px; overflow: hidden;'>
+	<div style='position: fixed; top: 10px; width:inherit; text-align: center; z-index: 1;'>
+		<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - tango example for a-frame by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+		<br/>
+		<div id="arjsDebugUIContainer"></div>
+	</div>
 	<!-- Define your scene -->
-	<a-scene embedded arjs='trackingMethod: best'>
+	<a-scene embedded arjs='trackingMethod: best; debugUIEnabled: true;'>
 		<!-- Create a anchor to attach your augmented reality -->
-		<a-entity arjsmarker arjs-hit-testing>
+		<a-anchor hit-testing-enabled='true'>
 			<!-- Add your augmented reality here -->
-			<a-box position='0 0.5 0' material='color:red'></a-box>
-		</a-entity>
+			<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
+		</a-anchor>
 		<!-- Define a static camera -->
 		<a-camera-static/>
 	</a-scene>

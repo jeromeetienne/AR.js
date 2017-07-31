@@ -27,24 +27,25 @@ AFRAME.registerComponent('arjs-hit-testing', {
 		var startedAt = Date.now()
 		var timerId = setInterval(function(){
 			var anchorEl = _this.el
-			var arjsMarker = anchorEl.components['arjs-anchor']
-			// wait until arjsMarker is initialised
-			if( arjsMarker === undefined || arjsMarker.initialised === false )	return
+			var anchorComponent = anchorEl.components['arjs-anchor']
+			// wait until anchorComponent is initialised
+			if( anchorComponent === undefined || anchorComponent.initialised === false )	return
 
 			clearInterval(timerId)
 
 			//////////////////////////////////////////////////////////////////////////////
 			//		create arAnchor
 			//////////////////////////////////////////////////////////////////////////////
-			var arAnchor = arjsMarker._arAnchor
+			var arAnchor = anchorComponent._arAnchor
 			var arSession = arjsSystem._arSession
 			var renderer = arSession.parameters.renderer
 
-			var hitTester = _this._arHitTesting = new ARjs.HitTesting(arSession)
+			var hitTesting = _this._arHitTesting = new ARjs.HitTesting(arSession)
+			hitTesting.enabled = _this.data.enabled
 			
 			// tango only - picking to set object position
 			renderer.domElement.addEventListener("click", function(domEvent){
-				var hitTestResults = hitTester.testDomEvent(domEvent)
+				var hitTestResults = hitTesting.testDomEvent(domEvent)
 				if( hitTestResults.length === 0 )	return
 
 				var hitTestResult = hitTestResults[0]
@@ -67,13 +68,13 @@ AFRAME.registerComponent('arjs-hit-testing', {
 		var arSession = arjsSystem._arSession
 
 		var anchorEl = _this.el
-		var arjsMarker = anchorEl.components['arjs-anchor']
-		var arAnchor = arjsMarker._arAnchor
+		var anchorComponent = anchorEl.components['arjs-anchor']
+		var arAnchor = anchorComponent._arAnchor
 		
 
-		var hitTester = this._arHitTesting
+		var hitTesting = this._arHitTesting
 		var camera = arSession.parameters.camera
 // console.log(camera.position)
-		hitTester.update(camera, arAnchor.object3d, arAnchor.parameters.changeMatrixMode)
+		hitTesting.update(camera, arAnchor.object3d, arAnchor.parameters.changeMatrixMode)
 	}
 });

@@ -60,7 +60,7 @@ ARjs.HitTesting.prototype.testDomEvent = function(domEvent){
 	var arSource = this._arSession.arSource
 
 	// if it isnt enabled, do nothing
-	if( this.enabled === false )	return
+	if( this.enabled === false )	return []
 	
 	if( trackingBackend === 'tango' ){
         	var mouseX = domEvent.pageX / window.innerWidth
@@ -87,7 +87,7 @@ ARjs.HitTesting.prototype.test = function(mouseX, mouseY){
 	var hitTestResults = []
 
 	// if it isnt enabled, do nothing
-	if( this.enabled === false )	return
+	if( this.enabled === false )	return []
 
 	var result = null
 	if( trackingBackend === 'tango' ){

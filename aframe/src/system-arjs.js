@@ -214,19 +214,8 @@ AFRAME.registerSystem('arjs', {
 			//		honor .debugUIEnabled
 			//////////////////////////////////////////////////////////////////////////////
 			if( _this.data.debugUIEnabled ){
-				console.warn('debugUIEnabled not yet implemented¡')
-				// document.querySelector('#trackingMethod').innerHTML = _this.data.trackingMethod
-				// if( arProfile.contextParameters.trackingBackend === 'tango' && _this.data.tangoPointCloudEnabled ){
-				// 	document.querySelector('#buttonTangoTogglePointCloud').addEventListener('click', function(){
-				// 		if( tangoPointCloud.object3d.parent ){
-				// 			scene.remove(tangoPointCloud.object3d)
-				// 		}else{
-				// 			scene.add(tangoPointCloud.object3d)			
-				// 		}
-				// 	})
-				// }else{
-				// 	document.querySelector('#buttonTangoTogglePointCloud').style.display = 'none'
-				// }				
+				var sessionDebugUI = new ARjs.SessionDebugUI(arSession)
+				document.querySelector('#arjsDebugUIContainer').appendChild(sessionDebugUI.domElement)		
 			}
 		})
 
@@ -253,9 +242,6 @@ AFRAME.registerSystem('arjs', {
 		if( this.initialised === false )	return
 
 		var arSession = this._arSession
-
-
-
 
 		// update arSession
 		this._arSession.update()

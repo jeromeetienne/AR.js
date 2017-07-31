@@ -6,7 +6,7 @@ var ARjs = ARjs || {}
  * 
  * @param {ARjs.Anchor} arAnchor - the anchor to user
  */
-ARjs.SessionDebugUI = function(arSession){
+ARjs.SessionDebugUI = function(arSession, tangoPointCloud){
 	var trackingBackend = arSession.arContext.parameters.trackingBackend
 
 	this.domElement = document.createElement('div')
@@ -23,7 +23,7 @@ ARjs.SessionDebugUI = function(arSession){
 	//		toggle-point-cloud
 	//////////////////////////////////////////////////////////////////////////////
 
-	if( trackingBackend === 'tango' ){
+	if( trackingBackend === 'tango' && tangoPointCloud ){
 		var domElement = document.createElement('button')
 		this.domElement.appendChild(domElement)
 
@@ -32,15 +32,21 @@ ARjs.SessionDebugUI = function(arSession){
 		domElement.href='javascript:void(0)'
 
 		domElement.addEventListener('click', function(){
-			// if( tangoPointCloud.object3d.parent ){
-			// 	scene.remove(tangoPointCloud.object3d)
-			// }else{
-			// 	scene.add(tangoPointCloud.object3d)			
-			// }
+			var scene = arSession.parameters.scene
+	// TODO how tangoPointCloud, get connected here ???
+	// in arguments simply ?
+			if( tangoPointCloud.object3d.parent ){
+				scene.remove(tangoPointCloud.object3d)
+			}else{
+				scene.add(tangoPointCloud.object3d)			
+			}
 		})
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////////
+//		ARjs.AnchorDebugUI
+//////////////////////////////////////////////////////////////////////////////
 
 /**
  * Create an debug UI for an ARjs.Anchor
@@ -81,23 +87,6 @@ ARjs.AnchorDebugUI = function(arAnchor){
 			arAnchor.markersArea.setSubMarkersVisibility(subMarkerHelpersVisible)		
 		})
 	}
-
-	//////////////////////////////////////////////////////////////////////////////
-	//		Reset-marker-area
-	//////////////////////////////////////////////////////////////////////////////
-
-	if( arAnchor.parameters.markersAreaEnabled ){
-		var domElement = document.createElement('button')
-		this.domElement.appendChild(domElement)
-		domElement.id = 'buttonMarkersAreaReset'
-		domElement.innerHTML = 'Reset-marker-area'
-		domElement.href ='javascript:void(0)'
-
-		domElement.addEventListener('click', function(){
-			ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile(trackingBackend)
-			location.reload()
-		})
-	}
 	
 	//////////////////////////////////////////////////////////////////////////////
 	//		Learn-new-marker-area
@@ -114,5 +103,22 @@ ARjs.AnchorDebugUI = function(arAnchor){
 			var learnerBaseURL = ARjs.Context.baseURL + 'examples/multi-markers/examples/learner.html'
 			ARjs.MarkersAreaUtils.navigateToLearnerPage(learnerBaseURL, trackingBackend)
 		})	
+	}
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		Reset-marker-area
+	//////////////////////////////////////////////////////////////////////////////
+
+	if( arAnchor.parameters.markersAreaEnabled ){
+		var domElement = document.createElement('button')
+		this.domElement.appendChild(domElement)
+		domElement.id = 'buttonMarkersAreaReset'
+		domElement.innerHTML = 'Reset-marker-area'
+		domElement.href ='javascript:void(0)'
+
+		domElement.addEventListener('click', function(){
+			ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile(trackingBackend)
+			location.reload()
+		})
 	}
 }

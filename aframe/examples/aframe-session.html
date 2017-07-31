@@ -35,7 +35,7 @@
 <script src='../../three.js/src/markers-area/threex-armultimarkercontrols.js'></script>
 <script src='../../three.js/src/markers-area/threex-armultimarkerlearning.js'></script>
 <!-- include aframe-ar.js -->
-<script src="../src/system-ar-session.js"></script>
+<script src="../src/system-arjs.js"></script>
 <script src="../src/component-anchor.js"></script>
 <script src="../src/component-hit-testing.js"></script>
 
@@ -61,10 +61,19 @@
 		<div id="arjsDebugUIContainer"></div>
 	</div>
 	
-	<a-scene embedded arjs='trackingMethod: best'>
+	<!-- <a-scene embedded arjs='trackingMethod: best; debugUIEnabled: true;'>
 		<a-anchor hit-testing-enabled='true'>
 			<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
 		</a-anchor>
+		<a-camera-static/>
+	</a-scene> -->
+	<a-scene embedded arjs='trackingMethod: best; debugUIEnabled: true;'>
+		<a-anchor preset='area' hit-testing-enabled='true'>
+			<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
+		</a-anchor>
+		<!-- <a-anchor preset='kanji' hit-testing-enabled='false'>
+			<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'></a-box>
+		</a-anchor> -->
 		<a-camera-static/>
 	</a-scene>
 

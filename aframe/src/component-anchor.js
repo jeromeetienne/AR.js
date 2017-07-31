@@ -104,31 +104,8 @@ AFRAME.registerComponent('arjs-anchor', {
 			//		honor .debugUIEnabled
 			//////////////////////////////////////////////////////////////////////////////
 			if( arjsSystem.data.debugUIEnabled ){
-				console.warn('debugUIEnabled not yet implemented¡')
-				// if( arAnchor.parameters.markersAreaEnabled ){
-				// 	var subMarkerHelpersVisible = false
-				// 	document.querySelector('#buttonToggleMarkerHelpers').addEventListener('click', function(){
-				// 		subMarkerHelpersVisible = subMarkerHelpersVisible ? false : true
-				// 		arAnchor.markersArea.setSubMarkersVisibility(subMarkerHelpersVisible)
-				// 	})
-				// 
-				// 
-				// 	document.querySelector('#buttonMarkersAreaReset').addEventListener('click', function(){
-				// 		var trackingBackend = arProfile.contextParameters.trackingBackend
-				// 		THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(trackingBackend)
-				// 		location.reload()
-				// 	})
-				// 
-				// 	document.querySelector('#buttonMarkersAreaLearner').addEventListener('click', function(){
-				// 		var learnerBaseURL = THREEx.ArToolkitContext.baseURL + 'examples/multi-markers/examples/learner.html'
-				// 		var trackingBackend = arProfile.contextParameters.trackingBackend
-				// 		THREEx.ArMultiMarkerUtils.navigateToLearnerPage(learnerBaseURL, trackingBackend)
-				// 	})		
-				// }else{
-				// 	document.querySelector('#buttonToggleMarkerHelpers').style.display = 'none'
-				// 	document.querySelector('#buttonMarkersAreaReset').style.display = 'none'
-				// 	document.querySelector('#buttonMarkersAreaLearner').style.display = 'none'
-				// }
+				var anchorDebugUI = new ARjs.AnchorDebugUI(arAnchor)
+				document.querySelector('#arjsDebugUIContainer').appendChild(anchorDebugUI.domElement)
 			}
 		}, 1000/60)
 	},
