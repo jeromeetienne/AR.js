@@ -4,6 +4,7 @@
   - in three.js and in aframe.js
 - ensure backward compatibility of aframe api
 - make trackingBackend switchable in arjs-session.html
+- once this refactor is done, publish is as AR.js v1.5 with a blog post
 
 
 - remove the area from the trackingMethod
