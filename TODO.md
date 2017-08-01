@@ -128,28 +128,6 @@
 - ar-tracking-aruco.js
 - ar-tracking-tango.js
 
-## Remove three.js dependancy
-- first remove it externally
-  - find all dependancy to three.js in the ar-session API
-  - ARjs.Anchor should export a modelViewMatrix
-  - ARjs.Session should export a camera projection matrix and a camera transform matrix
-  - ARjs.HitTesting Plane is very three.js dependant - use raycasting of three.js
-  - ARjs.Session got dependancy on renderer/scene/camera .... quite a lot 
-    - it needs to be sorted out
-- then remove it internally
-- get ride of three.js dependancy 
-  - first arjs session API not to use any three.js specific
-  - vector3 as array, same for quaternion
-  - some matrix as array too - projection matrix, localMatrix
-- as im rewriting the highlevel API, im thinking about removing the three.js 
-  dependancy. aka to make AR.js easily usable by other than three.js
-  this could be osg.js (sketchfab stuff), this could be babylon.js
-  this would clean things up and this isnt too hard to do on my side.
-  Just using another math library and to do some THREE.Object3d emulation
-- use gl-matrix.js - it is good code - it is from somebody rigurous - it is well maintained
-- ARjs.Camera inherit from ARjs.Object3D - projectionMatrix
-- ARjs.Object3D : position, quaternion, scale
-
 
 --- 
 - put multi-markers in /src/markers-area
