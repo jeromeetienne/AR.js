@@ -45,7 +45,7 @@ AFRAME.registerComponent('arjs-anchor', {
 		//		Code Separator
 		//////////////////////////////////////////////////////////////////////////////
 
-		_this.initialised = false
+		_this.isReady = false
 		_this._arAnchor = null
 
 		// honor object visibility
@@ -57,11 +57,11 @@ AFRAME.registerComponent('arjs-anchor', {
 
 
 
-		// trick to wait until arjsSystem is initialised
+		// trick to wait until arjsSystem is isReady
 		var startedAt = Date.now()
 		var timerId = setInterval(function(){
-			// wait until the system is initialised
-			if( arjsSystem.initialised === false )	return
+			// wait until the system is isReady
+			if( arjsSystem.isReady === false )	return
 
 			clearInterval(timerId)
 
@@ -97,8 +97,8 @@ AFRAME.registerComponent('arjs-anchor', {
 			var arSession = arjsSystem._arSession
 			var arAnchor = _this._arAnchor = new ARjs.Anchor(arSession, arProfile.defaultMarkerParameters)
 
-			// it is now considered initialised
-			_this.initialised = true
+			// it is now considered isReady
+			_this.isReady = true
 
 			//////////////////////////////////////////////////////////////////////////////
 			//		honor .debugUIEnabled
@@ -115,8 +115,8 @@ AFRAME.registerComponent('arjs-anchor', {
 	},
 	tick: function(){
 		var _this = this
-		// if not yet initialised, do nothing
-		if( this.initialised === false )	return
+		// if not yet isReady, do nothing
+		if( this.isReady === false )	return
 
 		//////////////////////////////////////////////////////////////////////////////
 		//		update arAnchor

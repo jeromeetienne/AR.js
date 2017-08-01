@@ -125,10 +125,10 @@ AFRAME.registerSystem('arjs', {
 
 		this._arSession = null
 
-		_this.initialised = false
+		_this.isReady = false
 		_this.needsOverride = true
 
-		// wait until the renderer is initialised
+		// wait until the renderer is isReady
 		this.el.sceneEl.addEventListener('renderstart', function(){
 			var scene = _this.el.sceneEl.object3D
 			var camera = _this.el.sceneEl.camera
@@ -188,7 +188,7 @@ AFRAME.registerSystem('arjs', {
 			//		Code Separator
 			//////////////////////////////////////////////////////////////////////////////
 
-			_this.initialised = true
+			_this.isReady = true
 
 			//////////////////////////////////////////////////////////////////////////////
 			//		awefull resize trick
@@ -239,7 +239,7 @@ AFRAME.registerSystem('arjs', {
 		var _this = this
 
 		// skip it if not yet isInitialised
-		if( this.initialised === false )	return
+		if( this.isReady === false )	return
 
 		var arSession = this._arSession
 

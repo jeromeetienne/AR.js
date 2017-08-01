@@ -19,17 +19,17 @@ AFRAME.registerComponent('arjs-hit-testing', {
 
 // TODO make it work on cameraTransformMatrix too
 // 
-		_this.initialised = false
+		_this.isReady = false
 		_this._arAnchor = null
 		_this._arHitTesting = null
 
-		// trick to wait until arjsSystem is initialised
+		// trick to wait until arjsSystem is isReady
 		var startedAt = Date.now()
 		var timerId = setInterval(function(){
 			var anchorEl = _this.el
 			var anchorComponent = anchorEl.components['arjs-anchor']
-			// wait until anchorComponent is initialised
-			if( anchorComponent === undefined || anchorComponent.initialised === false )	return
+			// wait until anchorComponent is isReady
+			if( anchorComponent === undefined || anchorComponent.isReady === false )	return
 
 			clearInterval(timerId)
 
@@ -52,7 +52,7 @@ AFRAME.registerComponent('arjs-hit-testing', {
 				arAnchor.applyHitTestResult(hitTestResult)
 			})
 			
-			_this.initialised = true
+			_this.isReady = true
 		}, 1000/60)
 	},
 	remove : function(){
@@ -61,8 +61,8 @@ AFRAME.registerComponent('arjs-hit-testing', {
 	},
 	tick: function(){
 		var _this = this
-		// if not yet initialised, do nothing
-		if( this.initialised === false )	return
+		// if not yet isReady, do nothing
+		if( this.isReady === false )	return
 
 		var arjsSystem = this.el.sceneEl.systems.arjs || this.el.sceneEl.systems.artoolkit
 		var arSession = arjsSystem._arSession

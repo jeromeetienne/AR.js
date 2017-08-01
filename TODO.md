@@ -1,22 +1,11 @@
 ## New API - aframe
-- to fix build file...
-  - make one build for external tracking
-  - one build for pure ar.js
-  - would that work ?
-  - it worked beofre... with aframe. why it doesnt work anymore ?
 - multi-marker learner doesnt work on firefox
 - do a button - display-hittester-plane
   - in three.js and in aframe.js
+- ensure backward compatibility of aframe api
 
 - FIXME in aframe, i define .initialised but aframe defined .initialized..!?!?! super error prone
   - rename as in isReady ? better than nothing. good for now
-
-- implement working build
-  - apparently some issue if artoolkit is included in the build
-  - it worked in aframe before... what is happening
-  - what if i change the order of the scripts
-
-
 
 - remove the area from the trackingMethod
 - better handling of the area stuff in trackingMethod
@@ -39,16 +28,15 @@
     - what is it on tango ? some fictuous barcode ?
   - trackingBackend is about the session
 
-- honor marker preset
-  - hiro + kanji and area
-  - old issue with the same markers ?? deep in jsartoolkit
-  
-- aframe api ? there is marker everywhere... change that ?
-  - <ar-camera> ?
-  - <ar-anchor>
-
-
-
+- DONE to fix build file...
+  - make one build for external tracking
+  - one build for pure ar.js
+  - would that work ?
+  - it worked beofre... with aframe. why it doesnt work anymore ?
+- DONE implement working build
+  - apparently some issue if artoolkit is included in the build
+  - it worked in aframe before... what is happening
+  - what if i change the order of the scripts
 - DONE maybe a class arjs-session-debugui.js
   - create the UI
   - let user attach it to the dom
@@ -77,6 +65,10 @@
 
 ## New API
 
+- honor marker preset
+  - hiro + kanji and area
+  - old issue with the same markers ?? deep in jsartoolkit
+  
 - clickability works IIF changeMatrixMode === modelViewMatrix
   - change that
   - not a bug, it is just not implemented
@@ -139,7 +131,11 @@
 ## Remove three.js dependancy
 - first remove it externally
   - find all dependancy to three.js in the ar-session API
-  - 
+  - ARjs.Anchor should export a modelViewMatrix
+  - ARjs.Session should export a camera projection matrix and a camera transform matrix
+  - ARjs.HitTesting Plane is very three.js dependant - use raycasting of three.js
+  - ARjs.Session got dependancy on renderer/scene/camera .... quite a lot 
+    - it needs to be sorted out
 - then remove it internally
 - get ride of three.js dependancy 
   - first arjs session API not to use any three.js specific
