@@ -5,31 +5,29 @@ var ARjs = ARjs || {}
  * Heavily inspired from the great three.js THREE.Object3D
  */
 ARjs.Object3D = function(){
-	this.position = ARjs.Math.Vector3.create()
-	this.quaternion = quat.create()
-	this.scale = ARjs.Math.Vector3.create()
-	ARjs.Math.Vector3.set(this.scale, 1, 1, 1)
-
-
-	this.matrix = ARjs.Math.Matrix4.create()
-	this.matrixAutoUpdate = true
-
-	this.matrixWorld = ARjs.Math.Matrix4.create()
-	this.matrixWorldNeedsUpdate = false
-	
-	// decompose transform matrix
-	// ARjs.Math.Matrix4.getTranslation(this.position, this.matrix)
-	// ARjs.Math.Matrix4.getRotation(this.quaternion, this.matrix)
-	// ARjs.Math.Matrix4.getScaling(this.scale, this.matrix)
-
-	this.updateMatrix()
-
+	// unique ID for each ARjs.Object3D
 	this.id = ARjs.Object3D.nextID++
 	this.parent = null
 	this.children = []
 
 	this.visible = true
 	this.userData = {}		
+
+	// set position/quaternion/scale
+	this.position = ARjs.Math.Vector3.create()
+	this.quaternion = quat.create()
+	this.scale = ARjs.Math.Vector3.create()
+	ARjs.Math.Vector3.set(this.scale, 1, 1, 1)
+
+	// define matrix and matrixWorld
+	this.matrix = ARjs.Math.Matrix4.create()
+	this.matrixAutoUpdate = true
+	this.updateMatrix()
+
+	this.matrixWorld = ARjs.Math.Matrix4.create()
+	this.matrixWorldNeedsUpdate = false
+	
+
 }
 
 ARjs.Object3D.nextID = 0
@@ -38,6 +36,7 @@ ARjs.Object3D.prototype.decomposeMatrix = function(){
 	ARjs.Math.Matrix4.getTranslation(this.position, this.matrix)
 	ARjs.Math.Matrix4.getRotation(this.quaternion, this.matrix)
 	ARjs.Math.Matrix4.getScaling(this.scale, this.matrix)
+	return this
 }
 
 //////////////////////////////////////////////////////////////////////////////

@@ -1,3 +1,7 @@
+/**
+ * @file little wrapper on top of gl-matrix.js
+ */
+
 var ARjs = ARjs || {}
 ARjs.Math = ARjs.Math || {}
 

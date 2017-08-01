@@ -3,7 +3,7 @@ var ARjs = ARjs || {}
 ARjs.Camera = function(){
 	ARjs.Object3D.call(this)
 	
-	this.projectionMatrix = mat4.create()
+	this.projectionMatrix = ARjs.Math.Matrix4.create()
 }
 
 ARjs.Camera.prototype = Object.create( ARjs.Object3D.prototype );
