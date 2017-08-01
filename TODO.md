@@ -3,9 +3,8 @@
 - do a button - display-hittester-plane
   - in three.js and in aframe.js
 - ensure backward compatibility of aframe api
+- make trackingBackend switchable in arjs-session.html
 
-- FIXME in aframe, i define .initialised but aframe defined .initialized..!?!?! super error prone
-  - rename as in isReady ? better than nothing. good for now
 
 - remove the area from the trackingMethod
 - better handling of the area stuff in trackingMethod
@@ -28,6 +27,8 @@
     - what is it on tango ? some fictuous barcode ?
   - trackingBackend is about the session
 
+- DONE in aframe, i define .initialised but aframe defined .initialized..!?!?! super error prone
+  - rename as in isReady ? better than nothing. good for now
 - DONE to fix build file...
   - make one build for external tracking
   - one build for pure ar.js
