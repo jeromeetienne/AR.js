@@ -1,0 +1,3 @@
+- do ARjs.Object3D
+- handle scene graph with world matrix
+- 
