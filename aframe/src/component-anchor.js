@@ -182,7 +182,7 @@ AFRAME.registerPrimitive('a-camera-static', AFRAME.utils.extendDeep({}, AFRAME.p
 }));
 
 //////////////////////////////////////////////////////////////////////////////
-//		Code Separator
+//		backward compatibility
 //////////////////////////////////////////////////////////////////////////////
 // FIXME 
 AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
