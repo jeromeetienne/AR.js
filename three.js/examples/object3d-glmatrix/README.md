@@ -5,6 +5,8 @@
 - handle scene graph with world matrix
 - 
 
+- remove THREE.EventDispatched for signals.js
+
 ---
 
 ## Remove three.js dependancy

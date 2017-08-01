@@ -39,6 +39,14 @@ ARjs.Object3D.prototype.decomposeMatrix = function(){
 	return this
 }
 
+ARjs.Object3D.prototype.localToWorldPosition = function(vector3){
+	var out = ARjs.Math.Vector3.create()
+	this.updateMatrixWorld()
+	ARjs.Math.Matrix4.getTranslation(out, this.matrix)
+	ARjs.Math.Vector3.add(out, vector3)
+	return out
+}
+
 //////////////////////////////////////////////////////////////////////////////
 //		.updateMatrix + .updateMatrixWorld
 //////////////////////////////////////////////////////////////////////////////
