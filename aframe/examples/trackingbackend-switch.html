@@ -24,15 +24,16 @@
 		<a href='#tango' onclick='location.reload()'>tango</a>
 		/ 
 		<a href='#best' onclick='location.reload()'>best</a>
-		<br/>
+		<div id="arjsDebugUIContainer"></div>
 	</div>
 <script>
-	var trackingMethod = 'best'
+	var trackingMethod = location.hash.substring(1) || 'best'
+	document.querySelector('#trackingMethod').innerHTML = trackingMethod
 	
 
 	var sceneEl = document.createElement('a-scene')
 	sceneEl.setAttribute('embedded', 'true')
-	sceneEl.setAttribute('arjs', 'trackingMethod: '+trackingMethod)
+	sceneEl.setAttribute('arjs', 'debugUIEnabled: true; trackingMethod: '+trackingMethod)
 
 
 	var parsedTrackingMethod = ARjs.Utils.parseTrackingMethod(trackingMethod)

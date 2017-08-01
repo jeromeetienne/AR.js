@@ -1,18 +1,17 @@
 <!-- include a-frame -->
 <script src="vendor/aframe/build/aframe.min.js"></script>
-<!-- include ar.js for aframe -->
+<!-- include aframe-ar.js -->
 <script src='../build/aframe-ar.js'></script>
 <script>ARjs.Context.baseURL = '../../three.js/'</script>
-<!-- start the body of your page -->
+
 <body style='margin : 0px; overflow: hidden;'>
-	<!-- add some info at the top of the page -->
 	<div style='position: fixed; top: 10px; width:inherit; text-align: center; z-index: 1;'>
 		<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - tango example for a-frame by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 		<br/>
 		<div id="arjsDebugUIContainer"></div>
 	</div>
 	<!-- Define your scene -->
-	<a-scene embedded arjs='trackingMethod: best; debugUIEnabled: true;'>
+	<a-scene embedded arjs='trackingMethod: tango; debugUIEnabled: true;'>
 		<!-- Create a anchor to attach your augmented reality -->
 		<a-anchor hit-testing-enabled='true'>
 			<!-- Add your augmented reality here -->
