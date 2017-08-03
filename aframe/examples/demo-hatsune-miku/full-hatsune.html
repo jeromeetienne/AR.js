@@ -19,7 +19,7 @@
    <script src="https://cdn.rawgit.com/takahirox/a-mmd/master/build/a-mmd.js"></script>
    
    <!-- include aframe-ar.js -->
-   <script src="../build/aframe-ar.js"></script>
+   <script src="../../build/aframe-ar.js"></script>
   </head>
  
   <body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
@@ -36,7 +36,7 @@ https://github.com/mrdoob/three.js/tree/dev/examples/models/mmd#readme
 
                 <a-entity camera></a-entity>
 
-		<a-marker type='pattern' url='../../data/data/patt.hiro' size='3'>
+		<a-anchor>
 			<a-entity mmd="audio:https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/mmd/audios/wavefile_short.mp3;
      			                audioDelayTime:5.333333333333333; afterglow:2.0;">
 			<a-entity mmd-model="model:https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/mmd/miku/miku_v2.pmd;
@@ -44,7 +44,7 @@ https://github.com/mrdoob/three.js/tree/dev/examples/models/mmd#readme
                 			physics:false;"
           			shadow="cast:true">
 			</a-entity>
-		</a-marker>
+		</a-anchor>
 
                 <a-plane rotation="-90 0 0"
                        color="#AAAAAA"
@@ -66,6 +66,8 @@ https://github.com/mrdoob/three.js/tree/dev/examples/models/mmd#readme
                               shadowCameraBottom:-20"
                               position="-20 20 20">
                 </a-entity>
+		<!-- Define a static camera -->
+		<a-camera-static/>                
     </a-scene>
   </body>
 </html>

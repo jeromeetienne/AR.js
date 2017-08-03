@@ -1,6 +1,4 @@
 ## New API - aframe
-- multi-marker learner doesnt work on firefox
-
 
 - do a button - display-hittester-plane
   - in three.js and in aframe.js
@@ -8,7 +6,7 @@
 - once this refactor is done, publish is as AR.js v1.5 with a blog post
 
 - ensure backward compatibility of aframe api
-  - it works ?
+  - it seems works ?
 
 
 - remove the area from the trackingMethod
@@ -32,6 +30,7 @@
     - what is it on tango ? some fictuous barcode ?
   - trackingBackend is about the session
 
+- DONE multi-marker learner doesnt work on firefox
 - DONE make trackingBackend switchable in arjs-session.html
 - DONE in aframe, i define .initialised but aframe defined .initialized..!?!?! super error prone
   - rename as in isReady ? better than nothing. good for now

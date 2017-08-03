@@ -1,0 +1,58 @@
+<!-- include a-frame -->
+<script src='../vendor/aframe/build/aframe.min.js'></script>
+
+<script src='https://cdn.rawgit.com/kripken/ammo.js/dcab07bf0e7f2b4b64c01dc45da846344c8f50be/builds/ammo.js'></script>
+<script src='https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.2.0/dist/aframe-extras.min.js'></script>
+<script src='https://cdn.rawgit.com/takahirox/aframe-outline/v1.1.0/build/aframe-outline.min.js'></script>
+<script src='https://cdn.rawgit.com/takahirox/a-mmd/v1.0.2/build/a-mmd.js'></script>
+
+<!-- include ar.js for aframe -->
+<script src='../../build/aframe-ar.js'></script>
+<script>ARjs.Context.baseURL = '../../../three.js/'</script>
+<!-- start the body of your page -->
+<body style='margin : 0px; overflow: hidden;'>
+	<!-- add some info at the top of the page -->
+	<div style='position: fixed; top: 10px; width:100%; text-align: center; z-index: 1;'>
+		<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - A-Frame
+                <a href='https://github.com/mrdoob/three.js/tree/dev/examples/models/mmd#readme'>hatsune miku</a> with 
+                <a href='https://github.com/takahirox/a-mmd' target="blank">mmd</a>
+                by 
+                <a href='https://twitter.com/jerome_etienne' target='_blank'>@takahirox</a>
+		<br/>
+		<div id='arjsDebugUIContainer'></div>
+	</div>
+	<!-- Define your scene -->
+	<a-scene embedded arjs='trackingMethod: best; debugUIEnabled: true;'>
+		<!-- Create a anchor to attach your augmented reality -->
+		<a-anchor hit-testing-enabled='true'>
+                        <!-- <a-entity mmd scale='0.1 0.1 0.1'> -->
+                        <a-entity mmd="" scale='0.8 0.8 0.8'>
+                                <a-entity mmd-model='model:https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/mmd/miku/miku_v2.pmd;
+                                        vmd:https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/mmd/vmds/wavefile_v2.vmd;
+                                        '>
+                                </a-entity>
+                        </a-entity>
+                        <!-- <a-plane rotation="-90 0 0"
+                                color="#AAAAAA"
+                                opacity="0.5"
+                                height="15"
+                                width="15"
+                                shadow="receive:true">
+                        </a-plane> -->
+                        <a-entity shadow-light="type:directional;
+                                                castShadow:true;
+                                                color:#888;
+                                                shadowMapWidth:1024;
+                                                shadowMapHeight:1024;
+                                                shadowCameraRight:20;
+                                                shadowCameraTop:20;
+                                                shadowCameraLeft:-20;
+                                                shadowCameraBottom:-20"
+                                position="-20 20 20">
+                        </a-entity>
+
+		</a-anchor>
+		<!-- Define a static camera -->
+		<a-camera-static/>
+	</a-scene>
+</body>

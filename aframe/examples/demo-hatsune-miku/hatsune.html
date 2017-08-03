@@ -7,9 +7,9 @@
 <script src="https://cdn.rawgit.com/takahirox/a-mmd/master/build/a-mmd.js"></script>
 
 <!-- include aframe-ar.js -->
-<script src="../build/aframe-ar.js"></script>
+<script src="../../build/aframe-ar.js"></script>
 
-<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: fixed; top: 10px; width:inherit; text-align: center; z-index: 1;'>
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: fixed; top: 10px; width: 100%; text-align: center; z-index: 1;'>
 	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - example for a-frame
 	<br/>
 	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
@@ -18,7 +18,7 @@
         <a-scene embedded arjs='sourceType: webcam; sourceWidth: 240; sourceHeight: 180;' antialias="true" outline>
                 
 		<!-- <a-marker type='unknown' size='1'>                 -->
-		<a-marker type='pattern' url='../../data/data/patt.hiro' size='1'>                
+		<a-marker preset='hiro' size='1'>                
                         <!-- add an hatsune miku -->
                         <a-entity scale="0.08 0.08 0.08">
                                 <a-entity mmd='outline: true' afterglow:2.0;>

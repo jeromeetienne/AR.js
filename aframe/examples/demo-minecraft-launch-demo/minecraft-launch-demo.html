@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<!-- include aframe -->
-<script src="https://aframe.io/releases/0.6.0/aframe.min.js"></script>
+<!-- include a-frame -->
+<script src='../vendor/aframe/build/aframe.min.js'></script>
 
 <!-- include aframe-ar.js -->
-<script src="../build/aframe-ar.js"></script>
+<script src="../../build/aframe-ar.js"></script>
+<script>ARjs.Context.baseURL = '../../../three.js/'</script>
 
 <!-- threex minecraft -->
-<script src='vendor/threex.minecraft/a-frame/build/aframe-minecraft.min.js'></script>
-<script>THREEx.MinecraftChar.baseUrl = 'vendor/threex.minecraft/'</script>
+<script src='../vendor/threex.minecraft/a-frame/build/aframe-minecraft.min.js'></script>
+<script>THREEx.MinecraftChar.baseUrl = '../vendor/threex.minecraft/'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
-        <!-- <a-scene embedded arjs='sourceType: image; sourceUrl:../../data/images/armchair.jpg' antialias="true">         -->
-        <a-scene embedded arjs='sourceType: webcam;' antialias="true">
-
-		<!-- <a-marker type='unknown'>                 -->
-		<a-marker type='pattern' url='../../data/data/patt.hiro' size='1'>
+	<!-- Define your scene -->
+	<a-scene embedded arjs='trackingMethod: best;'>
+		<!-- Create a anchor to attach your augmented reality -->
+		<a-anchor hit-testing-enabled='true'>
+			<!-- Add your augmented reality here -->
 	                <!-- Add a minecraft character -->
 			<a-entity minecraft minecraft-head-anim='yes' minecraft-body-anim='hiwave'></a-entity>
 
@@ -32,8 +33,9 @@
 				<a-animation attribute="position" from="-1.8 0.4 0" to="-1.8 .6 0" direction="alternate" dur="500"
 					repeat="indefinite" easing='ease-in-out-cubic'></a-animation>
 			</a-text>
-		</a-marker>
-		<a-entity camera></a-entity>
-        </a-scene>
+		</a-anchor>
+		<!-- Define a static camera -->
+		<a-camera-static/>
+	</a-scene>
 </body>
 </html>

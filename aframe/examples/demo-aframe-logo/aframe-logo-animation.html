@@ -1,8 +1,8 @@
 <!-- include a-frame -->
-<script src="vendor/aframe/build/aframe.min.js"></script>
+<script src="../vendor/aframe/build/aframe.min.js"></script>
 <!-- include ar.js for aframe -->
-<script src='../build/aframe-ar.js'></script>
-<script>ARjs.Context.baseURL = '../../three.js/'</script>
+<script src='../../build/aframe-ar.js'></script>
+<script>ARjs.Context.baseURL = '../../../three.js/'</script>
 
 <body style='margin : 0px; overflow: hidden;'>
 	<div style='position: fixed; top: 10px; width:inherit; text-align: center; z-index: 1;'>
@@ -18,7 +18,7 @@
 		<!-- Create a anchor to attach your augmented reality -->
 		<a-anchor hit-testing-enabled='true'>
 
-			<a-entity id="logo" rotation="0 45 0" scale='0.5 0.5 0.5'>
+			<a-entity id="logo" rotation="0 45 0" scale='0.1 0.1 0.1'>
 				
 				<a-entity rotation="-20 0 0" position="0 0 10.75" scale="1 0 1">
 					<a-animation attribute="scale" to="1 1 1" delay="200" dur="1000" easing="ease-out"></a-animation>

@@ -10,7 +10,7 @@ THREEx.HitTestingTango = function(arContext){
 	// seems to be the object bounding sphere for picking
 	this.boundingSphereRadius = 0.01
 	// default result scale
-	this.resultScale = new THREE.Vector3(1,1,1).multiplyScalar(0.1)
+	this.resultScale = new THREE.Vector3(1,1,1).multiplyScalar(1)
 }
 
 //////////////////////////////////////////////////////////////////////////////

@@ -30,17 +30,11 @@
 <script src='threex-screenasportal/threex-screenasportal.js'></script>
 <script>THREEx.ScreenAsPortal.baseURL = 'threex-screenasportal/'</script>
 
-<style>
-	#recordButton:hover {
-		cursor: pointer;
-	}
-</style>
-
-
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
 	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Multi marker
 	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div>
+<!-- info at the top of page -->
 <div style='position: fixed; bottom: 10px; width:100%; text-align: center;z-index:1';>
 	tracking backend: 
 		<a href='javascript:void(0)' onclick='trackingBackendSet("artoolkit")'>artoolkit</a>
@@ -51,7 +45,13 @@
 	-
 	<a href='javascript:void(0)' onclick='resetMarkerFile()'>reset area</a>
 </div>
+<!-- display record button -->
 <div style='position: fixed; bottom: 16px; right: 16px; z-index:1';>
+	<style>
+		#recordButton:hover {
+			cursor: pointer;
+		}
+	</style>
 	<img id='recordButton' src="images/record-start.png" width='64px'  height='64px'>
 </div>
 <script>
