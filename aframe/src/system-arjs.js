@@ -226,7 +226,7 @@ AFRAME.registerSystem('arjs', {
 		// KLUDGE: kludge to write a 'resize' event
 		var startedAt = Date.now()
 		var timerId = setInterval(function(){
-			if( Date.now() - startedAt > 10*1000 ){
+			if( Date.now() - startedAt > 10000*1000 ){
 				clearInterval(timerId)
 				return 					
 			}

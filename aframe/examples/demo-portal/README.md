@@ -6,3 +6,5 @@
 - in outsidePortal + live-scene => add a cache sphere
 -------------------
 - a actual entity
+- support movie url too
+- do that in a THREEx - add it to webar-playground
