@@ -5904,11 +5904,15 @@ ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
 	if (navigator.mediaDevices === undefined 
 			|| navigator.mediaDevices.enumerateDevices === undefined 
 			|| navigator.mediaDevices.getUserMedia === undefined  ){
+		if( navigator.mediaDevices === undefined )				var fctName = 'navigator.mediaDevices'
+		else if( navigator.mediaDevices.enumerateDevices === undefined )	var fctName = 'navigator.mediaDevices.enumerateDevices'
+		else if( navigator.mediaDevices.getUserMedia === undefined )		var fctName = 'navigator.mediaDevices.getUserMedia'
+		else console.assert(false)
 		onError({
 			name: '',
-			message: 'WebRTC issue! navigator.mediaDevices.enumerateDevices not present in your browser'
+			message: 'WebRTC issue-! '+fctName+' not present in your browser'
 		})
-		return
+		return null
 	}
 
 	// get available devices
