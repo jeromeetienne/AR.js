@@ -8,7 +8,6 @@
 - ensure backward compatibility of aframe api
   - it seems works ?
 
-
 - remove the area from the trackingMethod
 - better handling of the area stuff in trackingMethod
 - REFACTOR trackingMethod - should i put changeMatrixMode into trackingMethod ?

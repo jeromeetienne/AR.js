@@ -1,0 +1,8 @@
+- i can put a live scene in there
+- thus it can be a way to visual VR in AR
+- good because to put a video in tango is too slow
+- TODO make the source a image or a video
+- make it a live scene too ?
+- in outsidePortal + live-scene => add a cache sphere
+-------------------
+- a actual entity
