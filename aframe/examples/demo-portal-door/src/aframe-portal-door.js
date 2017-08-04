@@ -1,17 +1,17 @@
 //////////////////////////////////////////////////////////////////////////////
 //		arjs-hit-testing
 //////////////////////////////////////////////////////////////////////////////
-AFRAME.registerComponent('arjs-portal360', {
+AFRAME.registerComponent('arjs-portal-door', {
 	dependencies: ['arjs'],
 	schema: {
-		url : {
+		url : {		// Url of the content - may be video or image
 			type: 'string',
 		},
-		doorWidth : {
+		doorWidth : {	// width of the door
 			type: 'number',
 			default: 1,
 		},
-		doorHeight : {
+		doorHeight : {	// height of the door
 			type: 'number',
 			default: 2,
 		},
@@ -23,22 +23,22 @@ AFRAME.registerComponent('arjs-portal360', {
 		var doorHeight = this.data.doorHeight
 		var imageURL = this.data.url
 
-		var portal360 = new THREEx.Portal360(imageURL, doorWidth, doorHeight)
-		this._portal360 = portal360
-		
-		this.el.object3D.add(portal360.object3d)
+		var portalDoor = new THREEx.Portal360(imageURL, doorWidth, doorHeight)
+		this._portalDoor = portalDoor
+
+		this.el.object3D.add(portalDoor.object3d)
 	},
 	tick: function(){
-		this._portal360.update()
+		this._portalDoor.update()
 	}
 })
 
 
-AFRAME.registerPrimitive('a-portal360', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
+AFRAME.registerPrimitive('a-portal-door', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
 	defaultComponents: {
-		'arjs-portal360': {},
+		'arjs-portal-door': {},
 	},
 	mappings: {
-		'url': 'arjs-portal360.url',
+		'url': 'arjs-portal-door.url',
 	}
-}));
+}))

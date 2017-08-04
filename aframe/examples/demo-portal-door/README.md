@@ -1,8 +1,8 @@
-
+# TODO support live scene
 - i can put a live scene in there
-  - cache material on sphere when outside portal - thus real scene is hidden
-  - it can work for sphere 360 it has nothing special
-  - good thus ALL the content is handled outside
+- cache material on sphere when outside portal - thus real scene is hidden
+- it can work for sphere 360 it has nothing special
+- good thus ALL the content is handled outside
 
 ---
 - thus it can be a way to visual VR in AR
@@ -13,6 +13,6 @@
 
 -------------------
 - a actual entity
-- support movie url too
 
+- DONE support movie url too
 - DONE do that in a THREEx - add it to webar-playground
