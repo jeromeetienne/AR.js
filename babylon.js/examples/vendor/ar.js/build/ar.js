@@ -2224,30 +2224,17 @@ THREEx.ArMarkerControls.prototype._initArtoolkit = function(){
 		}else if( _this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
 			// debugger;  
 			markerObject3D.matrix.getInverse( modelViewMatrix )  
-			cameraB._computedViewMatrix = new BABYLON.Matrix.FromArray(markerObject3D.matrix.toArray()); //SPLICE-FINAL!  
-			       // This is actually it?!? _this.object3d instance assignment.
-			// cameraB._projectionMatrix = new BABYLON.Matrix.FromArray(modelViewMatrixB).invert();           // This is actually it?!? _this.object3d instance assignment.
-			// var invertMB = new BABYLON.Matrix.FromArray(modelViewMatrix.toArray()).invert();
-			// cameraB._transformMatrix = new BABYLON.Matrix.FromArray(markerObject3D.matrix.toArray()); //SPLICE          // This is actually it?!? _this.object3d instance assignment.
-			// cameraB._projectionMatrix = new BABYLON.Matrix.FromArray(markerObject3D.matrix.toArray()); //SPLICE          // This is actually it?!? _this.object3d instance assignment.
-			// cameraB.getTranformationMatrix();
-			// cameraB._computeViewMatrix();
-			// sceneB.matrix = new BABYLON.Matrix.FromArray(markerObject3D.matrix.toArray()); //SPLICE
-			// cameraB._projectionMatrix = new BABYLON.Matrix.FromArray(markerObject3D.matrix.toArray()); //SPLICE          // This is actually it?!? _this.object3d instance assignment.
-			// cameraB.freezeProjectionMatrix( invertMB ); //SPLICE          // This is actually it?!? _this.object3d instance assignment.
-			// cameraB.freezeProjectionMatrix( new BABYLON.Matrix.FromArray(modelViewMatrix.toArray()).invert() ); //SPLICE          // This is actually it?!? _this.object3d instance assignment.
-			// cameraB.freezeProjectionMatrix( new BABYLON.Matrix.FromArray(modelViewMatrixB.toArray()) ); //SPLICE          // This is actually it?!? _this.object3d instance assignment.
-			console.log('STEP: put the finished MVM into Camera.matrix... getInverse()!')
 		}else {
 			console.assert(false)
 		}
 
 	// decompose - the matrix into .position, .quaternion, .scale
 	// cameraB._computedViewMatrix.decompose(_computedViewMatrix.scale, _computedViewMatrix.quaternion, _computedViewMatrix.position)
-	// markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
+	markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
 
 	// dispatchEvent
-	// this.dispatchEvent( { type: 'markerFound' } );
+// debugger
+	_this.dispatchEvent( { type: 'markerFound' } );
 
 
 
