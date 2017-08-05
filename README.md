@@ -232,7 +232,7 @@ This one is mainly for [me](@jerome_etienne) to remember :)
 
 ```bash
 # replace REVISION to the proper version
-atom three.js/threex-artoolkitcontext.js package.json
+atom three.js/src/threex-artoolkitcontext.js package.json
 
 # Rebuild a-frame and webvr-polyfill
 make build
@@ -240,14 +240,20 @@ make build
 # Commit everything
 git add . && git commit -a -m 'Last commit before release'
 
+# Go to master branch
+git checkout master
+
 # tag the release
-git tag 1.0.0
+git tag 1.4.9
 
 # push the tag on github
 git push origin --tags
 
 # update npm package.json
 npm publish
+
+# Come back to dev branch
+git checkout dev
 
 # update the a-frame codepen
 open "https://codepen.io/jeromeetienne/pen/mRqqzb?editors=1000#0"
