@@ -243,8 +243,11 @@ git add . && git commit -a -m 'Last commit before release'
 # Go to master branch
 git checkout master
 
+# Merge dev branch into master branch
+git merge dev
+
 # tag the release
-git tag 1.4.9
+git tag 1.4.10
 
 # push the tag on github
 git push origin --tags
