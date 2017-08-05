@@ -223,3 +223,32 @@ Credits: @HelloDeadline, @sorianog
 # FAQ
 
 [FAQ.md](docs/FAQ.md)
+
+
+
+# How To Release ?
+
+This one is mainly for [me](@jerome_etienne) to remember :)
+
+```bash
+# replace REVISION to the proper version
+atom three.js/threex-artoolkitcontext.js package.json
+
+# Rebuild a-frame and webvr-polyfill
+make build
+
+# Commit everything
+git add . && git commit -a -m 'Last commit before release'
+
+# tag the release
+git tag 1.0.0
+
+# push the tag on github
+git push origin --tags
+
+# update npm package.json
+npm publish
+
+# update the a-frame codepen
+open "https://codepen.io/jeromeetienne/pen/mRqqzb?editors=1000#0"
+```
