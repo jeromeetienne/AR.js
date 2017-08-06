@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MMD Models</title>
+    <meta name="description" content="A-Frame MMD loader component">
+    <script>
+    /*
+    var WebVRConfig = {
+        FORCE_ENABLE_VR: true,
+        BUFFER_SCALE: 1.0
+    };
+    */
+    </script>
+    <script src="https://cdn.rawgit.com/aframevr/aframe/v0.5.0/dist/aframe-master.min.js"></script>
+    <script src="https://cdn.rawgit.com/kripken/ammo.js/dcab07bf0e7f2b4b64c01dc45da846344c8f50be/builds/ammo.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v3.2.0/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.rawgit.com/takahirox/aframe-outline/v1.1.0/build/aframe-outline.min.js"></script>
+   <script src="https://cdn.rawgit.com/takahirox/a-mmd/master/build/a-mmd.js"></script>
+   
+   <!-- include aframe-ar.js -->
+   <script src="../../build/aframe-ar.js"></script>
+  </head>
+ 
+  <body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
+
+<!-- 
+The license of MMD assets used here
+https://github.com/mrdoob/three.js/tree/dev/examples/models/mmd#readme
+-->
+
+    <a-scene  embedded arjs='debug: false; sourceType: webcam;' antialias="true" outline stats>
+      <a-assets>
+        <img id="sky" src="https://cdn.rawgit.com/aframevr/aframe/master/examples/primitives/models/peach-gradient.jpg">
+      </a-assets>
+
+                <a-entity camera></a-entity>
+
+		<a-anchor>
+			<a-entity mmd="audio:https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/mmd/audios/wavefile_short.mp3;
+     			                audioDelayTime:5.333333333333333; afterglow:2.0;">
+			<a-entity mmd-model="model:https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/mmd/miku/miku_v2.pmd;
+        				vmd:https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/mmd/vmds/wavefile_v2.vmd;
+                			physics:false;"
+          			shadow="cast:true">
+			</a-entity>
+		</a-anchor>
+
+                <a-plane rotation="-90 0 0"
+                       color="#AAAAAA"
+                       height="200"
+                       width="200"
+                       shadow="receive:true">
+                </a-plane>
+
+                <a-sky src="#sky"></a-sky>
+
+                <a-entity shadow-light="type:directional;
+                              castShadow:true;
+                              color:#888;
+                              shadowMapWidth:1024;
+                              shadowMapHeight:1024;
+                              shadowCameraRight:20;
+                              shadowCameraTop:20;
+                              shadowCameraLeft:-20;
+                              shadowCameraBottom:-20"
+                              position="-20 20 20">
+                </a-entity>
+		<!-- Define a static camera -->
+		<a-camera-static/>                
+    </a-scene>
+  </body>
+</html>
