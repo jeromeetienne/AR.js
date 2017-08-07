@@ -20,10 +20,9 @@ AFRAME.registerComponent('shadowonly-plane', {
 		// add a transparent ground-plane shadow-receiver
 		var material = new THREE.ShadowMaterial({
 			opacity: this.data.opacity,
-			depthWrite: false,
+			// depthWrite: false,
 		})
 
-console.dir(material)
 		var geometry = new THREE.PlaneGeometry(this.data.width, this.data.height)
 		
 		var mesh = new THREE.Mesh( geometry, material);
