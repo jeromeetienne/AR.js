@@ -6,6 +6,9 @@
 <!-- include ar.js for aframe -->
 <script src='../../build/aframe-ar.js'></script>
 <script>ARjs.Context.baseURL = '../../../three.js/'</script>
+<!-- include shadowonly-plane -->
+<script src='../demo-firefox/aframe-shadow-plane.js'></script>
+
 <!-- start the body of your page -->
 <body style='margin : 0px; overflow: hidden;'>
 	<!-- add some info at the top of the page -->
@@ -38,6 +41,8 @@
 				light="type: directional; color: #888; intensity: 0.9; castShadow:true; shadowCameraVisible: false; shadowMapWidth:2048; shadowMapHeight:2048;" 
 				position="-5 20 5">
 			</a-entity>
+			<!-- add shadow only ground -->
+			<a-entity shadowonly-plane='width: 3; height: 3; opacity: 0.7'></a-entity>
                         <!-- <a-plane rotation="-90 0 0"
                                 color="#AAAAAA"
                                 opacity="0.5"
@@ -45,14 +50,14 @@
                                 width="15"
                                 shadow="receive:true">
                         </a-plane> -->
-	                <a-circle				
+	                <!-- <a-circle				
 				rotation='-90 0 0'
                                 opacity='0.5'
 				src='url(../demo-firefox/images/UV_Grid_Sm.jpg)'
 				transparency='true'
 				radius='1'
 				shadow='receive:true'>
-			</a-circle>
+			</a-circle> -->
 	                <!-- <a-entity				
 				rotation='-90 0 0'
                                 opacity="0.5"

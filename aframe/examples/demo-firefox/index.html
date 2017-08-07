@@ -1,37 +1,40 @@
 <!-- include a-frame -->
-<script src="../vendor/aframe/build/aframe.min.js"></script>
+<script src='../vendor/aframe/build/aframe.min.js'></script>
 <!-- include ar.js for aframe -->
 <script src='../../build/aframe-ar.js'></script>
 <script>ARjs.Context.baseURL = '../../../three.js/'</script>
+<!-- include shadowonly-plane -->
+<script src='../demo-firefox/aframe-shadow-plane.js'></script>
+
 <!-- start the body of your page -->
 <body style='margin : 0px; overflow: hidden;'>
 	<!-- add some info at the top of the page -->
 	<div style='position: fixed; top: 10px; width:100%; text-align: center; z-index: 1;'>
-		<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - tango example for a-frame by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
-		<div id="arjsDebugUIContainer"></div>
+		<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - tango example for a-frame by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+		<div id='arjsDebugUIContainer'></div>
 	</div>
 	<!-- Define your scene -->
-	<a-scene embedded arjs='trackingMethod: best; debugUIEnabled: true;' antialias="true">
+	<a-scene embedded arjs='trackingMethod: best; debugUIEnabled: true;' antialias='true'>
 		<!-- download yours assets -->
 		<a-assets>
-			<a-asset-item id="tree-obj" src="models/little-fox/model.obj"></a-asset-item>
-			<a-asset-item id="tree-mtl" src="models/little-fox/materials.mtl"></a-asset-item>
+			<a-asset-item id='tree-obj' src='models/little-fox/model.obj'></a-asset-item>
+			<a-asset-item id='tree-mtl' src='models/little-fox/materials.mtl'></a-asset-item>
 		</a-assets>		
 
 		<a-entity
-			light="type: ambient; color: #333">
+			light='type: ambient; color: #333'>
 		</a-entity>
 		<a-entity
-			light="type: directional; color: #888; intensity: 0.5; castShadow:true; shadowDarkness: 1.0; shadowCameraVisible: false; shadowMapWidth:512; shadowMapHeight:512;" 
-			position="-2 5 -2">
+			light='type: directional; color: #888; intensity: 0.5; castShadow:true; shadowDarkness: 1.0; shadowCameraVisible: false; shadowMapWidth:512; shadowMapHeight:512;' 
+			position='-2 5 -2'>
 		</a-entity>
 		<a-entity 
-			light="type: directional; color: #888; intensity: 0.5;" 
-			position="-2 5 2">
+			light='type: directional; color: #888; intensity: 0.5;' 
+			position='-2 5 2'>
 		</a-entity>
 		<a-entity 
-			light="type: directional; color: #888; intensity: 0.5;" 
-			position="+2 5 2">
+			light='type: directional; color: #888; intensity: 0.5;' 
+			position='+2 5 2'>
 		</a-entity>
 		
 
@@ -40,28 +43,22 @@
 		<a-anchor hit-testing-enabled='true'>
 			
 			<!-- firefox model -->
-			<a-entity obj-model="obj: #tree-obj; mtl: #tree-mtl" position='0 0.8 0' rotation='0 90 0' shadow="receive: true"></a-entity>
+			<a-entity obj-model='obj: #tree-obj; mtl: #tree-mtl' position='0 0.8 0' rotation='0 90 0' shadow='receive: true'></a-entity>
 			
-			<!-- ground -->
-				<!-- src='url(images/UV_Grid_Sm.jpg)' -->
-	                <a-circle				
-				radius='1.5'
-				rotation='-90 0 0'
-                                opacity='0.5'
-				transparency='true'
-				shadow='receive:true'>
-			</a-circle>
+			<!-- add shadow only ground -->
+			<a-entity shadowonly-plane='width: 3; height: 3; opacity: 0.7'></a-entity>
+
 			<!-- firefox 55 is out -->
 			<a-entity position='-0.8 1 0' rotation='90 0 0' scale='0.6 0.6 0.6'>
-				<a-animation attribute="rotation" from="15 0 30" to="-15 0 30" direction="alternate" dur="500"
-					repeat="indefinite" easing='ease-in-out-cubic'></a-animation>
-				<a-text position='-1 0 0' side='double' value="Firefox 55 is out!!" color='orange' shadow="receive: true"></a-text>
+				<a-animation attribute='rotation' from='15 0 30' to='-15 0 30' direction='alternate' dur='500'
+					repeat='indefinite' easing='ease-in-out-cubic'></a-animation>
+				<a-text position='-1 0 0' side='double' value='Firefox 55 is out!!' color='orange' shadow='receive: true'></a-text>
 			</a-entity>
 			<!-- webvr included -->
 			<a-entity position='0.8 1 0' rotation='90 0 0' scale='0.6 0.6 0.6'>
-				<a-animation attribute="rotation" from="15 0 -30" to="-15 0 -30" direction="alternate" dur="500"
-					repeat="indefinite" easing='ease-in-out-cubic'></a-animation>
-				<a-text position='-1 0 0' side='double' value="WebVR included!!" color='orange' shadow="receive: true"></a-text>
+				<a-animation attribute='rotation' from='15 0 -30' to='-15 0 -30' direction='alternate' dur='500'
+					repeat='indefinite' easing='ease-in-out-cubic'></a-animation>
+				<a-text position='-1 0 0' side='double' value='WebVR included!!' color='orange' shadow='receive: true'></a-text>
 			</a-entity>
 		</a-anchor>
 
