@@ -222,7 +222,7 @@ Credits: @HelloDeadline, @sorianog
 
 # FAQ
 
-[FAQ.md](https://jeromeetienne.github.io/AR.js-docs/misc/FAQ.html0)
+[FAQ.md](https://jeromeetienne.github.io/AR.js-docs/misc/FAQ.html)
 
 
 
