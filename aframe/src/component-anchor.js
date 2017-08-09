@@ -104,8 +104,17 @@ AFRAME.registerComponent('arjs-anchor', {
 			//		honor .debugUIEnabled
 			//////////////////////////////////////////////////////////////////////////////
 			if( arjsSystem.data.debugUIEnabled ){
+				// get or create containerElement
+				var containerElement = document.querySelector('#arjsDebugUIContainer')
+				if( containerElement === null ){
+					containerElement = document.createElement('div')
+					containerElement.id = 'arjsDebugUIContainer'
+					containerElement.setAttribute('style', 'position: fixed; bottom: 10px; width:100%; text-align: center; z-index: 1; color: grey;')
+					document.body.appendChild(containerElement)
+				}
+				// create anchorDebugUI
 				var anchorDebugUI = new ARjs.AnchorDebugUI(arAnchor)
-				document.querySelector('#arjsDebugUIContainer').appendChild(anchorDebugUI.domElement)
+				containerElement.appendChild(anchorDebugUI.domElement)		
 			}
 		}, 1000/60)
 	},

@@ -6,7 +6,7 @@ AFRAME.registerSystem('arjs', {
 		},
 		debugUIEnabled :{
 			type: 'boolean',	
-			default: false,			
+			default: true,			
 		},
 		areaLearningButton : {
 			type: 'boolean',	
@@ -214,8 +214,17 @@ AFRAME.registerSystem('arjs', {
 			//		honor .debugUIEnabled
 			//////////////////////////////////////////////////////////////////////////////
 			if( _this.data.debugUIEnabled ){
+				// get or create containerElement
+				var containerElement = document.querySelector('#arjsDebugUIContainer')
+				if( containerElement === null ){
+					containerElement = document.createElement('div')
+					containerElement.id = 'arjsDebugUIContainer'
+					containerElement.setAttribute('style', 'position: fixed; bottom: 10px; width:100%; text-align: center; z-index: 1;color: grey;')
+					document.body.appendChild(containerElement)
+				}
+				// create sessionDebugUI
 				var sessionDebugUI = new ARjs.SessionDebugUI(arSession)
-				document.querySelector('#arjsDebugUIContainer').appendChild(sessionDebugUI.domElement)		
+				containerElement.appendChild(sessionDebugUI.domElement)		
 			}
 		})
 

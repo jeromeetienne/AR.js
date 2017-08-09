@@ -8204,7 +8204,7 @@ AFRAME.registerSystem('arjs', {
 		},
 		debugUIEnabled :{
 			type: 'boolean',	
-			default: false,			
+			default: true,			
 		},
 		areaLearningButton : {
 			type: 'boolean',	
