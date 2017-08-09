@@ -203,6 +203,7 @@ AFRAME.registerSystem('arjs', {
 					arSource.copyElementSizeTo(document.body)
 				}
 				
+				// fixing a-frame css
 				var buttonElement = document.querySelector('.a-enter-vr')
 				if( buttonElement ){
 					buttonElement.style.position = 'fixed'
@@ -213,7 +214,8 @@ AFRAME.registerSystem('arjs', {
 			//////////////////////////////////////////////////////////////////////////////
 			//		honor .debugUIEnabled
 			//////////////////////////////////////////////////////////////////////////////
-			if( _this.data.debugUIEnabled ){
+			if( _this.data.debugUIEnabled )	initDebugUI()
+			function initDebugUI(){
 				// get or create containerElement
 				var containerElement = document.querySelector('#arjsDebugUIContainer')
 				if( containerElement === null ){
@@ -222,9 +224,10 @@ AFRAME.registerSystem('arjs', {
 					containerElement.setAttribute('style', 'position: fixed; bottom: 10px; width:100%; text-align: center; z-index: 1;color: grey;')
 					document.body.appendChild(containerElement)
 				}
+
 				// create sessionDebugUI
 				var sessionDebugUI = new ARjs.SessionDebugUI(arSession)
-				containerElement.appendChild(sessionDebugUI.domElement)		
+				containerElement.appendChild(sessionDebugUI.domElement)
 			}
 		})
 

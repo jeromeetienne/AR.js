@@ -1,5 +1,15 @@
 # 1.5.0-dev
 
+- aframe-ar.js - added link into webxr.io/augmented-website
+- aframe-ar.js - change debugUIEnabled default from false to true.
+- drafting a demo for 3d.io
+- made demo for portal-door - nice reuseable components available
+- made demos to celebrate firefox 55
+- made demo for mapbox
+- vr-camera-controls - or how to walk in VR with AR.js
+
+# 1.4.10
+
 - support for markers-area 
   - Efficient user friendly area scanning
   - More Versatile than single marker tracking 0 larger areas than single markers

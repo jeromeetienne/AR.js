@@ -6597,15 +6597,39 @@ ARjs.SessionDebugUI = function(arSession, tangoPointCloud){
 	var trackingBackend = arSession.arContext.parameters.trackingBackend
 
 	this.domElement = document.createElement('div')
+	this.domElement.style.color = 'rgba(0,0,0,0.9)'
+	this.domElement.style.backgroundColor = 'rgba(127,127,127,0.5)'
+	this.domElement.style.display = 'inline-block'
+	this.domElement.style.padding = '0.5em'
+	this.domElement.style.margin = '0.5em'
+	this.domElement.style.textAlign = 'left'
+
+	var domElement = document.createElement('div')
+	domElement.style.display = 'block'
+	domElement.style.fontWeight = 'bold'
+	domElement.style.fontSize = '120%'
+	this.domElement.appendChild(domElement)
+	domElement.innerHTML = 'AR.js Session Debug'
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		current-tracking-backend
 	//////////////////////////////////////////////////////////////////////////////
 
 	var domElement = document.createElement('span')
+	domElement.style.display = 'block'
 	this.domElement.appendChild(domElement)
-	domElement.innerHTML = 'trackingBackend :' +trackingBackend
+	domElement.innerHTML = '<b>trackingBackend</b> : ' +trackingBackend
 	
+	//////////////////////////////////////////////////////////////////////////////
+	//		augmented-websites
+	//////////////////////////////////////////////////////////////////////////////
+	var domElement = document.createElement('a')
+	domElement.innerHTML = 'Share on augmented-websites'
+	domElement.style.display = 'block'
+	domElement.setAttribute('target', '_blank')
+	domElement.href = 'https://webxr.io/augmented-website?'+location.href
+	this.domElement.appendChild(domElement)				
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		toggle-point-cloud
 	//////////////////////////////////////////////////////////////////////////////
@@ -6646,15 +6670,32 @@ ARjs.AnchorDebugUI = function(arAnchor){
 	var trackingBackend = arSession.arContext.parameters.trackingBackend
 	
 	this.domElement = document.createElement('div')
+	this.domElement.style.color = 'rgba(0,0,0,0.9)'
+	this.domElement.style.backgroundColor = 'rgba(127,127,127,0.5)'
+	this.domElement.style.display = 'inline-block'
+	this.domElement.style.padding = '0.5em'
+	this.domElement.style.margin = '0.5em'
+	this.domElement.style.textAlign = 'left'
 
+	//////////////////////////////////////////////////////////////////////////////
+	//		add title
+	//////////////////////////////////////////////////////////////////////////////
+
+	var domElement = document.createElement('div')
+	domElement.style.display = 'block'
+	domElement.style.fontWeight = 'bold'
+	domElement.style.fontSize = '120%'
+	this.domElement.appendChild(domElement)
+	domElement.innerHTML = 'Anchor Marker Debug'
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		current-tracking-backend
 	//////////////////////////////////////////////////////////////////////////////
 
 	var domElement = document.createElement('span')
+	domElement.style.display = 'block'
 	this.domElement.appendChild(domElement)
-	domElement.innerHTML = 'markersAreaEnabled :' +arAnchor.parameters.markersAreaEnabled
+	domElement.innerHTML = '<b>markersAreaEnabled</b> :' +arAnchor.parameters.markersAreaEnabled
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		toggle-marker-helper
@@ -6662,6 +6703,7 @@ ARjs.AnchorDebugUI = function(arAnchor){
 
 	if( arAnchor.parameters.markersAreaEnabled ){
 		var domElement = document.createElement('button')
+		domElement.style.display = 'block'
 		this.domElement.appendChild(domElement)
 
 		domElement.id= 'buttonToggleMarkerHelpers'
@@ -6681,7 +6723,9 @@ ARjs.AnchorDebugUI = function(arAnchor){
 
 	if( arAnchor.parameters.markersAreaEnabled ){
 		var domElement = document.createElement('button')
+		domElement.style.display = 'block'
 		this.domElement.appendChild(domElement)
+
 		domElement.id = 'buttonMarkersAreaLearner'
 		domElement.innerHTML = 'Learn-new-marker-area'
 		domElement.href ='javascript:void(0)'
@@ -6698,7 +6742,9 @@ ARjs.AnchorDebugUI = function(arAnchor){
 
 	if( arAnchor.parameters.markersAreaEnabled ){
 		var domElement = document.createElement('button')
+		domElement.style.display = 'block'
 		this.domElement.appendChild(domElement)
+
 		domElement.id = 'buttonMarkersAreaReset'
 		domElement.innerHTML = 'Reset-marker-area'
 		domElement.href ='javascript:void(0)'
@@ -7999,8 +8045,17 @@ AFRAME.registerComponent('arjs-anchor', {
 			//		honor .debugUIEnabled
 			//////////////////////////////////////////////////////////////////////////////
 			if( arjsSystem.data.debugUIEnabled ){
+				// get or create containerElement
+				var containerElement = document.querySelector('#arjsDebugUIContainer')
+				if( containerElement === null ){
+					containerElement = document.createElement('div')
+					containerElement.id = 'arjsDebugUIContainer'
+					containerElement.setAttribute('style', 'position: fixed; bottom: 10px; width:100%; text-align: center; z-index: 1; color: grey;')
+					document.body.appendChild(containerElement)
+				}
+				// create anchorDebugUI
 				var anchorDebugUI = new ARjs.AnchorDebugUI(arAnchor)
-				document.querySelector('#arjsDebugUIContainer').appendChild(anchorDebugUI.domElement)
+				containerElement.appendChild(anchorDebugUI.domElement)		
 			}
 		}, 1000/60)
 	},
@@ -8401,6 +8456,7 @@ AFRAME.registerSystem('arjs', {
 					arSource.copyElementSizeTo(document.body)
 				}
 				
+				// fixing a-frame css
 				var buttonElement = document.querySelector('.a-enter-vr')
 				if( buttonElement ){
 					buttonElement.style.position = 'fixed'
@@ -8411,9 +8467,20 @@ AFRAME.registerSystem('arjs', {
 			//////////////////////////////////////////////////////////////////////////////
 			//		honor .debugUIEnabled
 			//////////////////////////////////////////////////////////////////////////////
-			if( _this.data.debugUIEnabled ){
+			if( _this.data.debugUIEnabled )	initDebugUI()
+			function initDebugUI(){
+				// get or create containerElement
+				var containerElement = document.querySelector('#arjsDebugUIContainer')
+				if( containerElement === null ){
+					containerElement = document.createElement('div')
+					containerElement.id = 'arjsDebugUIContainer'
+					containerElement.setAttribute('style', 'position: fixed; bottom: 10px; width:100%; text-align: center; z-index: 1;color: grey;')
+					document.body.appendChild(containerElement)
+				}
+
+				// create sessionDebugUI
 				var sessionDebugUI = new ARjs.SessionDebugUI(arSession)
-				document.querySelector('#arjsDebugUIContainer').appendChild(sessionDebugUI.domElement)		
+				containerElement.appendChild(sessionDebugUI.domElement)
 			}
 		})
 
