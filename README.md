@@ -41,7 +41,7 @@ It is thanks to the hard work from others, that we can today reach this mythic 6
 So i would like to thanks :
 
 - **three.js** for being a great library to do 3d on the web.
-- **artoolkit!** years of development and experiences on doing augmented reality
+- **artoolkit**! years of development and experiences on doing augmented reality
 - **emscripten and asm.js**! thus we could compile artoolkit c into javascript
 - **chromium**! thanks for being so fast!
 
