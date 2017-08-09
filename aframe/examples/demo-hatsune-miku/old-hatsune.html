@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!-- include aframe -->
+<script src="https://aframe.io/releases/0.6.0/aframe.min.js"></script>
+
+<!-- hatsune miku -->
+<script src="https://cdn.rawgit.com/kripken/ammo.js/dcab07bf0e7f2b4b64c01dc45da846344c8f50be/builds/ammo.js"></script>
+<script src="https://cdn.rawgit.com/takahirox/a-mmd/master/build/a-mmd.js"></script>
+
+<!-- include aframe-ar.js -->
+<script src="../../build/aframe-ar.js"></script>
+
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: fixed; top: 10px; width: 100%; text-align: center; z-index: 1;'>
+	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - example for a-frame
+	<br/>
+	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+</div>
+        <!-- <a-scene embedded arjs='sourceType: image; sourceUrl:../../data/images/armchair.jpg' antialias="true"> -->
+        <a-scene embedded arjs='sourceType: webcam; sourceWidth: 240; sourceHeight: 180;' antialias="true" outline>
+                
+		<!-- <a-marker type='unknown' size='1'>                 -->
+		<a-marker preset='hiro' size='1'>                
+                        <!-- add an hatsune miku -->
+                        <a-entity scale="0.08 0.08 0.08">
+                                <a-entity mmd='outline: true' afterglow:2.0;>
+                                        <a-entity mmd-model="model:https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/mmd/miku/miku_v2.pmd;
+                                        vmd:https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/mmd/vmds/wavefile_v2.vmd;"
+                                        shadow="cast:true"
+                                        position="0 0 0"></a-entity>
+                                </a-entity>
+				<!-- add sounds -->
+      				<!-- <a-entity mmd="audio:https://cdn.rawgit.com/mrdoob/three.js/dev/examples/models/mmd/audios/wavefile_short.mp3;
+                     			audioDelayTime:5.333333333333333; afterglow:2.0;"> -->
+                        </a-entity>
+			
+			<!-- <a-plane rotation="-90 0 0"
+			       color="rgba(0,0,0, 0)"
+			       height="2"
+			       width="2"
+			       shadow="receive:true; transparent: true"></a-plane> -->
+
+			<a-entity shadow-light="type:directional;
+			                      castShadow:true;
+			                      color:#888;
+			                      shadowMapWidth:1024;
+			                      shadowMapHeight:1024;
+			                      shadowCameraRight:20;
+			                      shadowCameraTop:20;
+			                      shadowCameraLeft:-20;
+			                      shadowCameraBottom:-20;
+					      shadowCameraVisible: true;"
+			        position="-2 2 2"></a-entity>
+                </a-marker>
+
+                <a-entity camera></a-entity>
+        </a-scene>
+</body>
+</html>

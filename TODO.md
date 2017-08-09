@@ -2,10 +2,11 @@
 
 - do a button - display-hittester-plane
   - in three.js and in aframe.js
+  
 
 - once this refactor is done, publish is as AR.js v1.5 with a blog post
 
-- ensure backward compatibility of aframe api
+- DONE ensure backward compatibility of aframe api
   - it seems works ?
 
 - remove the area from the trackingMethod

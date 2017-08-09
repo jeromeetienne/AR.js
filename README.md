@@ -165,7 +165,7 @@ Some applications:
 - [WebAR Playground](https://jeromeetienne.github.io/webar-playground/) :
   Playground running in WebAR with ar.js/chromiumAR
 
-[ALL EXAMPLES](docs/misc/EXAMPLES.md)
+[ALL EXAMPLES](https://jeromeetienne.github.io/AR.js-docs/misc/EXAMPLES.html)
 
 # Folders
 - ```/three.js``` is the extension to use it with [pure three.js](https://threejs.org)
@@ -218,11 +218,11 @@ Credits: @HelloDeadline, @sorianog
 
 # Future
 
-[FUTURE.md](docs/FUTURE.md)
+[FUTURE.md](https://jeromeetienne.github.io/AR.js-docs/misc/FUTURE.html)
 
 # FAQ
 
-[FAQ.md](docs/FAQ.md)
+[FAQ.md](https://jeromeetienne.github.io/AR.js-docs/misc/FAQ.html)
 
 
 

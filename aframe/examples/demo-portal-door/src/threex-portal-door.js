@@ -17,9 +17,10 @@ THREEx.Portal360 = function(videoImageURL, doorWidth, doorHeight){
 		video.loop = true;
 		video.muted = true;
 		video.src = videoImageURL;
+		video.crossOrigin = 'anonymous'
 		video.setAttribute( 'webkit-playsinline', 'webkit-playsinline' );
 		video.play();
-		
+
 		var texture360 = new THREE.VideoTexture( video );
 		texture360.minFilter = THREE.LinearFilter;
 		texture360.format = THREE.RGBFormat;	

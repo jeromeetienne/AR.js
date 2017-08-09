@@ -2,7 +2,6 @@
 //		arjs-hit-testing
 //////////////////////////////////////////////////////////////////////////////
 AFRAME.registerComponent('arjs-portal-door', {
-	dependencies: ['arjs'],
 	schema: {
 		url : {		// Url of the content - may be video or image
 			type: 'string',
