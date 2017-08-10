@@ -6471,7 +6471,6 @@ ARjs.Anchor = function(arSession, markerParameters){
 	// log to debug
 	console.log('ARjs.Anchor -', 'changeMatrixMode:', this.parameters.changeMatrixMode, '/ markersAreaEnabled:', markerParameters.markersAreaEnabled)
 
-
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
 
@@ -6553,11 +6552,10 @@ ARjs.Anchor = function(arSession, markerParameters){
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
 	this.update = function(){	
-		// update scene.visible if the marker is seen
-		if( markerParameters.changeMatrixMode === 'cameraTransformMatrix' ){
-			_this.object3d.visible = controlledObject.visible
-		}
-		
+		// update _this.object3d.visible
+		_this.object3d.visible = _this.object3d.parent.visible
+
+		// console.log('controlledObject.visible', _this.object3d.parent.visible)
 		if( smoothedControls !== undefined ){
 			// update smoothedControls parameters depending on how many markers are visible in multiMarkerControls
 			if( multiMarkerControls !== undefined ){

@@ -55,8 +55,6 @@ AFRAME.registerComponent('arjs-anchor', {
  			_this.el.sceneEl.object3D.visible = false
 		}else console.assert(false)
 
-
-
 		// trick to wait until arjsSystem is isReady
 		var startedAt = Date.now()
 		var timerId = setInterval(function(){
@@ -144,18 +142,12 @@ AFRAME.registerComponent('arjs-anchor', {
 		//		honor visibility
 		//////////////////////////////////////////////////////////////////////////////
 		if( _this._arAnchor.parameters.changeMatrixMode === 'modelViewMatrix' ){
-			_this.el.object3D.visible = true
+			_this.el.object3D.visible = this._arAnchor.object3d.visible
 		}else if( _this._arAnchor.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
-			_this.el.sceneEl.object3D.visible = true
+			_this.el.sceneEl.object3D.visible = this._arAnchor.object3d.visible
 		}else console.assert(false)
-
-		// TODO visibility of object doesnt work at all
-		// - this._arAnchor.object3d.visible doesnt seem to be honored
-		// - likely an issue from upstream
-
-		// console.log('arWorldRoot.visible', arWorldRoot.visible)
 	}
-});
+})
 
 //////////////////////////////////////////////////////////////////////////////
 //                define some primitives shortcuts
@@ -178,7 +170,7 @@ AFRAME.registerPrimitive('a-anchor', AFRAME.utils.extendDeep({}, AFRAME.primitiv
 		'hit-testing-renderDebug': 'arjs-hit-testing.renderDebug',
 		'hit-testing-enabled': 'arjs-hit-testing.enabled',
 	}
-}));
+}))
 
 
 
@@ -188,7 +180,7 @@ AFRAME.registerPrimitive('a-camera-static', AFRAME.utils.extendDeep({}, AFRAME.p
 	},
 	mappings: {
 	}
-}));
+}))
 
 //////////////////////////////////////////////////////////////////////////////
 //		backward compatibility
@@ -211,7 +203,7 @@ AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitiv
 		'hit-testing-renderDebug': 'arjs-hit-testing.renderDebug',
 		'hit-testing-enabled': 'arjs-hit-testing.enabled',
 	}
-}));
+}))
 
 AFRAME.registerPrimitive('a-marker-camera', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
 	defaultComponents: {
@@ -229,4 +221,4 @@ AFRAME.registerPrimitive('a-marker-camera', AFRAME.utils.extendDeep({}, AFRAME.p
 		'minConfidence': 'arjs-anchor.minConfidence',
 		'markerhelpers': 'arjs-anchor.markerhelpers',
 	}
-}));
+}))

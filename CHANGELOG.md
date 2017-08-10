@@ -8,6 +8,7 @@
 - made demo for mapbox
 - vr-camera-controls - or how to walk in VR with AR.js
 - Started porting on babylon.js ```/babylon.js/examples/manual.html```
+- FIX: in aframe-ar.js object3d stayed visible when marker goes out of screen
 
 # 1.4.10
 
