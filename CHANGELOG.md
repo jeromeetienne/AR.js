@@ -1,14 +1,22 @@
 # 1.5.0-dev
 
+## aframe-ar.js
 - aframe-ar.js - added link into webxr.io/augmented-website
 - aframe-ar.js - change debugUIEnabled default from false to true.
-- drafting a demo for 3d.io
-- made demo for portal-door - nice reuseable components available
-- made demos to celebrate firefox 55
-- made demo for mapbox
-- vr-camera-controls - or how to walk in VR with AR.js
-- Started porting on babylon.js ```/babylon.js/examples/manual.html```
 - FIX: in aframe-ar.js object3d stayed visible when marker goes out of screen
+
+## babylon-ar.js
+- Started porting on babylon.js ```/babylon.js/examples/manual.html```
+  - object pose seems to be working
+  - TODO: handle projection matrix, and resize
+
+## Demos
+- drafting a demo for 3d.io - [tweet](https://twitter.com/jerome_etienne/status/895258272361480193)
+- made demo for portal-door - [tweet](https://twitter.com/jerome_etienne/status/893217730517749760)
+  - nice reuseable components available
+- made demos to celebrate firefox 55
+- made demo for mapbox - [tweet](https://twitter.com/jerome_etienne/status/895018409922093058)
+- vr-camera-controls - or how to walk in VR with AR.js - [tweet](https://twitter.com/jerome_etienne/status/894580746026758144)
 
 # 1.4.10
 
