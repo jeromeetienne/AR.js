@@ -1,12 +1,13 @@
 ## New API - aframe
 
+- once this refactor is done, publish is as AR.js v2.0 with a blog post
+
 - do a button - display-hittester-plane
   - in three.js and in aframe.js
 - cleanup /three.js/examples 
   - which version remains in ar.js session and currently
 - have a source in images and video. in three.js and aframe.js
-- 
-- once this refactor is done, publish is as AR.js v1.5 with a blog post
+
 
 - DONE ensure backward compatibility of aframe api
   - it seems works ?

@@ -132,21 +132,22 @@ window.addEventListener('DOMContentLoaded', function(){
 	// sceneBabylon = scene;
 	// cameraBabylon = arcRotateCamera;
 	// scene.useRightHandedSystem = true
-	
+
 	markerControls.addEventListener('markerFound', function(){
 		var threejsObject3D = markerControls.object3d
 		var modelViewMatrix = threejsObject3D.matrix
+
+		threejsObject3D.updateMatrixWorld()
 // console.log('camera position', threejsObject3D.position)
 
 		var threejsPosition = threejsObject3D.position.clone()
-		
+
 		var threejsTarget = new THREE.Vector3(0,0,-1)
 		threejsObject3D.localToWorld(threejsTarget)
-		
+
 		// debugger
-		
+
 		// threejsPosition.x -= -1
-		
 
 		var cameraBabylon = arcRotateCamera;
 
@@ -159,6 +160,7 @@ window.addEventListener('DOMContentLoaded', function(){
 			threejsTarget.y,
 			threejsTarget.z
 		))
+
 		// cameraBabylon.target.x = -threejsTarget.x
 		// cameraBabylon.target.y = 0
 		// cameraBabylon.target.z = 0

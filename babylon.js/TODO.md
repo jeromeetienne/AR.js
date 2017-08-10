@@ -1,7 +1,7 @@
+- port it to ar-session.js
+
 # Remaining issue
+- babylon.js object very shacky - while three.js super stable - reason unkonwn
 
-- babylon.js object shacky
-
-- perspective camera to set
-
+- camera projection matrix to set
 - resize to handle

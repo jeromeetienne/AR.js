@@ -7,6 +7,7 @@
 - made demos to celebrate firefox 55
 - made demo for mapbox
 - vr-camera-controls - or how to walk in VR with AR.js
+- Started porting on babylon.js ```/babylon.js/examples/manual.html```
 
 # 1.4.10
 
