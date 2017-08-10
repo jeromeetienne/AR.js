@@ -8,6 +8,8 @@
 <script src="../../three.js/build/ar.js"></script>
 <script>THREEx.ArToolkitContext.baseURL = '../../three.js/'</script> 
 
+<script src="../src/babylon-ar.js"></script>
+
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
 <script>
@@ -22,35 +24,16 @@ window.addEventListener('DOMContentLoaded', function(){
 	canvasElement.style.zIndex = -1
 	document.body.appendChild(canvasElement)
 	var engine = new BABYLON.Engine(canvasElement, true);
-
-	var scene;
-	var arcRotateCamera;
+	var babylonCamera;
 	
 	/*********************************CREATE-LIGHTS******************************/
 	var createLights = function() {
-		var spot1, light1, light2;
 		var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0,10,0), scene);
 		light.intensity = 0.4;
 		
-		light1 = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(-1, -2, -1), scene);
-		light1.position = new BABYLON.Vector3(20, 39, 20);
-		light1.intensity = 0.5;
-		
-		// light2
-		light2 = new BABYLON.SpotLight("spot02", new BABYLON.Vector3(0, 40, 20), new BABYLON.Vector3(-1, -2, -1), 1.1, 16, scene);
-		light2.intensity = 0.5;
-	}
-	
-	/*********************************CREATE-CAMERA******************************/
-	var createCamera = function() {
-		//ARC-ROTATE-CAMERA
-		arcRotateCamera = new BABYLON.ArcRotateCamera("GlobalRotativeCamera1",  0, 0, 0, new BABYLON.Vector3(0, 0, -1), scene);
-		// arcRotateCamera.setPosition(new BABYLON.Vector3(0, 50, 80));
-		// arcRotateCamera.setTarget(BABYLON.Vector3.Zero());
-		// arcRotateCamera.attachControl(canvas, true);
-// debugger
-		scene.activeCamera.fovmode = BABYLON.Camera.fovmode_HORIZONTAL_FIXED;
-		scene.activeCamera.fov = 2*22 / 180*Math.PI
+		var light = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(-1, -2, -1), scene);
+		light.position = new BABYLON.Vector3(20, 39, 20);
+		light.intensity = 0.5;
 	}
 	
 	/******************************CREATE-MOON*****************************/
@@ -111,71 +94,26 @@ window.addEventListener('DOMContentLoaded', function(){
 		
 	}
 	
-	/*********************************CREATE-SCENE******************************/
-	var createScene = function(){
-		scene = new BABYLON.Scene(engine);
-		scene.useRightHandedSystem = true
-		
-		createLights();
-		createCamera();
-		createMoon();
-		createImagePlane();
-		
-		return scene;
-	}
 	/******************************Initialization******************************/
-	scene = createScene();
-	
-	
-	//export
-	// engineBabylon = engine;
-	// sceneBabylon = scene;
-	// cameraBabylon = arcRotateCamera;
-	// scene.useRightHandedSystem = true
-
-	markerControls.addEventListener('markerFound', function(){
-		var threejsObject3D = markerControls.object3d
-		var modelViewMatrix = threejsObject3D.matrix
-
-		threejsObject3D.updateMatrixWorld()
-// console.log('camera position', threejsObject3D.position)
-
-		var threejsPosition = threejsObject3D.position.clone()
-
-		var threejsTarget = new THREE.Vector3(0,0,-1)
-		threejsObject3D.localToWorld(threejsTarget)
-
-		// debugger
-
-		// threejsPosition.x -= -1
-
-		var cameraBabylon = arcRotateCamera;
-
-		cameraBabylon.position.x =  threejsPosition.x
-		cameraBabylon.position.y =  threejsPosition.y
-		cameraBabylon.position.z =  threejsPosition.z
-
-		cameraBabylon.setTarget(new BABYLON.Vector3(
-			threejsTarget.x,
-			threejsTarget.y,
-			threejsTarget.z
-		))
-
-		// cameraBabylon.target.x = -threejsTarget.x
-		// cameraBabylon.target.y = 0
-		// cameraBabylon.target.z = 0
-		// cameraBabylon.setPosition()
-// debugger
-		// cameraBabylon._computedViewMatrix = new BABYLON.Matrix.FromArray(modelViewMatrix.toArray());
-		// cameraBabylon._computedViewMatrix.m.set(modelViewMatrix.toArray());
-		// cameraBabylon._computedViewMatrix.invert()
-	})
-	
-	// scene.clearColor = new BABYLON.Color3(.33,.44,.55);
-	// Set clearColor (background) to transparrent.
+	var scene = new BABYLON.Scene(engine);
+	scene.useRightHandedSystem = true
 	scene.clearColor = new BABYLON.Color4(0, 0, 0, 0);
+
+	var babylonCamera = ARjs.Babylon.createCamera(scene)
+
+	var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0,10,0), scene);
+	light.intensity = 0.4;
+	
+	var light = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(-1, -2, -1), scene);
+	light.position = new BABYLON.Vector3(20, 39, 20);
+	light.intensity = 0.5;
+	
+	createMoon();
+	createImagePlane();
 	
 	engine.runRenderLoop(function(){
+		ARjs.Babylon.setObject3D(babylonCamera, markerControls.object3d)
+
 		scene.render();
 	});
 	
@@ -314,7 +252,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	var material	= new THREE.MeshNormalMaterial(); 
 	var mesh	= new THREE.Mesh( geometry, material );
 	// mesh.position.y	= 0.5
-	scene.add( mesh );
+	// scene.add( mesh );
 	
 	onRenderFcts.push(function(delta){
 		mesh.rotation.x += Math.PI*delta
