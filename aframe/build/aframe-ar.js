@@ -6604,12 +6604,15 @@ ARjs.SessionDebugUI = function(arSession, tangoPointCloud){
 	this.domElement.style.margin = '0.5em'
 	this.domElement.style.textAlign = 'left'
 
-	var domElement = document.createElement('div')
-	domElement.style.display = 'block'
-	domElement.style.fontWeight = 'bold'
-	domElement.style.fontSize = '120%'
-	this.domElement.appendChild(domElement)
-	domElement.innerHTML = 'AR.js Session Debug'
+	//////////////////////////////////////////////////////////////////////////////
+	//		add title
+	//////////////////////////////////////////////////////////////////////////////
+	// var domElement = document.createElement('div')
+	// domElement.style.display = 'block'
+	// domElement.style.fontWeight = 'bold'
+	// domElement.style.fontSize = '120%'
+	// this.domElement.appendChild(domElement)
+	// domElement.innerHTML = 'AR.js Session Debug'
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		current-tracking-backend
@@ -6681,12 +6684,12 @@ ARjs.AnchorDebugUI = function(arAnchor){
 	//		add title
 	//////////////////////////////////////////////////////////////////////////////
 
-	var domElement = document.createElement('div')
-	domElement.style.display = 'block'
-	domElement.style.fontWeight = 'bold'
-	domElement.style.fontSize = '120%'
-	this.domElement.appendChild(domElement)
-	domElement.innerHTML = 'Anchor Marker Debug'
+	// var domElement = document.createElement('div')
+	// domElement.style.display = 'block'
+	// domElement.style.fontWeight = 'bold'
+	// domElement.style.fontSize = '120%'
+	// this.domElement.appendChild(domElement)
+	// domElement.innerHTML = 'Anchor Marker Debug'
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		current-tracking-backend
