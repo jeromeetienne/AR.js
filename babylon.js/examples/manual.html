@@ -19,6 +19,7 @@ window.addEventListener('DOMContentLoaded', function(){
 	canvasElement.style.width = '100%'
 	canvasElement.style.height = '100%'
 	canvasElement.style.position = 'absolute'
+	canvasElement.style.zIndex = -1
 	document.body.appendChild(canvasElement)
 	var engine = new BABYLON.Engine(canvasElement, true);
 
@@ -58,6 +59,7 @@ window.addEventListener('DOMContentLoaded', function(){
 		material.diffuseTexture = new BABYLON.Texture("images/UV_Grid_Sm.jpg", scene);
 		
 		var mesh = BABYLON.Mesh.CreateSphere("mesh", 12, 1, scene);
+
 		// mesh.position.y = 60;
 		mesh.material = material;
 		mesh.position = new BABYLON.Vector3(0,0, 0)
@@ -94,16 +96,25 @@ window.addEventListener('DOMContentLoaded', function(){
 		material.twoSidedLighting = true
 		material.diffuseTexture = new BABYLON.Texture("images/UV_Grid_Sm.jpg", scene);
 		material.specularColor = new BABYLON.Color3(1, 1, 1);
+
 		// material.backFaceCulling = true;
-		var mesh = BABYLON.Mesh.CreatePlane("mesh", 2, scene);
+		// var mesh = BABYLON.Mesh.CreatePlane("mesh", 2, scene);
+
+		var mesh = BABYLON.MeshBuilder.CreatePlane("plane1", {
+			size: 2,
+			sideOrientation: BABYLON.Mesh.DOUBLESIDE
+		}, scene);
+
 		mesh.material = material;
 		mesh.position = new BABYLON.Vector3(0,0, 0)
+		mesh.rotation.y = Math.PI
 		
 	}
 	
 	/*********************************CREATE-SCENE******************************/
 	var createScene = function(){
 		scene = new BABYLON.Scene(engine);
+		scene.useRightHandedSystem = true
 		
 		createLights();
 		createCamera();
@@ -138,19 +149,16 @@ window.addEventListener('DOMContentLoaded', function(){
 		
 
 		var cameraBabylon = arcRotateCamera;
-		// cameraBabylon.setPosition(new BABYLON.Vector3(0, 0, -4));
-		// cameraBabylon.setPosition(new BABYLON.Vector3(-threejsPosition.x, 0, -4));
-		cameraBabylon.setPosition(new BABYLON.Vector3(-threejsPosition.x, -threejsPosition.y, -threejsPosition.z));
-		cameraBabylon.position.x = -threejsPosition.x
+
+		cameraBabylon.position.x =  threejsPosition.x
 		cameraBabylon.position.y =  threejsPosition.y
-		cameraBabylon.position.z = -threejsPosition.z
-		// , -threejsPosition.y, -threejsPosition.z));
-		// cameraBabylon.setTarget(BABYLON.Vector3.Zero());
+		cameraBabylon.position.z =  threejsPosition.z
+
 		cameraBabylon.setTarget(new BABYLON.Vector3(
-			 threejsTarget.x,
-			 0,
-			 0
-		));
+			threejsTarget.x,
+			threejsTarget.y,
+			threejsTarget.z
+		))
 		// cameraBabylon.target.x = -threejsTarget.x
 		// cameraBabylon.target.y = 0
 		// cameraBabylon.target.z = 0
