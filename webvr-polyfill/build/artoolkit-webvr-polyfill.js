@@ -6553,11 +6553,10 @@ ARjs.Anchor = function(arSession, markerParameters){
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
 	this.update = function(){	
-		// update scene.visible if the marker is seen
-		if( markerParameters.changeMatrixMode === 'cameraTransformMatrix' ){
-			_this.object3d.visible = controlledObject.visible
-		}
-		
+		// update _this.object3d.visible
+		_this.object3d.visible = _this.object3d.parent.visible
+
+		// console.log('controlledObject.visible', _this.object3d.parent.visible)
 		if( smoothedControls !== undefined ){
 			// update smoothedControls parameters depending on how many markers are visible in multiMarkerControls
 			if( multiMarkerControls !== undefined ){
@@ -6577,13 +6576,13 @@ ARjs.Anchor = function(arSession, markerParameters){
  * @param {ARjs.HitTesting.Result} hitTestResult - the result to apply
  */
 ARjs.Anchor.prototype.applyHitTestResult = function(hitTestResult){
-	
-	
-	this.object3d.position.copy(hitTestResult.position)
-	this.object3d.quaternion.copy(hitTestResult.quaternion)
-	this.object3d.scale.copy(hitTestResult.scale)
-
-	this.object3d.updateMatrix()
+	console.warn('obsolete anchro.applyHitTestResult - use hitTestResult.apply(object3d) instead')
+	hitTestResult.apply(this.object3d)
+	// object3d.position.copy(hitTestResult.position)
+	// object3d.quaternion.copy(hitTestResult.quaternion)
+	// object3d.scale.copy(hitTestResult.scale)
+	// 
+	// object3d.updateMatrix()
 }
 // @namespace
 var ARjs = ARjs || {}
@@ -6604,12 +6603,15 @@ ARjs.SessionDebugUI = function(arSession, tangoPointCloud){
 	this.domElement.style.margin = '0.5em'
 	this.domElement.style.textAlign = 'left'
 
-	var domElement = document.createElement('div')
-	domElement.style.display = 'block'
-	domElement.style.fontWeight = 'bold'
-	domElement.style.fontSize = '120%'
-	this.domElement.appendChild(domElement)
-	domElement.innerHTML = 'AR.js Session Debug'
+	//////////////////////////////////////////////////////////////////////////////
+	//		add title
+	//////////////////////////////////////////////////////////////////////////////
+	// var domElement = document.createElement('div')
+	// domElement.style.display = 'block'
+	// domElement.style.fontWeight = 'bold'
+	// domElement.style.fontSize = '120%'
+	// this.domElement.appendChild(domElement)
+	// domElement.innerHTML = 'AR.js Session Debug'
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		current-tracking-backend
@@ -6681,12 +6683,12 @@ ARjs.AnchorDebugUI = function(arAnchor){
 	//		add title
 	//////////////////////////////////////////////////////////////////////////////
 
-	var domElement = document.createElement('div')
-	domElement.style.display = 'block'
-	domElement.style.fontWeight = 'bold'
-	domElement.style.fontSize = '120%'
-	this.domElement.appendChild(domElement)
-	domElement.innerHTML = 'Anchor Marker Debug'
+	// var domElement = document.createElement('div')
+	// domElement.style.display = 'block'
+	// domElement.style.fontWeight = 'bold'
+	// domElement.style.fontSize = '120%'
+	// this.domElement.appendChild(domElement)
+	// domElement.innerHTML = 'Anchor Marker Debug'
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		current-tracking-backend
@@ -6877,6 +6879,30 @@ ARjs.HitTesting.Result = function(position, quaternion, scale){
 	this.position = position
 	this.quaternion = quaternion
 	this.scale = scale
+}
+
+/**
+ * Apply to a controlled object3d
+ * 
+ * @param {THREE.Object3D} object3d - the result to apply
+ */
+ARjs.HitTesting.Result.prototype.apply = function(object3d){
+	object3d.position.copy(this.position)
+	object3d.quaternion.copy(this.quaternion)
+	object3d.scale.copy(this.scale)
+
+	object3d.updateMatrix()
+}
+
+/**
+ * Apply to a controlled object3d
+ * 
+ * @param {THREE.Object3D} object3d - the result to apply
+ */
+ARjs.HitTesting.Result.prototype.applyPosition = function(object3d){
+	object3d.position.copy(this.position)
+
+	object3d.updateMatrix()
 }
 var ARjs = ARjs || {}
 
@@ -7366,11 +7392,11 @@ ARjs.MarkersAreaControls.prototype.updateSmoothedControls = function(smoothedCon
 		// {lerpPosition: 0.5, lerpQuaternion: 0.2, lerpQuaternion: 0.7}
 		// ]
 		lerpsValues = [
-			[0.1, 0.1, 0.3],
-			[0.2, 0.1, 0.4],
-			[0.2, 0.2, 0.5],
-			[0.3, 0.2, 0.7],
-			[0.3, 0.2, 0.7],
+			[0.3+.1, 0.1, 0.3],
+			[0.4+.1, 0.1, 0.4],
+			[0.4+.1, 0.2, 0.5],
+			[0.5+.1, 0.2, 0.7],
+			[0.5+.1, 0.2, 0.7],
 		]
 	}
 	// count how many subMarkersControls are visible
