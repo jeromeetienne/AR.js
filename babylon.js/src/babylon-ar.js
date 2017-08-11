@@ -4,14 +4,12 @@ var ARjs = ARjs || {}
 ARjs.Babylon = function(){}
 
 ARjs.Babylon.createCamera = function(scene){
-	var babylonCamera = new BABYLON.ArcRotateCamera("GlobalRotativeCamera1",  0, 0, 0, new BABYLON.Vector3(0, 0, -1), scene);
-	// arcRotateCamera.setPosition(new BABYLON.Vector3(0, 50, 80));
-	// arcRotateCamera.setTarget(BABYLON.Vector3.Zero());
-	// arcRotateCamera.attachControl(canvas, true);
+	var babylonCamera = new BABYLON.ArcRotateCamera("blabla",  0, 0, 0, new BABYLON.Vector3(0, 0, -1), scene);
 
-	// hard
+	// hard code a fov which is kinda ok
 	// scene.activeCamera.fovmode = BABYLON.Camera.fovmode_HORIZONTAL_FIXED;
 	// scene.activeCamera.fov = 2*22 / 180*Math.PI
+
 	return babylonCamera
 }
 

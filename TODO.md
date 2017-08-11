@@ -1,5 +1,6 @@
 ## New API - aframe
 - port webar-playground on new API
+
 - once this refactor is done, publish is as AR.js v2.0 with a blog post
 
 - do a button - display-hittester-plane
@@ -9,7 +10,6 @@
   - which version remains in ar.js session and currently
 
 - have a source in images and video. in three.js and aframe.js
-
 
 - DONE ensure backward compatibility of aframe api
   - it seems works ?

@@ -121,3 +121,27 @@ ARjs.HitTesting.Result = function(position, quaternion, scale){
 	this.quaternion = quaternion
 	this.scale = scale
 }
+
+/**
+ * Apply to a controlled object3d
+ * 
+ * @param {THREE.Object3D} object3d - the result to apply
+ */
+ARjs.HitTesting.Result.prototype.apply = function(object3d){
+	object3d.position.copy(this.position)
+	object3d.quaternion.copy(this.quaternion)
+	object3d.scale.copy(this.scale)
+
+	object3d.updateMatrix()
+}
+
+/**
+ * Apply to a controlled object3d
+ * 
+ * @param {THREE.Object3D} object3d - the result to apply
+ */
+ARjs.HitTesting.Result.prototype.applyPosition = function(object3d){
+	object3d.position.copy(this.position)
+
+	object3d.updateMatrix()
+}
