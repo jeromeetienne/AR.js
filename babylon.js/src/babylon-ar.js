@@ -6,7 +6,7 @@ ARjs.Babylon = function(){}
 ARjs.Babylon.createCamera = function(scene){
 	var babylonCamera = new BABYLON.ArcRotateCamera("blabla",  0, 0, 0, new BABYLON.Vector3(0, 0, -1), scene);
 
-	// hard code a fov which is kinda ok
+	// hard code a fov which is kinda similar to default camera
 	// scene.activeCamera.fovmode = BABYLON.Camera.fovmode_HORIZONTAL_FIXED;
 	// scene.activeCamera.fov = 2*22 / 180*Math.PI
 
@@ -48,6 +48,7 @@ ARjs.Babylon.updateObjectPose = function(babylonObject3D, threeObject3D){
 	// use modelViewMatrix
 	var modelViewMatrix = threeObject3D.matrix
 	babylonObject3D._computedViewMatrix = new BABYLON.Matrix.FromArray(modelViewMatrix.toArray());
+	// TODO: why 2 lines ??? one of them seems useless
 	babylonObject3D._computedViewMatrix.m.set(modelViewMatrix.toArray());
 	babylonObject3D._computedViewMatrix.invert()	
 }

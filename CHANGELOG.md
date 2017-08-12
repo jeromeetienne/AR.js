@@ -6,16 +6,17 @@
 - FIX: in aframe-ar.js object3d stayed visible when marker goes out of screen
 
 ## babylon-ar.js
-- Started porting on babylon.js ```/babylon.js/examples/manual.html```
-  - object pose seems to be working
-  - TODO: handle projection matrix, and resize
+- Started porting on babylon.js [source](https://github.com/jeromeetienne/AR.js/tree/master/babylon.js)
+- object's pose seems to be working
+- projection matrix seems ok
+- TODO: handle resize
 
 ## Demos
-- drafting a demo for 3d.io - [tweet](https://twitter.com/jerome_etienne/status/895258272361480193)
-- made demo for portal-door - [tweet](https://twitter.com/jerome_etienne/status/893217730517749760)
+- drafting a demo for 3d.io - [tweet](https://twitter.com/jerome_etienne/status/895258272361480193) - [source](https://github.com/jeromeetienne/AR.js/tree/master/aframe/examples/demo-3dio/)
+- Magic door bridging AR and VR [tweet](https://twitter.com/jerome_etienne/status/893217730517749760)
   - nice reuseable components available
-- made demos to celebrate firefox 55
-- made demo for mapbox - [tweet](https://twitter.com/jerome_etienne/status/895018409922093058)
+- made demos to celebrate firefox 55 - [post](https://medium.com/arjs/demos-for-firefox-55-release-with-webvr-fb854bb9bb70) - [source](https://github.com/jeromeetienne/AR.js/tree/master/aframe/examples/demo-firefox-release/)
+- made demo for mapbox - [tweet](https://twitter.com/jerome_etienne/status/895018409922093058) - [source](https://github.com/jeromeetienne/AR.js/tree/master/aframe/examples/demo-mapbox/)
 - vr-camera-controls - or how to walk in VR with AR.js - [tweet](https://twitter.com/jerome_etienne/status/894580746026758144)
 
 # 1.4.10

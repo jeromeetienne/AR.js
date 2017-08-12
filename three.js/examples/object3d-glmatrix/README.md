@@ -1,3 +1,15 @@
+
+WHY REIMPLEMENTING WHAT IS ALREADY DONE IN THREE>JS ??
+- why not simply copy it
+- aka copy THREE.Object3D and THREE.Math
+- the whole thing to be sure you got everything
+- then switch the source to that ?
+- it should be rather simple
+- then maintain this is your own copy. it is not suppose to remain insync with three.js
+- strip it down to the minimal you use. in Object3D, in Math
+- API remains identical internally
+
+
 - https://github.com/mrdoob/three.js/blob/master/src/core/Object3D.js
 - http://glmatrix.net/docs/
 
