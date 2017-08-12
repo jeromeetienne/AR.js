@@ -111,10 +111,13 @@ window.addEventListener('DOMContentLoaded', function(){
 		ARjs.Babylon.updateCamera(babylonCamera, camera)
 
 		ARjs.Babylon.updateObjectPose(babylonCamera, camera)
+		
+		// ARjs.Source.prototype.copyElementSizeTo
+		arSession.arSource.copyElementSizeTo(canvasElement)
 
 		scene.render()
 	})
-	
+
 	window.addEventListener('resize', function(){
 		engine.resize()
 	})

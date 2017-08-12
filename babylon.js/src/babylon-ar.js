@@ -20,30 +20,7 @@ ARjs.Babylon.updateCamera = function(babylonCamera, threeCamera){
 }
 
 ARjs.Babylon.updateObjectPose = function(babylonObject3D, threeObject3D){
-
 	threeObject3D.updateMatrixWorld()
-
-	// console.log('camera position', threeObject3D.position)
-
-	// var threejsPosition = threeObject3D.position.clone()
-	// babylonObject3D.position.x =  threejsPosition.x
-	// babylonObject3D.position.y =  threejsPosition.y
-	// babylonObject3D.position.z =  threejsPosition.z
-
-	// var threejsUp = new THREE.Vector3(0,1,0)
-	// // threeObject3D.localToWorld(threejsUp)
-	// babylonObject3D.upVector.x = threejsUp.x
-	// babylonObject3D.upVector.y = threejsUp.y
-	// babylonObject3D.upVector.z = threejsUp.z
-
-	// // set target
-	// var threejsTarget = new THREE.Vector3(0,0,-1)
-	// threeObject3D.localToWorld(threejsTarget)
-	// babylonObject3D.setTarget(new BABYLON.Vector3(
-	// 	threejsTarget.x,
-	// 	threejsTarget.y,
-	// 	threejsTarget.z
-	// ))
 
 	// use modelViewMatrix
 	var modelViewMatrix = threeObject3D.matrix
