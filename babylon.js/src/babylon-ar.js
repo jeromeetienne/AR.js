@@ -48,7 +48,5 @@ ARjs.Babylon.updateObjectPose = function(babylonObject3D, threeObject3D){
 	// use modelViewMatrix
 	var modelViewMatrix = threeObject3D.matrix
 	babylonObject3D._computedViewMatrix = new BABYLON.Matrix.FromArray(modelViewMatrix.toArray());
-	// TODO: why 2 lines ??? one of them seems useless
-	babylonObject3D._computedViewMatrix.m.set(modelViewMatrix.toArray());
 	babylonObject3D._computedViewMatrix.invert()	
 }
