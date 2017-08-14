@@ -247,7 +247,7 @@ git checkout master
 git merge dev
 
 # tag the release
-git tag 1.4.10
+git tag 1.5.1
 
 # push the tag on github
 git push origin --tags
