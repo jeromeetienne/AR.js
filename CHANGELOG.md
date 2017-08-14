@@ -1,4 +1,4 @@
-# 1.5.0-dev
+# 1.5.1
 
 ## aframe-ar.js
 - aframe-ar.js - added link into webxr.io/augmented-website
