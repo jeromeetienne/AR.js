@@ -1,5 +1,7 @@
 - babylon forum - http://www.html5gamedevs.com/topic/31654-babylonaugmented-reality-in-arjs/?tab=comments&_fromLogin=1
 
+- can i do a babylon.js playground version ?
+
 # Remaining issue
 - resize to handle
 
