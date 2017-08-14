@@ -49,7 +49,7 @@ AFRAME.registerComponent('arjs-hit-testing', {
 				if( hitTestResults.length === 0 )	return
 
 				var hitTestResult = hitTestResults[0]
-				arAnchor.applyHitTestResult(hitTestResult)
+				hitTestResult.apply(arAnchor.object3d)
 			})
 			
 			_this.isReady = true

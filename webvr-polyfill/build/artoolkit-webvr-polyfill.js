@@ -5205,7 +5205,7 @@ Object.assign( ARjs.Context.prototype, THREE.EventDispatcher.prototype );
 // ARjs.Context.baseURL = '../'
 // default to github page
 ARjs.Context.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
-ARjs.Context.REVISION = '1.4.10'
+ARjs.Context.REVISION = '1.5.0'
 
 
 
@@ -6553,11 +6553,10 @@ ARjs.Anchor = function(arSession, markerParameters){
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
 	this.update = function(){	
-		// update scene.visible if the marker is seen
-		if( markerParameters.changeMatrixMode === 'cameraTransformMatrix' ){
-			_this.object3d.visible = controlledObject.visible
-		}
-		
+		// update _this.object3d.visible
+		_this.object3d.visible = _this.object3d.parent.visible
+
+		// console.log('controlledObject.visible', _this.object3d.parent.visible)
 		if( smoothedControls !== undefined ){
 			// update smoothedControls parameters depending on how many markers are visible in multiMarkerControls
 			if( multiMarkerControls !== undefined ){
@@ -6577,13 +6576,13 @@ ARjs.Anchor = function(arSession, markerParameters){
  * @param {ARjs.HitTesting.Result} hitTestResult - the result to apply
  */
 ARjs.Anchor.prototype.applyHitTestResult = function(hitTestResult){
-	
-	
-	this.object3d.position.copy(hitTestResult.position)
-	this.object3d.quaternion.copy(hitTestResult.quaternion)
-	this.object3d.scale.copy(hitTestResult.scale)
-
-	this.object3d.updateMatrix()
+	console.warn('obsolete anchro.applyHitTestResult - use hitTestResult.apply(object3d) instead')
+	hitTestResult.apply(this.object3d)
+	// object3d.position.copy(hitTestResult.position)
+	// object3d.quaternion.copy(hitTestResult.quaternion)
+	// object3d.scale.copy(hitTestResult.scale)
+	// 
+	// object3d.updateMatrix()
 }
 // @namespace
 var ARjs = ARjs || {}
@@ -6597,15 +6596,42 @@ ARjs.SessionDebugUI = function(arSession, tangoPointCloud){
 	var trackingBackend = arSession.arContext.parameters.trackingBackend
 
 	this.domElement = document.createElement('div')
+	this.domElement.style.color = 'rgba(0,0,0,0.9)'
+	this.domElement.style.backgroundColor = 'rgba(127,127,127,0.5)'
+	this.domElement.style.display = 'inline-block'
+	this.domElement.style.padding = '0.5em'
+	this.domElement.style.margin = '0.5em'
+	this.domElement.style.textAlign = 'left'
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		add title
+	//////////////////////////////////////////////////////////////////////////////
+	// var domElement = document.createElement('div')
+	// domElement.style.display = 'block'
+	// domElement.style.fontWeight = 'bold'
+	// domElement.style.fontSize = '120%'
+	// this.domElement.appendChild(domElement)
+	// domElement.innerHTML = 'AR.js Session Debug'
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		current-tracking-backend
 	//////////////////////////////////////////////////////////////////////////////
 
 	var domElement = document.createElement('span')
+	domElement.style.display = 'block'
 	this.domElement.appendChild(domElement)
-	domElement.innerHTML = 'trackingBackend :' +trackingBackend
+	domElement.innerHTML = '<b>trackingBackend</b> : ' +trackingBackend
 	
+	//////////////////////////////////////////////////////////////////////////////
+	//		augmented-websites
+	//////////////////////////////////////////////////////////////////////////////
+	var domElement = document.createElement('a')
+	domElement.innerHTML = 'Share on augmented-websites'
+	domElement.style.display = 'block'
+	domElement.setAttribute('target', '_blank')
+	domElement.href = 'https://webxr.io/augmented-website?'+location.href
+	this.domElement.appendChild(domElement)				
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		toggle-point-cloud
 	//////////////////////////////////////////////////////////////////////////////
@@ -6646,15 +6672,32 @@ ARjs.AnchorDebugUI = function(arAnchor){
 	var trackingBackend = arSession.arContext.parameters.trackingBackend
 	
 	this.domElement = document.createElement('div')
+	this.domElement.style.color = 'rgba(0,0,0,0.9)'
+	this.domElement.style.backgroundColor = 'rgba(127,127,127,0.5)'
+	this.domElement.style.display = 'inline-block'
+	this.domElement.style.padding = '0.5em'
+	this.domElement.style.margin = '0.5em'
+	this.domElement.style.textAlign = 'left'
 
+	//////////////////////////////////////////////////////////////////////////////
+	//		add title
+	//////////////////////////////////////////////////////////////////////////////
+
+	// var domElement = document.createElement('div')
+	// domElement.style.display = 'block'
+	// domElement.style.fontWeight = 'bold'
+	// domElement.style.fontSize = '120%'
+	// this.domElement.appendChild(domElement)
+	// domElement.innerHTML = 'Anchor Marker Debug'
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		current-tracking-backend
 	//////////////////////////////////////////////////////////////////////////////
 
 	var domElement = document.createElement('span')
+	domElement.style.display = 'block'
 	this.domElement.appendChild(domElement)
-	domElement.innerHTML = 'markersAreaEnabled :' +arAnchor.parameters.markersAreaEnabled
+	domElement.innerHTML = '<b>markersAreaEnabled</b> :' +arAnchor.parameters.markersAreaEnabled
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		toggle-marker-helper
@@ -6662,6 +6705,7 @@ ARjs.AnchorDebugUI = function(arAnchor){
 
 	if( arAnchor.parameters.markersAreaEnabled ){
 		var domElement = document.createElement('button')
+		domElement.style.display = 'block'
 		this.domElement.appendChild(domElement)
 
 		domElement.id= 'buttonToggleMarkerHelpers'
@@ -6681,7 +6725,9 @@ ARjs.AnchorDebugUI = function(arAnchor){
 
 	if( arAnchor.parameters.markersAreaEnabled ){
 		var domElement = document.createElement('button')
+		domElement.style.display = 'block'
 		this.domElement.appendChild(domElement)
+
 		domElement.id = 'buttonMarkersAreaLearner'
 		domElement.innerHTML = 'Learn-new-marker-area'
 		domElement.href ='javascript:void(0)'
@@ -6698,7 +6744,9 @@ ARjs.AnchorDebugUI = function(arAnchor){
 
 	if( arAnchor.parameters.markersAreaEnabled ){
 		var domElement = document.createElement('button')
+		domElement.style.display = 'block'
 		this.domElement.appendChild(domElement)
+
 		domElement.id = 'buttonMarkersAreaReset'
 		domElement.innerHTML = 'Reset-marker-area'
 		domElement.href ='javascript:void(0)'
@@ -6831,6 +6879,45 @@ ARjs.HitTesting.Result = function(position, quaternion, scale){
 	this.position = position
 	this.quaternion = quaternion
 	this.scale = scale
+}
+
+/**
+ * Apply to a controlled object3d
+ * 
+ * @param {THREE.Object3D} object3d - the result to apply
+ */
+ARjs.HitTesting.Result.prototype.apply = function(object3d){
+	object3d.position.copy(this.position)
+	object3d.quaternion.copy(this.quaternion)
+	object3d.scale.copy(this.scale)
+
+	object3d.updateMatrix()
+}
+
+/**
+ * Apply to a controlled object3d
+ * 
+ * @param {THREE.Object3D} object3d - the result to apply
+ */
+ARjs.HitTesting.Result.prototype.applyPosition = function(object3d){
+	object3d.position.copy(this.position)
+
+	object3d.updateMatrix()
+
+	return this
+}
+
+/**
+ * Apply to a controlled object3d
+ * 
+ * @param {THREE.Object3D} object3d - the result to apply
+ */
+ARjs.HitTesting.Result.prototype.applyQuaternion = function(object3d){
+	object3d.quaternion.copy(this.quaternion)
+
+	object3d.updateMatrix()
+
+	return this
 }
 var ARjs = ARjs || {}
 
@@ -7320,11 +7407,11 @@ ARjs.MarkersAreaControls.prototype.updateSmoothedControls = function(smoothedCon
 		// {lerpPosition: 0.5, lerpQuaternion: 0.2, lerpQuaternion: 0.7}
 		// ]
 		lerpsValues = [
-			[0.1, 0.1, 0.3],
-			[0.2, 0.1, 0.4],
-			[0.2, 0.2, 0.5],
-			[0.3, 0.2, 0.7],
-			[0.3, 0.2, 0.7],
+			[0.3+.1, 0.1, 0.3],
+			[0.4+.1, 0.1, 0.4],
+			[0.4+.1, 0.2, 0.5],
+			[0.5+.1, 0.2, 0.7],
+			[0.5+.1, 0.2, 0.7],
 		]
 	}
 	// count how many subMarkersControls are visible

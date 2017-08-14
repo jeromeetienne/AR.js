@@ -104,11 +104,10 @@ ARjs.Anchor = function(arSession, markerParameters){
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
 	this.update = function(){	
-		// update scene.visible if the marker is seen
-		if( markerParameters.changeMatrixMode === 'cameraTransformMatrix' ){
-			_this.object3d.visible = controlledObject.visible
-		}
-		
+		// update _this.object3d.visible
+		_this.object3d.visible = _this.object3d.parent.visible
+
+		// console.log('controlledObject.visible', _this.object3d.parent.visible)
 		if( smoothedControls !== undefined ){
 			// update smoothedControls parameters depending on how many markers are visible in multiMarkerControls
 			if( multiMarkerControls !== undefined ){
@@ -128,11 +127,11 @@ ARjs.Anchor = function(arSession, markerParameters){
  * @param {ARjs.HitTesting.Result} hitTestResult - the result to apply
  */
 ARjs.Anchor.prototype.applyHitTestResult = function(hitTestResult){
-	
-	
-	this.object3d.position.copy(hitTestResult.position)
-	this.object3d.quaternion.copy(hitTestResult.quaternion)
-	this.object3d.scale.copy(hitTestResult.scale)
-
-	this.object3d.updateMatrix()
+	console.warn('obsolete anchro.applyHitTestResult - use hitTestResult.apply(object3d) instead')
+	hitTestResult.apply(this.object3d)
+	// object3d.position.copy(hitTestResult.position)
+	// object3d.quaternion.copy(hitTestResult.quaternion)
+	// object3d.scale.copy(hitTestResult.scale)
+	// 
+	// object3d.updateMatrix()
 }

@@ -10,15 +10,42 @@ ARjs.SessionDebugUI = function(arSession, tangoPointCloud){
 	var trackingBackend = arSession.arContext.parameters.trackingBackend
 
 	this.domElement = document.createElement('div')
+	this.domElement.style.color = 'rgba(0,0,0,0.9)'
+	this.domElement.style.backgroundColor = 'rgba(127,127,127,0.5)'
+	this.domElement.style.display = 'inline-block'
+	this.domElement.style.padding = '0.5em'
+	this.domElement.style.margin = '0.5em'
+	this.domElement.style.textAlign = 'left'
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		add title
+	//////////////////////////////////////////////////////////////////////////////
+	// var domElement = document.createElement('div')
+	// domElement.style.display = 'block'
+	// domElement.style.fontWeight = 'bold'
+	// domElement.style.fontSize = '120%'
+	// this.domElement.appendChild(domElement)
+	// domElement.innerHTML = 'AR.js Session Debug'
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		current-tracking-backend
 	//////////////////////////////////////////////////////////////////////////////
 
 	var domElement = document.createElement('span')
+	domElement.style.display = 'block'
 	this.domElement.appendChild(domElement)
-	domElement.innerHTML = 'trackingBackend :' +trackingBackend
+	domElement.innerHTML = '<b>trackingBackend</b> : ' +trackingBackend
 	
+	//////////////////////////////////////////////////////////////////////////////
+	//		augmented-websites
+	//////////////////////////////////////////////////////////////////////////////
+	var domElement = document.createElement('a')
+	domElement.innerHTML = 'Share on augmented-websites'
+	domElement.style.display = 'block'
+	domElement.setAttribute('target', '_blank')
+	domElement.href = 'https://webxr.io/augmented-website?'+location.href
+	this.domElement.appendChild(domElement)				
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		toggle-point-cloud
 	//////////////////////////////////////////////////////////////////////////////
@@ -59,15 +86,32 @@ ARjs.AnchorDebugUI = function(arAnchor){
 	var trackingBackend = arSession.arContext.parameters.trackingBackend
 	
 	this.domElement = document.createElement('div')
+	this.domElement.style.color = 'rgba(0,0,0,0.9)'
+	this.domElement.style.backgroundColor = 'rgba(127,127,127,0.5)'
+	this.domElement.style.display = 'inline-block'
+	this.domElement.style.padding = '0.5em'
+	this.domElement.style.margin = '0.5em'
+	this.domElement.style.textAlign = 'left'
 
+	//////////////////////////////////////////////////////////////////////////////
+	//		add title
+	//////////////////////////////////////////////////////////////////////////////
+
+	// var domElement = document.createElement('div')
+	// domElement.style.display = 'block'
+	// domElement.style.fontWeight = 'bold'
+	// domElement.style.fontSize = '120%'
+	// this.domElement.appendChild(domElement)
+	// domElement.innerHTML = 'Anchor Marker Debug'
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		current-tracking-backend
 	//////////////////////////////////////////////////////////////////////////////
 
 	var domElement = document.createElement('span')
+	domElement.style.display = 'block'
 	this.domElement.appendChild(domElement)
-	domElement.innerHTML = 'markersAreaEnabled :' +arAnchor.parameters.markersAreaEnabled
+	domElement.innerHTML = '<b>markersAreaEnabled</b> :' +arAnchor.parameters.markersAreaEnabled
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		toggle-marker-helper
@@ -75,6 +119,7 @@ ARjs.AnchorDebugUI = function(arAnchor){
 
 	if( arAnchor.parameters.markersAreaEnabled ){
 		var domElement = document.createElement('button')
+		domElement.style.display = 'block'
 		this.domElement.appendChild(domElement)
 
 		domElement.id= 'buttonToggleMarkerHelpers'
@@ -94,7 +139,9 @@ ARjs.AnchorDebugUI = function(arAnchor){
 
 	if( arAnchor.parameters.markersAreaEnabled ){
 		var domElement = document.createElement('button')
+		domElement.style.display = 'block'
 		this.domElement.appendChild(domElement)
+
 		domElement.id = 'buttonMarkersAreaLearner'
 		domElement.innerHTML = 'Learn-new-marker-area'
 		domElement.href ='javascript:void(0)'
@@ -111,7 +158,9 @@ ARjs.AnchorDebugUI = function(arAnchor){
 
 	if( arAnchor.parameters.markersAreaEnabled ){
 		var domElement = document.createElement('button')
+		domElement.style.display = 'block'
 		this.domElement.appendChild(domElement)
+
 		domElement.id = 'buttonMarkersAreaReset'
 		domElement.innerHTML = 'Reset-marker-area'
 		domElement.href ='javascript:void(0)'

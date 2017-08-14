@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<title>Babylon.js sample code</title>
+	<!-- include babylon.js -->
+	<script src="vendor/babylon.max.js"></script> 
+	<!-- babylon-ar.js -->
+	<script src="../build/babylon-ar.js"></script>
+	<script>ARjs.Context.baseURL = '../../three.js/'</script> 
+
+	<style>
+	html, body {
+		overflow: hidden;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+	}
+	
+	#renderCanvas {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		touch-action: none;
+	}
+	</style>
+</head>
+<body>
+	<div id="canvasZone">
+		<canvas id="renderCanvas"></canvas>
+	</div>
+	<script>
+	//////////////////////////////////////////////////////////////////////////////
+	//		initialize babylon.js engine
+	//////////////////////////////////////////////////////////////////////////////
+
+	var canvas = document.getElementById("renderCanvas");
+	var engine = new BABYLON.Engine(canvas, true);
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		create babylon.js scene 
+	//////////////////////////////////////////////////////////////////////////////
+		
+		
+	function createScene(){
+		// Set the scene and background color
+		var scene = new BABYLON.Scene(engine);
+		scene.clearColor = new BABYLON.Color4(0, 0, 0, 0)
+		
+		// Create a camera
+		var camera = new BABYLON.ArcRotateCamera("Camera", 1.0, 1.0, 12, BABYLON.Vector3.Zero(), scene);
+		
+		// Attach camera to canvas
+		// camera.attachControl(canvas, false);
+		
+		// Add a light
+		var light = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0, 1, 0), scene);
+		
+		// Reflect the light off the ground to light the mesh bottom
+		light.groundColor = new BABYLON.Color3(0.5, 0, 0.5);
+		
+		// Create a builtin shape
+		var box = BABYLON.Mesh.CreateBox("mesh", 1, scene);
+		box.position.y = 0.5
+		box.showBoundingBox = true;
+		
+		// Define a material
+		var material = new BABYLON.StandardMaterial("std", scene);
+		material.diffuseColor = new BABYLON.Color3(0.5, 0, 0.5);
+		
+		// Apply the material
+		box.material = material;		
+		
+		return scene
+	}
+
+	var scene = createScene()
+	scene.clearColor = new BABYLON.Color4(0, 0, 0, 0)
+		
+	////////////////////////////////////////////////////////////////////////////////
+	//          	Set up Arjs.Profile
+	////////////////////////////////////////////////////////////////////////////////
+	ARjs.Babylon.init(engine, scene, scene.cameras[0])
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+	engine.runRenderLoop(function () {
+		scene.render();
+	});
+	
+	// Resize
+	window.addEventListener("resize", function () {
+		engine.resize();
+	});
+	</script>
+</body>
+</html>
