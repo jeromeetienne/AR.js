@@ -232,10 +232,10 @@ This one is mainly for [me](@jerome_etienne) to remember :)
 
 ```bash
 # replace REVISION to the proper version
-atom three.js/src/threex-artoolkitcontext.js package.json
+atom three.js/src/threex/threex-artoolkitcontext.js package.json
 
 # Rebuild a-frame and webvr-polyfill
-make build
+make minify
 
 # Commit everything
 git add . && git commit -a -m 'Last commit before release'

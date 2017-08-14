@@ -5205,7 +5205,7 @@ Object.assign( ARjs.Context.prototype, THREE.EventDispatcher.prototype );
 // ARjs.Context.baseURL = '../'
 // default to github page
 ARjs.Context.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
-ARjs.Context.REVISION = '1.4.10'
+ARjs.Context.REVISION = '1.5.0'
 
 
 
@@ -6903,6 +6903,21 @@ ARjs.HitTesting.Result.prototype.applyPosition = function(object3d){
 	object3d.position.copy(this.position)
 
 	object3d.updateMatrix()
+
+	return this
+}
+
+/**
+ * Apply to a controlled object3d
+ * 
+ * @param {THREE.Object3D} object3d - the result to apply
+ */
+ARjs.HitTesting.Result.prototype.applyQuaternion = function(object3d){
+	object3d.quaternion.copy(this.quaternion)
+
+	object3d.updateMatrix()
+
+	return this
 }
 var ARjs = ARjs || {}
 
