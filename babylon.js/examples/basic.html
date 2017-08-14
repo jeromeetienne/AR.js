@@ -51,15 +51,13 @@
 		scene.clearColor = new BABYLON.Color4(0, 0, 0, 0)
 		
 		// Create a camera
-		var camera = new BABYLON.ArcRotateCamera("Camera", 1.0,
-		1.0, 12, BABYLON.Vector3.Zero(), scene);
+		var camera = new BABYLON.ArcRotateCamera("Camera", 1.0, 1.0, 12, BABYLON.Vector3.Zero(), scene);
 		
 		// Attach camera to canvas
 		// camera.attachControl(canvas, false);
 		
 		// Add a light
-		var light = new BABYLON.HemisphericLight("hemi",
-		new BABYLON.Vector3(0, 1, 0), scene);
+		var light = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0, 1, 0), scene);
 		
 		// Reflect the light off the ground to light the mesh bottom
 		light.groundColor = new BABYLON.Color3(0.5, 0, 0.5);

@@ -1,21 +1,14 @@
-Example of AR.js on babylon.js
+# ar.js for babylon.js
 
-# ARBJS
-Proof of Concept connecting Augmented Reality to Babylon.js for first time with AR.js
+AR.js now support babylon.js. This is a first version, but it is a working version. 
 
-The index should run in a local server. 
+first include [babylon-ar.js](https://github.com/jeromeetienne/AR.js/tree/master/babylon.js/build/babylon-ar.js)
 
-It includes ar.js with customizations in Matrix math.
+```html
+<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/master/babylon.js/build/babylon-ar.js"></script>
+<script>ARjs.Context.baseURL = 'https://cdn.rawgit.com/jeromeetienne/AR.js/master/three.js/'</script> 
+```
 
-There is a single line of code that splices the two environments together so that both Three.js and Babylon run AR.js simultaneously.
-
-That line of code is this:
-cameraB.computedViewMatrix = new BABYLON.Matrix.FromArray(markerObject3D.matrix.toArray()); //SPLICE-FINAL! 
-
-In the index file you will find two boilerplate examples. 1st Babylon which populates the cameraB variable.
-
-Second, an AR template rendering a threeJS knot from AR.js.
-
-MIT license. Free to use, extend, reuse. No Warranty.
-
-Cheers.
+```javascript
+ARjs.Babylon.init(engine, scene, camera)
+```

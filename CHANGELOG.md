@@ -6,10 +6,8 @@
 - FIX: in aframe-ar.js object3d stayed visible when marker goes out of screen
 
 ## babylon-ar.js
-- Started porting on babylon.js [source](https://github.com/jeromeetienne/AR.js/tree/master/babylon.js)
-- object's pose seems to be working
-- projection matrix seems ok
-- TODO: handle resize
+- AR.js now work with babylon.js [source](https://github.com/jeromeetienne/AR.js/tree/master/babylon.js)
+- It is early but it is working!
 
 ## Demos
 - drafting a demo for 3d.io - [tweet](https://twitter.com/jerome_etienne/status/895258272361480193) - [source](https://github.com/jeromeetienne/AR.js/tree/master/aframe/examples/demo-3dio/)
