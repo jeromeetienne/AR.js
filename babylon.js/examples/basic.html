@@ -55,7 +55,7 @@
 		1.0, 12, BABYLON.Vector3.Zero(), scene);
 		
 		// Attach camera to canvas
-		camera.attachControl(canvas, false);
+		// camera.attachControl(canvas, false);
 		
 		// Add a light
 		var light = new BABYLON.HemisphericLight("hemi",
@@ -85,38 +85,7 @@
 	////////////////////////////////////////////////////////////////////////////////
 	//          	Set up Arjs.Profile
 	////////////////////////////////////////////////////////////////////////////////
-	initARjs(engine, scene, scene.cameras[0])
-
-	function initARjs(babylonEngine, babylonScene, babylonCamera){
-
-		var trackingMethod = 'area-artoolkit'
-		var arProfile = new ARjs.Profile()
-			.sourceWebcam()
-			.trackingMethod(trackingMethod)
-			.changeMatrixMode('cameraTransformMatrix')
-			.defaultMarker()
-			.checkIfValid()
-
-		
-		var bARSession = new ARjs.Babylon.Session(arProfile, canvas)
-
-		engine.runRenderLoop(function(){
-			bARSession.updateProjectionMatrix(babylonCamera)
-			bARSession.update()
-		})
-
-		////////////////////////////////////////////////////////////////////////////////
-		//          Create a ARjs.Anchor
-		////////////////////////////////////////////////////////////////////////////////
-		var arAnchor = new ARjs.Anchor(bARSession._arSession, arProfile.defaultMarkerParameters)
-		engine.runRenderLoop(function(){
-			bARSession.updateAnchor(arAnchor, babylonCamera)
-		})
-
-		
-		// add three.js debug
-		ARjs.Babylon._addThreejsDebug(bARSession, arAnchor)
-	}
+	ARjs.Babylon.init(engine, scene, scene.cameras[0])
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator

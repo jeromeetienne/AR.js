@@ -52094,6 +52094,74 @@ ARjs.MarkersAreaUtils.createDefaultMarkersControlsParameters = function(tracking
 var ARjs = ARjs || {}
 
 ARjs.Babylon = {}
+
+ARjs.Babylon.init = function(babylonEngine, babylonScene, babylonCamera){
+	var trackingMethod = 'area-artoolkit'
+	var arProfile = new ARjs.Profile()
+		.sourceWebcam()
+		.trackingMethod(trackingMethod)
+		.changeMatrixMode('cameraTransformMatrix')
+		.defaultMarker()
+		.checkIfValid()
+
+	
+	var bARSession = new ARjs.Babylon.Session(arProfile, canvas)
+	var arSession = bARSession._arSession
+	engine.runRenderLoop(function(){
+		bARSession.updateProjectionMatrix(babylonCamera)
+		bARSession.update()
+	})
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          Create a ARjs.Anchor
+	////////////////////////////////////////////////////////////////////////////////
+	var arAnchor = new ARjs.Anchor(bARSession._arSession, arProfile.defaultMarkerParameters)
+	engine.runRenderLoop(function(){
+		bARSession.updateAnchor(arAnchor, babylonCamera)
+	})
+
+	
+	// add three.js debug
+	// ARjs.Babylon._addThreejsDebug(bARSession, arAnchor)
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		tango specifics
+	//////////////////////////////////////////////////////////////////////////////
+	
+	if( arProfile.contextParameters.trackingBackend === 'tango' ){
+		// init tangoVideoMesh
+		var tangoVideoMesh = new ARjs.TangoVideoMesh(arSession)
+		onRenderFcts.push(function(){
+			tangoVideoMesh.update()
+		})
+	}
+
+	if( arProfile.contextParameters.trackingBackend === 'tango' ){
+		// init tangoPointCloud
+		var tangoPointCloud = new ARjs.TangoPointCloud(arSession)
+		scene.add(tangoPointCloud.object3d)
+	}
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		DebugUI
+	//////////////////////////////////////////////////////////////////////////////
+
+	// create arjsDebugUIContainer if needed
+	if( document.querySelector('#arjsDebugUIContainer') === null ){
+		var domElement = document.createElement('div')
+		domElement.id = 'arjsDebugUIContainer'
+		domElement.setAttribute('style', 'position: fixed; bottom: 10px; width:100%; text-align: center; z-index: 1;color: grey;')
+		document.body.appendChild(domElement)
+	}
+
+
+	var sessionDebugUI = new ARjs.SessionDebugUI(arSession, tangoPointCloud)
+	document.querySelector('#arjsDebugUIContainer').appendChild(sessionDebugUI.domElement)
+
+	var anchorDebugUI = new ARjs.AnchorDebugUI(arAnchor)
+	document.querySelector('#arjsDebugUIContainer').appendChild(anchorDebugUI.domElement)
+}
+
 ARjs.Babylon.Session = function(arProfile, canvasElement){
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
@@ -52133,6 +52201,25 @@ ARjs.Babylon.Session = function(arProfile, canvasElement){
 	})
 
 	//////////////////////////////////////////////////////////////////////////////
+	//		tango specifics
+	//////////////////////////////////////////////////////////////////////////////
+	
+	if( arProfile.contextParameters.trackingBackend === 'tango' ){
+		// init tangoVideoMesh
+		var tangoVideoMesh = new ARjs.TangoVideoMesh(arSession)
+		onRenderFcts.push(function(){
+			tangoVideoMesh.update()
+		})
+	}
+
+	if( arProfile.contextParameters.trackingBackend === 'tango' ){
+		// init tangoPointCloud
+		var tangoPointCloud = new ARjs.TangoPointCloud(arSession)
+		scene.add(tangoPointCloud.object3d)
+	}
+
+	
+	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
 
@@ -52146,6 +52233,9 @@ ARjs.Babylon.Session = function(arProfile, canvasElement){
 		arSession.arSource.copyElementSizeTo(canvasElement)
 	}
 
+
+	this._tangoPointCloud = tangoPointCloud
+	this._tangoVideoMesh = tangoVideoMesh
 	this._renderer = renderer
 	this._scene = scene
 	this._camera = camera
@@ -52158,8 +52248,6 @@ ARjs.Babylon.Session.prototype.updateAnchor = function(arAnchor, babylonCamera){
 
 	arAnchor.update()
 	ARjs.Babylon.updateObjectPose(babylonCamera, threejsCamera)
-
-	this.updateProjectionMatrix(babylonCamera)
 }
 
 ARjs.Babylon.Session.prototype.updateProjectionMatrix = function(babylonCamera){
