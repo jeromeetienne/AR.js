@@ -51960,7 +51960,7 @@ ARjs.MarkersAreaUtils.navigateToLearnerPage = function(learnerBaseURL, trackingB
 		trackingBackend: trackingBackend,
 		markersControlsParameters: ARjs.MarkersAreaUtils.createDefaultMarkersControlsParameters(trackingBackend),
 	}
-	location.href = learnerBaseURL + '#' + encodeURIComponent(JSON.stringify(learnerParameters))
+	location.href = learnerBaseURL + '?' + encodeURIComponent(JSON.stringify(learnerParameters))
 }
 
 //////////////////////////////////////////////////////////////////////////////
