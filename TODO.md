@@ -1,4 +1,5 @@
 ## New API - aframe
+// TODO put subMarkerControls visibility into an external file. with 2 handling for three.js and babylon.js
 
 - port webar-playground on new API
 

@@ -1,6 +1,6 @@
 # 1.5.5-dev
 
-- FIX cross domain communication with with [https://webxr.io/augmented-website/](https://webxr.io/augmented-website/)
+- fix cross domain issue with [https://webxr.io/augmented-website/](https://webxr.io/augmented-website/)
 
 # 1.5.1
 
