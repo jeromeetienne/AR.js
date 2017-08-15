@@ -1,5 +1,9 @@
 ## New API - aframe
-// TODO put subMarkerControls visibility into an external file. with 2 handling for three.js and babylon.js
+- fix subMarkerControls visibility in babylon.js
+  - put subMarkerControls visibility into an external file. with 2 handling for three.js and babylon.js
+  
+
+- DONE put multimarkers learner on location.search and not location.hash http://127.0.0.1:3000/three.js/examples/multi-markers/examples/player.html#%7B%22trackingBackend%22%3A%22aruco%22%7D
 
 - port webar-playground on new API
 
