@@ -85,9 +85,9 @@
 	//		parse urlOptions
 	//////////////////////////////////////////////////////////////////////////////
 	
-	var hasHash = location.hash.substring(1) !== '' ? true : false
+	var hasHash = location.search.substring(1) !== '' ? true : false
 	if( hasHash === true ){
-		var urlOptions = JSON.parse(decodeURIComponent(location.hash.substring(1)))
+		var urlOptions = JSON.parse(decodeURIComponent(location.search.substring(1)))
 	}else{
 		var urlOptions = {
 			backURL : null,

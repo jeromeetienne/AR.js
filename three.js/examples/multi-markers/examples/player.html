@@ -110,11 +110,11 @@
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
 
-	var artoolkitProfile = new THREEx.ArToolkitProfile()
+	var artoolkitProfile = new ARjs.Profile()
 	artoolkitProfile.sourceWebcam()
 		.trackingBackend(urlOptions.trackingBackend)
 
-	var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)
+	var arToolkitSource = new ARjs.Source(artoolkitProfile.sourceParameters)
 
 	arToolkitSource.init(function onReady(){
 		onResize()
@@ -125,14 +125,14 @@
 		onResize()
 	})
 	function onResize(){
-		arToolkitSource.onResize()
-		arToolkitSource.copySizeTo(renderer.domElement)	
+		arToolkitSource.onResizeElement()
+		arToolkitSource.copyElementSizeTo(renderer.domElement)	
 		if( urlOptions.trackingBackend === 'artoolkit' ){
 			if( arToolkitContext.arController !== null ){
-				arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
+				arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)	
 			}	
 		}else if( urlOptions.trackingBackend === 'aruco' ){
-			arToolkitSource.copySizeTo(arToolkitContext.arucoContext.canvas)	
+			arToolkitSource.copyElementSizeTo(arToolkitContext.arucoContext.canvas)	
 			camera.aspect = renderer.domElement.width / renderer.domElement.height;
 			camera.updateProjectionMatrix();			
 		}else console.assert(false)
@@ -143,7 +143,7 @@
 	////////////////////////////////////////////////////////////////////////////////	
 
 	// create atToolkitContext
-	var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
+	var arToolkitContext = new ARjs.Context(artoolkitProfile.contextParameters)
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
 		// if artoolkit, copy projection matrix to camera
@@ -252,8 +252,8 @@
 		// markerRoot.add(arWorldRoot)
 
 
-		var screenAsPortal = new THREEx.ScreenAsPortal(multiMarkerFile)
-		arWorldRoot.add(screenAsPortal.object3d)
+		// var screenAsPortal = new THREEx.ScreenAsPortal(multiMarkerFile)
+		// arWorldRoot.add(screenAsPortal.object3d)
 
 		var mesh = new THREE.AxisHelper()
 		arWorldRoot.add(mesh)
