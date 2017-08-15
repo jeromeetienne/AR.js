@@ -38,10 +38,26 @@ ARjs.Anchor = function(arSession, markerParameters){
 	}else{
 		// sanity check - MUST be a trackingBackend with markers
 		console.assert( arContext.parameters.trackingBackend === 'artoolkit' || arContext.parameters.trackingBackend === 'aruco' )
-		// for multi marker
+
+		// if( localStorage.getItem('ARjsMultiMarkerFile') === null && location.search.substring(1).startsWith('markers-area-resolution=') ){
+		if( location.search.substring(1).startsWith('markers-area-resolution=') === true ){
+			// get resolutionW/resolutionH from url
+			var markerPageResolution = location.search.substring(1)
+			var matches = markerPageResolution.match(/markers-area-resolution=(\d+)x(\d+)/)
+			console.assert(matches.length === 3)
+			var resolutionW = parseInt(matches[1])
+			var resolutionH = parseInt(matches[2])
+debugger
+			// generate and store the ARjsMultiMarkerFile
+			ARjs.MarkersAreaUtils.storeAreaMarkersFileFromResolution(arContext.parameters.trackingBackend, resolutionW, resolutionH)
+		}
+
+		// if there is no ARjsMultiMarkerFile, build a default one
 		if( localStorage.getItem('ARjsMultiMarkerFile') === null ){
 			ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile(arContext.parameters.trackingBackend)
 		}
+		
+		
 		
 		// get multiMarkerFile from localStorage
 		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
@@ -60,7 +76,7 @@ ARjs.Anchor = function(arSession, markerParameters){
 		// honor markerParameters.changeMatrixMode
 		multiMarkerControls.parameters.changeMatrixMode = markerParameters.changeMatrixMode
 
-		// create ArMarkerHelper - useful to debug
+		// create ArMarkerHelper - useful to debug - super three.js specific
 		var markerHelpers = []
 		multiMarkerControls.subMarkersControls.forEach(function(subMarkerControls){
 			// add an helper to visuable each sub-marker
@@ -118,20 +134,4 @@ ARjs.Anchor = function(arSession, markerParameters){
 			smoothedControls.update(markerRoot)			
 		}
 	}
-}
-
-
-/**
- * Apply ARjs.Session.HitTestResult to the controlled object3d
- * 
- * @param {ARjs.HitTesting.Result} hitTestResult - the result to apply
- */
-ARjs.Anchor.prototype.applyHitTestResult = function(hitTestResult){
-	console.warn('obsolete anchro.applyHitTestResult - use hitTestResult.apply(object3d) instead')
-	hitTestResult.apply(this.object3d)
-	// object3d.position.copy(hitTestResult.position)
-	// object3d.quaternion.copy(hitTestResult.quaternion)
-	// object3d.scale.copy(hitTestResult.scale)
-	// 
-	// object3d.updateMatrix()
 }
