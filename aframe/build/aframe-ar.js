@@ -6471,7 +6471,6 @@ ARjs.Anchor = function(arSession, markerParameters){
 	// log to debug
 	console.log('ARjs.Anchor -', 'changeMatrixMode:', this.parameters.changeMatrixMode, '/ markersAreaEnabled:', markerParameters.markersAreaEnabled)
 
-
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
 
@@ -6488,7 +6487,7 @@ ARjs.Anchor = function(arSession, markerParameters){
 		// sanity check - MUST be a trackingBackend with markers
 		console.assert( arContext.parameters.trackingBackend === 'artoolkit' || arContext.parameters.trackingBackend === 'aruco' )
 
-		// honor markers-page resolution for https://webxr.io/augmented-website
+		// honor markers-page-resolution for https://webxr.io/augmented-website
 		if( location.hash.substring(1).startsWith('markers-page-resolution=') === true ){
 			// get resolutionW/resolutionH from url
 			var markerPageResolution = location.hash.substring(1)
@@ -6523,6 +6522,7 @@ ARjs.Anchor = function(arSession, markerParameters){
 		// honor markerParameters.changeMatrixMode
 		multiMarkerControls.parameters.changeMatrixMode = markerParameters.changeMatrixMode
 
+// TODO put subMarkerControls visibility into an external file. with 2 handling for three.js and babylon.js
 		// create ArMarkerHelper - useful to debug - super three.js specific
 		var markerHelpers = []
 		multiMarkerControls.subMarkersControls.forEach(function(subMarkerControls){
@@ -6623,13 +6623,15 @@ ARjs.SessionDebugUI = function(arSession, tangoPointCloud){
 	//////////////////////////////////////////////////////////////////////////////
 	//		augmented-websites
 	//////////////////////////////////////////////////////////////////////////////
-	var domElement = document.createElement('a')
-	domElement.innerHTML = 'Share on augmented-websites'
-	domElement.style.display = 'block'
-	// domElement.setAttribute('target', '_blank')
-	domElement.href = 'https://webxr.io/augmented-website?'+location.href
-	domElement.href = 'http://127.0.0.1:8080/augmented-website?'+location.href
-	this.domElement.appendChild(domElement)				
+
+	if( ARjs.SessionDebugUI.AugmentedWebsiteURL ){
+		var domElement = document.createElement('a')
+		domElement.innerHTML = 'Share on augmented-websites'
+		domElement.style.display = 'block'
+		// domElement.setAttribute('target', '_blank')
+		domElement.href = ARjs.SessionDebugUI.AugmentedWebsiteURL + '?'+location.href
+		this.domElement.appendChild(domElement)						
+	}
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		toggle-point-cloud
@@ -6655,6 +6657,12 @@ ARjs.SessionDebugUI = function(arSession, tangoPointCloud){
 		})
 	}
 }
+
+/**
+ * Url of augmented-website service - if === '' then dont include augmented-website link
+ * @type {String}
+ */
+ARjs.SessionDebugUI.AugmentedWebsiteURL = 'https://webxr.io/augmented-website'
 
 //////////////////////////////////////////////////////////////////////////////
 //		ARjs.AnchorDebugUI
