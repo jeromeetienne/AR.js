@@ -39,13 +39,15 @@ ARjs.SessionDebugUI = function(arSession, tangoPointCloud){
 	//////////////////////////////////////////////////////////////////////////////
 	//		augmented-websites
 	//////////////////////////////////////////////////////////////////////////////
-	var domElement = document.createElement('a')
-	domElement.innerHTML = 'Share on augmented-websites'
-	domElement.style.display = 'block'
-	// domElement.setAttribute('target', '_blank')
-	domElement.href = 'https://webxr.io/augmented-website?'+location.href
-	domElement.href = 'http://127.0.0.1:8080/augmented-website?'+location.href
-	this.domElement.appendChild(domElement)				
+
+	if( ARjs.SessionDebugUI.AugmentedWebsiteURL ){
+		var domElement = document.createElement('a')
+		domElement.innerHTML = 'Share on augmented-websites'
+		domElement.style.display = 'block'
+		// domElement.setAttribute('target', '_blank')
+		domElement.href = ARjs.SessionDebugUI.AugmentedWebsiteURL + '?'+location.href
+		this.domElement.appendChild(domElement)						
+	}
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		toggle-point-cloud
@@ -71,6 +73,12 @@ ARjs.SessionDebugUI = function(arSession, tangoPointCloud){
 		})
 	}
 }
+
+/**
+ * Url of augmented-website service - if === '' then dont include augmented-website link
+ * @type {String}
+ */
+ARjs.SessionDebugUI.AugmentedWebsiteURL = 'https://webxr.io/augmented-website'
 
 //////////////////////////////////////////////////////////////////////////////
 //		ARjs.AnchorDebugUI
