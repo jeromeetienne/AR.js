@@ -13,21 +13,21 @@
 		<strong>Tracking Method:</strong> <span id='trackingMethod'>unknown</span>
 		- 
 		Switch to : 
-		<a href='#artoolkit' onclick='location.reload()'>artoolkit</a>
+		<a href='?artoolkit'>artoolkit</a>
 		/ 
-		<a href='#aruco' onclick='location.reload()'>aruco</a>
+		<a href='?aruco'>aruco</a>
 		/ 
-		<a href='#area-artoolkit' onclick='location.reload()'>area artoolkit</a>
+		<a href='?area-artoolkit'>area artoolkit</a>
 		/ 
-		<a href='#area-aruco' onclick='location.reload()'>area aruco</a>
+		<a href='?area-aruco'>area aruco</a>
 		/ 
-		<a href='#tango' onclick='location.reload()'>tango</a>
+		<a href='?tango'>tango</a>
 		/ 
-		<a href='#best' onclick='location.reload()'>best</a>
+		<a href='?best'>best</a>
 		<div id="arjsDebugUIContainer"></div>
 	</div>
 <script>
-	var trackingMethod = location.hash.substring(1) || 'best'
+	var trackingMethod = location.search.substring(1) || 'best'
 	document.querySelector('#trackingMethod').innerHTML = trackingMethod
 	
 

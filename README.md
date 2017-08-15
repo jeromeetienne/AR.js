@@ -232,7 +232,7 @@ This one is mainly for [me](@jerome_etienne) to remember :)
 
 ```bash
 # replace REVISION to the proper version
-atom three.js/src/threex/threex-artoolkitcontext.js package.json
+atom three.js/src/threex/threex-artoolkitcontext.js package.json README.md
 
 # Rebuild a-frame and webvr-polyfill
 make minify
@@ -251,6 +251,9 @@ git tag 1.5.1
 
 # push the tag on github
 git push origin --tags
+
+# push commits tag on github
+git push
 
 # update npm package.json
 npm publish

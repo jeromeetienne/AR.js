@@ -15,7 +15,7 @@
 <!-- include for tango trackingBackend -->
 <script src='../vendor/chromium-tango/THREE.WebAR.js'></script>
 <!-- include ar.js -->
-<script src='../arjs-utils.js'></script>
+<script src='../src/new-api/arjs-utils.js'></script>
 <script src='../src/threex/threex-artoolkitsource.js'></script>
 <script src='../src/threex/threex-artoolkitcontext.js'></script>
 <script src='../src/threex/threex-artoolkitprofile.js'></script>
@@ -37,18 +37,18 @@
 	<strong>Tracking Backend:</strong> <span id='currentTracking'>unknown</span>
 	- 
 	Switch to : 
-	<a href='#artoolkit' onclick='location.reload()'>artoolkit</a>
+	<a href='?artoolkit'>artoolkit</a>
 	/ 
-	<a href='#aruco' onclick='location.reload()'>aruco</a>
+	<a href='?aruco'>aruco</a>
 	/ 
-	<a href='#tango' onclick='location.reload()'>tango</a>
+	<a href='?tango'>tango</a>
 </div><script>
-	var trackingBackend = location.hash.substring(1) ? location.hash.substring(1) : 'artoolkit'
+	var trackingBackend = location.search.substring(1) ? location.search.substring(1) : 'artoolkit'
 	document.querySelector('#currentTracking').innerHTML = trackingBackend
 	
 	// if we are running on tango device, ensure trackingBackend is 'tango'
 	if( trackingBackend !== 'tango' && ARjs.Utils.isTango() === true ){
-		location.hash = '#tango'
+		location.search = '#tango'
 		location.reload()
 	}
 	

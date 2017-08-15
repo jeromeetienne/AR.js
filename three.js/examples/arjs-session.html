@@ -41,28 +41,24 @@
 	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Session API demo with multi tracking and hit testing
 	- by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 	<br/>
-	Marker image 
-	<a href='../../data/images/hiro.jpg' target='_blank'>hiro for artoolkit</a>
-	/
-	<a href='../../three.js/threex/threex-aruco/examples/images/1001.png' target='_blank'>1001 for aruco</a>
+	<a href='../../three.js/examples/multi-markers/markers-page/' target='_blank'>Markers page</a>
 	<br/>
 	<strong>Tracking Backend:</strong> 
-	<a href='#artoolkit' onclick='location.reload()'>artoolkit</a>
+	<a href='?artoolkit'>artoolkit</a>
 	/ 
-	<a href='#aruco' onclick='location.reload()'>aruco</a>
+	<a href='?aruco'>aruco</a>
 	/ 
-	<a href='#area-artoolkit' onclick='location.reload()'>area artoolkit</a>
+	<a href='?area-artoolkit'>area artoolkit</a>
 	/ 
-	<a href='#area-aruco' onclick='location.reload()'>area aruco</a>
+	<a href='?area-aruco'>area aruco</a>
 	/ 
-	<a href='#tango' onclick='location.reload()'>tango</a>
+	<a href='?tango'>tango</a>
 	/ 
-	<a href='#best' onclick='location.reload()'>best</a>
-	<div id="arjsDebugUIContainer"></div>
+	<a href='?best'>best</a>
 </div><script>
 ;(function(){
-	// get tracking method from location.hash
-	var trackingMethod = location.hash.substring(1) ? location.hash.substring(1) : 'best'
+	// get tracking method from location.search
+	var trackingMethod = location.search.substring(1) ? location.search.substring(1) : 'best'
 	
 	
 	//////////////////////////////////////////////////////////////////////////////////
