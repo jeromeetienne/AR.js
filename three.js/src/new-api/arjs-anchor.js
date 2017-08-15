@@ -39,25 +39,23 @@ ARjs.Anchor = function(arSession, markerParameters){
 		// sanity check - MUST be a trackingBackend with markers
 		console.assert( arContext.parameters.trackingBackend === 'artoolkit' || arContext.parameters.trackingBackend === 'aruco' )
 
-		// if( localStorage.getItem('ARjsMultiMarkerFile') === null && location.search.substring(1).startsWith('markers-area-resolution=') ){
-		if( location.search.substring(1).startsWith('markers-area-resolution=') === true ){
+		// honor markers-page resolution for https://webxr.io/augmented-website
+		if( location.hash.substring(1).startsWith('markers-page-resolution=') === true ){
 			// get resolutionW/resolutionH from url
-			var markerPageResolution = location.search.substring(1)
-			var matches = markerPageResolution.match(/markers-area-resolution=(\d+)x(\d+)/)
+			var markerPageResolution = location.hash.substring(1)
+			var matches = markerPageResolution.match(/markers-page-resolution=(\d+)x(\d+)/)
 			console.assert(matches.length === 3)
 			var resolutionW = parseInt(matches[1])
 			var resolutionH = parseInt(matches[2])
-debugger
+			var arContext = arSession.arContext
 			// generate and store the ARjsMultiMarkerFile
-			ARjs.MarkersAreaUtils.storeAreaMarkersFileFromResolution(arContext.parameters.trackingBackend, resolutionW, resolutionH)
+			ARjs.MarkersAreaUtils.storeMarkersAreaFileFromResolution(arContext.parameters.trackingBackend, resolutionW, resolutionH)
 		}
 
 		// if there is no ARjsMultiMarkerFile, build a default one
 		if( localStorage.getItem('ARjsMultiMarkerFile') === null ){
 			ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile(arContext.parameters.trackingBackend)
 		}
-		
-		
 		
 		// get multiMarkerFile from localStorage
 		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )

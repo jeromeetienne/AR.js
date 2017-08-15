@@ -166,9 +166,9 @@ ARjs.MarkersAreaUtils.createDefaultMarkersControlsParameters = function(tracking
 /**
  * generate areaFile
  */
-ARjs.MarkersAreaUtils.storeAreaMarkersFileFromResolution = function (trackingBackend, resolutionW, resolutionH) {
+ARjs.MarkersAreaUtils.storeMarkersAreaFileFromResolution = function (trackingBackend, resolutionW, resolutionH) {
 	// generate areaFile
-	var areaFile = this.buildAreaMarkersFileFromResolution(trackingBackend, resolutionW, resolutionH)
+	var areaFile = this.buildMarkersAreaFileFromResolution(trackingBackend, resolutionW, resolutionH)
 	// store areaFile in localStorage
 	localStorage.setItem('ARjsMultiMarkerFile', JSON.stringify(areaFile))
 }
@@ -178,7 +178,7 @@ ARjs.MarkersAreaUtils.storeAreaMarkersFileFromResolution = function (trackingBac
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 	
-ARjs.MarkersAreaUtils.buildAreaMarkersFileFromResolution = function(trackingBackend, resolutionW, resolutionH){
+ARjs.MarkersAreaUtils.buildMarkersAreaFileFromResolution = function(trackingBackend, resolutionW, resolutionH){
 	// create the base file
 	var file = {
 		meta : {

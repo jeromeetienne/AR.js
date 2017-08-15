@@ -42,8 +42,9 @@ ARjs.SessionDebugUI = function(arSession, tangoPointCloud){
 	var domElement = document.createElement('a')
 	domElement.innerHTML = 'Share on augmented-websites'
 	domElement.style.display = 'block'
-	domElement.setAttribute('target', '_blank')
+	// domElement.setAttribute('target', '_blank')
 	domElement.href = 'https://webxr.io/augmented-website?'+location.href
+	domElement.href = 'http://127.0.0.1:8080/augmented-website?'+location.href
 	this.domElement.appendChild(domElement)				
 
 	//////////////////////////////////////////////////////////////////////////////
