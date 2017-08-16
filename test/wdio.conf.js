@@ -51,12 +51,12 @@ exports.config = {
         // https://docs.saucelabs.com/reference/platforms-configurator
         //
         capabilities: [
-                {
-                        browserName: 'firefox'
-                }, 
                 // {
-                //         browserName: 'chrome'
-                // }
+                //         browserName: 'firefox'
+                // }, 
+                {
+                        browserName: 'chrome'
+                }
         ],
         //
         // ===================
@@ -142,7 +142,7 @@ exports.config = {
                         referenceName: getScreenshotName(path.join(process.cwd(), 'screenshots/reference')),
                         screenshotName: getScreenshotName(path.join(process.cwd(), 'screenshots/screen')),
                         diffName: getScreenshotName(path.join(process.cwd(), 'screenshots/diff')),
-                        misMatchTolerance: 0.6,
+                        // misMatchTolerance: 0.0,
                 }),
                 viewportChangePause: 300,
                 widths: [320, 480, 640, 1024],

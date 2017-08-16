@@ -6,9 +6,9 @@ server:
 		-Dwebdriver.chrome.driver=./bin/chromedriver \
 		bin/selenium-server-standalone-3.0.1.jar
 
-clean: cleanReference
+clean: cleanResults
+	rm -f screenshots/reference/*.png
+
+cleanResults: 
 	rm -f screenshots/diff/*.png
 	rm -f screenshots/screen/*.png
-
-cleanReference:
-	rm -f screenshots/reference/*.png
