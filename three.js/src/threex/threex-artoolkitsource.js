@@ -289,10 +289,13 @@ ARjs.Source.prototype.toggleMobileTorch = function(){
 //          handle resize
 ////////////////////////////////////////////////////////////////////////////////
 
-ARjs.Source.prototype.onResizeElement = function(mirrorDomElements){
+ARjs.Source.prototype.onResizeElement = function(){
 	var _this = this
 	var screenWidth = window.innerWidth
 	var screenHeight = window.innerHeight
+
+	// sanity check
+	console.assert( arguments.length === 0 )
 
 	// compute sourceWidth, sourceHeight
 	if( this.domElement.nodeName === "IMG" ){
@@ -330,21 +333,6 @@ ARjs.Source.prototype.onResizeElement = function(mirrorDomElements){
 		this.domElement.style.width = screenWidth+'px'
 		this.domElement.style.marginLeft = '0px'
 	}
-	
-	
-	if( arguments.length !== 0 ){
-		debugger
-		console.warn('use bad signature for arToolkitSource.copyElementSizeTo')
-	}
-	// honor default parameters
-	// if( mirrorDomElements !== undefined )	console.warn('still use the old resize. fix it')
-	if( mirrorDomElements === undefined )	mirrorDomElements = []
-	if( mirrorDomElements instanceof Array === false )	mirrorDomElements = [mirrorDomElements]	
-
-	// Mirror _this.domElement.style to mirrorDomElements
-	mirrorDomElements.forEach(function(domElement){
-		_this.copyElementSizeTo(domElement)
-	})
 }
 
 ARjs.Source.prototype.copyElementSizeTo = function(otherElement){
