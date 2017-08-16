@@ -14,6 +14,8 @@
 <script src='../src/threex/threex-aruco/threex-arucodebug.js'></script>
 <!-- include for tango trackingBackend -->
 <script src='../vendor/chromium-tango/THREE.WebAR.js'></script>
+<!-- include for signals.js -->
+<script src='../vendor/signals.min.js'></script>
 <!-- include ar.js -->
 <script src='../src/threex/threex-artoolkitsource.js'></script>
 <script src='../src/threex/threex-artoolkitcontext.js'></script>
@@ -99,8 +101,8 @@
 
 	if( arProfile.contextParameters.trackingBackend === 'artoolkit' ){
 		// arProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../test/data/images/markers-page-ipad.jpg')
-		arProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../test/data/images/markers-page-ipad-640x480.jpg')
-		// arProfile.sourceVideo(THREEx.ArToolkitContext.baseURL + '../test/data/videos/markers-page-ipad.mp4')
+		// arProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../test/data/images/markers-page-ipad-640x480.jpg')
+		arProfile.sourceVideo(THREEx.ArToolkitContext.baseURL + '../test/data/videos/markers-page-ipad.mp4')
 	}else if( arProfile.contextParameters.trackingBackend === 'aruco' ){
 		arProfile.sourceImage(THREEx.ArToolkitContext.baseURL + 'src/threex/threex-aruco/examples/images/screenshot-marker-aruco.png')
 	}else console.assert(false)
@@ -133,6 +135,12 @@
 	onRenderFcts.push(function(){
 		arSession.update()
 	})
+
+
+	
+	var videoElement = arSession.arSource.domElement
+	videoElement.pause()
+	videoElement.currentTime = 4.0
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ARjs.Anchor

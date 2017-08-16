@@ -15,6 +15,11 @@ ARjs.Session = function(parameters){
 		sourceParameters: {},
 		contextParameters: {},
 	}
+	
+	this.signals = {
+		sourceReady : new signals.Signal(),
+		contextInitialized: new signals.Signal(),
+	}
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		setParameters
@@ -71,6 +76,8 @@ ARjs.Session = function(parameters){
 
 	arSource.init(function onReady(){
 		arSource.onResize(arContext, _this.parameters.renderer, _this.parameters.camera)
+
+		_this.signals.sourceReady.dispatch()
 	})
 	
 	// handle resize
@@ -90,6 +97,8 @@ ARjs.Session = function(parameters){
 	
 	arContext.addEventListener('initialized', function(event){
 		arSource.onResize(arContext, _this.parameters.renderer, _this.parameters.camera)
+		
+		_this.signals.contextInitialized.dispatch()
 	})
 	
 	//////////////////////////////////////////////////////////////////////////////
