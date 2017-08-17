@@ -70,6 +70,9 @@ ARjs.Babylon.init = function(babylonEngine, babylonScene, babylonCamera){
 	document.querySelector('#arjsDebugUIContainer').appendChild(anchorDebugUI.domElement)
 }
 
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
 ARjs.Babylon.Session = function(arProfile, canvasElement){
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
@@ -254,5 +257,4 @@ ARjs.Babylon._addThreejsDebug = function(bARSession, arAnchor){
 			onRenderFct(deltaMsec/1000, nowMsec/1000)
 		})
 	})
-	
 }
