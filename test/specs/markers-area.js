@@ -64,9 +64,11 @@ describe('AR.js Markers Area', function() {
 	
 		// FIXME timeout is lame
 		browser.pause(1000);
-	
+
+		// click to display markers-helpers
 		browser.click('#buttonToggleMarkerHelpers')
-	
+
+		// take a screenshot fo the results
 		browser.checkViewport()
 	})
 })
