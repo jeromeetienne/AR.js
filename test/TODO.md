@@ -1,16 +1,18 @@
 # TODO
-- Test multi marker: learning playing
 - measure performance
   - e.g. fps. run the test for say 5sec and then extract an average
   - should i use stats.js. my own specific measurement
   - console.time ?
   - can i get this result ? my own simple performance.now() substract
-  - 
+  - fps is more global, 
 - make it such as you can instrument any demo
+  - have the .js to detect they are running in a test... how ?
+  - and if running in a tests, have the profile to obey the conditions
 - make more image for test
   - multi markers
   - various angle, various lights
 
+- DONE Test multi marker: learning playing
 - DONE test picking
 - DONE make test-runner.html to the ARjs new api
 - DONE support test on video too

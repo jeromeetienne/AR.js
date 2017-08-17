@@ -39,7 +39,7 @@ describe('AR.js Markers Area', function() {
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
-	it('use a markers-area and enabled markers-helpers', function () {
+	it('use a markers-area and enabled markers-helpers', function() {
 		// goes in test-runner.html
 		var pageURL = '/three.js/examples/test-runner.html'
 		browser.url(pageURL)
