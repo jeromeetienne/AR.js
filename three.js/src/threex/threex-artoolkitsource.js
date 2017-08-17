@@ -285,6 +285,13 @@ ARjs.Source.prototype.toggleMobileTorch = function(){
 	});
 }
 
+ARjs.Source.prototype.domElementWidth = function(){
+	return parseInt(this.domElement.style.width)
+}
+ARjs.Source.prototype.domElementHeight = function(){
+	return parseInt(this.domElement.style.height)
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 //          handle resize
 ////////////////////////////////////////////////////////////////////////////////

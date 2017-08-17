@@ -66,9 +66,8 @@ ARjs.HitTesting.prototype.testDomEvent = function(domEvent){
         	var mouseX = domEvent.pageX / window.innerWidth
         	var mouseY = domEvent.pageY / window.innerHeight
 	}else{		
-		// FIXME should not use css!!!
-		var mouseX = domEvent.layerX / parseInt(arSource.domElement.style.width)
-		var mouseY = domEvent.layerY / parseInt(arSource.domElement.style.height)
+		var mouseX = domEvent.clientX / arSource.domElementWidth()
+		var mouseY = domEvent.clientY / arSource.domElementHeight()
 	}
 
 	return this.test(mouseX, mouseY)

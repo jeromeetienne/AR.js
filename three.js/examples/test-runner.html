@@ -58,7 +58,7 @@
 	/ 
 	<a href='?best'>best</a>
 </div><script>
-;(function(){
+// ;(function(){
 	// get tracking method from location.search
 	var trackingMethod = location.search.substring(1) ? location.search.substring(1) : 'best'
 	
@@ -101,8 +101,8 @@
 
 	if( arProfile.contextParameters.trackingBackend === 'artoolkit' ){
 		// arProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../test/data/images/markers-page-ipad.jpg')
-		// arProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../test/data/images/markers-page-ipad-640x480.jpg')
-		arProfile.sourceVideo(THREEx.ArToolkitContext.baseURL + '../test/data/videos/markers-page-ipad.mp4')
+		arProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../test/data/images/markers-page-ipad-640x480.jpg')
+		// arProfile.sourceVideo(THREEx.ArToolkitContext.baseURL + '../test/data/videos/markers-page-ipad.mp4')
 	}else if( arProfile.contextParameters.trackingBackend === 'aruco' ){
 		arProfile.sourceImage(THREEx.ArToolkitContext.baseURL + 'src/threex/threex-aruco/examples/images/screenshot-marker-aruco.png')
 	}else console.assert(false)
@@ -136,11 +136,6 @@
 		arSession.update()
 	})
 
-
-	
-	var videoElement = arSession.arSource.domElement
-	videoElement.pause()
-	videoElement.currentTime = 4.0
 	
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ARjs.Anchor
@@ -168,7 +163,7 @@
 		var hitTestResult = hitTestResults[0]
 		hitTestResult.apply(arAnchor.object3d)
 	})
-
+	
 	//////////////////////////////////////////////////////////////////////////////
 	//		tango specifics
 	//////////////////////////////////////////////////////////////////////////////
@@ -215,7 +210,7 @@
 	// onRenderFcts.push(function(delta){
 	// 	mesh.rotation.x += Math.PI*delta
 	// })
-	
+	// 
 	//////////////////////////////////////////////////////////////////////////////
 	//		DebugUI
 	//////////////////////////////////////////////////////////////////////////////
@@ -272,5 +267,5 @@
 			onRenderFct(deltaMsec/1000, nowMsec/1000)
 		})
 	})
-})()
+// })()
 </script></body>

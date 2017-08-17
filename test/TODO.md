@@ -1,10 +1,14 @@
 # TODO
+- Test multi marker: learning playing
+- test picking
+- measure performance
+- 
 - make more image for test
   - multi markers
   - various angle, various lights
-- support test on video too
 
 - DONE make test-runner.html to the ARjs new api
+- DONE support test on video too
 
 # Issues
 - test need to fail if there is a screenshot error
