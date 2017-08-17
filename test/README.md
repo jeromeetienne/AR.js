@@ -1,5 +1,23 @@
 # Automatic tests for AR.js
 
+It is running [webdriver.io](http://webdriver.io/)
+with their great [visual regression's services](http://webdriver.io/guide/services/visual-regression.html).
+In brief, it takes screenshots of the current version and compare them to screenshots from previous versions.
+If they are different, this is a regression.
+
+# How to run the tests ?
+
+First install the npm packages for the tests.
+
+```bash
+$ npm install 
+```
+
+How to run the tests ?
+
+```bash
+$ npm test
+```
 
 # Measure Performance Principles
 - Measure stability - so 3d shakiness, if marker is stable and camera too
