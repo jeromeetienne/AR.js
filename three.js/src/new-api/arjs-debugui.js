@@ -84,6 +84,9 @@ ARjs.SessionDebugUI.AugmentedWebsiteURL = 'https://webxr.io/augmented-website'
 //		ARjs.AnchorDebugUI
 //////////////////////////////////////////////////////////////////////////////
 
+
+
+
 /**
  * Create an debug UI for an ARjs.Anchor
  * 
@@ -156,8 +159,12 @@ ARjs.AnchorDebugUI = function(arAnchor){
 		domElement.href ='javascript:void(0)'
 
 		domElement.addEventListener('click', function(){
-			var learnerBaseURL = ARjs.Context.baseURL + 'examples/multi-markers/examples/learner.html'
-			ARjs.MarkersAreaUtils.navigateToLearnerPage(learnerBaseURL, trackingBackend)
+			if( ARjs.AnchorDebugUI.MarkersAreaLearnerURL !== null ){
+				var learnerURL = ARjs.AnchorDebugUI.MarkersAreaLearnerURL
+			}else{
+				var learnerURL = ARjs.Context.baseURL + 'examples/multi-markers/examples/learner.html'
+			}
+			ARjs.MarkersAreaUtils.navigateToLearnerPage(learnerURL, trackingBackend)
 		})	
 	}
 
@@ -180,3 +187,9 @@ ARjs.AnchorDebugUI = function(arAnchor){
 		})
 	}
 }
+
+/**
+ * url for the markers-area learner. if not set, take the default one
+ * @type {String}
+ */
+ARjs.AnchorDebugUI.MarkersAreaLearnerURL = null

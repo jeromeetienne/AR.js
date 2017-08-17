@@ -5,7 +5,7 @@ with their great [visual regression's services](http://webdriver.io/guide/servic
 In brief, it takes screenshots of the current version and compare them to screenshots from previous versions.
 If they are different, this is a regression.
 
-To see current tasks in progress, check out the [TODO.md](https://github.com/jeromeetienne/AR.js/blob/dev/test/TODO.md)
+To see current tasks in progress, check out the [TODO.md](https://github.com/jeromeetienne/AR.js/blob/dev/test/TODO.md).
 
 # How to run the tests ?
 

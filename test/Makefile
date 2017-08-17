@@ -1,6 +1,9 @@
 test:
 	./node_modules/.bin/wdio wdio.conf.js
 
+testMarkersArea:
+	./node_modules/.bin/wdio --spec specs/markers-area.js ./wdio.conf.js
+
 server:
 	java -jar -Dwebdriver.gecko.driver=./bin/geckodriver \
 		-Dwebdriver.chrome.driver=./bin/chromedriver \

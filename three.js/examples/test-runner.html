@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
+<title>AR.js Test Runner</title>
 <!-- three.js library -->
 <script src='../examples/vendor/three.js/build/three.js'></script>
 <!-- include for artoolkit trackingBackend -->
@@ -125,6 +126,8 @@
 	//		build ARjs.Session
 	//////////////////////////////////////////////////////////////////////////////
 
+	ARjs.AnchorDebugUI.MarkersAreaLearnerURL = ARjs.Context.baseURL + 'examples/multi-markers/examples/learner-testrunner.html'
+	
 	var arSession = new ARjs.Session({
 		scene: scene,
 		renderer: renderer,

@@ -113,14 +113,24 @@
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
 
-	var artoolkitProfile = new THREEx.ArToolkitProfile()
-	artoolkitProfile.sourceWebcam()
+	var arProfile = new THREEx.ArToolkitProfile()
+	arProfile.sourceWebcam()
+		.trackingBackend(urlOptions.trackingBackend)
 		// .performance('desktop-fast')
 
-	// artoolkitProfile.sourceVideo(THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4').kanjiMarker();
-	// artoolkitProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg').hiroMarker()
-
-	var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)
+	// arProfile.sourceVideo(THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4').kanjiMarker();
+	// arProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg').hiroMarker()
+	if( arProfile.contextParameters.trackingBackend === 'artoolkit' ){
+		// arProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../test/data/images/markers-page-ipad.jpg')
+		arProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../test/data/images/markers-page-ipad-640x480.jpg')
+		// arProfile.sourceVideo(THREEx.ArToolkitContext.baseURL + '../test/data/videos/markers-page-ipad.mp4')
+	}else if( arProfile.contextParameters.trackingBackend === 'aruco' ){
+		arProfile.sourceImage(THREEx.ArToolkitContext.baseURL + 'src/threex/threex-aruco/examples/images/screenshot-marker-aruco.png')
+	}else console.assert(false)
+	
+	
+	
+	var arToolkitSource = new THREEx.ArToolkitSource(arProfile.sourceParameters)
 
 	arToolkitSource.init(function onReady(){
 		onResize()
@@ -149,10 +159,10 @@
 	////////////////////////////////////////////////////////////////////////////////	
 
 	// honor urlOptions.trackingBackend
-	artoolkitProfile.contextParameters.trackingBackend = urlOptions.trackingBackend
+	arProfile.contextParameters.trackingBackend = urlOptions.trackingBackend
 
 	// create atToolkitContext
-	var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
+	var arToolkitContext = new THREEx.ArToolkitContext(arProfile.contextParameters)
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
 		// if artoolkit, copy projection matrix to camera

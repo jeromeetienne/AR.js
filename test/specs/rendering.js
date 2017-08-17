@@ -5,39 +5,35 @@ var viewportSize = {
 browser.setViewportSize(viewportSize)
 
 
-describe('AR.js testrunner.html', function() {
+describe('AR.js Rendering', function() {
 	
 	it(`rendering-three.js-artookit-${viewportSize.width}x${viewportSize.height}`, function () {
 		var pageURL = '/three.js/examples/test-runner.html?artoolkit'                
 		browser.url(pageURL)
 		browser.checkViewport()
 	})
-
+	
 	it(`rendering-three.js-aruco-${viewportSize.width}x${viewportSize.height}`, function () {
 		var pageURL = '/three.js/examples/test-runner.html?aruco'                
 		browser.url(pageURL)
 		browser.checkViewport()
 	})
-
+	
+	// test that clicking in the middle of the screen, actually move the object
+	// - aka hit testing should be there
 	it('test hit testing', function () {
 		var pageURL = '/three.js/examples/test-runner.html?artoolkit'                
 		browser.url(pageURL)
-
+	
 		triggerClick(browser, 0.5, 0.5)
 		browser.checkViewport()
 	})
-		
-	// it(`rendering-three.js-aruco-${viewportSize.width}x${viewportSize.height}`, function () {
-	//         var pageURL = '/three.js/examples/test-runner.html#aruco'                
-	// 	browser.url(pageURL)
-	//         browser.checkViewport()
-	// })
-	// 
-	// it(`rendering-aframe-artoolkit-${viewportSize.width}x${viewportSize.height}`, function () {
-	//         var pageURL = '/aframe/examples/test-runner.html'
-	// 	browser.url(pageURL)
-	//         browser.checkViewport()
-	// })
+	
+
+	// var windowSize = browser.windowHandleSize();
+	// console.log('window.size', windowSize.value.width+'x'+windowSize.value.height); // outputs: { width: 500, height: 602 }
+	
+			
 })
 
 
@@ -45,7 +41,12 @@ describe('AR.js testrunner.html', function() {
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 
+// NOTE: should i be custom command http://webdriver.io/guide/usage/customcommands.html
 
+/**
+ * client at a given position on the canvas
+ * - useful to test hit testing
+ */
 function triggerClick(browser, normalizedX, normalizedY){
 	browser.execute(function(normalizedX, normalizedY) {
 		// Create mouse events
@@ -59,6 +60,9 @@ function triggerClick(browser, normalizedX, normalizedY){
 	}, normalizedX, normalizedY)	
 }
 
+/**
+ * to change currentTime in the testing video
+ */
 function seekVideo(browser, currentTime){
 	browser.execute(function(currentTime) {
 		// get the video at a given point
