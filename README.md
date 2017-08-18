@@ -41,12 +41,12 @@ This project supports a wide range of options for deploying and using markers:
 
 **Ready to go?!** Use your mobile device to view the HIRO marker image on your mobile device to reveal the example Augmented Reality.
 
-[![screenshot](https://cloud.githubusercontent.com/assets/252962/23072106/73a0656c-f528-11e6-9fcd-3c900d1d47d3.jpg)]
+![screenshot](https://cloud.githubusercontent.com/assets/252962/23072106/73a0656c-f528-11e6-9fcd-3c900d1d47d3.jpg)
 
 # Project Tools and Examples
 
-- [Pattern Marker Training]: **Need New URL**
-- Generate a [pattern marker] with your own image. **Need New URL** 
+- Pattern Marker Training: [Pattern Marker Training](https://archive.artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_training)
+- Generate a pattern marker with your own image. [Barcode](https://archive.artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_barcode) and [Multi](https://archive.artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_multi)
 - [ARCode Generator](https://jeromeetienne.github.io/AR.js/three.js/examples/arcode.html) :
   Generator of AR-Code ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arcode.html))
 - [WebAR Playground](https://webxr.io/webar-playground/) :
