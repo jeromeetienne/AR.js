@@ -1,10 +1,9 @@
 # TODO
-- measure performance
-  - e.g. fps. run the test for say 5sec and then extract an average
-  - should i use stats.js. my own specific measurement
-  - console.time ?
-  - can i get this result ? my own simple performance.now() substract
-  - fps is more global, 
+  
+- What to do of with FPS result ?
+- how to make the test use the various performance tunning
+  - e.g. on this plateform, using this performance setting is that much fps
+
 - make it such as you can instrument any demo
   - have the .js to detect they are running in a test... how ?
   - and if running in a tests, have the profile to obey the conditions
@@ -12,6 +11,7 @@
   - multi markers
   - various angle, various lights
 
+- DONE measure FPS
 - DONE Test multi marker: learning playing
 - DONE test picking
 - DONE make test-runner.html to the ARjs new api

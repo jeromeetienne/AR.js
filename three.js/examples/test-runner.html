@@ -112,8 +112,9 @@
 	arProfile.defaultMarker()
 		// .changeMatrixMode('modelViewMatrix')
 		// .changeMatrixMode('cameraTransformMatrix')
-		.checkIfValid()
-
+	
+	// arProfile.performance('desktop-fast')
+	// arProfile.contextParameters.maxDetectionRate = 60
 
 
 	// arProfile.contextParameters.debug = true
@@ -121,6 +122,8 @@
 	if( arProfile.contextParameters.trackingBackend === 'tango' ){
 		arProfile.changeMatrixMode('cameraTransformMatrix')
 	}
+	
+	arProfile.checkIfValid()
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		build ARjs.Session
