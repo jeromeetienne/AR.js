@@ -3,10 +3,17 @@
 - What to do of with FPS result ?
 - how to make the test use the various performance tunning
   - e.g. on this plateform, using this performance setting is that much fps
+  - so there is a context in which we measure performance
+    - plateform informations: this browser on this hardware
+    - ar.js version: we did the test with this software
+    - ar.js profile: we measured this particular profile
+  - which test is done: e.g. fps, latency
 
 - make it such as you can instrument any demo
   - have the .js to detect they are running in a test... how ?
   - and if running in a tests, have the profile to obey the conditions
+- what about the tester being able to send the ARProfile directly
+  - and the test arProfile is overwritten on .checkIfValid()
 - make more image for test
   - multi markers
   - various angle, various lights

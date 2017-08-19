@@ -21,7 +21,7 @@ How to run the tests ?
 npm test
 ```
 
-# Measure Performance Principles
+# Principles for measuring performance
 - Measure stability - so 3d shakiness, if marker is stable and camera too
   - influence of blur, influence of noises
 - Measure accuracy - substract between where it should be, versus where it is.
