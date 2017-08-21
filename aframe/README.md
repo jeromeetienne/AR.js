@@ -54,9 +54,9 @@ Here are the attributes for this entity
 | --- | --- | --- |
 | type | type of marker - ['pattern', 'barcode', 'unknown' ] | artoolkitmarker.type |
 | size | size of the marker in meter | artoolkitmarker.size |
-| url | url of the pattern - IIF type='pattern' | artoolkitmarker.patternUrl |
+| url | url of the pattern - IIF preset='custom' | artoolkitmarker.patternUrl |
 | value | value of the barcode - IIF type='barcode' | artoolkitmarker.barcodeValue |
-| preset | parameters preset - ['hiro', 'kanji'] | artoolkitmarker.preset |
+| preset | parameters preset - ['hiro', 'kanji', 'custom'] | artoolkitmarker.preset |
 
 
 # \<a-marker-camera\>
