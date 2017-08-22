@@ -7,7 +7,7 @@ browser.setViewportSize(viewportSize)
 
 describe('AR.js Performance', function() {
 	
-	it(`fps average`, function () {
+	it(`measure FPS average`, function () {
 		var pageURL = '/three.js/examples/test-runner.html?artoolkit'                
 		browser.url(pageURL)
 		
@@ -16,8 +16,7 @@ describe('AR.js Performance', function() {
 		
 		// TODO what should i do with that ? 
 		// - should i log it somewhere
-	})
-	
+	})	
 })
 
 //////////////////////////////////////////////////////////////////////////////
@@ -31,11 +30,11 @@ describe('AR.js Performance', function() {
  * - useful to test hit testing
  */
 function measureFPS(browser, delay){
-	browser.timeoutsAsyncScript(5000);
+	browser.timeouts('script', delay+1000);
 	var result = browser.executeAsync(function(delay, done) {
 		// declare variables
 		var lastTime = null
-		var averageFPS = 1/30
+		var averageFPS = null
 		
 		// do a requestAnimationFrame loop
 		requestAnimationFrame(function animate(nowMsec){
@@ -46,10 +45,9 @@ function measureFPS(browser, delay){
 			var deltaTime	= nowMsec/1000 - lastTime
 			// update lastTimeMsec
 			lastTime	= nowMsec/1000
-			// update averageFPS 
-			averageFPS  = averageFPS *0.9 + (1/deltaTime)*0.1
-			
-			console.log('averageFPS ', averageFPS )
+			if( averageFPS === null )	averageFPS = 1/deltaTime
+			// update averageFPS with a smoothing
+			averageFPS  = averageFPS * 0.9 + (1/deltaTime)*0.1
 		})
 		
 		// wait for a bit and return averageFPS 
