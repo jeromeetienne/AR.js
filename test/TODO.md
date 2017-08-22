@@ -19,9 +19,10 @@
 - display a marker - aka 1x1 with a texture - display a marker area - all in all this is a marker controls
 - Generating videos for test seems nice and standalone. I controls the output better than actual movies. 
   I can pick the resolution, the content, simulate the lighting. The angle. Transition speed, rotation speed
-- Extend THREEx.MarkersHelpers, you give it a ARjs.Controls and it is able to display
+- Extend THREEx.MarkersHelpers ? you give it a ARjs.Controls and it is able to display
   - where the markers should be
   - where the markers are
+  - find a good name
 
 
 - make more image for test

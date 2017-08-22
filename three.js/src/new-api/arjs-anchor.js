@@ -33,7 +33,8 @@ ARjs.Anchor = function(arSession, markerParameters){
 	}else console.assert(false)
 
 	if( markerParameters.markersAreaEnabled === false ){
-		var markerControls = new THREEx.ArMarkerControls(arContext, controlledObject, markerParameters)		
+		var markerControls = new THREEx.ArMarkerControls(arContext, controlledObject, markerParameters)	
+		this.controls = markerControls
 	}else{
 		// sanity check - MUST be a trackingBackend with markers
 		console.assert( arContext.parameters.trackingBackend === 'artoolkit' || arContext.parameters.trackingBackend === 'aruco' )
@@ -69,7 +70,8 @@ ARjs.Anchor = function(arSession, markerParameters){
 	
 		// build a multiMarkerControls
 		var multiMarkerControls = ARjs.MarkersAreaControls.fromJSON(arContext, parent3D, controlledObject, multiMarkerFile)
-		
+		this.controls = multiMarkerControls
+
 		// honor markerParameters.changeMatrixMode
 		multiMarkerControls.parameters.changeMatrixMode = markerParameters.changeMatrixMode
 
