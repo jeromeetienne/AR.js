@@ -142,7 +142,7 @@ exports.config = {
                         referenceName: getScreenshotName(path.join(process.cwd(), 'screenshots/reference')),
                         screenshotName: getScreenshotName(path.join(process.cwd(), 'screenshots/screen')),
                         diffName: getScreenshotName(path.join(process.cwd(), 'screenshots/diff')),
-                        misMatchTolerance: 0,
+                        misMatchTolerance: 0.40,
                 }),
                 viewportChangePause: 300,
                 widths: [320, 480, 640, 1024],
@@ -160,7 +160,7 @@ exports.config = {
         // Test reporter for stdout.
         // The only one supported by default is 'dot'
         // see also: http://webdriver.io/guide/testrunner/reporters.html
-        reporters: ['spec'],
+        reporters: ['dot'],
         // 
         //
         // Options to be passed to Mocha.

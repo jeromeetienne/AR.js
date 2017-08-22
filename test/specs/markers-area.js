@@ -10,7 +10,7 @@ describe('AR.js Markers Area', function() {
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
-	it('learn an markers-area and play it', function () {
+	it('learns an markers-area and play it', function () {
 		// goes in test-runner.html
 		var pageURL = '/three.js/examples/test-runner.html'
 		browser.url(pageURL)
@@ -33,13 +33,14 @@ describe('AR.js Markers Area', function() {
 		}, 5000, 'page hasnt loaded in 5-seconds');
 
 		// take screenshot of the result
-		browser.checkViewport()
+		var report = browser.checkViewport()
+		console.assert( report[0].isWithinMisMatchTolerance )
 	})
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
-	it('use a markers-area and enabled markers-helpers', function() {
+	it('uses a markers-area and enabled markers-helpers', function() {
 		// goes in test-runner.html
 		var pageURL = '/three.js/examples/test-runner.html'
 		browser.url(pageURL)
@@ -47,14 +48,15 @@ describe('AR.js Markers Area', function() {
 		// toggle marker-helpers
 		browser.click('#buttonToggleMarkerHelpers')
 	
-		// take a screenshot of the result
-		browser.checkViewport()
+		// take screenshot of the result
+		var report = browser.checkViewport()
+		console.assert( report[0].isWithinMisMatchTolerance )
 	})
 	
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
-	it('reset the markers-area and enable marker-helpers', function () {
+	it('resets the markers-area and enable marker-helpers', function () {
 		// goes in test-runner.html
 		var pageURL = '/three.js/examples/test-runner.html'
 		browser.url(pageURL)
@@ -68,7 +70,8 @@ describe('AR.js Markers Area', function() {
 		// click to display markers-helpers
 		browser.click('#buttonToggleMarkerHelpers')
 
-		// take a screenshot fo the results
-		browser.checkViewport()
+		// take screenshot of the result
+		var report = browser.checkViewport()
+		console.assert( report[0].isWithinMisMatchTolerance )
 	})
 })

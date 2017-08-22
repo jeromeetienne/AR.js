@@ -10,13 +10,18 @@ describe('AR.js Rendering', function() {
 	it(`rendering-three.js-artookit-${viewportSize.width}x${viewportSize.height}`, function () {
 		var pageURL = '/three.js/examples/test-runner.html?artoolkit'                
 		browser.url(pageURL)
-		browser.checkViewport()
+		// take a screenshot
+		var report = browser.checkViewport()
+		console.assert( report[0].isWithinMisMatchTolerance )
 	})
+
 	
 	it(`rendering-three.js-aruco-${viewportSize.width}x${viewportSize.height}`, function () {
 		var pageURL = '/three.js/examples/test-runner.html?aruco'                
 		browser.url(pageURL)
-		browser.checkViewport()
+		// take a screenshot
+		var report = browser.checkViewport()
+		console.assert( report[0].isWithinMisMatchTolerance )
 	})
 	
 	// test that clicking in the middle of the screen, actually move the object
@@ -24,9 +29,12 @@ describe('AR.js Rendering', function() {
 	it('test hit testing', function () {
 		var pageURL = '/three.js/examples/test-runner.html?artoolkit'                
 		browser.url(pageURL)
-	
+		// click to trigger hit-testing
 		triggerClick(browser, 0.5, 0.5)
-		browser.checkViewport()
+
+		// take a screenshot
+		var report = browser.checkViewport()
+		console.assert( report[0].isWithinMisMatchTolerance )
 	})
 	
 

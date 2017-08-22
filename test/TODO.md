@@ -1,5 +1,4 @@
 # TODO
-  
 - What to do of with FPS result ?
 - how to make the test use the various performance tunning
   - e.g. on this plateform, using this performance setting is that much fps
@@ -14,6 +13,17 @@
   - and if running in a tests, have the profile to obey the conditions
 - what about the tester being able to send the ARProfile directly
   - and the test arProfile is overwritten on .checkIfValid()
+
+## Generate videos
+- Generate the videos synthetically - draw a three.js scene and make a movie out of it - https://github.com/spite/ccapture.js/
+- display a marker - aka 1x1 with a texture - display a marker area - all in all this is a marker controls
+- Generating videos for test seems nice and standalone. I controls the output better than actual movies. 
+  I can pick the resolution, the content, simulate the lighting. The angle. Transition speed, rotation speed
+- Extend THREEx.MarkersHelpers, you give it a ARjs.Controls and it is able to display
+  - where the markers should be
+  - where the markers are
+
+
 - make more image for test
   - multi markers
   - various angle, various lights
