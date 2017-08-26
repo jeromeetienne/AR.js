@@ -4,8 +4,7 @@
   
 
 - DONE put multimarkers learner on location.search and not location.hash http://127.0.0.1:3000/three.js/examples/multi-markers/examples/player.html#%7B%22trackingBackend%22%3A%22aruco%22%7D
-
-- port webar-playground on new API
+- DONE port webar-playground on new API
 
 - once this refactor is done, publish is as AR.js v2.0 with a blog post
 

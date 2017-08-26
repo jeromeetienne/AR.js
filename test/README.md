@@ -27,3 +27,11 @@ npm test
 - Measure accuracy - substract between where it should be, versus where it is.
 - Measure latency - time to process one frame
 - Measure performance fps
+
+  
+# Good links
+- "GUI and Headless Browser Testing" on @travisci 
+  - https://docs.travis-ci.com/user/gui-and-headless-browsers/
+  - It would be good to have that tested on each commit
+- [webdriver.io](http://webdriver.io/)
+  with their great [visual regression's services](http://webdriver.io/guide/services/visual-regression.html).

@@ -1,6 +1,14 @@
 # 1.5.5-dev
 
-- fix cross domain issue with [https://webxr.io/augmented-website/](https://webxr.io/augmented-website/)
+- Fix cross domain issue with [https://webxr.io/augmented-website/](https://webxr.io/augmented-website/)
+
+## Tests
+- Made tests to report failure - yeah i know it is silly but before it reported
+- Added test to measure performance : fps
+- Added test for markers-area learning and usage
+- Added test for artoolkit, aruco and hit-testing
+
+---
 
 # 1.5.1
 
@@ -21,6 +29,8 @@
 - made demo for mapbox - [tweet](https://twitter.com/jerome_etienne/status/895018409922093058) - [source](https://github.com/jeromeetienne/AR.js/tree/master/aframe/examples/demo-mapbox/)
 - vr-camera-controls - or how to walk in VR with AR.js - [tweet](https://twitter.com/jerome_etienne/status/894580746026758144)
 
+---
+
 # 1.4.10
 
 - support for markers-area 
@@ -32,6 +42,8 @@
 - single api for all tracking
 - tango support
 - support for aruco WIP - all included but need to fix pose estimation
+
+---
 
 # 1.3.0
 
@@ -67,6 +79,8 @@ Nice and slick! thanks @tentone
 - Added a-frame logo in AR - [aframe-logo.html](https://github.com/jeromeetienne/AR.js/blob/master/aframe/examples/aframe-logo.html)
 - added a profile discovery. It helps choose the performance tradeoff which fit your case - [profile](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/profile.html)
 
+---
+
 # 1.0.0 - AR.js has landed
 
 - Fixed the resize issue in a-frame!
@@ -74,6 +88,8 @@ Nice and slick! thanks @tentone
   - massive improvement in the pose detection time
   - so maxDetectionRate can go way up
 - Improved documentations
+
+---
 
 # 0.9.0 - Initial Release
 

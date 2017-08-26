@@ -158,6 +158,7 @@ ARjs.Babylon.Session.prototype.updateAnchor = function(arAnchor, babylonCamera){
 	var threejsCamera = this._camera
 
 	arAnchor.update()
+
 	ARjs.Babylon.updateObjectPose(babylonCamera, threejsCamera)
 }
 
@@ -193,7 +194,7 @@ ARjs.Babylon.updateObjectPose = function(babylonObject3D, threeObject3D){
 	// use modelViewMatrix
 	var modelViewMatrix = threeObject3D.matrix
 	babylonObject3D._computedViewMatrix = new BABYLON.Matrix.FromArray(modelViewMatrix.toArray());
-	babylonObject3D._computedViewMatrix.invert()	
+	babylonObject3D._computedViewMatrix.invert()
 }
 
 // function initRenderThreejs
