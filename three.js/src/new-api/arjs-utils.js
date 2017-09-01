@@ -7,7 +7,7 @@ ARjs.Utils = {}
  * @param {string} trackingBackend - the tracking to user
  * @return {THREE.Camera} the created camera
  */
-ARjs.Utils.createDefaultCamera = function(trackingMethod){
+ARjs.Utils.createDefaultCamera = function(trackingMethod, vrDisplay){
 	var trackingBackend = this.parseTrackingMethod(trackingMethod).trackingBackend
 	// Create a camera
 	if( trackingBackend === 'artoolkit' ){
@@ -16,6 +16,15 @@ ARjs.Utils.createDefaultCamera = function(trackingMethod){
 		var camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.01, 100);
 	}else if( trackingBackend === 'tango' ){
 		var camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.01, 100);
+	}else if( trackingBackend === 'arcore' ){
+		var camera = new THREE.ARPerspectiveCamera(
+                        vrDisplay,
+                        42,
+                        window.innerWidth / window.innerHeight,
+                        vrDisplay.depthNear,
+                        vrDisplay.depthFar
+                );
+		// var camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.01, 100);
 	}else console.assert(false, 'unknown trackingBackend: '+trackingBackend)
 
 	return camera
@@ -34,6 +43,18 @@ ARjs.Utils.isTango = function(){
 
 
 /**
+ * test if the code is running on arcore
+ * 
+ * @return {boolean} - true if running on arcore, false otherwise
+ */
+ARjs.Utils.isARCore = function(){
+	// FIXME: this test is super bad
+	var isARCore = navigator.userAgent.match('Build/OPR6.170623.012') !== null ? true : false
+	return isARCore
+}
+
+
+/**
  * parse tracking method
  * 
  * @param {String} trackingMethod - the tracking method to parse
@@ -41,8 +62,15 @@ ARjs.Utils.isTango = function(){
  */
 ARjs.Utils.parseTrackingMethod = function(trackingMethod){
 
+	// honor trackingMethod 'best'
 	if( trackingMethod === 'best' ){
-		trackingMethod = ARjs.Utils.isTango() ? 'tango' : 'area-artoolkit'
+		if(  ARjs.Utils.isARCore() ){
+			trackingMethod = 'arcore'	
+		}else if(  ARjs.Utils.isTango() ){
+			trackingMethod = 'tango'
+		}else{
+			trackingMethod = 'area-artoolkit'
+		}
 	}	
 
 	if( trackingMethod.startsWith('area-') ){

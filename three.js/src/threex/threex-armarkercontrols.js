@@ -75,6 +75,8 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, para
 		this._arucoPosit = new POS.Posit(this.parameters.size, _this.context.arucoContext.canvas.width)
 	}else if( _this.context.parameters.trackingBackend === 'tango' ){
 		this._initTango()
+	}else if( _this.context.parameters.trackingBackend === 'arcore' ){
+		this._initArcore()
 	}else console.assert(false)
 }
 
@@ -111,6 +113,8 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatr
 	}else if( this.context.parameters.trackingBackend === 'aruco' ){
 		// ...
 	}else if( this.context.parameters.trackingBackend === 'tango' ){
+		// ...
+	}else if( this.context.parameters.trackingBackend === 'arcore' ){
 		// ...
 	}else console.assert(false)
 
@@ -237,9 +241,17 @@ ARjs.MarkerControls.prototype._initAruco = function(){
 }
 
 //////////////////////////////////////////////////////////////////////////////
-//		init for Artoolkit
+//		init for Tango
 //////////////////////////////////////////////////////////////////////////////
 ARjs.MarkerControls.prototype._initTango = function(){
 	var _this = this
-	console.log('init tango ArMarkerControls')
+	// console.log('init tango ArMarkerControls')
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		init for Arcore
+//////////////////////////////////////////////////////////////////////////////
+ARjs.MarkerControls.prototype._initArcore = function(){
+	var _this = this
+	// console.log('init tango ArMarkerControls')
 }

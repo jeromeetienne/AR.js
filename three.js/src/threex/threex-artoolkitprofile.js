@@ -113,6 +113,10 @@ ARjs.Profile.prototype.defaultMarker = function (trackingBackend) {
 		// FIXME temporary placeholder - to reevaluate later
 		this.defaultMarkerParameters.type = 'barcode'
 		this.defaultMarkerParameters.barcodeValue = 1001
+	}else if( trackingBackend === 'arcore' ){
+		// FIXME temporary placeholder - to reevaluate later
+		this.defaultMarkerParameters.type = 'barcode'
+		this.defaultMarkerParameters.barcodeValue = 1001
 	}else console.assert(false)
 
 	return this
@@ -170,6 +174,9 @@ ARjs.Profile.prototype.trackingMethod = function (trackingMethod) {
  */
 ARjs.Profile.prototype.checkIfValid = function () {
 	if( this.contextParameters.trackingBackend === 'tango' ){
+		this.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg')
+	}
+	if( this.contextParameters.trackingBackend === 'arcore' ){
 		this.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg')
 	}
 	return this

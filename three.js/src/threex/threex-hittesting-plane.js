@@ -19,7 +19,8 @@ THREEx.HitTestingPlane = function(sourceElement){
 	var material = new THREE.MeshBasicMaterial({
 		// opacity: 0.5,
 		// transparent: true,
-		wireframe: true
+		wireframe: true,
+		color: 'red',
 	})
 	// material.visible = false
 	this._pickingPlane = new THREE.Mesh(geometry, material)

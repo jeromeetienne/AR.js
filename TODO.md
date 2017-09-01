@@ -2,7 +2,6 @@
 - fix subMarkerControls visibility in babylon.js
   - put subMarkerControls visibility into an external file. with 2 handling for three.js and babylon.js
   
-
 - DONE put multimarkers learner on location.search and not location.hash http://127.0.0.1:3000/three.js/examples/multi-markers/examples/player.html#%7B%22trackingBackend%22%3A%22aruco%22%7D
 - DONE port webar-playground on new API
 
@@ -20,6 +19,8 @@
   - it seems works ?
 
 - remove the area from the trackingMethod
+  - this is a profile-preset
+  - a single which precify the profile to use
 - better handling of the area stuff in trackingMethod
 - REFACTOR trackingMethod - should i put changeMatrixMode into trackingMethod ?
   - should just drop it ? ??? why insit. it seems trouble
