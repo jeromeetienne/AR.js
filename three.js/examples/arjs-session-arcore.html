@@ -111,16 +111,6 @@ function init(vrDisplay){
 
 	var camera = ARjs.Utils.createDefaultCamera(trackingMethod, vrDisplay)
 	scene.add(camera)
-	
-	// if( trackingMethod === 'arcore' ){
-	// 	window.addEventListener('resize', onWindowResize, false);
-	// 	function onWindowResize () {
-	// 		camera.aspect = window.innerWidth / window.innerHeight;
-	// 		camera.updateProjectionMatrix();
-	// 		// renderer.setSize(window.innerWidth, window.innerHeight);
-	// 	}
-	// 	
-	// }
 		
 	////////////////////////////////////////////////////////////////////////////////
 	//          	Set up Arjs.Profile
@@ -212,7 +202,6 @@ function init(vrDisplay){
 	//		add an object to the arAnchor
 	//////////////////////////////////////////////////////////////////////////////////
 	var arWorldRoot = arAnchor.object3d
-arAnchor.object3d.scale.set(0.3, 0.3, 0.3)
 	var mesh = new THREE.AxisHelper()
 	arWorldRoot.add(mesh)
 	
@@ -269,17 +258,18 @@ arAnchor.object3d.scale.set(0.3, 0.3, 0.3)
 		if( arProfile.contextParameters.trackingBackend === 'tango' ){
 			tangoVideoMesh.render()
 		}
+
 		// render arView
 		if( arProfile.contextParameters.trackingBackend === 'arcore' ){
 			arView.render();
 		}
-		
-		
+				
 		// render hitTesting pickingPlane - for debug
 		var renderHitTestingPickingPlane = true 
 		if( renderHitTestingPickingPlane && hitTesting._hitTestingPlane){
 			hitTesting._hitTestingPlane.renderDebug(renderer)
 		}
+
 		renderer.clearDepth();
 		renderer.render( scene, camera );
 	})

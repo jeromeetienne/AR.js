@@ -1,3 +1,10 @@
+## Porting ARCore
+- issue with vrDisplay init
+  - seems needed only for the camera
+  - look at his code and change it to use the later init
+- issue with 3d object orientation - likely some rotation to do at the axis level
+- ARjs.Utils.isARCore and ARjs.Utils.isTango are crappy - they listen to navigator.userAgent
+
 ## New API - aframe
 - fix subMarkerControls visibility in babylon.js
   - put subMarkerControls visibility into an external file. with 2 handling for three.js and babylon.js
