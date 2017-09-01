@@ -1,0 +1,16 @@
+name: "dat.gui"
+description:
+  "dat.gui is a lightweight controller library for JavaScript."
+
+third_party {
+  url {
+    type: HOMEPAGE
+    value: "https://github.com/dataarts/dat.gui"
+  }
+  url {
+    type: GIT
+    value: "git@github.com:dataarts/dat.gui.git"
+  }
+  version: "0.6.5"
+  last_upgrade_date { year: 2017 month: 7 day: 27 }
+}
