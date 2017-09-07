@@ -1,10 +1,10 @@
 ## Porting ARCore
+- merge THREE.ARView into ARjs.TangoVideoMesh
 - when can i merge into dev ?
   - what is the criteria ? when im sure im not breaking the other versions
   - i dont think im breaking anything... 
-- DONE merge THREE.ARView into ARjs.TangoVideoMesh
-  - rename it ARjs.WebcamVideoMesh
 - handle hit testing
+
 
 - issue with vrDisplay init
   - seems needed only for the camera
@@ -19,6 +19,9 @@
 - FIXED issue with 3d object orientation - likely some rotation to do at the axis level
 
 ## New API - aframe
+- test aframe stuff too
+  - have test-runner.html to do the same in aframe and in three.js
+  - then make it such as all tests run in both
 - fix subMarkerControls visibility in babylon.js
   - put subMarkerControls visibility into an external file. with 2 handling for three.js and babylon.js
   
