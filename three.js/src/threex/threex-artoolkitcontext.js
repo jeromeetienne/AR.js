@@ -480,7 +480,6 @@ ARjs.Context.prototype._updateArcore = function(srcElement){
 	if( this._arMarkersControls.length === 0 )	return
 
 	// TODO here do a fake search on barcode/1001 ?
-
 	var foundControls = this._arMarkersControls[0]
 	
 	var frameData = this._arcoreContext.frameData
@@ -488,6 +487,7 @@ ARjs.Context.prototype._updateArcore = function(srcElement){
 	// read frameData
 	vrDisplay.getFrameData(frameData);
 
+	// check the data is available
 	if( frameData.pose.position === null )		return
 	if( frameData.pose.orientation === null )	return
 
@@ -498,8 +498,14 @@ ARjs.Context.prototype._updateArcore = function(srcElement){
 	var cameraTransformMatrix = new THREE.Matrix4().compose(position, quaternion, scale)
 	// compute modelViewMatrix from cameraTransformMatrix
 	var modelViewMatrix = new THREE.Matrix4()
-	modelViewMatrix.getInverse( cameraTransformMatrix )	
+	modelViewMatrix.getInverse( cameraTransformMatrix )
 
+	// change the axis to match AR.js default
+	var transformMatrix = new THREE.Matrix4()
+	transformMatrix.multiply(new THREE.Matrix4().makeRotationX(-Math.PI/2))
+	modelViewMatrix.multiply(transformMatrix)
+
+	// update the controls
 	foundControls.updateWithModelViewMatrix(modelViewMatrix)
 		
 	// console.log('position', position)

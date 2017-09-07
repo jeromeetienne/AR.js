@@ -1,9 +1,22 @@
 ## Porting ARCore
+- when can i merge into dev ?
+  - what is the criteria ? when im sure im not breaking the other versions
+  - i dont think im breaking anything... 
+- DONE merge THREE.ARView into ARjs.TangoVideoMesh
+  - rename it ARjs.WebcamVideoMesh
+- handle hit testing
+
 - issue with vrDisplay init
   - seems needed only for the camera
   - look at his code and change it to use the later init
-- issue with 3d object orientation - likely some rotation to do at the axis level
 - ARjs.Utils.isARCore and ARjs.Utils.isTango are crappy - they listen to navigator.userAgent
+  - those function are supposeed to be synchronous...
+  - and to actually identify it ... require a vrDisplay which is async
+  - how to handle this ?
+  - FIXME: this is needed only for the camera... maybe i can find a way to have the camera ok, 
+    aka i work around the issue, and fix it later
+
+- FIXED issue with 3d object orientation - likely some rotation to do at the axis level
 
 ## New API - aframe
 - fix subMarkerControls visibility in babylon.js

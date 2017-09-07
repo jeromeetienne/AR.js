@@ -157,25 +157,25 @@ AFRAME.registerSystem('arjs', {
 			}
 
 			//////////////////////////////////////////////////////////////////////////////
-			//		tango specifics - _tangoVideoMesh
+			//		tango specifics - _webcamVideoMesh
 			//////////////////////////////////////////////////////////////////////////////
 
-			_this._tangoVideoMesh = null
+			_this._webcamVideoMesh = null
 			if( arProfile.contextParameters.trackingBackend === 'tango' ){
-				// init tangoVideoMesh
-				var tangoVideoMesh = _this._tangoVideoMesh = new ARjs.TangoVideoMesh(arSession)
+				// init webcamVideoMesh
+				var webcamVideoMesh = _this._webcamVideoMesh = new ARjs.WebcamVideoMesh(arSession)
 				
-				// override renderer.render to render tangoVideoMesh
+				// override renderer.render to render webcamVideoMesh
 				var rendererRenderFct = renderer.render;
 				renderer.render = function customRender(scene, camera, renderTarget, forceClear) {
 					renderer.autoClear = false;
 					// clear it all
 					renderer.clear()
-					// render tangoVideoMesh
+					// render webcamVideoMesh
 					if( arProfile.contextParameters.trackingBackend === 'tango' ){
 						// FIXME fails on three.js r84
 						// render sceneOrtho
-						rendererRenderFct.call(renderer, tangoVideoMesh._sceneOrtho, tangoVideoMesh._cameraOrtho, renderTarget, forceClear)
+						rendererRenderFct.call(renderer, webcamVideoMesh._sceneOrtho, webcamVideoMesh._cameraOrtho, renderTarget, forceClear)
 						// Render the perspective scene
 						renderer.clearDepth()		
 					}
@@ -258,7 +258,7 @@ AFRAME.registerSystem('arjs', {
 		// update arSession
 		this._arSession.update()
 		
-		if( _this._tangoVideoMesh !== null )	_this._tangoVideoMesh.update()
+		if( _this._webcamVideoMesh !== null )	_this._webcamVideoMesh.update()
 
 		// copy projection matrix to camera
 		this._arSession.onResize()

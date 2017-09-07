@@ -31,7 +31,7 @@
 <script src='../src/new-api/arjs-session.js'></script>
 <script src='../src/new-api/arjs-anchor.js'></script>
 <script src='../src/new-api/arjs-hittesting.js'></script>
-<script src='../src/new-api/arjs-tangovideomesh.js'></script>
+<script src='../src/new-api/arjs-webcamvideomesh.js'></script>
 <script src='../src/new-api/arjs-tangopointcloud.js'></script>
 <script src='../src/new-api/arjs-debugui.js'></script>
 <script src='../src/markers-area/threex-armultimarkerutils.js'></script>
@@ -175,10 +175,10 @@
 	//////////////////////////////////////////////////////////////////////////////
 	
 	if( arProfile.contextParameters.trackingBackend === 'tango' ){
-		// init tangoVideoMesh
-		var tangoVideoMesh = new ARjs.TangoVideoMesh(arSession)
+		// init WebcamVideoMesh
+		var WebcamVideoMesh = new ARjs.WebcamVideoMesh(arSession)
 		onRenderFcts.push(function(){
-			tangoVideoMesh.update()
+			WebcamVideoMesh.update()
 		})
 	}
 
@@ -245,9 +245,9 @@
 		// Render the see through camera scene
 		renderer.clear()
 		
-		// render tangoVideoMesh
+		// render WebcamVideoMesh
 		if( arProfile.contextParameters.trackingBackend === 'tango' ){
-			tangoVideoMesh.render()
+			WebcamVideoMesh.render()
 		}
 		
 		// render hitTesting pickingPlane - for debug

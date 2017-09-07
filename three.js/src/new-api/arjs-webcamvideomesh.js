@@ -1,7 +1,7 @@
 // @namespace
 var ARjs = ARjs || {}
 
-ARjs.TangoVideoMesh = function(arSession){
+ARjs.WebcamVideoMesh = function(arSession){
 	var arContext = arSession.arContext
 	var renderer = arSession.renderer
 
