@@ -48,6 +48,11 @@ ARjs.Utils.isTango = function(){
  * @return {boolean} - true if running on arcore, false otherwise
  */
 ARjs.Utils.isARCore = function(){
+
+	var isARKit = navigator.userAgent.match('AppleWebKit/604.1.38') !== null ? true : false
+	if( isARKit === true )	return isARKit
+	
+	// return true
 	// FIXME: this test is super bad
 	var isARCore = navigator.userAgent.match('Build/OPR6.170623.012') !== null ? true : false
 	return isARCore

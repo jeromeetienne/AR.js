@@ -143,7 +143,11 @@ function init(vrDisplay){
 	onRenderFcts.push(function(){
 		arSession.update()
 	})
-	
+
+
+	if( arProfile.contextParameters.trackingBackend === 'tango' || arProfile.contextParameters.trackingBackend === 'arcore' ){
+		arSession.arSource.domElement.style.visibility = 'hidden'
+	}	
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ARjs.Anchor
 	////////////////////////////////////////////////////////////////////////////////
@@ -221,11 +225,10 @@ function init(vrDisplay){
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= 0.5
 	arWorldRoot.add( mesh );
-
 	onRenderFcts.push(function(delta){
 		mesh.rotation.x += Math.PI*delta
 	})
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		DebugUI
 	//////////////////////////////////////////////////////////////////////////////
@@ -277,6 +280,8 @@ function init(vrDisplay){
 	// run the rendering loop
 	var lastTimeMsec= null
 	requestAnimationFrame(function animate(nowMsec){
+		// working around IOS issue with requestAnimationFrame parameters
+		if( nowMsec === undefined ) nowMsec = Date.now()
 		// keep looping
 		requestAnimationFrame( animate );
 		// measure time
