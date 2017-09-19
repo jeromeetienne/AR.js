@@ -1,0 +1,60 @@
+<!-- include ar.js -->
+<script src="../../three.js/examples/vendor/three.js/build/three.js"></script>
+<script src="../../three.js/build/ar.js"></script>
+<script src="../src/litegl-ar.js"></script>
+<script>ARjs.Context.baseURL = '../../three.js/'</script> 
+
+<!-- include litescene.js -->
+<script src="../vendor/litegl.js/external/gl-matrix-min.js"></script>
+<script src="../vendor/litegl.js/build/litegl.js"></script>
+<script src="../vendor/litescene.js/build/litescene.js"></script>
+
+<body style='margin: 0'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
+	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - 
+	Support for <a href='https://github.com/jagenjo/litescene.js'>litegl.js/litescene.js</a>
+	- by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+</div><script>
+//create context 3D
+var player = new LS.Player({
+	width: window.innerWidth,
+	height: window.innerHeight, 
+	resources: "../vendor/litescene.js/examples/assets/", 
+	shaders: "../vendor/litescene.js/data/shaders.xml",
+	container: document.body,
+	redraw: true,
+	autoplay: true,
+	allow_base_files: true
+});
+
+player.onUpdate = function(deltaTime){
+}
+
+// mesh
+var node = new LS.SceneNode("monitor");
+node.material = new LS.StandardMaterial({
+	textures: {
+		color: "monitor_textura.png"
+	}
+});
+node.loadAndSetMesh("monitor.obj");
+LS.GlobalScene.root.addChild(node);
+
+
+// some useful controllers
+LS.GlobalScene.root.addComponent( new LS.Components.CameraController({rot_speed:0.1}) );
+// var interactive = new LS.Components.InteractiveController({mode: LS.Components.InteractiveController.PICKING });
+// LS.GlobalScene.root.addComponent( interactive );
+
+// global camera
+var globalCamera = LS.GlobalScene.getCamera();
+globalCamera.center = [0,35,0];
+globalCamera.eye = [150,40,100];
+globalCamera.far = 1000;
+globalCamera.near = 1;
+
+LS.GlobalScene.loadResources(function(){
+	console.log('resource loaded')
+	player.play();
+});
+
+</script></body>

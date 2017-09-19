@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<style type='text/css'>
+	html, body {
+		background-color: black;
+		margin: 0;
+		padding: 0;
+	}
+</style>
+<script src="../vendor/litegl.js/external/gl-matrix-min.js"></script>
+<script src="../vendor/litegl.js/build/litegl.js"></script>
+<script src="../vendor/litescene.js/build/litescene.js"></script>
+
+<body><script>
+
+//create context 3D
+var player = this.player = new LS.Player({
+	width:window.innerWidth,
+	height: window.innerHeight, 
+	resources: "../vendor/litescene.js/examples/assets/", 
+	shaders: "../vendor/litescene.js/data/shaders.xml",
+	container: document.body,
+	redraw: true,
+	autoplay: true,
+	allow_base_files: true
+});
+
+player.onUpdate = function(deltaTime){
+}
+
+// mesh
+var node = new LS.SceneNode("monitor");
+node.material = new LS.StandardMaterial({
+	textures: {
+		color: "monitor_textura.png"
+	}
+});
+node.loadAndSetMesh("monitor.obj");
+LS.GlobalScene.root.addChild(node);
+
+
+//some useful controllers
+LS.GlobalScene.root.addComponent( new LS.Components.CameraController({rot_speed:0.1}) );
+// var interactive = new LS.Components.InteractiveController({mode: LS.Components.InteractiveController.PICKING });
+// LS.GlobalScene.root.addComponent( interactive );
+
+// global camera
+var globalCamera = LS.GlobalScene.getCamera();
+globalCamera.center = [0,35,0];
+globalCamera.eye = [150,40,100];
+globalCamera.far = 1000;
+globalCamera.near = 1;
+
+LS.GlobalScene.loadResources(function(){
+	console.log('resource loaded')
+	player.play();
+});
+
+</script></body>
+</html>
