@@ -20,7 +20,7 @@ If you wanna chat, check [![Gitter chat](https://badges.gitter.im/AR-js/Lobby.pn
 
 # Try it on Mobile
 
-It works on all platforms. Android, IOS and window phone. It run **any browser with WebGL and WebRTC**.
+It works on all platforms. Android, IOS and windows phone. It run **any browser with WebGL and WebRTC**.
 (for IOS, you need to update to ios11)
 
 To try on your phone is only 2 easy steps, check it out!
