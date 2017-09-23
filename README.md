@@ -52,7 +52,7 @@ After all this work done by a lot of people, we have a *web-based augmented real
 
 Now, many people got a phone powerful enough to do web AR in their pocket.
 I think this performance improvement makes web AR a reality.
-I am all exited by what people are gonna with it :)
+I am all excited by what people are gonna with it :)
 
 # Performance
 
