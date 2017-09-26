@@ -15,4 +15,4 @@ minify: build
 
 ################################################################################
 buildLiteScene:
-	cd vendor/litescene.js/utils && python builder.py deploy_files.txt -o ../build/litescene.min.js -o2 ../build/litescene.js
+	cd vendor/litescene.js/utils && python builder.py deploy_files.txt -o ../build/litescene.min.js -o2 ../build/litescene.js --nomin

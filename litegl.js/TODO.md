@@ -1,0 +1,2 @@
+- DONE make litegl canvas transparent background
+- handle resize

@@ -12,7 +12,7 @@ ARjs.Babylon.init = function(babylonEngine, babylonScene, babylonCamera){
 		.defaultMarker()
 		.checkIfValid()
 
-	
+	// FIXME this canvas is a global
 	var bARSession = new ARjs.Babylon.Session(arProfile, canvas)
 	var arSession = bARSession._arSession
 	engine.runRenderLoop(function(){
@@ -173,7 +173,7 @@ ARjs.Babylon.Session.prototype.updateProjectionMatrix = function(babylonCamera){
 //////////////////////////////////////////////////////////////////////////////
 
 ARjs.Babylon.createCamera = function(scene){
-	var babylonCamera = new BABYLON.ArcRotateCamera("blabla",  0, 0, 0, new BABYLON.Vector3(0, 0, -1), scene);
+	var babylonCamera = new BABYLON.ArcRotateCamera("arjsCamera",  0, 0, 0, new BABYLON.Vector3(0, 0, -1), scene);
 
 	// hard code a fov which is kinda similar to default camera
 	// scene.activeCamera.fovmode = BABYLON.Camera.fovmode_HORIZONTAL_FIXED;
@@ -197,6 +197,11 @@ ARjs.Babylon.updateObjectPose = function(babylonObject3D, threeObject3D){
 	babylonObject3D._computedViewMatrix.invert()
 }
 
+
+
+//////////////////////////////////////////////////////////////////////////////
+//		Debug function to display three.js on top
+//////////////////////////////////////////////////////////////////////////////
 // function initRenderThreejs
 ARjs.Babylon._addThreejsDebug = function(bARSession, arAnchor){
 	// array of functions for the rendering loop
