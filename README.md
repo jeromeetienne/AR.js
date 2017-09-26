@@ -73,8 +73,8 @@ and the hardware that you are using.
 With this project, we bring more performance to artoolkit.
 artoolkit is a software with years of experience doing augmented reality. It is able to do a lot!
 
-It is marker based. It supports a wide range of markers: multiple types of markers [pattern](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_training)/[barcode](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_barcode)
-multiple independent markers at the same time, or [multiple markers acting as a single marker](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_multi)
+It is marker based. It supports a wide range of markers: multiple types of markers [pattern](https://archive.artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_training)/[barcode](https://archive.artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_barcode)
+multiple independent markers at the same time, or [multiple markers acting as a single marker](https://archive.artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_multi)
 up to you to choose.
 
 # What’s New?
@@ -158,7 +158,7 @@ The service is available [webxr.io/augmented-website](https://webxr.io/augmented
 Some applications:
 
 - [Pattern Marker Training](https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html) :
-  Generate a [pattern marker](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_training) with your own image.
+  Generate a [pattern marker](https://archive.artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_training) with your own image.
 - [ARCode Generator](https://jeromeetienne.github.io/AR.js/three.js/examples/arcode.html) :
   Generator of AR-Code
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arcode.html))
