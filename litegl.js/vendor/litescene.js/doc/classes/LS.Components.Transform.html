@@ -1,0 +1,3935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>LS.Components.Transform</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/LS.Animation.html">LS.Animation</a></li>
+                                <li><a href="../classes/LS.Animation.Take.html">LS.Animation.Take</a></li>
+                                <li><a href="../classes/LS.Animation.Track.html">LS.Animation.Track</a></li>
+                                <li><a href="../classes/LS.Collision.html">LS.Collision</a></li>
+                                <li><a href="../classes/LS.Component.html">LS.Component</a></li>
+                                <li><a href="../classes/LS.ComponentContainer.html">LS.ComponentContainer</a></li>
+                                <li><a href="../classes/LS.Components.Camera.html">LS.Components.Camera</a></li>
+                                <li><a href="../classes/LS.Components.CameraController.html">LS.Components.CameraController</a></li>
+                                <li><a href="../classes/LS.Components.CameraDirector.html">LS.Components.CameraDirector</a></li>
+                                <li><a href="../classes/LS.Components.CameraFX.html">LS.Components.CameraFX</a></li>
+                                <li><a href="../classes/LS.Components.Canvas3D.html">LS.Components.Canvas3D</a></li>
+                                <li><a href="../classes/LS.Components.CustomData.html">LS.Components.CustomData</a></li>
+                                <li><a href="../classes/LS.Components.FollowNode.html">LS.Components.FollowNode</a></li>
+                                <li><a href="../classes/LS.Components.FrameFX.html">LS.Components.FrameFX</a></li>
+                                <li><a href="../classes/LS.Components.FXGraphComponent.html">LS.Components.FXGraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.FXStack.html">LS.Components.FXStack</a></li>
+                                <li><a href="../classes/LS.Components.GeometricPrimitive.html">LS.Components.GeometricPrimitive</a></li>
+                                <li><a href="../classes/LS.Components.GraphComponent.html">LS.Components.GraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.MeshRenderer.html">LS.Components.MeshRenderer</a></li>
+                                <li><a href="../classes/LS.Components.NodeManipulator.html">LS.Components.NodeManipulator</a></li>
+                                <li><a href="../classes/LS.Components.PlayAnimation.html">LS.Components.PlayAnimation</a></li>
+                                <li><a href="../classes/LS.Components.Poser.html">LS.Components.Poser</a></li>
+                                <li><a href="../classes/LS.Components.RealtimeReflector.html">LS.Components.RealtimeReflector</a></li>
+                                <li><a href="../classes/LS.Components.Rotator.html">LS.Components.Rotator</a></li>
+                                <li><a href="../classes/LS.Components.Script.html">LS.Components.Script</a></li>
+                                <li><a href="../classes/LS.Components.SkinDeformer.html">LS.Components.SkinDeformer</a></li>
+                                <li><a href="../classes/LS.Components.Spline.html">LS.Components.Spline</a></li>
+                                <li><a href="../classes/LS.Components.SVGRenderer.html">LS.Components.SVGRenderer</a></li>
+                                <li><a href="../classes/LS.Components.Target.html">LS.Components.Target</a></li>
+                                <li><a href="../classes/LS.Components.Transform.html">LS.Components.Transform</a></li>
+                                <li><a href="../classes/LS.Components.VRCameraController.html">LS.Components.VRCameraController</a></li>
+                                <li><a href="../classes/LS.CompositePattern.html">LS.CompositePattern</a></li>
+                                <li><a href="../classes/LS.DebugRender.html">LS.DebugRender</a></li>
+                                <li><a href="../classes/LS.Draw.html">LS.Draw</a></li>
+                                <li><a href="../classes/LS.Formats.html">LS.Formats</a></li>
+                                <li><a href="../classes/LS.GLSLCode.html">LS.GLSLCode</a></li>
+                                <li><a href="../classes/LS.GUI.html">LS.GUI</a></li>
+                                <li><a href="../classes/LS.Input.html">LS.Input</a></li>
+                                <li><a href="../classes/LS.InteractiveController.html">LS.InteractiveController</a></li>
+                                <li><a href="../classes/LS.Knob.html">LS.Knob</a></li>
+                                <li><a href="../classes/LS.Light.html">LS.Light</a></li>
+                                <li><a href="../classes/LS.LightFX.html">LS.LightFX</a></li>
+                                <li><a href="../classes/LS.LS.html">LS.LS</a></li>
+                                <li><a href="../classes/LS.LScript.html">LS.LScript</a></li>
+                                <li><a href="../classes/LS.Material.html">LS.Material</a></li>
+                                <li><a href="../classes/LS.Pack.html">LS.Pack</a></li>
+                                <li><a href="../classes/LS.Physics.html">LS.Physics</a></li>
+                                <li><a href="../classes/LS.PhysicsInstance.html">LS.PhysicsInstance</a></li>
+                                <li><a href="../classes/LS.Picking.html">LS.Picking</a></li>
+                                <li><a href="../classes/LS.Player.html">LS.Player</a></li>
+                                <li><a href="../classes/LS.Prefab.html">LS.Prefab</a></li>
+                                <li><a href="../classes/LS.Project.html">LS.Project</a></li>
+                                <li><a href="../classes/LS.Renderer.html">LS.Renderer</a></li>
+                                <li><a href="../classes/LS.RenderFrameContext.html">LS.RenderFrameContext</a></li>
+                                <li><a href="../classes/LS.RenderInstance.html">LS.RenderInstance</a></li>
+                                <li><a href="../classes/LS.RenderSettings.html">LS.RenderSettings</a></li>
+                                <li><a href="../classes/LS.RenderState.html">LS.RenderState</a></li>
+                                <li><a href="../classes/LS.Resource.html">LS.Resource</a></li>
+                                <li><a href="../classes/LS.ResourcesManager.html">LS.ResourcesManager</a></li>
+                                <li><a href="../classes/LS.SceneNode.html">LS.SceneNode</a></li>
+                                <li><a href="../classes/LS.SceneTree.html">LS.SceneTree</a></li>
+                                <li><a href="../classes/LS.ShaderCode.html">LS.ShaderCode</a></li>
+                                <li><a href="../classes/LS.ShaderGraph.html">LS.ShaderGraph</a></li>
+                                <li><a href="../classes/LS.ShaderMaterial.html">LS.ShaderMaterial</a></li>
+                                <li><a href="../classes/LS.ShaderQuery.html">LS.ShaderQuery</a></li>
+                                <li><a href="../classes/LS.ShadersManager.html">LS.ShadersManager</a></li>
+                                <li><a href="../classes/LS.SpatialContainer.html">LS.SpatialContainer</a></li>
+                                <li><a href="../classes/LS.StandardMaterial.html">LS.StandardMaterial</a></li>
+                                <li><a href="../classes/LS.UnityMaterial.html">LS.UnityMaterial</a></li>
+                                <li><a href="../classes/LS.WBin.html">LS.WBin</a></li>
+                                <li><a href="../classes/LSQ.html">LSQ</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/LS.html">LS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1>LS.Components.Transform Class</h1>
+<div class="box meta">
+
+
+        <div class="foundat">
+            Defined in: <a href="../files/.._src_components_transform.js.html#l1"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:1</code></a>
+        </div>
+
+            Module: <a href="../modules/LS.html">LS</a>
+
+</div>
+
+
+<div class="box intro">
+    
+</div>
+
+    <div class="constructor">
+        <h2>Constructor</h2>
+<div id="method_LS.Components.Transform" class="method item">
+    <h3 class="name"><code>LS.Components.Transform</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>object</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l1"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:1</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">object</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>to configure from</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+    </div>
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+            <li class="api-class-tab events"><a href="#events">Events</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_applyTransform">applyTransform</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_applyTransformMatrix">applyTransformMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_configure">configure</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_copyFrom">copyFrom</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_fromMatrix">fromMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getAncestors">getAncestors</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getFront">getFront</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getGlobalMatrix">getGlobalMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getGlobalMatrix">getGlobalMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getGlobalPosition">getGlobalPosition</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getGlobalRotation">getGlobalRotation</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getGlobalRotationMatrix">getGlobalRotationMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getGlobalRotationMatrix">getGlobalRotationMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getGlobalScale">getGlobalScale</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getGlobalTranslationMatrix">getGlobalTranslationMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getGlobalTranslationRotationMatrix">getGlobalTranslationRotationMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getLocalMatrixRef">getLocalMatrixRef</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getMatrix">getMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getNormalMatrix">getNormalMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getPosition">getPosition</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getRight">getRight</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getRotation">getRotation</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getRotation">getRotation</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getScale">getScale</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getTop">getTop</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_globalToLocal">globalToLocal</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_identity">identity</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_interpolate">interpolate</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_localToGlobal">localToGlobal</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_localVectorToGlobal">localVectorToGlobal</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_lookAt">lookAt</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_orbit">orbit</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_resetPosition">resetPosition</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_resetRotation">resetRotation</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_resetScale">resetScale</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_rotate">rotate</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_rotateGlobal">rotateGlobal</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_rotateQuat">rotateQuat</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_rotateQuatGlobal">rotateQuatGlobal</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_rotateX">rotateX</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_rotateY">rotateY</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_rotateZ">rotateZ</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_scale">scale</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_serialize">serialize</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setPosition">setPosition</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setRotation">setRotation</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setRotationFromEuler">setRotationFromEuler</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setScale">setScale</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_transformPoint">transformPoint</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_transformPointGlobal">transformPointGlobal</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_transformVector">transformVector</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_translate">translate</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_translateGlobal">translateGlobal</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_updateGlobalMatrix">updateGlobalMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_updateMatrix">updateMatrix</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties">
+                            <li class="index-item property">
+                                <a href="#property_matrix">matrix</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_matrix">matrix</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_matrix">matrix</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_mustUpdate">mustUpdate</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_position">position</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_position">position</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_rotation">rotation</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_scaling">scaling</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+                <div class="index-section events">
+                    <h3>Events</h3>
+
+                    <ul class="index-list events">
+                            <li class="index-item event">
+                                <a href="#event_changed">changed</a>
+
+                            </li>
+                    </ul>
+                </div>
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_applyTransform" class="method item">
+    <h3 class="name"><code>applyTransform</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l1249"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:1249</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Apply a transform to this transform</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_applyTransformMatrix" class="method item">
+    <h3 class="name"><code>applyTransformMatrix</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>matrix</code>
+                </li>
+                <li class="arg">
+                        <code>center</code>
+                </li>
+                <li class="arg">
+                        <code>is_global</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l1271"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:1271</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Applies the transformation using a matrix</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">matrix</code>
+                        <span class="type">Mat4</span>
+
+
+                    <div class="param-description">
+                        <p>with the transform</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">center</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>different pivot [optional] if omited 0,0,0 will be used</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">is_global</code>
+                        <span class="type">Bool</span>
+
+
+                    <div class="param-description">
+                        <p>(optional) tells if the transformation should be applied in global space or local space</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_configure" class="method item">
+    <h3 class="name"><code>configure</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>object</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l307"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:307</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Configure from a serialized object</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">object</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>with the serialized info</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_copyFrom" class="method item">
+    <h3 class="name"><code>copyFrom</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>src</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l297"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:297</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Copy the transform from another Transform</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">src</code>
+                        <span class="type">Transform</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_fromMatrix" class="method item">
+    <h3 class="name"><code>fromMatrix</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>matrix</code>
+                </li>
+                <li class="arg">
+                        <code>is_global</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l720"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:720</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Configure the transform from a local Matrix (do not tested carefully)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">matrix</code>
+                        <span class="type">Mat4</span>
+
+
+                    <div class="param-description">
+                        <p>the matrix in array format</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">is_global</code>
+                        <span class="type">Bool</span>
+
+
+                    <div class="param-description">
+                        <p>tells if the matrix is in global space [optional]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_getAncestors" class="method item">
+    <h3 class="name"><code>getAncestors</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Array</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l596"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:596</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns an array with all the ancestors</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Array</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getFront" class="method item">
+    <h3 class="name"><code>getFront</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Vec3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l1140"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:1140</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns the [0,0,-1] vector in global space</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec3</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getGlobalMatrix" class="method item">
+    <h3 class="name"><code>getGlobalMatrix</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>out</code>
+                </li>
+                <li class="arg">
+                        <code>fast</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Mat4</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l564"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:564</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a copy of the global matrix of this transform (it updates the matrix automatically)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">out</code>
+                        <span class="type">Mat4</span>
+
+
+                    <div class="param-description">
+                        <p>optional</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">fast</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>this flags skips recomputing parents matrices</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Mat4</span>:
+                    <p>the matrix in array format</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getGlobalMatrix" class="method item">
+    <h3 class="name"><code>getGlobalMatrix</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Mat4</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l583"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:583</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a copy of the global matrix of this transform (it updates the matrix automatically)</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Mat4</span>:
+                    <p>the matrix in array format</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getGlobalPosition" class="method item">
+    <h3 class="name"><code>getGlobalPosition</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>out</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Vec3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l420"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:420</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a copy of the global position</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">out</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>[optional] where to store the result, otherwise one vec3 is created and returned</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec3</span>:
+                    <p>the position</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getGlobalRotation" class="method item">
+    <h3 class="name"><code>getGlobalRotation</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Quat</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l610"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:610</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a quaternion with all parents rotations</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Quat</span>:
+                    <p>Quaternion</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getGlobalRotationMatrix" class="method item">
+    <h3 class="name"><code>getGlobalRotationMatrix</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Mat4</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l665"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:665</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the global rotation in quaternion array (a copy)</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Mat4</span>:
+                    <p>the rotation</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getGlobalRotationMatrix" class="method item">
+    <h3 class="name"><code>getGlobalRotationMatrix</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Mat4</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l631"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:631</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a Matrix with all parents rotations</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Mat4</span>:
+                    <p>Matrix rotation</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getGlobalScale" class="method item">
+    <h3 class="name"><code>getGlobalScale</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>out</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Vec3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l484"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:484</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a copy of the global scale (this is not correct, there is no global_scale factor, because due to rotations the axis could change)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">out</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>[optional] where to store the result, otherwise one vec3 is created and returned</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec3</span>:
+                    <p>the scale</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getGlobalTranslationMatrix" class="method item">
+    <h3 class="name"><code>getGlobalTranslationMatrix</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Mat4</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l654"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:654</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the local matrix of this transform without the rotation or scale</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Mat4</span>:
+                    <p>the matrix in array format</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getGlobalTranslationRotationMatrix" class="method item">
+    <h3 class="name"><code>getGlobalTranslationRotationMatrix</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Mat4</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l688"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:688</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the local matrix of this transform without the scale</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Mat4</span>:
+                    <p>the matrix in array format</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getLocalMatrixRef" class="method item">
+    <h3 class="name"><code>getLocalMatrixRef</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Mat4</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l551"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:551</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the original local matrix of this transform (it updates the matrix automatically)</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Mat4</span>:
+                    <p>the matrix in array format</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getMatrix" class="method item">
+    <h3 class="name"><code>getMatrix</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>out</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Mat4</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l536"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:536</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a copy of the local matrix of this transform (it updates the matrix automatically)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">out</code>
+                        <span class="type">Mat4</span>
+
+
+                    <div class="param-description">
+                        <p>[optional] where to store the result, otherwise one mat4 is created and returned</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Mat4</span>:
+                    <p>the matrix</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getNormalMatrix" class="method item">
+    <h3 class="name"><code>getNormalMatrix</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Mat4</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l702"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:702</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the matrix for the normals in the shader</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Mat4</span>:
+                    <p>the matrix in array format</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getPosition" class="method item">
+    <h3 class="name"><code>getPosition</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>out</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Vec3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l407"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:407</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a copy of the local position</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">out</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>[optional] where to store the result, otherwise one vec3 is created and returned</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec3</span>:
+                    <p>the position</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getRight" class="method item">
+    <h3 class="name"><code>getRight</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Vec3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l1158"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:1158</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns the [1,0,0] vector in global space</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec3</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getRotation" class="method item">
+    <h3 class="name"><code>getRotation</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>out</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Quat</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l446"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:446</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the global rotation in quaternion array (a copy)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">out</code>
+                        <span class="type">Quat</span>
+
+
+                    <div class="param-description">
+                        <p>[optional] where to store the result, otherwise one quat is created and returned</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Quat</span>:
+                    <p>the rotation</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getRotation" class="method item">
+    <h3 class="name"><code>getRotation</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>out</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Quat</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l434"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:434</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the rotation in quaternion array (a copy)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">out</code>
+                        <span class="type">Quat</span>
+
+
+                    <div class="param-description">
+                        <p>[optional] where to store the result, otherwise one quat is created and returned</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Quat</span>:
+                    <p>the rotation</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getScale" class="method item">
+    <h3 class="name"><code>getScale</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>out</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Vec3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l472"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:472</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the scale (its a copy)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">out</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>[optional] where to store the result, otherwise one vec3 is created and returned</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec3</span>:
+                    <p>the scale</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getTop" class="method item">
+    <h3 class="name"><code>getTop</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Vec3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l1149"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:1149</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns the [0,1,0] vector in global space</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec3</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_globalToLocal" class="method item">
+    <h3 class="name"><code>globalToLocal</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>point</code>
+                </li>
+                <li class="arg">
+                        <code>destination</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l1204"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:1204</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>convert from global coordinates to local coordinates</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">point</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">destination</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>(optional)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_identity" class="method item">
+    <h3 class="name"><code>identity</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l353"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:353</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Reset this transform</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_interpolate" class="method item">
+    <h3 class="name"><code>interpolate</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>a</code>
+                </li>
+                <li class="arg">
+                        <code>b</code>
+                </li>
+                <li class="arg">
+                        <code>factor</code>
+                </li>
+                <li class="arg">
+                        <code>the</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l1026"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:1026</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>This method is static (call it from Transform.interpolate)
+interpolate the transform between two transforms and stores the result in another Transform</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">a</code>
+                        <span class="type">Transform</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">b</code>
+                        <span class="type">Transform</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">factor</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>from 0 to 1</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">the</code>
+                        <span class="type">Transform</span>
+
+
+                    <div class="param-description">
+                        <p>destination</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_localToGlobal" class="method item">
+    <h3 class="name"><code>localToGlobal</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>point</code>
+                </li>
+                <li class="arg">
+                        <code>destination</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l1182"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:1182</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>convert from local coordinates to global coordinates
+If no destination is specified a new vector is created</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">point</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">destination</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>(optional)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_localVectorToGlobal" class="method item">
+    <h3 class="name"><code>localVectorToGlobal</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>vector</code>
+                </li>
+                <li class="arg">
+                        <code>destination</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l1231"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:1231</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Applies the transformation to a vector (rotate but not translate)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">vector</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">destination</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>(optional)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_lookAt" class="method item">
+    <h3 class="name"><code>lookAt</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>position</code>
+                </li>
+                <li class="arg">
+                        <code>target</code>
+                </li>
+                <li class="arg">
+                        <code>up</code>
+                </li>
+                <li class="arg">
+                        <code>in_world</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l1071"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:1071</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Orients the transform to look from one position to another</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">position</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">target</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">up</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">in_world</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>tells if the values are in world coordinates (otherwise asume its in local coordinates)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_orbit" class="method item">
+    <h3 class="name"><code>orbit</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>angle_in_deg</code>
+                </li>
+                <li class="arg">
+                        <code>axis</code>
+                </li>
+                <li class="arg">
+                        <code>center</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l1044"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:1044</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Orbits around a point</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">angle_in_deg</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">axis</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">center</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>in local coordinates</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_resetPosition" class="method item">
+    <h3 class="name"><code>resetPosition</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l382"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:382</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Sets the position to 0,0,0</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_resetRotation" class="method item">
+    <h3 class="name"><code>resetRotation</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l370"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:370</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Sets the rotation to identity</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_resetScale" class="method item">
+    <h3 class="name"><code>resetScale</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l394"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:394</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Sets the scale to 1,1,1</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_rotate" class="method item">
+    <h3 class="name"><code>rotate</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>angle_in_deg</code>
+                </li>
+                <li class="arg">
+                        <code>axis</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l915"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:915</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>rotate object in local space (axis is in local space)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">angle_in_deg</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">axis</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_rotateGlobal" class="method item">
+    <h3 class="name"><code>rotateGlobal</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>angle_in_deg</code>
+                </li>
+                <li class="arg">
+                        <code>axis</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l971"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:971</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>rotate object in global space (axis is in global space)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">angle_in_deg</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">axis</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_rotateQuat" class="method item">
+    <h3 class="name"><code>rotateQuat</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>quaternion</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l985"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:985</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>rotate object in local space using a quat</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">quaternion</code>
+                        <span class="type">Quat</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_rotateQuatGlobal" class="method item">
+    <h3 class="name"><code>rotateQuatGlobal</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>quaternion</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l997"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:997</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>rotate object in global space using a quat</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">quaternion</code>
+                        <span class="type">Quat</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_rotateX" class="method item">
+    <h3 class="name"><code>rotateX</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>angle_in_rad</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l934"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:934</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>rotate object in local space in local X axis</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">angle_in_rad</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_rotateY" class="method item">
+    <h3 class="name"><code>rotateY</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>angle_in_rad</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l946"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:946</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>rotate object in local space in local Y axis</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">angle_in_rad</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_rotateZ" class="method item">
+    <h3 class="name"><code>rotateZ</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>angle_in_rad</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l958"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:958</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>rotate object in local space in local Z axis</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">angle_in_rad</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_scale" class="method item">
+    <h3 class="name"><code>scale</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>x</code>
+                </li>
+                <li class="arg">
+                        <code>y</code>
+                </li>
+                <li class="arg">
+                        <code>z</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l1009"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:1009</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>scale the object</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">x</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">y</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">z</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_serialize" class="method item">
+    <h3 class="name"><code>serialize</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l336"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:336</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Serialize the object</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    <p>object with the serialized info</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_setPosition" class="method item">
+    <h3 class="name"><code>setPosition</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>x</code>
+                </li>
+                <li class="arg">
+                        <code>y</code>
+                </li>
+                <li class="arg">
+                        <code>z</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l832"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:832</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>sets the position</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">x</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">y</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">z</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setRotation" class="method item">
+    <h3 class="name"><code>setRotation</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>rotation</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l849"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:849</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>sets the rotation from a quaternion or from an angle(rad) and axis</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">rotation</code>
+                        <span class="type">Quat</span>
+
+
+                    <div class="param-description">
+                        <p>in quaterion format or angle</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setRotationFromEuler" class="method item">
+    <h3 class="name"><code>setRotationFromEuler</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>src,</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l820"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:820</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Configure the transform rotation from a vec3 Euler angles (heading,attitude,bank)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">src,</code>
+                        <span class="type">Mat4</span>
+
+
+                    <div class="param-description">
+                        <p>the matrix in array format</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setScale" class="method item">
+    <h3 class="name"><code>setScale</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>x</code>
+                </li>
+                <li class="arg">
+                        <code>y</code>
+                </li>
+                <li class="arg">
+                        <code>z</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l864"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:864</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>sets the scale</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">x</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">y</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">z</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_transformPoint" class="method item">
+    <h3 class="name"><code>transformPoint</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>point</code>
+                </li>
+                <li class="arg">
+                        <code>destination</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l1167"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:1167</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Multiplies a point by the local matrix (not global)
+If no destination is specified a new vector is created</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">point</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">destination</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>(optional)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_transformPointGlobal" class="method item">
+    <h3 class="name"><code>transformPointGlobal</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>point</code>
+                </li>
+                <li class="arg">
+                        <code>destination</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l1196"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:1196</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>same as localToGlobal</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">point</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">destination</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>(optional)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_transformVector" class="method item">
+    <h3 class="name"><code>transformVector</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>vector</code>
+                </li>
+                <li class="arg">
+                        <code>destination</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l1221"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:1221</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Applies the transformation to a vector (rotate but not translate)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">vector</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">destination</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>(optional)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_translate" class="method item">
+    <h3 class="name"><code>translate</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>x</code>
+                </li>
+                <li class="arg">
+                        <code>y</code>
+                </li>
+                <li class="arg">
+                        <code>z</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l881"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:881</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>translates object in local coordinates (using the rotation and the scale)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">x</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">y</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">z</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_translateGlobal" class="method item">
+    <h3 class="name"><code>translateGlobal</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>x</code>
+                </li>
+                <li class="arg">
+                        <code>y</code>
+                </li>
+                <li class="arg">
+                        <code>z</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l898"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:898</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>translates object in local coordinates (adds to the position)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">x</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">y</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">z</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_updateGlobalMatrix" class="method item">
+    <h3 class="name"><code>updateGlobalMatrix</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>fast</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l521"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:521</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>updates the global matrix using the parents transformation</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">fast</code>
+                        <span class="type">Bool</span>
+
+
+                    <div class="param-description">
+                        <p>it doesnt recompute parent matrices, just uses the stored one, is faster but could create errors if the parent doesnt have its global matrix update</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_updateMatrix" class="method item">
+    <h3 class="name"><code>updateMatrix</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l507"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:507</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>update the local Matrix to match the position,scale and rotation</p>
+
+    </div>
+
+
+
+
+</div>
+            </div>
+
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_matrix" class="property item">
+    <h3 class="name"><code>matrix</code></h3>
+    <span class="type">Mat4</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l160"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:160</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The local matrix transform relative to its parent in mat4 format</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_matrix" class="property item">
+    <h3 class="name"><code>matrix</code></h3>
+    <span class="type">Mat4</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l228"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:228</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The local matrix transform relative to its parent in mat4 format</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_matrix" class="property item">
+    <h3 class="name"><code>matrix</code></h3>
+    <span class="type">Mat4</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l243"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:243</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The local matrix transform relative to its parent in mat4 format</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_mustUpdate" class="property item">
+    <h3 class="name"><code>mustUpdate</code></h3>
+    <span class="type">Boolean</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l258"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:258</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>Force object to update matrices</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_position" class="property item">
+    <h3 class="name"><code>position</code></h3>
+    <span class="type">Vec3</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l80"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:80</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The position relative to its parent in vec3 format</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_position" class="property item">
+    <h3 class="name"><code>position</code></h3>
+    <span class="type">Vec3</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l217"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:217</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The position relative to its parent in vec3 format</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_rotation" class="property item">
+    <h3 class="name"><code>rotation</code></h3>
+    <span class="type">Quat</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l131"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:131</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The orientation relative to its parent in quaternion format</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_scaling" class="property item">
+    <h3 class="name"><code>scaling</code></h3>
+    <span class="type">Vec3</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_transform.js.html#l144"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:144</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The scaling relative to its parent in vec3 format (default is [1,1,1])</p>
+
+    </div>
+
+
+
+</div>
+            </div>
+
+
+            <div id="events" class="api-class-tabpanel">
+                <h2 class="off-left">Events</h2>
+
+                    <div id="event_changed" class="events item">
+                        <h3 class="name"><code>changed</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._src_components_transform.js.html#l1129"><code>..&#x2F;src&#x2F;components&#x2F;transform.js:1129</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Fired when the node has changed its transform</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    </div>
+            </div>
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

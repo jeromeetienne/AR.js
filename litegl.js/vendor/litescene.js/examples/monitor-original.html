@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<!--
+<meta property="og:title" content="GameEditor" />
+<meta property="og:description" content="GameEditor for simple games" />
+<meta property="og:image" content="" />
+-->
+
+<title>Scene Creation Demo</title>
+	<style type='text/css'>
+		html, body {
+			background-color: black;
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+
+	<script type="text/javascript" src="../../litegl/external/gl-matrix-min.js"></script>
+	<script type="text/javascript" src="../../litegl/build/litegl.js"></script>
+	<script type="text/javascript" src="../build/litescene.js"></script>
+
+	<script type="text/javascript">
+
+var APP = {
+	tv_settings:{
+		power: false,
+		offset: 0,
+		delta_offset:0,
+		brightness: 1
+	},
+	render_options: {},
+	
+	init: function() {
+		//create context 3D
+		var player = this.player = new LS.Player({
+			width:window.innerWidth, height: window.innerHeight, 
+			redraw: true,
+			autoplay: true,
+			resources: "assets/", 
+			shaders: "../data/shaders.xml",
+			container: document.body,
+			redraw: true,
+			allow_base_files: true
+		});
+
+		player.onUpdate = APP.onUpdate.bind(this);
+		this.setupScene();
+
+		LS.GlobalScene.loadResources( function(){
+			player.play();
+		});
+	},
+
+	setupScene: function()
+	{
+		LS.GlobalScene.info.background_color = [0.1,0.1,0.1,1];
+		LS.GlobalScene.info.ambient_color = [0.2,0.2,0.2];
+
+		//mesh
+		var node = new LS.SceneNode("monitor");
+		node.material = new LS.StandardMaterial({ textures: { color: "monitor_textura.png" } });
+		node.loadAndSetMesh("monitor.obj");
+		LS.GlobalScene.root.addChild(node);
+		var main = node;
+
+		node = new LS.SceneNode("screen");
+		node.flags.seen_by_picking = false;
+		node.material = new LS.StandardMaterial({ color: [0.5,0.5,0.5], emissive: [0.0,0.0,0.0], 
+			detail_factor:8,
+			detail_scale:[256,256], 
+			emissive_extra:1,
+			blend_mode: LS.Blend.ALPHA,
+			specular_factor: 2, specular_gloss: 100, specular_ontop: true,
+			textures: { emissive: { texture: "c64pot.png", uvs: LS.Material.COORDS_UV_TRANSFORMED },
+						detail: { texture: "pattern_rgb.png" }, 
+						color: "empty-screen.png" }});
+		node.loadAndSetMesh("screen.obj");
+		main.addChild(node);
+
+		node = new LS.SceneNode("light"); //screen light
+		var light = new LS.Components.Light();
+		light.color = [0.4,0.5,1.0];
+		light.intensity = 2;
+		light.range_attenuation = true;
+		light.att_end = 120;
+		light.enabled = false;
+		node.addComponent( light );
+		node.transform.setPosition(20,35,-32);
+		main.addChild(node);
+
+		node = new LS.SceneNode("button");
+		node.material = new LS.StandardMaterial({ emissive:[0.25,0.25,0.25], textures: { color:"button_power.png", emissive: "button_power.png" } });
+		node.flags.cast_shadows = false;
+		node.transform.setPosition([-8.5,9.5,-34.0]); //-9.5,9.5,33.8
+		quat.setAxisAngle(node.transform._rotation,[0,1,0],-18*DEG2RAD);
+		node.loadAndSetMesh("button.obj");
+		node.addComponent( new LS.Components.Collider({shape: LS.Components.Collider.BOX, size:[4,4,4]}));
+		node.onClicked = function() { 
+			console.log("on clicked");
+			this.clicked = !this.clicked;
+			quat.setAxisAngle(this.transform._rotation, [0,1,0], 18 * (this.clicked ? 1 : -1 ) * DEG2RAD);
+			this.transform.mustUpdate = true;
+			light.enabled = this.clicked;
+			APP.tv_settings.power = this.clicked;
+		};
+		LEvent.bind( node, "clicked", node.onClicked.bind(node) );
+		main.addChild(node);
+
+		node = createKnob("knob");
+		node.transform.setPosition([14.5,9.5,-34.0]); //-9.5,9.5,33.8
+		node.transform.setScale(1.2,1.2,1.2);
+		LEvent.bind(node, "knobChange", function(e,v) { 
+			APP.tv_settings.brightness = v;
+		 });
+		main.addChild(node);
+
+		node = createKnob("knob2");
+		node.transform.setPosition([21,9.5,-34.0]); //-9.5,9.5,33.8
+		node.transform.setScale(1.2,1.2,1.2);
+		LEvent.bind(node, "knobChange", function(e,v) { 
+			APP.tv_settings.delta_offset = (v-0.5)*0.01;
+		});
+		main.addChild(node);
+
+		node = createKnob("knob3",true);
+		node.transform.setPosition([-26,42,-34.5]); //-9.5,9.5,33.8
+		node.transform.setScale(1.2,1.2,1.2);
+		LEvent.bind(node, "knobChange", function(e,v) {  
+		
+		});
+		main.addChild(node);
+
+		node = new LS.SceneNode("postit");
+		node.material = new LS.StandardMaterial({alpha: 0.99, emissive:[0.05,0.05,0.05], textures: { color: "postit.png", emissive: "postit_hidden.png"} });
+		node.flags.twosided = true;
+		node.flags.cast_shadows = false;
+		node.loadAndSetMesh("postit.obj");
+		main.addChild(node);
+
+		APP.rotateScene(250);
+
+		//some useful controllers
+		LS.GlobalScene.root.addComponent( new LS.Components.CameraController({rot_speed:0.1}) );
+		//main.addComponent( new LS.Components.NodeManipulator({rot_speed:[1,0]}) );
+		var interactive = new LS.Components.InteractiveController({mode: LS.Components.InteractiveController.PICKING });
+		LS.GlobalScene.root.addComponent( interactive );
+
+		//global camera
+		var global_camera = LS.GlobalScene.getCamera();
+		global_camera.center = [0,35,0];
+		global_camera.eye = [150,40,100];
+		global_camera.far = 1000;
+		global_camera.near = 1;
+
+		//light
+		var global_light = LS.GlobalScene.root.light;
+		global_light.color = [0.6,0.6,0.6];
+		global_light.intensity = 2;
+		global_light.position = [0,100,200];
+		global_light.type = LS.Light.SPOT;
+		global_light.spot_cone = true;
+		global_light.far = 500;
+		global_light.near = 1;
+		global_light.size = 200;
+		global_light.resolution = 2048;
+		global_light.cast_shadows = true;
+		global_light.hard_shadows = false;
+		global_light.shadow_bias = 0.1;
+		global_light.projective_texture = "window.png";//"stained-glass.png";
+
+		function createKnob(name, big)
+		{
+			var node = new LS.SceneNode(name);
+			node.material = new LS.StandardMaterial({specular_factor: 0.5, textures: { color: big ? "knob2.png" : "knob.png" }} );
+			node.flags.cast_shadows = !!big;
+			node.loadAndSetMesh( big ? "bigknob.obj" : "knob.obj");
+			//node.addComponent( new LS.Components.Knob({value: 0.5}) );
+			return node;
+		}
+	},
+
+	rotateScene: function(angle)
+	{
+		LS.GlobalScene.getNode("monitor").transform.rotate(angle,[0,1,0]);
+	},
+
+	onUpdate: function(dt)
+	{
+		//Monitor screen effects
+		var mat = LS.GlobalScene.getNode("screen").getMaterial();
+		var emissive = mat.emissive;
+		if(APP.tv_settings.power && emissive[0] < 4)
+			vec3.add(emissive,emissive,[0.1,0.1,0.1]);
+		else if(!APP.tv_settings.power && emissive[0] > 0)
+			vec3.sub(emissive,emissive,[0.1,0.1,0.1]);
+		vec3.scale(emissive,emissive,APP.tv_settings.brightness);
+		mat._detail[0] = emissive[0]*0.2;
+		if(APP.tv_settings.power)
+			mat.opacity = Math.random() * 0.05 + 0.95;
+		else
+			mat.opacity = 0.9;
+		mat.uvs_matrix[7] += APP.tv_settings.offset;
+		APP.tv_settings.offset += dt * APP.tv_settings.delta_offset;
+	}
+};	
+	
+	</script>
+</head>
+<body>
+
+
+<script>APP.init();</script>
+</body>
+</html>

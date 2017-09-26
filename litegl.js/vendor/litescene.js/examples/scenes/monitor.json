@@ -1,0 +1,1590 @@
+{
+  "uid": "@TREE--3d50e1-581-1230d7f-2",
+  "object_type": "SceneTree",
+  "local_repository": null,
+  "extra": {},
+  "root": {
+    "name": "root",
+    "uid": "@NODE--3d50e1-583-15fd032-5",
+    "layers": 3,
+    "flags": {
+      "visible": true,
+      "is_static": false,
+      "selectable": true
+    },
+    "children": [
+      {
+        "name": "monitor",
+        "uid": "@NODE--3d50e1-5ec-1aead82-9",
+        "layers": 3,
+        "material": {
+          "uid": "@MAT--3d50e1-5ed-151cd68-b",
+          "diffuse": [
+            1,
+            1,
+            1
+          ],
+          "uvs_matrix": [
+            1,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            1
+          ],
+          "textures": {
+            "color": {
+              "texture": "monitor_textura.png",
+              "uvs": "0",
+              "wrap": 0,
+              "minFilter": 0,
+              "magFilter": 0,
+              "_must_update": true
+            }
+          },
+          "flags": {
+            "alpha_test": false,
+            "alpha_test_shadows": false,
+            "two_sided": false,
+            "flip_normals": false,
+            "depth_test": true,
+            "depth_write": true,
+            "ignore_lights": false,
+            "cast_shadows": true,
+            "receive_shadows": true,
+            "ignore_frustum": false
+          },
+          "color": [
+            1,
+            1,
+            1
+          ],
+          "opacity": 1,
+          "queue": 0,
+          "render_state": {
+            "front_face": 2305,
+            "cull_face": true,
+            "depth_test": true,
+            "depth_mask": true,
+            "depth_func": 513,
+            "blend": false,
+            "blendFunc0": 770,
+            "blendFunc1": 771,
+            "colorMask0": true,
+            "colorMask1": true,
+            "colorMask2": true,
+            "colorMask3": true,
+            "stencil_test": false,
+            "stencil_func": 1,
+            "stencil_ref": 1,
+            "stencil_mask": 255,
+            "depth_write": true
+          },
+          "shader_name": "global",
+          "blend_mode": "normal",
+          "ambient": [
+            1,
+            1,
+            1
+          ],
+          "emissive": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "backlight_factor": 0,
+          "specular_ontop": false,
+          "reflection_factor": 0,
+          "reflection_fresnel": 1,
+          "reflection_additive": false,
+          "reflection_specular": false,
+          "velvet": [
+            0.5,
+            0.5,
+            0.5
+          ],
+          "velvet_exp": 0,
+          "velvet_additive": false,
+          "normalmap_factor": 1,
+          "normalmap_tangent": true,
+          "displacementmap_factor": 0.1,
+          "bumpmap_factor": 1,
+          "use_scene_ambient": true,
+          "extra_surface_shader_code": "",
+          "extra_uniforms": {},
+          "detail_factor": 0,
+          "detail_scale": [
+            10,
+            10
+          ],
+          "emissive_extra": 0,
+          "extra_factor": 0,
+          "extra_color": [
+            0,
+            0,
+            0
+          ],
+          "specular_factor": 0.10000000149011612,
+          "specular_gloss": 10,
+          "material_class": "StandardMaterial"
+        },
+        "flags": {
+          "visible": true,
+          "is_static": false,
+          "selectable": true
+        },
+        "children": [
+          {
+            "name": "screen",
+            "uid": "@NODE--3d50e1-5ef-191b5ea-c",
+            "layers": 3,
+            "material": {
+              "uid": "@MAT--3d50e1-5f0-1271437-e",
+              "diffuse": [
+                1,
+                1,
+                1
+              ],
+              "uvs_matrix": [
+                1,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                1
+              ],
+              "textures": {
+                "emissive": {
+                  "texture": "c64pot.png",
+                  "uvs": "transformed",
+                  "_must_update": true
+                },
+                "detail": {
+                  "texture": "pattern_rgb.png",
+                  "_must_update": true
+                },
+                "color": {
+                  "texture": "empty-screen.png",
+                  "uvs": "0",
+                  "wrap": 0,
+                  "minFilter": 0,
+                  "magFilter": 0,
+                  "_must_update": true
+                }
+              },
+              "flags": {
+                "alpha_test": false,
+                "alpha_test_shadows": false,
+                "two_sided": false,
+                "flip_normals": false,
+                "depth_test": true,
+                "depth_write": true,
+                "ignore_lights": false,
+                "cast_shadows": true,
+                "receive_shadows": true,
+                "ignore_frustum": false
+              },
+              "color": [
+                0.5,
+                0.5,
+                0.5
+              ],
+              "opacity": 0.8999999761581421,
+              "queue": 0,
+              "render_state": {
+                "front_face": 2305,
+                "cull_face": true,
+                "depth_test": true,
+                "depth_mask": true,
+                "depth_func": 513,
+                "blend": true,
+                "blendFunc0": 770,
+                "blendFunc1": 771,
+                "colorMask0": true,
+                "colorMask1": true,
+                "colorMask2": true,
+                "colorMask3": true,
+                "stencil_test": false,
+                "stencil_func": 1,
+                "stencil_ref": 1,
+                "stencil_mask": 255,
+                "depth_write": true
+              },
+              "shader_name": "global",
+              "blend_mode": "alpha",
+              "ambient": [
+                1,
+                1,
+                1
+              ],
+              "emissive": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "backlight_factor": 0,
+              "specular_ontop": true,
+              "reflection_factor": 0,
+              "reflection_fresnel": 1,
+              "reflection_additive": false,
+              "reflection_specular": false,
+              "velvet": [
+                0.5,
+                0.5,
+                0.5
+              ],
+              "velvet_exp": 0,
+              "velvet_additive": false,
+              "normalmap_factor": 1,
+              "normalmap_tangent": true,
+              "displacementmap_factor": 0.1,
+              "bumpmap_factor": 1,
+              "use_scene_ambient": true,
+              "extra_surface_shader_code": "",
+              "extra_uniforms": {},
+              "detail_factor": 0,
+              "detail_scale": [
+                256,
+                256
+              ],
+              "emissive_extra": 1,
+              "extra_factor": 0,
+              "extra_color": [
+                0,
+                0,
+                0
+              ],
+              "specular_factor": 2,
+              "specular_gloss": 100,
+              "material_class": "StandardMaterial"
+            },
+            "flags": {
+              "visible": true,
+              "is_static": false,
+              "selectable": true,
+              "seen_by_picking": false
+            },
+            "components": [
+              [
+                "Transform",
+                {
+                  "uid": "@COMP--3d50e1-5f0-13387cd-d",
+                  "position": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "rotation": [
+                    0,
+                    0,
+                    0,
+                    1
+                  ],
+                  "scaling": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "matrix": [
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1
+                  ]
+                }
+              ],
+              [
+                "MeshRenderer",
+                {
+                  "enabled": true,
+                  "mesh": "screen.obj",
+                  "submaterials": [],
+                  "point_size": 0.1,
+                  "textured_points": false,
+                  "uid": "@COMP--3d50e1-63b-1fffeb3-25"
+                }
+              ]
+            ]
+          },
+          {
+            "name": "light",
+            "uid": "@NODE--3d50e1-5f1-10db9b0-f",
+            "layers": 3,
+            "flags": {
+              "visible": true,
+              "is_static": false,
+              "selectable": true
+            },
+            "components": [
+              [
+                "Transform",
+                {
+                  "uid": "@COMP--3d50e1-5f1-1a0c334-10",
+                  "position": [
+                    20,
+                    35,
+                    -32
+                  ],
+                  "rotation": [
+                    0,
+                    0,
+                    0,
+                    1
+                  ],
+                  "scaling": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "matrix": [
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    20,
+                    35,
+                    -32,
+                    1
+                  ]
+                }
+              ],
+              [
+                "Light",
+                {
+                  "enabled": false,
+                  "near": 1,
+                  "far": 500,
+                  "angle": 45,
+                  "angle_end": 60,
+                  "constant_diffuse": false,
+                  "use_specular": true,
+                  "linear_attenuation": false,
+                  "range_attenuation": true,
+                  "att_start": 0,
+                  "att_end": 120,
+                  "offset": 0,
+                  "spot_cone": true,
+                  "projective_texture": null,
+                  "use_target": false,
+                  "intensity": 2,
+                  "cast_shadows": false,
+                  "shadow_bias": 0.05,
+                  "shadowmap_resolution": 0,
+                  "type": 1,
+                  "frustum_size": 50,
+                  "extra_light_shader_code": null,
+                  "extra_texture": null,
+                  "position": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "target": [
+                    0,
+                    0,
+                    1
+                  ],
+                  "up": [
+                    0,
+                    1,
+                    0
+                  ],
+                  "color": [
+                    0.4000000059604645,
+                    0.5,
+                    1
+                  ],
+                  "uid": "@COMP--3d50e1-5f1-177890d-11"
+                }
+              ]
+            ]
+          },
+          {
+            "name": "button",
+            "uid": "@NODE--3d50e1-5f2-11c7355-12",
+            "layers": 3,
+            "material": {
+              "uid": "@MAT--3d50e1-5f2-12ebb62-14",
+              "diffuse": [
+                1,
+                1,
+                1
+              ],
+              "uvs_matrix": [
+                1,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                1
+              ],
+              "textures": {
+                "color": {
+                  "texture": "button_power.png",
+                  "uvs": "0",
+                  "wrap": 0,
+                  "minFilter": 0,
+                  "magFilter": 0,
+                  "_must_update": true
+                },
+                "emissive": {
+                  "texture": "button_power.png",
+                  "uvs": "0",
+                  "wrap": 0,
+                  "minFilter": 0,
+                  "magFilter": 0,
+                  "_must_update": true
+                }
+              },
+              "flags": {
+                "alpha_test": false,
+                "alpha_test_shadows": false,
+                "two_sided": false,
+                "flip_normals": false,
+                "depth_test": true,
+                "depth_write": true,
+                "ignore_lights": false,
+                "cast_shadows": true,
+                "receive_shadows": true,
+                "ignore_frustum": false
+              },
+              "color": [
+                1,
+                1,
+                1
+              ],
+              "opacity": 1,
+              "queue": 0,
+              "render_state": {
+                "front_face": 2305,
+                "cull_face": true,
+                "depth_test": true,
+                "depth_mask": true,
+                "depth_func": 513,
+                "blend": false,
+                "blendFunc0": 770,
+                "blendFunc1": 771,
+                "colorMask0": true,
+                "colorMask1": true,
+                "colorMask2": true,
+                "colorMask3": true,
+                "stencil_test": false,
+                "stencil_func": 1,
+                "stencil_ref": 1,
+                "stencil_mask": 255,
+                "depth_write": true
+              },
+              "shader_name": "global",
+              "blend_mode": "normal",
+              "ambient": [
+                1,
+                1,
+                1
+              ],
+              "emissive": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "backlight_factor": 0,
+              "specular_ontop": false,
+              "reflection_factor": 0,
+              "reflection_fresnel": 1,
+              "reflection_additive": false,
+              "reflection_specular": false,
+              "velvet": [
+                0.5,
+                0.5,
+                0.5
+              ],
+              "velvet_exp": 0,
+              "velvet_additive": false,
+              "normalmap_factor": 1,
+              "normalmap_tangent": true,
+              "displacementmap_factor": 0.1,
+              "bumpmap_factor": 1,
+              "use_scene_ambient": true,
+              "extra_surface_shader_code": "",
+              "extra_uniforms": {},
+              "detail_factor": 0,
+              "detail_scale": [
+                10,
+                10
+              ],
+              "emissive_extra": 0,
+              "extra_factor": 0,
+              "extra_color": [
+                0,
+                0,
+                0
+              ],
+              "specular_factor": 0.10000000149011612,
+              "specular_gloss": 10,
+              "material_class": "StandardMaterial"
+            },
+            "flags": {
+              "visible": true,
+              "is_static": false,
+              "selectable": true,
+              "cast_shadows": false
+            },
+            "components": [
+              [
+                "Transform",
+                {
+                  "uid": "@COMP--3d50e1-5f2-15ffb05-13",
+                  "position": [
+                    -8.5,
+                    9.5,
+                    -34
+                  ],
+                  "rotation": [
+                    0,
+                    -0.15643446147441864,
+                    0,
+                    0.9876883625984192
+                  ],
+                  "scaling": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "matrix": [
+                    0.9510565400123596,
+                    0,
+                    0.30901700258255005,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    -0.30901700258255005,
+                    0,
+                    0.9510565400123596,
+                    0,
+                    -8.5,
+                    9.5,
+                    -34,
+                    1
+                  ]
+                }
+              ],
+              [
+                "Collider",
+                {
+                  "enabled": true,
+                  "shape": 1,
+                  "mesh": null,
+                  "size": [
+                    4,
+                    4,
+                    4
+                  ],
+                  "center": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "use_mesh_bounding": false,
+                  "uid": "@COMP--3d50e1-5f3-13c8e0b-15"
+                }
+              ],
+              [
+                "MeshRenderer",
+                {
+                  "enabled": true,
+                  "mesh": "button.obj",
+                  "submaterials": [],
+                  "point_size": 0.1,
+                  "textured_points": false,
+                  "uid": "@COMP--3d50e1-656-16d3e61-29"
+                }
+              ]
+            ]
+          },
+          {
+            "name": "knob",
+            "uid": "@NODE--3d50e1-5f3-184d7b9-16",
+            "layers": 3,
+            "material": {
+              "uid": "@MAT--3d50e1-5f3-11bd552-18",
+              "diffuse": [
+                1,
+                1,
+                1
+              ],
+              "uvs_matrix": [
+                1,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                1
+              ],
+              "textures": {
+                "color": {
+                  "texture": "knob.png",
+                  "uvs": "0",
+                  "wrap": 0,
+                  "minFilter": 0,
+                  "magFilter": 0,
+                  "_must_update": true
+                }
+              },
+              "flags": {
+                "alpha_test": false,
+                "alpha_test_shadows": false,
+                "two_sided": false,
+                "flip_normals": false,
+                "depth_test": true,
+                "depth_write": true,
+                "ignore_lights": false,
+                "cast_shadows": true,
+                "receive_shadows": true,
+                "ignore_frustum": false
+              },
+              "color": [
+                1,
+                1,
+                1
+              ],
+              "opacity": 1,
+              "queue": 0,
+              "render_state": {
+                "front_face": 2305,
+                "cull_face": true,
+                "depth_test": true,
+                "depth_mask": true,
+                "depth_func": 513,
+                "blend": false,
+                "blendFunc0": 770,
+                "blendFunc1": 771,
+                "colorMask0": true,
+                "colorMask1": true,
+                "colorMask2": true,
+                "colorMask3": true,
+                "stencil_test": false,
+                "stencil_func": 1,
+                "stencil_ref": 1,
+                "stencil_mask": 255,
+                "depth_write": true
+              },
+              "shader_name": "global",
+              "blend_mode": "normal",
+              "ambient": [
+                1,
+                1,
+                1
+              ],
+              "emissive": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "backlight_factor": 0,
+              "specular_ontop": false,
+              "reflection_factor": 0,
+              "reflection_fresnel": 1,
+              "reflection_additive": false,
+              "reflection_specular": false,
+              "velvet": [
+                0.5,
+                0.5,
+                0.5
+              ],
+              "velvet_exp": 0,
+              "velvet_additive": false,
+              "normalmap_factor": 1,
+              "normalmap_tangent": true,
+              "displacementmap_factor": 0.1,
+              "bumpmap_factor": 1,
+              "use_scene_ambient": true,
+              "extra_surface_shader_code": "",
+              "extra_uniforms": {},
+              "detail_factor": 0,
+              "detail_scale": [
+                10,
+                10
+              ],
+              "emissive_extra": 0,
+              "extra_factor": 0,
+              "extra_color": [
+                0,
+                0,
+                0
+              ],
+              "specular_factor": 0.5,
+              "specular_gloss": 10,
+              "material_class": "StandardMaterial"
+            },
+            "flags": {
+              "visible": true,
+              "is_static": false,
+              "selectable": true,
+              "cast_shadows": false
+            },
+            "components": [
+              [
+                "Transform",
+                {
+                  "uid": "@COMP--3d50e1-5f3-160db51-17",
+                  "position": [
+                    14.5,
+                    9.5,
+                    -34
+                  ],
+                  "rotation": [
+                    0,
+                    0,
+                    0,
+                    1
+                  ],
+                  "scaling": [
+                    1.2000000476837158,
+                    1.2000000476837158,
+                    1.2000000476837158
+                  ],
+                  "matrix": [
+                    1.2000000476837158,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1.2000000476837158,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1.2000000476837158,
+                    0,
+                    14.5,
+                    9.5,
+                    -34,
+                    1
+                  ]
+                }
+              ],
+              [
+                "MeshRenderer",
+                {
+                  "enabled": true,
+                  "mesh": "knob.obj",
+                  "submaterials": [],
+                  "point_size": 0.1,
+                  "textured_points": false,
+                  "uid": "@COMP--3d50e1-66f-1b912a4-2d"
+                }
+              ]
+            ]
+          },
+          {
+            "name": "knob2",
+            "uid": "@NODE--3d50e1-5f4-18e547c-19",
+            "layers": 3,
+            "material": {
+              "uid": "@MAT--3d50e1-5f4-1943c64-1b",
+              "diffuse": [
+                1,
+                1,
+                1
+              ],
+              "uvs_matrix": [
+                1,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                1
+              ],
+              "textures": {
+                "color": {
+                  "texture": "knob.png",
+                  "uvs": "0",
+                  "wrap": 0,
+                  "minFilter": 0,
+                  "magFilter": 0,
+                  "_must_update": true
+                }
+              },
+              "flags": {
+                "alpha_test": false,
+                "alpha_test_shadows": false,
+                "two_sided": false,
+                "flip_normals": false,
+                "depth_test": true,
+                "depth_write": true,
+                "ignore_lights": false,
+                "cast_shadows": true,
+                "receive_shadows": true,
+                "ignore_frustum": false
+              },
+              "color": [
+                1,
+                1,
+                1
+              ],
+              "opacity": 1,
+              "queue": 0,
+              "render_state": {
+                "front_face": 2305,
+                "cull_face": true,
+                "depth_test": true,
+                "depth_mask": true,
+                "depth_func": 513,
+                "blend": false,
+                "blendFunc0": 770,
+                "blendFunc1": 771,
+                "colorMask0": true,
+                "colorMask1": true,
+                "colorMask2": true,
+                "colorMask3": true,
+                "stencil_test": false,
+                "stencil_func": 1,
+                "stencil_ref": 1,
+                "stencil_mask": 255,
+                "depth_write": true
+              },
+              "shader_name": "global",
+              "blend_mode": "normal",
+              "ambient": [
+                1,
+                1,
+                1
+              ],
+              "emissive": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "backlight_factor": 0,
+              "specular_ontop": false,
+              "reflection_factor": 0,
+              "reflection_fresnel": 1,
+              "reflection_additive": false,
+              "reflection_specular": false,
+              "velvet": [
+                0.5,
+                0.5,
+                0.5
+              ],
+              "velvet_exp": 0,
+              "velvet_additive": false,
+              "normalmap_factor": 1,
+              "normalmap_tangent": true,
+              "displacementmap_factor": 0.1,
+              "bumpmap_factor": 1,
+              "use_scene_ambient": true,
+              "extra_surface_shader_code": "",
+              "extra_uniforms": {},
+              "detail_factor": 0,
+              "detail_scale": [
+                10,
+                10
+              ],
+              "emissive_extra": 0,
+              "extra_factor": 0,
+              "extra_color": [
+                0,
+                0,
+                0
+              ],
+              "specular_factor": 0.5,
+              "specular_gloss": 10,
+              "material_class": "StandardMaterial"
+            },
+            "flags": {
+              "visible": true,
+              "is_static": false,
+              "selectable": true,
+              "cast_shadows": false
+            },
+            "components": [
+              [
+                "Transform",
+                {
+                  "uid": "@COMP--3d50e1-5f4-17264d7-1a",
+                  "position": [
+                    21,
+                    9.5,
+                    -34
+                  ],
+                  "rotation": [
+                    0,
+                    0,
+                    0,
+                    1
+                  ],
+                  "scaling": [
+                    1.2000000476837158,
+                    1.2000000476837158,
+                    1.2000000476837158
+                  ],
+                  "matrix": [
+                    1.2000000476837158,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1.2000000476837158,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1.2000000476837158,
+                    0,
+                    21,
+                    9.5,
+                    -34,
+                    1
+                  ]
+                }
+              ],
+              [
+                "MeshRenderer",
+                {
+                  "enabled": true,
+                  "mesh": "knob.obj",
+                  "submaterials": [],
+                  "point_size": 0.1,
+                  "textured_points": false,
+                  "uid": "@COMP--3d50e1-66f-169af54-2f"
+                }
+              ]
+            ]
+          },
+          {
+            "name": "knob3",
+            "uid": "@NODE--3d50e1-5f4-134bc4c-1c",
+            "layers": 3,
+            "material": {
+              "uid": "@MAT--3d50e1-5f5-1fd536d-1e",
+              "diffuse": [
+                1,
+                1,
+                1
+              ],
+              "uvs_matrix": [
+                1,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                1
+              ],
+              "textures": {
+                "color": {
+                  "texture": "knob2.png",
+                  "uvs": "0",
+                  "wrap": 0,
+                  "minFilter": 0,
+                  "magFilter": 0,
+                  "_must_update": true
+                }
+              },
+              "flags": {
+                "alpha_test": false,
+                "alpha_test_shadows": false,
+                "two_sided": false,
+                "flip_normals": false,
+                "depth_test": true,
+                "depth_write": true,
+                "ignore_lights": false,
+                "cast_shadows": true,
+                "receive_shadows": true,
+                "ignore_frustum": false
+              },
+              "color": [
+                1,
+                1,
+                1
+              ],
+              "opacity": 1,
+              "queue": 0,
+              "render_state": {
+                "front_face": 2305,
+                "cull_face": true,
+                "depth_test": true,
+                "depth_mask": true,
+                "depth_func": 513,
+                "blend": false,
+                "blendFunc0": 770,
+                "blendFunc1": 771,
+                "colorMask0": true,
+                "colorMask1": true,
+                "colorMask2": true,
+                "colorMask3": true,
+                "stencil_test": false,
+                "stencil_func": 1,
+                "stencil_ref": 1,
+                "stencil_mask": 255,
+                "depth_write": true
+              },
+              "shader_name": "global",
+              "blend_mode": "normal",
+              "ambient": [
+                1,
+                1,
+                1
+              ],
+              "emissive": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "backlight_factor": 0,
+              "specular_ontop": false,
+              "reflection_factor": 0,
+              "reflection_fresnel": 1,
+              "reflection_additive": false,
+              "reflection_specular": false,
+              "velvet": [
+                0.5,
+                0.5,
+                0.5
+              ],
+              "velvet_exp": 0,
+              "velvet_additive": false,
+              "normalmap_factor": 1,
+              "normalmap_tangent": true,
+              "displacementmap_factor": 0.1,
+              "bumpmap_factor": 1,
+              "use_scene_ambient": true,
+              "extra_surface_shader_code": "",
+              "extra_uniforms": {},
+              "detail_factor": 0,
+              "detail_scale": [
+                10,
+                10
+              ],
+              "emissive_extra": 0,
+              "extra_factor": 0,
+              "extra_color": [
+                0,
+                0,
+                0
+              ],
+              "specular_factor": 0.5,
+              "specular_gloss": 10,
+              "material_class": "StandardMaterial"
+            },
+            "flags": {
+              "visible": true,
+              "is_static": false,
+              "selectable": true,
+              "cast_shadows": true
+            },
+            "components": [
+              [
+                "Transform",
+                {
+                  "uid": "@COMP--3d50e1-5f5-16568a1-1d",
+                  "position": [
+                    -26,
+                    42,
+                    -34.5
+                  ],
+                  "rotation": [
+                    0,
+                    0,
+                    0,
+                    1
+                  ],
+                  "scaling": [
+                    1.2000000476837158,
+                    1.2000000476837158,
+                    1.2000000476837158
+                  ],
+                  "matrix": [
+                    1.2000000476837158,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1.2000000476837158,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1.2000000476837158,
+                    0,
+                    -26,
+                    42,
+                    -34.5,
+                    1
+                  ]
+                }
+              ],
+              [
+                "MeshRenderer",
+                {
+                  "enabled": true,
+                  "mesh": "bigknob.obj",
+                  "submaterials": [],
+                  "point_size": 0.1,
+                  "textured_points": false,
+                  "uid": "@COMP--3d50e1-65b-1bc001d-2b"
+                }
+              ]
+            ]
+          },
+          {
+            "name": "postit",
+            "uid": "@NODE--3d50e1-5f6-1a65d17-1f",
+            "layers": 3,
+            "material": {
+              "uid": "@MAT--3d50e1-5f6-133e16d-21",
+              "diffuse": [
+                1,
+                1,
+                1
+              ],
+              "uvs_matrix": [
+                1,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                1
+              ],
+              "textures": {
+                "color": {
+                  "texture": "postit.png",
+                  "uvs": "0",
+                  "wrap": 0,
+                  "minFilter": 0,
+                  "magFilter": 0,
+                  "_must_update": true
+                },
+                "emissive": {
+                  "texture": "postit_hidden.png",
+                  "uvs": "0",
+                  "wrap": 0,
+                  "minFilter": 0,
+                  "magFilter": 0,
+                  "_must_update": true
+                }
+              },
+              "flags": {
+                "alpha_test": false,
+                "alpha_test_shadows": false,
+                "two_sided": false,
+                "flip_normals": false,
+                "depth_test": true,
+                "depth_write": true,
+                "ignore_lights": false,
+                "cast_shadows": true,
+                "receive_shadows": true,
+                "ignore_frustum": false
+              },
+              "color": [
+                1,
+                1,
+                1
+              ],
+              "opacity": 1,
+              "queue": 0,
+              "render_state": {
+                "front_face": 2305,
+                "cull_face": true,
+                "depth_test": true,
+                "depth_mask": true,
+                "depth_func": 513,
+                "blend": false,
+                "blendFunc0": 770,
+                "blendFunc1": 771,
+                "colorMask0": true,
+                "colorMask1": true,
+                "colorMask2": true,
+                "colorMask3": true,
+                "stencil_test": false,
+                "stencil_func": 1,
+                "stencil_ref": 1,
+                "stencil_mask": 255,
+                "depth_write": true
+              },
+              "shader_name": "global",
+              "blend_mode": "normal",
+              "ambient": [
+                1,
+                1,
+                1
+              ],
+              "emissive": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "backlight_factor": 0,
+              "specular_ontop": false,
+              "reflection_factor": 0,
+              "reflection_fresnel": 1,
+              "reflection_additive": false,
+              "reflection_specular": false,
+              "velvet": [
+                0.5,
+                0.5,
+                0.5
+              ],
+              "velvet_exp": 0,
+              "velvet_additive": false,
+              "normalmap_factor": 1,
+              "normalmap_tangent": true,
+              "displacementmap_factor": 0.1,
+              "bumpmap_factor": 1,
+              "use_scene_ambient": true,
+              "extra_surface_shader_code": "",
+              "extra_uniforms": {},
+              "detail_factor": 0,
+              "detail_scale": [
+                10,
+                10
+              ],
+              "emissive_extra": 0,
+              "extra_factor": 0,
+              "extra_color": [
+                0,
+                0,
+                0
+              ],
+              "specular_factor": 0.10000000149011612,
+              "specular_gloss": 10,
+              "material_class": "StandardMaterial"
+            },
+            "flags": {
+              "visible": true,
+              "is_static": false,
+              "selectable": true,
+              "twosided": true,
+              "cast_shadows": false
+            },
+            "components": [
+              [
+                "Transform",
+                {
+                  "uid": "@COMP--3d50e1-5f6-125c927-20",
+                  "position": [
+                    0,
+                    0,
+                    0
+                  ],
+                  "rotation": [
+                    0,
+                    0,
+                    0,
+                    1
+                  ],
+                  "scaling": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "matrix": [
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1
+                  ]
+                }
+              ],
+              [
+                "MeshRenderer",
+                {
+                  "enabled": true,
+                  "mesh": "postit.obj",
+                  "submaterials": [],
+                  "point_size": 0.1,
+                  "textured_points": false,
+                  "uid": "@COMP--3d50e1-672-16ba45d-31"
+                }
+              ]
+            ]
+          }
+        ],
+        "components": [
+          [
+            "Transform",
+            {
+              "uid": "@COMP--3d50e1-5ec-1d1a535-a",
+              "position": [
+                0,
+                0,
+                0
+              ],
+              "rotation": [
+                0,
+                0.8191520571708679,
+                0,
+                -0.5735764503479004
+              ],
+              "scaling": [
+                1,
+                1,
+                1
+              ],
+              "matrix": [
+                -0.342020183801651,
+                0,
+                0.9396926760673523,
+                0,
+                0,
+                1,
+                0,
+                0,
+                -0.9396926760673523,
+                0,
+                -0.342020183801651,
+                0,
+                0,
+                0,
+                0,
+                1
+              ]
+            }
+          ],
+          [
+            "MeshRenderer",
+            {
+              "enabled": true,
+              "mesh": "monitor.obj",
+              "submaterials": [],
+              "point_size": 0.1,
+              "textured_points": false,
+              "uid": "@COMP--3d50e1-64c-1654886-27"
+            }
+          ]
+        ]
+      }
+    ],
+    "components": [
+      [
+        "GlobalInfo",
+        {
+          "ambient_color": [
+            0.20000000298023224,
+            0.20000000298023224,
+            0.20000000298023224
+          ],
+          "background_color": [
+            0.1,
+            0.1,
+            0.1,
+            1
+          ],
+          "textures": {},
+          "render_settings": {
+            "renderer_name": null,
+            "default_shadowmap_resolution": 1024,
+            "ignore_viewports": false,
+            "ignore_clear": false,
+            "keep_viewport": false,
+            "linear_pipeline": false,
+            "shadows_enabled": true,
+            "update_shadowmaps": true,
+            "update_all_shadowmaps": false,
+            "force_wireframe": false,
+            "lights_disabled": false,
+            "low_quality": false,
+            "update_materials": true,
+            "render_all_cameras": true,
+            "render_fx": true,
+            "render_gui": true,
+            "render_helpers": true,
+            "layers": 255,
+            "z_pass": false,
+            "frustum_culling": true,
+            "clipping_plane": null,
+            "in_player": true,
+            "default_shader_id": "global",
+            "default_low_shader_id": "lowglobal"
+          },
+          "uid": "@COMP--3d50e1-584-16a16fe-6"
+        }
+      ],
+      [
+        "Camera",
+        {
+          "uid": "@COMP--3d50e1-586-1e67ea6-7",
+          "layers": 3,
+          "enabled": true,
+          "type": 1,
+          "eye": [
+            117.88638305664062,
+            45.974491119384766,
+            136.04403686523438
+          ],
+          "center": [
+            0,
+            35,
+            0
+          ],
+          "up": [
+            0,
+            1,
+            0
+          ],
+          "near": 1,
+          "far": 1000,
+          "fov": 45,
+          "aspect": 1,
+          "background_color": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "frustum_size": 50,
+          "viewport": [
+            0,
+            0,
+            1,
+            1
+          ],
+          "render_to_texture": false,
+          "frame": null,
+          "show_frame": true
+        }
+      ],
+      [
+        "Light",
+        {
+          "enabled": true,
+          "near": 1,
+          "far": 500,
+          "angle": 45,
+          "angle_end": 60,
+          "constant_diffuse": false,
+          "use_specular": true,
+          "linear_attenuation": false,
+          "range_attenuation": true,
+          "att_start": 0,
+          "att_end": 1000,
+          "offset": 0,
+          "spot_cone": true,
+          "projective_texture": "window.png",
+          "use_target": false,
+          "intensity": 2,
+          "cast_shadows": true,
+          "shadow_bias": 0.1,
+          "shadowmap_resolution": 0,
+          "type": 2,
+          "frustum_size": 50,
+          "extra_light_shader_code": null,
+          "extra_texture": null,
+          "size": 200,
+          "resolution": 2048,
+          "hard_shadows": false,
+          "position": [
+            0,
+            100,
+            200
+          ],
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "up": [
+            0,
+            1,
+            0
+          ],
+          "color": [
+            0.6000000238418579,
+            0.6000000238418579,
+            0.6000000238418579
+          ],
+          "uid": "@COMP--3d50e1-587-1e4a815-8"
+        }
+      ],
+      [
+        "CameraController",
+        {
+          "enabled": true,
+          "speed": 10,
+          "rot_speed": 0.1,
+          "wheel_speed": 1,
+          "smooth": false,
+          "allow_panning": true,
+          "mode": 1,
+          "uid": "@COMP--3d50e1-5f8-185c563-22"
+        }
+      ],
+      [
+        "InteractiveController",
+        {
+          "enabled": true,
+          "mode": 1,
+          "layers": 3,
+          "uid": "@COMP--3d50e1-5f8-123b6b2-23"
+        }
+      ]
+    ]
+  },
+  "layer_names": [
+    "main",
+    "secondary"
+  ],
+  "global_scripts": [],
+  "external_scripts": [],
+  "preloaded_resources": {}
+}

@@ -1,0 +1,13 @@
+body { background-color: #DDD; }
+h1 {
+	margin: 0;
+}
+
+#wrap {
+	margin: auto;
+	width: 800px;
+	min-height: 400px;
+	padding: 1em;
+	background-color: white;
+	box-shadow: 0 0 2px #333;
+}

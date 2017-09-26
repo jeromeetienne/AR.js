@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>gl</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/BBox.html">BBox</a></li>
+                                <li><a href="../classes/geo.html">geo</a></li>
+                                <li><a href="../classes/GL.html">GL</a></li>
+                                <li><a href="../classes/gl.html">gl</a></li>
+                                <li><a href="../classes/GL.Buffer.html">GL.Buffer</a></li>
+                                <li><a href="../classes/GL.FBO.html">GL.FBO</a></li>
+                                <li><a href="../classes/GL.Indexer.html">GL.Indexer</a></li>
+                                <li><a href="../classes/GL.Mesh.html">GL.Mesh</a></li>
+                                <li><a href="../classes/GL.Octree.html">GL.Octree</a></li>
+                                <li><a href="../classes/GL.Shader.html">GL.Shader</a></li>
+                                <li><a href="../classes/GL.Texture.html">GL.Texture</a></li>
+                                <li><a href="../classes/LEvent.html">LEvent</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1>gl Class</h1>
+<div class="box meta">
+
+
+        <div class="foundat">
+            Defined in: <a href="../files/.._src_core.js.html#l50"><code>..&#x2F;src&#x2F;core.js:50</code></a>
+        </div>
+
+
+</div>
+
+
+<div class="box intro">
+    <p>the webgl context returned by GL.create, its a WebGLRenderingContext with some extra methods added</p>
+
+</div>
+
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_animate">animate</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_captureGamepads">captureGamepads</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_captureKeys">captureKeys</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_captureMouse">captureMouse</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_destroy">destroy</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_drawTexture">drawTexture</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_execute">execute</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_fullscreen">fullscreen</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getGamepads">getGamepads</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_gl.reset">gl.reset</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_loadTexture">loadTexture</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_makeCurrent">makeCurrent</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_snapshot">snapshot</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_animate" class="method item">
+    <h3 class="name"><code>animate</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_core.js.html#l150"><code>..&#x2F;src&#x2F;core.js:150</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Launch animation loop (calls gl.onupdate and gl.ondraw every frame)
+example: gl.ondraw = function(){ ... }   or  gl.onupdate = function(dt) { ... }</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_captureGamepads" class="method item">
+    <h3 class="name"><code>captureGamepads</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_core.js.html#l494"><code>..&#x2F;src&#x2F;core.js:494</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Tells the system to capture gamepad events on the canvas.</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_captureKeys" class="method item">
+    <h3 class="name"><code>captureKeys</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>prevent_default</code>
+                </li>
+                <li class="arg">
+                        <code>only_canvas</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_core.js.html#l410"><code>..&#x2F;src&#x2F;core.js:410</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Tells the system to capture key events on the canvas. This will trigger onkey</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">prevent_default</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>prevent default behaviour (like scroll on the web, etc)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">only_canvas</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>only caches keyboard events if they happen when the canvas is in focus</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_captureMouse" class="method item">
+    <h3 class="name"><code>captureMouse</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>capture_wheel</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_core.js.html#l252"><code>..&#x2F;src&#x2F;core.js:252</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Tells the system to capture mouse events on the canvas.
+This will trigger onmousedown, onmousemove, onmouseup, onmousewheel callbacks assigned in the gl context
+example: gl.onmousedown = function(e){ ... }
+The event is a regular MouseEvent with some extra parameters</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">capture_wheel</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>capture also the mouse wheel</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_destroy" class="method item">
+    <h3 class="name"><code>destroy</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_core.js.html#l205"><code>..&#x2F;src&#x2F;core.js:205</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Destroy this WebGL context (removes also the Canvas from the DOM)</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_drawTexture" class="method item">
+    <h3 class="name"><code>drawTexture</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>texture</code>
+                </li>
+                <li class="arg">
+                        <code>x</code>
+                </li>
+                <li class="arg">
+                        <code>y</code>
+                </li>
+                <li class="arg">
+                        <code>w</code>
+                </li>
+                <li class="arg">
+                        <code>h</code>
+                </li>
+                <li class="arg">
+                        <code>tx</code>
+                </li>
+                <li class="arg">
+                        <code>ty</code>
+                </li>
+                <li class="arg">
+                        <code>tw</code>
+                </li>
+                <li class="arg">
+                        <code>th</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_core.js.html#l720"><code>..&#x2F;src&#x2F;core.js:720</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>draws a texture to the viewport</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">texture</code>
+                        <span class="type">Texture</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">x</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>in viewport coordinates</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">y</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>in viewport coordinates</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">w</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>in viewport coordinates</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">h</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>in viewport coordinates</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">tx</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>texture x in texture coordinates</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">ty</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>texture y in texture coordinates</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">tw</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>texture width in texture coordinates</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">th</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>texture height in texture coordinates</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_execute" class="method item">
+    <h3 class="name"><code>execute</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_core.js.html#l136"><code>..&#x2F;src&#x2F;core.js:136</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>executes callback inside this webgl context</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_fullscreen" class="method item">
+    <h3 class="name"><code>fullscreen</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_core.js.html#l633"><code>..&#x2F;src&#x2F;core.js:633</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>launches de canvas in fullscreen mode</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_getGamepads" class="method item">
+    <h3 class="name"><code>getGamepads</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>skip_mapping</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_core.js.html#l518"><code>..&#x2F;src&#x2F;core.js:518</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns the detected gamepads on the system</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">skip_mapping</code>
+                        <span class="type">Bool</span>
+
+
+                    <div class="param-description">
+                        <p>if set to true it returns the basic gamepad, otherwise it returns a class with mapping info to XBOX controller</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_gl.reset" class="method item">
+    <h3 class="name"><code>gl.reset</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_core.js.html#l782"><code>..&#x2F;src&#x2F;core.js:782</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>use it to reset the the initial gl state</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_loadTexture" class="method item">
+    <h3 class="name"><code>loadTexture</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>url</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Texture</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_core.js.html#l688"><code>..&#x2F;src&#x2F;core.js:688</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns a texture and caches it inside gl.textures[]</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">url</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>(same options as when creating a texture)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                        <p>function called once the texture is loaded</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Texture</span>:
+                    <p>texture</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_makeCurrent" class="method item">
+    <h3 class="name"><code>makeCurrent</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_core.js.html#l127"><code>..&#x2F;src&#x2F;core.js:127</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>sets this context as the current global gl context (in case you have more than one)</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_snapshot" class="method item">
+    <h3 class="name"><code>snapshot</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>startx</code>
+                </li>
+                <li class="arg">
+                        <code>starty</code>
+                </li>
+                <li class="arg">
+                        <code>areax</code>
+                </li>
+                <li class="arg">
+                        <code>areay</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Canvas</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_core.js.html#l650"><code>..&#x2F;src&#x2F;core.js:650</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns a canvas with a snapshot of an area
+this is safer than using the canvas itself due to internals of webgl</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">startx</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>viewport x coordinate</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">starty</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>viewport y coordinate from bottom</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">areax</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>viewport area width</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">areay</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>viewport area height</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Canvas</span>:
+                    <p>canvas</p>
+
+            </div>
+        </div>
+
+
+</div>
+            </div>
+
+
+
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

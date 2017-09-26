@@ -1,0 +1,3605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>LS.Components.Camera</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/LS.Animation.html">LS.Animation</a></li>
+                                <li><a href="../classes/LS.Animation.Take.html">LS.Animation.Take</a></li>
+                                <li><a href="../classes/LS.Animation.Track.html">LS.Animation.Track</a></li>
+                                <li><a href="../classes/LS.Collision.html">LS.Collision</a></li>
+                                <li><a href="../classes/LS.Component.html">LS.Component</a></li>
+                                <li><a href="../classes/LS.ComponentContainer.html">LS.ComponentContainer</a></li>
+                                <li><a href="../classes/LS.Components.Camera.html">LS.Components.Camera</a></li>
+                                <li><a href="../classes/LS.Components.CameraController.html">LS.Components.CameraController</a></li>
+                                <li><a href="../classes/LS.Components.CameraDirector.html">LS.Components.CameraDirector</a></li>
+                                <li><a href="../classes/LS.Components.CameraFX.html">LS.Components.CameraFX</a></li>
+                                <li><a href="../classes/LS.Components.Canvas3D.html">LS.Components.Canvas3D</a></li>
+                                <li><a href="../classes/LS.Components.CustomData.html">LS.Components.CustomData</a></li>
+                                <li><a href="../classes/LS.Components.FollowNode.html">LS.Components.FollowNode</a></li>
+                                <li><a href="../classes/LS.Components.FrameFX.html">LS.Components.FrameFX</a></li>
+                                <li><a href="../classes/LS.Components.FXGraphComponent.html">LS.Components.FXGraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.FXStack.html">LS.Components.FXStack</a></li>
+                                <li><a href="../classes/LS.Components.GeometricPrimitive.html">LS.Components.GeometricPrimitive</a></li>
+                                <li><a href="../classes/LS.Components.GraphComponent.html">LS.Components.GraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.MeshRenderer.html">LS.Components.MeshRenderer</a></li>
+                                <li><a href="../classes/LS.Components.NodeManipulator.html">LS.Components.NodeManipulator</a></li>
+                                <li><a href="../classes/LS.Components.PlayAnimation.html">LS.Components.PlayAnimation</a></li>
+                                <li><a href="../classes/LS.Components.Poser.html">LS.Components.Poser</a></li>
+                                <li><a href="../classes/LS.Components.RealtimeReflector.html">LS.Components.RealtimeReflector</a></li>
+                                <li><a href="../classes/LS.Components.Rotator.html">LS.Components.Rotator</a></li>
+                                <li><a href="../classes/LS.Components.Script.html">LS.Components.Script</a></li>
+                                <li><a href="../classes/LS.Components.SkinDeformer.html">LS.Components.SkinDeformer</a></li>
+                                <li><a href="../classes/LS.Components.Spline.html">LS.Components.Spline</a></li>
+                                <li><a href="../classes/LS.Components.SVGRenderer.html">LS.Components.SVGRenderer</a></li>
+                                <li><a href="../classes/LS.Components.Target.html">LS.Components.Target</a></li>
+                                <li><a href="../classes/LS.Components.Transform.html">LS.Components.Transform</a></li>
+                                <li><a href="../classes/LS.Components.VRCameraController.html">LS.Components.VRCameraController</a></li>
+                                <li><a href="../classes/LS.CompositePattern.html">LS.CompositePattern</a></li>
+                                <li><a href="../classes/LS.DebugRender.html">LS.DebugRender</a></li>
+                                <li><a href="../classes/LS.Draw.html">LS.Draw</a></li>
+                                <li><a href="../classes/LS.Formats.html">LS.Formats</a></li>
+                                <li><a href="../classes/LS.GLSLCode.html">LS.GLSLCode</a></li>
+                                <li><a href="../classes/LS.GUI.html">LS.GUI</a></li>
+                                <li><a href="../classes/LS.Input.html">LS.Input</a></li>
+                                <li><a href="../classes/LS.InteractiveController.html">LS.InteractiveController</a></li>
+                                <li><a href="../classes/LS.Knob.html">LS.Knob</a></li>
+                                <li><a href="../classes/LS.Light.html">LS.Light</a></li>
+                                <li><a href="../classes/LS.LightFX.html">LS.LightFX</a></li>
+                                <li><a href="../classes/LS.LS.html">LS.LS</a></li>
+                                <li><a href="../classes/LS.LScript.html">LS.LScript</a></li>
+                                <li><a href="../classes/LS.Material.html">LS.Material</a></li>
+                                <li><a href="../classes/LS.Pack.html">LS.Pack</a></li>
+                                <li><a href="../classes/LS.Physics.html">LS.Physics</a></li>
+                                <li><a href="../classes/LS.PhysicsInstance.html">LS.PhysicsInstance</a></li>
+                                <li><a href="../classes/LS.Picking.html">LS.Picking</a></li>
+                                <li><a href="../classes/LS.Player.html">LS.Player</a></li>
+                                <li><a href="../classes/LS.Prefab.html">LS.Prefab</a></li>
+                                <li><a href="../classes/LS.Project.html">LS.Project</a></li>
+                                <li><a href="../classes/LS.Renderer.html">LS.Renderer</a></li>
+                                <li><a href="../classes/LS.RenderFrameContext.html">LS.RenderFrameContext</a></li>
+                                <li><a href="../classes/LS.RenderInstance.html">LS.RenderInstance</a></li>
+                                <li><a href="../classes/LS.RenderSettings.html">LS.RenderSettings</a></li>
+                                <li><a href="../classes/LS.RenderState.html">LS.RenderState</a></li>
+                                <li><a href="../classes/LS.Resource.html">LS.Resource</a></li>
+                                <li><a href="../classes/LS.ResourcesManager.html">LS.ResourcesManager</a></li>
+                                <li><a href="../classes/LS.SceneNode.html">LS.SceneNode</a></li>
+                                <li><a href="../classes/LS.SceneTree.html">LS.SceneTree</a></li>
+                                <li><a href="../classes/LS.ShaderCode.html">LS.ShaderCode</a></li>
+                                <li><a href="../classes/LS.ShaderGraph.html">LS.ShaderGraph</a></li>
+                                <li><a href="../classes/LS.ShaderMaterial.html">LS.ShaderMaterial</a></li>
+                                <li><a href="../classes/LS.ShaderQuery.html">LS.ShaderQuery</a></li>
+                                <li><a href="../classes/LS.ShadersManager.html">LS.ShadersManager</a></li>
+                                <li><a href="../classes/LS.SpatialContainer.html">LS.SpatialContainer</a></li>
+                                <li><a href="../classes/LS.StandardMaterial.html">LS.StandardMaterial</a></li>
+                                <li><a href="../classes/LS.UnityMaterial.html">LS.UnityMaterial</a></li>
+                                <li><a href="../classes/LS.WBin.html">LS.WBin</a></li>
+                                <li><a href="../classes/LSQ.html">LSQ</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/LS.html">LS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1>LS.Components.Camera Class</h1>
+<div class="box meta">
+
+
+        <div class="foundat">
+            Defined in: <a href="../files/.._src_components_camera.js.html#l3"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:3</code></a>
+        </div>
+
+            Module: <a href="../modules/LS.html">LS</a>
+
+</div>
+
+
+<div class="box intro">
+    <p>Camera contains the info about a camera (matrices, near far planes, clear color, etc)</p>
+
+</div>
+
+    <div class="constructor">
+        <h2>Constructor</h2>
+<div id="method_LS.Components.Camera" class="method item">
+    <h3 class="name"><code>LS.Components.Camera</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>object</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l3"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:3</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">object</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>to configure from</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+    </div>
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_fromViewMatrix">fromViewMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getCenter">getCenter</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getEye">getEye</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getFront">getFront</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getLocalPoint">getLocalPoint</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getLocalVector">getLocalVector</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getLocalViewport">getLocalViewport</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getModelMatrix">getModelMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getModelViewProjectionMatrix">getModelViewProjectionMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getProjectionMatrix">getProjectionMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getRayInPixel">getRayInPixel</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getRight">getRight</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getTop">getTop</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getUp">getUp</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getViewMatrix">getViewMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getViewProjectionMatrix">getViewProjectionMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isPointInCamera">isPointInCamera</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_lookAt">lookAt</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_lookAtFromMatrix">lookAtFromMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_move">move</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_orbit">orbit</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_panning">panning</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_project">project</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_projectNodeCenter">projectNodeCenter</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_resetVectors">resetVectors</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_rotate">rotate</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setCustomProjectionMatrix">setCustomProjectionMatrix</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setDistanceToCenter">setDistanceToCenter</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setOrthographic">setOrthographic</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setPerspective">setPerspective</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setViewportInPixels">setViewportInPixels</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_unproject">unproject</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_updateFrustumPlanes">updateFrustumPlanes</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_updateMatrices">updateMatrices</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_updateVectors">updateVectors</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties">
+                            <li class="index-item property">
+                                <a href="#property_aspect">aspect</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_background_color">background_color</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_center">center</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_eye">eye</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_far">far</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_focalLength">focalLength</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_fov">fov</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_frame  contains the RenderFrameContext where the scene was stored">frame  contains the RenderFrameContext where the scene was stored</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_frame_color_texture  contains the color texture used by the RenderFrameContext">frame_color_texture  contains the color texture used by the RenderFrameContext</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_frame_depth_texture  contains the depth texture used by the RenderFrameContext">frame_depth_texture  contains the depth texture used by the RenderFrameContext</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_frustum_size">frustum_size</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_mustUpdate">mustUpdate</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_near">near</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_orthographic  left,right,bottom,top (near and far are in the near,far properties)">orthographic  left,right,bottom,top (near and far are in the near,far properties)</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_projection_matrix">projection_matrix</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_projection_matrix">projection_matrix</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_type">type</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_up">up</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_viewport">viewport</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_viewport_offset">viewport_offset</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_viewport_size">viewport_size</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_fromViewMatrix" class="method item">
+    <h3 class="name"><code>fromViewMatrix</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>mat</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l1203"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:1203</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>uses a view matrix to compute the eye,center,up vectors</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">mat</code>
+                        <span class="type">Mat4</span>
+
+
+                    <div class="param-description">
+                        <p>the given view matrix</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_getCenter" class="method item">
+    <h3 class="name"><code>getCenter</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>out</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Vec3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l875"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:875</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns the center of the camera (position where the camera is pointing) in global coordinates</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">out</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>output vector [optional]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec3</span>:
+                    <p>position in global coordinates</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getEye" class="method item">
+    <h3 class="name"><code>getEye</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>out</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Vec3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l855"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:855</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the eye (position of the camera) in global coordinates
+Takes into account if it is a camera attached to a node
+The result of this function wont match the _eye property if the camera is a node camera</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">out</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>output vector [optional]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec3</span>:
+                    <p>position in global coordinates</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getFront" class="method item">
+    <h3 class="name"><code>getFront</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>out</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Vec3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l893"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:893</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns the front vector of the camera</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">out</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>output vector [optional]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec3</span>:
+                    <p>position in global coordinates</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getLocalPoint" class="method item">
+    <h3 class="name"><code>getLocalPoint</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>v</code>
+                </li>
+                <li class="arg">
+                        <code>dest</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Vec3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l814"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:814</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>transform a local coordinate to global coordinates</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">v</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>vector</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">dest</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>where to store the output, if not provided a vec3 is created</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec3</span>:
+                    <p>v in global coordinates</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getLocalVector" class="method item">
+    <h3 class="name"><code>getLocalVector</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>v</code>
+                </li>
+                <li class="arg">
+                        <code>dest</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Vec3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l834"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:834</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>rotate a local coordinate to global coordinates (skipping translation)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">v</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>vector</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">dest</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>where to store the output, if not provided a vec3 is created</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec3</span>:
+                    <p>v in global coordinates</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getLocalViewport" class="method item">
+    <h3 class="name"><code>getLocalViewport</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[viewport=null]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[result=vec4]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Vec4</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l1314"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:1314</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns the viewport in pixels applying the local camera viewport to the full viewport of the canvas</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[viewport=null]</code>
+                        <span class="type">Vec4</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>viewport info, otherwise the canvas dimensions will be used (not the current viewport)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[result=vec4]</code>
+                        <span class="type">Vec4</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>where to store the result, if omited it is created</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec4</span>:
+                    <p>the viewport info of the camera in pixels</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getModelMatrix" class="method item">
+    <h3 class="name"><code>getModelMatrix</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>m</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Mat4</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l727"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:727</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns the inverse of the viewmatrix</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">m</code>
+                        <span class="type">Mat4</span>
+
+
+                    <div class="param-description">
+                        <p>optional output container</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Mat4</span>:
+                    <p>matrix</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getModelViewProjectionMatrix" class="method item">
+    <h3 class="name"><code>getModelViewProjectionMatrix</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>model</code>
+                </li>
+                <li class="arg">
+                        <code>out</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Mat4</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l784"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:784</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns the model view projection matrix computed from a passed model</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">model</code>
+                        <span class="type">Mat4</span>
+
+
+                    <div class="param-description">
+                        <p>model matrix</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">out</code>
+                        <span class="type">Mat4</span>
+
+
+                    <div class="param-description">
+                        <p>optional output container</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Mat4</span>:
+                    <p>matrix</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getProjectionMatrix" class="method item">
+    <h3 class="name"><code>getProjectionMatrix</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>m</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Mat4</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l755"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:755</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns the projection matrix</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">m</code>
+                        <span class="type">Mat4</span>
+
+
+                    <div class="param-description">
+                        <p>optional output container</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Mat4</span>:
+                    <p>matrix</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getRayInPixel" class="method item">
+    <h3 class="name"><code>getRayInPixel</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>x</code>
+                </li>
+                <li class="arg">
+                        <code>y</code>
+                </li>
+                <li class="arg">
+                        <code>viewport</code>
+                </li>
+                <li class="arg">
+                        <code>skip_local_viewport</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l1343"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:1343</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>given an x and y position, returns the ray {start, dir}</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">x</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">y</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">viewport</code>
+                        <span class="type">Vec4</span>
+
+
+                    <div class="param-description">
+                        <p>viewport coordinates (if omited full viewport is used using the camera viewport)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">skip_local_viewport</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>ignore the local camera viewport configuration when computing the viewport</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    <p>{origin:vec3, direction:vec3} or null is values are undefined or NaN</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getRight" class="method item">
+    <h3 class="name"><code>getRight</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>out</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Vec3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l951"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:951</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns the right vector of the camera</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">out</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>output vector [optional]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec3</span>:
+                    <p>position in global coordinates</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getTop" class="method item">
+    <h3 class="name"><code>getTop</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>out</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Vec3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l933"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:933</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns the top vector of the camera (different from up, this one is perpendicular to front and right)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">out</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>output vector [optional]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec3</span>:
+                    <p>position in global coordinates</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getUp" class="method item">
+    <h3 class="name"><code>getUp</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>out</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Vec3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l913"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:913</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns the up vector of the camera</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">out</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>output vector [optional]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec3</span>:
+                    <p>position in global coordinates</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getViewMatrix" class="method item">
+    <h3 class="name"><code>getViewMatrix</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>m</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Mat4</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l741"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:741</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns the viewmatrix</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">m</code>
+                        <span class="type">Mat4</span>
+
+
+                    <div class="param-description">
+                        <p>optional output container</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Mat4</span>:
+                    <p>matrix</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getViewProjectionMatrix" class="method item">
+    <h3 class="name"><code>getViewProjectionMatrix</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>m</code>
+                </li>
+                <li class="arg">
+                        <code>force</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Mat4</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l769"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:769</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns the view projection matrix</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">m</code>
+                        <span class="type">Mat4</span>
+
+
+                    <div class="param-description">
+                        <p>optional output container</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">force</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>optional force to update</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Mat4</span>:
+                    <p>matrix</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_isPointInCamera" class="method item">
+    <h3 class="name"><code>isPointInCamera</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>x</code>
+                </li>
+                <li class="arg">
+                        <code>y</code>
+                </li>
+                <li class="arg">
+                        <code>viewport</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l1373"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:1373</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns true if the 2D point (in screen space coordinates) is inside the camera viewport area</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">x</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">y</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">viewport</code>
+                        <span class="type">Vec4</span>
+
+
+                    <div class="param-description">
+                        <p>viewport coordinates (if omited full viewport is used)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_lookAt" class="method item">
+    <h3 class="name"><code>lookAt</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>eye</code>
+                </li>
+                <li class="arg">
+                        <code>center</code>
+                </li>
+                <li class="arg">
+                        <code>up</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l592"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:592</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Positions the camera at eye, pointing at center, and facing up as vertical.
+If the camera is a node camera, then the node transform is modified (plus the center to match the focalLength)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">eye</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">center</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">up</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_lookAtFromMatrix" class="method item">
+    <h3 class="name"><code>lookAtFromMatrix</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>matrix</code>
+                </li>
+                <li class="arg">
+                        <code>is_model</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l618"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:618</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Positions the camera using a matrix that contains the position an orientation (NOT FULLY TESTED)
+If the camera is a node camera, then the node transform is modified (plus the center to match the focalLength)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">matrix</code>
+                        <span class="type">Mat4</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">is_model</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>if false the matrix is assumed to be a view matrix, otherwise a model (inverse of view)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_move" class="method item">
+    <h3 class="name"><code>move</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>delta</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l1019"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:1019</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>moves the camera by adding the delta vector to center and eye</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">delta</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_orbit" class="method item">
+    <h3 class="name"><code>orbit</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>angle_in_deg</code>
+                </li>
+                <li class="arg">
+                        <code>axis</code>
+                </li>
+                <li class="arg">
+                        <code>center</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l1075"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:1075</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Rotates the camera eye around a center</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">angle_in_deg</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">axis</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">center</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>optional</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_panning" class="method item">
+    <h3 class="name"><code>panning</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>x</code>
+                </li>
+                <li class="arg">
+                        <code>y</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l1117"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:1117</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Pans the camera (move acording to view)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">x</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">y</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_project" class="method item">
+    <h3 class="name"><code>project</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>vec</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[viewport=null]</code>
+                </li>
+                <li class="arg">
+                        <code>result</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Vec3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l1256"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:1256</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Converts a 3D point to its 2D position in canvas space</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">vec</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>3D position we want to proyect to 2D</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[viewport=null]</code>
+                        <span class="type">Vec4</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>viewport info (if omited full canvas viewport is used)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">result</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>where to store the result, if omited it is created</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec3</span>:
+                    <p>the coordinates in 2D</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_projectNodeCenter" class="method item">
+    <h3 class="name"><code>projectNodeCenter</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>vec</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[viewport=null]</code>
+                </li>
+                <li class="arg">
+                        <code>result</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Vec3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l1292"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:1292</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>It tells you the 2D position of a node center in the screen</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">vec</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>3D position we want to proyect to 2D</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[viewport=null]</code>
+                        <span class="type">Vec4</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>viewport info (if omited full canvas viewport is used)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">result</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>where to store the result, if omited it is created</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec3</span>:
+                    <p>the coordinates in 2D</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_resetVectors" class="method item">
+    <h3 class="name"><code>resetVectors</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>focalDist</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l654"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:654</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>resets eye, center and up, so they are in [0,0,0],[0,0,-focalDist] and [0,1,0]</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">focalDist</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>[optional] it not set it will be 1</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_rotate" class="method item">
+    <h3 class="name"><code>rotate</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>angle_in_deg</code>
+                </li>
+                <li class="arg">
+                        <code>axis</code>
+                </li>
+                <li class="arg">
+                        <code>in_local_space</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l1038"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:1038</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>rotate the camera around its center</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">angle_in_deg</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">axis</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">in_local_space</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>allows to specify if the axis is in local space or global space</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setCustomProjectionMatrix" class="method item">
+    <h3 class="name"><code>setCustomProjectionMatrix</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>mat</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l1217"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:1217</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>overwrites the current projection matrix with a given one (it also blocks the camera from modifying the projection matrix)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">mat</code>
+                        <span class="type">Mat4</span>
+
+
+                    <div class="param-description">
+                        <p>the given projection matrix (or null to disable it)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setDistanceToCenter" class="method item">
+    <h3 class="name"><code>setDistanceToCenter</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>new_distance</code>
+                </li>
+                <li class="arg">
+                        <code>move_eye</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l1140"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:1140</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>changes the distance between eye and center ( it could move the center or the eye, depending on the parameters )</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">new_distance</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">move_eye</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>if this is true it moves the eye closer, otherwise it moves the center closer to the eye</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setOrthographic" class="method item">
+    <h3 class="name"><code>setOrthographic</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>left</code>
+                </li>
+                <li class="arg">
+                        <code>right</code>
+                </li>
+                <li class="arg">
+                        <code>bottom</code>
+                </li>
+                <li class="arg">
+                        <code>top</code>
+                </li>
+                <li class="arg">
+                        <code>near</code>
+                </li>
+                <li class="arg">
+                        <code>far</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l1000"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:1000</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>set camera in orthographic mode and sets the planes</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">left</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">right</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">bottom</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">top</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">near</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">far</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setPerspective" class="method item">
+    <h3 class="name"><code>setPerspective</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>fov</code>
+                </li>
+                <li class="arg">
+                        <code>aspect</code>
+                </li>
+                <li class="arg">
+                        <code>near</code>
+                </li>
+                <li class="arg">
+                        <code>far</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l982"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:982</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>set camera in perspective mode and sets the properties</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">fov</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>in degrees</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">aspect</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>the aspect modifier (not the real final aspect, leave it to one)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">near</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>distance</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">far</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>distance</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setViewportInPixels" class="method item">
+    <h3 class="name"><code>setViewportInPixels</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>left</code>
+                </li>
+                <li class="arg">
+                        <code>right</code>
+                </li>
+                <li class="arg">
+                        <code>width</code>
+                </li>
+                <li class="arg">
+                        <code>height</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l1239"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:1239</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Sets the viewport in pixels (using the gl.canvas as reference)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">left</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">right</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">width</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">height</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_unproject" class="method item">
+    <h3 class="name"><code>unproject</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>vec</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[viewport=null]</code>
+                </li>
+                <li class="arg">
+                        <code>result</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Vec3</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l1283"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:1283</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Converts a screen space 2D vector (with a Z value) to its 3D equivalent position</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">vec</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>2D position we want to proyect to 3D</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[viewport=null]</code>
+                        <span class="type">Vec4</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>viewport info (if omited full canvas viewport is used)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">result</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>where to store the result, if omited it is created</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Vec3</span>:
+                    <p>the coordinates in 2D</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_updateFrustumPlanes" class="method item">
+    <h3 class="name"><code>updateFrustumPlanes</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Float32Array</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l716"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:716</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Update the frustum planes according to viewprojection_matrix, used for visibility testing</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Float32Array</span>:
+                    <p>planes</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_updateMatrices" class="method item">
+    <h3 class="name"><code>updateMatrices</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l668"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:668</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Update matrices according to the eye,center,up,fov,aspect,...</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_updateVectors" class="method item">
+    <h3 class="name"><code>updateVectors</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>model</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l799"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:799</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>apply a transform to all the vectors (eye,center,up) using a matrix</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">model</code>
+                        <span class="type">Mat4</span>
+
+
+                    <div class="param-description">
+                        <p>matrix</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+            </div>
+
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_aspect" class="property item">
+    <h3 class="name"><code>aspect</code></h3>
+    <span class="type">Number</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l276"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:276</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The camera aspect ratio</p>
+
+    </div>
+
+        <p><strong>Default:</strong> 1</p>
+
+
+</div>
+<div id="property_background_color" class="property item">
+    <h3 class="name"><code>background_color</code></h3>
+    <span class="type">Vec4</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l432"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:432</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_center" class="property item">
+    <h3 class="name"><code>center</code></h3>
+    <span class="type">Vec3</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l188"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:188</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The center where the camera points (in local space, node space)</p>
+
+    </div>
+
+        <p><strong>Default:</strong> [0,0,0]</p>
+
+
+</div>
+<div id="property_eye" class="property item">
+    <h3 class="name"><code>eye</code></h3>
+    <span class="type">Vec3</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l172"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:172</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The position of the camera (in local space, node space)</p>
+
+    </div>
+
+        <p><strong>Default:</strong> [0,100,100]</p>
+
+
+</div>
+<div id="property_far" class="property item">
+    <h3 class="name"><code>far</code></h3>
+    <span class="type">Number</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l259"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:259</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The far plane</p>
+
+    </div>
+
+        <p><strong>Default:</strong> 1000</p>
+
+
+</div>
+<div id="property_focalLength" class="property item">
+    <h3 class="name"><code>focalLength</code></h3>
+    <span class="type">Number</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l204"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:204</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The distance between the center and the eye point
+When focalLength is modified it will change the center so it matches the distance.</p>
+
+    </div>
+
+        <p><strong>Default:</strong> (depends)</p>
+
+
+</div>
+<div id="property_fov" class="property item">
+    <h3 class="name"><code>fov</code></h3>
+    <span class="type">Number</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l306"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:306</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The field of view in degrees</p>
+
+    </div>
+
+        <p><strong>Default:</strong> 45</p>
+
+
+</div>
+<div id="property_frame  contains the RenderFrameContext where the scene was stored" class="property item">
+    <h3 class="name"><code>frame  contains the RenderFrameContext where the scene was stored</code></h3>
+    <span class="type"><a href="../classes/LS.RenderFrameContext.html" class="crosslink">LS.RenderFrameContext</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l461"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:461</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_frame_color_texture  contains the color texture used by the RenderFrameContext" class="property item">
+    <h3 class="name"><code>frame_color_texture  contains the color texture used by the RenderFrameContext</code></h3>
+    <span class="type">GL.Texture</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l474"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:474</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_frame_depth_texture  contains the depth texture used by the RenderFrameContext" class="property item">
+    <h3 class="name"><code>frame_depth_texture  contains the depth texture used by the RenderFrameContext</code></h3>
+    <span class="type">GL.Texture</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l489"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:489</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_frustum_size" class="property item">
+    <h3 class="name"><code>frustum_size</code></h3>
+    <span class="type">Number</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l323"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:323</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The frustum size when working in ORTHOGRAPHIC</p>
+
+    </div>
+
+        <p><strong>Default:</strong> 50</p>
+
+
+</div>
+<div id="property_mustUpdate" class="property item">
+    <h3 class="name"><code>mustUpdate</code></h3>
+    <span class="type">Boolean</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l505"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:505</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_near" class="property item">
+    <h3 class="name"><code>near</code></h3>
+    <span class="type">Number</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l242"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:242</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The near plane</p>
+
+    </div>
+
+        <p><strong>Default:</strong> 1</p>
+
+
+</div>
+<div id="property_orthographic  left,right,bottom,top (near and far are in the near,far properties)" class="property item">
+    <h3 class="name"><code>orthographic  left,right,bottom,top (near and far are in the near,far properties)</code></h3>
+    <span class="type">Vec4</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l344"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:344</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The frustum size when working in pure ORTHOGRAPHIC</p>
+
+    </div>
+
+        <p><strong>Default:</strong> 50</p>
+
+
+</div>
+<div id="property_projection_matrix" class="property item">
+    <h3 class="name"><code>projection_matrix</code></h3>
+    <span class="type">Mat4</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l377"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:377</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The projection matrix of the camera (cannot be set manually, use setCustomProjectionMatrix instead)</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_projection_matrix" class="property item">
+    <h3 class="name"><code>projection_matrix</code></h3>
+    <span class="type">Vec4</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l363"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:363</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The view matrix of the camera</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_type" class="property item">
+    <h3 class="name"><code>type</code></h3>
+    <span class="type">Vec3</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l152"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:152</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>Camera type, could be Camera.PERSPECTIVE or Camera.ORTHOGRAPHIC</p>
+
+    </div>
+
+        <p><strong>Default:</strong> Camera.PERSPECTIVE;</p>
+
+
+</div>
+<div id="property_up" class="property item">
+    <h3 class="name"><code>up</code></h3>
+    <span class="type">Vec3</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l226"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:226</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The up vector of the camera (in local space, node space)</p>
+
+    </div>
+
+        <p><strong>Default:</strong> [0,1,0]</p>
+
+
+</div>
+<div id="property_viewport" class="property item">
+    <h3 class="name"><code>viewport</code></h3>
+    <span class="type">Vec4</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l392"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:392</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The viewport in normalized coordinates (left,bottom, width, height)</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_viewport_offset" class="property item">
+    <h3 class="name"><code>viewport_offset</code></h3>
+    <span class="type">Vec2</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l406"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:406</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_viewport_size" class="property item">
+    <h3 class="name"><code>viewport_size</code></h3>
+    <span class="type">Vec2</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_components_camera.js.html#l419"><code>..&#x2F;src&#x2F;components&#x2F;camera.js:419</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+            </div>
+
+
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

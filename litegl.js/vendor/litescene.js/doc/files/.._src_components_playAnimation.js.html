@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>../src/components/playAnimation.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/LS.Animation.html">LS.Animation</a></li>
+                                <li><a href="../classes/LS.Animation.Take.html">LS.Animation.Take</a></li>
+                                <li><a href="../classes/LS.Animation.Track.html">LS.Animation.Track</a></li>
+                                <li><a href="../classes/LS.Collision.html">LS.Collision</a></li>
+                                <li><a href="../classes/LS.Component.html">LS.Component</a></li>
+                                <li><a href="../classes/LS.ComponentContainer.html">LS.ComponentContainer</a></li>
+                                <li><a href="../classes/LS.Components.Camera.html">LS.Components.Camera</a></li>
+                                <li><a href="../classes/LS.Components.CameraController.html">LS.Components.CameraController</a></li>
+                                <li><a href="../classes/LS.Components.CameraDirector.html">LS.Components.CameraDirector</a></li>
+                                <li><a href="../classes/LS.Components.CameraFX.html">LS.Components.CameraFX</a></li>
+                                <li><a href="../classes/LS.Components.Canvas3D.html">LS.Components.Canvas3D</a></li>
+                                <li><a href="../classes/LS.Components.CustomData.html">LS.Components.CustomData</a></li>
+                                <li><a href="../classes/LS.Components.FollowNode.html">LS.Components.FollowNode</a></li>
+                                <li><a href="../classes/LS.Components.FrameFX.html">LS.Components.FrameFX</a></li>
+                                <li><a href="../classes/LS.Components.FXGraphComponent.html">LS.Components.FXGraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.FXStack.html">LS.Components.FXStack</a></li>
+                                <li><a href="../classes/LS.Components.GeometricPrimitive.html">LS.Components.GeometricPrimitive</a></li>
+                                <li><a href="../classes/LS.Components.GraphComponent.html">LS.Components.GraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.MeshRenderer.html">LS.Components.MeshRenderer</a></li>
+                                <li><a href="../classes/LS.Components.NodeManipulator.html">LS.Components.NodeManipulator</a></li>
+                                <li><a href="../classes/LS.Components.PlayAnimation.html">LS.Components.PlayAnimation</a></li>
+                                <li><a href="../classes/LS.Components.Poser.html">LS.Components.Poser</a></li>
+                                <li><a href="../classes/LS.Components.RealtimeReflector.html">LS.Components.RealtimeReflector</a></li>
+                                <li><a href="../classes/LS.Components.Rotator.html">LS.Components.Rotator</a></li>
+                                <li><a href="../classes/LS.Components.Script.html">LS.Components.Script</a></li>
+                                <li><a href="../classes/LS.Components.SkinDeformer.html">LS.Components.SkinDeformer</a></li>
+                                <li><a href="../classes/LS.Components.Spline.html">LS.Components.Spline</a></li>
+                                <li><a href="../classes/LS.Components.SVGRenderer.html">LS.Components.SVGRenderer</a></li>
+                                <li><a href="../classes/LS.Components.Target.html">LS.Components.Target</a></li>
+                                <li><a href="../classes/LS.Components.Transform.html">LS.Components.Transform</a></li>
+                                <li><a href="../classes/LS.Components.VRCameraController.html">LS.Components.VRCameraController</a></li>
+                                <li><a href="../classes/LS.CompositePattern.html">LS.CompositePattern</a></li>
+                                <li><a href="../classes/LS.DebugRender.html">LS.DebugRender</a></li>
+                                <li><a href="../classes/LS.Draw.html">LS.Draw</a></li>
+                                <li><a href="../classes/LS.Formats.html">LS.Formats</a></li>
+                                <li><a href="../classes/LS.GLSLCode.html">LS.GLSLCode</a></li>
+                                <li><a href="../classes/LS.GUI.html">LS.GUI</a></li>
+                                <li><a href="../classes/LS.Input.html">LS.Input</a></li>
+                                <li><a href="../classes/LS.InteractiveController.html">LS.InteractiveController</a></li>
+                                <li><a href="../classes/LS.Knob.html">LS.Knob</a></li>
+                                <li><a href="../classes/LS.Light.html">LS.Light</a></li>
+                                <li><a href="../classes/LS.LightFX.html">LS.LightFX</a></li>
+                                <li><a href="../classes/LS.LS.html">LS.LS</a></li>
+                                <li><a href="../classes/LS.LScript.html">LS.LScript</a></li>
+                                <li><a href="../classes/LS.Material.html">LS.Material</a></li>
+                                <li><a href="../classes/LS.Pack.html">LS.Pack</a></li>
+                                <li><a href="../classes/LS.Physics.html">LS.Physics</a></li>
+                                <li><a href="../classes/LS.PhysicsInstance.html">LS.PhysicsInstance</a></li>
+                                <li><a href="../classes/LS.Picking.html">LS.Picking</a></li>
+                                <li><a href="../classes/LS.Player.html">LS.Player</a></li>
+                                <li><a href="../classes/LS.Prefab.html">LS.Prefab</a></li>
+                                <li><a href="../classes/LS.Project.html">LS.Project</a></li>
+                                <li><a href="../classes/LS.Renderer.html">LS.Renderer</a></li>
+                                <li><a href="../classes/LS.RenderFrameContext.html">LS.RenderFrameContext</a></li>
+                                <li><a href="../classes/LS.RenderInstance.html">LS.RenderInstance</a></li>
+                                <li><a href="../classes/LS.RenderSettings.html">LS.RenderSettings</a></li>
+                                <li><a href="../classes/LS.RenderState.html">LS.RenderState</a></li>
+                                <li><a href="../classes/LS.Resource.html">LS.Resource</a></li>
+                                <li><a href="../classes/LS.ResourcesManager.html">LS.ResourcesManager</a></li>
+                                <li><a href="../classes/LS.SceneNode.html">LS.SceneNode</a></li>
+                                <li><a href="../classes/LS.SceneTree.html">LS.SceneTree</a></li>
+                                <li><a href="../classes/LS.ShaderCode.html">LS.ShaderCode</a></li>
+                                <li><a href="../classes/LS.ShaderGraph.html">LS.ShaderGraph</a></li>
+                                <li><a href="../classes/LS.ShaderMaterial.html">LS.ShaderMaterial</a></li>
+                                <li><a href="../classes/LS.ShaderQuery.html">LS.ShaderQuery</a></li>
+                                <li><a href="../classes/LS.ShadersManager.html">LS.ShadersManager</a></li>
+                                <li><a href="../classes/LS.SpatialContainer.html">LS.SpatialContainer</a></li>
+                                <li><a href="../classes/LS.StandardMaterial.html">LS.StandardMaterial</a></li>
+                                <li><a href="../classes/LS.UnityMaterial.html">LS.UnityMaterial</a></li>
+                                <li><a href="../classes/LS.WBin.html">LS.WBin</a></li>
+                                <li><a href="../classes/LSQ.html">LSQ</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/LS.html">LS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: ../src/components/playAnimation.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+* Reads animation tracks from an Animation resource and applies the properties to the objects referenced
+* @class PlayAnimation
+* @constructor
+* @param {String} object to configure from
+*/
+
+
+function PlayAnimation(o)
+{
+	this.enabled = true;
+
+	this._animation = &quot;&quot;;
+	this._take = &quot;default&quot;;
+
+	/**
+	* the root node locator where to apply the animation, is none is specified it is applied using the scene root node
+	* if a &quot;@&quot; is set, then only to this node and its children
+	* @property root_node {String}
+	*/
+	this.root_node = &quot;@&quot;;
+	this.playback_speed = 1.0;
+
+	/**
+	* how to play the animation, options are:
+    *   PlayAnimation.LOOP
+	*	PlayAnimation.PINGPONG
+	*	PlayAnimation.ONCE
+	*	PlayAnimation.PAUSED
+	* @property mode {Number}
+	*/
+	this.mode = PlayAnimation.LOOP;
+	this.playing = true;
+	this.current_time = 0;
+	this.blend_time = 0;
+	this.range = null;
+
+	this._last_time = 0;
+
+	this._use_blend_animation = false;
+	this._blend_animation = null;
+	this._blend_take = null;
+	this._blend_current_time = 0;
+	this._blend_remaining_time = 0;
+	this._blend_updated_frame = -1; //used to avoid reseting time when animation and track are changed continuously
+
+	this.disabled_tracks = {};
+
+	if(o)
+		this.configure(o);
+}
+
+PlayAnimation.LOOP = 1;
+PlayAnimation.PINGPONG = 2;
+PlayAnimation.ONCE = 3;
+PlayAnimation.PAUSED = 4;
+
+PlayAnimation.MODES = {&quot;loop&quot;:PlayAnimation.LOOP, &quot;pingpong&quot;:PlayAnimation.PINGPONG, &quot;once&quot;:PlayAnimation.ONCE, &quot;paused&quot;:PlayAnimation.PAUSED };
+
+PlayAnimation[&quot;@animation&quot;] = { widget: &quot;animation&quot; };
+PlayAnimation[&quot;@root_node&quot;] = { type: &quot;node&quot; };
+PlayAnimation[&quot;@mode&quot;] = { type:&quot;enum&quot;, values: PlayAnimation.MODES };
+PlayAnimation[&quot;@current_time&quot;] = { type: LS.TYPES.NUMBER, min: 0, units:&quot;s&quot; };
+PlayAnimation[&quot;@blend_time&quot;] = { type: LS.TYPES.NUMBER, min: 0, units:&quot;s&quot; };
+PlayAnimation[&quot;@take&quot;] = { type: &quot;enum&quot;, values: function(){
+	var anim = this.instance.getAnimation();
+	if(!anim)
+		return [&quot;default&quot;];
+	var takes = anim.takes;
+	var result = [];
+	for(var i in takes)
+		result.push(i);
+	return result;
+}};
+
+/**
+* the name of the LS.Animation resource where the takes and tracks are stored
+* @property animation {String}
+*/
+Object.defineProperty( PlayAnimation.prototype, &quot;animation&quot;, {
+	set: function(v){
+		if(v == this._animation)
+			return;
+		this._blend_animation = this._animation;
+		this._animation = v;
+		if(this.blend_time)
+		{
+			if(!this._root || !this._root.scene)
+				return;
+
+			this._use_blend_animation = true;
+			if( this._root.scene.frame != this._blend_updated_frame )
+			{
+				this._blend_current_time = this.current_time;
+				this._blend_remaining_time = this.blend_time;
+				this._blend_updated_frame = this._root.scene.frame;
+			}
+		}
+	},
+	get: function()
+	{
+		return this._animation;
+	},
+	enumerable: true
+});
+
+/**
+* the name of the LS.Animation.Take to play from the LS.Animation
+* A take representes a set of tracks
+* @property take {String}
+*/
+Object.defineProperty( PlayAnimation.prototype, &quot;take&quot;, {
+	set: function(v){
+		if(v == this._take)
+			return;
+		this._blend_take = this._take;
+		this._take = v;
+		if(this.blend_time)
+		{
+			if(!this._root || !this._root.scene)
+				return;
+			this._use_blend_animation = true;
+			if( this._root.scene.frame != this._blend_updated_frame )
+			{
+				this._blend_current_time = this.current_time;
+				this._blend_remaining_time = this.blend_time;
+				this._blend_updated_frame = this._root.scene.frame;
+			}
+		}
+	},
+	get: function()
+	{
+		return this._take;
+	},
+	enumerable: true
+});
+
+PlayAnimation.prototype.configure = function(o)
+{
+	if(o.play) //LEGACY
+		delete o.play;
+
+	if(o.enabled !== undefined)
+		this.enabled = !!o.enabled;
+	if(o.range) 
+		this.range = o.range.concat();
+	if(o.mode !== undefined) 
+		this.mode = o.mode;
+	if(o.animation)
+		this._animation = o.animation;
+	if(o.take)
+		this._take = o.take;
+	if(o.playback_speed != null)
+		this.playback_speed = parseFloat( o.playback_speed );
+	if(o.root_node !== undefined)
+		this.root_node = o.root_node;
+	if(o.playing !== undefined)
+		this.playing = o.playing;
+	if(o.blend_time !== undefined)
+		this.blend_time = o.blend_time;
+}
+
+
+PlayAnimation.icon = &quot;mini-icon-clock.png&quot;;
+
+PlayAnimation.prototype.onAddedToScene = function(scene)
+{
+	LEvent.bind( scene, &quot;update&quot;, this.onUpdate, this);
+}
+
+
+PlayAnimation.prototype.onRemovedFromScene = function(scene)
+{
+	LEvent.unbind( scene, &quot;update&quot;, this.onUpdate, this);
+}
+
+PlayAnimation.prototype.onUpdate = function(e, dt)
+{
+	if(!this.enabled)
+		return;
+
+	if(!this.playing)
+		return;
+
+	if( this.mode != PlayAnimation.PAUSED )
+		this.current_time += dt * this.playback_speed;
+
+	this.onUpdateAnimation( dt );
+
+	if( this._use_blend_animation )
+		this.onUpdateBlendAnimation( dt );
+}
+
+PlayAnimation.prototype.onUpdateAnimation = function(dt)
+{
+	var animation = this.getAnimation();
+	if(!animation) 
+		return;
+
+	var take = animation.takes[ this.take ];
+	if(!take) 
+		return;
+
+	var time = this.current_time;
+
+	var start_time = 0;
+	var duration = take.duration;
+	var end_time = duration;
+
+	if(this.range)
+	{
+		start_time = this.range[0];
+		end_time = this.range[1];
+		duration = end_time - start_time;
+	}
+
+	if(time &gt; end_time)
+	{
+		switch( this.mode )
+		{
+			case PlayAnimation.ONCE: 
+				time = end_time; 
+				//time = start_time; //reset after
+				LEvent.trigger( this, &quot;end_animation&quot; );
+				this.playing = false;
+				break;
+			case PlayAnimation.PINGPONG:
+				if( ((time / duration)|0) % 2 == 0 ) //TEST THIS
+					time = this.current_time % duration; 
+				else
+					time = duration - (this.current_time % duration);
+				break;
+			case PlayAnimation.PINGPONG:
+				time = end_time; 
+				break;
+			case PlayAnimation.LOOP: 
+			default: 
+				time = ((this.current_time - start_time) % duration) + start_time;
+				LEvent.trigger( this, &quot;animation_loop&quot; );
+				break;
+		}
+	}
+	else if(time &lt; start_time)
+		time = start_time;
+
+	this.applyAnimation( take, time, this._last_time );
+
+	this._last_time = time; //TODO, add support for pingpong events in tracks
+	//take.actionPerSample( this.current_time, this._processSample.bind( this ), { disabled_tracks: this.disabled_tracks } );
+
+	var scene = this._root.scene;
+	if(scene)
+		scene.requestFrame();
+}
+
+PlayAnimation.prototype.onUpdateBlendAnimation = function( dt )
+{
+	var animation = this.getAnimation( this._blend_animation || this._animation || &quot;&quot; );
+	if(!animation) 
+		return;
+
+	var take = animation.takes[ this._blend_take || this._take || &quot;default&quot; ];
+	if(!take) 
+		return;
+
+	this._blend_current_time += dt;
+	this._blend_remaining_time -= dt;
+
+	if( this._blend_remaining_time &lt;= 0 )
+		this._use_blend_animation = false; //next frame it will stop
+
+	var time = this._blend_current_time * this.playback_speed;
+
+	var start_time = 0;
+	var duration = take.duration;
+	var end_time = duration;
+
+	if(this.range)
+	{
+		start_time = this.range[0];
+		end_time = this.range[1];
+		duration = end_time - start_time;
+	}
+
+	if(time &gt; end_time)
+	{
+		switch( this.mode )
+		{
+			case PlayAnimation.ONCE: 
+				time = end_time; 
+				this._use_blend_animation = false;
+				break;
+			case PlayAnimation.PINGPONG:
+				if( ((time / duration)|0) % 2 == 0 ) //TEST THIS
+					time = this._blend_current_time % duration; 
+				else
+					time = duration - (this._blend_current_time % duration);
+				break;
+			case PlayAnimation.PINGPONG:
+				time = end_time; 
+				break;
+			case PlayAnimation.LOOP: 
+			default: 
+				time = ((this._blend_current_time - start_time) % duration) + start_time;
+				break;
+		}
+	}
+	else if(time &lt; start_time)
+		time = start_time;
+
+	this.applyAnimation( take, time, null, this._blend_remaining_time / this.blend_time );
+
+	var scene = this._root.scene;
+	if(scene)
+		scene.requestFrame();
+}
+
+/**
+* returns the current animation or an animation with a given name
+* @method getAnimation
+* @param {String} name [optional] the name of the animation, if omited then uses the animation set in the component
+* @return {LS.Animation} the animation container
+*/
+PlayAnimation.prototype.getAnimation = function( name )
+{
+	name = name === undefined ? this.animation : name;
+
+	if(!name || name[0] == &quot;@&quot;) 
+		return this._root.scene.animation;
+	var anim = LS.ResourcesManager.getResource( name );
+	if( anim &amp;&amp; anim.constructor === LS.Animation )
+		return anim;
+	return null;
+}
+
+/**
+* returns the current animation or an animation with a given name
+* @method getTake
+* @param {String} take_name [optional] if not specified then it uses the current take
+* @return {Number} the duration of the take, or -1 if the take was not found or the animation is not loaded
+*/
+PlayAnimation.prototype.getTake = function( take_name )
+{
+	var animation = this.getAnimation();
+	if(!animation) 
+		return null;
+	take_name = take_name || this.take;
+	var take = animation.takes[ take_name ];
+	if(take) 
+		return take;
+	return null;
+}
+
+/**
+* Gets the duration of the current take in the current animation
+* @method getDuration
+* @return {Number} the duration of the take, or -1 if the take was not found or the animation is not loaded
+*/
+PlayAnimation.prototype.getDuration = function()
+{
+	var take = this.getTake();
+	if(take) 
+		return take.duration;
+	return -1;
+}
+
+/**
+* Resets the time to zero and starts playing the current take of the animation
+* It also triggers a &quot;start_animation&quot; event
+* @method play
+*/
+PlayAnimation.prototype.play = function()
+{
+	if(!this._root || !this._root.scene)
+		console.error(&quot;cannot play an animation if the component doesnt belong to a node in a scene&quot;);
+
+	this.playing = true;
+
+	this.current_time = 0;
+	if(this.range)
+		this.current_time = this.range[0];
+	this._last_time = this.current_time;
+	LEvent.trigger( this, &quot;start_animation&quot; );
+
+	//this.applyAnimation( take, this.current_time );
+}
+
+/**
+* Pauses the animation
+* @method pause
+*/
+PlayAnimation.prototype.pause = function()
+{
+	this.playing = false;
+}
+
+/**
+* Stops the animation and sets the time to zero
+* @method stop
+*/
+PlayAnimation.prototype.stop = function()
+{
+	this.playing = false;
+
+	this.current_time = 0;
+	if(this.range)
+		this.current_time = this.range[0];
+	this._last_time = this.current_time;
+	//this.applyAnimation( take, this.current_time );
+}
+
+/**
+* Starts playing the animation but only using a range of it
+* @method playRange
+* @param {Number} start start time
+* @param {Number} end end time
+*/
+PlayAnimation.prototype.playRange = function( start, end )
+{
+	this.playing = true;
+	this.current_time = start;
+	this._last_time = this.current_time;
+	this.range = [ start, end ];
+}
+
+/**
+* applys the animation to the scene nodes
+* @method applyAnimation
+* @param {String} take the name of the take
+* @param {Number} time the time where to sample the tracks
+* @param {Number} last_time [optional] the last time that was applied, (used to trigger events)
+* @param {Number} weight [optional] the weight of this animation (used for blending animation), if ommited 1 is used
+*/
+PlayAnimation.prototype.applyAnimation = function( take, time, last_time, weight )
+{
+	if( last_time === undefined )
+		last_time = time;
+
+	var root_node = null;
+	if(this.root_node &amp;&amp; this._root.scene)
+	{
+		if(this.root_node == &quot;@&quot;)
+			root_node = this._root;
+		else
+			root_node = this._root.scene.getNode( this.root_node );
+	}
+	take.applyTracks( time, last_time, undefined, root_node, this._root.scene, weight );
+}
+
+PlayAnimation.prototype._processSample = function(nodename, property, value, options)
+{
+	var scene = this._root.scene;
+	if(!scene)
+		return;
+	var node = scene.getNode(nodename);
+	if(!node) 
+		return;
+		
+	var trans = node.transform;
+
+	switch(property)
+	{
+		case &quot;translate.X&quot;: if(trans) trans.position[0] = value; break;
+		case &quot;translate.Y&quot;: if(trans) trans.position[1] = value; break;
+		case &quot;translate.Z&quot;: if(trans) trans.position[2] = value; break;
+		//NOT TESTED
+		/*
+		case &quot;rotateX.ANGLE&quot;: if(trans) trans.rotation[0] = value * DEG2RAD; break;
+		case &quot;rotateY.ANGLE&quot;: if(trans) trans.rotation[1] = value * DEG2RAD; break;
+		case &quot;rotateZ.ANGLE&quot;: if(trans) trans.rotation[2] = value * DEG2RAD; break;
+		*/
+		case &quot;matrix&quot;: if(trans) trans.fromMatrix(value); break;
+		default: break;
+	}
+	
+	if(node.transform)
+		node.transform.updateMatrix();
+}
+
+PlayAnimation.prototype.getResources = function(res)
+{
+	if(this.animation)
+		res[ this.animation ] = LS.Animation;
+}
+
+PlayAnimation.prototype.onResourceRenamed = function (old_name, new_name, resource)
+{
+	if(this.animation == old_name)
+		this.animation = new_name;
+}
+
+//returns which events can trigger this component
+PlayAnimation.prototype.getEvents = function()
+{
+	return { &quot;start_animation&quot;: &quot;event&quot;, &quot;end_animation&quot;: &quot;event&quot; };
+}
+
+//returns which actions can be triggered in this component
+PlayAnimation.prototype.getEventActions = function()
+{
+	return { &quot;play&quot;: &quot;function&quot;,&quot;pause&quot;: &quot;function&quot;,&quot;stop&quot;: &quot;function&quot; };
+}
+
+
+LS.registerComponent( PlayAnimation );
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

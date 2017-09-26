@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>litegl.js: stencil example</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<style type='text/css'>
+		html, body { width: 100%; height: 100%; margin: 0; padding: 0 }
+		body { background-color: #DDD;}
+		h1 { color: #777; background-color: #CCC; }
+	</style>
+	<script type="text/javascript" src="../external/gl-matrix.js"></script>
+	<script type="text/javascript" src="../build/litegl.js"></script>
+	<script type="text/javascript">
+	
+	function init()
+	{
+		//create the rendering context
+		var container = document.body;
+
+		var gl = GL.create({width: container.offsetWidth, height: container.offsetHeight, stencil: true});
+		container.appendChild(gl.canvas);
+		gl.animate();
+
+		//build the mesh
+		var mesh = GL.Mesh.fromURL("man.obj");
+		var floor = GL.Mesh.plane({size:140, xz: true});
+		var cam_pos = [0,200,350];
+		var cam_center = [0,100,0];
+
+		//create basic matrices for cameras and transformation
+		var proj = mat4.create();
+		var view = mat4.create();
+		var model = mat4.create();
+		var mvp = mat4.create();
+		var temp = mat4.create();
+		var model2 = mat4.create();
+
+		//get mouse actions
+		gl.captureMouse();
+		gl.onmousemove = function(e)
+		{
+			if(e.dragging)
+			{
+				mat4.rotateY(model,model,e.deltax * 0.01);
+				cam_pos[1] += e.deltay;
+			}
+		}
+
+		//set the camera position
+		mat4.perspective(proj, 45 * DEG2RAD, gl.canvas.width / gl.canvas.height, 0.1, 1000);
+
+		//basic phong shader
+		var shader = new Shader('\
+				precision highp float;\
+				attribute vec3 a_vertex;\
+				attribute vec3 a_normal;\
+				varying vec3 v_normal;\
+				uniform mat4 u_mvp;\
+				uniform mat4 u_model;\
+				void main() {\
+					v_normal = (u_model * vec4(a_normal,0.0)).xyz;\
+					gl_Position = u_mvp * vec4(a_vertex,1.0);\
+				}\
+				', '\
+				precision highp float;\
+				varying vec3 v_normal;\
+				uniform vec3 u_lightvector;\
+				uniform vec4 u_camera_position;\
+				uniform vec4 u_color;\
+				void main() {\
+				  vec3 N = normalize(v_normal);\
+				  gl_FragColor = u_color * max(0.0, dot(u_lightvector,N));\
+				}\
+			');
+
+
+		//generic gl flags and settings
+		gl.clearColor(0.1,0.1,0.1,1);
+		gl.enable( gl.DEPTH_TEST );
+
+		//rendering loop
+		gl.ondraw = function()
+		{
+			gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
+			mat4.lookAt(view, cam_pos, cam_center, [0,1,0]);
+
+			mat4.multiply(temp,view,model);
+			mat4.multiply(mvp,proj,temp);
+
+			//global uniforms
+			shader.uniforms({
+				u_color: [1,1,1,1],
+				u_lightvector: vec3.normalize(vec3.create(),[1,1,1]),
+				u_camera_position: cam_pos});
+
+			//enable rendering to the stencil only
+			gl.enable( gl.STENCIL_TEST );
+			gl.clearStencil( 0x0 );
+			gl.clear( gl.STENCIL_BUFFER_BIT );
+			//gl.colorMask(false, false, false, false);
+			gl.depthMask(false);
+			gl.stencilFunc( gl.ALWAYS, 1, 0xFF );
+			gl.stencilOp( gl.KEEP, gl.KEEP, gl.REPLACE );
+			gl.enable( gl.CULL_FACE );
+
+			//render floor
+			shader.uniforms({
+				u_color: [0.1,0.1,0.1,1],
+				u_model: model,
+				u_mvp: mvp
+			}).draw(floor);
+
+			//render back to color buffer but only if stencil is 1
+			gl.colorMask(true, true, true, true);
+			gl.depthMask(true);
+			gl.enable( gl.STENCIL_TEST );
+			gl.stencilFunc( gl.EQUAL, 1, 0xFF );
+
+			//render reflection with stencil test on
+			mat4.scale( model2, model, [1,-1,1]);
+			mat4.multiply(temp,view,model2);
+			mat4.multiply(mvp,proj,temp);
+			gl.frontFace( gl.CW ); //because the mesh is reversed in Y
+
+			shader.uniforms({
+				u_color: [0.1,0.1,0.1,1],
+				u_model: model2,
+				u_mvp: mvp
+			}).draw( mesh );
+
+			gl.frontFace( gl.CCW );
+			gl.disable( gl.STENCIL_TEST );
+
+			mat4.multiply(temp,view,model);
+			mat4.multiply(mvp,proj,temp);
+
+			//render mesh using the shader
+			shader.uniforms({
+				u_color: [1,1,1,1],
+				u_model: model,
+				u_mvp: mvp
+			}).draw( mesh );
+		};
+
+		//update loop
+		gl.onupdate = function(dt)
+		{
+			//rotate world
+			mat4.rotateY(model,model,dt*0.2);
+		};
+	}	
+	
+	</script>
+</head>
+<body>
+<script>init();</script>
+</body>
+</html>
+
+

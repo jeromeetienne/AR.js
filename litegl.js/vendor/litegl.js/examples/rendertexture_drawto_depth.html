@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>litegl.js: Render to Texture drawTo example</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<style type='text/css'>
+		html, body { margin: 0; padding: 0; }
+		body { background-color: #DDD;}
+		h1 { color: #777; background-color: #CCC; }
+	</style>
+	<script type="text/javascript" src="../external/gl-matrix.js"></script>
+	<script type="text/javascript" src="../build/litegl.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+	
+	//create the rendering context
+	var gl = GL.create({width: window.innerWidth,height: window.innerHeight});
+	var container = document.body;
+	container.appendChild(gl.canvas);
+	gl.animate();
+
+	//build the mesh
+	var mesh = GL.Mesh.cube({size:10});
+	var sphere = GL.Mesh.sphere({size:10});
+	var texture = new GL.Texture(gl.canvas.width,gl.canvas.height, { format: gl.DEPTH_COMPONENT, type: gl.UNSIGNED_INT });
+
+	//create basic matrices for cameras and transformation
+	var persp = mat4.create();
+	var view = mat4.create();
+	var model = mat4.create();
+	var mvp = mat4.create();
+	var temp = mat4.create();
+	var identity = mat4.create();
+
+	//get mouse actions
+	gl.captureMouse();
+	gl.onmousemove = function(e)
+	{
+		if(e.dragging)
+			mat4.rotateY(model,model,e.deltax * 0.01);
+	}
+
+	//set the camera position
+	mat4.perspective(persp, 45 * DEG2RAD, gl.canvas.width / gl.canvas.height, 5, 200);
+	mat4.lookAt(view, [0,20,20],[0,0,0], [0,1,0]);
+
+	//basic shader
+	var flat_shader = new Shader('\
+			precision highp float;\
+			attribute vec3 a_vertex;\
+			uniform mat4 u_mvp;\
+			void main() {\
+				gl_Position = u_mvp * vec4(a_vertex,1.0);\
+			    gl_PointSize = 50.0;\
+			}\
+			', '\
+			precision highp float;\
+			uniform vec4 u_color;\
+			void main() {\
+			  gl_FragColor = u_color;\
+			}\
+		');
+
+	//generic gl flags and settings
+	gl.clearColor(0.1,0.1,0.1,1);
+	gl.enable( gl.DEPTH_TEST );
+
+	//rendering loop
+	gl.ondraw = function()
+	{
+
+		//render something in the texture
+		texture.drawTo(function(){
+			gl.clearColor(0.1,0.3,0.4,1);
+			gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
+
+			//create modelview and projection matrices
+			mat4.multiply(temp,view,model);
+			mat4.multiply(mvp,persp,temp);
+
+			flat_shader.uniforms({
+				u_color: [Math.sin( GL.getTime() * 0.001 ),0.3,0.1,1],
+				u_model: model,
+				u_mvp: mvp
+			}).draw( sphere, gl.POINTS );
+		});
+
+		//render depth to screen
+		texture.toViewport();
+	};
+
+	//update loop
+	gl.onupdate = function(dt)
+	{
+		//rotate cube
+		mat4.rotateY(model,model,dt*0.2);
+	};
+	
+	</script>
+</body>
+
+</html>
+
+

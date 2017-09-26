@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>../src/render/renderInstance.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/LS.Animation.html">LS.Animation</a></li>
+                                <li><a href="../classes/LS.Animation.Take.html">LS.Animation.Take</a></li>
+                                <li><a href="../classes/LS.Animation.Track.html">LS.Animation.Track</a></li>
+                                <li><a href="../classes/LS.Collision.html">LS.Collision</a></li>
+                                <li><a href="../classes/LS.Component.html">LS.Component</a></li>
+                                <li><a href="../classes/LS.ComponentContainer.html">LS.ComponentContainer</a></li>
+                                <li><a href="../classes/LS.Components.Camera.html">LS.Components.Camera</a></li>
+                                <li><a href="../classes/LS.Components.CameraController.html">LS.Components.CameraController</a></li>
+                                <li><a href="../classes/LS.Components.CameraDirector.html">LS.Components.CameraDirector</a></li>
+                                <li><a href="../classes/LS.Components.CameraFX.html">LS.Components.CameraFX</a></li>
+                                <li><a href="../classes/LS.Components.Canvas3D.html">LS.Components.Canvas3D</a></li>
+                                <li><a href="../classes/LS.Components.CustomData.html">LS.Components.CustomData</a></li>
+                                <li><a href="../classes/LS.Components.FollowNode.html">LS.Components.FollowNode</a></li>
+                                <li><a href="../classes/LS.Components.FrameFX.html">LS.Components.FrameFX</a></li>
+                                <li><a href="../classes/LS.Components.FXGraphComponent.html">LS.Components.FXGraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.FXStack.html">LS.Components.FXStack</a></li>
+                                <li><a href="../classes/LS.Components.GeometricPrimitive.html">LS.Components.GeometricPrimitive</a></li>
+                                <li><a href="../classes/LS.Components.GraphComponent.html">LS.Components.GraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.MeshRenderer.html">LS.Components.MeshRenderer</a></li>
+                                <li><a href="../classes/LS.Components.NodeManipulator.html">LS.Components.NodeManipulator</a></li>
+                                <li><a href="../classes/LS.Components.PlayAnimation.html">LS.Components.PlayAnimation</a></li>
+                                <li><a href="../classes/LS.Components.Poser.html">LS.Components.Poser</a></li>
+                                <li><a href="../classes/LS.Components.RealtimeReflector.html">LS.Components.RealtimeReflector</a></li>
+                                <li><a href="../classes/LS.Components.Rotator.html">LS.Components.Rotator</a></li>
+                                <li><a href="../classes/LS.Components.Script.html">LS.Components.Script</a></li>
+                                <li><a href="../classes/LS.Components.SkinDeformer.html">LS.Components.SkinDeformer</a></li>
+                                <li><a href="../classes/LS.Components.Spline.html">LS.Components.Spline</a></li>
+                                <li><a href="../classes/LS.Components.SVGRenderer.html">LS.Components.SVGRenderer</a></li>
+                                <li><a href="../classes/LS.Components.Target.html">LS.Components.Target</a></li>
+                                <li><a href="../classes/LS.Components.Transform.html">LS.Components.Transform</a></li>
+                                <li><a href="../classes/LS.Components.VRCameraController.html">LS.Components.VRCameraController</a></li>
+                                <li><a href="../classes/LS.CompositePattern.html">LS.CompositePattern</a></li>
+                                <li><a href="../classes/LS.DebugRender.html">LS.DebugRender</a></li>
+                                <li><a href="../classes/LS.Draw.html">LS.Draw</a></li>
+                                <li><a href="../classes/LS.Formats.html">LS.Formats</a></li>
+                                <li><a href="../classes/LS.GLSLCode.html">LS.GLSLCode</a></li>
+                                <li><a href="../classes/LS.GUI.html">LS.GUI</a></li>
+                                <li><a href="../classes/LS.Input.html">LS.Input</a></li>
+                                <li><a href="../classes/LS.InteractiveController.html">LS.InteractiveController</a></li>
+                                <li><a href="../classes/LS.Knob.html">LS.Knob</a></li>
+                                <li><a href="../classes/LS.Light.html">LS.Light</a></li>
+                                <li><a href="../classes/LS.LightFX.html">LS.LightFX</a></li>
+                                <li><a href="../classes/LS.LS.html">LS.LS</a></li>
+                                <li><a href="../classes/LS.LScript.html">LS.LScript</a></li>
+                                <li><a href="../classes/LS.Material.html">LS.Material</a></li>
+                                <li><a href="../classes/LS.Pack.html">LS.Pack</a></li>
+                                <li><a href="../classes/LS.Physics.html">LS.Physics</a></li>
+                                <li><a href="../classes/LS.PhysicsInstance.html">LS.PhysicsInstance</a></li>
+                                <li><a href="../classes/LS.Picking.html">LS.Picking</a></li>
+                                <li><a href="../classes/LS.Player.html">LS.Player</a></li>
+                                <li><a href="../classes/LS.Prefab.html">LS.Prefab</a></li>
+                                <li><a href="../classes/LS.Project.html">LS.Project</a></li>
+                                <li><a href="../classes/LS.Renderer.html">LS.Renderer</a></li>
+                                <li><a href="../classes/LS.RenderFrameContext.html">LS.RenderFrameContext</a></li>
+                                <li><a href="../classes/LS.RenderInstance.html">LS.RenderInstance</a></li>
+                                <li><a href="../classes/LS.RenderSettings.html">LS.RenderSettings</a></li>
+                                <li><a href="../classes/LS.RenderState.html">LS.RenderState</a></li>
+                                <li><a href="../classes/LS.Resource.html">LS.Resource</a></li>
+                                <li><a href="../classes/LS.ResourcesManager.html">LS.ResourcesManager</a></li>
+                                <li><a href="../classes/LS.SceneNode.html">LS.SceneNode</a></li>
+                                <li><a href="../classes/LS.SceneTree.html">LS.SceneTree</a></li>
+                                <li><a href="../classes/LS.ShaderCode.html">LS.ShaderCode</a></li>
+                                <li><a href="../classes/LS.ShaderGraph.html">LS.ShaderGraph</a></li>
+                                <li><a href="../classes/LS.ShaderMaterial.html">LS.ShaderMaterial</a></li>
+                                <li><a href="../classes/LS.ShaderQuery.html">LS.ShaderQuery</a></li>
+                                <li><a href="../classes/LS.ShadersManager.html">LS.ShadersManager</a></li>
+                                <li><a href="../classes/LS.SpatialContainer.html">LS.SpatialContainer</a></li>
+                                <li><a href="../classes/LS.StandardMaterial.html">LS.StandardMaterial</a></li>
+                                <li><a href="../classes/LS.UnityMaterial.html">LS.UnityMaterial</a></li>
+                                <li><a href="../classes/LS.WBin.html">LS.WBin</a></li>
+                                <li><a href="../classes/LSQ.html">LSQ</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/LS.html">LS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: ../src/render/renderInstance.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+* RenderInstance contains info of one object to be rendered on the scene.
+* It shouldnt contain ids to resources (strings), instead if must contain the direct reference (to mesh, material)
+*
+* @class RenderInstance
+* @namespace LS
+* @constructor
+*/
+
+function RenderInstance( node, component )
+{
+	this.uid = LS.generateUId(&quot;RINS&quot;); //unique identifier for this RI
+	this.layers = 3; //in layer 1 and 2 by default
+	this.index = -1; //used to know the rendering order
+
+	//info about the mesh
+	this.vertex_buffers = {};
+	this.index_buffer = null;
+	this.wireframe_index_buffer = null;
+	this.range = new Int32Array([0,-1]); //start, offset
+	this.primitive = GL.TRIANGLES;
+
+	this.mesh = null; //shouldnt be used (buffers are added manually), but just in case
+	this.collision_mesh = null; //in case of raycast
+
+	//where does it come from
+	this.node = node;
+	this.component = component;
+	this.priority = 10; //only used if the RenderQueue is in PRIORITY MODE, instances are rendered from higher to lower priority
+	this.sort_mode = RenderInstance.NO_SORT;
+
+	//transformation
+	this.matrix = mat4.create();
+	this.normal_matrix = mat4.create();
+	this.center = vec3.create();
+
+	//for visibility computation
+	this.oobb = BBox.create(); //object space bounding box
+	this.aabb = BBox.create(); //axis aligned bounding box
+
+	//info about the material
+	this.material = null; //the material, cannot be a string
+	this.use_bounding = true; //in case it has vertex shader deformers the bounding box is not usable
+
+	//for extra data for the shader
+	this.query = new LS.ShaderQuery();
+	this.uniforms = {};
+	this.samplers = [];
+
+	this.shader_block_flags = 0;
+	this.shader_blocks = [];
+
+	this.picking_node = null; //for picking
+
+	//this.deformers = []; //TODO
+
+	//TO DO: instancing
+	//this.uniforms_instancing = {};
+
+	//for internal use
+	this._camera_visibility = 0; //tells in which camera was visible this instance during the last rendering (using bit operations)
+	this._is_visible = false; //used during the rendering to mark if it was seen
+	this._dist = 0; //computed during rendering, tells the distance to the current camera
+	this._final_query = new LS.ShaderQuery();
+}
+
+RenderInstance.NO_SORT = 0;
+RenderInstance.SORT_NEAR_FIRST = 1;
+RenderInstance.SORT_FAR_FIRST = 2;
+
+RenderInstance.prototype.fromNode = function(node)
+{
+	if(!node)
+		throw(&quot;no node&quot;);
+	this.node = node;
+	if(node.transform)
+		this.setMatrix( node.transform._global_matrix );
+	else
+		this.setMatrix( LS.IDENTITY );
+	mat4.multiplyVec3( this.center, this.matrix, LS.ZEROS );
+	this.layers = node.layers;
+}
+
+//set the matrix 
+RenderInstance.prototype.setMatrix = function(matrix, normal_matrix)
+{
+	this.matrix.set( matrix );
+
+	if( normal_matrix )
+		this.normal_matrix.set( normal_matrix )
+	else
+		this.computeNormalMatrix();
+}
+
+/**
+* Updates the normal matrix using the matrix
+*
+* @method computeNormalMatrix
+*/
+RenderInstance.prototype.computeNormalMatrix = function()
+{
+	var m = mat4.invert(this.normal_matrix, this.matrix);
+	if(m)
+		mat4.transpose(this.normal_matrix, m);
+}
+
+/**
+* applies a transformation to the current matrix
+*
+* @method applyTransform
+* @param {mat4} matrix
+* @param {mat4} normal_matrix [optional]
+*/
+RenderInstance.prototype.applyTransform = function( matrix, normal_matrix )
+{
+	mat4.mul( this.matrix, this.matrix, matrix );
+	if( normal_matrix )
+		mat4.mul( this.normal_matrix, this.normal_matrix, normal_matrix );
+	else
+		this.computeNormalMatrix();
+}
+
+//set the material and apply material flags to render instance
+RenderInstance.prototype.setMaterial = function(material)
+{
+	this.material = material;
+	if(material &amp;&amp; material.applyToRenderInstance)
+		material.applyToRenderInstance(this);
+}
+
+//sets the buffers to render, the primitive, and the bounding
+RenderInstance.prototype.setMesh = function(mesh, primitive)
+{
+	if( primitive == -1 || primitive === undefined )
+		primitive = gl.TRIANGLES;
+	this.primitive = primitive;
+
+	if(mesh != this.mesh)
+	{
+		this.mesh = mesh;
+		this.vertex_buffers = {};
+	}
+
+	if(!this.mesh)
+		return;
+
+	//this.vertex_buffers = mesh.vertexBuffers;
+	for(var i in mesh.vertexBuffers)
+		this.vertex_buffers[i] = mesh.vertexBuffers[i];
+
+	switch(primitive)
+	{
+		case gl.TRIANGLES: 
+			this.index_buffer = mesh.indexBuffers[&quot;triangles&quot;]; //works for indexed and non-indexed
+			break;
+		case gl.LINES: 
+			/*
+			if(!mesh.indexBuffers[&quot;lines&quot;])
+				mesh.computeWireframe();
+			*/
+			this.index_buffer = mesh.indexBuffers[&quot;lines&quot;];
+			break;
+		case 10:  //wireframe
+			this.primitive = gl.LINES;
+			if(!mesh.indexBuffers[&quot;wireframe&quot;])
+				mesh.computeWireframe();
+			this.index_buffer = mesh.indexBuffers[&quot;wireframe&quot;];
+			break;
+
+		case gl.POINTS: 
+		default:
+			this.index_buffer = null;
+			break;
+	}
+
+	if(mesh.bounding)
+	{
+		this.oobb.set( mesh.bounding ); //copy
+		this.use_bounding = true;
+	}
+	else
+		this.use_bounding = false;
+}
+
+RenderInstance.prototype.setRange = function(start, offset)
+{
+	this.range[0] = start;
+	this.range[1] = offset;
+}
+
+/**
+* Enable flag in the flag bit field
+*
+* @method enableFlag
+* @param {number} flag id
+*/
+RenderInstance.prototype.enableFlag = function(flag)
+{
+	this.flags |= flag;
+}
+
+/**
+* Disable flag in the flag bit field
+*
+* @method enableFlag
+* @param {number} flag id
+*/
+RenderInstance.prototype.disableFlag = function(flag)
+{
+	this.flags &amp;= ~flag;
+}
+
+/**
+* Tells if a flag is enabled
+*
+* @method enableFlag
+* @param {number} flag id
+* @return {boolean} flag value
+*/
+RenderInstance.prototype.isFlag = function(flag)
+{
+	return (this.flags &amp; flag);
+}
+
+/**
+* Computes the instance bounding box in world space from the one in local space
+*
+* @method updateAABB
+*/
+RenderInstance.prototype.updateAABB = function()
+{
+	BBox.transformMat4(this.aabb, this.oobb, this.matrix );
+}
+
+/**
+* Used to update the RI info without having to go through the collectData process, it is faster but some changes may take a while
+*
+* @method update
+*/
+RenderInstance.prototype.update = function()
+{
+	if(!this.node || !this.node.transform)
+		return;
+	this.setMatrix( this.node.transform._global_matrix );
+}
+
+/**
+* Calls render taking into account primitive and range
+*
+* @method render
+* @param {Shader} shader
+*/
+RenderInstance.prototype.render = function(shader, primitive)
+{
+	//in case no normals found but they are required
+	if(shader.attributes[&quot;a_normal&quot;] &amp;&amp; !this.vertex_buffers[&quot;normals&quot;])
+	{
+		this.mesh.computeNormals();		
+		this.vertex_buffers[&quot;normals&quot;] = this.mesh.vertexBuffers[&quot;normals&quot;];
+	}
+
+	//in case no coords found but they are required
+	if(shader.attributes[&quot;a_coord&quot;] &amp;&amp; !this.vertex_buffers[&quot;coords&quot;])
+	{
+		//this.mesh.computeTextureCoordinates();		
+		//this.vertex_buffers[&quot;coords&quot;] = this.mesh.vertexBuffers[&quot;coords&quot;];
+	}
+
+	//in case no tangents found but they are required
+	if(shader.attributes[&quot;a_tangent&quot;] &amp;&amp; !this.vertex_buffers[&quot;tangents&quot;])
+	{
+		this.mesh.computeTangents();		
+		this.vertex_buffers[&quot;tangents&quot;] = this.mesh.vertexBuffers[&quot;tangents&quot;];
+	}
+
+	//in case no secondary coords found but they are required
+	if(shader.attributes[&quot;a_coord1&quot;] &amp;&amp; !this.vertex_buffers[&quot;coords1&quot;])
+	{
+		this.mesh.createVertexBuffer(&quot;coords1&quot;,2, vertex_buffers[&quot;coords&quot;].data );
+		this.vertex_buffers[&quot;coords1&quot;] = this.mesh.vertexBuffers[&quot;coords1&quot;];
+	}
+
+	//in case no secondary coords found but they are required
+	if(shader.attributes[&quot;a_extra&quot;] &amp;&amp; !this.vertex_buffers[&quot;extra&quot;])
+	{
+		this.mesh.createVertexBuffer(&quot;a_extra&quot;, 1 );
+		this.vertex_buffers[&quot;extra&quot;] = this.mesh.vertexBuffers[&quot;extra&quot;];
+	}
+
+	if(shader.attributes[&quot;a_extra2&quot;] &amp;&amp; !this.vertex_buffers[&quot;extra2&quot;])
+	{
+		this.mesh.createVertexBuffer(&quot;a_extra2&quot;, 2 );
+		this.vertex_buffers[&quot;extra2&quot;] = this.mesh.vertexBuffers[&quot;extra2&quot;];
+	}
+
+	if(shader.attributes[&quot;a_extra3&quot;] &amp;&amp; !this.vertex_buffers[&quot;extra3&quot;])
+	{
+		this.mesh.createVertexBuffer(&quot;a_extra3&quot;, 3 );
+		this.vertex_buffers[&quot;extra3&quot;] = this.mesh.vertexBuffers[&quot;extra3&quot;];
+	}
+
+	shader.drawBuffers( this.vertex_buffers,
+	  this.index_buffer,
+	  primitive !== undefined ? primitive : this.primitive,
+	  this.range[0], this.range[1] );
+}
+
+RenderInstance.prototype.addShaderBlock = function( block, uniforms )
+{
+	if( block.flag_mask &amp; this.shader_block_flags &amp;&amp; uniforms === undefined )
+		return;
+
+	for(var i = 0; i &lt; this.shader_blocks.length; ++i)
+	{
+		if(!this.shader_blocks[i])
+			continue;
+		if( this.shader_blocks[i].block == block )
+		{
+			if(uniforms !== undefined)
+				this.shader_blocks[i].uniforms = uniforms;
+			return i;
+		}
+	}
+	this.shader_blocks.push( { block: block, uniforms: uniforms } );
+	this.shader_block_flags |= block.flag_mask;
+	return this.shader_blocks.length - 1;
+}
+
+RenderInstance.prototype.removeShaderBlock = function( block )
+{
+	if( ! (block.flag_mask &amp; this.shader_block_flags) )
+		return;
+
+	for(var i = 0; i &lt; this.shader_blocks.length; ++i)
+	{
+		if(!this.shader_blocks[i])
+			continue;
+		if( this.shader_blocks[i].block !== block )
+			continue;
+
+		this.shader_blocks.splice(i,1);
+		this.shader_block_flags &amp;= ~block.flag_mask;
+		break;
+	}
+}
+
+//checks the ShaderBlocks attached to this instance and resolves the flags
+RenderInstance.prototype.computeShaderBlockFlags = function()
+{
+	return this.shader_block_flags;
+
+	/*
+	var r = 0;
+	for(var i = 0; i &lt; this.shader_blocks.length; ++i)
+	{
+		var shader_block = this.shader_blocks[i];
+		if(!shader_block)
+			continue;
+		var block = this.shader_blocks[i].block;
+		r |= block.flag_mask;
+	}
+	return r;
+	*/
+}
+
+/*
+RenderInstance.prototype.renderInstancing = function( shader )
+{
+	var instances_info = this.instances_info;
+
+	var matrices = new Float32Array( instances_info.length * 16 );
+	for(var j = 0; j &lt; instances_info.length; ++j)
+	{
+		var matrix = instances_info[j].matrix;
+		matrices.set( matrix, j*16 );
+	}
+
+	gl.bindBuffer(gl.ARRAY_BUFFER, matricesBuffer );
+	gl.bufferData(gl.ARRAY_BUFFER, matrices, gl.STREAM_DRAW);
+
+	// Bind the instance matrices data (mat4 behaves as 4 attributes)
+	for(var k = 0; k &lt; 4; ++k)
+	{
+		gl.enableVertexAttribArray( location+k );
+		gl.vertexAttribPointer( location+k, 4, gl.FLOAT , false, 16*4, k*4*4 );
+		ext.vertexAttribDivisorANGLE( location+k, 1 ); // This makes it instanced!
+	}
+
+	//gl.drawElements( gl.TRIANGLES, length, indexBuffer.buffer.gl_type, 0 ); //gl.UNSIGNED_SHORT
+	ext.drawElementsInstancedANGLE( gl.TRIANGLES, length, indexBuffer.buffer.gl_type, 0, batch.length );
+	GFX.stats.calls += 1;
+	for(var k = 0; k &lt; 4; ++k)
+	{
+		ext.vertexAttribDivisorANGLE( location+k, 0 );
+		gl.disableVertexAttribArray( location+k );
+	}
+}
+*/
+
+RenderInstance.prototype.overlapsSphere = function( center, radius )
+{
+	//we dont know if the bbox of the instance is valid
+	if( !this.use_bounding )
+		return true;
+	return geo.testSphereBBox( center, radius, this.aabb );
+}
+
+/**
+* Checks if this object was visible by a camera during the last frame
+*
+* @method wasVisibleByCamera
+* @param {LS.Camera} camera [optional] if a camera is supplied it checks if it was visible by that camera, otherwise tells you if it was visible by any camera
+* @return {Boolean} true if it was visible by the camera (or any camera if no camera supplied), false otherwise
+*/
+RenderInstance.prototype.wasVisibleByCamera = function( camera )
+{
+	if(!camera)
+		return this._camera_visibility != 0;
+	return (this._camera_visibility | (1&lt;&lt;(camera._rendering_index))) ? true : false;
+}
+
+LS.RenderInstance = RenderInstance;
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

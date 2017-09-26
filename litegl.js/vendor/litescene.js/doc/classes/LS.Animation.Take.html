@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>LS.Animation.Take</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/LS.Animation.html">LS.Animation</a></li>
+                                <li><a href="../classes/LS.Animation.Take.html">LS.Animation.Take</a></li>
+                                <li><a href="../classes/LS.Animation.Track.html">LS.Animation.Track</a></li>
+                                <li><a href="../classes/LS.Collision.html">LS.Collision</a></li>
+                                <li><a href="../classes/LS.Component.html">LS.Component</a></li>
+                                <li><a href="../classes/LS.ComponentContainer.html">LS.ComponentContainer</a></li>
+                                <li><a href="../classes/LS.Components.Camera.html">LS.Components.Camera</a></li>
+                                <li><a href="../classes/LS.Components.CameraController.html">LS.Components.CameraController</a></li>
+                                <li><a href="../classes/LS.Components.CameraDirector.html">LS.Components.CameraDirector</a></li>
+                                <li><a href="../classes/LS.Components.CameraFX.html">LS.Components.CameraFX</a></li>
+                                <li><a href="../classes/LS.Components.Canvas3D.html">LS.Components.Canvas3D</a></li>
+                                <li><a href="../classes/LS.Components.CustomData.html">LS.Components.CustomData</a></li>
+                                <li><a href="../classes/LS.Components.FollowNode.html">LS.Components.FollowNode</a></li>
+                                <li><a href="../classes/LS.Components.FrameFX.html">LS.Components.FrameFX</a></li>
+                                <li><a href="../classes/LS.Components.FXGraphComponent.html">LS.Components.FXGraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.FXStack.html">LS.Components.FXStack</a></li>
+                                <li><a href="../classes/LS.Components.GeometricPrimitive.html">LS.Components.GeometricPrimitive</a></li>
+                                <li><a href="../classes/LS.Components.GraphComponent.html">LS.Components.GraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.MeshRenderer.html">LS.Components.MeshRenderer</a></li>
+                                <li><a href="../classes/LS.Components.NodeManipulator.html">LS.Components.NodeManipulator</a></li>
+                                <li><a href="../classes/LS.Components.PlayAnimation.html">LS.Components.PlayAnimation</a></li>
+                                <li><a href="../classes/LS.Components.Poser.html">LS.Components.Poser</a></li>
+                                <li><a href="../classes/LS.Components.RealtimeReflector.html">LS.Components.RealtimeReflector</a></li>
+                                <li><a href="../classes/LS.Components.Rotator.html">LS.Components.Rotator</a></li>
+                                <li><a href="../classes/LS.Components.Script.html">LS.Components.Script</a></li>
+                                <li><a href="../classes/LS.Components.SkinDeformer.html">LS.Components.SkinDeformer</a></li>
+                                <li><a href="../classes/LS.Components.Spline.html">LS.Components.Spline</a></li>
+                                <li><a href="../classes/LS.Components.SVGRenderer.html">LS.Components.SVGRenderer</a></li>
+                                <li><a href="../classes/LS.Components.Target.html">LS.Components.Target</a></li>
+                                <li><a href="../classes/LS.Components.Transform.html">LS.Components.Transform</a></li>
+                                <li><a href="../classes/LS.Components.VRCameraController.html">LS.Components.VRCameraController</a></li>
+                                <li><a href="../classes/LS.CompositePattern.html">LS.CompositePattern</a></li>
+                                <li><a href="../classes/LS.DebugRender.html">LS.DebugRender</a></li>
+                                <li><a href="../classes/LS.Draw.html">LS.Draw</a></li>
+                                <li><a href="../classes/LS.Formats.html">LS.Formats</a></li>
+                                <li><a href="../classes/LS.GLSLCode.html">LS.GLSLCode</a></li>
+                                <li><a href="../classes/LS.GUI.html">LS.GUI</a></li>
+                                <li><a href="../classes/LS.Input.html">LS.Input</a></li>
+                                <li><a href="../classes/LS.InteractiveController.html">LS.InteractiveController</a></li>
+                                <li><a href="../classes/LS.Knob.html">LS.Knob</a></li>
+                                <li><a href="../classes/LS.Light.html">LS.Light</a></li>
+                                <li><a href="../classes/LS.LightFX.html">LS.LightFX</a></li>
+                                <li><a href="../classes/LS.LS.html">LS.LS</a></li>
+                                <li><a href="../classes/LS.LScript.html">LS.LScript</a></li>
+                                <li><a href="../classes/LS.Material.html">LS.Material</a></li>
+                                <li><a href="../classes/LS.Pack.html">LS.Pack</a></li>
+                                <li><a href="../classes/LS.Physics.html">LS.Physics</a></li>
+                                <li><a href="../classes/LS.PhysicsInstance.html">LS.PhysicsInstance</a></li>
+                                <li><a href="../classes/LS.Picking.html">LS.Picking</a></li>
+                                <li><a href="../classes/LS.Player.html">LS.Player</a></li>
+                                <li><a href="../classes/LS.Prefab.html">LS.Prefab</a></li>
+                                <li><a href="../classes/LS.Project.html">LS.Project</a></li>
+                                <li><a href="../classes/LS.Renderer.html">LS.Renderer</a></li>
+                                <li><a href="../classes/LS.RenderFrameContext.html">LS.RenderFrameContext</a></li>
+                                <li><a href="../classes/LS.RenderInstance.html">LS.RenderInstance</a></li>
+                                <li><a href="../classes/LS.RenderSettings.html">LS.RenderSettings</a></li>
+                                <li><a href="../classes/LS.RenderState.html">LS.RenderState</a></li>
+                                <li><a href="../classes/LS.Resource.html">LS.Resource</a></li>
+                                <li><a href="../classes/LS.ResourcesManager.html">LS.ResourcesManager</a></li>
+                                <li><a href="../classes/LS.SceneNode.html">LS.SceneNode</a></li>
+                                <li><a href="../classes/LS.SceneTree.html">LS.SceneTree</a></li>
+                                <li><a href="../classes/LS.ShaderCode.html">LS.ShaderCode</a></li>
+                                <li><a href="../classes/LS.ShaderGraph.html">LS.ShaderGraph</a></li>
+                                <li><a href="../classes/LS.ShaderMaterial.html">LS.ShaderMaterial</a></li>
+                                <li><a href="../classes/LS.ShaderQuery.html">LS.ShaderQuery</a></li>
+                                <li><a href="../classes/LS.ShadersManager.html">LS.ShadersManager</a></li>
+                                <li><a href="../classes/LS.SpatialContainer.html">LS.SpatialContainer</a></li>
+                                <li><a href="../classes/LS.StandardMaterial.html">LS.StandardMaterial</a></li>
+                                <li><a href="../classes/LS.UnityMaterial.html">LS.UnityMaterial</a></li>
+                                <li><a href="../classes/LS.WBin.html">LS.WBin</a></li>
+                                <li><a href="../classes/LSQ.html">LSQ</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/LS.html">LS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1>LS.Animation.Take Class</h1>
+<div class="box meta">
+
+
+        <div class="foundat">
+            Defined in: <a href="../files/.._src_resources_animation.js.html#l273"><code>..&#x2F;src&#x2F;resources&#x2F;animation.js:273</code></a>
+        </div>
+
+            Module: <a href="../modules/LS.html">LS</a>
+
+</div>
+
+
+<div class="box intro">
+    <p>Represents a set of animations</p>
+
+</div>
+
+    <div class="constructor">
+        <h2>Constructor</h2>
+<div id="method_LS.Animation.Take" class="method item">
+    <h3 class="name"><code>LS.Animation.Take</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_resources_animation.js.html#l273"><code>..&#x2F;src&#x2F;resources&#x2F;animation.js:273</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+
+</div>
+    </div>
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_applyTracks">applyTracks</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_createTrack">createTrack</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_onlyRotations">onlyRotations</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_optimizeTracks">optimizeTracks</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_removeScaling">removeScaling</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties">
+                            <li class="index-item property">
+                                <a href="#property_duration  in seconds">duration  in seconds</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_name">name</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_tracks">tracks</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_applyTracks" class="method item">
+    <h3 class="name"><code>applyTracks</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>current_time</code>
+                </li>
+                <li class="arg">
+                        <code>last_time</code>
+                </li>
+                <li class="arg">
+                        <code>ignore_interpolation</code>
+                </li>
+                <li class="arg">
+                        <code>weight</code>
+                </li>
+                <li class="arg">
+                        <code>root</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Component</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_resources_animation.js.html#l342"><code>..&#x2F;src&#x2F;resources&#x2F;animation.js:342</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>For every track, gets the interpolated value between keyframes and applies the value to the property associated with the track locator
+Locators are in the form of &quot;{NODE_UID}/{COMPONENT_UID}/{property_name}&quot;</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">current_time</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>the time of the anim to sample</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">last_time</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>this is used for events, we need to know where you were before</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">ignore_interpolation</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>in case you want to sample the nearest one</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">weight</code>
+                        <span class="type">SceneNode</span>
+
+
+                    <div class="param-description">
+                        <p>[Optional] allows to blend animations with current value (default is 1)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">root</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>[Optional] if you want to limit the locator to search inside a node</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Component</span>:
+                    <p>the target where the action was performed</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_createTrack" class="method item">
+    <h3 class="name"><code>createTrack</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>data</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/LS.Animation.Track.html" class="crosslink">LS.Animation.Track</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_resources_animation.js.html#l322"><code>..&#x2F;src&#x2F;resources&#x2F;animation.js:322</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>creates a new track from a given data</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">data</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>in serialized format</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/LS.Animation.Track.html" class="crosslink">LS.Animation.Track</a></span>:
+                    <p>the track</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_onlyRotations" class="method item">
+    <h3 class="name"><code>onlyRotations</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_resources_animation.js.html#l573"><code>..&#x2F;src&#x2F;resources&#x2F;animation.js:573</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>If this is a transform track it removes translation and scale leaving only rotations</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_optimizeTracks" class="method item">
+    <h3 class="name"><code>optimizeTracks</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_resources_animation.js.html#l514"><code>..&#x2F;src&#x2F;resources&#x2F;animation.js:514</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Optimizes the tracks by changing the Matrix tracks to Trans10 tracks which are way faster and use less space</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_removeScaling" class="method item">
+    <h3 class="name"><code>removeScaling</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_resources_animation.js.html#l639"><code>..&#x2F;src&#x2F;resources&#x2F;animation.js:639</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>removes scaling in transform tracks</p>
+
+    </div>
+
+
+
+
+</div>
+            </div>
+
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_duration  in seconds" class="property item">
+    <h3 class="name"><code>duration  in seconds</code></h3>
+    <span class="type">Number</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_resources_animation.js.html#l290"><code>..&#x2F;src&#x2F;resources&#x2F;animation.js:290</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_name" class="property item">
+    <h3 class="name"><code>name</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_resources_animation.js.html#l282"><code>..&#x2F;src&#x2F;resources&#x2F;animation.js:282</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_tracks" class="property item">
+    <h3 class="name"><code>tracks</code></h3>
+    <span class="type">Array</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_resources_animation.js.html#l286"><code>..&#x2F;src&#x2F;resources&#x2F;animation.js:286</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+            </div>
+
+
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

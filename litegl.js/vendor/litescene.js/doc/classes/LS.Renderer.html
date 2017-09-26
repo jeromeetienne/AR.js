@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>LS.Renderer</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/LS.Animation.html">LS.Animation</a></li>
+                                <li><a href="../classes/LS.Animation.Take.html">LS.Animation.Take</a></li>
+                                <li><a href="../classes/LS.Animation.Track.html">LS.Animation.Track</a></li>
+                                <li><a href="../classes/LS.Collision.html">LS.Collision</a></li>
+                                <li><a href="../classes/LS.Component.html">LS.Component</a></li>
+                                <li><a href="../classes/LS.ComponentContainer.html">LS.ComponentContainer</a></li>
+                                <li><a href="../classes/LS.Components.Camera.html">LS.Components.Camera</a></li>
+                                <li><a href="../classes/LS.Components.CameraController.html">LS.Components.CameraController</a></li>
+                                <li><a href="../classes/LS.Components.CameraDirector.html">LS.Components.CameraDirector</a></li>
+                                <li><a href="../classes/LS.Components.CameraFX.html">LS.Components.CameraFX</a></li>
+                                <li><a href="../classes/LS.Components.Canvas3D.html">LS.Components.Canvas3D</a></li>
+                                <li><a href="../classes/LS.Components.CustomData.html">LS.Components.CustomData</a></li>
+                                <li><a href="../classes/LS.Components.FollowNode.html">LS.Components.FollowNode</a></li>
+                                <li><a href="../classes/LS.Components.FrameFX.html">LS.Components.FrameFX</a></li>
+                                <li><a href="../classes/LS.Components.FXGraphComponent.html">LS.Components.FXGraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.FXStack.html">LS.Components.FXStack</a></li>
+                                <li><a href="../classes/LS.Components.GeometricPrimitive.html">LS.Components.GeometricPrimitive</a></li>
+                                <li><a href="../classes/LS.Components.GraphComponent.html">LS.Components.GraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.MeshRenderer.html">LS.Components.MeshRenderer</a></li>
+                                <li><a href="../classes/LS.Components.NodeManipulator.html">LS.Components.NodeManipulator</a></li>
+                                <li><a href="../classes/LS.Components.PlayAnimation.html">LS.Components.PlayAnimation</a></li>
+                                <li><a href="../classes/LS.Components.Poser.html">LS.Components.Poser</a></li>
+                                <li><a href="../classes/LS.Components.RealtimeReflector.html">LS.Components.RealtimeReflector</a></li>
+                                <li><a href="../classes/LS.Components.Rotator.html">LS.Components.Rotator</a></li>
+                                <li><a href="../classes/LS.Components.Script.html">LS.Components.Script</a></li>
+                                <li><a href="../classes/LS.Components.SkinDeformer.html">LS.Components.SkinDeformer</a></li>
+                                <li><a href="../classes/LS.Components.Spline.html">LS.Components.Spline</a></li>
+                                <li><a href="../classes/LS.Components.SVGRenderer.html">LS.Components.SVGRenderer</a></li>
+                                <li><a href="../classes/LS.Components.Target.html">LS.Components.Target</a></li>
+                                <li><a href="../classes/LS.Components.Transform.html">LS.Components.Transform</a></li>
+                                <li><a href="../classes/LS.Components.VRCameraController.html">LS.Components.VRCameraController</a></li>
+                                <li><a href="../classes/LS.CompositePattern.html">LS.CompositePattern</a></li>
+                                <li><a href="../classes/LS.DebugRender.html">LS.DebugRender</a></li>
+                                <li><a href="../classes/LS.Draw.html">LS.Draw</a></li>
+                                <li><a href="../classes/LS.Formats.html">LS.Formats</a></li>
+                                <li><a href="../classes/LS.GLSLCode.html">LS.GLSLCode</a></li>
+                                <li><a href="../classes/LS.GUI.html">LS.GUI</a></li>
+                                <li><a href="../classes/LS.Input.html">LS.Input</a></li>
+                                <li><a href="../classes/LS.InteractiveController.html">LS.InteractiveController</a></li>
+                                <li><a href="../classes/LS.Knob.html">LS.Knob</a></li>
+                                <li><a href="../classes/LS.Light.html">LS.Light</a></li>
+                                <li><a href="../classes/LS.LightFX.html">LS.LightFX</a></li>
+                                <li><a href="../classes/LS.LS.html">LS.LS</a></li>
+                                <li><a href="../classes/LS.LScript.html">LS.LScript</a></li>
+                                <li><a href="../classes/LS.Material.html">LS.Material</a></li>
+                                <li><a href="../classes/LS.Pack.html">LS.Pack</a></li>
+                                <li><a href="../classes/LS.Physics.html">LS.Physics</a></li>
+                                <li><a href="../classes/LS.PhysicsInstance.html">LS.PhysicsInstance</a></li>
+                                <li><a href="../classes/LS.Picking.html">LS.Picking</a></li>
+                                <li><a href="../classes/LS.Player.html">LS.Player</a></li>
+                                <li><a href="../classes/LS.Prefab.html">LS.Prefab</a></li>
+                                <li><a href="../classes/LS.Project.html">LS.Project</a></li>
+                                <li><a href="../classes/LS.Renderer.html">LS.Renderer</a></li>
+                                <li><a href="../classes/LS.RenderFrameContext.html">LS.RenderFrameContext</a></li>
+                                <li><a href="../classes/LS.RenderInstance.html">LS.RenderInstance</a></li>
+                                <li><a href="../classes/LS.RenderSettings.html">LS.RenderSettings</a></li>
+                                <li><a href="../classes/LS.RenderState.html">LS.RenderState</a></li>
+                                <li><a href="../classes/LS.Resource.html">LS.Resource</a></li>
+                                <li><a href="../classes/LS.ResourcesManager.html">LS.ResourcesManager</a></li>
+                                <li><a href="../classes/LS.SceneNode.html">LS.SceneNode</a></li>
+                                <li><a href="../classes/LS.SceneTree.html">LS.SceneTree</a></li>
+                                <li><a href="../classes/LS.ShaderCode.html">LS.ShaderCode</a></li>
+                                <li><a href="../classes/LS.ShaderGraph.html">LS.ShaderGraph</a></li>
+                                <li><a href="../classes/LS.ShaderMaterial.html">LS.ShaderMaterial</a></li>
+                                <li><a href="../classes/LS.ShaderQuery.html">LS.ShaderQuery</a></li>
+                                <li><a href="../classes/LS.ShadersManager.html">LS.ShadersManager</a></li>
+                                <li><a href="../classes/LS.SpatialContainer.html">LS.SpatialContainer</a></li>
+                                <li><a href="../classes/LS.StandardMaterial.html">LS.StandardMaterial</a></li>
+                                <li><a href="../classes/LS.UnityMaterial.html">LS.UnityMaterial</a></li>
+                                <li><a href="../classes/LS.WBin.html">LS.WBin</a></li>
+                                <li><a href="../classes/LSQ.html">LSQ</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/LS.html">LS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1>LS.Renderer Class</h1>
+<div class="box meta">
+
+
+        <div class="foundat">
+            Defined in: <a href="../files/.._src_render_renderer.js.html#l3"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:3</code></a>
+        </div>
+
+            Module: <a href="../modules/LS.html">LS</a>
+
+</div>
+
+
+<div class="box intro">
+    <p>The Renderer is in charge of generating one frame of the scene. Contains all the passes and intermediate functions to create the frame.</p>
+
+</div>
+
+    <div class="constructor">
+        <h2>Constructor</h2>
+<div id="method_LS.Renderer" class="method item">
+    <h3 class="name"><code>LS.Renderer</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l3"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:3</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+
+</div>
+    </div>
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_addRenderQueue">addRenderQueue</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_enableCamera">enableCamera</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_fillSceneShaderQuery">fillSceneShaderQuery</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getCameraAtPosition">getCameraAtPosition</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getNearLights">getNearLights</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_processVisibleData">processVisibleData</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_registerRenderPass">registerRenderPass</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_render">render</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_renderColorMultiPassLightingInstance">renderColorMultiPassLightingInstance</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_renderFrame">renderFrame</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_renderFrameCameras">renderFrameCameras</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_renderInstances">renderInstances</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_renderInstancesToRT">renderInstancesToRT</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_renderMaterialPreview">renderMaterialPreview</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_renderPickingInstance">renderPickingInstance</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_renderShadowPassInstance">renderShadowPassInstance</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_renderToCubemap">renderToCubemap</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_resetGLState">resetGLState</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setRenderPass">setRenderPass</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_addRenderQueue" class="method item">
+    <h3 class="name"><code>addRenderQueue</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+                <li class="arg">
+                        <code>sorting</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Number</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l1545"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:1545</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Adds a new RenderQueue to the Renderer.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">RenderQueue</span>
+
+
+                    <div class="param-description">
+                        <p>name of the render pass as in render_passes</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">sorting</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>which algorithm use to sort ( LS.RenderQueue.NO_SORT, LS.RenderQueue.SORT_NEAR_TO_FAR, LS.RenderQueue.SORT_FAR_TO_NEAR )</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>extra stuff to add to the queue ( like callbacks onStart, onFinish )</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Number</span>:
+                    <p>index of the render queue</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_enableCamera" class="method item">
+    <h3 class="name"><code>enableCamera</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>camera</code>
+                </li>
+                <li class="arg">
+                        <code>render_settings</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l374"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:374</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Sets camera as the current camera, sets the viewport according to camera info, updates matrices, and prepares LS.Draw</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">camera</code>
+                        <span class="type">Camera</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">render_settings</code>
+                        <span class="type">RenderSettings</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_fillSceneShaderQuery" class="method item">
+    <h3 class="name"><code>fillSceneShaderQuery</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>scene</code>
+                </li>
+                <li class="arg">
+                        <code>render_settings</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l1060"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:1060</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Update the scene shader query according to the render pass
+Do not reuse the query, they change between rendering passes (shadows, reflections, etc)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">scene</code>
+                        <span class="type">SceneTree</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">render_settings</code>
+                        <span class="type">RenderSettings</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_getCameraAtPosition" class="method item">
+    <h3 class="name"><code>getCameraAtPosition</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>x</code>
+                </li>
+                <li class="arg">
+                        <code>y</code>
+                </li>
+                <li class="arg">
+                        <code>scene</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Camera</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l1492"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:1492</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the last camera that falls into a given screen position</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">x</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">y</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">scene</code>
+                        <span class="type">SceneTree</span>
+
+
+                    <div class="param-description">
+                        <p>if not specified last rendered scene will be used</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Camera</span>:
+                    <p>the camera</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getNearLights" class="method item">
+    <h3 class="name"><code>getNearLights</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>instance</code>
+                </li>
+                <li class="arg">
+                        <code>result</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Array</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l663"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:663</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns a list of all the lights overlapping this instance (it uses sperical bounding so it could returns lights that are not really overlapping)
+It is used by the multipass lighting to iterate</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">instance</code>
+                        <span class="type">RenderInstance</span>
+
+
+                    <div class="param-description">
+                        <p>the render instance</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">result</code>
+                        <span class="type">Array</span>
+
+
+                    <div class="param-description">
+                        <p>[optional] the output array</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Array</span>:
+                    <p>array containing a list of LS.Light affecting this RenderInstance</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_processVisibleData" class="method item">
+    <h3 class="name"><code>processVisibleData</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>scene</code>
+                </li>
+                <li class="arg">
+                        <code>render_settings</code>
+                </li>
+                <li class="arg">
+                        <code>cameras</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l1146"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:1146</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Collects and process the rendering instances, cameras and lights that are visible
+Its a prepass shared among all rendering passes
+Warning: rendering order is computed here, so it is shared among all the cameras (TO DO, move somewhere else)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">scene</code>
+                        <span class="type">SceneTree</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">render_settings</code>
+                        <span class="type">RenderSettings</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">cameras</code>
+                        <span class="type">Array</span>
+
+
+                    <div class="param-description">
+                        <p>in case you dont want to use the scene cameras</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_registerRenderPass" class="method item">
+    <h3 class="name"><code>registerRenderPass</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+                <li class="arg">
+                        <code>info</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l1530"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:1530</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Register a render pass to be used during the rendering</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>name of the render pass as in render_passes</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">info</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>render pass info, { render_instance: Function( instance, render_settings ) }</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_render" class="method item">
+    <h3 class="name"><code>render</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>scene</code>
+                </li>
+                <li class="arg">
+                        <code>render_settings</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[cameras=null]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l169"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:169</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Renders the current scene to the screen
+Many steps are involved, from gathering info from the scene tree, generating shadowmaps, setup FBOs, render every camera
+If you want to change the rendering pipeline, do not overwrite this function, try to understand it first, otherwise you will miss lots of features</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">scene</code>
+                        <span class="type">SceneTree</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">render_settings</code>
+                        <span class="type">RenderSettings</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[cameras=null]</code>
+                        <span class="type">Array</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>if no cameras are specified the cameras are taken from the scene</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_renderColorMultiPassLightingInstance" class="method item">
+    <h3 class="name"><code>renderColorMultiPassLightingInstance</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>instance</code>
+                </li>
+                <li class="arg">
+                        <code>render_settings</code>
+                </li>
+                <li class="arg">
+                        <code>lights</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l746"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:746</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Renders the RenderInstance taking into account all the lights that affect it and doing a render for every light
+This function it is not as fast as I would like but enables lots of interesting features</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">instance</code>
+                        <span class="type">RenderInstance</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">render_settings</code>
+                        <span class="type">RenderSettings</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">lights</code>
+                        <span class="type">Array</span>
+
+
+                    <div class="param-description">
+                        <p>array containing al the lights affecting this RI</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_renderFrame" class="method item">
+    <h3 class="name"><code>renderFrame</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>camera</code>
+                </li>
+                <li class="arg">
+                        <code>render_settings</code>
+                </li>
+                <li class="arg">
+                        <code>scene</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l325"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:325</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>renders the view from one camera to the current viewport (could be the screen or a texture)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">camera</code>
+                        <span class="type">Camera</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">render_settings</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">scene</code>
+                        <span class="type">SceneTree</span>
+
+
+                    <div class="param-description">
+                        <p>[optional] this can be passed when we are rendering a different scene from LS.GlobalScene (used in renderMaterialPreview)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_renderFrameCameras" class="method item">
+    <h3 class="name"><code>renderFrameCameras</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>cameras</code>
+                </li>
+                <li class="arg">
+                        <code>render_settings</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l296"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:296</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Calls renderFrame of every camera in the cameras list (triggering the appropiate events)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">cameras</code>
+                        <span class="type">Array</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">render_settings</code>
+                        <span class="type">RenderSettings</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_renderInstances" class="method item">
+    <h3 class="name"><code>renderInstances</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>render_settings</code>
+                </li>
+                <li class="arg">
+                        <code>instances</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l518"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:518</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Calls the render method for every RenderInstance (it also takes into account events and frustrum culling)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">render_settings</code>
+                        <span class="type">RenderSettings</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">instances</code>
+                        <span class="type">Array</span>
+
+
+                    <div class="param-description">
+                        <p>array of RIs, if not specified the last visible_instances are rendered</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_renderInstancesToRT" class="method item">
+    <h3 class="name"><code>renderInstancesToRT</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>cam</code>
+                </li>
+                <li class="arg">
+                        <code>texture</code>
+                </li>
+                <li class="arg">
+                        <code>render_settings</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l1325"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:1325</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Renders a frame into a texture (could be a cubemap, in which case does the six passes)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">cam</code>
+                        <span class="type">Camera</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">texture</code>
+                        <span class="type">Texture</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">render_settings</code>
+                        <span class="type">RenderSettings</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_renderMaterialPreview" class="method item">
+    <h3 class="name"><code>renderMaterialPreview</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>material</code>
+                </li>
+                <li class="arg">
+                        <code>size</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+                <li class="arg">
+                        <code>canvas</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Image</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l1410"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:1410</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Renders the material preview to an image (or to the screen)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">material</code>
+                        <span class="type">Material</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">size</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>image size</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>could be environment_texture, to_viewport</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">canvas</code>
+                        <span class="type">HTMLCanvas</span>
+
+
+                    <div class="param-description">
+                        <p>[optional] the output canvas where to store the preview</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Image</span>:
+                    <p>the preview image (in canvas format) or null if it was rendered to the viewport</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_renderPickingInstance" class="method item">
+    <h3 class="name"><code>renderPickingInstance</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>instance</code>
+                </li>
+                <li class="arg">
+                        <code>render_settings</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l918"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:918</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Render instance into the picking buffer</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">instance</code>
+                        <span class="type">RenderInstance</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">render_settings</code>
+                        <span class="type">RenderSettings</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_renderShadowPassInstance" class="method item">
+    <h3 class="name"><code>renderShadowPassInstance</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>instance</code>
+                </li>
+                <li class="arg">
+                        <code>render_settings</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l874"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:874</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Renders this RenderInstance into the shadowmap</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">instance</code>
+                        <span class="type">RenderInstance</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">render_settings</code>
+                        <span class="type">RenderSettings</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_renderToCubemap" class="method item">
+    <h3 class="name"><code>renderToCubemap</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>position</code>
+                </li>
+                <li class="arg">
+                        <code>size</code>
+                </li>
+                <li class="arg">
+                        <code>texture</code>
+                </li>
+                <li class="arg">
+                        <code>render_settings</code>
+                </li>
+                <li class="arg">
+                        <code>near</code>
+                </li>
+                <li class="arg">
+                        <code>far</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Texture</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l1363"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:1363</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Renders the current scene to a cubemap centered in the given position</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">position</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>center of the camera where to render the cubemap</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">size</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>texture size</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">texture</code>
+                        <span class="type">Texture</span>
+
+
+                    <div class="param-description">
+                        <p>to reuse the same texture</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">render_settings</code>
+                        <span class="type">RenderSettings</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">near</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">far</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Texture</span>:
+                    <p>the resulting texture</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_resetGLState" class="method item">
+    <h3 class="name"><code>resetGLState</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>render_settings</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l487"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:487</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>To set gl state to a known and constant state in every render pass</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">render_settings</code>
+                        <span class="type">RenderSettings</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setRenderPass" class="method item">
+    <h3 class="name"><code>setRenderPass</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_render_renderer.js.html#l1519"><code>..&#x2F;src&#x2F;render&#x2F;renderer.js:1519</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Sets the render pass to use, this allow to change between &quot;color&quot;,&quot;shadow&quot;,&quot;picking&quot;,etc</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>name of the render pass as in render_passes</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+            </div>
+
+
+
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

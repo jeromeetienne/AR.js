@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>../src/helpers/FXstack.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/LS.Animation.html">LS.Animation</a></li>
+                                <li><a href="../classes/LS.Animation.Take.html">LS.Animation.Take</a></li>
+                                <li><a href="../classes/LS.Animation.Track.html">LS.Animation.Track</a></li>
+                                <li><a href="../classes/LS.Collision.html">LS.Collision</a></li>
+                                <li><a href="../classes/LS.Component.html">LS.Component</a></li>
+                                <li><a href="../classes/LS.ComponentContainer.html">LS.ComponentContainer</a></li>
+                                <li><a href="../classes/LS.Components.Camera.html">LS.Components.Camera</a></li>
+                                <li><a href="../classes/LS.Components.CameraController.html">LS.Components.CameraController</a></li>
+                                <li><a href="../classes/LS.Components.CameraDirector.html">LS.Components.CameraDirector</a></li>
+                                <li><a href="../classes/LS.Components.CameraFX.html">LS.Components.CameraFX</a></li>
+                                <li><a href="../classes/LS.Components.Canvas3D.html">LS.Components.Canvas3D</a></li>
+                                <li><a href="../classes/LS.Components.CustomData.html">LS.Components.CustomData</a></li>
+                                <li><a href="../classes/LS.Components.FollowNode.html">LS.Components.FollowNode</a></li>
+                                <li><a href="../classes/LS.Components.FrameFX.html">LS.Components.FrameFX</a></li>
+                                <li><a href="../classes/LS.Components.FXGraphComponent.html">LS.Components.FXGraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.FXStack.html">LS.Components.FXStack</a></li>
+                                <li><a href="../classes/LS.Components.GeometricPrimitive.html">LS.Components.GeometricPrimitive</a></li>
+                                <li><a href="../classes/LS.Components.GraphComponent.html">LS.Components.GraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.MeshRenderer.html">LS.Components.MeshRenderer</a></li>
+                                <li><a href="../classes/LS.Components.NodeManipulator.html">LS.Components.NodeManipulator</a></li>
+                                <li><a href="../classes/LS.Components.PlayAnimation.html">LS.Components.PlayAnimation</a></li>
+                                <li><a href="../classes/LS.Components.Poser.html">LS.Components.Poser</a></li>
+                                <li><a href="../classes/LS.Components.RealtimeReflector.html">LS.Components.RealtimeReflector</a></li>
+                                <li><a href="../classes/LS.Components.Rotator.html">LS.Components.Rotator</a></li>
+                                <li><a href="../classes/LS.Components.Script.html">LS.Components.Script</a></li>
+                                <li><a href="../classes/LS.Components.SkinDeformer.html">LS.Components.SkinDeformer</a></li>
+                                <li><a href="../classes/LS.Components.Spline.html">LS.Components.Spline</a></li>
+                                <li><a href="../classes/LS.Components.SVGRenderer.html">LS.Components.SVGRenderer</a></li>
+                                <li><a href="../classes/LS.Components.Target.html">LS.Components.Target</a></li>
+                                <li><a href="../classes/LS.Components.Transform.html">LS.Components.Transform</a></li>
+                                <li><a href="../classes/LS.Components.VRCameraController.html">LS.Components.VRCameraController</a></li>
+                                <li><a href="../classes/LS.CompositePattern.html">LS.CompositePattern</a></li>
+                                <li><a href="../classes/LS.DebugRender.html">LS.DebugRender</a></li>
+                                <li><a href="../classes/LS.Draw.html">LS.Draw</a></li>
+                                <li><a href="../classes/LS.Formats.html">LS.Formats</a></li>
+                                <li><a href="../classes/LS.GLSLCode.html">LS.GLSLCode</a></li>
+                                <li><a href="../classes/LS.GUI.html">LS.GUI</a></li>
+                                <li><a href="../classes/LS.Input.html">LS.Input</a></li>
+                                <li><a href="../classes/LS.InteractiveController.html">LS.InteractiveController</a></li>
+                                <li><a href="../classes/LS.Knob.html">LS.Knob</a></li>
+                                <li><a href="../classes/LS.Light.html">LS.Light</a></li>
+                                <li><a href="../classes/LS.LightFX.html">LS.LightFX</a></li>
+                                <li><a href="../classes/LS.LS.html">LS.LS</a></li>
+                                <li><a href="../classes/LS.LScript.html">LS.LScript</a></li>
+                                <li><a href="../classes/LS.Material.html">LS.Material</a></li>
+                                <li><a href="../classes/LS.Pack.html">LS.Pack</a></li>
+                                <li><a href="../classes/LS.Physics.html">LS.Physics</a></li>
+                                <li><a href="../classes/LS.PhysicsInstance.html">LS.PhysicsInstance</a></li>
+                                <li><a href="../classes/LS.Picking.html">LS.Picking</a></li>
+                                <li><a href="../classes/LS.Player.html">LS.Player</a></li>
+                                <li><a href="../classes/LS.Prefab.html">LS.Prefab</a></li>
+                                <li><a href="../classes/LS.Project.html">LS.Project</a></li>
+                                <li><a href="../classes/LS.Renderer.html">LS.Renderer</a></li>
+                                <li><a href="../classes/LS.RenderFrameContext.html">LS.RenderFrameContext</a></li>
+                                <li><a href="../classes/LS.RenderInstance.html">LS.RenderInstance</a></li>
+                                <li><a href="../classes/LS.RenderSettings.html">LS.RenderSettings</a></li>
+                                <li><a href="../classes/LS.RenderState.html">LS.RenderState</a></li>
+                                <li><a href="../classes/LS.Resource.html">LS.Resource</a></li>
+                                <li><a href="../classes/LS.ResourcesManager.html">LS.ResourcesManager</a></li>
+                                <li><a href="../classes/LS.SceneNode.html">LS.SceneNode</a></li>
+                                <li><a href="../classes/LS.SceneTree.html">LS.SceneTree</a></li>
+                                <li><a href="../classes/LS.ShaderCode.html">LS.ShaderCode</a></li>
+                                <li><a href="../classes/LS.ShaderGraph.html">LS.ShaderGraph</a></li>
+                                <li><a href="../classes/LS.ShaderMaterial.html">LS.ShaderMaterial</a></li>
+                                <li><a href="../classes/LS.ShaderQuery.html">LS.ShaderQuery</a></li>
+                                <li><a href="../classes/LS.ShadersManager.html">LS.ShadersManager</a></li>
+                                <li><a href="../classes/LS.SpatialContainer.html">LS.SpatialContainer</a></li>
+                                <li><a href="../classes/LS.StandardMaterial.html">LS.StandardMaterial</a></li>
+                                <li><a href="../classes/LS.UnityMaterial.html">LS.UnityMaterial</a></li>
+                                <li><a href="../classes/LS.WBin.html">LS.WBin</a></li>
+                                <li><a href="../classes/LSQ.html">LSQ</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/LS.html">LS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: ../src/helpers/FXstack.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/** FXStack
+* Helps apply a stack of FXs to a texture with as fewer render calls as possible with low memory footprint
+* Used by CameraFX and FrameFX but also available for any other use
+* You can add new FX to the FX pool if you want.
+* @class FXStack
+*/
+function FXStack( o )
+{
+	this.apply_fxaa = false;
+	this.filter = true;
+	this.fx = [];
+
+	this._uniforms = { u_aspect: 1, u_viewport: vec2.create(), u_iviewport: vec2.create(), u_texture: 0, u_depth_texture: 1, u_random: vec2.create() };
+
+	this._passes = null;
+	this._must_update_passes = true;
+
+	if(o)
+		this.configure(o);
+}
+
+FXStack.available_fx = {
+	&quot;brightness_contrast&quot;: {
+		name: &quot;Brightness &amp; Contrast&quot;,
+		uniforms: {
+			brightness: { name: &quot;u_brightness&quot;, type: &quot;float&quot;, value: 1, step: 0.01 },
+			contrast: { name: &quot;u_contrast&quot;, type: &quot;float&quot;, value: 1, step: 0.01 }
+		},
+		code:&quot;color.xyz = (color.xyz * u_brightness@ - vec3(0.5)) * u_contrast@ + vec3(0.5);&quot;
+	},
+	&quot;hue_saturation&quot;: {
+		name: &quot;Hue &amp; Saturation&quot;,
+		functions: [&quot;HSV&quot;],
+		uniforms: {
+			hue: { name: &quot;u_hue&quot;, type: &quot;float&quot;, value: 0, step: 0.01 },
+			saturation: { name: &quot;u_saturation&quot;, type: &quot;float&quot;, value: 1, step: 0.01 },
+			brightness: { name: &quot;u_brightness&quot;, type: &quot;float&quot;, value: 0, step: 0.01 }
+		},
+		code:&quot;color.xyz = rgb2hsv(color.xyz); color.xz += vec2(u_hue@,u_brightness@); color.y *= u_saturation@; color.xyz = hsv2rgb(color.xyz);&quot;
+	},
+	&quot;invert&quot;: {
+		name: &quot;Invert color&quot;,
+		code:&quot;color.xyz = vec3(1.0) - color.xyz;&quot;
+	},
+	&quot;threshold&quot;: {
+		name: &quot;Threshold&quot;,
+		uniforms: {
+			threshold: { name: &quot;u_threshold&quot;, type: &quot;float&quot;, value: 0.5, min: 0, max: 2, step: 0.01 },
+			threshold_width: { name: &quot;u_threshold_width&quot;, type: &quot;float&quot;, value: 0.01, min: 0, max: 1, step: 0.001 }
+		},
+		code:&quot;color.xyz = vec3( smoothstep( u_threshold@ - u_threshold_width@ * 0.5, u_threshold@ + u_threshold_width@ * 0.5,  length(color.xyz) ));&quot;
+	},
+	&quot;colorize&quot;: {
+		name: &quot;Colorize&quot;,
+		uniforms: {
+			colorize: { name: &quot;u_colorize&quot;, type: &quot;color3&quot;, value: [1,1,1] },
+			vibrance: { name: &quot;u_vibrance&quot;, type: &quot;float&quot;, value: 0.0, min: 0, max: 2, step: 0.01 }
+		},
+		code:&quot;color.xyz = color.xyz * (u_colorize@ + vec3(u_vibrance@ * 0.1)) * (1.0 + u_vibrance@);&quot;
+	},
+	&quot;color_add&quot;: {
+		name: &quot;Color add&quot;,
+		uniforms: {
+			color_add: { name: &quot;u_coloradd&quot;, type: &quot;color3&quot;, value: [0.1,0.1,0.1] }
+		},
+		code:&quot;color.xyz = color.xyz + u_coloradd@;&quot;
+	},
+	&quot;fog&quot;:{
+		name:&quot;fog&quot;,
+		uniforms: {
+			fog_color: { name: &quot;u_fog_color&quot;, type: &quot;color3&quot;, value: [0.1,0.1,0.1] },
+			fog_start: { name: &quot;u_fog_start&quot;, type: &quot;float&quot;, value: 10 },
+			fog_density: { name: &quot;u_fog_density&quot;, type: &quot;float&quot;, precision: 0.00001, value: 0.001, step: 0.00001 }
+		},
+		code:&quot;float z_n@ = 2.0 * texture2D( u_depth_texture, v_coord).x - 1.0;&quot; +
+			&quot;float cam_dist@ = 2.0 * u_depth_range.x * u_depth_range.y / (u_depth_range.y + u_depth_range.x - z_n@ * (u_depth_range.y - u_depth_range.x));&quot; +
+			&quot;float fog_factor@ = 1. - 1.0 / exp(max(0.0,cam_dist@ - u_fog_start@) * u_fog_density@);&quot; +
+			&quot;color.xyz = mix( color.xyz, u_fog_color@, fog_factor@ );&quot;
+	},
+	&quot;vigneting&quot;: {
+		name: &quot;Vigneting&quot;,
+		uniforms: {
+			radius: { name: &quot;u_radius&quot;, type: &quot;float&quot;, value: 1 },
+			intensity: { name: &quot;u_vigneting&quot;, type: &quot;float&quot;, value: 1, min: 0, max: 2, step: 0.01 }
+		},
+		code:&quot;color.xyz = mix( color.xyz * max( 1.0 - (dist_to_center * u_radius@ / 0.7071), 0.0), color.xyz, u_vigneting@);&quot;
+	},
+	&quot;aberration&quot;: {
+		name: &quot;Chromatic Aberration&quot;,
+		break_pass: true,
+		uniforms: {
+			difraction: { name: &quot;u_difraction&quot;, type: &quot;float&quot;, value: 1 }
+		},
+		code: &quot;color.x = texture2D(u_texture, uv - to_center * 0.001 * u_difraction@ ).x;&quot; + 
+			&quot;color.z = texture2D(u_texture, uv + to_center * 0.001 * u_difraction@ ).z;&quot;
+	},
+	&quot;halftone&quot;: {
+		name: &quot;Halftone&quot;,
+		uniforms: {
+			&quot;Halftone angle&quot;: { name: &quot;u_halftone_angle&quot;, type: &quot;float&quot;, value: 0, step: 0.01 },
+			&quot;Halftone size&quot;: { name: &quot;u_halftone_size&quot;, type: &quot;float&quot;, value: 1, step: 0.01 }
+		},
+		functions: [&quot;pattern&quot;],
+		code:&quot;color.x = ( (color.x * 10.0 - 5.0) + pattern( u_halftone_angle@, u_halftone_size@ ) );&quot; + 
+			&quot;color.y = ( (color.y * 10.0 - 5.0) + pattern( u_halftone_angle@ + 0.167, u_halftone_size@ ) );&quot; + 
+			&quot;color.z = ( (color.z * 10.0 - 5.0) + pattern( u_halftone_angle@ + 0.333, u_halftone_size@ ) );&quot;
+	},
+	&quot;halftoneBN&quot;: {
+		name: &quot;Halftone B/N&quot;,
+		uniforms: {
+			&quot;Halftone angle&quot;: { name: &quot;u_halftone_angle&quot;, type: &quot;float&quot;, value: 0, step: 0.01 },
+			&quot;Halftone size&quot;: { name: &quot;u_halftone_size&quot;, type: &quot;float&quot;, value: 1, step: 0.01 }
+		},
+		functions: [&quot;pattern&quot;],
+		code:&quot;color.xyz = vec3( (length(color.xyz) * 10.0 - 5.0) + pattern( u_halftone_angle@, u_halftone_size@ ) );&quot;
+	},
+	&quot;lens&quot;: {
+		name: &quot;Lens Distortion&quot;,
+		break_pass: true,
+		uniforms: {
+			lens_k: { name: &quot;u_lens_k&quot;, type: &quot;float&quot;, value: -0.15 },
+			lens_kcube: { name: &quot;u_lens_kcube&quot;, type: &quot;float&quot;, value: 0.8 },
+			lens_scale: { name: &quot;u_lens_scale&quot;, type: &quot;float&quot;, value: 1 }
+		},
+		uv_code:&quot;float r2 = u_aspect * u_aspect * (uv.x-0.5) * (uv.x-0.5) + (uv.y-0.5) * (uv.y-0.5); float distort@ = 1. + r2 * (u_lens_k@ + u_lens_kcube@ * sqrt(r2)); uv = vec2( u_lens_scale@ * distort@ * (uv.x-0.5) + 0.5, u_lens_scale@  * distort@ * (uv.y-0.5) + 0.5 );&quot;
+	},
+	&quot;image&quot;: {
+		name: &quot;Image&quot;,
+		uniforms: {
+			image_texture: { name: &quot;u_image_texture&quot;, type: &quot;sampler2D&quot;, widget: &quot;Texture&quot;, value: &quot;&quot; },
+			image_alpha: { name: &quot;u_image_alpha&quot;, type: &quot;float&quot;, value: 1, step: 0.001 },
+			image_scale: { name: &quot;u_image_scale&quot;, type: &quot;vec2&quot;, value: [1,1], step: 0.001 }
+		},
+		code:&quot;vec4 image@ = texture2D( u_image_texture@, (uv - vec2(0.5)) * u_image_scale@ + vec2(0.5)); color.xyz = mix(color.xyz, image@.xyz, image@.a * u_image_alpha@ );&quot;
+	},
+	&quot;warp&quot;: {
+		name: &quot;Warp&quot;,
+		break_pass: true,
+		uniforms: {
+			warp_amp: { name: &quot;u_warp_amp&quot;, type: &quot;float&quot;, value: 0.01, step: 0.001 },
+			warp_offset: { name: &quot;u_warp_offset&quot;, type: &quot;vec2&quot;, value: [0,0], step: 0.001 },
+			warp_scale: { name: &quot;u_warp_scale&quot;, type: &quot;vec2&quot;, value: [1,1], step: 0.001 },
+			warp_texture: { name: &quot;u_warp_texture&quot;, type: &quot;sampler2D&quot;, widget: &quot;Texture&quot;, value: &quot;&quot; }
+		},
+		uv_code:&quot;uv = uv + u_warp_amp@ * (texture2D( u_warp_texture@, uv * u_warp_scale@ + u_warp_offset@ ).xy - vec2(0.5));&quot;
+	},
+	&quot;LUT&quot;: {
+		name: &quot;LUT&quot;,
+		functions: [&quot;LUT&quot;],
+		uniforms: {
+			lut_intensity: { name: &quot;u_lut_intensity&quot;, type: &quot;float&quot;, value: 1, step: 0.01 },
+			lut_texture: { name: &quot;u_lut_texture&quot;, type: &quot;sampler2D&quot;, filter: &quot;nearest&quot;, wrap: &quot;clamp&quot;, widget: &quot;Texture&quot;, value: &quot;&quot; }
+		},
+		code:&quot;color.xyz = mix(color.xyz, LUT( color.xyz, u_lut_texture@ ), u_lut_intensity@);&quot;
+	},
+	&quot;pixelate&quot;: {
+		name: &quot;Pixelate&quot;,
+		uniforms: {
+			width: { name: &quot;u_width&quot;, type: &quot;float&quot;, value: 256, step: 1, min: 1 },
+			height: { name: &quot;u_height&quot;, type: &quot;float&quot;, value: 256, step: 1, min: 1 }
+		},
+		uv_code:&quot;uv = vec2( floor(uv.x * u_width@) / u_width@, floor(uv.y * u_height@) / u_height@ );&quot;
+	},
+	&quot;quantize&quot;: {
+		name: &quot;Quantize&quot;,
+		uniforms: {
+			levels: { name: &quot;u_levels&quot;, type: &quot;float&quot;, value: 8, step: 1, min: 1 }
+		},
+		code:&quot;color.xyz = floor(color.xyz * u_levels@) / u_levels@;&quot;
+	},
+	&quot;edges&quot;: {
+		name: &quot;Edges&quot;,
+		break_pass: true,
+		uniforms: {
+			&quot;Edges factor&quot;: { name: &quot;u_edges_factor&quot;, type: &quot;float&quot;, value: 1 }
+		},
+		code:&quot;vec4 color@ = texture2D(u_texture, uv );\n\
+				vec4 color_up@ = texture2D(u_texture, uv + vec2(0., u_iviewport.y));\n\
+				vec4 color_right@ = texture2D(u_texture, uv + vec2(u_iviewport.x,0.));\n\
+				vec4 color_down@ = texture2D(u_texture, uv + vec2(0., -u_iviewport.y));\n\
+				vec4 color_left@ = texture2D(u_texture, uv + vec2(-u_iviewport.x,0.));\n\
+				color = u_edges_factor@ * (abs(color@ - color_up@) + abs(color@ - color_down@) + abs(color@ - color_left@) + abs(color@ - color_right@));&quot;
+	},
+	&quot;depth&quot;: {
+		name: &quot;Depth&quot;,
+		uniforms: {
+			&quot;near&quot;: { name: &quot;u_near&quot;, type: &quot;float&quot;, value: 0.01, step: 0.1 },
+			&quot;far&quot;: { name: &quot;u_far&quot;, type: &quot;float&quot;, value: 1000, step: 1 }
+		},
+		code:&quot;color.xyz = vec3( (2.0 * u_near@) / (u_far@ + u_near@ - texture2D( u_depth_texture, uv ).x * (u_far@ - u_near@)) );&quot;
+	},
+	&quot;logarithmic&quot;: {
+		name: &quot;Logarithmic&quot;,
+		uniforms: {
+			&quot;Log. A Factor&quot;: { name: &quot;u_logfactor_a&quot;, type: &quot;float&quot;, value: 2, step: 0.01 },
+			&quot;Log. B Factor&quot;: { name: &quot;u_logfactor_b&quot;, type: &quot;float&quot;, value: 2, step: 0.01 }
+		},
+		code:&quot;color.xyz = log( color.xyz * u_logfactor_a@ ) * u_logfactor_b@;&quot;
+	},
+	&quot;ditherBN&quot;: {
+		name: &quot;dither B/N&quot;,
+		functions: [&quot;dither&quot;],
+		code:&quot;color.xyz = vec3( dither( color.x ) );&quot;
+	},
+	&quot;dither&quot;: {
+		name: &quot;Dither&quot;,
+		functions: [&quot;dither&quot;],
+		code:&quot;color.xyz = vec3( dither( color.x ), dither( color.y ), dither( color.z ) );&quot;
+	},
+	&quot;gamma&quot;: {
+		name: &quot;Gamma&quot;,
+		uniforms: {
+			&quot;Gamma&quot;: { name: &quot;u_gamma&quot;, type: &quot;float&quot;, value: 2.2, step: 0.01 }
+		},
+		code:&quot;color.xyz = pow( color.xyz, vec3( 1.0 / u_gamma@) );&quot;
+	},
+	&quot;noiseBN&quot;: {
+		name: &quot;Noise B&amp;N&quot;,
+		functions: [&quot;noise&quot;],
+		uniforms: {
+			&quot;noise&quot;: { name: &quot;u_noise&quot;, type: &quot;float&quot;, value: 0.1, step: 0.01 }
+		},
+		code:&quot;color.xyz += u_noise@ * vec3( noise( (u_random + v_coord) * u_viewport) );&quot;
+	}
+	/*
+	&quot;blur&quot;: {
+			name: &quot;Blur&quot;,
+			break_pass: true,
+			uniforms: {
+				&quot;blur_intensity&quot;: { name: &quot;u_blur_intensity&quot;, type: &quot;float&quot;, value: 0.1, step: 0.01 }
+			},
+			local_callback: FXStack.applyBlur
+		}
+	}
+	*/
+	//median: https://github.com/patriciogonzalezvivo/flatLand/blob/master/bin/data/median.frag
+};
+
+//functions that could be used
+FXStack.available_functions = {
+	pattern: &quot;float pattern(float angle, float size) {\n\
+				float s = sin(angle * 3.1415), c = cos(angle * 3.1415);\n\
+				vec2 tex = v_coord * u_viewport.xy;\n\
+				vec2 point = vec2( c * tex.x - s * tex.y , s * tex.x + c * tex.y ) * size;\n\
+				return (sin(point.x) * sin(point.y)) * 4.0;\n\
+			}\n\
+		&quot;,
+	dither: &quot;float dither(float v) {\n\
+				vec2 pixel = v_coord * u_viewport;\n\
+				int i = int(floor(clamp(v,0.0,1.0) * 16.0 + 0.5));\n\
+				if(i &lt; 1)\n\
+					return 0.0;\n\
+				if(i &gt;= 15)\n\
+					return 1.0;\n\
+				float x = floor(pixel.x);\n\
+				float y = floor(pixel.y);\n\
+				bool xmod4 = mod(x, 4.0) == 0.0;\n\
+				bool ymod4 = mod(y, 4.0) == 0.0;\n\
+				bool xmod2 = mod(x, 2.0) == 0.0;\n\
+				bool ymod2 = mod(y, 2.0) == 0.0;\n\
+				bool xmod4_2 = mod(x + 2.0, 4.0) == 0.0;\n\
+				bool ymod4_2 = mod(y + 2.0, 4.0) == 0.0;\n\
+				bool xmod2_1 = mod(x + 1.0, 2.0) == 0.0;\n\
+				bool ymod2_1 = mod(y + 1.0, 2.0) == 0.0;\n\
+				bool xmod4_1 = mod(x + 1.0, 4.0) == 0.0;\n\
+				bool ymod4_1 = mod(y + 1.0, 4.0) == 0.0;\n\
+				bool xmod4_3 = mod(x + 3.0, 4.0) == 0.0;\n\
+				bool ymod4_3 = mod(y + 3.0, 4.0) == 0.0;\n\
+				\n\
+				if(i &lt; 9)\n\
+				{\n\
+					if(i &gt;= 1 &amp;&amp; xmod4 &amp;&amp; ymod4 )\n\
+						return 1.0;\n\
+					if(i &gt;= 2 &amp;&amp; xmod4_2 &amp;&amp; ymod4_2)\n\
+						return 1.0;\n\
+					if(i &gt;= 3 &amp;&amp; xmod4_2 &amp;&amp; ymod2 )\n\
+						return 1.0;\n\
+					if(i &gt;= 4 &amp;&amp; xmod2 &amp;&amp; ymod2 )\n\
+						return 1.0;\n\
+					if(i &gt;= 5 &amp;&amp; xmod4_1 &amp;&amp; ymod4_1 )\n\
+						return 1.0;\n\
+					if(i &gt;= 6 &amp;&amp; xmod4_3 &amp;&amp; ymod4_3 )\n\
+						return 1.0;\n\
+					if(i &gt;= 7 &amp;&amp; xmod4_1 &amp;&amp; ymod4_3 )\n\
+						return 1.0;\n\
+					if(i &gt;= 8 &amp;&amp; xmod4_3 &amp;&amp; ymod4_1 )\n\
+						return 1.0;\n\
+					return 0.0;\n\
+				}\n\
+				else\n\
+				{\n\
+					if(i &lt; 15 &amp;&amp; xmod4_1 &amp;&amp; ymod4 )\n\
+						return 0.0;\n\
+					if(i &lt; 14 &amp;&amp; xmod4_3 &amp;&amp; ymod4_2)\n\
+						return 0.0;\n\
+					if(i &lt; 13 &amp;&amp; xmod4_3 &amp;&amp; ymod2 )\n\
+						return 0.0;\n\
+					if(i &lt; 12 &amp;&amp; xmod2_1 &amp;&amp; ymod2 )\n\
+						return 0.0;\n\
+					if(i &lt; 11 &amp;&amp; xmod4_2 &amp;&amp; ymod4_1 )\n\
+						return 0.0;\n\
+					if(i &lt; 10 &amp;&amp; xmod4 &amp;&amp; ymod4_3 )\n\
+						return 0.0;\n\
+					return 1.0;\n\
+				}\n\
+			}\n\
+		&quot;,
+	LUT:  &quot;vec3 LUT(in vec3 color, in sampler2D textureB) {\n\
+		 lowp vec3 textureColor = clamp( color, vec3(0.0), vec3(1.0) );\n\
+		 mediump float blueColor = textureColor.b * 63.0;\n\
+		 mediump vec2 quad1;\n\
+		 quad1.y = floor(floor(blueColor) / 8.0);\n\
+		 quad1.x = floor(blueColor) - (quad1.y * 8.0);\n\
+		 mediump vec2 quad2;\n\
+		 quad2.y = floor(ceil(blueColor) / 8.0);\n\
+		 quad2.x = ceil(blueColor) - (quad2.y * 8.0);\n\
+		 highp vec2 texPos1;\n\
+		 texPos1.x = (quad1.x * 0.125) + 0.5/512.0 + ((0.125 - 1.0/512.0) * textureColor.r);\n\
+		 texPos1.y = 1.0 - ((quad1.y * 0.125) + 0.5/512.0 + ((0.125 - 1.0/512.0) * textureColor.g));\n\
+		 highp vec2 texPos2;\n\
+		 texPos2.x = (quad2.x * 0.125) + 0.5/512.0 + ((0.125 - 1.0/512.0) * textureColor.r);\n\
+		 texPos2.y = 1.0 - ((quad2.y * 0.125) + 0.5/512.0 + ((0.125 - 1.0/512.0) * textureColor.g));\n\
+		 lowp vec3 newColor1 = texture2D(textureB, texPos1).xyz;\n\
+		 lowp vec3 newColor2 = texture2D(textureB, texPos2).xyz;\n\
+		 lowp vec3 newColor = mix(newColor1, newColor2, fract(blueColor));\n\
+		 return newColor.rgb;\n\
+	 }&quot;,
+	noise:  &quot;\n\
+		float hash(float n) { return fract(sin(n) * 1e4); }\n\
+		float hash(vec2 p) { return fract(1e4 * sin(17.0 * p.x + p.y * 0.1) * (0.1 + abs(sin(p.y * 13.0 + p.x)))); }\n\
+		float noise(float x) {\n\
+			float i = floor(x);\n\
+			float f = fract(x);\n\
+			float u = f * f * (3.0 - 2.0 * f);\n\
+			return mix(hash(i), hash(i + 1.0), u);\n\
+		}\n\
+		float noise(vec2 x) {\n\
+			vec2 i = floor(x);\n\
+			vec2 f = fract(x);\n\
+			float a = hash(i);\n\
+			float b = hash(i + vec2(1.0, 0.0));\n\
+			float c = hash(i + vec2(0.0, 1.0));\n\
+			float d = hash(i + vec2(1.0, 1.0));\n\
+			vec2 u = f * f * (3.0 - 2.0 * f);\n\
+			return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;\n\
+		}\n\
+	&quot;,
+	HSV: &quot;vec3 rgb2hsv(vec3 c)\n\
+		{\n\
+			vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);\n\
+			vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));\n\
+			vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));\n\
+			\n\
+			float d = q.x - min(q.w, q.y);\n\
+			float e = 1.0e-10;\n\
+			return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);\n\
+		}\n\
+		\n\
+		vec3 hsv2rgb(vec3 c)\n\
+		{\n\
+			vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);\n\
+			vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);\n\
+			return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);\n\
+		}&quot;
+}
+
+/**
+* Returns the first component of this container that is of the same class
+* @method configure
+* @param {Object} o object with the configuration info from a previous serialization
+*/
+FXStack.prototype.configure = function(o)
+{
+	this.apply_fxaa = !!o.apply_fxaa;
+	if(o.fx)
+		this.fx = o.fx.concat();
+	this._must_update_passes = true;
+}
+
+FXStack.prototype.serialize = FXStack.prototype.toJSON = function()
+{
+	return { 
+		apply_fxaa: this.apply_fxaa,
+		fx: this.fx.concat()
+	};
+}
+
+FXStack.prototype.getResources = function(res)
+{
+	var fxs = this.fx;
+	for(var i = 0; i &lt; fxs.length; i++)
+	{
+		var fx = fxs[i];
+		var fx_info = FXStack.available_fx[ fx.name ];
+		if(!fx_info)
+			continue;
+		if(!fx_info.uniforms)
+			continue;
+		for(var j in fx_info.uniforms)
+		{
+			var uniform = fx_info.uniforms[j];
+			if(uniform.type == &quot;sampler2D&quot; &amp;&amp; fx[j])
+				res[ fx[j] ] = GL.Texture;
+		}
+	}
+	return res;
+}
+
+FXStack.prototype.onResourceRenamed = function(old_name, new_name, resource)
+{
+	var fxs = this.fx;
+	for(var i = 0; i &lt; fxs.length; i++)
+	{
+		var fx = fxs[i];
+		var fx_info = FXStack.available_fx[ fx.name ];
+		if(!fx_info)
+			continue;
+		if(!fx_info.uniforms)
+			continue;
+		for(var j in fx_info.uniforms)
+		{
+			var uniform = fx_info.uniforms[j];
+			if(uniform.type == &quot;sampler2D&quot; &amp;&amp; fx[j] == old_name )
+				fx[j] = new_name;
+		}
+	}
+}
+
+
+//attach a new FX to the FX Stack
+FXStack.prototype.addFX = function( name )
+{
+	if(!name)
+		return;
+	if( !FXStack.available_fx[ name ] )
+	{
+		console.warn( &quot;FXStack not found: &quot; + name );
+		return;
+	}
+	this.fx.push({ name: name });
+	this._must_update_passes = true;
+}
+
+//returns the Nth FX in the FX Stack
+FXStack.prototype.getFX = function(index)
+{
+	return this.fx[ index ];
+}
+
+//rearranges an FX
+FXStack.prototype.moveFX = function( fx, offset )
+{
+	offset = offset || -1;
+
+	var index = this.fx.indexOf(fx);
+	if( index == -1 )
+		return;
+
+	this.fx.splice(index,1);
+	index += offset;
+
+
+	if(index &gt;= 0 &amp;&amp; index &lt; this.fx.length)
+		this.fx.splice(index,0,fx);
+	else
+		this.fx.push(fx);
+	this._must_update_passes = true;
+}
+
+//removes an FX from the FX stack
+FXStack.prototype.removeFX = function( fx )
+{
+	for(var i = 0; i &lt; this.fx.length; i++)
+	{
+		if(this.fx[i] !== fx)
+			continue;
+
+		this.fx.splice(i,1);
+		this._must_update_passes = true;
+		return;
+	}
+}
+
+//extract the number of passes to do according to the fx enabled
+FXStack.prototype.buildPasses = function()
+{
+	var fxs = this.fx;
+
+	var passes = [];
+	var current_pass = {
+		fxs:[],
+		uniforms:{},
+		shader:null,
+		first_fx_id: 0
+	};
+
+	var uv_code = &quot;&quot;;
+	var color_code = &quot;&quot;;
+	var uniforms_code = &quot;&quot;;
+	var included_functions = {};
+
+	var is_first = true;
+
+	var fx_id = 0;
+	for(var i = 0; i &lt; fxs.length; i++)
+	{
+		//the FX settings
+		var fx = fxs[i];
+		fx_id = i;
+
+		//the FX definition
+		var fx_info = FXStack.available_fx[ fx.name ];
+		if(!fx_info)
+			continue;
+
+		//break this pass
+		if( fx_info.break_pass &amp;&amp; !is_first)
+		{
+			current_pass.uv_code = uv_code;
+			current_pass.color_code = color_code;
+			current_pass.uniforms_code = uniforms_code;
+			current_pass.included_functions = included_functions;
+			passes.push(current_pass);
+			this.buildPassShader( current_pass );
+
+			uv_code = &quot;&quot;;
+			color_code = &quot;&quot;;
+			uniforms_code = &quot;&quot;;
+			included_functions = {};
+
+			current_pass = {
+				fxs:[],
+				uniforms:{},
+				first_fx_id: fx_id
+			};
+			is_first = true;
+		}
+		else
+			is_first = false;
+
+		if(fx_info.functions)
+			for(var z in fx_info.functions)
+				included_functions[ fx_info.functions[z] ] = true;
+		if( fx_info.code )
+			color_code += fx_info.code.split(&quot;@&quot;).join( fx_id ) + &quot;;\n&quot;;
+		if( fx_info.uv_code )
+			uv_code += fx_info.uv_code.split(&quot;@&quot;).join( fx_id ) + &quot;;\n&quot;;
+
+		if(fx_info.uniforms)
+			for(var j in fx_info.uniforms)
+			{
+				var uniform = fx_info.uniforms[j];
+				var varname = uniform.name + fx_id;
+				uniforms_code += &quot;uniform &quot; + uniform.type + &quot; &quot; + varname + &quot;;\n&quot;;
+			}
+
+		current_pass.fxs.push( fx );
+	}
+
+	if(!is_first)
+	{
+		current_pass.uv_code = uv_code;
+		current_pass.color_code = color_code;
+		current_pass.included_functions = included_functions;
+		passes.push( current_pass );
+		this.buildPassShader( current_pass );
+	}
+
+	this._passes = passes;
+}
+
+FXStack.prototype.buildPassShader = function( pass )
+{
+	var functions_code = &quot;&quot;;
+	for(var i in pass.included_functions)
+	{
+		var func = FXStack.available_functions[ i ];
+		if(!func)
+		{
+			console.error(&quot;FXStack: Function not found: &quot; + i);
+			continue;
+		}
+		functions_code += func + &quot;\n&quot;;
+	}
+
+	var fullcode = &quot;\n\
+		#extension GL_OES_standard_derivatives : enable\n\
+		precision highp float;\n\
+		#define color3 vec3\n\
+		#define color4 vec4\n\
+		uniform sampler2D u_texture;\n\
+		uniform sampler2D u_depth_texture;\n\
+		varying vec2 v_coord;\n\
+		uniform vec2 u_viewport;\n\
+		uniform vec2 u_iviewport;\n\
+		uniform float u_aspect;\n\
+		uniform vec2 u_depth_range;\n\
+		uniform vec2 u_random;\n\
+		vec2 uv;\n\
+		&quot; + pass.uniforms_code + &quot;\n\
+		&quot; + functions_code + &quot;\n\
+		void main() {\n\
+			uv = v_coord;\n\
+			vec2 to_center = vec2(0.5) - uv;\n\
+			float dist_to_center = length(to_center);\n\
+			&quot; + pass.uv_code + &quot;\n\
+			vec4 color = texture2D(u_texture, uv);\n\
+			float temp = 0.0;\n\
+			&quot; + pass.color_code + &quot;\n\
+			gl_FragColor = color;\n\
+		}\n\
+		&quot;;
+
+	this._must_update_passes = false;
+	pass.shader = new GL.Shader( GL.Shader.SCREEN_VERTEX_SHADER, fullcode );
+	return pass.shader;
+}
+
+
+FXStack.prototype.applyFX = function( input_texture, output_texture, options )
+{
+	var color_texture = input_texture;
+	var depth_texture = options.depth_texture;
+
+	var global_uniforms = this._uniforms;
+	global_uniforms.u_viewport[0] = color_texture.width;
+	global_uniforms.u_viewport[1] = color_texture.height;
+	global_uniforms.u_iviewport[0] = 1 / color_texture.width;
+	global_uniforms.u_iviewport[1] = 1 / color_texture.height;
+	global_uniforms.u_aspect = color_texture.width / color_texture.height;
+	global_uniforms.u_random[0] = Math.random();
+	global_uniforms.u_random[1] = Math.random();
+
+	if(!this._passes || this._must_update_passes )
+		this.buildPasses();
+
+	if(!this._passes.length)
+	{
+		if(output_texture)
+			input_texture.copyTo( output_texture );
+		else
+		{
+			var fxaa_shader = GL.Shader.getFXAAShader();
+			fxaa_shader.setup();
+			input_texture.toViewport( this.apply_fxaa ? fxaa_shader : null );
+		}
+		return;
+	}
+
+	var w = output_texture ? output_texture.width : input_texture.width;
+	var h = output_texture ? output_texture.height : input_texture.height;
+
+	var origin_texture = GL.Texture.getTemporary( w, h, { type: input_texture.type, format: input_texture.format } );
+	var target_texture = GL.Texture.getTemporary( w, h, { type: input_texture.type, format: input_texture.format } );
+
+	input_texture.copyTo( origin_texture );
+
+	var fx_id = 0;
+	for(var i = 0; i &lt; this._passes.length; i++)
+	{
+		var pass = this._passes[i];
+		var texture_slot = 2;
+		var uniforms = pass.uniforms;
+
+		//gather uniform values
+		for(var j = 0; j &lt; pass.fxs.length; ++j)
+		{
+			var fx = pass.fxs[j];
+			fx_id = pass.first_fx_id + j;
+
+			//the FX definition
+			var fx_info = FXStack.available_fx[ fx.name ];
+			if(!fx_info)
+				continue;
+
+			if(!fx_info.uniforms)
+				continue;
+
+			for(var k in fx_info.uniforms)
+			{
+				var uniform = fx_info.uniforms[k];
+				var varname = uniform.name + fx_id;
+				if(uniform.type == &quot;sampler2D&quot;)
+				{
+					uniforms[ varname ] = texture_slot;
+					var tex = this.getTexture( fx[k] );
+					if(tex)
+					{
+						tex.bind( texture_slot );
+						if(uniform.filter == &quot;nearest&quot;)
+						{
+							gl.texParameteri( tex.texture_type, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
+							gl.texParameteri( tex.texture_type, gl.TEXTURE_MIN_FILTER, gl.NEAREST );
+						}
+						if(uniform.wrap == &quot;clamp&quot;)
+						{
+							gl.texParameteri( tex.texture_type, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE );
+							gl.texParameteri( tex.texture_type, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE );
+						}
+					}
+					else
+					{
+						//bind something to avoid problems
+						tex = LS.Renderer._missing_texture;
+						if(tex)
+							tex.bind( texture_slot );
+					}
+					texture_slot++;
+				}
+				else
+					uniforms[ varname ] = fx[j] !== undefined ? fx[j] : uniform.value;
+			}
+		}
+
+		//apply pass
+		var shader = pass.shader;
+		//error compiling shader
+		if(!shader)
+		{
+			input_texture.toViewport(); //what about output_texture?
+			break;
+		}
+
+		//set the depth texture for some FXs like fog or depth
+		if(shader.hasUniform(&quot;u_depth_texture&quot;))
+		{
+			depth_texture.bind(1);
+			if(depth_texture.near_far_planes)
+				uniforms.u_depth_range = depth_texture.near_far_planes;
+		}
+
+		//apply FX and accumulate in secondary texture ***************
+		shader.uniforms( global_uniforms );
+		origin_texture.copyTo( target_texture, shader, uniforms );
+
+		//swap
+		var tmp = origin_texture;
+		origin_texture = target_texture;
+		target_texture = tmp;
+	}
+
+	//to the screen or the output_texture
+	var final_texture = target_texture;
+	final_texture.setParameter( gl.TEXTURE_MAG_FILTER, this.filter ? gl.LINEAR : gl.NEAREST );
+	final_texture.setParameter( gl.TEXTURE_MIN_FILTER, gl.LINEAR );
+
+	//to screen
+	if( this.apply_fxaa )
+	{
+		var fx_aa_shader = GL.Shader.getFXAAShader();
+		fx_aa_shader.setup();
+		if(!output_texture)
+			final_texture.toViewport( fx_aa_shader );
+		else
+			final_texture.copyTo( output_texture, fx_aa_shader );
+	}
+	else
+	{
+		if(!output_texture)
+			final_texture.toViewport();
+		else
+		{
+			shader.uniforms( uniforms );
+			final_texture.copyTo( output_texture, shader );
+		}
+	}
+
+	//release textures back to the pool
+	GL.Texture.releaseTemporary( origin_texture );
+	GL.Texture.releaseTemporary( target_texture );
+}
+
+
+//executes the FX stack in the input texture and outputs the result in the output texture (or the screen)
+FXStack.prototype.applyFX = function( input_texture, output_texture, options )
+{
+	var color_texture = input_texture;
+	var depth_texture = options.depth_texture;
+
+	var fxs = this.fx;
+
+	var update_shader = this._must_update_passes;
+
+	var uniforms = this._uniforms;
+	uniforms.u_viewport[0] = color_texture.width;
+	uniforms.u_viewport[1] = color_texture.height;
+	uniforms.u_iviewport[0] = 1 / color_texture.width;
+	uniforms.u_iviewport[1] = 1 / color_texture.height;
+	uniforms.u_aspect = color_texture.width / color_texture.height;
+	uniforms.u_random[0] = Math.random();
+	uniforms.u_random[1] = Math.random();
+
+	var uv_code = &quot;&quot;;
+	var color_code = &quot;&quot;;
+	var included_functions = {};
+	var uniforms_code = &quot;&quot;;
+	var texture_slot = 2;
+
+	var fx_id = 0;
+	for(var i = 0; i &lt; fxs.length; i++)
+	{
+		//the FX settings
+		var fx = fxs[i];
+		fx_id = i;
+
+		//the FX definition
+		var fx_info = FXStack.available_fx[ fx.name ];
+		if(!fx_info)
+			continue;
+
+		if(update_shader)
+		{
+			if(fx_info.functions)
+				for(var z in fx_info.functions)
+					included_functions[ fx_info.functions[z] ] = true;
+			if( fx_info.code )
+				color_code += fx_info.code.split(&quot;@&quot;).join( fx_id ) + &quot;;\n&quot;;
+			if( fx_info.uv_code )
+				uv_code += fx_info.uv_code.split(&quot;@&quot;).join( fx_id ) + &quot;;\n&quot;;
+		}
+
+		if(fx_info.uniforms)
+			for(var j in fx_info.uniforms)
+			{
+				var uniform = fx_info.uniforms[j];
+				var varname = uniform.name + fx_id;
+				if(update_shader)
+				{
+					uniforms_code += &quot;uniform &quot; + uniform.type + &quot; &quot; + varname + &quot;;\n&quot;;
+				}
+
+				if(uniform.type == &quot;sampler2D&quot;)
+				{
+					uniforms[ varname ] = texture_slot;
+					var tex = this.getTexture( fx[j] );
+					if(tex)
+					{
+						tex.bind( texture_slot );
+						if(uniform.filter == &quot;nearest&quot;)
+						{
+							gl.texParameteri( tex.texture_type, gl.TEXTURE_MAG_FILTER, gl.NEAREST );
+							gl.texParameteri( tex.texture_type, gl.TEXTURE_MIN_FILTER, gl.NEAREST );
+						}
+						if(uniform.wrap == &quot;clamp&quot;)
+						{
+							gl.texParameteri( tex.texture_type, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE );
+							gl.texParameteri( tex.texture_type, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE );
+						}
+					}
+					else
+					{
+						//bind something to avoid problems
+						tex = LS.Renderer._missing_texture;
+						if(tex)
+							tex.bind( texture_slot );
+					}
+
+					texture_slot++;
+				}
+				else
+					uniforms[ varname ] = fx[j] !== undefined ? fx[j] : uniform.value;
+			}
+	}
+
+
+	var shader = null;
+	if(update_shader)
+	{
+		var functions_code = &quot;&quot;;
+		for(var i in included_functions)
+		{
+			var func = FXStack.available_functions[ i ];
+			if(!func)
+			{
+				console.error(&quot;FXStack: Function not found: &quot; + i);
+				continue;
+			}
+			functions_code += func + &quot;\n&quot;;
+		}
+
+		var fullcode = &quot;\n\
+			#extension GL_OES_standard_derivatives : enable\n\
+			precision highp float;\n\
+			#define color3 vec3\n\
+			#define color4 vec4\n\
+			uniform sampler2D u_texture;\n\
+			uniform sampler2D u_depth_texture;\n\
+			varying vec2 v_coord;\n\
+			uniform vec2 u_viewport;\n\
+			uniform vec2 u_iviewport;\n\
+			uniform float u_aspect;\n\
+			uniform vec2 u_depth_range;\n\
+			uniform vec2 u_random;\n\
+			vec2 uv;\n\
+			&quot; + uniforms_code + &quot;\n\
+			&quot; + functions_code + &quot;\n\
+			void main() {\n\
+				uv = v_coord;\n\
+				vec2 to_center = vec2(0.5) - uv;\n\
+				float dist_to_center = length(to_center);\n\
+				&quot; + uv_code + &quot;\n\
+				vec4 color = texture2D(u_texture, uv);\n\
+				float temp = 0.0;\n\
+				&quot; + color_code + &quot;\n\
+				gl_FragColor = color;\n\
+			}\n\
+			&quot;;
+
+		this._last_shader = new GL.Shader( GL.Shader.SCREEN_VERTEX_SHADER, fullcode );
+	}
+
+	shader = this._last_shader;
+
+	//error compiling shader
+	if(!shader)
+	{
+		input_texture.toViewport();
+		return;
+	}
+
+	//set the depth texture for some FXs like fog or depth
+	if(shader.hasUniform(&quot;u_depth_texture&quot;))
+	{
+		depth_texture.bind(1);
+		if(depth_texture.near_far_planes)
+			uniforms.u_depth_range = depth_texture.near_far_planes;
+	}
+
+	color_texture.setParameter( gl.TEXTURE_MAG_FILTER, this.filter ? gl.LINEAR : gl.NEAREST );
+	color_texture.setParameter( gl.TEXTURE_MIN_FILTER, gl.LINEAR );
+
+	if( this.apply_fxaa )
+	{
+		if(!this.temp_tex || this.temp_tex.width != gl.viewport_data[2] || this.temp_tex.height != gl.viewport_data[3])
+			this.temp_tex = new GL.Texture(gl.viewport_data[2],gl.viewport_data[3]);
+		this.temp_tex.drawTo(function(){
+			color_texture.toViewport( shader, uniforms );
+		});
+		var fx_aa_shader = GL.Shader.getFXAAShader();
+		fx_aa_shader.setup();
+
+		if(!output_texture)
+			this.temp_tex.toViewport( fx_aa_shader );
+		else
+			this.temp_tex.copyTo( output_texture, fx_aa_shader );
+	}
+	else
+	{
+		this.temp_tex = null;
+		if(!output_texture)
+			color_texture.toViewport( shader, uniforms );
+		else
+		{
+			shader.uniforms( uniforms );
+			color_texture.copyTo( output_texture, shader );
+		}
+	}
+}
+
+FXStack.prototype.getTexture = function( name )
+{
+	return LS.ResourcesManager.getTexture( name );
+}
+
+FXStack.prototype.getPropertyInfoFromPath = function( path )
+{
+	if(path.length &lt; 2)
+		return null;
+
+	var fx_num = parseInt( path[0] );
+
+	//fx not active
+	if(fx_num &gt;= this.fx.length)
+		return null;
+	var fx = this.fx[ fx_num ];
+
+	var fx_info = FXStack.available_fx[ fx.name ];
+	if(!fx_info)
+		return null;
+
+	var varname = path[1];
+	if(varname == &quot;name&quot;)
+		return null;
+
+	var uniform = fx_info.uniforms[ varname ];
+	if(!uniform)
+		return null;
+
+	var type = uniform.type;
+
+	if(type == &quot;float&quot;)
+		type = &quot;number&quot;;
+	else if(type == &quot;sampler2D&quot;)
+		type = &quot;texture&quot;;
+
+	return {
+		target: fx,
+		name: varname,
+		value: fx[ varname ],
+		type: uniform.type || &quot;number&quot;
+	};
+}
+
+FXStack.prototype.setPropertyValueFromPath = function( path, value, offset )
+{
+	offset = offset || 0;
+
+	if( path.length &lt; (offset+1) )
+		return null;
+
+	var fx_num = parseInt( path[offset] );
+	if(fx_num &gt;= this.fx.length)
+		return null;
+	var fx = this.fx[ fx_num ];
+	if(!fx)
+		return null;
+	
+	var varname = path[offset+1];
+	if (fx[ varname ] === undefined )
+		return null;
+
+	//to avoid incompatible types
+	if( fx[ varname ] !== undefined &amp;&amp; value !== undefined &amp;&amp; fx[ varname ].constructor === value.constructor )
+		fx[ varname ] = value;
+}
+
+//static method to register new FX in the system
+FXStack.registerFX = function( name, fx_info )
+{
+	if( !fx_info.name )
+		fx_info.name = name;
+	if( fx_info.code === undefined )
+		throw(&quot;FXStack must have a code&quot;);
+	if( fx_info.uniforms &amp;&amp; Object.keys( fx_info.uniforms ) &amp;&amp; fx_info.code &amp;&amp; fx_info.code.indexOf(&quot;@&quot;) == -1 )
+		console.warn(&quot;FXStack using uniforms must use the character &#x27;@&#x27; at the end of every use to avoid collisions with other variables with the same name.&quot;);
+
+	FXStack.available_fx[ name ] = fx_info;
+}
+
+//for common functions shared among different FXs...
+FXStack.registerFunction = function( name, code )
+{
+	FXStack.available_functions[name] = code;
+}
+
+LS.FXStack = FXStack;
+LS.TextureFX = FXStack; //LEGACY
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

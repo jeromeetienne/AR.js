@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<!--
+<meta property="og:title" content="GameEditor" />
+<meta property="og:description" content="GameEditor for simple games" />
+<meta property="og:image" content="" />
+-->
+
+<title>Scene Creation Demo</title>
+	<style type='text/css'>
+		html, body {
+			background-color: black;
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+
+	<script type="text/javascript" src="../../litegl/external/gl-matrix-min.js"></script>
+	<script type="text/javascript" src="../../litegl/build/litegl.js"></script>
+	<script type="text/javascript" src="../build/litescene.js"></script>
+
+	<script type="text/javascript">
+
+var APP = {
+	ready: false,
+	tv_settings:{
+		power: false,
+		offset: 0,
+		delta_offset:0,
+		brightness: 1
+	},
+	render_options: {},
+	
+	init: function() {
+		//create context 3D
+		var player = this.player = new LS.Player({
+			width:window.innerWidth, height: window.innerHeight, 
+			redraw: true,
+			resources: "assets/", 
+			shaders: "../data/shaders.xml",
+			container: document.body,
+			autoplay: true,
+			allow_base_files: true
+		});
+
+		LS.GlobalScene.init();
+		player.onUpdate = APP.onUpdate.bind(this);
+		player.loadScene("scenes/monitor.json", this.afterLoading.bind(this) );
+	},
+
+	afterLoading: function()
+	{
+		//hook events to the controllers
+		var node = LS.GlobalScene.getNode("button");
+		LEvent.bind(node, "mouseup", function(e,v) { 
+			this.clicked = !this.clicked;
+			quat.setAxisAngle(this.transform._rotation, [0,1,0], 18 * (this.clicked ? 1 : -1 ) * DEG2RAD);
+			this.transform._dirty = true;
+			LS.GlobalScene.getNode("light").light.enabled = this.clicked;
+			APP.tv_settings.power = this.clicked;
+		}, node);
+
+		var node = LS.GlobalScene.getNode("knob");
+		LEvent.bind(node, "knobChange", function(e,v) { 
+			APP.tv_settings.brightness = v;
+		});
+
+		var node = LS.GlobalScene.getNode("knob2");
+		LEvent.bind(node, "knobChange", function(e,v) { 
+			APP.tv_settings.delta_offset = (v-0.5)*0.01;
+		});
+
+		this.ready = true;
+	},
+
+	rotateScene: function(angle)
+	{
+		if(!this.ready)
+			return;
+
+		LS.GlobalScene.getNode("monitor").transform.rotate(angle,[0,1,0]);
+	},
+
+	onUpdate: function(dt)
+	{
+		if(!this.ready)
+			return;
+
+		//Monitor screen effects
+		var mat = LS.GlobalScene.getNode("screen").getMaterial();
+		mat.blend_mode = LS.Blend.ALPHA;
+		var emissive = mat.emissive;
+		if(APP.tv_settings.power && emissive[0] < 4)
+			vec3.add(emissive,emissive,[0.1,0.1,0.1]);
+		else if(!APP.tv_settings.power && emissive[0] > 0)
+			vec3.sub(emissive,emissive,[0.1,0.1,0.1]);
+		vec3.scale(emissive,emissive,APP.tv_settings.brightness);
+		mat._detail[0] = emissive[0]*0.1;
+		if(APP.tv_settings.power)
+			mat.opacity = Math.random() * 0.05 + 0.95;
+		else
+			mat.opacity = 0.1;
+		mat.uvs_matrix[7] += APP.tv_settings.offset;
+		APP.tv_settings.offset += dt * APP.tv_settings.delta_offset;
+	}
+};	
+	
+	</script>
+</head>
+<body>
+
+
+<script>APP.init();</script>
+</body>
+</html>

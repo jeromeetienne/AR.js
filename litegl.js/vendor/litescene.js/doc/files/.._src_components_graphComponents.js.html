@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>../src/components/graphComponents.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/LS.Animation.html">LS.Animation</a></li>
+                                <li><a href="../classes/LS.Animation.Take.html">LS.Animation.Take</a></li>
+                                <li><a href="../classes/LS.Animation.Track.html">LS.Animation.Track</a></li>
+                                <li><a href="../classes/LS.Collision.html">LS.Collision</a></li>
+                                <li><a href="../classes/LS.Component.html">LS.Component</a></li>
+                                <li><a href="../classes/LS.ComponentContainer.html">LS.ComponentContainer</a></li>
+                                <li><a href="../classes/LS.Components.Camera.html">LS.Components.Camera</a></li>
+                                <li><a href="../classes/LS.Components.CameraController.html">LS.Components.CameraController</a></li>
+                                <li><a href="../classes/LS.Components.CameraDirector.html">LS.Components.CameraDirector</a></li>
+                                <li><a href="../classes/LS.Components.CameraFX.html">LS.Components.CameraFX</a></li>
+                                <li><a href="../classes/LS.Components.Canvas3D.html">LS.Components.Canvas3D</a></li>
+                                <li><a href="../classes/LS.Components.CustomData.html">LS.Components.CustomData</a></li>
+                                <li><a href="../classes/LS.Components.FollowNode.html">LS.Components.FollowNode</a></li>
+                                <li><a href="../classes/LS.Components.FrameFX.html">LS.Components.FrameFX</a></li>
+                                <li><a href="../classes/LS.Components.FXGraphComponent.html">LS.Components.FXGraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.FXStack.html">LS.Components.FXStack</a></li>
+                                <li><a href="../classes/LS.Components.GeometricPrimitive.html">LS.Components.GeometricPrimitive</a></li>
+                                <li><a href="../classes/LS.Components.GraphComponent.html">LS.Components.GraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.MeshRenderer.html">LS.Components.MeshRenderer</a></li>
+                                <li><a href="../classes/LS.Components.NodeManipulator.html">LS.Components.NodeManipulator</a></li>
+                                <li><a href="../classes/LS.Components.PlayAnimation.html">LS.Components.PlayAnimation</a></li>
+                                <li><a href="../classes/LS.Components.Poser.html">LS.Components.Poser</a></li>
+                                <li><a href="../classes/LS.Components.RealtimeReflector.html">LS.Components.RealtimeReflector</a></li>
+                                <li><a href="../classes/LS.Components.Rotator.html">LS.Components.Rotator</a></li>
+                                <li><a href="../classes/LS.Components.Script.html">LS.Components.Script</a></li>
+                                <li><a href="../classes/LS.Components.SkinDeformer.html">LS.Components.SkinDeformer</a></li>
+                                <li><a href="../classes/LS.Components.Spline.html">LS.Components.Spline</a></li>
+                                <li><a href="../classes/LS.Components.SVGRenderer.html">LS.Components.SVGRenderer</a></li>
+                                <li><a href="../classes/LS.Components.Target.html">LS.Components.Target</a></li>
+                                <li><a href="../classes/LS.Components.Transform.html">LS.Components.Transform</a></li>
+                                <li><a href="../classes/LS.Components.VRCameraController.html">LS.Components.VRCameraController</a></li>
+                                <li><a href="../classes/LS.CompositePattern.html">LS.CompositePattern</a></li>
+                                <li><a href="../classes/LS.DebugRender.html">LS.DebugRender</a></li>
+                                <li><a href="../classes/LS.Draw.html">LS.Draw</a></li>
+                                <li><a href="../classes/LS.Formats.html">LS.Formats</a></li>
+                                <li><a href="../classes/LS.GLSLCode.html">LS.GLSLCode</a></li>
+                                <li><a href="../classes/LS.GUI.html">LS.GUI</a></li>
+                                <li><a href="../classes/LS.Input.html">LS.Input</a></li>
+                                <li><a href="../classes/LS.InteractiveController.html">LS.InteractiveController</a></li>
+                                <li><a href="../classes/LS.Knob.html">LS.Knob</a></li>
+                                <li><a href="../classes/LS.Light.html">LS.Light</a></li>
+                                <li><a href="../classes/LS.LightFX.html">LS.LightFX</a></li>
+                                <li><a href="../classes/LS.LS.html">LS.LS</a></li>
+                                <li><a href="../classes/LS.LScript.html">LS.LScript</a></li>
+                                <li><a href="../classes/LS.Material.html">LS.Material</a></li>
+                                <li><a href="../classes/LS.Pack.html">LS.Pack</a></li>
+                                <li><a href="../classes/LS.Physics.html">LS.Physics</a></li>
+                                <li><a href="../classes/LS.PhysicsInstance.html">LS.PhysicsInstance</a></li>
+                                <li><a href="../classes/LS.Picking.html">LS.Picking</a></li>
+                                <li><a href="../classes/LS.Player.html">LS.Player</a></li>
+                                <li><a href="../classes/LS.Prefab.html">LS.Prefab</a></li>
+                                <li><a href="../classes/LS.Project.html">LS.Project</a></li>
+                                <li><a href="../classes/LS.Renderer.html">LS.Renderer</a></li>
+                                <li><a href="../classes/LS.RenderFrameContext.html">LS.RenderFrameContext</a></li>
+                                <li><a href="../classes/LS.RenderInstance.html">LS.RenderInstance</a></li>
+                                <li><a href="../classes/LS.RenderSettings.html">LS.RenderSettings</a></li>
+                                <li><a href="../classes/LS.RenderState.html">LS.RenderState</a></li>
+                                <li><a href="../classes/LS.Resource.html">LS.Resource</a></li>
+                                <li><a href="../classes/LS.ResourcesManager.html">LS.ResourcesManager</a></li>
+                                <li><a href="../classes/LS.SceneNode.html">LS.SceneNode</a></li>
+                                <li><a href="../classes/LS.SceneTree.html">LS.SceneTree</a></li>
+                                <li><a href="../classes/LS.ShaderCode.html">LS.ShaderCode</a></li>
+                                <li><a href="../classes/LS.ShaderGraph.html">LS.ShaderGraph</a></li>
+                                <li><a href="../classes/LS.ShaderMaterial.html">LS.ShaderMaterial</a></li>
+                                <li><a href="../classes/LS.ShaderQuery.html">LS.ShaderQuery</a></li>
+                                <li><a href="../classes/LS.ShadersManager.html">LS.ShadersManager</a></li>
+                                <li><a href="../classes/LS.SpatialContainer.html">LS.SpatialContainer</a></li>
+                                <li><a href="../classes/LS.StandardMaterial.html">LS.StandardMaterial</a></li>
+                                <li><a href="../classes/LS.UnityMaterial.html">LS.UnityMaterial</a></li>
+                                <li><a href="../classes/LS.WBin.html">LS.WBin</a></li>
+                                <li><a href="../classes/LSQ.html">LSQ</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/LS.html">LS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: ../src/components/graphComponents.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/* Requires LiteGraph.js ******************************/
+
+//on include, link to resources manager
+if(typeof(LGraphTexture) != &quot;undefined&quot;)
+{
+	//link LGraph textures system with LiteScene
+	LGraphTexture.getTexturesContainer = function() { return LS.ResourcesManager.textures };
+	LGraphTexture.storeTexture = function(name, texture) { return LS.ResourcesManager.registerResource(name, texture); };
+	LGraphTexture.loadTexture = LS.ResourcesManager.load.bind( LS.ResourcesManager );
+}
+
+
+if( typeof(LGAudio) != &quot;undefined&quot; )
+{
+	LGAudio.onProcessAudioURL = function(url)
+	{
+		return LS.RM.getFullURL(url);
+	}
+}
+
+
+/**
+* This component allow to integrate a behaviour graph on any object
+* @class GraphComponent
+* @param {Object} o object with the serialized info
+*/
+function GraphComponent(o)
+{
+	this.enabled = true;
+	this.force_redraw = false;
+
+	this.on_event = &quot;update&quot;;
+
+	if(typeof(LGraphTexture) == &quot;undefined&quot;)
+		return console.error(&quot;Cannot use GraphComponent if LiteGraph is not installed&quot;);
+
+	this._graph = new LGraph();
+	this._graph.getScene = function() { return this._scene || LS.GlobalScene; } //this OR is ugly
+
+	if(o)
+		this.configure(o);
+	else //default
+	{
+		var graphnode = this._default_node = LiteGraph.createNode(&quot;scene/node&quot;);
+		this._graph.add( graphnode );
+		//graphnode.properties.node_id = //cannot be set yet, not attached to node
+	}
+	
+	LEvent.bind(this,&quot;trigger&quot;, this.trigger, this );	
+}
+
+GraphComponent[&quot;@on_event&quot;] = { type:&quot;enum&quot;, values: [&quot;start&quot;,&quot;render&quot;,&quot;update&quot;,&quot;trigger&quot;] };
+
+GraphComponent.icon = &quot;mini-icon-graph.png&quot;;
+
+/**
+* Returns the first component of this container that is of the same class
+* @method configure
+* @param {Object} o object with the configuration info from a previous serialization
+*/
+GraphComponent.prototype.configure = function(o)
+{
+	this.uid = o.uid;
+	this.enabled = !!o.enabled;
+	if(o.graph_data)
+	{
+		if(LS.catch_exceptions)
+		{
+			try
+			{
+				var obj = JSON.parse(o.graph_data);
+				this._graph.configure( obj );
+			}
+			catch (err)
+			{
+				console.error(&quot;Error configuring Graph data: &quot; + err);
+			}
+		}
+		else
+		{
+			var obj = JSON.parse(o.graph_data);
+			this._graph.configure( obj );
+		}
+	}
+
+	if(o.on_event)
+		this.on_event = o.on_event;
+	if(o.force_redraw)
+		this.force_redraw = o.force_redraw;
+}
+
+GraphComponent.prototype.serialize = function()
+{
+	return { 
+		object_class: &quot;GraphComponent&quot;,
+		uid: this.uid,
+		enabled: this.enabled, 
+		force_redraw: this.force_redraw , 
+		graph_data: JSON.stringify( this._graph.serialize() ),
+		on_event: this.on_event
+	};
+}
+
+GraphComponent.prototype.onAddedToNode = function(node)
+{
+	this._graph._scenenode = node;
+	if( this._default_node )
+		this._default_node.properties.node_id = node.uid;
+	//catch the global rendering
+	//LEvent.bind( LS.GlobalScene, &quot;beforeRenderMainPass&quot;, this.onBeforeRender, this );
+}
+
+GraphComponent.prototype.onRemovedFromNode = function(node)
+{
+	this._graph._scenenode = null;
+	//LEvent.unbind( LS.GlobalScene, &quot;beforeRenderMainPass&quot;, this.onBeforeRender, this );
+}
+
+GraphComponent.prototype.onAddedToScene = function( scene )
+{
+	this._graph._scene = scene;
+	LEvent.bind( scene , &quot;init&quot;, this.onSceneEvent, this );
+	LEvent.bind( scene , &quot;start&quot;, this.onSceneEvent, this );
+	LEvent.bind( scene , &quot;pause&quot;, this.onSceneEvent, this );
+	LEvent.bind( scene , &quot;unpause&quot;, this.onSceneEvent, this );
+	LEvent.bind( scene , &quot;finish&quot;, this.onSceneEvent, this );
+	LEvent.bind( scene , &quot;beforeRenderMainPass&quot;, this.onSceneEvent, this );
+	LEvent.bind( scene , &quot;update&quot;, this.onSceneEvent, this );
+}
+
+GraphComponent.prototype.onRemovedFromScene = function( scene )
+{
+	this._graph._scene = null;
+	LEvent.unbind( scene, &quot;init&quot;, this.onSceneEvent, this );
+	LEvent.unbind( scene, &quot;start&quot;, this.onSceneEvent, this );
+	LEvent.unbind( scene, &quot;pause&quot;, this.onSceneEvent, this );
+	LEvent.unbind( scene, &quot;unpause&quot;, this.onSceneEvent, this );
+	LEvent.unbind( scene, &quot;finish&quot;, this.onSceneEvent, this );
+	LEvent.unbind( scene, &quot;beforeRenderMainPass&quot;, this.onSceneEvent, this );
+	LEvent.unbind( scene, &quot;update&quot;, this.onSceneEvent, this );
+}
+
+GraphComponent.prototype.onResourceRenamed = function( old_name, new_name, resource )
+{
+	this._graph.sendEventToAllNodes(&quot;onResourceRenamed&quot;,[old_name, new_name, resource]);
+}
+
+GraphComponent.prototype.onSceneEvent = function( event_type, event_data )
+{
+	if(event_type == &quot;beforeRenderMainPass&quot;)
+		event_type = &quot;render&quot;;
+
+	if(event_type == &quot;init&quot;)
+		this._graph.sendEventToAllNodes(&quot;onInit&quot;);
+	else if(event_type == &quot;start&quot;)
+	{
+		this._graph.sendEventToAllNodes(&quot;onStart&quot;);
+		this._graph.status = LGraph.STATUS_RUNNING;
+	}
+	else if(event_type == &quot;pause&quot;)
+	{
+		this._graph.sendEventToAllNodes(&quot;onPause&quot;);
+		this._graph.status = LGraph.STATUS_RUNNING;
+	}
+	else if(event_type == &quot;unpause&quot;)
+	{
+		this._graph.sendEventToAllNodes(&quot;onUnpause&quot;);
+		this._graph.status = LGraph.STATUS_RUNNING;
+	}
+	else if(event_type == &quot;finish&quot;)
+	{
+		this._graph.sendEventToAllNodes(&quot;onStop&quot;);
+		this._graph.status = LGraph.STATUS_STOPPED;
+	}
+
+	if(this.on_event == event_type)
+		this.runGraph();
+}
+
+GraphComponent.prototype.trigger = function(e)
+{
+	if(this.on_event == &quot;trigger&quot;)
+		this.runGraph();
+}
+
+GraphComponent.prototype.runGraph = function()
+{
+	if(!this._root._in_tree || !this.enabled)
+		return;
+	if(this._graph)
+		this._graph.runStep( 1, LS.catch_exceptions );
+	if(this.force_redraw)
+		this._root.scene.requestFrame();
+}
+
+GraphComponent.prototype.getGraph = function()
+{
+	return this._graph;
+}
+
+GraphComponent.prototype.getPropertyValue = function( property )
+{
+	var nodes = this._graph.findNodesByType(&quot;scene/global&quot;);
+	if(nodes.length)
+	{
+		for(var i = 0; i &lt; nodes.length; ++i)
+		{
+			var n = nodes[i];
+			var type = n.properties.type;
+			if(n.properties.name != property)
+				continue;
+
+			return n.properties.value;
+		}
+	}
+}
+
+
+GraphComponent.prototype.setPropertyValue = function( property, value )
+{
+	var nodes = this._graph.findNodesByType(&quot;scene/global&quot;);
+	if(nodes.length)
+	{
+		for(var i = 0; i &lt; nodes.length; ++i)
+		{
+			var n = nodes[i];
+			var type = n.properties.type;
+			if(n.properties.name != property)
+				continue;
+
+			if(n.properties.value &amp;&amp; n.properties.value.set)
+				n.properties.value.set(value);
+			else
+				n.properties.value = value;
+			return true;
+		}
+	}
+}
+
+LS.registerComponent( GraphComponent );
+
+
+
+/**
+* This component allow to integrate a rendering post FX using a graph
+* @class FXGraphComponent
+* @param {Object} o object with the serialized info
+*/
+function FXGraphComponent(o)
+{
+	this.enabled = true;
+	this.frame = new LS.RenderFrameContext();
+	this.use_antialiasing = false;
+	this.use_node_camera = false;
+
+	if(typeof(LGraphTexture) == &quot;undefined&quot;)
+		return console.error(&quot;Cannot use FXGraphComponent if LiteGraph is not installed&quot;);
+
+	this._graph = new LGraph();
+	this._graph.getScene = function() { return this._scene; }
+
+	if(o)
+	{
+		this.configure(o);
+	}
+	else //default
+	{
+		this._graph_frame_node = LiteGraph.createNode(&quot;scene/frame&quot;,&quot;Rendered Frame&quot;);
+		this._graph_frame_node.ignore_remove = true;
+		this._graph_frame_node.ignore_rename = true;
+		this._graph.add( this._graph_frame_node );
+
+		this._graph_viewport_node = LiteGraph.createNode(&quot;texture/toviewport&quot;,&quot;Viewport&quot;);
+		this._graph_viewport_node.pos[0] = 500;
+		this._graph_viewport_node.properties.disable_alpha = true;
+		this._graph.add( this._graph_viewport_node );
+
+		this._graph_frame_node.connect(0, this._graph_viewport_node );
+	}
+
+	if(FXGraphComponent.high_precision_format == null &amp;&amp; global.gl)
+	{
+		if(gl.half_float_ext)
+			FXGraphComponent.high_precision_format = gl.HALF_FLOAT_OES;
+		else if(gl.float_ext)
+			FXGraphComponent.high_precision_format = gl.FLOAT;
+		else
+			FXGraphComponent.high_precision_format = gl.UNSIGNED_BYTE;
+	}
+}
+
+FXGraphComponent.icon = &quot;mini-icon-graph.png&quot;;
+FXGraphComponent.buffer_size = [1024,512];
+
+/**
+* Returns the first component of this container that is of the same class
+* @method configure
+* @param {Object} o object with the configuration info from a previous serialization
+*/
+FXGraphComponent.prototype.configure = function(o)
+{
+	if(!o.graph_data)
+		return;
+
+	this.uid = o.uid;
+	this.enabled = !!o.enabled;
+	this.use_antialiasing = !!o.use_antialiasing;
+	this.use_node_camera = !!o.use_node_camera;
+	if(o.frame)
+		this.frame.configure(o.frame);
+
+	this._graph.configure( JSON.parse( o.graph_data ) );
+
+	this._graph_frame_node = this._graph.findNodesByTitle(&quot;Rendered Frame&quot;)[0];
+	this._graph_viewport_node = this._graph.findNodesByType(&quot;texture/toviewport&quot;)[0];
+
+	if(!this._graph_frame_node) //LEGACY CODE, DELETE AT SOME POINT
+	{
+		console.log(&quot;CONVERTING LEGACY DATA TO NEW FORMAT&quot;);
+		
+		this._graph_frame_node = LiteGraph.createNode(&quot;scene/frame&quot;,&quot;Rendered Frame&quot;);
+		this._graph_frame_node.ignore_remove = true;
+		this._graph_frame_node.ignore_rename = true;
+		this._graph.add( this._graph_frame_node );
+
+		var old_nodes = [&quot;Color Buffer&quot;,&quot;Depth Buffer&quot;,&quot;Extra Buffer&quot;];
+		for(var j = 0; j &lt; old_nodes.length; ++j)
+		{
+			var old_node = this._graph.findNodesByTitle(old_nodes[j])[0];
+			if(!old_node)
+				continue;
+
+			var connection_info = old_node.getOutputInfo(0);
+			if(!connection_info.links)
+				continue;
+			var links = connection_info.links.concat();
+			for(var i in links)
+			{
+				var link = this._graph.links[ links[i] ];
+				if(!link)
+					continue;
+				this._graph_frame_node.connect( j, link.target_id, link.target_slot ); 
+			}
+			this._graph.remove( old_node );
+		}
+	}
+}
+
+FXGraphComponent.prototype.serialize = function()
+{
+	return {
+		object_class: &quot;FXGraphComponent&quot;,
+		uid: this.uid,
+		enabled: this.enabled,
+		use_antialiasing: this.use_antialiasing,
+		frame: this.frame.serialize(),
+		use_node_camera: this.use_node_camera,
+
+		graph_data: JSON.stringify( this._graph.serialize() )
+	};
+}
+
+FXGraphComponent.prototype.getResources = function(res)
+{
+	this._graph.sendEventToAllNodes(&quot;getResources&quot;,res);
+	return res;
+}
+
+FXGraphComponent.prototype.getPropertyValue = function( property )
+{
+	var nodes = this._graph.findNodesByType(&quot;scene/global&quot;);
+	if(nodes.length)
+	{
+		for(var i = 0; i &lt; nodes.length; ++i)
+		{
+			var n = nodes[i];
+			var type = n.properties.type;
+			if(n.properties.name != property)
+				continue;
+
+			return n.properties.value;
+		}
+	}
+}
+
+
+FXGraphComponent.prototype.setPropertyValue = function( property, value )
+{
+	var nodes = this._graph.findNodesByType(&quot;scene/global&quot;);
+	if(nodes.length)
+	{
+		for(var i = 0; i &lt; nodes.length; ++i)
+		{
+			var n = nodes[i];
+			var type = n.properties.type;
+			if(n.properties.name != property)
+				continue;
+
+			if(n.properties.value &amp;&amp; n.properties.value.set)
+				n.properties.value.set(value);
+			else
+				n.properties.value = value;
+			return true;
+		}
+	}
+}
+
+
+FXGraphComponent.prototype.getGraph = function()
+{
+	return this._graph;
+}
+
+FXGraphComponent.prototype.onResourceRenamed = function(old_name, new_name, res)
+{
+	this._graph.sendEventToAllNodes(&quot;onResourceRenamed&quot;,[old_name, new_name, res]);
+}
+
+FXGraphComponent.prototype.onAddedToNode = function(node)
+{
+	this._graph._scenenode = node;
+	//catch the global rendering
+	//LEvent.bind( LS.GlobalScene, &quot;beforeRenderMainPass&quot;, this.onBeforeRender, this );
+}
+
+FXGraphComponent.prototype.onRemovedFromNode = function(node)
+{
+	this._graph._scenenode = null;
+	//LEvent.unbind( LS.GlobalScene, &quot;beforeRenderMainPass&quot;, this.onBeforeRender, this );
+}
+
+FXGraphComponent.prototype.onAddedToScene = function( scene )
+{
+	this._graph._scene = scene;
+	LEvent.bind( scene, &quot;enableFrameContext&quot;, this.onBeforeRender, this );
+	LEvent.bind( scene, &quot;showFrameContext&quot;, this.onAfterRender, this );
+}
+
+FXGraphComponent.prototype.onRemovedFromScene = function( scene )
+{
+	this._graph._scene = null;
+	LEvent.unbind( scene, &quot;enableFrameContext&quot;, this.onBeforeRender, this );
+	LEvent.unbind( scene, &quot;showFrameContext&quot;, this.onAfterRender, this );
+
+	LS.ResourcesManager.unregisterResource( &quot;:color_&quot; + this.uid );
+	LS.ResourcesManager.unregisterResource( &quot;:depth_&quot; + this.uid );
+	LS.ResourcesManager.unregisterResource( &quot;:extra_&quot; + this.uid );
+}
+
+
+FXGraphComponent.prototype.onBeforeRender = function(e, render_settings)
+{
+	this._last_camera = LS.Renderer._current_camera;
+
+	if(!this.enabled)
+	{
+		if( this._binded_camera )
+		{
+			LEvent.unbindAll( this._binded_camera, this );
+			this._binded_camera = null;
+		}
+		return;
+	}
+
+	//FBO for one camera
+	if(this.use_node_camera)
+	{
+		var camera = this._root.camera;
+		if(camera &amp;&amp; camera != this._binded_camera)
+		{
+			if(this._binded_camera)
+				LEvent.unbindAll( this._binded_camera, this );
+			LEvent.bind( camera, &quot;enableFrameContext&quot;, this.enableCameraFBO, this );
+			LEvent.bind( camera, &quot;showFrameContext&quot;, this.showCameraFBO, this );
+		}
+		this._binded_camera = camera;
+		return;
+	}
+	else if( this._binded_camera )
+	{
+		LEvent.unbindAll( this._binded_camera, this );
+		this._binded_camera = null;
+	}
+
+	this.enableGlobalFBO( render_settings );
+}
+
+FXGraphComponent.prototype.onAfterRender = function(e, render_settings )
+{
+	if(!this.enabled)
+		return;
+
+	if(this.use_node_camera)
+		return;
+
+	this.showFBO();
+}
+
+FXGraphComponent.prototype.enableCameraFBO = function(e, render_settings )
+{
+	if(!this.enabled)
+		return;
+
+	var camera = this._binded_camera;
+	
+	var viewport = this._viewport = camera.getLocalViewport( null, this._viewport );
+	this.frame.enable( render_settings, viewport );
+	render_settings.ignore_viewports = true;
+}
+
+FXGraphComponent.prototype.showCameraFBO = function(e, render_settings )
+{
+	if(!this.enabled)
+		return;
+	render_settings.ignore_viewports = false;
+
+	this.showFBO();
+}
+
+FXGraphComponent.prototype.enableGlobalFBO = function( render_settings )
+{
+	if(!this.enabled)
+		return;
+
+	//configure
+	this.frame.enable( render_settings );
+}
+
+FXGraphComponent.prototype.showFBO = function()
+{
+	if(!this.enabled)
+		return;
+
+	this.frame.disable();
+
+	LS.ResourcesManager.textures[&quot;:color_&quot; + this.uid] = this.frame._color_texture;
+	LS.ResourcesManager.textures[&quot;:depth_&quot; + this.uid] = this.frame._depth_texture;
+	if(this.frame.num_extra_textures)
+	{
+		for(var i = 0; i &lt; this.frame.num_extra_textures; ++i)
+			LS.ResourcesManager.textures[&quot;:extra&quot;+ i +&quot;_&quot; + this.uid] = this.frame._textures[i+1];
+	}
+
+	if(this.use_node_camera &amp;&amp; this._viewport)
+	{
+		gl.setViewport( this._viewport );
+		this.applyGraph();
+		gl.setViewport( this.frame._fbo._old_viewport );
+	}
+	else
+		this.applyGraph();
+}
+
+
+//take the resulting textures and pass them through the graph
+FXGraphComponent.prototype.applyGraph = function()
+{
+	if(!this._graph)
+		return;
+
+	if(!this._graph_frame_node)
+		this._graph_frame_node = this._graph.findNodesByTitle(&quot;Rendered Frame&quot;)[0];
+	this._graph_frame_node._color_texture = &quot;:color_&quot; + this.uid;
+	this._graph_frame_node._depth_texture = &quot;:depth_&quot; + this.uid;
+	this._graph_frame_node._extra_texture = &quot;:extra0_&quot; + this.uid;
+	this._graph_frame_node._camera = this._last_camera;
+
+	if(this._graph_viewport_node) //force antialiasing
+	{
+		this._graph_viewport_node.properties.filter = this.frame.filter_texture;
+		this._graph_viewport_node.properties.antialiasing = this.use_antialiasing;
+	}
+
+	//execute graph
+	this._graph.runStep(1, LS.catch_exceptions );
+}
+
+LS.registerComponent( FXGraphComponent );
+
+
+
+
+
+
+
+
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

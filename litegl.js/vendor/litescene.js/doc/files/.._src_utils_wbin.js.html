@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>../src/utils/wbin.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/LS.Animation.html">LS.Animation</a></li>
+                                <li><a href="../classes/LS.Animation.Take.html">LS.Animation.Take</a></li>
+                                <li><a href="../classes/LS.Animation.Track.html">LS.Animation.Track</a></li>
+                                <li><a href="../classes/LS.Collision.html">LS.Collision</a></li>
+                                <li><a href="../classes/LS.Component.html">LS.Component</a></li>
+                                <li><a href="../classes/LS.ComponentContainer.html">LS.ComponentContainer</a></li>
+                                <li><a href="../classes/LS.Components.Camera.html">LS.Components.Camera</a></li>
+                                <li><a href="../classes/LS.Components.CameraController.html">LS.Components.CameraController</a></li>
+                                <li><a href="../classes/LS.Components.CameraDirector.html">LS.Components.CameraDirector</a></li>
+                                <li><a href="../classes/LS.Components.CameraFX.html">LS.Components.CameraFX</a></li>
+                                <li><a href="../classes/LS.Components.Canvas3D.html">LS.Components.Canvas3D</a></li>
+                                <li><a href="../classes/LS.Components.CustomData.html">LS.Components.CustomData</a></li>
+                                <li><a href="../classes/LS.Components.FollowNode.html">LS.Components.FollowNode</a></li>
+                                <li><a href="../classes/LS.Components.FrameFX.html">LS.Components.FrameFX</a></li>
+                                <li><a href="../classes/LS.Components.FXGraphComponent.html">LS.Components.FXGraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.FXStack.html">LS.Components.FXStack</a></li>
+                                <li><a href="../classes/LS.Components.GeometricPrimitive.html">LS.Components.GeometricPrimitive</a></li>
+                                <li><a href="../classes/LS.Components.GraphComponent.html">LS.Components.GraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.MeshRenderer.html">LS.Components.MeshRenderer</a></li>
+                                <li><a href="../classes/LS.Components.NodeManipulator.html">LS.Components.NodeManipulator</a></li>
+                                <li><a href="../classes/LS.Components.PlayAnimation.html">LS.Components.PlayAnimation</a></li>
+                                <li><a href="../classes/LS.Components.Poser.html">LS.Components.Poser</a></li>
+                                <li><a href="../classes/LS.Components.RealtimeReflector.html">LS.Components.RealtimeReflector</a></li>
+                                <li><a href="../classes/LS.Components.Rotator.html">LS.Components.Rotator</a></li>
+                                <li><a href="../classes/LS.Components.Script.html">LS.Components.Script</a></li>
+                                <li><a href="../classes/LS.Components.SkinDeformer.html">LS.Components.SkinDeformer</a></li>
+                                <li><a href="../classes/LS.Components.Spline.html">LS.Components.Spline</a></li>
+                                <li><a href="../classes/LS.Components.SVGRenderer.html">LS.Components.SVGRenderer</a></li>
+                                <li><a href="../classes/LS.Components.Target.html">LS.Components.Target</a></li>
+                                <li><a href="../classes/LS.Components.Transform.html">LS.Components.Transform</a></li>
+                                <li><a href="../classes/LS.Components.VRCameraController.html">LS.Components.VRCameraController</a></li>
+                                <li><a href="../classes/LS.CompositePattern.html">LS.CompositePattern</a></li>
+                                <li><a href="../classes/LS.DebugRender.html">LS.DebugRender</a></li>
+                                <li><a href="../classes/LS.Draw.html">LS.Draw</a></li>
+                                <li><a href="../classes/LS.Formats.html">LS.Formats</a></li>
+                                <li><a href="../classes/LS.GLSLCode.html">LS.GLSLCode</a></li>
+                                <li><a href="../classes/LS.GUI.html">LS.GUI</a></li>
+                                <li><a href="../classes/LS.Input.html">LS.Input</a></li>
+                                <li><a href="../classes/LS.InteractiveController.html">LS.InteractiveController</a></li>
+                                <li><a href="../classes/LS.Knob.html">LS.Knob</a></li>
+                                <li><a href="../classes/LS.Light.html">LS.Light</a></li>
+                                <li><a href="../classes/LS.LightFX.html">LS.LightFX</a></li>
+                                <li><a href="../classes/LS.LS.html">LS.LS</a></li>
+                                <li><a href="../classes/LS.LScript.html">LS.LScript</a></li>
+                                <li><a href="../classes/LS.Material.html">LS.Material</a></li>
+                                <li><a href="../classes/LS.Pack.html">LS.Pack</a></li>
+                                <li><a href="../classes/LS.Physics.html">LS.Physics</a></li>
+                                <li><a href="../classes/LS.PhysicsInstance.html">LS.PhysicsInstance</a></li>
+                                <li><a href="../classes/LS.Picking.html">LS.Picking</a></li>
+                                <li><a href="../classes/LS.Player.html">LS.Player</a></li>
+                                <li><a href="../classes/LS.Prefab.html">LS.Prefab</a></li>
+                                <li><a href="../classes/LS.Project.html">LS.Project</a></li>
+                                <li><a href="../classes/LS.Renderer.html">LS.Renderer</a></li>
+                                <li><a href="../classes/LS.RenderFrameContext.html">LS.RenderFrameContext</a></li>
+                                <li><a href="../classes/LS.RenderInstance.html">LS.RenderInstance</a></li>
+                                <li><a href="../classes/LS.RenderSettings.html">LS.RenderSettings</a></li>
+                                <li><a href="../classes/LS.RenderState.html">LS.RenderState</a></li>
+                                <li><a href="../classes/LS.Resource.html">LS.Resource</a></li>
+                                <li><a href="../classes/LS.ResourcesManager.html">LS.ResourcesManager</a></li>
+                                <li><a href="../classes/LS.SceneNode.html">LS.SceneNode</a></li>
+                                <li><a href="../classes/LS.SceneTree.html">LS.SceneTree</a></li>
+                                <li><a href="../classes/LS.ShaderCode.html">LS.ShaderCode</a></li>
+                                <li><a href="../classes/LS.ShaderGraph.html">LS.ShaderGraph</a></li>
+                                <li><a href="../classes/LS.ShaderMaterial.html">LS.ShaderMaterial</a></li>
+                                <li><a href="../classes/LS.ShaderQuery.html">LS.ShaderQuery</a></li>
+                                <li><a href="../classes/LS.ShadersManager.html">LS.ShadersManager</a></li>
+                                <li><a href="../classes/LS.SpatialContainer.html">LS.SpatialContainer</a></li>
+                                <li><a href="../classes/LS.StandardMaterial.html">LS.StandardMaterial</a></li>
+                                <li><a href="../classes/LS.UnityMaterial.html">LS.UnityMaterial</a></li>
+                                <li><a href="../classes/LS.WBin.html">LS.WBin</a></li>
+                                <li><a href="../classes/LSQ.html">LSQ</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/LS.html">LS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: ../src/utils/wbin.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/* WBin: Javi Agenjo javi.agenjo@gmail.com  Febrary 2014
+
+WBin allows to pack binary information easily
+Works similar to WAD file format from ID Software. You have binary lumps with a given name (and a special type code).
+First we store a file header, then info about every lump, then a big binary chunk where all the lumps data is located.
+The lump headers contain info to the position of the data in the lump binary chunk (positions are relative to the binary chung starting position)
+
+Header: (64 bytes total)
+	* FOURCC: 4 bytes with &quot;WBIN&quot;
+	* Version: 4 bytes for Float32, represents WBin version used to store
+	* Flags: 2 bytes to store flags (first byte reserved, second is free to use)
+	* Num. lumps: 2 bytes number with the total amount of lumps in this wbin
+	* ClassName: 32 bytes to store a classname, used to know info about the object stored
+	* extra space for future improvements
+
+Lump header: (64 bytes total)
+	* start: 4 bytes (Uint32), where the lump start in the binary area
+	* length: 4 bytes (Uint32), size of the lump
+	* code: 2 bytes to represent data type using code table (Uint8Array, Float32Array, ...)
+	* name: 54 bytes name for the lump
+
+Lump binary: all the binary data...
+
+*/
+
+/**
+* WBin allows to create binary files easily (similar to WAD format). You can pack lots of resources in one file or extract them.
+* @class WBin
+*/
+
+function WBin()
+{
+}
+
+WBin.classes = {};//if the WBin contains a class it will be seaerch here first (otherwise it will search in the global scope)
+
+WBin.HEADER_SIZE = 64; //num bytes per header, some are free to future improvements
+WBin.FOUR_CC = &quot;WBIN&quot;;
+WBin.VERSION = 0.3; //use numbers, never strings, fixed size in binary
+WBin.CLASSNAME_SIZE = 32; //32 bytes: stores a type for the object stored inside this binary
+
+WBin.LUMPNAME_SIZE = 54; //max size of a lump name, it is big because sometimes some names have urls
+WBin.LUMPHEADER_SIZE = 4+4+2+WBin.LUMPNAME_SIZE; //32 bytes: 4 start, 4 length, 2 code, 54 name
+
+WBin.CODES = {
+	&quot;ArrayBuffer&quot;:&quot;AB&quot;, &quot;Int8Array&quot;:&quot;I1&quot;, &quot;Uint8Array&quot;:&quot;i1&quot;, &quot;Int16Array&quot;:&quot;I2&quot;, &quot;Uint16Array&quot;:&quot;i2&quot;, &quot;Int32Array&quot;:&quot;I4&quot;, &quot;Uint32Array&quot;:&quot;i4&quot;,
+	&quot;Float32Array&quot;:&quot;F4&quot;, &quot;Float64Array&quot;: &quot;F8&quot;, &quot;Object&quot;:&quot;OB&quot;,&quot;WideObject&quot;:&quot;WO&quot;,&quot;String&quot;:&quot;ST&quot;,&quot;WideString&quot;:&quot;WS&quot;,&quot;Number&quot;:&quot;NU&quot;, &quot;null&quot;:&quot;00&quot;
+};
+
+WBin.REVERSE_CODES = {};
+for(var i in WBin.CODES)
+	WBin.REVERSE_CODES[ WBin.CODES[i] ] = i;
+
+WBin.FULL_BINARY = 1; //means this binary should be passed as binary, not as object of chunks
+
+/**
+* Allows to check if one Uint8Array contains a WBin file
+* @method WBin.isWBin
+* @param {UInt8Array} data
+* @return {boolean}
+*/
+WBin.isWBin = function(data)
+{
+	var fourcc = data.subarray(0,4);
+	for(var i = 0; i &lt; fourcc.length; i++)
+		if(fourcc[i] != 0 &amp;&amp; fourcc[i] != WBin.FOUR_CC.charCodeAt(i))
+			return false;
+	return true;
+}
+
+/**
+* Builds a WBin data stream from an object (every property of the object will be considered a lump with data)
+* It supports Numbers, Strings and TypedArrays or ArrayBuffer
+* @method WBin.create
+* @param {Object} origin object containing all the lumps, the key will be used as lump name
+* @param {String} origin_class_name [Optional] allows to add a classname to the WBin, this is used to detect which class to instance when extracting it
+* @return {Uint8Array} all the bytes
+*/
+WBin.create = function( origin, origin_class_name )
+{
+	if(!origin)
+		throw(&quot;WBin null origin passed&quot;);
+
+	var flags = new Uint8Array([0,0]);
+	var version = new Uint8Array( new Float32Array( [WBin.VERSION] ).buffer );
+	origin_class_name = origin_class_name || &quot;&quot;;
+
+	//use class binary creator
+	if(origin.toBinary)
+	{
+		var content = origin.toBinary();
+		if(!content)
+			return null;
+
+		if(content.constructor == ArrayBuffer)
+		{
+			flags[0] |= WBin.FULL_BINARY;
+
+			var classname = WBin.getObjectClassName( origin );
+			//alloc memory
+			var data = new Uint8Array(WBin.HEADER_SIZE + content.length);
+			//set fourcc
+			data.set(WBin.stringToUint8Array( WBin.FOUR_CC ));
+			//set version
+			data.set(version, 4);
+			//Set flags
+			data.set(flags, 8);
+			//set classname
+			data.set(WBin.stringToUint8Array(classname,WBin.CLASSNAME_SIZE), 14);
+			//set data
+			data.set(content, WBin.HEADER_SIZE);
+			return data;
+		}
+		else
+			origin = content;
+	}
+
+	//create 
+	var total_size = WBin.HEADER_SIZE;
+	var lumps = [];
+	var lump_offset = 0;
+
+	//gather lumps
+	for(var i in origin)
+	{
+		var data = origin[i];
+		if(data == null)
+			continue;
+
+		if(data.constructor === Blob || data.constructor === File)
+			throw(&quot;Wbin does not allow Blobs or Files as data to store, conver to ArrayBuffer&quot;);
+
+		var classname = WBin.getObjectClassName(data);
+
+		var code = WBin.CODES[ classname ];
+		if(!code) 
+			code = &quot;OB&quot;; //generic
+
+		//class specific actions
+		if (code == &quot;NU&quot;)
+			data = new Float64Array([data]);  //data.toString(); //numbers are stored as strings
+		else if(code == &quot;OB&quot;)
+			data = JSON.stringify(data); //serialize the data
+
+		var data_length = 0;
+
+		//convert any string related data to typed arrays
+		if( data &amp;&amp; data.constructor == String )
+		{
+			data = WBin.stringToTypedArray( data );
+			if(data.constructor === Uint16Array) //careful when wide characters found (international characters)
+				code = (code == &quot;OB&quot;) ? &quot;WO&quot; : &quot;WS&quot;;
+		}
+
+		//typed array
+		if(data.buffer &amp;&amp; data.buffer.constructor == ArrayBuffer)
+		{
+			//clone the data, to avoid problems with shared arrays
+			data = new Uint8Array( new Uint8Array( data.buffer, data.byteOffset, data.byteLength ) ); 
+			data_length = data.byteLength;
+		}
+		else if(data.constructor == ArrayBuffer) //plain buffer
+			data_length = data.byteLength;
+		else
+			throw(&quot;WBin: cannot be anything different to ArrayBuffer&quot;);
+
+		var lumpname = i.substring(0,WBin.LUMPNAME_SIZE);
+		if(lumpname.length &lt; i.length)
+			console.error(&quot;Lump name is too long (max is &quot;+WBin.LUMPNAME_SIZE+&quot;), it has been cut down, this could lead to an error in the future&quot;);
+		lumps.push({code: code, name: lumpname, data: data, start: lump_offset, size: data_length});
+		lump_offset += data_length;
+		total_size += WBin.LUMPHEADER_SIZE + data_length;
+	}
+
+	//construct the final file
+	var data = new Uint8Array(total_size);
+	//set fourcc
+	data.set(WBin.stringToUint8Array( WBin.FOUR_CC ));
+	//set version
+	data.set(version, 4);
+	//set flags
+	data.set(flags, 8);	
+	//set num lumps
+	data.set( new Uint8Array( new Uint16Array([lumps.length]).buffer ), 10);	
+	//set origin_class_name
+	if(origin_class_name)
+		data.set( WBin.stringToUint8Array( origin_class_name, WBin.CLASSNAME_SIZE ), 12);
+
+	var lump_data_start = WBin.HEADER_SIZE + lumps.length * WBin.LUMPHEADER_SIZE;
+
+	//copy lumps to final file
+	var nextPos = WBin.HEADER_SIZE;
+	for(var j in lumps)
+	{
+		var lump = lumps[j];
+		var buffer = lump.data;
+
+		//create lump header
+		var lump_header = new Uint8Array( WBin.LUMPHEADER_SIZE );
+		lump_header.set( new Uint8Array( (new Uint32Array([lump.start])).buffer ), 0);
+		lump_header.set( new Uint8Array( (new Uint32Array([lump.size])).buffer ), 4);
+		lump_header.set( WBin.stringToUint8Array( lump.code, 2), 8);
+		lump_header.set( WBin.stringToUint8Array( lump.name, WBin.LUMPNAME_SIZE), 10);
+
+		//copy lump header
+		data.set(lump_header,nextPos); 
+		nextPos += WBin.LUMPHEADER_SIZE;
+
+		//copy lump data
+		var view = new Uint8Array( lump.data );
+		data.set(view, lump_data_start + lump.start);
+	}
+
+	return data;
+}
+
+
+/**
+* Extract the info from a Uint8Array containing WBin info and returns the object with all the lumps.
+* If the data contains info about the class to instantiate, the WBin instantiates the class and passes the data to it
+* @method WBin.load
+* @param {UInt8Array} data_array 
+* @param {bool} skip_classname avoid getting the instance of the class specified in classname, and get only the lumps
+* @param {String} filename [optional] the filename where this wbin came from (important to mark resources)
+* @return {*} Could be an Object with all the lumps or an instance to the class specified in the WBin data
+*/
+WBin.load = function( data_array, skip_classname, filename )
+{
+	if(!data_array || ( data_array.constructor !== Uint8Array &amp;&amp; data_array.constructor !== ArrayBuffer ) )
+		throw(&quot;WBin data must be ArrayBuffer or Uint8Array&quot;);
+
+	//clone to avoid possible memory aligment problems
+	data_array = new Uint8Array(data_array);
+
+	var header = WBin.getHeaderInfo(data_array);
+	if(!header)
+	{
+		console.error(&quot;Wrong WBin Header&quot;);
+		return null;
+	}
+
+	if(header.version &gt; (new Float32Array([WBin.VERSION])[0]) ) //all this because sometimes there are precission problems
+		console.log(&quot;ALERT: WBin version is higher that code version&quot;);
+
+	var object = null;
+
+	//lump unpacking
+	for(var i in header.lumps)
+	{
+		if(!object) //we do not create the object unless there is a lump
+			object = {};
+
+		var lump = header.lumps[i];
+		var lump_data = header.lump_data.subarray( lump.start, lump.start + lump.size );
+
+		if(lump.size != lump_data.length )
+			throw(&quot;WBin: incorrect wbin lump size&quot;);
+
+		var lump_final = null;
+
+		var data_class_name = WBin.REVERSE_CODES[ lump.code ];
+		if(!data_class_name)
+			throw(&quot;WBin: Incorrect data code&quot;);
+
+		switch(data_class_name)
+		{
+			case &quot;null&quot;: break;
+			case &quot;WideString&quot;: 
+							lump_data = new Uint16Array( (new Uint8Array( lump_data )).buffer ); //no break
+			case &quot;String&quot;:	lump_final = WBin.TypedArrayToString( lump_data ); break;
+			case &quot;Number&quot;: 
+					if(header.version &lt; 0.3) //LEGACY: remove
+						lump_final = parseFloat( WBin.TypedArrayToString( lump_data ) );
+					else
+						lump_final = (new Float64Array( lump_data.buffer ))[0];
+					break;
+			case &quot;WideObject&quot;: 
+							lump_data = new Uint16Array( (new Uint8Array( lump_data )).buffer ); //no break
+			case &quot;Object&quot;:	lump_final = JSON.parse( WBin.TypedArrayToString( lump_data ) ); break;
+			case &quot;ArrayBuffer&quot;: lump_final = new Uint8Array(lump_data).buffer; break; //clone
+			default:
+				lump_data = new Uint8Array(lump_data); //clone to avoid problems with bytes alignment
+				var ctor = WBin.classes[ data_class_name ] || window[ data_class_name ];
+				if(!ctor)
+					throw(&quot;WBin referenced class not found: &quot; + data_class_name );
+				if( (lump_data.length / ctor.BYTES_PER_ELEMENT)%1 != 0)
+					throw(&quot;WBin: size do not match type&quot;);
+				lump_final = new ctor(lump_data.buffer);
+		}
+		object[ lump.name ] = lump_final;
+	}
+
+	//check if className exists, if it does use internal class parser
+	if(!skip_classname &amp;&amp; header.classname)
+	{
+		var ctor = WBin.classes[ header.classname ] || window[ header.classname ];
+		if(ctor &amp;&amp; ctor.fromBinary)
+			return ctor.fromBinary( object, filename );
+		else if(ctor &amp;&amp; ctor.prototype.fromBinary)
+		{
+			var inst = new ctor();
+			inst.fromBinary( object, filename );
+			return inst;
+		}
+		else
+		{
+			object[&quot;@classname&quot;] = header.classname;
+		}
+	}	
+
+	return object;
+}
+
+
+/**
+* Extract the header info from an ArrayBuffer (it contains version, and lumps info)
+* @method WBin.getHeaderInfo
+* @param {UInt8Array} data_array 
+* @return {Object} Header
+*/
+WBin.getHeaderInfo = function(data_array)
+{
+	//check FOURCC
+	var fourcc = data_array.subarray(0,4);
+	var good_header = true;
+	for(var i = 0; i &lt; fourcc.length; i++)
+		if(fourcc[i] != 0 &amp;&amp; fourcc[i] != WBin.FOUR_CC.charCodeAt(i))
+			return null; //wrong fourcc
+
+	var version = WBin.readFloat32( data_array, 4);
+	var flags = new Uint8Array( data_array.subarray(8,10) );
+	var numlumps = WBin.readUint16(data_array, 10);
+	var classname = WBin.TypedArrayToString( data_array.subarray(12,12 + WBin.CLASSNAME_SIZE) );
+
+	var lumps = [];
+	for(var i = 0; i &lt; numlumps; ++i)
+	{
+		var start = WBin.HEADER_SIZE + i * WBin.LUMPHEADER_SIZE;
+		var lumpheader = data_array.subarray( start, start + WBin.LUMPHEADER_SIZE );
+		var lump = {};
+		lump.start = WBin.readUint32(lumpheader,0);
+		lump.size  = WBin.readUint32(lumpheader,4);
+		lump.code  = WBin.TypedArrayToString(lumpheader.subarray(8,10));
+		lump.name  = WBin.TypedArrayToString(lumpheader.subarray(10));
+		lumps.push(lump);
+	}
+
+	var lump_data = data_array.subarray( WBin.HEADER_SIZE + numlumps * WBin.LUMPHEADER_SIZE );
+
+	return {
+		version: version,
+		flags: flags,
+		classname: classname,
+		numlumps: numlumps,
+		lumps: lumps,
+		lump_data: lump_data
+	};
+}
+
+WBin.getObjectClassName = function(obj) {
+    if (obj &amp;&amp; obj.constructor &amp;&amp; obj.constructor.toString) {
+        var arr = obj.constructor.toString().match(
+            /function\s*(\w+)/);
+        if (arr &amp;&amp; arr.length == 2) {
+            return arr[1];
+        }
+    }
+    return undefined;
+}
+
+WBin.stringToUint8Array = function(str, fixed_length)
+{
+	var r = new Uint8Array( fixed_length ? fixed_length : str.length);
+	var warning = false;
+	for(var i = 0; i &lt; str.length; i++)
+	{
+		var c = str.charCodeAt(i);
+		if(c &gt; 255)
+			warning = true;
+		r[i] = c;
+	}
+
+	if(warning)
+		console.warn(&quot;WBin: there are characters in the string that cannot be encoded in 1 byte.&quot;);
+	return r;
+}
+
+WBin.TypedArrayToString = function(typed_array, same_size)
+{
+	var r = &quot;&quot;;
+	for(var i = 0; i &lt; typed_array.length; i++)
+		if (typed_array[i] == 0 &amp;&amp; !same_size)
+			break;
+		else
+			r += String.fromCharCode( typed_array[i] );
+	//return String.fromCharCode.apply(null,typed_array)
+	return r;
+}
+
+WBin.stringToTypedArray = function(str, fixed_length)
+{
+	var r = new Uint8Array( fixed_length ? fixed_length : str.length);
+	var warning = false;
+	for(var i = 0; i &lt; str.length; i++)
+	{
+		var c = str.charCodeAt(i);
+		if(c &gt; 255)
+			warning = true;
+		r[i] = c;
+	}
+
+	if(!warning)
+		return r;
+
+	//convert to 16bits per character
+	var r = new Uint16Array( fixed_length ? fixed_length : str.length);
+	for(var i = 0; i &lt; str.length; i++)
+	{
+		var c = str.charCodeAt(i);
+		r[i] = c;
+	}
+
+	return r;
+}
+
+WBin.readUint16 = function( buffer, pos )
+{
+	var dv = new DataView( buffer.buffer, buffer.byteOffset );
+	return dv.getUint16( pos, true );
+	/* this may be slow but helps removing Endian problems
+	var f = new Uint16Array(1);
+	var view = new Uint8Array(f.buffer);
+	view.set( buffer.subarray(pos,pos+2) );
+	return f[0];
+	*/
+}
+
+WBin.readUint32 = function(buffer, pos)
+{
+	var dv = new DataView( buffer.buffer, buffer.byteOffset);
+	return dv.getUint32( pos, true );
+	/*
+	var f = new Uint32Array(1);
+	var view = new Uint8Array(f.buffer);
+	view.set( buffer.subarray(pos,pos+4) );
+	return f[0];
+	*/
+}
+
+WBin.readFloat32 = function(buffer, pos)
+{
+	var dv = new DataView( buffer.buffer, buffer.byteOffset );
+	return dv.getFloat32( pos, true );
+}
+
+/* CANNOT BE DONE, XMLHTTPREQUEST DO NOT ALLOW TO READ PROGRESSIVE BINARY DATA (yet)
+//ACCORDING TO THIS SOURCE: http://chimera.labs.oreilly.com/books/1230000000545/ch15.html#XHR_STREAMING
+
+WBin.progressiveLoad = function(url, on_header, on_lump, on_complete, on_error)
+{
+    var xhr = new XMLHttpRequest();
+    xhr.open(&#x27;GET&#x27;, url, true);
+
+    //get binary format
+	xhr.responseType = &quot;arraybuffer&quot;;
+  	xhr.overrideMimeType( &quot;application/octet-stream&quot; );
+
+    //get data as it arrives
+	xhr.onprogress = function(evt)
+    {
+		console.log(this.response); //this is null till the last packet
+		if (!evt.lengthComputable) return;
+		var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+		//on_progress( percentComplete );
+    }
+
+    xhr.onload = function(load)
+	{
+		var response = this.response;
+		if(on_complete)
+			on_complete.call(this, response);
+	};
+    xhr.onerror = function(err) {
+    	console.error(err);
+		if(on_error)
+			on_error(err);
+	}
+	//start downloading
+    xhr.send();
+}
+*/
+
+//WBin is not registered in LS here, because WBin is included before LS
+//IT is done from LS
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

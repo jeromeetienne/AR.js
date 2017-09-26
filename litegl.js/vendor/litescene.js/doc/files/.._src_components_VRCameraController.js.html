@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>../src/components/VRCameraController.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/LS.Animation.html">LS.Animation</a></li>
+                                <li><a href="../classes/LS.Animation.Take.html">LS.Animation.Take</a></li>
+                                <li><a href="../classes/LS.Animation.Track.html">LS.Animation.Track</a></li>
+                                <li><a href="../classes/LS.Collision.html">LS.Collision</a></li>
+                                <li><a href="../classes/LS.Component.html">LS.Component</a></li>
+                                <li><a href="../classes/LS.ComponentContainer.html">LS.ComponentContainer</a></li>
+                                <li><a href="../classes/LS.Components.Camera.html">LS.Components.Camera</a></li>
+                                <li><a href="../classes/LS.Components.CameraController.html">LS.Components.CameraController</a></li>
+                                <li><a href="../classes/LS.Components.CameraDirector.html">LS.Components.CameraDirector</a></li>
+                                <li><a href="../classes/LS.Components.CameraFX.html">LS.Components.CameraFX</a></li>
+                                <li><a href="../classes/LS.Components.Canvas3D.html">LS.Components.Canvas3D</a></li>
+                                <li><a href="../classes/LS.Components.CustomData.html">LS.Components.CustomData</a></li>
+                                <li><a href="../classes/LS.Components.FollowNode.html">LS.Components.FollowNode</a></li>
+                                <li><a href="../classes/LS.Components.FrameFX.html">LS.Components.FrameFX</a></li>
+                                <li><a href="../classes/LS.Components.FXGraphComponent.html">LS.Components.FXGraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.FXStack.html">LS.Components.FXStack</a></li>
+                                <li><a href="../classes/LS.Components.GeometricPrimitive.html">LS.Components.GeometricPrimitive</a></li>
+                                <li><a href="../classes/LS.Components.GraphComponent.html">LS.Components.GraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.MeshRenderer.html">LS.Components.MeshRenderer</a></li>
+                                <li><a href="../classes/LS.Components.NodeManipulator.html">LS.Components.NodeManipulator</a></li>
+                                <li><a href="../classes/LS.Components.PlayAnimation.html">LS.Components.PlayAnimation</a></li>
+                                <li><a href="../classes/LS.Components.Poser.html">LS.Components.Poser</a></li>
+                                <li><a href="../classes/LS.Components.RealtimeReflector.html">LS.Components.RealtimeReflector</a></li>
+                                <li><a href="../classes/LS.Components.Rotator.html">LS.Components.Rotator</a></li>
+                                <li><a href="../classes/LS.Components.Script.html">LS.Components.Script</a></li>
+                                <li><a href="../classes/LS.Components.SkinDeformer.html">LS.Components.SkinDeformer</a></li>
+                                <li><a href="../classes/LS.Components.Spline.html">LS.Components.Spline</a></li>
+                                <li><a href="../classes/LS.Components.SVGRenderer.html">LS.Components.SVGRenderer</a></li>
+                                <li><a href="../classes/LS.Components.Target.html">LS.Components.Target</a></li>
+                                <li><a href="../classes/LS.Components.Transform.html">LS.Components.Transform</a></li>
+                                <li><a href="../classes/LS.Components.VRCameraController.html">LS.Components.VRCameraController</a></li>
+                                <li><a href="../classes/LS.CompositePattern.html">LS.CompositePattern</a></li>
+                                <li><a href="../classes/LS.DebugRender.html">LS.DebugRender</a></li>
+                                <li><a href="../classes/LS.Draw.html">LS.Draw</a></li>
+                                <li><a href="../classes/LS.Formats.html">LS.Formats</a></li>
+                                <li><a href="../classes/LS.GLSLCode.html">LS.GLSLCode</a></li>
+                                <li><a href="../classes/LS.GUI.html">LS.GUI</a></li>
+                                <li><a href="../classes/LS.Input.html">LS.Input</a></li>
+                                <li><a href="../classes/LS.InteractiveController.html">LS.InteractiveController</a></li>
+                                <li><a href="../classes/LS.Knob.html">LS.Knob</a></li>
+                                <li><a href="../classes/LS.Light.html">LS.Light</a></li>
+                                <li><a href="../classes/LS.LightFX.html">LS.LightFX</a></li>
+                                <li><a href="../classes/LS.LS.html">LS.LS</a></li>
+                                <li><a href="../classes/LS.LScript.html">LS.LScript</a></li>
+                                <li><a href="../classes/LS.Material.html">LS.Material</a></li>
+                                <li><a href="../classes/LS.Pack.html">LS.Pack</a></li>
+                                <li><a href="../classes/LS.Physics.html">LS.Physics</a></li>
+                                <li><a href="../classes/LS.PhysicsInstance.html">LS.PhysicsInstance</a></li>
+                                <li><a href="../classes/LS.Picking.html">LS.Picking</a></li>
+                                <li><a href="../classes/LS.Player.html">LS.Player</a></li>
+                                <li><a href="../classes/LS.Prefab.html">LS.Prefab</a></li>
+                                <li><a href="../classes/LS.Project.html">LS.Project</a></li>
+                                <li><a href="../classes/LS.Renderer.html">LS.Renderer</a></li>
+                                <li><a href="../classes/LS.RenderFrameContext.html">LS.RenderFrameContext</a></li>
+                                <li><a href="../classes/LS.RenderInstance.html">LS.RenderInstance</a></li>
+                                <li><a href="../classes/LS.RenderSettings.html">LS.RenderSettings</a></li>
+                                <li><a href="../classes/LS.RenderState.html">LS.RenderState</a></li>
+                                <li><a href="../classes/LS.Resource.html">LS.Resource</a></li>
+                                <li><a href="../classes/LS.ResourcesManager.html">LS.ResourcesManager</a></li>
+                                <li><a href="../classes/LS.SceneNode.html">LS.SceneNode</a></li>
+                                <li><a href="../classes/LS.SceneTree.html">LS.SceneTree</a></li>
+                                <li><a href="../classes/LS.ShaderCode.html">LS.ShaderCode</a></li>
+                                <li><a href="../classes/LS.ShaderGraph.html">LS.ShaderGraph</a></li>
+                                <li><a href="../classes/LS.ShaderMaterial.html">LS.ShaderMaterial</a></li>
+                                <li><a href="../classes/LS.ShaderQuery.html">LS.ShaderQuery</a></li>
+                                <li><a href="../classes/LS.ShadersManager.html">LS.ShadersManager</a></li>
+                                <li><a href="../classes/LS.SpatialContainer.html">LS.SpatialContainer</a></li>
+                                <li><a href="../classes/LS.StandardMaterial.html">LS.StandardMaterial</a></li>
+                                <li><a href="../classes/LS.UnityMaterial.html">LS.UnityMaterial</a></li>
+                                <li><a href="../classes/LS.WBin.html">LS.WBin</a></li>
+                                <li><a href="../classes/LSQ.html">LSQ</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/LS.html">LS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: ../src/components/VRCameraController.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+//WORK IN PROGRESS: NOT FINISHED
+
+/**
+* This component allow to integrate with WebVR to use VR Headset
+* @class VRCameraController
+* @namespace LS.Components
+* @param {Object} o object with the serialized info
+*/
+function VRCameraController(o)
+{
+	this.enabled = true;
+	this.eye_distance = 1;
+	if(o)
+		this.configure(o);
+}
+
+VRCameraController.icon = &quot;mini-icon-graph.png&quot;;
+
+//Remove this
+VRCameraController.rift_server_url = &quot;http://tamats.com/uploads/RiftServer_0_3.zip&quot;;
+
+VRCameraController.prototype.onAddedToNode = function(node)
+{
+	var scene = node.scene;
+
+	LEvent.bind(scene,&quot;start&quot;, this.onStart, this );
+	LEvent.bind(scene,&quot;finish&quot;, this.onStop, this );
+	LEvent.bind(scene,&quot;beforeRender&quot;, this.onBeforeRender, this );
+	LEvent.bind(scene,&quot;afterRender&quot;, this.onAfterRender, this );
+	LEvent.bind(node, &quot;collectCameras&quot;, this.onCollectCameras, this );
+}
+
+VRCameraController.prototype.onRemovedFromNode = function(node)
+{
+	var scene = this._root.scene;
+
+	LEvent.unbind(scene,&quot;start&quot;, this.onStart, this );
+	LEvent.unbind(scene,&quot;finish&quot;, this.onStop, this );
+	LEvent.unbind(scene,&quot;beforeRender&quot;, this.onBeforeRender, this );
+	LEvent.unbind(scene,&quot;afterRender&quot;, this.onAfterRender, this );
+	LEvent.unbind(node, &quot;collectCameras&quot;, this.onCollectCameras, this );
+	Renderer.color_rendertarget = null;
+}
+
+VRCameraController.prototype.onCollectCameras = function(e, cameras)
+{
+	var main_camera = Renderer.main_camera;
+
+	if(this._orientation)
+		main_camera.setOrientation(this._orientation, true);
+
+	var right_vector = main_camera.getLocalVector([ this.eye_distance * 0.5, 0, 0]);
+	var left_vector = vec3.scale( vec3.create(), right_vector, -1);
+
+	if(!this._left_camera)
+	{
+		this._left_camera = new LS.Camera();
+		this._right_camera = new LS.Camera();
+	}
+
+	var main_info = main_camera.serialize();
+
+	this._left_camera.configure(main_info);
+	this._right_camera.configure(main_info);
+
+	this._left_camera.eye = vec3.add(vec3.create(), main_camera.eye, left_vector);
+	this._right_camera.eye = vec3.add(vec3.create(), main_camera.eye, right_vector);
+
+	this._left_camera._viewport.set([0,0,0.5,1]);
+	this._right_camera._viewport.set([0.5,0,0.5,1]);
+	this._right_camera._ignore_clear = true;
+
+	cameras.push( this._left_camera, this._right_camera );
+}
+
+VRCameraController.prototype.onStart = function(e)
+{
+	var ws = new WebSocket(&quot;ws://localhost:1981&quot;);
+	ws.onopen = function()
+	{
+		console.log(&quot;VR connection stablished&quot;);
+	}
+
+	ws.onmessage = this.onMessage.bind(this);
+
+	ws.onclose = function()
+	{
+		console.log(&quot;OVR connection lost&quot;);
+	}
+
+	ws.onerror = function()
+	{
+		console.error(&quot;Oculus Server not found in your machine. To run an app using Oculus Rift you need to use a client side app, you can download it from: &quot; + OculusController.rift_server_url );
+	}
+
+	this._ws = ws;
+}
+
+VRCameraController.prototype.onMessage = function(e)
+{
+	var data = e.data;
+	data = JSON.parse(&quot;[&quot; + data + &quot;]&quot;);
+
+	var q = quat.create();
+	q.set( data );
+	var q2 = quat.fromValues(-1,0,0,0);	quat.multiply(q,q2,q);
+	this._orientation = q;
+
+	if(this._root.scene)
+		this._root.scene.requestFrame();
+}
+
+VRCameraController.prototype.onStop = function(e)
+{
+	if(this._ws)
+	{
+		this._ws.close();
+		this._ws = null;
+	}
+}
+
+VRCameraController.prototype.onBeforeRender = function(e,dt)
+{
+	var width = 1024;
+	var height = 512;
+	var viewport = gl.viewport_data;
+	width = v[2];
+	height = v[3];
+
+	if(!this._color_texture || this._color_texture.width != width || this._color_texture.height != height)
+	{
+		this._color_texture = new GL.Texture( width, height,{ format: gl.RGB, filter: gl.LINEAR });
+		LS.ResourcesManager.textures[&quot;:vr_color_buffer&quot;] = this._color_texture;
+	}
+
+	//CHANGE THIS TO USE RENDERFRAMECONTEXT
+	if(this.enabled)
+	{
+		LS.Renderer.color_rendertarget = this._color_texture;
+	}
+	else
+	{
+		LS.Renderer.color_rendertarget = null;
+	}
+
+	//Renderer.disable_main_render
+}
+
+
+VRCameraController.prototype.onAfterRender = function(e,dt)
+{
+	if(this._color_texture)
+		this._color_texture.toViewport();
+}
+
+/* not finished
+LS.registerComponent(VRCameraController);
+window.VRCameraController = VRCameraController;
+*/
+
+
+
+
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

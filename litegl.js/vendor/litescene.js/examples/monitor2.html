@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style type='text/css'>
+	html, body {
+		background-color: black;
+		margin: 0;
+		padding: 0;
+	}
+</style>
+<script type="text/javascript" src="../../litegl/external/gl-matrix-min.js"></script>
+<script type="text/javascript" src="../../litegl/build/litegl.js"></script>
+<script type="text/javascript" src="../build/litescene.js"></script>
+</head>
+<body>
+	<script>
+var APP = {
+	tv_settings:{
+		power: false,
+		offset: 0,
+		delta_offset:0,
+		brightness: 1
+	},
+	render_options: {},
+	
+	init: function() {
+		//create context 3D
+		var player = this.player = new LS.Player({
+			width:window.innerWidth, height: window.innerHeight, 
+			redraw: true,
+			autoplay: true,
+			resources: "assets/", 
+			shaders: "../data/shaders.xml",
+			container: document.body,
+			redraw: true,
+			allow_base_files: true
+		});
+
+		player.onUpdate = APP.onUpdate.bind(this);
+		this.setupScene();
+
+		LS.GlobalScene.loadResources( function(){
+			player.play();
+		});
+	},
+
+	setupScene: function()
+	{
+ 		//mesh
+		var node = new LS.SceneNode("monitor");
+		node.material = new LS.StandardMaterial({
+			textures: {
+				color: "monitor_textura.png"
+			}
+		});
+		node.loadAndSetMesh("monitor.obj");
+		LS.GlobalScene.root.addChild(node);
+		var main = node;
+
+
+		//some useful controllers
+		LS.GlobalScene.root.addComponent( new LS.Components.CameraController({rot_speed:0.1}) );
+		//main.addComponent( new LS.Components.NodeManipulator({rot_speed:[1,0]}) );
+		var interactive = new LS.Components.InteractiveController({mode: LS.Components.InteractiveController.PICKING });
+		LS.GlobalScene.root.addComponent( interactive );
+
+		// global camera
+		var global_camera = LS.GlobalScene.getCamera();
+		global_camera.center = [0,35,0];
+		global_camera.eye = [150,40,100];
+		global_camera.far = 1000;
+		global_camera.near = 1;
+	},
+
+	onUpdate: function(dt){
+	}
+};	
+
+
+APP.init();
+
+</script></body>
+</html>

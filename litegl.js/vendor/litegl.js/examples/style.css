@@ -1,0 +1,323 @@
+body {
+	background-color: #222;
+	color: #666;
+	font:  14px 'Tahoma';
+}
+
+a { color: #77A; outline: 0; text-decoration: none;}
+p { margin: 0; padding: 0; }
+div { margin: 0; padding: 0; }
+h1,h2,h3 { margin: 0; padding: 2px; }
+#wrap {
+	width: 100%;
+}
+
+h1 { 
+	font-size: 1.6em;
+}
+
+h2 {
+	font-size: 1.2em;
+}
+
+h1, h2 {
+	color: #eee;
+}
+
+
+#footer {
+	background-color: #444;
+	padding: 4px;
+}
+
+.toolbar {
+	padding: 2px;
+	height: 26px;
+	background-color: #333;
+}
+
+.toolbar .tool {
+	height: 20px;
+	vertical-align: top;
+	margin-left: 4px;
+	padding: 0;
+	display: inline-block;
+}
+
+.toolbar strong
+{
+	padding: 3px;
+	vertical-align: top;
+	display: inline-block;
+}
+
+#content {
+	position: relative;
+	width: 1000px;
+	height: 500px;
+	background-color: #111;
+	cursor: crosshair;
+}
+
+#footer {
+	background-color: #111;
+	padding: 4px;
+	height: 40px;
+	overflow: hidden; 
+	font-size: 12px;
+}
+
+#main {
+	margin: auto;
+	margin-top: 10px;
+	width: 1000px;
+	box-shadow: 0 0 4px #AAA;
+}
+
+object, embed {
+  outline: 0;
+}
+strong { color: #aaa; }
+
+.final {
+	font-weight: bold;
+	color: white;
+}
+
+#chat, #view, #help, #demos {
+	position: absolute;
+	top: 0;
+	width: 500px;
+	height: 500px;
+	background-color: transparent;
+	vertical-align: top;
+	display: inline-block;
+	padding: 0;
+	margin: 0;
+}
+
+#chat {
+	width: 300px;
+	left: auto;
+	right: 0;
+	font-size: 12px;
+	background-color: black;
+	overflow: auto;
+	color: #EEE;
+	border-left: 2px solid #444;
+}
+
+#chat .msg {
+	padding: 2px;
+	padding-left: 5px;
+}
+
+#chat .msg strong {
+	padding-right: 5px;
+	text-shadow: 0 1px 2px black;
+}
+
+#view {
+	width: 1000px;
+	right: 0px;
+	background-color: black;
+}
+
+#view #maincanvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#help {
+	width: 1000px;
+	background-color: rgba(0,0,0,0.9);
+	overflow: auto;
+}
+
+#help p {
+	padding: 10px;
+}
+
+.error {
+	color: red;
+}
+
+
+button {
+	position: relative;
+	background: #333;
+    background: -moz-linear-gradient(#32302D, #4B4947);
+    background: -webkit-gradient(linear, left top, left bottom, from(#32302D), to(#4B4947));
+    box-shadow: 0 1px 0 #5B5957 inset, 0 -1px 0 black, 0 1px 0 black, -1px 0 0 black, 1px 0 0 black, 0 1px 1px #111111;
+    -moz-box-shadow: inset 0 1px 0 #5B5957, 0 -1px 0 black, 0 1px 0 black, -1px 0 0 black, 1px 0 0 black, 0 1px 1px #111;
+    -webkit-box-shadow: inset 0 1px 0 #5B5957, 0 -1px 0 black, 0 1px 0 black, -1px 0 0 black, 1px 0 0 black, 0 1px 1px #111;
+    border-radius: 2px;
+
+	border: 0;
+    display: inline-block;
+    padding: 1px 10px;
+    vertical-align: top;
+    color: #eee;
+    -moz-text-shadow: 0 1px 0 black; /* in chrome looks bad so no chrome */
+	margin: 2px;
+}
+
+button:hover:not(:disabled) {
+	background: #b5b5b5;
+    -moz-transition: background 0.3s ease 0s;
+}
+
+button:active:not(:disabled) {
+	background-color: white;
+	color: #aaa;
+	box-shadow: inset 0 0 3px black;
+}
+
+button:disabled {
+	opacity: 0.5;
+}
+
+button.on {
+	color: white;
+	background: #AFA;
+}
+
+.ui-slider {
+    border-bottom: 1px solid #333333 !important;
+    border-right: 1px solid #333333 !important;
+    border-top: 1px solid black !important;
+	border-left: 1px solid black !important;
+	background-color: black !important;
+    margin: 12px 2px 0;
+	height: 0px !important;
+	vertical-align: top;
+}
+
+.ui-slider-handle {
+	border: 0 !important;
+    background: -moz-linear-gradient(#4B4947, #32302D) !important;
+    background: -webkit-gradient(linear, left top, left bottom, from(#4B4947), to(#32302D)) !important;
+	
+	border-radius: 7px 7px 7px 7px !important;
+    box-shadow: 0 1px 0 #5B5957 inset, 0 -1px 0 black, 0 1px 0 black, -1px 0 0 black, 1px 0 0 black, 0 1px 1px #111111 !important;
+    cursor: default !important;
+    height: 12px !important;
+    margin: -6px !important;
+    position: absolute !important;
+    width: 12px !important;
+	top: 0 !important;
+}
+
+#demos .content .item {
+	margin: 5px;
+	padding: 5px;
+	font-size: 2em;
+
+	background-color: transparent;
+	color: #999;
+	padding-left: 5px;
+	transition: background-color 300ms, color 300ms, padding-left 300ms;
+	-moz-transition: background-color 300ms, color 300ms, padding-left 300ms;
+	-webkit-transition: background-color 300ms, color 300ms, padding-left 300ms;
+}
+
+#demos .content .item:hover {
+	background-color: #33A;
+	border-radius: 4px;
+	color: white;
+	padding-left: 15px;
+	transition: background-color 300ms, color 300ms, padding-left 300ms;
+	-moz-transition: background-color 300ms, color 300ms, padding-left 300ms;
+	-webkit-transition: background-color 300ms, color 300ms, padding-left 300ms;
+	cursor: pointer;
+}
+
+#demos .content .item strong {
+	display: inline-block;
+	width: 200px;
+}
+
+.status {
+	color: #EFA;
+	font-size: 1.2em;
+	padding: 4px;
+	height: 20px;
+}
+
+#bottomtools {
+	position: relative;
+}
+
+#chat_tools {
+	position: absolute;
+	top: 3px;
+	right: 0;
+}
+
+#chat_input {
+	width: 280px;
+}
+
+button.mini {
+	padding: 0;
+}
+
+button .mini {
+	display: inline-block;
+	background-color: #FF7400;
+	border-radius: 4px;
+	font-size: 10px;
+	min-width: 20px;
+	text-align: center;
+	vertical-align: top;
+	margin-top: 2px;
+	margin-left: 3px;
+}
+
+input {
+	border: 0;
+	margin: 3px;
+	width: 120px;
+	vertical-align: top;
+	background-color: black;
+	color: white;
+	padding-left: 5px;
+}
+
+input.color {
+	text-align: center;
+	width: 50px;
+	border-radius: 2px;
+	border: 1px solid black;
+	font-size: 10px;
+	padding: 2px;
+}
+
+input[type="text"] {
+	font-size: 16px;
+	border-radius: 4px;
+}
+
+#server_status {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	background-color: #A00;
+	text-align: center;
+	margin-top: 0px;
+	margin-left: 4px;
+	margin-bottom: -2px;
+	border-radius: 4px;
+	color: black;
+}
+
+#server_status.connected {
+	background-color: #9F9;
+	color: white;
+}
+
+.ui-slider { 
+	width: 100px;
+	display: inline-block;
+}

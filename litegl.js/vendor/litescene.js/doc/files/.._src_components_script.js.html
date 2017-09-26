@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>../src/components/script.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/LS.Animation.html">LS.Animation</a></li>
+                                <li><a href="../classes/LS.Animation.Take.html">LS.Animation.Take</a></li>
+                                <li><a href="../classes/LS.Animation.Track.html">LS.Animation.Track</a></li>
+                                <li><a href="../classes/LS.Collision.html">LS.Collision</a></li>
+                                <li><a href="../classes/LS.Component.html">LS.Component</a></li>
+                                <li><a href="../classes/LS.ComponentContainer.html">LS.ComponentContainer</a></li>
+                                <li><a href="../classes/LS.Components.Camera.html">LS.Components.Camera</a></li>
+                                <li><a href="../classes/LS.Components.CameraController.html">LS.Components.CameraController</a></li>
+                                <li><a href="../classes/LS.Components.CameraDirector.html">LS.Components.CameraDirector</a></li>
+                                <li><a href="../classes/LS.Components.CameraFX.html">LS.Components.CameraFX</a></li>
+                                <li><a href="../classes/LS.Components.Canvas3D.html">LS.Components.Canvas3D</a></li>
+                                <li><a href="../classes/LS.Components.CustomData.html">LS.Components.CustomData</a></li>
+                                <li><a href="../classes/LS.Components.FollowNode.html">LS.Components.FollowNode</a></li>
+                                <li><a href="../classes/LS.Components.FrameFX.html">LS.Components.FrameFX</a></li>
+                                <li><a href="../classes/LS.Components.FXGraphComponent.html">LS.Components.FXGraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.FXStack.html">LS.Components.FXStack</a></li>
+                                <li><a href="../classes/LS.Components.GeometricPrimitive.html">LS.Components.GeometricPrimitive</a></li>
+                                <li><a href="../classes/LS.Components.GraphComponent.html">LS.Components.GraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.MeshRenderer.html">LS.Components.MeshRenderer</a></li>
+                                <li><a href="../classes/LS.Components.NodeManipulator.html">LS.Components.NodeManipulator</a></li>
+                                <li><a href="../classes/LS.Components.PlayAnimation.html">LS.Components.PlayAnimation</a></li>
+                                <li><a href="../classes/LS.Components.Poser.html">LS.Components.Poser</a></li>
+                                <li><a href="../classes/LS.Components.RealtimeReflector.html">LS.Components.RealtimeReflector</a></li>
+                                <li><a href="../classes/LS.Components.Rotator.html">LS.Components.Rotator</a></li>
+                                <li><a href="../classes/LS.Components.Script.html">LS.Components.Script</a></li>
+                                <li><a href="../classes/LS.Components.SkinDeformer.html">LS.Components.SkinDeformer</a></li>
+                                <li><a href="../classes/LS.Components.Spline.html">LS.Components.Spline</a></li>
+                                <li><a href="../classes/LS.Components.SVGRenderer.html">LS.Components.SVGRenderer</a></li>
+                                <li><a href="../classes/LS.Components.Target.html">LS.Components.Target</a></li>
+                                <li><a href="../classes/LS.Components.Transform.html">LS.Components.Transform</a></li>
+                                <li><a href="../classes/LS.Components.VRCameraController.html">LS.Components.VRCameraController</a></li>
+                                <li><a href="../classes/LS.CompositePattern.html">LS.CompositePattern</a></li>
+                                <li><a href="../classes/LS.DebugRender.html">LS.DebugRender</a></li>
+                                <li><a href="../classes/LS.Draw.html">LS.Draw</a></li>
+                                <li><a href="../classes/LS.Formats.html">LS.Formats</a></li>
+                                <li><a href="../classes/LS.GLSLCode.html">LS.GLSLCode</a></li>
+                                <li><a href="../classes/LS.GUI.html">LS.GUI</a></li>
+                                <li><a href="../classes/LS.Input.html">LS.Input</a></li>
+                                <li><a href="../classes/LS.InteractiveController.html">LS.InteractiveController</a></li>
+                                <li><a href="../classes/LS.Knob.html">LS.Knob</a></li>
+                                <li><a href="../classes/LS.Light.html">LS.Light</a></li>
+                                <li><a href="../classes/LS.LightFX.html">LS.LightFX</a></li>
+                                <li><a href="../classes/LS.LS.html">LS.LS</a></li>
+                                <li><a href="../classes/LS.LScript.html">LS.LScript</a></li>
+                                <li><a href="../classes/LS.Material.html">LS.Material</a></li>
+                                <li><a href="../classes/LS.Pack.html">LS.Pack</a></li>
+                                <li><a href="../classes/LS.Physics.html">LS.Physics</a></li>
+                                <li><a href="../classes/LS.PhysicsInstance.html">LS.PhysicsInstance</a></li>
+                                <li><a href="../classes/LS.Picking.html">LS.Picking</a></li>
+                                <li><a href="../classes/LS.Player.html">LS.Player</a></li>
+                                <li><a href="../classes/LS.Prefab.html">LS.Prefab</a></li>
+                                <li><a href="../classes/LS.Project.html">LS.Project</a></li>
+                                <li><a href="../classes/LS.Renderer.html">LS.Renderer</a></li>
+                                <li><a href="../classes/LS.RenderFrameContext.html">LS.RenderFrameContext</a></li>
+                                <li><a href="../classes/LS.RenderInstance.html">LS.RenderInstance</a></li>
+                                <li><a href="../classes/LS.RenderSettings.html">LS.RenderSettings</a></li>
+                                <li><a href="../classes/LS.RenderState.html">LS.RenderState</a></li>
+                                <li><a href="../classes/LS.Resource.html">LS.Resource</a></li>
+                                <li><a href="../classes/LS.ResourcesManager.html">LS.ResourcesManager</a></li>
+                                <li><a href="../classes/LS.SceneNode.html">LS.SceneNode</a></li>
+                                <li><a href="../classes/LS.SceneTree.html">LS.SceneTree</a></li>
+                                <li><a href="../classes/LS.ShaderCode.html">LS.ShaderCode</a></li>
+                                <li><a href="../classes/LS.ShaderGraph.html">LS.ShaderGraph</a></li>
+                                <li><a href="../classes/LS.ShaderMaterial.html">LS.ShaderMaterial</a></li>
+                                <li><a href="../classes/LS.ShaderQuery.html">LS.ShaderQuery</a></li>
+                                <li><a href="../classes/LS.ShadersManager.html">LS.ShadersManager</a></li>
+                                <li><a href="../classes/LS.SpatialContainer.html">LS.SpatialContainer</a></li>
+                                <li><a href="../classes/LS.StandardMaterial.html">LS.StandardMaterial</a></li>
+                                <li><a href="../classes/LS.UnityMaterial.html">LS.UnityMaterial</a></li>
+                                <li><a href="../classes/LS.WBin.html">LS.WBin</a></li>
+                                <li><a href="../classes/LSQ.html">LSQ</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/LS.html">LS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: ../src/components/script.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+
+/** Script is the component in charge of executing scripts to control the behaviour of the application.
+* Script must be coded in Javascript and they have full access to all the engine, so one script could replace the behaviour of any part of the engine.
+* Scripts are executed inside their own context, the context is local to the script so any variable defined in the context that is not attached to the context wont be accessible from other parts of the engine.
+* To interact with the engine Scripts must bind callback to events so the callbacks will be called when those events are triggered, however, there are some generic methods that will be called
+* @class Script
+* @constructor
+* @param {Object} object to configure from
+*/
+function Script(o)
+{
+	this.enabled = true;
+	this.code = this.constructor.templates[&quot;script&quot;];
+	this._blocked_functions = new Set(); //used to block functions that has errors
+	this._name = &quot;&quot;;
+
+	this._script = new LScript();
+
+	//this are the methods that will be in the prototype of the script context by default
+	this._script.extra_methods = {
+		getComponent: (function(type,index) { 
+			if(!arguments.length)
+				return this;
+			if(!this._root)
+				return null;
+			return this._root.getComponent(type,index)
+			}).bind(this),
+		getLocator: function() { return this.getComponent().getLocator() + &quot;/context&quot;; },
+		createProperty: LS.Component.prototype.createProperty,
+		createAction: LS.Component.prototype.createAction,
+		bind: LS.Component.prototype.bind,
+		unbind: LS.Component.prototype.unbind,
+		unbindAll: LS.Component.prototype.unbindAll
+	};
+
+	this._script.onerror = this.onError.bind(this);
+	this._script.exported_functions = [];
+	this._last_error = null;
+	this._breakpoint_on_call = false;
+
+	if(o)
+		this.configure(o);
+}
+
+Script.secure_module = false; //this module is not secure (it can execute code)
+Script.block_execution = false; //avoid executing code
+Script.catch_important_exceptions = true; //catch exception during parsing, otherwise configuration could fail
+
+Script.icon = &quot;mini-icon-script.png&quot;;
+Script.templates = {
+	&quot;script&quot;:&quot;//@unnamed\n//defined: component, node, scene, transform, globals\nthis.onStart = function()\n{\n}\n\nthis.onUpdate = function(dt)\n{\n\t//node.scene.refresh();\n}&quot;
+};
+
+Script[&quot;@code&quot;] = {type:&#x27;script&#x27;};
+
+//used to determine to which object to bind
+Script.BIND_TO_COMPONENT = 1;
+Script.BIND_TO_NODE = 2;
+Script.BIND_TO_SCENE = 3;
+Script.BIND_TO_RENDERER = 4;
+
+//Here we specify which methods of the script will be automatically binded to events in the system
+//This way developing is much more easy as you dont have to bind or unbind anything
+Script.API_functions = {};
+Script.API_events_to_function = {};
+
+Script.defineAPIFunction = function( func_name, target, event, info ) {
+	event = event || func_name;
+	target = target || Script.BIND_TO_SCENE;
+	var data = { name: func_name, target: target, event: event, info: info };
+	Script.API_functions[ func_name ] = data;
+	Script.API_events_to_function[ event ] = data;
+}
+
+//init
+Script.defineAPIFunction( &quot;onStart&quot;, Script.BIND_TO_SCENE, &quot;start&quot; );
+Script.defineAPIFunction( &quot;onFinish&quot;, Script.BIND_TO_SCENE, &quot;finish&quot; );
+Script.defineAPIFunction( &quot;onPrefabReady&quot;, Script.BIND_TO_NODE, &quot;prefabReady&quot; );
+//behaviour
+Script.defineAPIFunction( &quot;onUpdate&quot;, Script.BIND_TO_SCENE, &quot;update&quot; );
+Script.defineAPIFunction( &quot;onNodeClicked&quot;, Script.BIND_TO_NODE, &quot;node_clicked&quot; );
+Script.defineAPIFunction( &quot;onClicked&quot;, Script.BIND_TO_NODE, &quot;clicked&quot; );
+//rendering
+Script.defineAPIFunction( &quot;onSceneRender&quot;, Script.BIND_TO_SCENE, &quot;beforeRender&quot; );
+Script.defineAPIFunction( &quot;onCollectRenderInstances&quot;, Script.BIND_TO_NODE, &quot;collectRenderInstances&quot; ); //TODO: move to SCENE
+Script.defineAPIFunction( &quot;onRender&quot;, Script.BIND_TO_SCENE, &quot;beforeRenderInstances&quot; );
+Script.defineAPIFunction( &quot;onAfterRender&quot;, Script.BIND_TO_SCENE, &quot;afterRenderInstances&quot; );
+Script.defineAPIFunction( &quot;onAfterSceneRender&quot;, Script.BIND_TO_SCENE, &quot;afterRender&quot; );
+Script.defineAPIFunction( &quot;onRenderHelpers&quot;, Script.BIND_TO_SCENE, &quot;renderHelpers&quot; );
+Script.defineAPIFunction( &quot;onRenderGUI&quot;, Script.BIND_TO_SCENE, &quot;renderGUI&quot; );
+Script.defineAPIFunction( &quot;onEnableFrameContext&quot;, Script.BIND_TO_SCENE, &quot;enableFrameContext&quot; );
+Script.defineAPIFunction( &quot;onShowFrameContext&quot;, Script.BIND_TO_SCENE, &quot;showFrameContext&quot; );
+//input
+Script.defineAPIFunction( &quot;onMouseDown&quot;, Script.BIND_TO_SCENE, &quot;mousedown&quot; );
+Script.defineAPIFunction( &quot;onMouseMove&quot;, Script.BIND_TO_SCENE, &quot;mousemove&quot; );
+Script.defineAPIFunction( &quot;onMouseUp&quot;, Script.BIND_TO_SCENE, &quot;mouseup&quot; );
+Script.defineAPIFunction( &quot;onMouseWheel&quot;, Script.BIND_TO_SCENE, &quot;mousewheel&quot; );
+Script.defineAPIFunction( &quot;onKeyDown&quot;, Script.BIND_TO_SCENE, &quot;keydown&quot; );
+Script.defineAPIFunction( &quot;onKeyUp&quot;, Script.BIND_TO_SCENE, &quot;keyup&quot; );
+Script.defineAPIFunction( &quot;onGamepadConnected&quot;, Script.BIND_TO_SCENE, &quot;gamepadconnected&quot; );
+Script.defineAPIFunction( &quot;onGamepadDisconnected&quot;, Script.BIND_TO_SCENE, &quot;gamepaddisconnected&quot; );
+Script.defineAPIFunction( &quot;onButtonDown&quot;, Script.BIND_TO_SCENE, &quot;buttondown&quot; );
+Script.defineAPIFunction( &quot;onButtonUp&quot;, Script.BIND_TO_SCENE, &quot;buttonup&quot; );
+//global
+Script.defineAPIFunction( &quot;onFileDrop&quot;, Script.BIND_TO_SCENE, &quot;fileDrop&quot; );
+//dtor
+Script.defineAPIFunction( &quot;onDestroy&quot;, Script.BIND_TO_NODE, &quot;destroy&quot; );
+
+
+Script.coding_help = &quot;For a complete guide check: &lt;a href=&#x27;https://github.com/jagenjo/litescene.js/blob/master/guides/scripting.md&#x27; target=&#x27;blank&#x27;&gt;Scripting Guide&lt;/a&gt;&quot;;
+
+Script.active_scripts = {};
+
+Object.defineProperty( Script.prototype, &quot;context&quot;, {
+	set: function(v){ 
+		console.error(&quot;Script: context cannot be assigned&quot;);
+	},
+	get: function() { 
+		if(this._script)
+				return this._script._context;
+		return null;
+	},
+	enumerable: false //if it was enumerable it would be serialized
+});
+
+Object.defineProperty( Script.prototype, &quot;name&quot;, {
+	set: function(v){ 
+		console.error(&quot;Script: name cannot be assigned, add to the first line //@name&quot;);
+	},
+	get: function() { 
+		return this._name;
+	},
+	enumerable: false //if it was enumerable it would be serialized
+});
+
+Script.prototype.configure = function(o)
+{
+	if(o.uid)
+		this.uid = o.uid;
+	if(o.enabled !== undefined)
+		this.enabled = o.enabled;
+	if(o.code !== undefined)
+		this.code = o.code;
+
+	if(this._root &amp;&amp; this._root.scene)
+		this.processCode();
+
+	//do this before processing the code if you want the script to overwrite the vars
+	if(o.properties)
+		 this.setContextProperties( o.properties );
+}
+
+Script.prototype.serialize = function()
+{
+	return {
+		object_class: &quot;Script&quot;,
+		uid: this.uid,
+		enabled: this.enabled,
+		code: this.code,
+		properties: LS.cloneObject( this.getContextProperties() )
+	};
+}
+
+Script.prototype.getContext = function()
+{
+	if(this._script)
+		return this._script._context;
+	return null;
+}
+
+Script.prototype.getCode = function()
+{
+	return this.code;
+}
+
+Script.prototype.setCode = function( code, skip_events )
+{
+	this.code = code;
+	this._blocked_functions.clear();
+	this.processCode( skip_events );
+}
+
+/**
+* Force to reevaluate the code (only for special situations)
+* @method reload
+*/
+Script.prototype.reload = function()
+{
+	this.processCode();
+}
+
+/**
+* This is the method in charge of compiling the code and executing the constructor, which also creates the context.
+* It is called everytime the code is modified, that implies that the context is created when the component is configured.
+* @method processCode
+*/
+Script.prototype.processCode = function( skip_events )
+{
+	this._blocked_functions.clear();
+	this._script.code = this.code;
+
+	//extract name
+	this._name = &quot;&quot;;
+	if(this.code)
+	{
+		var line = this.code.substr(0,128);
+		if(line.indexOf(&quot;//@&quot;) == 0)
+		{
+			var last = line.indexOf(&quot;\n&quot;);
+			if(last == -1)
+				last = undefined;
+			this._name = line.substr(3,last - 3).trim();
+		}
+	}
+
+	if(!this._root || LS.Script.block_execution )
+		return true;
+
+	//unbind old stuff
+	if(this._script &amp;&amp; this._script._context)
+		this._script._context.unbindAll();
+
+	//save old state
+	var old = this._stored_properties || this.getContextProperties();
+
+	//compiles and executes the context
+	var ret = this._script.compile({component:this, node: this._root, scene: this._root.scene, transform: this._root.transform, globals: LS.Globals });
+	if(!skip_events)
+		this.hookEvents();
+
+	this.setContextProperties( old );
+	this._stored_properties = null;
+
+	//execute some starter functions
+	if( this._script._context &amp;&amp; !this._script._context._initialized )
+	{
+		if( this._root &amp;&amp; this._script._context.onAddedToNode)
+			this._script._context.onAddedToNode( this._root );
+
+		if( this._root &amp;&amp; this._root.scene )
+		{
+			if( this._script._context.onAddedToScene )
+				this._script._context.onAddedToScene( this._root.scene );
+
+			if( this._script._context.onBind )
+				this._script._context.onBind( this._root.scene );
+
+			if( this._root.scene._state === LS.PLAYING &amp;&amp; this._script._context.start )
+				this._script._context.start();
+		}
+
+		this._script._context._initialized = true; //avoid initializing it twice
+	}
+
+	if( this._name &amp;&amp; this._root &amp;&amp; this._root.scene )
+		LS.Script.active_scripts[ this._name ] = this;
+
+	return ret;
+}
+
+Script.prototype.getContextProperties = function()
+{
+	var ctx = this.getContext();
+	if(!ctx)
+		return;
+	return LS.cloneObject( ctx );
+}
+
+Script.prototype.setContextProperties = function( properties )
+{
+	if(!properties)
+		return;
+	var ctx = this.getContext();
+	if(!ctx) //maybe the context hasnt been crated yet
+	{
+		this._stored_properties = properties;
+		return;
+	}
+
+	//to copy we use the clone in target method
+	LS.cloneObject( properties, ctx, false, true );
+}
+
+//used for graphs
+Script.prototype.setProperty = function(name, value)
+{
+	var ctx = this.getContext();
+
+	if( ctx &amp;&amp; ctx[name] !== undefined )
+	{
+		if(ctx[name].set)
+			ctx[name](value);
+		else
+			ctx[name] = value;
+	}
+	else if(this[name])
+		this[name] = value;
+}
+
+
+Script.prototype.getPropertiesInfo = function()
+{
+	var ctx = this.getContext();
+
+	if(!ctx)
+		return {enabled:&quot;boolean&quot;};
+
+	var attrs = LS.getObjectProperties( ctx );
+	attrs.enabled = &quot;boolean&quot;;
+	return attrs;
+}
+
+/*
+Script.prototype.getPropertyValue = function( property )
+{
+	var ctx = this.getContext();
+	if(!ctx)
+		return;
+
+	return ctx[ property ];
+}
+
+Script.prototype.setPropertyValue = function( property, value )
+{
+	var context = this.getContext();
+	if(!context)
+		return;
+
+	if( context[ property ] === undefined )
+		return;
+
+	if(context[ property ] &amp;&amp; context[ property ].set)
+		context[ property ].set( value );
+	else
+		context[ property ] = value;
+
+	return true;
+}
+*/
+
+//used for animation tracks
+Script.prototype.getPropertyInfoFromPath = function( path )
+{
+	if(path[0] != &quot;context&quot;)
+		return;
+
+	var context = this.getContext();
+
+	if(path.length == 1)
+		return {
+			name:&quot;context&quot;,
+			node: this._root,
+			target: context,
+			type: &quot;object&quot;,
+			value: context
+		};
+
+	var varname = path[1];
+	if(!context || context[ varname ] === undefined )
+		return;
+
+	var value = context[ varname ];
+	var extra_info = context[ &quot;@&quot; + varname ];
+	if(!extra_info)
+		extra_info = context.constructor[ &quot;@&quot; + varname ];
+
+	var type = &quot;&quot;;
+	if(extra_info)
+		type = extra_info.type;
+
+	if(!type &amp;&amp; value !== null &amp;&amp; value !== undefined)
+	{
+		if(value.constructor === String)
+			type = &quot;string&quot;;
+		else if(value.constructor === Boolean)
+			type = &quot;boolean&quot;;
+		else if(value.length)
+			type = &quot;vec&quot; + value.length;
+		else if(value.constructor === Number)
+			type = &quot;number&quot;;
+		else if(value.constructor === Function)
+			type = &quot;function&quot;;
+	}
+
+	if(type == &quot;function&quot;)
+		value = varname; //just to avoid doing assignments of functions
+
+	return {
+		node: this._root,
+		target: context,
+		name: varname,
+		value: value,
+		type: type
+	};
+}
+
+Script.prototype.setPropertyValueFromPath = function( path, value, offset )
+{
+	offset = offset || 0;
+
+	if( path.length &lt; (offset+1) )
+		return;
+
+	if(path[offset] != &quot;context&quot; )
+		return;
+
+	var context = this.getContext();
+	var varname = path[offset+1];
+	if(!context || context[ varname ] === undefined )
+		return;
+
+	if( context[ varname ] === undefined )
+		return;
+
+	//cannot assign functions this way
+	if( context[ varname ] &amp;&amp; context[ varname ].constructor == Function )
+		return;
+
+	if(context[ varname ] &amp;&amp; context[ varname ].set)
+		context[ varname ].set( value );
+	else
+		context[ varname ] = value;
+	return true;
+}
+
+/**
+* This check if the context has API functions that should be called, if thats the case, it binds events automatically
+* This way we dont have to bind manually all the methods.
+* @method hookEvents
+*/
+Script.prototype.hookEvents = function()
+{
+	var node = this._root;
+	if(!node)
+		throw(&quot;hooking events of a Script without a node&quot;);
+	var scene = node.scene || LS.GlobalScene; //hack
+
+	//script context
+	var context = this.getContext();
+	if(!context)
+		return;
+
+	//hook events
+	for(var i in LS.Script.API_functions)
+	{
+		var func_name = i;
+		var event_info = LS.Script.API_functions[ func_name ];
+
+		var target = null;
+		switch( event_info.target )
+		{
+			case Script.BIND_TO_COMPONENT: target = this; break;
+			case Script.BIND_TO_NODE: target = node; break;
+			case Script.BIND_TO_SCENE: target = scene; break;
+			case Script.BIND_TO_RENDERER: target = LS.Renderer; break;
+		}
+		if(!target)
+			throw(&quot;Script event without target?&quot;);
+
+		//check if this function exist
+		if( context[ func_name ] &amp;&amp; context[ func_name ].constructor === Function )
+		{
+			if( !LEvent.isBind( target, event_info.event, this.onScriptEvent, this )  )
+				LEvent.bind( target, event_info.event, this.onScriptEvent, this );
+		}
+		else //if it doesnt ensure we are not binding the event
+			LEvent.unbind( target, event_info.event, this.onScriptEvent, this );
+	}
+}
+
+/**
+* Called every time an event should be redirected to one function in the script context
+* @method onScriptEvent
+*/
+Script.prototype.onScriptEvent = function(event_type, params)
+{
+	if(!this.enabled)
+		return;
+
+	var event_info = LS.Script.API_events_to_function[ event_type ];
+	if(!event_info)
+		return; //????
+	if(this._breakpoint_on_call)
+	{
+		this._breakpoint_on_call = false;
+		{{debugger}} //stops the execution if the console is open
+	}
+
+	if( this._blocked_functions.has( event_info.name ) ) //prevent calling code with errors
+		return;
+
+	var r = this._script.callMethod( event_info.name, params, undefined, this );
+	return r;
+}
+
+Script.prototype.onAddedToNode = function( node )
+{
+	if(!node.script)
+		node.script = this;
+}
+
+Script.prototype.onRemovedFromNode = function( node )
+{
+	if(node.script == this)
+		delete node.script;
+}
+
+Script.prototype.onAddedToScene = function( scene )
+{
+	if( this._name )
+		LS.Script.active_scripts[ this._name ] = this;
+
+	//avoid to parse it again
+	if(this._script &amp;&amp; this._script._context &amp;&amp; this._script._context._initialized )
+	{
+		if(this._script._context.onBind)
+			this._script._context.onBind();
+		return;
+	}
+
+	if( !this.constructor.catch_important_exceptions )
+	{
+		this.processCode();
+		return;
+	}
+
+	//catch
+	try
+	{
+		//careful, if the code saved had an error, do not block the flow of the configure or the rest will be lost
+		this.processCode();
+	}
+	catch (err)
+	{
+		console.error(err);
+	}
+
+
+}
+
+Script.prototype.onRemovedFromScene = function(scene)
+{
+	if( this._name &amp;&amp; LS.Script.active_scripts[ this._name ] == this )
+		delete LS.Script.active_scripts[ this._name ];
+
+	//ensures no binded events
+	LEvent.unbindAll( scene, this );
+	if( this._context )
+	{
+		LEvent.unbindAll( scene, this._context, this );
+		if(this._script._context.onUnbind )
+			this._script._context.onUnbind( scene );
+		if(this._script._context.onRemovedFromScene )
+			this._context.onRemovedFromScene( scene );
+	}
+}
+
+//used in editor
+Script.prototype.getComponentTitle = function()
+{
+	return this.name; //name is a getter that reads the name from the code comment
+}
+
+Script.prototype.toInfoString = function()
+{
+	if(!this._root)
+		return LS.getObjectClassName( this );
+	return LS.getObjectClassName( this ) + &quot; in node &quot; + this._root.name;
+}
+
+
+//TODO stuff ***************************************
+/*
+Script.prototype.onAddedToProject = function( project )
+{
+	try
+	{
+		//just in case the script saved had an error, do not block the flow
+		this.processCode();
+	}
+	catch (err)
+	{
+		console.error(err);
+	}
+}
+
+Script.prototype.onRemovedFromProject = function( project )
+{
+	//ensures no binded events
+	if(this._context)
+		LEvent.unbindAll( project, this._context, this );
+
+	//unbind evends
+	LEvent.unbindAll( project, this );
+}
+*/
+//*******************************
+
+Script.prototype.onError = function(e)
+{
+	var scene = this._root.scene;
+	if(!scene)
+		return;
+
+	e.script = this;
+	e.node = this._root;
+	this._blocked_functions.add( e.method_name );
+
+	LEvent.trigger( this, &quot;code_error&quot;,e);
+	LEvent.trigger( scene, &quot;code_error&quot;,e);
+	LEvent.trigger( LS, &quot;code_error&quot;,e);
+
+	//conditional this?
+	console.log(&quot;app finishing due to error in script&quot;);
+	scene.finish();
+}
+
+//called from the editor?
+Script.prototype.onCodeChange = function(code)
+{
+	this.processCode();
+}
+
+Script.prototype.getResources = function(res)
+{
+	var ctx = this.getContext();
+
+	for(var i in ctx)
+	{
+		var value = ctx[i];
+		var info = ctx.constructor[ &quot;@&quot; + i];
+		if( !value || !info )
+			continue;
+		if( info.type == LS.TYPES.RESOURCE || info.type == LS.TYPES.TEXTURE || info.type == LS.TYPES.MESH )
+			res[ value ] = true;
+	}
+
+	if(ctx &amp;&amp; ctx.onGetResources )
+		ctx.onGetResources( res );
+}
+
+Script.prototype.onResourceRenamed = function( old_name, new_name, resource )
+{
+	var ctx = this.getContext();
+	if(ctx &amp;&amp; ctx.onResourceRenamed )
+		ctx.onResourceRenamed( old_name, new_name, resource );
+}
+
+LS.registerComponent( Script );
+LS.Script = Script;
+
+//*****************
+
+function ScriptFromFile(o)
+{
+	this.enabled = true;
+	this._filename = &quot;&quot;;
+	this._name = &quot;&quot;;
+
+	this._script = new LScript();
+	this._blocked_functions = new Set(); //used to block functions that has errors
+
+	this._script.extra_methods = {
+		getComponent: (function() { return this; }).bind(this),
+		getLocator: function() { return this.getComponent().getLocator() + &quot;/context&quot;; },
+		createProperty: LS.Component.prototype.createProperty,
+		createAction: LS.Component.prototype.createAction,
+		bind: LS.Component.prototype.bind,
+		unbind: LS.Component.prototype.unbind,
+		unbindAll: LS.Component.prototype.unbindAll
+	};
+
+	this._script.onerror = this.onError.bind(this);
+	this._script.exported_functions = [];//this.constructor.exported_callbacks;
+	this._last_error = null;
+
+	if(o)
+		this.configure(o);
+}
+
+ScriptFromFile.coding_help = Script.coding_help;
+
+Object.defineProperty( ScriptFromFile.prototype, &quot;filename&quot;, {
+	set: function(v){ 
+		if(v) //to avoid double slashes
+			v = LS.ResourcesManager.cleanFullpath( v );
+		this._filename = v;
+		this.processCode();
+	},
+	get: function() { 
+		return this._filename;
+	},
+	enumerable: true
+});
+
+Object.defineProperty( ScriptFromFile.prototype, &quot;context&quot;, {
+	set: function(v){ 
+		console.error(&quot;ScriptFromFile: context cannot be assigned&quot;);
+	},
+	get: function() { 
+		if(this._script)
+				return this._script._context;
+		return null;
+	},
+	enumerable: false //if it was enumerable it would be serialized
+});
+
+Object.defineProperty( ScriptFromFile.prototype, &quot;name&quot;, {
+	set: function(v){ 
+		console.error(&quot;Script: name cannot be assigned, set the first line with //@name&quot;);
+	},
+	get: function() { 
+		return this._name;
+	},
+	enumerable: false //if it was enumerable it would be serialized
+});
+
+ScriptFromFile.prototype.onAddedToScene = function( scene )
+{
+	//avoid to parse it again
+	if(this._script &amp;&amp; this._script._context &amp;&amp; this._script._context._initialized )
+	{
+		if( this._script._context.onBind )
+			this._script._context.onBind( scene );
+		if( this._script._context.onAddedToScene )
+			this._script._context.onAddedToScene( scene );
+
+		return;
+	}
+
+	if( !this.constructor.catch_important_exceptions )
+	{
+		this.processCode();
+		return;
+	}
+
+	//catch
+	try
+	{
+		//careful, if the code saved had an error, do not block the flow of the configure or the rest will be lost
+		this.processCode();
+	}
+	catch (err)
+	{
+		console.error(err);
+	}
+}
+
+/**
+* Force to reevaluate the code (only for special situations like remove codes)
+* @method reload
+* @param {Function} [on_complete=null] 
+*/
+ScriptFromFile.prototype.reload = function( on_complete )
+{
+	if(!this.filename)
+		return;
+	var that = this;
+	LS.ResourcesManager.load( this.filename, null, function( res, url ){
+		if( url != that.filename )
+			return;
+		that.processCode();
+		if(on_complete)
+			on_complete(that);
+	}, true);
+}
+
+
+ScriptFromFile.prototype.processCode = function( skip_events, on_complete )
+{
+	var that = this;
+	if(!this.filename)
+		return;
+
+	var script_resource = LS.ResourcesManager.getResource( this.filename );
+	if(!script_resource)
+	{
+		LS.ResourcesManager.load( this.filename, null, function( res, url ){
+			if( url != that.filename )
+				return;
+			that.processCode( skip_events );
+			if(on_complete)
+				on_complete(that);
+		});
+		return;
+	}
+
+	var code = script_resource.data;
+	if( code === undefined)
+	{
+		this._name = &quot;&quot;;
+		return;
+	}
+
+	if( this._script.code == code )
+		return;
+
+	// ****** CODE PROCESSED ***********************
+
+	//extract name
+	this._name = &quot;&quot;;
+	if(code)
+	{
+		var line = code.substr(0,128);
+		if(line.indexOf(&quot;//@&quot;) == 0)
+		{
+			var last = line.indexOf(&quot;\n&quot;);
+			if(last == -1)
+				last = undefined;
+			this._name = line.substr(3,last - 3).trim();
+		}
+	}
+
+	if(!this._root || LS.Script.block_execution )
+		return true;
+
+	//assigned inside because otherwise if it gets modified before it is attached to the scene tree then it wont be compiled
+	this._script.code = code;
+
+	//unbind old stuff
+	if( this._script &amp;&amp; this._script._context )
+		this._script._context.unbindAll();
+
+	//compiles and executes the context
+	var old = this._stored_properties || this.getContextProperties();
+	var ret = this._script.compile({component:this, node: this._root, scene: this._root.scene, transform: this._root.transform, globals: LS.Globals });
+	if(!skip_events)
+		this.hookEvents();
+	this.setContextProperties( old );
+	this._stored_properties = null;
+
+	//try to catch up with all the events missed while loading the script
+	if( this._script._context &amp;&amp; !this._script._context._initialized )
+	{
+		if( this._root &amp;&amp; this._script._context.onAddedToNode)
+			this._script._context.onAddedToNode( this._root );
+
+		if( this._root &amp;&amp; this._root.scene )
+		{
+			if( this._script._context.onAddedToScene )
+				this._script._context.onAddedToScene( this._root.scene );
+
+			if( this._script._context.onBind )
+				this._script._context.onBind( this._root.scene );
+
+			if( this._root.scene._state === LS.PLAYING &amp;&amp; this._script._context.start )
+				this._script._context.start();
+		}
+
+		this._script._context._initialized = true; //avoid initializing it twice
+	}
+
+	if( this._name &amp;&amp; this._root &amp;&amp; this._root.scene )
+		LS.Script.active_scripts[ this._name ] = this;
+
+	if(on_complete)
+		on_complete(this);
+
+	return ret;
+}
+
+ScriptFromFile.prototype.configure = function(o)
+{
+	if(o.uid)
+		this.uid = o.uid;
+	if(o.enabled !== undefined)
+		this.enabled = o.enabled;
+	if(o.filename !== undefined)
+		this.filename = o.filename;
+	if(o.properties)
+		 this.setContextProperties( o.properties );
+
+	if(this._root &amp;&amp; this._root.scene)
+		this.processCode();
+}
+
+ScriptFromFile.prototype.serialize = function()
+{
+	return {
+		object_class: &quot;ScriptFromFile&quot;,
+		uid: this.uid,
+		enabled: this.enabled,
+		filename: this.filename,
+		properties: LS.cloneObject( this.getContextProperties() )
+	};
+}
+
+
+ScriptFromFile.prototype.getResources = function(res)
+{
+	if(this.filename)
+		res[this.filename] = LS.Resource;
+
+	//script resources
+	var ctx = this.getContext();
+	if(!ctx || !ctx.getResources )
+		return;
+	ctx.getResources( res );
+}
+
+ScriptFromFile.prototype.onResourceRenamed = function (old_name, new_name, resource)
+{
+	if(this.filename == old_name)
+		this.filename = new_name;
+}
+
+ScriptFromFile.prototype.getCodeResource = function()
+{
+	return LS.ResourcesManager.getResource( this.filename );
+}
+
+
+ScriptFromFile.prototype.getCode = function()
+{
+	var script_resource = LS.ResourcesManager.getResource( this.filename );
+	if(!script_resource)
+		return &quot;&quot;;
+	return script_resource.data;
+}
+
+ScriptFromFile.prototype.setCode = function( code, skip_events )
+{
+	var script_resource = LS.ResourcesManager.getResource( this.filename );
+	if(!script_resource)
+		return &quot;&quot;;
+	script_resource.data = code;
+	this.processCode( skip_events );
+}
+
+ScriptFromFile.updateComponents = function( script, skip_events )
+{
+	if( !script )
+		return;
+
+	var fullpath = script.fullpath || script.filename;
+	var scene = LS.GlobalScene;
+	var components = scene.findNodeComponents( LS.ScriptFromFile );
+	for(var i = 0; i &lt; components.length; ++i)
+	{
+		var compo = components[i];
+		if( compo.filename == fullpath )
+			compo.processCode(skip_events);
+	}
+}
+
+LS.extendClass( ScriptFromFile, Script );
+
+LS.registerComponent( ScriptFromFile );
+LS.ScriptFromFile = ScriptFromFile;
+
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

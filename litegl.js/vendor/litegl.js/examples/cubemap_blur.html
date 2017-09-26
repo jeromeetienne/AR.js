@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>litegl.js: cubemap blur example</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<style type='text/css'>
+		html, body { background-color: #DDD; margin: 0; padding: 0; width: 100%; height: 100%;}
+		.tools {
+			position: fixed;
+			top: 10px;
+			left: 10px;
+		}
+		button {
+			border: 0;
+			border-radius: 10px;
+			font-size: 20px;
+			padding: 10px;
+			background-color: #334;
+		}
+	</style>
+	<script type="text/javascript" src="../external/gl-matrix.js"></script>
+	<script type="text/javascript" src="../build/litegl.js"></script>
+	<script type="text/javascript">
+		
+	function init()
+	{
+		//create the rendering context
+		var container = document.body;
+
+		GL.debug = true;
+
+		var gl = GL.create({width: container.offsetWidth, height: container.offsetHeight, failIfMajorPerformanceCaveat: true});
+		container.appendChild(gl.canvas);
+		gl.animate();
+
+		//build the mesh
+		var mesh = GL.Mesh.sphere({size:10, subdivisions: 32});
+		var texture = GL.Texture.cubemapFromURL("cross-skybox.jpg",{temp_color:[80,80,80,255], is_cross: 1, minFilter: gl.NEAREST });
+		var blur_texture = null;
+
+		//create basic matrices for cameras and transformation
+		var proj = mat4.create();
+		var view = mat4.create();
+		var model = mat4.create();
+		var mvp = mat4.create();
+		var temp = mat4.create();
+
+		var cam_pos = [0,30,30];
+
+		//get mouse actions
+		gl.captureMouse(true);
+		gl.onmousemove = function(e)
+		{
+			if(!e.dragging)
+				return;
+			mat4.rotateY(model,model,e.deltax * 0.01);
+			if(e.deltay)
+				vec3.rotateX(cam_pos,cam_pos,e.deltay * -0.01);
+		}
+		gl.onmousewheel = function(e)
+		{
+			if(!e.wheel)
+				return;
+			var s = 1 + e.wheel / 1000;
+			mat4.scale(model,model,[s,s,s]);
+		}
+
+		//set the camera position
+		mat4.perspective( proj, 45 * DEG2RAD, gl.canvas.width / gl.canvas.height, 0.1, 1000);
+		mat4.lookAt(view, [0,30,30],[0,0,0], [0,1,0]);
+
+		//basic phong shader
+		var shader = new Shader('\
+				precision highp float;\
+				attribute vec3 a_vertex;\
+				attribute vec3 a_normal;\
+				varying vec3 v_normal;\
+				uniform mat4 u_model;\
+				uniform mat4 u_mvp;\
+				void main() {\
+					v_normal = a_normal;\
+					gl_Position = u_mvp * vec4(a_vertex,1.0);\
+				}\
+				', '\
+				precision highp float;\
+				varying vec3 v_normal;\
+				varying vec2 v_coord;\
+				uniform samplerCube u_texture;\
+				uniform vec3 u_camera_eye;\
+				void main() {\
+				  vec3 N = normalize(v_normal);\
+				  vec4 color = textureCube( u_texture, N );\
+				  gl_FragColor = color;\
+				}\
+			');
+
+
+		//generic gl flags and settings
+		gl.clearColor(0.1,0.1,0.1,1);
+		gl.enable( gl.DEPTH_TEST );
+
+		//rendering loop
+		gl.ondraw = function()
+		{
+			gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
+			gl.enable( gl.DEPTH_TEST );
+			gl.disable( gl.BLEND );
+			gl.disable( gl.CULL_FACE );
+
+			//create modelview and projection matrices
+			mat4.lookAt(view, cam_pos,[0,0,0], [0,1,0]);
+			mat4.multiply(temp,view,model);
+			mat4.multiply(mvp,proj,temp);
+
+			//compute rotation matrix for normals
+			texture.bind(0);
+			window.cubemap = texture; //debug
+
+			//render mesh using the shader
+			shader.uniforms({
+				u_model: model,
+				u_texture: 0,
+				u_mvp: mvp
+			}).draw(mesh);
+		};
+
+		//update loop
+		gl.onupdate = function(dt)
+		{
+		};
+
+		gl.onlosecontext = function(err)
+		{
+			console.log(err);
+			var error = gl.getError();
+			console.log(error);
+		}
+
+		window.blurCubemap = function blurCubemap(num)
+		{
+			num = parseInt(num);
+			if(num == -1)
+			{
+				texture = texture.clone();
+				return;
+			}
+			
+			if(!blur_texture)
+				blur_texture = texture.clone();
+			for(var i = 0; i < num; i++)
+			{
+				var old = texture; //swap
+				texture = texture.applyBlur(i,i, 1, null, blur_texture);
+				blur_texture = old;
+			}
+		}
+
+		window.toCross = function toCross()
+		{
+			var canvas = texture.toCanvas();
+			var a = document.createElement("a");
+			a.download = "cubemap.png";
+			a.href = canvas.toDataURL();
+			a.title = "Download file";
+			a.appendChild(canvas);
+			var new_window = window.open();
+			new_window.document.body.appendChild(a);
+		}
+	}	
+	
+	</script>
+</head>
+<body>
+	<div class="tools">
+		<button onclick="blurCubemap(5);">Blur +5</button>
+		<button onclick="blurCubemap(5);">Blur +10</button>
+		<button onclick="blurCubemap(5);">Blur +20</button>
+		<button onclick="blurCubemap(-1);">Clone</button>
+		<button onclick="toCross();">To Cross</button>
+	</div>
+	<script>init();</script>
+</body>
+</html>
+
+

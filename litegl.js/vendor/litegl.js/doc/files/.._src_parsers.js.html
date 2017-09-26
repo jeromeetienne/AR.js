@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>../src/parsers.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/BBox.html">BBox</a></li>
+                                <li><a href="../classes/geo.html">geo</a></li>
+                                <li><a href="../classes/GL.html">GL</a></li>
+                                <li><a href="../classes/gl.html">gl</a></li>
+                                <li><a href="../classes/GL.Buffer.html">GL.Buffer</a></li>
+                                <li><a href="../classes/GL.FBO.html">GL.FBO</a></li>
+                                <li><a href="../classes/GL.Indexer.html">GL.Indexer</a></li>
+                                <li><a href="../classes/GL.Mesh.html">GL.Mesh</a></li>
+                                <li><a href="../classes/GL.Octree.html">GL.Octree</a></li>
+                                <li><a href="../classes/GL.Shader.html">GL.Shader</a></li>
+                                <li><a href="../classes/GL.Texture.html">GL.Texture</a></li>
+                                <li><a href="../classes/LEvent.html">LEvent</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: ../src/parsers.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+//***** OBJ parser adapted from SpiderGL implementation *****************
+/**
+* Parses a OBJ string and returns an object with the info ready to be passed to GL.Mesh.load
+* @method Mesh.parseOBJ
+* @param {String} data all the OBJ info to be parsed
+* @param {Object} options
+* @return {Object} mesh information (vertices, coords, normals, indices)
+*/
+
+Mesh.parseOBJ = function(text, options)
+{
+	options = options || {};
+
+	//final arrays (packed, lineal [ax,ay,az, bx,by,bz ...])
+	var positionsArray = [ ];
+	var texcoordsArray = [ ];
+	var normalsArray   = [ ];
+	var indicesArray   = [ ];
+
+	//unique arrays (not packed, lineal)
+	var positions = [ ];
+	var texcoords = [ ];
+	var normals   = [ ];
+	var facemap   = { };
+	var index     = 0;
+
+	var line = null;
+	var f   = null;
+	var pos = 0;
+	var tex = 0;
+	var nor = 0;
+	var x   = 0.0;
+	var y   = 0.0;
+	var z   = 0.0;
+	var tokens = null;
+
+	var hasPos = false;
+	var hasTex = false;
+	var hasNor = false;
+
+	var parsingFaces = false;
+	var indices_offset = 0;
+	var negative_offset = -1; //used for weird objs with negative indices
+	var max_index = 0;
+
+	var skip_indices = options.noindex ? options.noindex : (text.length &gt; 10000000 ? true : false);
+	//trace(&quot;SKIP INDICES: &quot; + skip_indices);
+	var flip_axis = options.flipAxis;
+	var flip_normals = (flip_axis || options.flipNormals);
+
+	//used for mesh groups (submeshes)
+	var group = null;
+	var groups = [];
+	var materials_found = {};
+
+	var V_CODE = 1;
+	var VT_CODE = 2;
+	var VN_CODE = 3;
+	var F_CODE = 4;
+	var G_CODE = 5;
+	var O_CODE = 6;
+	var codes = { v: V_CODE, vt: VT_CODE, vn: VN_CODE, f: F_CODE, g: G_CODE, o: O_CODE };
+
+
+	var lines = text.split(&quot;\n&quot;);
+	var length = lines.length;
+	for (var lineIndex = 0;  lineIndex &lt; length; ++lineIndex) {
+		line = lines[lineIndex].replace(/[ \t]+/g, &quot; &quot;).replace(/\s\s*$/, &quot;&quot;); //trim
+
+		if (line[0] == &quot;#&quot;) continue;
+		if(line == &quot;&quot;) continue;
+
+		tokens = line.split(&quot; &quot;);
+		var code = codes[ tokens[0] ];
+
+		if(parsingFaces &amp;&amp; code == V_CODE) //another mesh?
+		{
+			indices_offset = index;
+			parsingFaces = false;
+			//trace(&quot;multiple meshes: &quot; + indices_offset);
+		}
+
+		//read and parse numbers
+		if( code &lt;= VN_CODE ) //v,vt,vn
+		{
+			x = parseFloat(tokens[1]);
+			y = parseFloat(tokens[2]);
+			if( code != VT_CODE )
+			{
+				if(tokens[3] == &#x27;\\&#x27;) //super weird case, OBJ allows to break lines with slashes...
+				{
+					//HACK! only works if the var is the thirth position...
+					++lineIndex;
+					line = lines[lineIndex].replace(/[ \t]+/g, &quot; &quot;).replace(/\s\s*$/, &quot;&quot;); //better than trim
+					z = parseFloat(line);
+				}
+				else
+					z = parseFloat(tokens[3]);
+			}
+		}
+
+		if (code == V_CODE) {
+			if(flip_axis) //maya and max notation style
+				positions.push(-1*x,z,y);
+			else
+				positions.push(x,y,z);
+		}
+		else if (code == VT_CODE) {
+			texcoords.push(x,y);
+		}
+		else if (code == VN_CODE) {
+
+			if(flip_normals)  //maya and max notation style
+				normals.push(-y,-z,x);
+			else
+				normals.push(x,y,z);
+		}
+		else if (code == F_CODE) {
+			parsingFaces = true;
+
+			if (tokens.length &lt; 4) continue; //faces with less that 3 vertices? nevermind
+
+			//for every corner of this polygon
+			var polygon_indices = [];
+			for (var i=1; i &lt; tokens.length; ++i) 
+			{
+				if (!(tokens[i] in facemap) || skip_indices) 
+				{
+					f = tokens[i].split(&quot;/&quot;);
+
+					if (f.length == 1) { //unpacked
+						pos = parseInt(f[0]) - 1;
+						tex = pos;
+						nor = pos;
+					}
+					else if (f.length == 2) { //no normals
+						pos = parseInt(f[0]) - 1;
+						tex = parseInt(f[1]) - 1;
+						nor = -1;
+					}
+					else if (f.length == 3) { //all three indexed
+						pos = parseInt(f[0]) - 1;
+						tex = parseInt(f[1]) - 1;
+						nor = parseInt(f[2]) - 1;
+					}
+					else {
+						console.err(&quot;Problem parsing: unknown number of values per face&quot;);
+						return false;
+					}
+
+					if(i &gt; 3 &amp;&amp; skip_indices) //break polygon in triangles
+					{
+						//first
+						var pl = positionsArray.length;
+						positionsArray.push( positionsArray[pl - (i-3)*9], positionsArray[pl - (i-3)*9 + 1], positionsArray[pl - (i-3)*9 + 2]);
+						positionsArray.push( positionsArray[pl - 3], positionsArray[pl - 2], positionsArray[pl - 1]);
+						pl = texcoordsArray.length;
+						texcoordsArray.push( texcoordsArray[pl - (i-3)*6], texcoordsArray[pl - (i-3)*6 + 1]);
+						texcoordsArray.push( texcoordsArray[pl - 2], texcoordsArray[pl - 1]);
+						pl = normalsArray.length;
+						normalsArray.push( normalsArray[pl - (i-3)*9], normalsArray[pl - (i-3)*9 + 1], normalsArray[pl - (i-3)*9 + 2]);
+						normalsArray.push( normalsArray[pl - 3], normalsArray[pl - 2], normalsArray[pl - 1]);
+					}
+
+					//add new vertex
+					x = 0.0;
+					y = 0.0;
+					z = 0.0;
+					if ((pos * 3 + 2) &lt; positions.length) {
+						hasPos = true;
+						x = positions[pos*3+0];
+						y = positions[pos*3+1];
+						z = positions[pos*3+2];
+					}
+					positionsArray.push(x,y,z);
+
+					//add new texture coordinate
+					x = 0.0;
+					y = 0.0;
+					if ((tex * 2 + 1) &lt; texcoords.length) {
+						hasTex = true;
+						x = texcoords[tex*2+0];
+						y = texcoords[tex*2+1];
+					}
+					texcoordsArray.push(x,y);
+
+					//add new normal
+					x = 0.0;
+					y = 0.0;
+					z = 1.0;
+					if(nor != -1)
+					{
+						if ((nor * 3 + 2) &lt; normals.length) {
+							hasNor = true;
+							x = normals[nor*3+0];
+							y = normals[nor*3+1];
+							z = normals[nor*3+2];
+						}
+						
+						normalsArray.push(x,y,z);
+					}
+
+					//Save the string &quot;10/10/10&quot; and tells which index represents it in the arrays
+					if(!skip_indices)
+						facemap[tokens[i]] = index++;
+				}//end of &#x27;if this token is new (store and index for later reuse)&#x27;
+
+				//store key for this triplet
+				if(!skip_indices)
+				{
+					var final_index = facemap[tokens[i]];
+					polygon_indices.push(final_index);
+					if(max_index &lt; final_index)
+						max_index = final_index;
+				}
+			} //end of for every token on a &#x27;f&#x27; line
+
+			//polygons (not just triangles)
+			if(!skip_indices)
+			{
+				for(var iP = 2; iP &lt; polygon_indices.length; iP++)
+				{
+					indicesArray.push( polygon_indices[0], polygon_indices[iP-1], polygon_indices[iP] );
+					//indicesArray.push( [polygon_indices[0], polygon_indices[iP-1], polygon_indices[iP]] );
+				}
+			}
+		}
+		else if (code == G_CODE || tokens[0] == &quot;usemtl&quot;) {
+			negative_offset = positions.length / 3 - 1;
+
+			if(tokens.length &gt; 1)
+			{
+				if(group != null)
+				{
+					group.length = indicesArray.length - group.start;
+					if(group.length &gt; 0)
+						groups.push(group);
+				}
+
+				group = {
+					name: tokens[1],
+					start: indicesArray.length,
+					length: -1,
+					material: &quot;&quot;
+				};
+			}
+		}
+		else if (tokens[0] == &quot;usemtl&quot;) {
+			if(group)
+				group.material = tokens[1];
+		}
+		/*
+		else if (tokens[0] == &quot;o&quot; || tokens[0] == &quot;s&quot;) {
+			//ignore
+		}
+		else
+		{
+			//console.log(&quot;unknown code: &quot; + line);
+		}
+		*/
+	}
+
+	if(!positions.length)
+	{
+		console.error(&quot;OBJ doesnt have vertices, maybe the file is not a OBJ&quot;);
+		return null;
+	}
+
+	if(group &amp;&amp; (indicesArray.length - group.start) &gt; 1)
+	{
+		group.length = indicesArray.length - group.start;
+		groups.push(group);
+	}
+
+	//deindex streams
+	if((max_index &gt; 256*256 || skip_indices ) &amp;&amp; indicesArray.length &gt; 0)
+	{
+		console.log(&quot;Deindexing mesh...&quot;)
+		var finalVertices = new Float32Array(indicesArray.length * 3);
+		var finalNormals = normalsArray &amp;&amp; normalsArray.length ? new Float32Array(indicesArray.length * 3) : null;
+		var finalTexCoords = texcoordsArray &amp;&amp; texcoordsArray.length ? new Float32Array(indicesArray.length * 2) : null;
+		for(var i = 0; i &lt; indicesArray.length; i += 1)
+		{
+			finalVertices.set( positionsArray.slice( indicesArray[i]*3,indicesArray[i]*3 + 3), i*3 );
+			if(finalNormals)
+				finalNormals.set( normalsArray.slice( indicesArray[i]*3,indicesArray[i]*3 + 3 ), i*3 );
+			if(finalTexCoords)
+				finalTexCoords.set( texcoordsArray.slice(indicesArray[i]*2,indicesArray[i]*2 + 2 ), i*2 );
+		}
+		positionsArray = finalVertices;
+		if(finalNormals)
+			normalsArray = finalNormals;
+		if(finalTexCoords)
+			texcoordsArray = finalTexCoords;
+		indicesArray = null;
+	}
+
+	//Create final mesh object
+	var mesh = {};
+
+	//create typed arrays
+	if (hasPos)
+		mesh.vertices = new Float32Array(positionsArray);
+	if (hasNor &amp;&amp; normalsArray.length &gt; 0)
+		mesh.normals = new Float32Array(normalsArray);
+	if (hasTex &amp;&amp; texcoordsArray.length &gt; 0)
+		mesh.coords = new Float32Array(texcoordsArray);
+	if (indicesArray &amp;&amp; indicesArray.length &gt; 0)
+		mesh.triangles = new Uint16Array(indicesArray);
+
+	var info = {};
+	if(groups.length &gt; 1)
+		info.groups = groups;
+	mesh.info = info;
+
+	var final_mesh = null;
+	
+	final_mesh = Mesh.load(mesh, null, options.mesh);
+	final_mesh.updateBounding();
+	return final_mesh;
+}
+
+Mesh.parsers[&quot;obj&quot;] = Mesh.parseOBJ.bind( Mesh );
+
+Mesh.encoders[&quot;obj&quot;] = function( mesh, options )
+{
+	//store vertices
+	var verticesBuffer = mesh.getBuffer(&quot;vertices&quot;);
+	if(!verticesBuffer)
+		return null;
+
+	var result = &quot;# Generated with liteGL.js by Javi Agenjo\n\n&quot;;
+
+	var vertices = verticesBuffer.data;
+	for (var i = 0; i &lt; vertices.length; i+=3)
+		result += &quot;v &quot; + vertices[i].toFixed(4) + &quot; &quot; + vertices[i+1].toFixed(4) + &quot; &quot; + vertices[i+2].toFixed(4) + &quot;\n&quot;;
+
+	//store normals
+	var normalsBuffer = mesh.getBuffer(&quot;normals&quot;);
+	if(normalsBuffer)
+	{
+		result += &quot;\n&quot;;
+		var normals = normalsBuffer.data;
+		for (var i = 0; i &lt; normals.length; i+=3)
+			result += &quot;vn &quot; + normals[i].toFixed(4) + &quot; &quot; + normals[i+1].toFixed(4) + &quot; &quot; + normals[i+2].toFixed(4) + &quot;\n&quot;;
+	}
+	
+	//store uvs
+	var coordsBuffer = mesh.getBuffer(&quot;coords&quot;);
+	if(coordsBuffer)
+	{
+		result += &quot;\n&quot;;
+		var coords = coordsBuffer.data;
+		for (var i = 0; i &lt; coords.length; i+=2)
+			result += &quot;vt &quot; + coords[i].toFixed(4) + &quot; &quot; + coords[i+1].toFixed(4) + &quot; &quot; + &quot; 0.0000\n&quot;;
+	}
+
+	result += &quot;\ng mesh\n&quot;;
+
+	//store faces
+	var indicesBuffer = mesh.getIndexBuffer(&quot;triangles&quot;);
+	if(indicesBuffer)
+	{
+		var indices = indicesBuffer.data;
+		for (var i = 0; i &lt; indices.length; i+=3)
+			result += &quot;f &quot; + (indices[i]+1) + &quot;/&quot; + (indices[i]+1) + &quot;/&quot; + (indices[i]+1) + &quot; &quot; + (indices[i+1]+1) + &quot;/&quot; + (indices[i+1]+1) + &quot;/&quot; + (indices[i+1]+1) + &quot; &quot; + (indices[i+2]+1) + &quot;/&quot; + (indices[i+2]+1) + &quot;/&quot; + (indices[i+2]+1) + &quot;\n&quot;;
+	}
+	else //no indices
+	{
+		for (var i = 0; i &lt; (vertices.length / 3); i+=3)
+			result += &quot;f &quot; + (i+1) + &quot;/&quot; + (i+1) + &quot;/&quot; + (i+1) + &quot; &quot; + (i+2) + &quot;/&quot; + (i+2) + &quot;/&quot; + (i+2) + &quot; &quot; + (i+3) + &quot;/&quot; + (i+3) + &quot;/&quot; + (i+3) + &quot;\n&quot;;
+	}
+	
+	return result;
+}
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

@@ -1,0 +1,572 @@
+body {
+	background-color: #222;
+	color: #666;
+	font:  14px 'Century Gothic','Tahoma';
+}
+
+a { color: #77A; outline: 0; text-decoration: none;}
+p { margin: 0; padding: 0; }
+div { margin: 0; padding: 0; }
+h1,h2,h3 { margin: 0; padding: 2px; }
+#wrap {
+	width: 100%;
+}
+
+#main {
+	margin: auto;
+	margin-top: 40px;
+	margin-bottom: 200px;
+	width: 1000px;
+	/* box-shadow: 0 0 4px black; */
+}
+
+
+#header {
+	position: relative;
+	background-color: #444;
+	padding: 4px;
+	color: #aaa;
+	height: 60px;
+}
+
+#content {
+	position: relative;
+	width: 100%;
+	min-height: 500px;
+	/* background-color: #333; */
+}
+
+#footer {
+	background-color: #111;
+	padding: 4px;
+}
+
+#header .menutools {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+}
+
+object, embed {
+  outline: 0;
+}
+strong { color: #aaa; }
+
+button {
+	background: #333;
+    background: -moz-linear-gradient(#4B4947, #32302D);
+    background: -webkit-gradient(linear, left top, left bottom, from(#4B4947), to(#32302D));
+    box-shadow: 0 1px 0 #5B5957 inset, 0 -1px 0 black, 0 1px 0 black, -1px 0 0 black, 1px 0 0 black, 0 1px 1px #111111;
+    -moz-box-shadow: inset 0 1px 0 #5B5957, 0 -1px 0 black, 0 1px 0 black, -1px 0 0 black, 1px 0 0 black, 0 1px 1px #111;
+    -webkit-box-shadow: inset 0 1px 0 #5B5957, 0 -1px 0 black, 0 1px 0 black, -1px 0 0 black, 1px 0 0 black, 0 1px 1px #111;
+    border-radius: 2px;
+
+	border: 0;
+    display: inline-block;
+    padding: 1px 10px;
+    vertical-align: top;
+    color: #eee;
+    text-shadow: 0 1px 0 black;
+	margin: 2px;
+}
+
+button:hover {
+	background: #b5b5b5;
+}
+
+button:active {
+	background-color: white;
+	color: #aaa;
+	box-shadow: inset 0 0 3px black;
+}
+
+.final {
+	font-weight: bold;
+	color: white;
+}
+
+.highlight { 
+	box-shadow: inset 0 0 4px white;
+}
+
+.mini {
+	font-size: 0.6em;
+}
+
+#left_tools {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
+#right_tools {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+
+.item-list .item {
+	border-radius: 4px;
+	margin: 1px;
+	font-size:1.2em;
+	color: #AAA;
+	padding: 2px;
+	padding-left: 10px;
+}
+
+.item-list .item:hover {
+	background-color: #48A;
+	color: white;
+}
+
+.item-list .item.selected {
+	background-color: #8AD;
+	color: white;
+}
+
+.item-list .item.loading {
+	color: #FA4;
+}
+
+.item-list .item.error {
+	color: #F33;
+}
+
+/*******************************************/
+
+h1 {
+	color: #AAF;
+	font-size: 24px;
+}
+
+#header {
+	background-color: #333;
+}
+
+#header .tools {
+	height: 50px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+#header .menutools button {
+/*	font-size: 1.4em;*/
+}
+
+#leftpanel {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+}
+
+.panel {
+	width: 300px;
+	background-color: rgba(20,20,20,1.0);
+	font-size: 0.8em;
+	overflow: auto;
+}
+
+.section {
+	padding: 2px;
+	height: 49%;
+}
+
+.section h2 {
+	font-size: 16px;
+	background-color: #444;
+	color: #ABD;
+	height: 24px;
+	font-size: 18px;
+	text-shadow: 0 1px 0 black;
+}
+
+.section h2 button {
+	float: right;
+	margin: 1px;
+}
+
+.section h3 {
+	margin: 3px;
+	color: #EEE;
+	font-size: 16px;
+	font-weight: normal;
+	text-shadow: 0 1px 0 black;
+}
+
+.section .content {
+	background-color: rgba(39,39,39,0.8);
+	overflow: auto;
+	height: 88%;
+	min-height: 200px;
+}
+
+#nodelist {
+	min-height: 160px;
+	overflow: auto;
+	user-select: none;
+	-moz-user-select: none;
+}
+
+#nodeinfo {
+}
+
+#nodeinfo p {
+	padding: 4px;
+}
+
+
+
+/* visor tools */
+#visor_tools .tools {
+	background-color: #333;
+	width: 512px;
+	height: 40px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	color: #aaa;
+
+	background: #4f4f4f; /* Old browsers */
+	background: -moz-linear-gradient(top, #4f4f4f 0%, #161616 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4f4f4f), color-stop(100%,#161616)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #4f4f4f 0%,#161616 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #4f4f4f 0%,#161616 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #4f4f4f 0%,#161616 100%); /* IE10+ */
+	background: linear-gradient(top, #4f4f4f 0%,#161616 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4f4f4f', endColorstr='#161616',GradientType=0 ); /* IE6-9 */
+
+	user-select: none;
+	-moz-user-select: none;
+}
+
+.tools .widget {
+	display: inline-block;
+	padding-left: 2px;
+	padding-right: 2px;
+	vertical-align: top;
+}
+
+.widget button {
+	/*margin-top: 9px;*/
+	padding: 2px;
+}
+
+.tools .widget button.on {
+	background: #5AF;
+}
+
+
+
+/* Attributes Editor **********************/
+.attributes-editor {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.attributes-editor .attributes-widget:hover {
+	background-color: #444;
+}
+
+.attributes-editor .attributes-widget strong {
+	display: inline-block;
+	width: 80px;
+	padding: 2px;
+	padding-left: 4px;
+	color: #AAA;
+	font-weight: normal;
+	/* text-shadow: 0 1px 0 black; */
+	vertical-align: top;
+	user-select: none;
+	-moz-user-select: none;
+}
+
+.attributes-editor .attributes-widget span {
+	padding: 2px;
+	color: #5AF;
+}
+
+.attributes-editor .attributes-widget span.fixed {
+	width: 40px;
+	display: inline-block;
+}
+
+.attributes-editor .attributes-widget span.flag {
+	margin-left: 30px;
+}
+
+.attributes-editor .attributes-widget span.full {
+	width: 180px;
+	display: inline-block;
+	background-color: #222;
+	overflow: hidden;
+}
+
+.attributes-editor .attributes-widget span.info {
+	width: 180px;
+	height: 14px;
+	display: inline-block;
+	overflow: hidden;
+}
+
+.attributes-editor .attributes-widget input {
+	padding-left: 5px;
+	background-color: #111;
+	color: #5AF;
+	border: 1px solid #aaa;
+	font-size: 10px;
+	width: 50px;
+}
+
+.attributes-editor .attributes-widget input.text {
+	width: 120px;
+}
+
+.attributes-editor .attributes-widget textarea {
+	padding-left: 5px;
+	background-color: #111;
+	color: #5AF;
+	border: 1px solid #aaa;
+	font-size: 12px;
+	width: 180px;
+	height: 100px;
+	margin: 2px;
+}
+
+.attributes-editor .attributes-widget img, .attributes-editor .attributes-widget .img-slot {
+	width: 200px;
+	height: 200px;
+	display: block;
+	border: 1px solid black;
+	text-align: center;
+	margin: auto;
+	margin-bottom: 4px;
+}
+
+.attributes-editor .attributes-widget .img-slot {
+	width: 100px;
+	height: 100px;
+	border: 4px dashed grey;
+	border-radius: 20px;
+	color: grey;
+	vertical-align: middle;
+}
+
+.attributes-editor .attributes-widget .img-slot.highlight {
+	background-color: #333;
+	color: white;
+}
+
+.attributes-editor .attributes-widget .checkbox {
+	display: inline-block;
+	width: 5px;
+	height: 5px;
+	background-color: black;
+	border: 1px solid #aaa;
+	margin: 4px;
+	margin-bottom: 0px;
+}
+
+.attributes-editor .attributes-widget .checkbox.on {
+	background-color: #5AF;
+}
+
+input.color {
+	border: 1px solid black;
+	width: 70px;
+	user-select: text;
+	-moz-user-select: text;
+}
+
+.attributes-editor button {
+	margin-bottom: 4px;
+}
+
+
+.attributes-editor button.right {
+	float: right;
+	margin-right: 5px;
+	margin-top: 2px;
+}
+
+.attributes-editor .ui-slider {
+	display: inline-block;
+	width: 110px;
+	margin-left: 10px;
+}
+
+.attributes-editor .ui-slider.nextline {
+	margin-left: 100px;
+	width: 140px;
+	display: block;
+}
+
+/*************************/
+
+#blackModalBG {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	opacity: 0.8;
+	background-color: black;
+}
+
+#dialogBox {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 300px;
+	height: 200px;
+
+	background-color: #222;
+	border: 1px solid black;
+	box-shadow: 0 0 4px black;
+}
+
+#dialogBox .header {
+	background-color: #555;
+	color: white;
+	padding: 2px;
+}
+
+#dialogBox .buttons {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+#dialogBox .buttons button {
+	padding: 0;
+	margin: 2px;
+
+}
+
+#messagebox {
+	position: absolute;
+	margin: auto;
+	width: 300px;
+	height: 140px;
+	background-color: #444;
+	border: 1px solid #555;
+	color: white;
+	text-align: center;
+	box-shadow: 0 0 10px black;
+}
+
+#messagebox span {
+	display: block;
+	margin: 30px;
+	font-size: 20px;
+}
+
+#messagebox button.close {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.rgb-color {
+	padding-left: 5px !important;
+}
+
+/********** INTERFACE *********************/
+.ui-slider {
+    border-bottom: 1px solid #333333;
+    border-right: 1px solid #333333;
+    border-top: 1px solid black;
+	border-left: 1px solid black;
+    margin: 8px 0 0;
+	height: 0px;
+	vertical-align: top;
+}
+
+.ui-slider-handle {
+	border: 0 !important;
+    background: -moz-linear-gradient(#4B4947, #32302D) !important;
+    background: -webkit-gradient(linear, left top, left bottom, from(#4B4947), to(#32302D)) !important;
+	
+	border-radius: 7px 7px 7px 7px !important;
+    box-shadow: 0 1px 0 #5B5957 inset, 0 -1px 0 black, 0 1px 0 black, -1px 0 0 black, 1px 0 0 black, 0 1px 1px #111111 !important;
+    cursor: default !important;
+    height: 12px !important;
+    margin: -6px !important;
+    position: absolute !important;
+    width: 12px !important;
+	top: 0 !important;
+}
+
+button.min {
+	padding: 0px;
+	margin: 0 0 4px 4px;
+	color: #aaa;
+	font-size: 0.9em;
+}
+
+
+/* PANELS AND DIALOGS ************************/
+
+#scenes-list {
+	padding: 4px;
+	margin: 4px;
+	box-shadow: inset 0 0 4px black;
+	background-color: #333;
+	height: 300px;
+	width: 300px;
+}
+
+#scenes-list {
+
+}
+
+#dialogTexturePainter {
+	padding: 4px;
+}
+
+#dialogTexturePainter .setting {
+	margin: 2px;
+	padding: 2px;
+}
+
+#dialogTexturePainter .setting:hover {
+	background-color: #555;
+}
+
+button.important {
+	font-size: 1.2em;
+}
+
+textarea {
+	padding-left: 5px;
+	background-color: #111;
+	color: #5AF;
+	border: 1px solid #aaa;
+	font-size: 12px;
+	width: 300px;
+	height: 50px;
+	margin: 2px;
+}
+
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to { 
+    -webkit-transform: rotate(360deg);
+  }
+}
+#loading img
+{
+    -webkit-animation-name:             rotate; 
+    -webkit-animation-duration:         0.5s; 
+    -webkit-animation-iteration-count:  infinite;
+    -webkit-transition-timing-function: linear;
+    }
+
+#loading {
+	position: absolute;
+	top: 30px;
+	left: 30px;
+	pointer-events:none;
+}

@@ -1,0 +1,3064 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shaders>
+	<snippet id="test">
+	<![CDATA[
+		//THIS IS TEST!
+	]]>		
+	</snippet>
+
+	<snippet id="input">
+		<![CDATA[
+			//used to store topology input information
+			struct Input {
+				vec4 color;
+				vec3 vertex;
+				vec3 normal;
+				vec2 uv;
+				vec2 uv1;
+
+				vec3 camPos;
+				vec3 viewDir;
+				vec3 worldPos;
+				vec3 worldNormal;
+				vec4 screenPos;
+			};
+
+			Input getInput()
+			{
+				Input IN;
+				IN.color = vec4(1.0);
+				IN.vertex = v_pos;
+				IN.normal = v_normal;
+				IN.uv = v_uvs;
+				IN.uv1 = IN.uv;
+
+				IN.camPos = u_camera_eye;
+				IN.viewDir = normalize(u_camera_eye - v_pos);
+				IN.worldPos = v_pos;
+				IN.worldNormal = normalize(v_normal);
+				//IN.screenPos = vec4( (v_screenpos.xy / v_screenpos.w) * 0.5 + vec2(0.5), v_screenpos.zw );  //sometimes we need also z and w, thats why we pass all
+				IN.screenPos = vec4( (gl_FragCoord.xy / gl_FragCoord.w) * 0.5 + vec2(0.5), gl_FragCoord.zw );  //sometimes we need also z and w, thats why we pass all
+				return IN;
+			}
+		]]>
+	</snippet>
+
+
+	<snippet id="structs">
+		<![CDATA[
+			//used to store topology input information
+			struct Input {
+				vec4 color;
+				vec3 vertex;
+				vec3 normal;
+				vec2 uv;
+				vec2 uv1;
+
+				vec3 camPos;
+				vec3 viewDir;
+				vec3 worldPos;
+				vec3 worldNormal;
+				vec4 screenPos;
+			};
+
+			//used to store surface shading properties
+			struct SurfaceOutput {
+				vec3 Albedo;
+				vec3 Normal; //separated in case there is a normal map
+				vec3 Emission;
+				vec3 Ambient;
+				float Specular;
+				float Gloss;
+				float Alpha;
+				float Reflectivity;
+				vec4 Extra; //for special purposes
+			};
+
+			//used to store light contribution
+			//CAREFUL: this one is different than 
+			struct FinalLight {
+				vec3 Color;
+				vec3 Ambient;
+				float Diffuse; //NdotL
+				float Specular; //RdotL
+				vec3 Emission;
+				vec3 Reflection;
+				float Attenuation;
+				float Shadow; //1.0 means fully lit
+			};
+		]]>
+	</snippet>
+
+	<snippet id="computeLight">
+		<![CDATA[
+		//***** compute Light
+			vec3 computeLight( in SurfaceOutput o, in Input IN, inout FinalLight LIGHT )
+			{
+				vec3 N = o.Normal; //use the final normal (should be the same as IN.worldNormal)
+
+				//lighting calculation
+				#if defined(USE_SHADOW_MAP) && !defined(USE_AMBIENT_ONLY)
+					#ifdef USE_HARD_SHADOWS
+						LIGHT.Shadow = 1.0 - testShadow(vec3(0.0));
+					#else
+						#ifndef USE_OMNI_LIGHT
+							if (v_light_coord.w > 0.0) //inside the light frustrum (omnis dont have frustrum)
+						#endif
+						{
+							LIGHT.Shadow = 2.0 * testShadow(vec3(0.0));
+							LIGHT.Shadow += testShadow(vec3(0.0,u_shadow_params.x,u_shadow_params.x));
+							LIGHT.Shadow += testShadow(vec3(0.0,-u_shadow_params.x,-u_shadow_params.x));
+							LIGHT.Shadow += testShadow(vec3(-u_shadow_params.x,0.0,u_shadow_params.x));
+							LIGHT.Shadow += testShadow(vec3(u_shadow_params.x,0.0,-u_shadow_params.x));
+							LIGHT.Shadow += testShadow(vec3(-u_shadow_params.x,-u_shadow_params.x,u_shadow_params.x));
+							LIGHT.Shadow += testShadow(vec3(u_shadow_params.x,-u_shadow_params.x,-u_shadow_params.x));
+							LIGHT.Shadow += testShadow(vec3(-u_shadow_params.x,u_shadow_params.x,u_shadow_params.x));
+							LIGHT.Shadow += testShadow(vec3(u_shadow_params.x,u_shadow_params.x,-u_shadow_params.x));
+							LIGHT.Shadow = 1.0 - LIGHT.Shadow * 0.1;
+						}
+					#endif	
+				#endif
+
+				vec3 E = (u_camera_eye - v_pos);
+				float cam_dist = length(E);
+
+				#ifdef USE_ORTHOGRAPHIC_CAMERA
+					E = mix( E / cam_dist, -u_camera_front, 0.9999); //HACK, if I use u_camera_front directly it crashes
+				#else
+					E /= cam_dist;
+				#endif
+
+				vec3 L = (u_light_position - v_pos);
+				float light_distance = length(L);
+				L /= light_distance;
+
+				#ifdef USE_DIRECTIONAL_LIGHT
+					L = -u_light_front;
+				#endif
+
+				vec3 R = reflect(E,N);
+
+				float NdotL = 1.0;
+				#ifdef USE_DIFFUSE_LIGHT
+					NdotL = dot(N,L);
+				#endif
+				float EdotN = dot(E,N); //clamp(dot(E,N),0.0,1.0);
+				LIGHT.Specular = o.Specular * pow( clamp(dot(R,-L),0.001,1.0), o.Gloss );
+
+				LIGHT.Attenuation = 1.0;
+				#ifdef USE_LINEAR_ATTENUATION
+					LIGHT.Attenuation = 10.0 / light_distance;
+				#endif
+
+				#ifdef USE_RANGE_ATTENUATION
+					#ifndef USE_DIRECTIONAL_LIGHT
+						if(light_distance >= u_light_att.y)
+							LIGHT.Attenuation = 0.0;
+						else if(light_distance >= u_light_att.x)
+							LIGHT.Attenuation *= 1.0 - (light_distance - u_light_att.x) / (u_light_att.y - u_light_att.x);
+					#endif
+				#endif
+
+				#ifdef USE_LIGHT_TEXTURE
+					vec2 light_sample = (v_light_coord.xy / v_light_coord.w) * vec2(0.5) + vec2(0.5);
+					LIGHT.Color *= texture2D(light_texture,light_sample).xyz;
+
+					#ifndef USE_SPOT_CONE
+						if (light_sample.x < 0.001 || light_sample.y < 0.001 || light_sample.x > 0.999 || light_sample.y > 0.999)
+							LIGHT.Attenuation = 0.0;
+					#endif
+				#endif
+
+				#ifdef USE_LIGHT_CUBEMAP
+					LIGHT.Color *= textureCube( light_cubemap, -L ).xyz;
+				#endif
+
+				#ifdef USE_SPOT_LIGHT
+					#ifdef USE_SPOT_CONE
+						LIGHT.Attenuation *= spotFalloff( u_light_front, normalize( u_light_position - v_pos ), u_light_angle.z, u_light_angle.w );
+					#endif
+				#endif
+
+				#ifndef USE_AMBIENT_ONLY
+					#ifdef USE_LIGHT_OFFSET
+						NdotL += u_light_offset;
+					#endif
+
+					#ifdef USE_BACKLIGHT
+						//if(NdotL > 0.0 != gl_FrontFacing)	NdotL *= u_backlight_factor;
+						if(NdotL < 0.0 && gl_FrontFacing)	NdotL *= u_backlight_factor;
+					#else
+						//if(NdotL > 0.0 != gl_FrontFacing) NdotL = 0.0;
+						//NdotL = max(0.0, NdotL * (gl_FrontFacing ? 1.0 : 0.0 ));
+						NdotL = max(0.0, NdotL);
+					#endif
+
+					LIGHT.Diffuse = abs(NdotL);
+				#endif
+
+				//REFLECTION (ENVIRONMENT)
+				LIGHT.Reflection = u_background_color.xyz;
+				float reflection_gloss = 0.0; //expressed in mipmap offset
+
+				#ifdef LAST_PASS
+				if(o.Reflectivity > 0.0)
+				{
+					#ifdef USE_SPECULAR_IN_REFLECTION
+						reflection_gloss = max(0.0, (20.0 - o.Gloss) / 4.0);
+					#endif
+
+					//compute reflection color from environment
+					#if defined(USE_ENVIRONMENT_TEXTURE) || defined(USE_ENVIRONMENT_CUBEMAP)
+
+						#ifdef USE_ENVIRONMENT_TEXTURE
+							vec2 uvs_0 = v_uvs; vec2 uvs_1 = v_uvs; vec2 uvs_transformed = v_uvs;
+							vec2 uvs_polar_reflected = polarToCartesian(-R);
+							vec2 uvs_screen = (v_screenpos.xy / v_screenpos.w) * 0.5 + 0.5;
+							vec2 screen_centered = uvs_screen;
+							vec2 uvs_flipped_screen = vec2(1.0 - uvs_screen.x, uvs_screen.y);
+							vec2 env_uv = USE_ENVIRONMENT_TEXTURE;
+
+							/* TODO: fix and enable this to have reflection distortion when normals are used
+							temp_v2 = vec2(0.0);
+							#ifdef USE_NORMAL_TEXTURE
+								//temp_v2 += vec2(0.0, -length(normalmap_pixel.xy)) * 0.1; //this can be improved, it is just a hack
+								temp_v2 = vec2(0.0,-0.1) * (1.0 - dot(N, normalize(v_normal)));
+								#ifdef USE_NORMALMAP_FACTOR
+									temp_v2 *= u_normalmap_factor;
+								#endif
+								env_uv += temp_v2;
+							#endif
+							*/
+							LIGHT.Reflection = texture2D( environment_texture, env_uv, reflection_gloss ).xyz;
+
+							//LIGHT.Reflection = texture2D( environment_texture, uvs_polar_reflected ).xyz;
+						#else //USE_ENVIRONMENT_CUBEMAP
+							LIGHT.Reflection = textureCube( environment_cubemap, -R, 0.0).xyz;
+						#endif
+
+					#endif //environment
+				}
+				#endif //lastpass
+
+				#ifdef USE_IGNORE_LIGHTS
+					LIGHT.Color = vec3(1.0);
+					LIGHT.Ambient = vec3(0.0);
+					LIGHT.Diffuse = 1.0;
+					LIGHT.Specular = 0.0;
+				#endif
+
+				//FINAL LIGHT FORMULA ************************* 
+
+				vec3 total_light = LIGHT.Ambient * o.Ambient + LIGHT.Color * LIGHT.Diffuse * LIGHT.Attenuation * LIGHT.Shadow;
+
+				vec3 final_color = o.Albedo * total_light;
+
+				#ifdef FIRST_PASS
+					final_color += o.Emission;
+				#endif
+
+				#ifndef USE_SPECULAR_ONTOP
+					final_color	+= o.Albedo * (LIGHT.Color * LIGHT.Specular * LIGHT.Attenuation * LIGHT.Shadow);
+				#endif
+
+				//apply reflection
+				#ifdef LAST_PASS
+					if(o.Reflectivity > 0.0)
+						final_color = mix( final_color, LIGHT.Reflection, max(0.0,o.Reflectivity) );
+				#endif
+
+				#ifdef USE_SPECULAR_ONTOP
+					final_color	+= LIGHT.Color * LIGHT.Specular * LIGHT.Attenuation * LIGHT.Shadow;
+				#endif
+
+				return max( final_color, vec3(0.0) );
+			}
+		]]>
+	</snippet>
+
+	<snippet id="spotFalloff">
+		<![CDATA[
+			float spotFalloff(vec3 spotDir, vec3 lightDir, float angle_phi, float angle_theta)
+			{
+				float sqlen = dot(lightDir,lightDir);
+				float atten = 1.0;
+
+				vec4 spotParams = vec4( angle_phi, angle_theta, 1.0, 0.0 );
+				spotParams.w = 1.0 / (spotParams.x-spotParams.y);
+
+				vec3 dirUnit = lightDir * sqrt(sqlen); //we asume they are normalized
+				float spotDot = dot(spotDir, -dirUnit);
+				if (spotDot <= spotParams.y)// spotDot <= cos phi/2
+					return 0.0;
+				else if (spotDot > spotParams.x) // spotDot > cos theta/2
+					return 1.0;
+
+				// vertex lies somewhere beyond the two regions
+				float ifallof = pow( (spotDot-spotParams.y)*spotParams.w,spotParams.z );
+				return ifallof;
+			}
+		]]>
+	</snippet>
+
+	<snippet id="testShadow">
+		<![CDATA[
+			#ifndef SHADOWMAP_OFFSET 
+				#define SHADOWMAP_OFFSET (1.0/1024.0)
+			#endif 
+
+			#ifdef USE_SHADOW_CUBEMAP
+				uniform samplerCube shadowmap;
+			#else
+				uniform sampler2D shadowmap;
+			#endif
+			uniform vec4 u_shadow_params; // (1.0/(texture_size), bias, near, far)
+
+			#ifdef USE_SHADOW_CUBEMAP
+			float VectorToDepthValue(vec3 Vec)
+			{
+				vec3 AbsVec = abs(Vec);
+				float LocalZcomp = max(AbsVec.x, max(AbsVec.y, AbsVec.z));
+				float n = u_shadow_params.z;
+				float f = u_shadow_params.w;
+				#ifdef USE_LINEAR_SHADOWMAP	
+					//TODO
+				#endif
+				float NormZComp = (f+n) / (f-n) - (2.0*f*n)/(f-n)/LocalZcomp;
+				return (NormZComp + 1.0) * 0.5;
+			}
+			#endif
+
+			float UnpackDepth32(vec4 depth)
+			{
+				#ifdef USE_SHADOW_DEPTH_TEXTURE
+					return depth.x;
+				#else
+					const vec4 bitShifts = vec4( 1.0/(256.0*256.0*256.0), 1.0/(256.0*256.0), 1.0/256.0, 1);
+					return dot(depth.xyzw , bitShifts);
+				#endif
+			}
+
+			float testShadow(vec3 offset)
+			{
+				float shadow = 0.0;
+				float depth = 0.0;
+				float bias = u_shadow_params.y;
+
+				#ifdef USE_SHADOW_CUBEMAP
+
+					vec3 l_vector = (v_pos - u_light_position);
+					float dist = length(l_vector);
+					float pixel_z = VectorToDepthValue( l_vector );
+					if(pixel_z >= 0.998) return 0.0; //fixes a little bit the far edge bug
+					vec4 depth_color = textureCube( shadowmap, l_vector + offset * dist );
+					float ShadowVec = UnpackDepth32( depth_color );
+					if ( ShadowVec > pixel_z - bias )
+						return 0.0; //no shadow
+					return 1.0; //full shadow
+
+				#else
+					vec2 sample = (v_light_coord.xy / v_light_coord.w) * vec2(0.5) + vec2(0.5) + offset.xy;
+					//is inside light frustum
+					if (clamp(sample, 0.0, 1.0) == sample) { 
+						float sampleDepth = UnpackDepth32( texture2D(shadowmap, sample) );
+						depth = (sampleDepth == 1.0) ? 1.0e9 : sampleDepth; //on empty data send it to far away
+					}
+					else 
+						return 0.0; //outside of shadowmap, no shadow
+
+					if (depth > 0.0) {
+						shadow = ((v_light_coord.z - bias) / v_light_coord.w * 0.5 + 0.5) > depth ? 1.0 : 0.0;
+					}
+					return shadow;
+				#endif
+			}
+		]]>
+	</snippet>
+
+	<snippet id="getSkyboxColor">
+		<![CDATA[
+			vec3 getSkyboxColor(vec3 dir)
+			{
+				float reflection_gloss = 0.0; //expressed in mipmap offset
+
+				#ifdef USE_ENVIRONMENT_TEXTURE
+					vec2 uvs_polar_reflected = polarToCartesian( dir );
+					return texture2D( environment_texture, uvs_polar_reflected, reflection_gloss ).xyz;
+				#endif 
+				
+				#ifdef USE_ENVIRONMENT_CUBEMAP
+					return textureCube(environment_cubemap, dir, 0.0).xyz;
+				#endif //environment
+
+				return u_background_color.xyz;
+			}
+		]]>
+	</snippet>
+
+	<snippet id="getFlatNormal">
+		<![CDATA[
+			#ifdef STANDARD_DERIVATIVES
+				#extension GL_OES_standard_derivatives : enable 
+				vec3 getFlatNormal(vec3 pos)
+				{
+					vec3 A = dFdx( pos );
+					vec3 B = dFdy( pos );
+					return normalize( cross(A,B) );
+				}
+			#else
+				vec3 getFlatNormal(vec3 pos)
+				{
+					return vec3(0.0);
+				}
+			#endif
+		]]>
+	</snippet>
+
+	<snippet id="perturbNormal">
+		<![CDATA[
+			#ifdef STANDARD_DERIVATIVES
+				#extension GL_OES_standard_derivatives : enable 
+
+				mat3 cotangent_frame(vec3 N, vec3 p, vec2 uv)
+				{
+					// get edge vectors of the pixel triangle
+					vec3 dp1 = dFdx( p );
+					vec3 dp2 = dFdy( p );
+					vec2 duv1 = dFdx( uv );
+					vec2 duv2 = dFdy( uv );
+
+					// solve the linear system
+					vec3 dp2perp = cross( dp2, N );
+					vec3 dp1perp = cross( N, dp1 );
+					vec3 T = dp2perp * duv1.x + dp1perp * duv2.x;
+					vec3 B = dp2perp * duv1.y + dp1perp * duv2.y;
+				 
+					// construct a scale-invariant frame 
+					float invmax = inversesqrt( max( dot(T,T), dot(B,B) ) );
+					return mat3( T * invmax, B * invmax, N );
+				}
+
+				vec3 perturbNormal( vec3 N, vec3 V, vec2 texcoord, vec3 normal_pixel )
+				{
+					#ifdef USE_POINTS
+						return N;
+					#endif
+
+					// assume N, the interpolated vertex normal and 
+					// V, the view vector (vertex to eye)
+					//vec3 normal_pixel = texture2D(normalmap, texcoord ).xyz;
+					normal_pixel = normal_pixel * 255./127. - 128./127.;
+					mat3 TBN = cotangent_frame(N, V, texcoord);
+					return normalize(TBN * normal_pixel);
+				}	
+			#else
+				vec3 perturbNormal( vec3 N, vec3 V, vec2 texcoord, vec3 normal_pixel )
+				{
+					return N;
+				}
+			#endif
+		]]>
+	</snippet>
+
+	<snippet id="bumpNormal">
+		<![CDATA[
+			#ifdef STANDARD_DERIVATIVES
+				#extension GL_OES_standard_derivatives : enable 
+
+				// Calculate the surface normal using screen-space partial derivatives of the height field
+				vec3 bumpNormal(vec3 position, vec3 normal, sampler2D texture, vec2 uvs, float factor)
+				{
+			        vec3 dpdx = dFdx(position);
+			        vec3 dpdy = dFdy(position);
+					vec3 r1 = cross(dpdy, normal);
+					vec3 r2 = cross(normal, dpdx);
+
+					vec2 dtdx = dFdx(uvs) * factor;
+					vec2 dtdy = dFdy(uvs) * factor;
+
+			        float h = texture2D( texture,  uvs ).r;
+			        float hdx = texture2D( texture,  uvs + dtdx ).r;
+			        float hdy = texture2D( texture,  uvs + dtdy ).r;					
+
+					return normalize(normal + (r1 * (hdx - h) - r2 * (hdy - h)) / dot(dpdx, r1));
+					/*
+			        float h = texture2D( texture,  uvs ).r;
+			        float hdx = dFdx( h ) * factor;
+			        float hdy = dFdy( h ) * factor;
+					return normalize(normal + (r1 * (hdx - h) - r2 * (hdy - h)) / dot(dpdx, r1));
+					*/
+				}
+			#else
+				vec3 bumpNormal(vec3 position, vec3 normal, sampler2D texture, vec2 uvs, float factor)
+				{
+					return normal;
+				}
+			#endif
+		]]>
+	</snippet>
+
+	<snippet id="skinning">
+		<![CDATA[
+
+				//I use three vector4 per bone instead of mat4 to save space
+				#ifndef MAX_BONES
+					#define MAX_BONES 64
+				#endif
+				#ifdef USE_SKINNING_TEXTURE
+					uniform sampler2D u_bones;
+				#else
+					uniform vec4 u_bones[ MAX_BONES * 3 ];
+				#endif
+				attribute vec4 a_weights;
+				attribute vec4 a_bone_indices;
+
+				void getMat(int id, inout mat4 m) {
+					#ifdef USE_SKINNING_TEXTURE
+						float i_max_texture_bones_offset = 1.0 / (128.0 * 3.0);
+						m[0] = texture2D( u_bones, vec2( 0.0, (float(id*3)+0.5) * i_max_texture_bones_offset ) );
+						m[1] = texture2D( u_bones, vec2( 0.0, (float(id*3+1)+0.5) * i_max_texture_bones_offset ) );
+						m[2] = texture2D( u_bones, vec2( 0.0, (float(id*3+2)+0.5) * i_max_texture_bones_offset ) );
+					#else
+						m[0] = u_bones[ id * 3];
+						m[1] = u_bones[ id * 3 + 1];
+						m[2] = u_bones[ id * 3 + 2];
+					#endif
+				}
+
+				mat3 mat3_emu(mat4 m4) {
+				  return mat3(
+				      m4[0][0], m4[0][1], m4[0][2],
+				      m4[1][0], m4[1][1], m4[1][2],
+				      m4[2][0], m4[2][1], m4[2][2]);
+				}	
+
+				void applySkinning(inout vec4 position, inout vec3 normal)
+				{
+					/*
+					vec3 pos = (position * u_bones[ int(a_bone_indices.x) ]).xyz * a_weights.x;
+		        	pos += (position * u_bones[ int(a_bone_indices.y) ]).xyz * a_weights.y;
+		        	pos += (position * u_bones[ int(a_bone_indices.z) ]).xyz * a_weights.z;
+		        	pos += (position * u_bones[ int(a_bone_indices.w) ]).xyz * a_weights.w;
+		        	position.xyz = pos;
+		        	//*/
+
+		        	//*
+		        	//toji version seems faster
+		        	mat4 bone_matrix = mat4(0.0,0.0,0.0,0.0, 0.0,0.0,0.0,0.0, 0.0,0.0,0.0,0.0, 0.0,0.0,0.0,1.0);
+
+					getMat( int(a_bone_indices.x), bone_matrix );
+		        	mat4 result = a_weights.x * bone_matrix;
+		        	getMat( int(a_bone_indices.y), bone_matrix);
+		        	result = result + a_weights.y * bone_matrix;
+		        	getMat( int(a_bone_indices.z), bone_matrix);
+		        	result = result + a_weights.z * bone_matrix;
+		        	getMat( int(a_bone_indices.w), bone_matrix);
+		        	result = result + a_weights.w * bone_matrix;
+
+		        	position.xyz = (position * result).xyz;
+		        	normal = normal * mat3_emu(result);
+		        	//*/
+		        	
+				}
+		]]>
+	</snippet>
+
+	<snippet id="morphing_streams">
+		<![CDATA[
+				//max vertex attribs are 16 usually, so 10 are available after using 6 for V,N,UV,UV2,BW,BI
+				attribute vec3 a_vertex_morph0;
+				attribute vec3 a_normal_morph0;
+				attribute vec3 a_vertex_morph1;
+				attribute vec3 a_normal_morph1;
+				attribute vec3 a_vertex_morph2;
+				attribute vec3 a_normal_morph2;
+				attribute vec3 a_vertex_morph3;
+				attribute vec3 a_normal_morph3;
+
+				uniform vec4 u_morph_weights;
+
+				void applyMorphing( inout vec4 position, inout vec3 normal )
+				{
+					vec3 original_vertex = position.xyz;
+					vec3 original_normal = normal.xyz;
+
+					if(u_morph_weights[0] != 0.0)
+					{
+						position.xyz += (a_vertex_morph0 - original_vertex) * u_morph_weights[0]; normal.xyz += (a_normal_morph0 - original_normal) * u_morph_weights[0];
+					}
+					if(u_morph_weights[1] != 0.0)
+					{
+						position.xyz += (a_vertex_morph1 - original_vertex) * u_morph_weights[1]; normal.xyz += (a_normal_morph1 - original_normal) * u_morph_weights[1];
+					}
+					if(u_morph_weights[2] != 0.0)
+					{
+						position.xyz += (a_vertex_morph2 - original_vertex) * u_morph_weights[2]; normal.xyz += (a_normal_morph2 - original_normal) * u_morph_weights[2];
+					}
+					if(u_morph_weights[3] != 0.0)
+					{
+						position.xyz += (a_vertex_morph3 - original_vertex) * u_morph_weights[3]; normal.xyz += (a_normal_morph3 - original_normal) * u_morph_weights[3];
+					}
+				}
+		]]>
+	</snippet>
+
+	<snippet id="morphing_texture">
+		<![CDATA[
+				attribute float a_morphing_ids;
+
+				uniform sampler2D u_morph_vertices_texture;
+				uniform sampler2D u_morph_normals_texture;
+				uniform vec4 u_morph_texture_size;
+
+				void applyMorphing( inout vec4 position, inout vec3 normal )
+				{
+					vec2 coord;
+					coord.x = ( mod( a_morphing_ids, u_morph_texture_size.x ) + 0.5 ) / u_morph_texture_size.x;
+					coord.y = 1.0 - ( floor( a_morphing_ids / u_morph_texture_size.x ) + 0.5 ) / u_morph_texture_size.y;
+					position.xyz += texture2D( u_morph_vertices_texture, coord ).xyz;
+					normal.xyz += texture2D( u_morph_normals_texture, coord ).xyz;
+				}
+		]]>
+	</snippet>
+
+	<snippet id="computeFog">
+		<![CDATA[
+				//apply fog
+				vec3 computeFog( vec3 color, float cam_dist, float height )
+				{
+					#ifdef USE_FOG_EXP
+						float fog = 1. - 1.0 / exp(max(0.0,cam_dist - u_fog_info.x) * u_fog_info.z);
+					#elif defined(USE_FOG_EXP2)
+						float fog = 1. - 1.0 / exp(pow(max(0.0,cam_dist - u_fog_info.x) * u_fog_info.z,2.0));
+					#else
+						float fog = 1. - clamp((u_fog_info.y - cam_dist) / (u_fog_info.y - u_fog_info.x),0.,1.);
+					#endif
+					#ifdef FIRST_PASS
+						return mix(color, u_fog_color, fog);
+					#else
+						return mix(color, vec3(0.0), fog);
+					#endif
+				}
+		]]>
+	</snippet>
+
+	<snippet id="computePointSize">
+		<![CDATA[
+			float computePointSize(float radius, float w)
+			{
+				if(radius < 0.0)
+					return -radius;
+				return u_viewport.w * u_camera_perspective.z * radius / w;
+			}
+		]]>
+	</snippet>
+
+	<snippet id="gamma">
+		<![CDATA[
+			vec3 degamma( vec3 color )
+			{
+				return pow( color.xyz, vec3(2.2) ); 
+			}
+
+			vec3 optionalDegamma( vec3 color )
+			{
+				#ifdef USE_LINEAR_PIPELINE
+					return pow( color.xyz, vec3(2.2) ); 
+				#else
+					return color;  //do nothing
+				#endif
+			}
+
+			vec3 finalGamma( vec3 color )
+			{
+				return pow( color, vec3(1.0 / 2.2) );
+			}
+		]]>
+	</snippet>
+
+
+	<template id="forward_high">
+
+		<code type="vertex_shader">
+		<![CDATA[
+			//header
+			#pragma hook : vertex_header
+			precision mediump float;
+			attribute vec3 a_vertex;
+			#pragma hook : attributes
+
+			//varyings
+			varying vec3 v_pos;
+			varying vec3 v_local_pos;
+			varying vec3 v_normal;
+			varying vec3 v_local_normal;
+			varying vec2 v_uvs;
+			//varying vec3 v_tangent;
+			//varying vec4 v_screenpos; //used for projective textures
+			#pragma hook : varyings
+
+			//matrices
+			uniform mat4 u_model;
+			uniform mat4 u_normal_model;
+			uniform mat4 u_view;
+			uniform mat4 u_viewprojection;
+
+			#pragma hook : uniforms_matrices
+
+			//globals
+			uniform float u_time;			
+			uniform vec4 u_viewport;
+			uniform float u_point_size;
+			#pragma hook : uniforms_globals
+
+			//camera
+			uniform vec3 u_camera_eye;
+			uniform vec3 u_camera_perspective;
+			#pragma hook : uniforms_camera
+
+			//lights
+			#pragma hook : uniforms_lights
+
+			//functions
+			#pragma import : computePointSize
+			#pragma hook : global_functions
+			#pragma hook : vertex_functions
+
+
+			void main() {
+
+				vec4 vertex4 = vec4(a_vertex,1.0);
+				v_normal = a_normal;
+				v_uvs = a_coord;
+
+				vec3 normal = v_normal;
+
+				#pragma hook : vertex_local_space
+
+				//vertex
+				v_local_pos = vertex4.xyz;
+				v_pos = (u_model * vertex4).xyz;
+
+				//normal
+				v_local_normal = normal;
+				v_normal = (u_normal_model * vec4(normal,1.0)).xyz;
+
+				#pragma hook : vertex_world_space
+
+				gl_Position = u_viewprojection * vec4(v_pos,1.0);
+
+				#pragma hook : vertex_screen_space
+
+				v_screenpos = gl_Position;
+				gl_PointSize = computePointSize( u_point_size, gl_Position.w );
+			}
+		]]>
+		</code>
+		<code type="fragment_shader">
+		<![CDATA[
+			//header
+			#pragma hook : fragment_header
+			precision mediump float;
+
+			//varyings
+			varying vec3 v_pos;
+			varying vec3 v_normal;
+			varying vec2 v_uvs;
+			varying vec3 v_local_pos;
+			varying vec3 v_local_normal;
+			//varying vec3 v_tangent;
+			varying vec4 v_screenpos; //used for projective textures
+			#pragma hook : varyings
+
+			//globals
+			uniform vec4 u_clipping_plane;
+			uniform float u_time;
+			uniform vec4 u_background_color;
+			#pragma hook : uniforms_globals
+
+			//camera
+			uniform vec3 u_camera_eye;
+			uniform vec2 u_camera_planes; //far near
+			uniform vec3 u_camera_perspective;
+			#pragma hook : uniforms_camera
+
+			//material
+			uniform vec4 u_material_color; //color and alpha
+			uniform mat3 u_texture_matrix;
+			#pragma hook : uniforms_material
+
+			//light
+			uniform vec3 u_ambient_light;
+			#pragma hook : uniforms_lights
+
+			//functions
+			#pragma hook : global_functions
+			#pragma hook : fragment_functions
+
+			void main() {
+
+				vec4 final_color = vec4(1.0);
+
+				#pragma hook : fragment_early_discard
+
+				#pragma hook : fragment_material
+
+				#pragma hook : fragment_shading
+
+				#pragma hook : fragment_discard
+
+				gl_FragColor = final_color;
+
+				#pragma hook : fragment_extra_buffers
+			}
+		]]>
+		</code>
+	</template>
+
+	<shader id="base" tags="instance" macros="NO_NORMALS,NO_COORDS,USE_COORDS1_STREAM,USE_COLOR_STREAM,USE_TANGENT_STREAM,USE_EXTRA_STREAMS,USE_CLIPPING_PLANE,USE_ALPHA_TEST,USE_ORTHOGRAPHIC_CAMERA,USE_VERTEX_SHADER_UNIFORMS,USE_VERTEX_SHADER_FUNCTIONS,USE_VERTEX_SHADER_CODE,USE_PIXEL_SHADER_UNIFORMS,USE_PIXEL_SHADER_FUNCTIONS,USE_PIXEL_SHADER_CODE,USE_SURFACE_SHADER,USE_IRRADIANCE_CUBEMAP,USE_ENVIRONMENT_TEXTURE,USE_ENVIRONMENT_CUBEMAP,USE_MORPHING_STREAMS,USE_MORPHING_TEXTURE,USE_SKINNING,MAX_BONES,USE_SKINNING_TEXTURE,USE_DRAW_BUFFERS,USE_POINTS,USE_TEXTURED_POINTS,USE_CIRCLE_POINTS,USE_LINEAR_PIPELINE" multipass="false" imports="true">
+		<code type="vertex_shader">
+		<![CDATA[
+			precision mediump float;
+			attribute vec3 a_vertex;
+
+			#ifndef NO_NORMALS
+				attribute vec3 a_normal;
+			#endif
+
+			#ifndef NO_COORDS
+				attribute vec2 a_coord;
+			#endif
+
+			#ifdef USE_COORDS1_STREAM
+				attribute vec2 a_coord1;
+				varying vec2 v_uvs1;
+			#endif
+
+			#ifdef USE_COLOR_STREAM
+				attribute vec4 a_color;
+				varying vec4 v_color;
+			#endif
+
+			#ifdef USE_TANGENT_STREAM
+				//attribute vec3 a_tangent;
+			#endif
+
+			#ifdef USE_EXTRA_STREAMS
+				USE_EXTRA_STREAMS
+			#endif
+
+			uniform mat4 u_model;
+			uniform mat4 u_normal_model;
+			uniform mat4 u_view;
+			uniform mat4 u_viewprojection;
+
+			varying vec3 v_pos;
+			varying vec3 v_local_pos;
+			varying vec3 v_normal;
+			varying vec3 v_local_normal;
+			//varying vec3 v_tangent;
+			varying vec2 v_uvs;
+
+			uniform float u_time;			
+			uniform vec4 u_viewport;
+
+			varying vec4 v_screenpos; //used for projective textures
+			uniform vec3 u_camera_eye;
+			uniform vec3 u_camera_perspective;
+			uniform float u_point_size;
+
+			#if defined(USE_SHADOW_MAP) || defined(USE_LIGHT_TEXTURE)
+				uniform mat4 u_light_matrix;
+				varying vec4 v_light_coord;
+			#endif		
+			
+			#ifdef USE_MORPHING_STREAMS
+				#import "morphing_streams"
+			#elif defined( USE_MORPHING_TEXTURE )
+				#import "morphing_texture"
+			#endif
+
+			#ifdef USE_SKINNING
+				#import "skinning"
+			#endif
+
+			#import "computePointSize"
+
+			#ifdef USE_VERTEX_SHADER_UNIFORMS
+				USE_VERTEX_SHADER_UNIFORMS
+			#endif
+
+			#ifdef USE_VERTEX_SHADER_FUNCTIONS
+				USE_VERTEX_SHADER_FUNCTIONS
+			#endif
+
+			void main() {
+
+				vec4 vertex4 = vec4(a_vertex,1.0);
+
+				#ifdef NO_NORMALS
+					v_normal = vec3(0.,1.,0.);
+				#else
+					v_normal = a_normal;
+				#endif
+
+				#ifdef USE_COLOR_STREAM
+					v_color = a_color;
+				#endif
+
+				#ifdef NO_COORDS
+					v_uvs = vec2(0.0);
+				#else
+					v_uvs = a_coord;
+				#endif
+
+				#ifdef USE_COORDS1_STREAM
+					v_uvs1 = a_coord1;
+				#endif
+
+				vec3 normal = v_normal;
+
+				#ifdef USE_VERTEX_SHADER_CODE
+					USE_VERTEX_SHADER_CODE
+				#endif
+
+				#if defined( USE_MORPHING_STREAMS ) || defined( USE_MORPHING_TEXTURE )
+					applyMorphing(vertex4, normal);
+				#endif
+
+				#ifdef USE_SKINNING
+					applySkinning(vertex4, normal);
+				#endif
+
+				v_local_pos = vertex4.xyz;
+				v_pos = (u_model * vertex4).xyz;
+
+				gl_Position = u_viewprojection * vec4(v_pos,1.0);
+				v_screenpos = gl_Position;
+
+				//normal
+				v_local_normal = normal;
+				v_normal = (u_normal_model * vec4(normal,1.0)).xyz;
+
+				#if defined(USE_SHADOW_MAP) || defined(USE_LIGHT_TEXTURE)
+					v_light_coord = u_light_matrix * vec4(v_pos,1.0);
+				#endif				
+
+				//gl_PointSize = (u_point_size / length(u_camera_eye - v_pos)) * u_camera_perspective.y; 
+				gl_PointSize = computePointSize( u_point_size, gl_Position.w );
+			}
+		]]>
+		</code>
+		<code type="pixel_shader">
+		<![CDATA[
+			#ifdef USE_DRAW_BUFFERS
+				#extension GL_EXT_draw_buffers : require
+			#endif
+
+			precision mediump float;
+
+			varying vec3 v_pos;
+			varying vec3 v_normal;
+			varying vec2 v_uvs;
+			//varying vec3 v_tangent;
+			varying vec4 v_screenpos; //used for projective textures
+			varying vec3 v_local_pos;
+			varying vec3 v_local_normal;
+
+			#ifdef USE_COLOR_STREAM
+				varying vec4 v_color;
+			#endif
+
+			#ifdef USE_COORDS1_STREAM
+				varying vec2 v_uvs1;
+			#endif
+			
+			uniform vec3 u_camera_eye;
+			uniform vec2 u_camera_planes; //far near
+			uniform vec3 u_camera_perspective;
+			uniform vec4 u_clipping_plane;
+			uniform float u_time;
+
+			uniform vec4 u_material_color; //color and alpha
+			uniform mat3 u_texture_matrix;
+
+			uniform vec3 u_ambient_light;
+			uniform vec4 u_background_color;
+			#ifdef USE_ENVIRONMENT_TEXTURE
+				uniform sampler2D environment_texture;
+			#endif			
+
+			#ifdef USE_ENVIRONMENT_CUBEMAP
+				uniform samplerCube environment_cubemap;
+			#endif			
+
+			#ifdef USE_IRRADIANCE_CUBEMAP
+				uniform samplerCube irradiance_cubemap;
+			#endif			
+
+			#import "structs"
+			#import "gamma"
+
+			//***** Global input and output variables
+			Input IN;
+			SurfaceOutput o;
+
+			//***** Useful functions
+			vec2 polarToCartesian(in vec3 V)
+			{
+				return vec2( 0.5 - (atan(V.z, V.x) / -6.28318531), asin(V.y) / 1.57079633 * 0.5 + 0.5);
+			}	
+			
+			#import "getSkyboxColor"
+			
+			//to use normalmaps
+			#import "perturbNormal"
+
+			#ifdef USE_PIXEL_SHADER_UNIFORMS
+				USE_PIXEL_SHADER_UNIFORMS
+			#endif
+
+			#ifdef USE_PIXEL_SHADER_FUNCTIONS
+				USE_PIXEL_SHADER_FUNCTIONS
+			#endif
+
+			#ifdef USE_SURFACE_SHADER
+				USE_SURFACE_SHADER
+			#else
+				void surf(in Input IN, inout SurfaceOutput o)
+				{
+				}
+			#endif			
+			
+			void main() {
+				#ifdef USE_CLIPPING_PLANE
+					if( dot(v_pos, u_clipping_plane.xyz) < u_clipping_plane.w)
+						discard;
+				#endif
+				
+				IN.vertex = v_local_pos;
+				IN.normal = v_local_normal;
+				IN.color = vec4(1.0);
+				#ifdef USE_COLOR_STREAM
+					IN.color = v_color;
+				#endif
+				IN.uv = v_uvs;
+				#ifdef USE_TEXTURED_POINTS
+					IN.uv = gl_PointCoord.xy;
+					IN.uv.y = 1.0 - IN.uv.y;
+					IN.uv = (u_texture_matrix * vec3(IN.uv,1.0)).xy;
+				#endif
+
+				#ifdef USE_COORD1_STREAM
+					IN.uv1 = v_uvs1;
+				#endif
+
+				IN.camPos = u_camera_eye;
+				IN.viewDir = normalize(u_camera_eye - v_pos);
+				IN.worldPos = v_pos;
+				IN.worldNormal = normalize(v_normal);
+				IN.screenPos = vec4( (v_screenpos.xy / v_screenpos.w) * 0.5 + vec2(0.5), v_screenpos.zw );  //sometimes we need also z and w, thats why we pass all
+
+				o.Albedo = u_material_color.xyz * IN.color.xyz;
+				o.Ambient = vec3(1.0);
+				o.Normal = IN.worldNormal;
+				o.Emission = vec3(0.0);
+				o.Specular = 0.0;
+				o.Gloss = 0.0;
+				o.Alpha = IN.color.a;
+
+				o.Reflectivity = 0.0;
+				o.Extra = vec4(0.0,0.0,0.0,0.0);
+
+				//* INCLUDED CODE ***************************
+				#ifdef USE_PIXEL_SHADER_CODE
+					USE_PIXEL_SHADER_CODE
+				#endif				
+				//********************************************
+
+				surf(IN,o);
+
+				#ifdef USE_CIRCLE_POINTS
+					if(length(gl_PointCoord.st - vec2(0.5)) > 0.5)
+						discard;
+				#endif
+
+				#ifdef USE_ALPHA_TEST
+					if(o.Alpha < USE_ALPHA_TEST)
+						discard;
+				#endif
+
+				//generate lighting
+				#ifndef USE_DRAW_BUFFERS
+					gl_FragColor = vec4( o.Albedo, o.Alpha );
+				#else
+					gl_FragData[0] = vec4( o.Albedo, o.Alpha );
+					gl_FragData[1] = o.Extra;
+				#endif
+			}
+		]]>
+		</code>
+	</shader>
+
+	<shader id="surface" tags="instance" macros="NO_NORMALS,NO_COORDS,USE_COORDS1_STREAM,USE_COLOR_STREAM,USE_TANGENT_STREAM,USE_EXTRA_STREAMS,USE_CLIPPING_PLANE,USE_ALPHA_TEST,USE_ORTHOGRAPHIC_CAMERA,USE_VERTEX_SHADER_UNIFORMS,USE_VERTEX_SHADER_FUNCTIONS,USE_VERTEX_SHADER_CODE,USE_PIXEL_SHADER_UNIFORMS,USE_PIXEL_SHADER_FUNCTIONS,USE_PIXEL_SHADER_CODE,USE_SURFACE_SHADER,USE_SHADOW_MAP,USE_SHADOW_DEPTH_TEXTURE,SHADOWMAP_OFFSET,USE_SHADOW_CUBEMAP,USE_LIGHT_TEXTURE,USE_LIGHT_CUBEMAP,USE_IGNORE_LIGHTS,USE_LIGHT_OFFSET,USE_BACKLIGHT,FIRST_PASS,LAST_PASS,USE_AMBIENT_ONLY,USE_HARD_SHADOWS,USE_SPOT_CONE,USE_SPOT_LIGHT,USE_DIRECTIONAL_LIGHT,USE_OMNI_LIGHT,USE_DIFFUSE_LIGHT,USE_SPECULAR_LIGHT,USE_IRRADIANCE_CUBEMAP,USE_LINEAR_ATTENUATION,USE_RANGE_ATTENUATION,USE_ENVIRONMENT_TEXTURE,USE_ENVIRONMENT_CUBEMAP,USE_SPECULAR_ONTOP,USE_MORPHING_STREAMS,USE_MORPHING_TEXTURE,USE_SKINNING,MAX_BONES,USE_SKINNING_TEXTURE, USE_EXTRA_LIGHT_TEXTURE, USE_EXTRA_LIGHT_CUBEMAP,USE_DRAW_BUFFERS,USE_POINTS,USE_TEXTURED_POINTS,USE_CIRCLE_POINTS,USE_LINEAR_PIPELINE" multipass="true" imports="true">
+		<code type="vertex_shader">
+		<![CDATA[
+			precision mediump float;
+			attribute vec3 a_vertex;
+
+			#ifndef NO_NORMALS
+				attribute vec3 a_normal;
+			#endif
+
+			#ifndef NO_COORDS
+				attribute vec2 a_coord;
+			#endif
+
+			#ifdef USE_COORDS1_STREAM
+				attribute vec2 a_coord1;
+				varying vec2 v_uvs1;
+			#endif
+
+			#ifdef USE_COLOR_STREAM
+				attribute vec4 a_color;
+				varying vec4 v_color;
+			#endif
+
+			#ifdef USE_TANGENT_STREAM
+				//attribute vec3 a_tangent;
+			#endif
+
+			#ifdef USE_EXTRA_STREAMS
+				USE_EXTRA_STREAMS
+			#endif
+
+			uniform mat4 u_model;
+			uniform mat4 u_normal_model;
+			uniform mat4 u_view;
+			uniform mat4 u_viewprojection;
+
+			varying vec3 v_pos;
+			varying vec3 v_local_pos;
+			varying vec3 v_normal;
+			varying vec3 v_local_normal;
+			//varying vec3 v_tangent;
+			varying vec2 v_uvs;
+
+			uniform float u_time;			
+			uniform vec4 u_viewport;
+
+			varying vec4 v_screenpos; //used for projective textures
+			uniform vec3 u_camera_eye;
+			uniform vec3 u_camera_perspective;
+			uniform float u_point_size;
+
+			#if defined(USE_SHADOW_MAP) || defined(USE_LIGHT_TEXTURE)
+				uniform mat4 u_light_matrix;
+				varying vec4 v_light_coord;
+			#endif		
+			
+			#ifdef USE_MORPHING_STREAMS
+				#import "morphing_streams"
+			#elif defined( USE_MORPHING_TEXTURE )
+				#import "morphing_texture"
+			#endif
+
+			#ifdef USE_SKINNING
+				#import "skinning"
+			#endif
+
+			#import "computePointSize"
+
+			#ifdef USE_VERTEX_SHADER_UNIFORMS
+				USE_VERTEX_SHADER_UNIFORMS
+			#endif
+
+			#ifdef USE_VERTEX_SHADER_FUNCTIONS
+				USE_VERTEX_SHADER_FUNCTIONS
+			#endif
+
+			void main() {
+
+				vec4 vertex4 = vec4(a_vertex,1.0);
+
+				#ifdef NO_NORMALS
+					v_normal = vec3(0.,1.,0.);
+				#else
+					v_normal = a_normal;
+				#endif
+
+				#ifdef USE_COLOR_STREAM
+					v_color = a_color;
+				#endif
+
+				#ifdef NO_COORDS
+					v_uvs = vec2(0.0);
+				#else
+					v_uvs = a_coord;
+				#endif
+
+				#ifdef USE_COORDS1_STREAM
+					v_uvs1 = a_coord1;
+				#endif
+
+				vec3 normal = v_normal;
+
+				#ifdef USE_VERTEX_SHADER_CODE
+					USE_VERTEX_SHADER_CODE
+				#endif
+
+				#if defined( USE_MORPHING_STREAMS ) || defined( USE_MORPHING_TEXTURE )
+					applyMorphing(vertex4, normal);
+				#endif
+
+				#ifdef USE_SKINNING
+					applySkinning(vertex4, normal);
+				#endif
+
+				v_local_pos = vertex4.xyz;
+				v_pos = (u_model * vertex4).xyz;
+
+				gl_Position = u_viewprojection * vec4(v_pos,1.0);
+				v_screenpos = gl_Position;
+
+				//normal
+				v_local_normal = normal;
+				v_normal = (u_normal_model * vec4(normal,1.0)).xyz;
+
+				#if defined(USE_SHADOW_MAP) || defined(USE_LIGHT_TEXTURE)
+					v_light_coord = u_light_matrix * vec4(v_pos, 1.0);
+				#endif				
+
+				//gl_PointSize = (u_point_size / length(u_camera_eye - v_pos)) * u_camera_perspective.y; 
+				gl_PointSize = computePointSize( u_point_size, gl_Position.w );
+			}
+		]]>
+		</code>
+		<code type="pixel_shader">
+		<![CDATA[
+
+			#ifdef USE_DRAW_BUFFERS
+				#extension GL_EXT_draw_buffers : enable
+			#endif
+
+			precision mediump float;
+
+			varying vec3 v_pos;
+			varying vec3 v_normal;
+			varying vec2 v_uvs;
+			//varying vec3 v_tangent;
+			varying vec4 v_screenpos; //used for projective textures
+			varying vec3 v_local_pos;
+			varying vec3 v_local_normal;
+
+			#ifdef USE_COLOR_STREAM
+				varying vec4 v_color;
+			#endif
+
+			#ifdef USE_COORDS1_STREAM
+				varying vec2 v_uvs1;
+			#endif
+			
+			uniform vec3 u_camera_eye;
+			uniform vec2 u_camera_planes; //far near
+			uniform vec3 u_camera_perspective;
+			uniform vec3 u_camera_front;
+			uniform vec4 u_clipping_plane;
+			uniform float u_time;
+
+			uniform vec4 u_material_color; //color and alpha
+			uniform mat3 u_texture_matrix;
+
+			uniform vec3 u_ambient_light;
+			uniform vec4 u_background_color;
+			uniform vec3 u_light_position;
+			uniform vec3 u_light_front;
+			uniform vec3 u_light_color;
+			uniform vec4 u_light_angle; //cone start,end,phi,theta
+			uniform vec4 u_light_att; //start,end
+
+			#ifdef USE_LIGHT_OFFSET
+				uniform float u_light_offset;
+			#endif			
+
+			#ifdef USE_LIGHT_TEXTURE
+				uniform sampler2D light_texture;
+			#endif
+
+			#ifdef USE_LIGHT_CUBEMAP
+				uniform samplerCube light_cubemap;
+			#endif
+
+			#ifdef USE_EXTRA_LIGHT_TEXTURE
+				uniform sampler2D extra_light_texture;
+			#endif
+
+			#ifdef USE_EXTRA_LIGHT_CUBEMAP
+				uniform samplerCube extra_light_cubemap;
+			#endif
+
+			#ifdef USE_ENVIRONMENT_TEXTURE
+				uniform sampler2D environment_texture;
+			#endif			
+
+			#ifdef USE_ENVIRONMENT_CUBEMAP
+				uniform samplerCube environment_cubemap;
+			#endif			
+
+			#ifdef USE_IRRADIANCE_CUBEMAP
+				uniform samplerCube irradiance_cubemap;
+			#endif			
+
+			#if defined(USE_SHADOW_MAP) || defined(USE_LIGHT_TEXTURE)
+				varying vec4 v_light_coord;
+			#endif
+
+			#import "structs"
+			#import "gamma"
+
+			#ifdef USE_SPOT_LIGHT
+				#import "spotFalloff"
+			#endif
+
+			#ifdef USE_SHADOW_MAP
+				#import "testShadow"
+			#endif
+
+			//***** Global input and output variables
+			Input IN;
+			SurfaceOutput o;
+
+			//***** Useful functions
+			vec2 polarToCartesian(in vec3 V)
+			{
+				return vec2( 0.5 - (atan(V.z, V.x) / -6.28318531), asin(V.y) / 1.57079633 * 0.5 + 0.5);
+			}					
+
+			#import "getSkyboxColor"
+			
+			#import "computeLight"
+
+			//to use normalmaps
+			#import "perturbNormal"
+
+			#ifdef USE_PIXEL_SHADER_UNIFORMS
+				USE_PIXEL_SHADER_UNIFORMS
+			#endif
+
+			#ifdef USE_PIXEL_SHADER_FUNCTIONS
+				USE_PIXEL_SHADER_FUNCTIONS
+			#endif
+
+			#ifdef USE_SURFACE_SHADER
+				USE_SURFACE_SHADER
+			#else
+				void surf(in Input IN, inout SurfaceOutput o)
+				{
+				}
+			#endif
+
+			void main() {
+
+				#ifdef USE_CLIPPING_PLANE
+					if( dot(v_pos, u_clipping_plane.xyz) < u_clipping_plane.w)
+						discard;
+				#endif
+				
+				IN.vertex = v_local_pos;
+				IN.normal = v_local_normal;
+				IN.color = vec4(1.0);
+				#ifdef USE_COLOR_STREAM
+					IN.color = v_color;
+				#endif
+				IN.uv = v_uvs;
+				#ifdef USE_TEXTURED_POINTS
+					IN.uv = gl_PointCoord.xy;
+					IN.uv.y = 1.0 - IN.uv.y;
+					IN.uv = (u_texture_matrix * vec3(IN.uv,1.0)).xy;
+				#endif
+
+				#ifdef USE_COORD1_STREAM
+					IN.uv1 = v_uvs1;
+				#endif
+
+				IN.camPos = u_camera_eye;
+				IN.viewDir = normalize(u_camera_eye - v_pos);
+				IN.worldPos = v_pos;
+				IN.worldNormal = normalize(v_normal);
+				IN.screenPos = vec4( (v_screenpos.xy / v_screenpos.w) * 0.5 + vec2(0.5), v_screenpos.zw );  //sometimes we need also z and w, thats why we pass all
+				o.Albedo = u_material_color.xyz * IN.color.xyz;
+				o.Ambient = vec3(1.0);
+				o.Normal = IN.worldNormal;
+				o.Emission = vec3(0.0);
+				o.Specular = 0.0;
+				o.Gloss = 0.0;
+				o.Alpha = IN.color.a;
+
+				o.Reflectivity = 0.0;
+				o.Extra = vec4(0.0,0.0,0.0,0.0);
+
+				//* INCLUDED CODE ***************************
+				#ifdef USE_PIXEL_SHADER_CODE
+					USE_PIXEL_SHADER_CODE
+				#endif				
+				//********************************************
+
+				surf(IN,o);
+
+				#ifdef USE_CIRCLE_POINTS
+					if(length(gl_PointCoord.st - vec2(0.5)) > 0.5)
+						discard;
+				#endif
+
+				#ifdef USE_ALPHA_TEST
+					if(o.Alpha < USE_ALPHA_TEST)
+						discard;
+				#endif
+
+				FinalLight LIGHT;
+				LIGHT.Color = u_light_color;
+				LIGHT.Ambient = vec3(0.0);
+				LIGHT.Diffuse = 1.0;
+				LIGHT.Specular = 0.0;
+				LIGHT.Reflection = vec3(0.0);
+				LIGHT.Attenuation = 0.0;
+				LIGHT.Shadow = 1.0;
+
+				#ifdef FIRST_PASS
+					LIGHT.Ambient = u_ambient_light;
+				#endif
+
+				//generate lighting
+				#ifndef USE_DRAW_BUFFERS
+					gl_FragColor = vec4( computeLight(o,IN,LIGHT), o.Alpha );
+				#else
+					gl_FragData[0] = vec4( computeLight(o,IN,LIGHT), o.Alpha);
+					gl_FragData[1] = o.Extra;
+				#endif
+			}
+		]]>
+		</code>
+	</shader>	
+
+	<shader id="global" tags="instance" multipass="true" imports="true">
+		<macros>
+			NO_NORMALS, NO_COORDS, USE_COORDS1_STREAM, USE_COLOR_STREAM, USE_TANGENT_STREAM,
+			USE_ALPHA_TEST, USE_POINTS,USE_CLIPPING_PLANE,USE_TEXTURE_MATRIX,
+			USE_COLOR_TEXTURE, USE_COLOR_CUBEMAP, USE_OPACITY_TEXTURE, USE_SPECULAR_TEXTURE, USE_AMBIENT_TEXTURE, USE_EXTRA_TEXTURE,
+			USE_EMISSIVE_TEXTURE, USE_EMISSIVE_MATERIAL, USE_SHADOW_MAP, USE_SHADOW_DEPTH_TEXTURE, USE_SHADOW_CUBEMAP, SHADOWMAP_OFFSET,
+			USE_VELVET, USE_VELVET_ALPHA, USE_DETAIL_TEXTURE, USE_NORMAL_TEXTURE,
+			USE_NORMALMAP_FACTOR, USE_TANGENT_NORMALMAP,
+			USE_BUMP_TEXTURE, USE_BUMP_FACTOR, USE_DISPLACEMENT_TEXTURE, USE_DISPLACEMENTMAP_FACTOR,
+			USE_REFLECTION, USE_REFLECTIVITY_TEXTURE, USE_ENVIRONMENT_TEXTURE, USE_ENVIRONMENT_CUBEMAP, USE_IRRADIANCE_TEXTURE,USE_IRRADIANCE_CUBEMAP,
+			USE_DIRECTIONAL_LIGHT, USE_SPOT_LIGHT, USE_OMNI_LIGHT, USE_LINEAR_ATTENUATION, USE_RANGE_ATTENUATION, USE_DIFFUSE_LIGHT,USE_SPECULAR_LIGHT,USE_AMBIENT_ONLY,USE_IGNORE_LIGHTS,USE_HARD_SHADOWS,
+			USE_SPECULAR_ONTOP, USE_SPECULAR_ON_ALPHA, USE_SPECULAR_IN_REFLECTION, USE_BACKLIGHT, USE_LIGHT_OFFSET, USE_SPOT_CONE,
+			USE_LIGHT_TEXTURE, USE_LIGHT_CUBEMAP,
+			USE_FOG, USE_FOG_EXP, USE_FOG_EXP2,
+			USE_ORTHOGRAPHIC_CAMERA, USE_SOFT_PARTICLES, FIRST_PASS,LAST_PASS, USE_EXTRA_SURFACE_SHADER_CODE, USE_VERTEX_SHADER_UNIFORMS, 
+			USE_VERTEX_SHADER_FUNCTIONS,USE_VERTEX_SHADER_CODE,USE_MORPHING_STREAMS,USE_MORPHING_TEXTURE,USE_SKINNING,MAX_BONES,USE_SKINNING_TEXTURE,
+			USE_EXTRA_LIGHT_TEXTURE, USE_EXTRA_LIGHT_CUBEMAP,
+			USE_DRAW_BUFFERS,USE_POINTS,USE_TEXTURED_POINTS,USE_LINEAR_PIPELINE
+		</macros>
+		<code type="vertex_shader">
+		<![CDATA[
+			precision mediump float;
+			attribute vec3 a_vertex;
+
+			#ifndef NO_NORMALS
+				attribute vec3 a_normal;
+			#endif
+
+			#ifndef NO_COORDS
+				attribute vec2 a_coord;
+			#endif
+
+			#ifdef USE_COORDS1_STREAM
+				attribute vec2 a_coord1;
+				varying vec2 v_uvs1;
+			#endif			
+
+			#ifdef USE_COLOR_STREAM
+				attribute vec4 a_color;
+				varying vec4 v_color;
+			#endif
+
+			#ifdef USE_TANGENT_STREAM
+				//attribute vec3 a_tangent;
+			#endif
+
+			#ifdef USE_DISPLACEMENT_TEXTURE
+				uniform sampler2D displacement_texture;
+			#endif
+
+			#ifdef USE_DISPLACEMENTMAP_FACTOR
+				uniform float u_displacementmap_factor;
+			#endif
+
+			uniform mat4 u_view;
+			uniform mat4 u_viewprojection;
+			uniform mat4 u_model;
+			uniform mat4 u_normal_model;
+
+			uniform mat3 u_texture_matrix; //matrix to modify uvs
+			varying vec2 v_uvs_transformed;
+
+			varying vec3 v_pos;
+			varying vec3 v_local_pos;
+			varying vec3 v_normal;
+			varying vec3 v_local_normal; //normal in local space
+			//varying vec3 v_tangent;
+			varying vec2 v_uvs;
+
+			uniform vec4 u_viewport;
+			
+			varying vec4 v_screenpos; //used for projective textures
+			uniform vec3 u_camera_eye;
+			uniform vec3 u_camera_perspective;
+			uniform float u_point_size;
+
+			#import "computePointSize"
+
+			#if defined(USE_SHADOW_MAP) || defined(USE_LIGHT_TEXTURE)
+				uniform mat4 u_light_matrix;
+				varying vec4 v_light_coord;
+			#endif
+
+			#ifdef USE_MORPHING_STREAMS
+				#import "morphing_streams"
+			#elif defined( USE_MORPHING_TEXTURE )
+				#import "morphing_texture"
+			#endif			
+
+			#ifdef USE_SKINNING
+				#import "skinning"
+			#endif			
+
+			#ifdef USE_VERTEX_SHADER_UNIFORMS
+				USE_VERTEX_SHADER_UNIFORMS
+			#endif
+
+			#ifdef USE_VERTEX_SHADER_FUNCTIONS
+				USE_VERTEX_SHADER_FUNCTIONS
+			#endif
+
+			void main() {
+
+				vec4 vertex4 = vec4(a_vertex,1.0);
+
+				#ifdef NO_NORMALS
+					v_normal = vec3(0.,1.,0.);
+				#else
+					v_normal = a_normal;
+				#endif
+
+				/*
+				#ifndef USE_TANGENT_STREAM
+					v_tangent = vec3(1.,0.,0.);
+				#else
+					v_tangent = (u_normal_model * vec4(a_tangent,1.0)).xyz;
+				#endif
+				*/
+
+				#ifdef USE_COLOR_STREAM
+					v_color = a_color;
+				#endif
+
+				#ifdef NO_COORDS
+					v_uvs = vec2(0.5);
+				#else
+					v_uvs = a_coord;
+				#endif
+
+				#ifdef USE_COORDS1_STREAM
+					v_uvs1 = a_coord1;
+				#endif				
+
+				v_uvs_transformed = (u_texture_matrix * vec3(v_uvs,1.0)).xy;
+
+				vec3 normal = v_normal;
+
+				#if defined( USE_MORPHING_STREAMS ) || defined( USE_MORPHING_TEXTURE )
+					applyMorphing( vertex4, normal );
+				#endif			
+				
+				#ifdef USE_SKINNING
+					applySkinning(vertex4, normal);
+				#endif				
+
+				#ifdef USE_VERTEX_SHADER_CODE
+					USE_VERTEX_SHADER_CODE
+				#endif
+
+				#ifdef USE_DISPLACEMENT_TEXTURE
+					vec2 uvs_0 = v_uvs;
+					vec2 uvs_1 = uvs_0;
+					vec2 uvs_transformed = v_uvs_transformed;
+
+					float height = texture2D( displacement_texture, USE_DISPLACEMENT_TEXTURE ).x;
+					#ifdef USE_DISPLACEMENTMAP_FACTOR
+						height *= u_displacementmap_factor;
+					#endif
+					vertex4.xyz += normal * height;
+				#endif
+
+
+				//position
+				v_local_pos = vertex4.xyz;
+				v_local_normal = normal;
+				v_pos = (u_model * vertex4).xyz;
+				gl_Position = u_viewprojection * vec4(v_pos,1.0);
+				//gl_Position.xy = (v_uvs * 2.0 - 1.0) * gl_Position.w ; // lightmapping
+				v_screenpos = gl_Position;
+
+				#if defined(USE_SHADOW_MAP) || defined(USE_LIGHT_TEXTURE)
+					v_light_coord = u_light_matrix * vec4(v_pos,1.0);
+				#endif
+
+				//normal
+				v_normal = (u_normal_model * vec4(normal,0.0)).xyz;
+
+				gl_PointSize = computePointSize( u_point_size, gl_Position.w );
+			}
+		]]>
+		</code>
+		<code type="pixel_shader">
+		<![CDATA[
+
+			#ifdef USE_DRAW_BUFFERS
+				#extension GL_EXT_draw_buffers : require
+			#endif
+			precision mediump float;
+
+			varying vec3 v_pos; //position in wold space
+			varying vec3 v_normal; //normal in world space
+			varying vec2 v_uvs;
+			varying vec2 v_uvs_transformed;
+			//varying vec3 v_tangent;
+			varying vec4 v_screenpos; //used for projective textures
+			varying vec3 v_local_pos; //position in local space
+			varying vec3 v_local_normal; //normal in local space
+
+			#ifdef USE_COLOR_STREAM
+				varying vec4 v_color;
+			#endif
+
+			#ifdef USE_COORDS1_STREAM
+				varying vec2 v_uvs1;
+			#endif
+			
+			#ifdef USE_COLOR_TEXTURE
+				uniform sampler2D color_texture;
+			#endif
+
+			#ifdef USE_COLOR_CUBEMAP
+				uniform samplerCube color_cubemap;
+			#endif
+
+
+			#ifdef USE_OPACITY_TEXTURE
+				uniform sampler2D opacity_texture;
+			#endif
+
+			#ifdef USE_SPECULAR_TEXTURE
+				uniform sampler2D specular_texture;
+			#endif
+
+			#ifdef USE_AMBIENT_TEXTURE
+				uniform sampler2D ambient_texture;
+			#endif
+
+			#ifdef USE_EMISSIVE_TEXTURE
+				uniform sampler2D emissive_texture;
+			#endif
+
+			#ifdef USE_NORMAL_TEXTURE
+				uniform mat4 u_normal_model;
+				uniform sampler2D normal_texture;
+			#endif
+			
+			#ifdef USE_BUMP_TEXTURE
+				uniform sampler2D bump_texture;
+			#endif
+
+			#ifdef USE_BUMP_FACTOR
+				uniform float u_bumpmap_factor;
+			#endif
+
+			#ifdef USE_NORMALMAP_FACTOR
+				uniform float u_normalmap_factor;
+			#endif
+
+ 			
+			#ifdef USE_DETAIL_TEXTURE
+				uniform sampler2D detail_texture;
+				uniform vec3 u_detail_info;
+			#endif
+
+			#ifdef USE_REFLECTIVITY_TEXTURE
+				uniform sampler2D reflectivity_texture;
+			#endif
+
+			uniform vec2 u_reflection_info;
+			#ifdef USE_ENVIRONMENT_TEXTURE
+				uniform sampler2D environment_texture;
+			#endif
+
+			#ifdef USE_ENVIRONMENT_CUBEMAP
+				uniform samplerCube environment_cubemap;
+			#endif
+
+			#ifdef USE_IRRADIANCE_TEXTURE
+				uniform sampler2D irradiance_texture;
+			#endif
+
+			#ifdef USE_IRRADIANCE_CUBEMAP
+				uniform samplerCube irradiance_cubemap;
+			#endif
+
+			#ifdef USE_LIGHT_TEXTURE
+				uniform sampler2D light_texture;
+			#endif
+
+			#ifdef USE_LIGHT_CUBEMAP
+				uniform samplerCube light_cubemap;
+			#endif
+
+			#ifdef USE_EXTRA_LIGHT_TEXTURE
+				uniform sampler2D extra_light_texture;
+			#endif
+
+			#ifdef USE_EXTRA_LIGHT_CUBEMAP
+				uniform samplerCube extra_light_cubemap;
+			#endif
+
+			#ifdef USE_EXTRA_TEXTURE
+				uniform sampler2D extra_texture;
+			#endif
+
+			#ifdef USE_SOFT_PARTICLES
+				uniform sampler2D depth_texture;
+			#endif
+
+			#ifdef USE_VELVET
+				uniform vec4 u_velvet_info;
+			#endif
+
+			#ifdef USE_BACKLIGHT
+				uniform float u_backlight_factor;
+			#endif
+
+			#ifdef USE_LIGHT_OFFSET
+				uniform float u_light_offset;
+			#endif
+
+			uniform vec3 u_ambient_light;
+			uniform vec4 u_background_color;
+
+			uniform vec4 u_material_color;
+			uniform vec3 u_ambient_color;
+			uniform vec4 u_emissive_color;
+
+			uniform vec3 u_light_position;
+			uniform vec3 u_light_front;
+			uniform vec3 u_light_color;
+			uniform vec4 u_light_angle; //start,end,phi,theta
+			uniform vec4 u_light_att; //start,end
+			#if defined(USE_SHADOW_MAP) || defined(USE_LIGHT_TEXTURE)
+				varying vec4 v_light_coord;
+			#endif
+
+			uniform vec3 u_camera_eye;
+			uniform vec3 u_camera_front;
+			uniform vec2 u_camera_planes; //far near
+
+			uniform vec3 u_fog_info;
+			uniform vec3 u_fog_color;
+
+			uniform vec4 u_extra_data;
+
+			uniform vec2 u_specular;
+			uniform float u_time;
+			uniform vec4 u_viewport;
+			uniform mat3 u_texture_matrix;
+
+			uniform vec4 u_clipping_plane;
+
+			#import "structs"
+
+			#ifdef USE_LINEAR_PIPELINE
+				uniform float u_gamma;
+			#endif
+
+			#ifdef USE_SPOT_LIGHT
+				#import "spotFalloff"
+			#endif
+
+			#ifdef USE_SHADOW_MAP
+				#import "testShadow"
+			#endif
+
+			#import "gamma"
+
+			//***** Global input and output variables
+			Input IN;
+			SurfaceOutput o;
+
+			//***** Useful functions
+			vec2 polarToCartesian(in vec3 V)
+			{
+				return vec2( 0.5 - (atan(V.z, V.x) / -6.28318531), asin(V.y) / 1.57079633 * 0.5 + 0.5);
+			}					
+			
+			#import "getSkyboxColor"
+
+			#import "computeLight"
+
+			//to use normalmaps
+			#import "perturbNormal"
+
+			#ifdef USE_BUMP_TEXTURE
+				#import "bumpNormal"
+			#endif
+
+			#import "computeFog"
+
+			#ifdef USE_PIXEL_SHADER_FUNCTIONS
+				USE_PIXEL_SHADER_FUNCTIONS
+			#endif
+
+			void main() {
+				float temp = 0.0;
+				vec2 temp_v2 = vec2(0.0);
+				vec3 temp_v3 = vec3(0.0);
+
+				// Clipping plane from reflections ******
+				#ifdef USE_CLIPPING_PLANE
+					if( dot(v_pos, u_clipping_plane.xyz) < u_clipping_plane.w)
+						discard;
+				#endif
+
+				FinalLight LIGHT;
+				LIGHT.Color = u_light_color;
+				LIGHT.Ambient = vec3(0.0);
+				LIGHT.Diffuse = 1.0;
+				LIGHT.Specular = 0.0;
+				LIGHT.Reflection = vec3(0.0);
+				LIGHT.Attenuation = 0.0;
+				LIGHT.Shadow = 1.0;
+				
+				#ifdef FIRST_PASS
+					LIGHT.Ambient = u_ambient_light;
+					o.Ambient = u_ambient_color;
+				#endif
+
+				o.Extra = vec4(0.0);
+
+				// Surface color **************************
+				vec3 color = u_material_color.xyz;
+				float alpha = u_material_color.a;
+				#ifdef USE_COLOR_STREAM
+					color *= v_color.xyz;
+					alpha *= v_color.w;
+				#endif
+
+				float spec_factor = u_specular.x;
+				float spec_gloss = u_specular.y;
+
+				vec3 N = normalize(v_normal);
+
+				//eye vector
+				vec3 E = (u_camera_eye - v_pos);
+				float cam_dist = length(E);
+
+				#ifdef USE_ORTHOGRAPHIC_CAMERA
+					//E /= cam_dist;
+					E = mix( E / cam_dist, -u_camera_front, 0.9999); //HACK, if I use u_camera_front directly it crashes ¿?
+				#else
+					E /= cam_dist;
+				#endif
+
+				//* COMPUTE TEXTURE COORDINATES ***************************
+				vec2 uvs_0 = v_uvs;
+				#ifdef USE_TEXTURED_POINTS
+					uvs_0 = gl_PointCoord.xy;
+					uvs_0.y = 1.0 - uvs_0.y;
+					uvs_0 = (u_texture_matrix * vec3(uvs_0,1.0)).xy;
+				#endif
+				vec2 uvs_1 = uvs_0;
+				#ifdef USE_COORDS1_STREAM
+					uvs_1 = v_uvs1;
+				#endif
+				vec2 uvs_transformed = v_uvs_transformed;
+				vec2 uvs_worldxy = v_pos.xy * 0.1;
+				vec2 uvs_worldxz = v_pos.xz * 0.1;
+				vec2 uvs_worldyz = v_pos.yz * 0.1;
+				vec2 uvs_screen = (v_screenpos.xy / v_screenpos.w) * 0.5 + 0.5;
+				vec2 uvs_screen_centered = vec2(uvs_screen.x * (u_viewport.z / u_viewport.w) - 0.5, uvs_screen.y);
+				vec2 uvs_flipped_screen = vec2(1.0 - uvs_screen.x, uvs_screen.y);
+
+				// Normalmap ***************************************
+				vec3 prev_norm = N;
+				#ifdef USE_NORMAL_TEXTURE
+					//warning: v_normal is in World space
+					vec3 normalmap_pixel = texture2D( normal_texture, USE_NORMAL_TEXTURE ).xyz;
+					#ifdef USE_TANGENT_NORMALMAP
+						normalmap_pixel.xy = vec2(1.0) - normalmap_pixel.xy; //fixes in woman
+						N = perturbNormal(N, E, USE_NORMAL_TEXTURE, normalmap_pixel );
+						//N is in world space
+					#else
+						N = (normalmap_pixel - vec3(0.5)) * 2.0;
+						//N is in object space so we need to convert it to world space
+						N = (u_normal_model * vec4(N,1.0)).xyz;
+					#endif
+
+					#ifdef USE_NORMALMAP_FACTOR
+						N = mix(prev_norm, normalize(N), u_normalmap_factor);
+					#endif
+					N = normalize(N);
+				#endif
+
+				#ifdef USE_BUMP_TEXTURE
+					float bump_factor = 1.0;
+					#ifdef USE_BUMP_FACTOR
+						bump_factor = u_bumpmap_factor;
+					#endif
+					N = bumpNormal(v_pos, N, bump_texture, USE_BUMP_TEXTURE, bump_factor );
+				#endif
+
+				vec3 localPosN = normalize(v_local_pos); //use_polar_vertex
+
+				vec2 uvs_polar = polarToCartesian(N);
+				vec2 uvs_polar_reflected = uvs_polar; //computed later when we know the Reflected vector
+				vec2 uvs_polar_vertex = polarToCartesian(localPosN);
+				//********************************************************
+
+				o.Normal = N;
+				float EdotN = dot(E,N);
+
+				// Opacity ***********************
+				#ifdef USE_OPACITY_TEXTURE
+					alpha *= texture2D(opacity_texture,USE_OPACITY_TEXTURE).x;
+				#endif
+
+				// Diffuse colors from texture, and color stream
+				#if defined(USE_COLOR_TEXTURE) || defined(USE_COLOR_CUBEMAP)
+					vec4 diffuse_tex = vec4(0.0);
+					#ifdef USE_COLOR_TEXTURE
+						diffuse_tex = texture2D(color_texture, USE_COLOR_TEXTURE );
+					#endif
+					#ifdef USE_COLOR_CUBEMAP
+						diffuse_tex = textureCube(color_cubemap, normalize(v_local_pos) );
+					#endif
+
+					#ifdef USE_LINEAR_PIPELINE
+						diffuse_tex.xyz = pow( diffuse_tex.xyz, vec3(u_gamma) );
+					#endif
+
+					color *= diffuse_tex.xyz;
+					#ifndef USE_OPACITY_TEXTURE
+						alpha *= diffuse_tex.a;
+					#endif
+				#endif
+
+				// Apply ALPHA_TEST *******************
+				#ifdef USE_ALPHA_TEST
+					if(alpha < USE_ALPHA_TEST)
+						discard;
+				#endif
+				
+				// Specular **********
+				#ifdef USE_SPECULAR_TEXTURE
+					vec3 spec_tex = texture2D(specular_texture, USE_SPECULAR_TEXTURE ).xyz;
+					spec_factor *= spec_tex.x;
+					spec_gloss *= spec_tex.y;
+				#endif
+				o.Specular = spec_factor;
+				o.Gloss = spec_gloss;
+
+				// Detail Texture *******
+				#ifdef USE_DETAIL_TEXTURE
+					vec3 detail_tex = texture2D(detail_texture, USE_DETAIL_TEXTURE * u_detail_info.yz).xyz;
+					color = color + color * (detail_tex - vec3(0.5)) * u_detail_info.x;
+				#endif
+
+				//Velvet *******
+				float velvet_factor = 0.0;
+				#ifdef USE_VELVET
+					velvet_factor = pow( 1.0 - abs(EdotN), abs(u_velvet_info.w) );
+
+					#ifdef USE_DETAIL_TEXTURE
+						velvet_factor += (detail_tex.x - 0.5) * u_detail_info.x;
+					#endif
+
+					if(u_velvet_info.w > 0.0)
+						color += u_velvet_info.xyz * velvet_factor;
+					else
+						color = color * (1.0 - velvet_factor) + u_velvet_info.xyz * velvet_factor;
+				#endif
+
+				//Reflection ***************
+				o.Reflectivity = abs( u_reflection_info.x ) * pow( 1.0 - clamp(0.0, EdotN, 1.0), u_reflection_info.y );
+				#ifdef USE_REFLECTIVITY_TEXTURE
+					o.Reflectivity *= texture2D( reflectivity_texture, USE_REFLECTIVITY_TEXTURE ).x;
+				#endif
+
+				//Surface properties
+				o.Albedo = color;
+
+				#ifdef FIRST_PASS
+					#ifdef USE_AMBIENT_TEXTURE
+						LIGHT.Ambient *= texture2D( ambient_texture, USE_AMBIENT_TEXTURE ).xyz;
+					#endif
+					#ifdef USE_IRRADIANCE_CUBEMAP
+						LIGHT.Ambient *= textureCube( irradiance_cubemap, N ).xyz;
+					#endif
+				#endif
+
+				//Emissive *********
+				o.Emission = u_emissive_color.xyz;
+				#ifdef USE_EMISSIVE_TEXTURE
+					o.Emission *= texture2D( emissive_texture, USE_EMISSIVE_TEXTURE ).xyz;
+				#endif
+				o.Emission = mix( o.Emission, o.Emission * o.Albedo, u_emissive_color.a ); //to allow to control if emission is affected by albedo
+
+				IN.vertex = v_local_pos;
+				IN.normal = v_local_normal;
+				IN.color = vec4(1.0);
+				#ifdef USE_COLOR_STREAM
+					IN.color = v_color;
+				#endif
+				IN.uv = v_uvs;
+				#ifdef USE_COORD1_STREAM
+					IN.uv1 = v_uvs1;
+				#endif
+				IN.camPos = u_camera_eye;
+				IN.viewDir = normalize(u_camera_eye - v_pos);
+				IN.worldPos = v_pos;
+				IN.worldNormal = normalize(v_normal);
+				IN.screenPos = vec4( (v_screenpos.xy / v_screenpos.w) * 0.5 + vec2(0.5), v_screenpos.zw );  //sometimes we need also z and w, thats why we pass all
+
+				#ifdef USE_EXTRA_SURFACE_SHADER_CODE
+					USE_EXTRA_SURFACE_SHADER_CODE
+				#endif
+
+				//Compute light equation **********************************************************
+				vec3 final_color = computeLight( o, IN, LIGHT );
+
+				#ifdef USE_SPECULAR_ON_ALPHA
+					alpha += LIGHT.Specular;
+				#endif
+
+				//*********************************************************************************
+
+				#ifdef USE_FOG
+					final_color = computeFog( final_color, cam_dist, v_local_pos.y );
+				#endif
+
+				//generate lighting
+				#ifndef USE_DRAW_BUFFERS
+					gl_FragColor =  vec4(final_color, alpha); //regular color
+				#else
+					gl_FragData[0] =  vec4(final_color, alpha); //regular color
+					gl_FragData[1] = o.Extra;
+				#endif
+			}
+		]]>
+		</code>
+	</shader>
+
+	<shader id="lowglobal" tags="instance" macros="USE_COLOR_TEXTURE,USE_OPACITY_TEXTURE,USE_SPECULAR_TEXTURE,USE_AMBIENT_TEXTURE,USE_EMISSIVE_TEXTURE,USE_ALPHA_TEST,USE_IGNORE_LIGHTS,USE_DIRECTIONAL_LIGHT,USE_SPOT_LIGHT,USE_OMNI_LIGHT,USE_LINEAR_ATTENUATION,USE_DIFFUSE_LIGHT,USE_RANGE_ATTENUATION,USE_AMBIENT_ONLY,USE_VELVET,NO_NORMALS,NO_COORDS,USE_COLOR_STREAM,USE_FOG,USE_CLIPPING_PLANE,USE_TEXTURE_MATRIX,USE_SPOT_CONE,USE_SOFT_PARTICLES,USE_POINTS,USE_POINT_CLOUD,USE_TEXTURED_POINTS,FIRST_PASS,LAST_PASS,USE_SKINNING,MAX_BONES,USE_SKINNING_TEXTURE"  multipass="true" imports="true">
+		<code type="vertex_shader">
+		<![CDATA[
+			precision highp float;
+			attribute vec3 a_vertex;
+			varying vec3 v_pos;
+
+			#ifndef NO_NORMALS
+				attribute vec3 a_normal;
+			#endif
+
+			#ifndef NO_COORDS
+				attribute vec2 a_coord;
+			#endif
+
+			#ifdef USE_COLOR_STREAM
+				attribute vec4 a_color;
+				varying vec4 v_color;
+			#endif
+
+			#ifdef USE_POINT_CLOUD
+				attribute vec2 a_extra2;
+			#endif
+
+			#ifdef USE_SKINNING
+				#import "skinning"
+			#endif				
+
+			uniform vec2 u_specular;
+			uniform vec3 u_ambient_color;
+			uniform vec4 u_emissive_color;
+
+			uniform vec4 u_viewport;
+
+			uniform mat4 u_model;
+			uniform mat4 u_view;
+			uniform mat4 u_viewprojection;
+			uniform mat4 u_normal_model;
+			uniform vec3 u_camera_eye;
+			uniform vec3 u_camera_front;
+			uniform vec3 u_camera_perspective;
+			uniform float u_point_size;
+
+			#import "computePointSize"
+
+
+			uniform vec3 u_light_position;
+			uniform vec3 u_light_front;
+			uniform vec3 u_light_color;
+			uniform vec4 u_light_angle; //start,end,phi,theta
+			uniform vec4 u_light_att; //start,end
+
+			varying vec2 v_uvs;
+			varying vec3 v_light;
+			varying vec4 v_screenpos;
+
+			#ifdef USE_BACKLIGHT
+				uniform float u_backlight_factor;
+			#endif
+
+			#ifdef USE_LIGHT_OFFSET
+				uniform float u_light_offset;
+			#endif
+
+			#ifdef USE_VELVET
+				uniform vec4 u_velvet_info;
+			#endif
+
+			void main() {
+
+				#ifdef NO_NORMALS
+					vec3 N = vec3(0.,1.,0.);
+				#else
+					vec3 N = a_normal;
+				#endif
+
+				vec4 vertex4 = vec4(a_vertex,1.0);
+
+				#ifdef USE_SKINNING
+					applySkinning(vertex4, N);
+				#endif
+
+				N = normalize((u_normal_model * vec4(N,1.0)).xyz);
+
+
+				v_pos = (u_model * vertex4).xyz;
+				gl_Position = u_viewprojection * vec4(v_pos,1.0);
+				v_screenpos = gl_Position;
+
+				float spec_factor = u_specular.x;
+				float spec_gloss = u_specular.y;
+
+				vec3 E = (u_camera_eye - v_pos);
+				float cam_dist = length(E);
+
+				#ifdef USE_ORTHOGRAPHIC_CAMERA
+					E = normalize(u_camera_eye);
+				#else
+					E /= cam_dist;
+				#endif
+
+				vec3 L = (u_light_position - v_pos);
+				float light_distance = length(L);
+				L /= light_distance;
+
+				float att = 1.0;
+				#ifdef USE_LINEAR_ATTENUATION
+					att = 10.0 / light_distance;
+				#endif
+
+				#ifdef USE_RANGE_ATTENUATION
+					if(light_distance >= u_light_att.y)
+						att = 0.0;
+					else if(light_distance >= u_light_att.x)
+						att *= 1.0 - (light_distance - u_light_att.x) / (u_light_att.y - u_light_att.x);
+				#endif
+
+				#if defined(USE_SPOT_LIGHT) || defined(USE_DIRECTIONAL_LIGHT)
+					L = -u_light_front;
+				#endif
+
+				vec3 R = reflect(E,N);
+				float NdotL = 1.0;
+				#ifdef USE_DIFFUSE_LIGHT
+					NdotL = dot(N,L);
+				#endif
+				float EdotN = dot(E,N); //clamp(dot(E,N),0.0,1.0);
+				spec_factor *= pow( clamp(dot(R,-L),0.001,1.0), spec_gloss);
+
+				#ifdef FIRST_PASS
+				vec3 light = u_ambient_color;
+				#else
+				vec3 light = vec3(0.0);
+				#endif
+
+				#ifndef USE_AMBIENT_ONLY
+					#ifdef USE_LIGHT_OFFSET
+						NdotL += u_light_offset;
+					#endif
+
+					NdotL = clamp(NdotL,0.0,1.0);
+					light += u_light_color * att * NdotL; 
+					light += u_light_color * att * spec_factor;
+				#endif
+
+				light += u_emissive_color.xyz;
+
+				#ifdef USE_IGNORE_LIGHTS
+					light = vec3(1.0);
+				#endif
+
+				float velvet_factor = 0.0;
+				#ifdef USE_VELVET
+					velvet_factor = pow( 1.0 - abs(EdotN), abs(u_velvet_info.w) );
+
+					if(u_velvet_info.w > 0.0)
+						light += u_velvet_info.xyz * velvet_factor;
+					else
+						light = light * (1.0 - velvet_factor) + u_velvet_info.xyz * velvet_factor;
+				#endif
+
+				//STREAMS **************************
+				#ifdef USE_COLOR_STREAM
+					v_color = a_color;
+				#endif
+
+				#ifdef NO_COORDS
+					v_uvs = vec2(0.5,0.5);
+				#else
+					v_uvs = a_coord;
+				#endif
+
+				v_light = light;
+
+				#ifdef USE_POINT_CLOUD
+					gl_PointSize = computePointSize( u_point_size * a_extra2.x , gl_Position.w );
+				#else
+					gl_PointSize = computePointSize( u_point_size, gl_Position.w );
+				#endif
+
+			}
+		]]>
+		</code>
+		<code type="pixel_shader">
+		<![CDATA[
+			precision highp float;
+
+			varying vec3 v_pos;
+			varying vec4 v_screenpos;
+			varying vec2 v_uvs;
+			#ifdef USE_COLOR_STREAM
+				varying vec4 v_color;
+			#endif
+			varying vec3 v_light;
+
+			#ifdef USE_COLOR_TEXTURE
+				uniform sampler2D color_texture;
+			#endif
+
+			#ifdef USE_OPACITY_TEXTURE
+				uniform sampler2D opacity_texture;
+			#endif
+
+			#ifdef USE_SOFT_PARTICLES
+				uniform sampler2D depth_texture;
+			#endif
+
+			uniform vec4 u_clipping_plane;
+			uniform vec4 u_material_color;
+			uniform vec2 u_camera_planes; //far near
+			uniform mat3 u_texture_matrix;
+
+			//for soft particles...
+			float LinearDepth(float z)
+			{
+				float n = u_camera_planes.x;
+				float f = u_camera_planes.y;
+				return (2.0 * n) / (f + n - z * (f - n));
+			}
+
+			void main() {
+
+				#ifdef USE_CLIPPING_PLANE
+					if( dot(v_pos, u_clipping_plane.xyz) < u_clipping_plane.w)
+						discard;
+				#endif
+				
+				vec2 uvs = v_uvs;
+				#ifdef USE_TEXTURED_POINTS
+					uvs = gl_PointCoord.st;
+					uvs.y = 1.0 - uvs.y;
+					uvs = (u_texture_matrix * vec3(uvs,1.0)).xy;
+					#ifndef NO_COORDS
+						uvs += v_uvs; //particles have offset
+					#endif
+				#endif
+
+
+				vec2 uvs_screen = (v_screenpos.xy / v_screenpos.w) * 0.5 + 0.5;
+				vec2 uvs_flipped_screen = vec2(1.0 - uvs_screen.x, uvs_screen.y);
+
+				vec3 final_color = u_material_color.xyz;
+				float alpha = u_material_color.a;
+				#ifdef USE_COLOR_STREAM
+					final_color *= v_color.xyz;
+					alpha *= v_color.a;
+				#endif
+
+				#ifdef USE_OPACITY_TEXTURE
+					alpha *= texture2D(opacity_texture,uvs).x;
+				#endif
+
+				#ifdef USE_COLOR_TEXTURE
+					vec4 diffuse_tex = texture2D(color_texture,uvs);
+					final_color *= diffuse_tex.xyz;
+					#ifndef USE_OPACITY_TEXTURE
+						alpha *= diffuse_tex.a;
+					#endif
+				#endif
+
+				#ifdef USE_SOFT_PARTICLES
+					float depth = ((v_screenpos.z / v_screenpos.w));
+					float texDepth = LinearDepth(texture2D(depth_texture,uvs_screen).x) - 0.5;
+					alpha *= clamp((texDepth - depth) * 5.,0.0,1.0);
+				#endif
+
+				#ifdef USE_ALPHA_TEST
+					if(alpha < USE_ALPHA_TEST)
+						discard;
+				#endif
+
+				//apply light
+				final_color *= v_light;
+
+				gl_FragColor = vec4(final_color, alpha); //regular color
+			}
+		]]>
+		</code>
+	</shader>
+
+	<shader id="depth" tags="" macros="NO_COORDS,USE_ORTHOGRAPHIC_CAMERA,USE_COLOR_TEXTURE,USE_OPACITY_TEXTURE,USE_ALPHA_TEST,USE_LINEAR_SHADOWMAP,USE_VERTEX_SHADER_UNIFORMS,USE_VERTEX_SHADER_FUNCTIONS,USE_VERTEX_SHADER_CODE,USE_MORPHING_STREAMS,USE_MORPHING_TEXTURE,USE_SKINNING,MAX_BONES,USE_SKINNING_TEXTURE" imports="true">
+		<code type="vertex_shader">
+		<![CDATA[
+			precision highp float;
+
+			attribute vec3 a_vertex;
+
+			#ifdef USE_ALPHA_TEST
+				#ifndef NO_COORDS
+					attribute vec2 a_coord;
+					varying vec2 v_uvs;
+					uniform mat3 u_texture_matrix;
+					varying vec2 v_uvs_transformed;
+				#endif
+			#endif
+
+			uniform mat4 u_model;
+			uniform mat4 u_view;
+			uniform mat4 u_viewprojection;
+			uniform vec3 u_camera_eye;
+			uniform vec3 u_camera_perspective;
+			uniform float u_point_size;
+			uniform vec4 u_viewport;
+
+			varying vec4 pos;
+			varying vec3 world_pos;
+
+			#import "computePointSize"
+
+			#ifdef USE_MORPHING_STREAMS
+				#import "morphing_streams"
+			#elif defined( USE_MORPHING_TEXTURE )
+				#import "morphing_texture"
+			#endif
+
+			#ifdef USE_SKINNING
+				#import "skinning"
+			#endif
+
+			#ifdef USE_VERTEX_SHADER_UNIFORMS
+				USE_VERTEX_SHADER_UNIFORMS
+			#endif
+
+			#ifdef USE_VERTEX_SHADER_FUNCTIONS
+				USE_VERTEX_SHADER_FUNCTIONS
+			#endif
+
+			void main()
+			{
+				#ifdef USE_ALPHA_TEST
+					#ifndef NO_COORDS
+						v_uvs = a_coord;
+					#else
+						v_uvs = vec2(0.5,0.5);
+					#endif
+				#endif
+
+				#ifdef USE_ALPHA_TEST
+					v_uvs_transformed = (u_texture_matrix * vec3(v_uvs,1.0)).xy;
+				#endif
+
+				vec4 vertex4 = vec4(a_vertex,1.0);
+
+				vec3 v_normal; //not used but needed in case the deformer affects it
+
+				#if defined ( USE_MORPHING_STREAMS ) || defined ( USE_MORPHING_TEXTURE )
+					applyMorphing(vertex4, v_normal);
+				#endif	
+
+				#ifdef USE_SKINNING
+					applySkinning(vertex4, v_normal);
+				#endif	
+
+				#ifdef USE_VERTEX_SHADER_CODE
+					USE_VERTEX_SHADER_CODE
+				#endif
+
+				world_pos = (u_model * vertex4).xyz;
+
+				gl_Position = pos = u_viewprojection * vec4(world_pos,1.0);
+
+				gl_PointSize = computePointSize( u_point_size, gl_Position.w );
+			}
+		]]>
+		</code>
+		<code type="pixel_shader">
+		<![CDATA[
+			precision highp float;
+
+			varying vec4 pos; //screen space
+
+			#ifdef USE_ALPHA_TEST
+				#ifdef USE_COLOR_TEXTURE
+					uniform sampler2D color_texture;
+				#endif
+				#ifdef USE_OPACITY_TEXTURE
+					uniform sampler2D opacity_texture;
+				#endif
+				
+				uniform vec4 u_material_color; //for the alpha
+
+				varying vec2 v_uvs;
+				varying vec2 v_uvs_transformed;
+			#endif
+
+			#ifdef USE_SHADOW_CUBEMAP
+				float VectorToDepthValue(vec3 Vec)
+				{
+					vec3 AbsVec = abs(Vec);
+					float LocalZcomp = max(AbsVec.x, max(AbsVec.y, AbsVec.z));
+					float n = u_shadow_params.z;
+					float f = u_shadow_params.w;
+					float NormZComp = (f+n) / (f-n) - (2.0*f*n)/(f-n)/LocalZcomp;
+					return (NormZComp + 1.0) * 0.5;
+				}
+			#endif
+
+			#ifdef USE_LINEAR_SHADOWMAP
+				varying vec3 world_pos;				
+				uniform vec3 u_camera_eye; //camera position
+			#endif
+			uniform vec2 u_camera_planes; //far near			
+
+			//packs depth normalized 
+			vec4 PackDepth32(float depth)
+			{
+				const vec4 bitSh  = vec4(   256*256*256, 256*256,   256,         1);
+				const vec4 bitMsk = vec4(   0,      1.0/256.0,    1.0/256.0,    1.0/256.0);
+				vec4 comp;
+				comp	= depth * bitSh;
+				comp	= fract(comp);
+				comp	-= comp.xxyz * bitMsk;
+				return comp;
+			}
+
+			void main() {
+
+				#ifdef USE_ALPHA_TEST
+					vec2 uvs_0 = v_uvs;
+					vec2 uvs_1 = uvs_0;
+					vec2 uvs_transformed = v_uvs_transformed;
+					vec2 uvs_worldxy = uvs_0;//v_pos.xy * 0.1;
+					vec2 uvs_worldxz = uvs_0;//v_pos.xz * 0.1;
+					vec2 uvs_worldyz = uvs_0;//v_pos.yz * 0.1;
+					vec2 uvs_screen = uvs_0;//(v_screenpos.xy / v_screenpos.w) * 0.5 + 0.5;
+					vec2 uvs_flipped_screen = vec2(1.0 - uvs_screen.x, uvs_screen.y);
+
+					float alpha = u_material_color.w;
+					#ifdef USE_COLOR_TEXTURE
+						alpha *= texture2D(color_texture,USE_COLOR_TEXTURE).w;
+					#endif
+					#ifdef USE_OPACITY_TEXTURE
+						alpha *= texture2D(opacity_texture,USE_OPACITY_TEXTURE).x;
+					#endif
+					if(alpha < USE_ALPHA_TEST)
+						discard;
+				#endif
+
+				float depth = 0.0;
+
+				#ifdef USE_LINEAR_SHADOWMAP				
+					depth = (length(world_pos - u_camera_eye) - u_camera_planes.x) / (u_camera_planes.y - u_camera_planes.x);
+				#else
+					depth = (pos.z / pos.w) * 0.5 + 0.5; //normalize
+				#endif
+
+				gl_FragColor = PackDepth32(depth);
+			}
+		]]>
+		</code>
+	</shader>
+
+	<shader id="depth_linear" tags="POSTFX">
+		<code type="vertex_shader">
+		<![CDATA[
+			precision highp float;
+
+			attribute vec3 a_vertex;
+			uniform mat4 u_model;
+			uniform mat4 u_viewprojection;
+
+			varying vec4 pos;
+			void main()
+			{
+				mat4 mvp = u_viewprojection * u_model;
+				gl_Position = pos = mvp * vec4(a_vertex,1.0);
+			}
+		]]>
+		</code>
+		<code type="pixel_shader">
+		<![CDATA[
+			precision highp float;
+
+			vec4 PackDepth32( float v ) {
+			  vec4 enc = vec4(1.0, 255.0, 65025.0, 160581375.0) * v;
+			  enc = fract(enc);
+			  enc -= enc.yzww * vec4(1.0/255.0,1.0/255.0,1.0/255.0,0.0);
+			  return enc;
+			}
+
+			varying vec4 pos;
+			void main() {
+				float depth = pos.z / pos.w;
+				gl_FragColor = PackDepth32(depth);
+
+				//gl_FragColor = PackDepth32(depth * 0.5 + 0.5);
+				//gl_FragColor = vec4( PackDepth32(depth), 0.0);
+			}
+		]]>
+		</code>
+	</shader>
+
+	<shader id="flat_texture" tags="instance">
+		<code type="vertex_shader">
+		<![CDATA[
+			precision highp float;
+
+			attribute vec3 a_vertex;
+			attribute vec2 a_coord;
+			uniform mat4 u_mvp;
+
+			varying vec2 v_uvs;
+
+			void main() {
+				v_uvs = a_coord;
+				vec4 vertex4 = vec4(a_vertex,1.0);
+				gl_Position = u_mvp * vertex4;
+			}
+		]]>
+		</code>
+		<code type="pixel_shader">
+		<![CDATA[
+			precision highp float;
+
+			uniform vec4 u_material_color;
+			varying vec2 v_uvs;
+			uniform sampler2D color_texture;
+
+			void main() {
+				gl_FragColor = u_material_color * texture2D(color_texture,v_uvs);
+			}
+		]]>
+		</code>
+	</shader>
+
+	<shader id="normal" tags="debug,instance" macros="NO_NORMALS,USE_MORPHING_STREAMS,USE_MORPHING_TEXTURE,USE_SKINNING,MAX_BONES,USE_SKINNING_TEXTURE,USE_NORMAL_TEXTURE,USE_NORMALMAP_FACTOR,USE_TANGENT_NORMALMAP" imports="true">
+		<code type="vertex_shader">
+		<![CDATA[
+			precision highp float;
+
+			attribute vec3 a_vertex;
+			attribute vec3 a_normal;
+
+			uniform mat4 u_view;
+			uniform mat4 u_viewprojection;
+			uniform mat4 u_model;
+			uniform mat4 u_normal_model;
+
+			#ifdef USE_NORMAL_TEXTURE
+				varying vec2 v_uvs;
+				attribute vec2 a_coord;
+			#endif
+
+			varying vec3 v_pos;
+			varying vec3 v_normal;
+
+			#ifdef USE_MORPHING_STREAMS
+				#import "morphing_streams"
+			#elif defined( USE_MORPHING_TEXTURE )
+				#import "morphing_texture"
+			#endif
+
+			#ifdef USE_SKINNING
+				#import "skinning"
+			#endif
+
+			void main() 
+			{
+				vec4 vertex4 = vec4(a_vertex,1.0);
+
+				#ifdef NO_NORMALS
+					v_normal = vec3(0.,1.,0.);
+				#else
+					v_normal = a_normal;
+				#endif
+
+				#ifdef USE_VERTEX_SHADER_CODE
+					USE_VERTEX_SHADER_CODE
+				#endif
+
+				//position
+				vec3 normal = v_normal;
+
+				#if defined( USE_MORPHING_STREAMS ) || defined( USE_MORPHING_TEXTURE )
+					applyMorphing( vertex4, normal );
+				#endif
+
+				#ifdef USE_SKINNING
+					applySkinning(vertex4, normal);
+				#endif
+
+				#ifdef USE_NORMAL_TEXTURE
+					v_uvs = a_coord;
+				#endif
+
+				v_pos = (u_model * vertex4).xyz;
+				v_normal = (u_normal_model * vec4(normal,1.0)).xyz;
+				gl_Position = u_viewprojection * vec4(v_pos,1.0);
+			}
+		]]>
+		</code>
+		<code type="pixel_shader">
+		<![CDATA[
+			precision highp float;
+
+			varying vec3 v_pos;
+			varying vec3 v_normal;
+
+			uniform mat4 u_normal_model;
+			uniform vec3 u_camera_eye;
+
+			#ifdef USE_NORMALMAP_FACTOR
+				uniform float u_normalmap_factor;
+			#endif
+
+			#ifdef USE_NORMAL_TEXTURE
+				uniform sampler2D normal_texture;
+				varying vec2 v_uvs;
+			#endif
+
+			#ifdef USE_TANGENT_NORMALMAP
+				#import "perturbNormal"
+			#endif
+
+			void main() {
+
+				vec3 N = v_normal;
+				vec3 prev_norm = normalize(N);
+
+				#ifdef USE_NORMAL_TEXTURE
+					vec3 E = normalize(v_pos - u_camera_eye);
+					//warning: v_normal is in World space
+					vec3 normalmap_pixel = texture2D( normal_texture, v_uvs ).xyz;
+					#ifdef USE_TANGENT_NORMALMAP
+						N = perturbNormal(prev_norm, E, v_uvs, normalmap_pixel );
+					#else
+						N = (normalmap_pixel - vec3(0.5)) * 2.0;
+						//N is in object space so we need to convert it to world space
+						N = (u_normal_model * vec4(N,1.0)).xyz;
+					#endif
+
+					#ifdef USE_NORMALMAP_FACTOR
+						N = mix(prev_norm, normalize(N), u_normalmap_factor);
+					#endif
+				#else
+					N = prev_norm;
+				#endif
+
+				gl_FragColor = vec4(N, 1.0);
+			}
+		]]>
+		</code>
+	</shader>
+
+	<shader id="phong" tags="instance" macros="USE_SPOT_LIGHT,USE_DIRECTIONAL_LIGHT,USE_OMNI_LIGHT,USE_AMBIENT_ONLY">
+		<code type="vertex_shader">
+		<![CDATA[
+			precision highp float;
+
+			attribute vec3 a_vertex;
+			attribute vec3 a_normal;
+
+			uniform mat4 u_model;
+			uniform mat4 u_viewprojection;
+			uniform mat4 u_normal_model;
+			varying vec3 v_pos;
+			varying vec3 v_normal;
+			
+			void main() {
+				v_pos = (u_model * vec4(a_vertex,1.0)).xyz;
+				mat4 mvp = u_viewprojection * u_model;
+				gl_Position = mvp * vec4(a_vertex,1.0);
+
+				v_normal = (u_normal_model * vec4(a_normal,1.0)).xyz;
+			}
+		]]>
+		</code>
+		<code type="pixel_shader">
+		<![CDATA[
+			precision highp float;
+
+			varying vec3 v_pos;
+			varying vec3 v_normal;
+			uniform vec4 u_material_color;
+			uniform vec3 u_ambient_color;
+			uniform vec3 u_light_position;
+			uniform vec3 u_light_front;
+
+			void main() {
+				#ifdef USE_AMBIENT_ONLY
+					vec3 color = u_material_color.xyz * u_ambient_color;
+				#else
+					vec3 L = normalize(u_light_position - v_pos);
+					#ifndef USE_OMNI_LIGHT
+						L = u_light_front;
+					#endif
+
+					vec3 N = normalize(v_normal);
+					vec3 light = vec3(1.0) * clamp(0.0,dot(N,L),1.0);
+					vec3 color = u_material_color.xyz * (light + u_ambient_color);
+				#endif
+
+				gl_FragColor = vec4(color.x, color.y, color.z, u_material_color.a);
+			}
+		]]>
+		</code>
+	</shader>
+
+	<shader id="debug" tags="instance,debug">
+		<code type="vertex_shader">
+		<![CDATA[
+			precision highp float;
+
+			attribute vec3 a_vertex;
+			attribute vec3 a_normal;
+			attribute vec2 a_coord;
+
+			uniform mat4 u_model;
+			uniform mat4 u_viewprojection;
+
+			varying vec2 v_uvs;
+			varying vec3 v_normal;
+			uniform mat4 u_normal_model;
+
+			void main() {
+				v_uvs = a_coord;
+				v_normal = (u_normal_model * vec4(a_normal,1.0)).xyz;
+				mat4 mvp = u_viewprojection * u_model;
+				gl_Position = mvp * vec4(a_vertex,1.0);
+			}
+		]]>
+		</code>
+		<code type="pixel_shader">
+		<![CDATA[
+			precision highp float;
+
+			uniform vec4 u_material_color;
+			varying vec2 v_uvs;
+			uniform samplerCube color_texture;
+			varying vec3 v_normal;
+
+			void main() {
+				gl_FragColor = u_material_color * textureCube(color_texture,v_normal);
+			}
+		]]>
+		</code>
+	</shader>
+
+	<shader id="phong_texture" tags="instance" macros="USE_SPOT_LIGHT,USE_DIRECTIONAL_LIGHT,USE_OMNI_LIGHT,USE_AMBIENT_ONLY">
+		<code type="vertex_shader">
+		<![CDATA[
+			precision highp float;
+
+			attribute vec3 a_vertex;
+			attribute vec3 a_normal;
+			attribute vec2 a_coord;
+
+			uniform mat4 u_model;
+			uniform mat4 u_viewprojection;
+
+			uniform mat4 u_model;
+			uniform mat4 u_normal_model;
+			varying vec3 v_pos;
+			varying vec3 v_normal;
+			varying vec2 v_coord;
+			
+			void main() {
+				v_pos = (u_model * vec4(a_vertex,1.0)).xyz;
+				mat4 mvp = u_viewprojection * u_model;
+				gl_Position = mvp * vec4(a_vertex,1.0);
+				v_coord = a_coord;
+				v_normal = (u_normal_model * vec4(a_normal,1.0)).xyz;
+			}
+		]]>
+		</code>
+		<code type="pixel_shader">
+		<![CDATA[
+			precision highp float;
+
+			varying vec3 v_pos;
+			varying vec3 v_normal;
+			varying vec2 v_coord;
+
+			uniform sampler2D color_texture;
+			uniform vec4 u_material_color;
+			uniform vec3 u_ambient_color;
+			uniform vec3 u_light_color;
+			uniform vec3 u_light_position;
+			uniform vec3 u_light_front;
+
+			void main() {
+				#ifdef USE_AMBIENT_ONLY
+					vec3 color = u_material_color.xyz * u_ambient_color;
+				#else
+					vec3 L = normalize(u_light_position - v_pos);
+					#ifndef USE_OMNI_LIGHT
+						L = u_light_front;
+					#endif
+
+					vec3 N = normalize(v_normal);
+					vec3 light = u_light_color * max(0.0,dot(N,L));
+					vec3 color = u_material_color.xyz * (light + u_ambient_color);
+				#endif
+
+				gl_FragColor = vec4(color, u_material_color.a) * texture2D( color_texture, v_coord );
+			}
+		]]>
+		</code>
+	</shader>
+
+	<shader id="flat" tags="instance" macros="USE_ORTHOGRAPHIC_CAMERA,USE_MORPHING,USE_SKINNING,MAX_BONES,USE_SKINNING_TEXTURE,USE_VERTEX_SHADER_CODE,USE_VERTEX_SHADER_UNIFORMS,USE_VERTEX_SHADER_FUNCTIONS" imports="true">
+		<code type="vertex_shader">
+		<![CDATA[
+			precision highp float;
+
+			attribute vec3 a_vertex;
+			attribute vec2 a_coord;
+			uniform mat4 u_model;
+			uniform mat4 u_viewprojection;
+
+			uniform vec3 u_camera_eye;
+			uniform vec3 u_camera_perspective;
+			uniform vec4 u_viewport;
+			uniform float u_point_size;
+
+			#import "computePointSize"
+
+			vec3 v_normal; //in case some script use it
+
+			#ifdef USE_MORPHING
+				#import "morphing"
+			#endif
+
+			#ifdef USE_SKINNING
+				#import "skinning"
+			#endif
+
+			#ifdef USE_VERTEX_SHADER_UNIFORMS
+				USE_VERTEX_SHADER_UNIFORMS
+			#endif
+
+			#ifdef USE_VERTEX_SHADER_FUNCTIONS
+				USE_VERTEX_SHADER_FUNCTIONS
+			#endif
+
+			void main() {
+				vec4 vertex4 = vec4(a_vertex,1.0);
+				//position
+				vec3 normal = vec3(0.0,1.0,0.0);
+
+				#ifdef USE_VERTEX_SHADER_CODE
+					USE_VERTEX_SHADER_CODE
+				#endif
+
+				#ifdef USE_MORPHING
+					applyMorphing(vertex4, normal);
+				#endif
+
+				#ifdef USE_SKINNING
+					applySkinning(vertex4, normal);
+				#endif
+
+				vec3 v_pos = (u_model * vertex4).xyz;
+
+				mat4 mvp = u_viewprojection * u_model;
+				gl_Position = mvp * vertex4;
+				gl_PointSize = computePointSize( u_point_size, gl_Position.w );
+			}
+		]]>
+		</code>
+		<code type="pixel_shader">
+		<![CDATA[
+			precision highp float;
+
+			uniform vec4 u_material_color;
+			void main() {
+			  gl_FragColor = vec4(u_material_color);
+			}
+		]]>
+		</code>
+	</shader>
+
+	<shader id="texture" tags="instance">
+		<code type="vertex_shader">
+		<![CDATA[
+			precision highp float;
+
+			attribute vec3 a_vertex;
+			attribute vec3 a_normal;
+			attribute vec2 a_coord;
+
+			uniform mat4 u_model;
+			uniform mat4 u_viewprojection;
+			uniform mat4 u_normal_model;
+			varying vec3 v_pos;
+			varying vec3 v_normal;
+			varying vec2 v_uvs;
+			
+			void main()
+			{
+				mat4 mvp = u_viewprojection * u_model;
+
+				v_pos = (u_model * vec4(a_vertex,1.0)).xyz;
+				v_normal = (u_normal_model * vec4(a_normal,1.0)).xyz;
+				v_uvs = a_coord;
+				gl_Position = mvp * vec4(a_vertex,1.0);
+			}
+		]]>
+		</code>
+		<code type="pixel_shader">
+		<![CDATA[
+			precision highp float;
+
+			varying vec3 v_pos;
+			varying vec3 v_normal;
+			varying vec2 v_uvs;
+			uniform sampler2D color_texture;
+			uniform vec3 u_ambient_color;
+			uniform vec3 u_lightpos;
+			void main()
+			{
+				vec3 tex = texture2D(color_texture,v_uvs).xyz;
+				vec3 L = normalize(u_lightpos - v_pos);
+				vec3 N = normalize(v_normal);
+				vec3 color = vec3(1.0,1.0,1.0) * clamp(0.0,dot(N,L),1.0);
+				color += vec3(0.4,0.8,1.0) * clamp(0.0,dot(-N,L),1.0) * 0.6;
+				color = color + u_ambient_color;
+				color *= tex;
+				gl_FragColor = vec4(color.x, color.y, color.z, 1.0);
+			}
+		]]>
+		</code>
+	</shader>
+
+	<shader id="volumetric_light" tags="">
+		<code type="vertex_shader">
+		<![CDATA[
+			precision highp float;
+
+			attribute vec3 a_vertex;
+			varying vec3 v_pos;
+
+			uniform mat4 u_model;
+			uniform mat4 u_view;
+			uniform mat4 u_viewprojection;
+
+			void main() {
+				v_pos = (u_model * vec4(a_vertex,1.0)).xyz;
+				gl_Position = u_viewprojection * vec4(v_pos, 1.0);
+			}
+		]]>
+		</code>
+		<code type="pixel_shader">
+		<![CDATA[
+			precision highp float;
+			varying vec3 v_pos;
+
+			uniform vec4 u_material_color;
+			uniform vec3 u_camera_eye;
+			uniform vec4 u_volume_info;
+			uniform float u_volume_density;
+
+			bool intSphere( in vec4 sp, in vec3 ro, in vec3 rd, in float tm, out float t, out float tw, out float dist_to_center )
+			{
+				bool  r = false;
+				vec3  d = ro - sp.xyz;
+				float b = dot(rd,d);
+				float c = dot(d,d) - sp.w*sp.w;
+				t = b*b-c;
+				if( t > 0.0 )
+				{
+					t = -b-sqrt(t);
+					tw = abs((-b+sqrt(t)) - t);
+					r = (t > 0.0) && (t < tm);
+				}
+				dist_to_center = b;
+
+				return r;
+			}
+
+			void main() {
+				vec3 rd = normalize( v_pos - u_camera_eye );
+				float t = 0.0;
+				float tw = 0.0;
+				float dist = 0.0;
+				if( !intSphere( u_volume_info, u_camera_eye, rd, 10000.0, t, tw, dist) )
+					discard;
+				float falloff = pow(tw * 0.01 * u_volume_density,2.0);
+				//falloff *= 1.0 - dist / u_volume_info.w;
+				gl_FragColor = vec4( u_material_color.xyz * falloff, u_material_color.a * falloff);
+			}
+		]]>
+		</code>
+	</shader>
+
+	<!--
+	<shader id="" tags="">
+		<code id="vertex_shader">
+
+		</code>
+		<code id="pixel_shader">
+
+		</code>
+	</shader>
+	-->
+</shaders>

@@ -1,0 +1,2835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>GL.Mesh</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/BBox.html">BBox</a></li>
+                                <li><a href="../classes/geo.html">geo</a></li>
+                                <li><a href="../classes/GL.html">GL</a></li>
+                                <li><a href="../classes/gl.html">gl</a></li>
+                                <li><a href="../classes/GL.Buffer.html">GL.Buffer</a></li>
+                                <li><a href="../classes/GL.FBO.html">GL.FBO</a></li>
+                                <li><a href="../classes/GL.Indexer.html">GL.Indexer</a></li>
+                                <li><a href="../classes/GL.Mesh.html">GL.Mesh</a></li>
+                                <li><a href="../classes/GL.Octree.html">GL.Octree</a></li>
+                                <li><a href="../classes/GL.Shader.html">GL.Shader</a></li>
+                                <li><a href="../classes/GL.Texture.html">GL.Texture</a></li>
+                                <li><a href="../classes/LEvent.html">LEvent</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1>GL.Mesh Class</h1>
+<div class="box meta">
+
+
+        <div class="foundat">
+            Defined in: <a href="../files/.._src_primitives.js.html#l2"><code>..&#x2F;src&#x2F;primitives.js:2</code></a>
+        </div>
+
+
+</div>
+
+
+<div class="box intro">
+    
+</div>
+
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_addBuffer">addBuffer</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_addBuffers">addBuffers</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_clone">clone</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_clone">clone</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_computeIndices">computeIndices</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_computeNormals">computeNormals</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_computeTangents">computeTangents</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_computeTextureCoordinates">computeTextureCoordinates</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_computeWireframe">computeWireframe</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_createIndexBuffer">createIndexBuffer</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_createVertexBuffer">createVertexBuffer</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_encode">encode</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_explodeIndices">explodeIndices</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_flipNormals">flipNormals</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_freeData">freeData</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_generateMetadata">generateMetadata</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getBoundingBox">getBoundingBox</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getBuffer">getBuffer</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getIndexBuffer">getIndexBuffer</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getMemory">getMemory</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getScreenQuad">getScreenQuad</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getVertexBuffer">getVertexBuffer</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getVertexNumber">getVertexNumber</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Mesh.circle">Mesh.circle</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Mesh.computeBounding">Mesh.computeBounding</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Mesh.cube">Mesh.cube</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Mesh.cube">Mesh.cube</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Mesh.cylinder">Mesh.cylinder</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Mesh.fromOBJ">Mesh.fromOBJ</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Mesh.grid">Mesh.grid</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Mesh.icosahedron">Mesh.icosahedron</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Mesh.load">Mesh.load</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Mesh.mergeMeshes">Mesh.mergeMeshes</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Mesh.parseOBJ">Mesh.parseOBJ</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Mesh.plane">Mesh.plane</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Mesh.plane2D">Mesh.plane2D</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Mesh.point">Mesh.point</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Mesh.sphere">Mesh.sphere</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_parse">parse</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_removeIndexBuffer">removeIndexBuffer</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_removeVertexBuffer">removeVertexBuffer</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setBounding">setBounding</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_simplify">simplify</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_toObject">toObject</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_updateBounding">updateBounding</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_upload">upload</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_addBuffer" class="method item">
+    <h3 class="name"><code>addBuffer</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+                <li class="arg">
+                        <code>buffer</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l294"><code>..&#x2F;src&#x2F;mesh.js:294</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Adds buffer to mesh</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">buffer</code>
+                        <span class="type">Buffer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_addBuffers" class="method item">
+    <h3 class="name"><code>addBuffers</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>vertexBuffers</code>
+                </li>
+                <li class="arg">
+                        <code>indexBuffers</code>
+                </li>
+                <li class="arg">
+                        <code>stream_type</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l313"><code>..&#x2F;src&#x2F;mesh.js:313</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Adds vertex and indices buffers to a mesh</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">vertexBuffers</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>object with all the vertex streams</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">indexBuffers</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>object with all the indices streams</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">stream_type</code>
+                        <span class="type">Enum</span>
+
+
+                    <div class="param-description">
+                        <p>default gl.STATIC_DRAW (other: gl.DYNAMIC_DRAW, gl.STREAM_DRAW )</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_clone" class="method item">
+    <h3 class="name"><code>clone</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l639"><code>..&#x2F;src&#x2F;mesh.js:639</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Creates a clone of the mesh, but the data-arrays are shared between both meshes (useful for sharing a mesh between contexts)</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_clone" class="method item">
+    <h3 class="name"><code>clone</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l615"><code>..&#x2F;src&#x2F;mesh.js:615</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Creates a clone of the mesh, the datarrays are cloned too</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_computeIndices" class="method item">
+    <h3 class="name"><code>computeIndices</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l841"><code>..&#x2F;src&#x2F;mesh.js:841</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Compute indices for a mesh where vertices are shared</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_computeNormals" class="method item">
+    <h3 class="name"><code>computeNormals</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>stream_type</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l1000"><code>..&#x2F;src&#x2F;mesh.js:1000</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Creates a stream with the normals</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">stream_type</code>
+                        <span class="type">Enum</span>
+
+
+                    <div class="param-description">
+                        <p>default gl.STATIC_DRAW (other: gl.DYNAMIC_DRAW, gl.STREAM_DRAW)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_computeTangents" class="method item">
+    <h3 class="name"><code>computeTangents</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l1082"><code>..&#x2F;src&#x2F;mesh.js:1082</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Creates a new stream with the tangents</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_computeTextureCoordinates" class="method item">
+    <h3 class="name"><code>computeTextureCoordinates</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l1171"><code>..&#x2F;src&#x2F;mesh.js:1171</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Creates texture coordinates using a triplanar aproximation</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_computeWireframe" class="method item">
+    <h3 class="name"><code>computeWireframe</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l757"><code>..&#x2F;src&#x2F;mesh.js:757</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Creates a new index stream with wireframe</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_createIndexBuffer" class="method item">
+    <h3 class="name"><code>createIndexBuffer</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+                <li class="arg">
+                        <code>data</code>
+                </li>
+                <li class="arg">
+                        <code>stream_type</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l477"><code>..&#x2F;src&#x2F;mesh.js:477</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Creates a new empty index buffer and attachs it to this mesh</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">data</code>
+                        <span class="type">Typed array</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">stream_type</code>
+                        <span class="type">Enum</span>
+
+
+                    <div class="param-description">
+                        <p>gl.STATIC_DRAW, gl.DYNAMIC_DRAW, gl.STREAM_DRAW</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_createVertexBuffer" class="method item">
+    <h3 class="name"><code>createVertexBuffer</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+                <li class="arg">
+                        <code>attribute</code>
+                </li>
+                <li class="arg">
+                        <code>spacing</code>
+                </li>
+                <li class="arg">
+                        <code>buffer_data</code>
+                </li>
+                <li class="arg">
+                        <code>stream_type</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l403"><code>..&#x2F;src&#x2F;mesh.js:403</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Creates a new empty buffer and attachs it to this mesh</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>&quot;vertices&quot;,&quot;normals&quot;...</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">attribute</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>name of the stream in the shader &quot;a_vertex&quot;,&quot;a_normal&quot;,... [optional, if omitted is used the common_buffers]</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">spacing</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>components per vertex [optional, if ommited is used the common_buffers, if not found then uses 3 ]</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">buffer_data</code>
+                        <span class="type">ArrayBufferView</span>
+
+
+                    <div class="param-description">
+                        <p>the data in typed array format [optional, if ommited it created an empty array of getNumVertices() * spacing]</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">stream_type</code>
+                        <span class="type">Enum</span>
+
+
+                    <div class="param-description">
+                        <p>[optional, default = gl.STATIC_DRAW (other: gl.DYNAMIC_DRAW, gl.STREAM_DRAW ) ]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_encode" class="method item">
+    <h3 class="name"><code>encode</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>format</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">?</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l1715"><code>..&#x2F;src&#x2F;mesh.js:1715</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>It returns the mesh data encoded in the format specified
+Only obj supported now</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">format</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>to encode the data to (p.e. &quot;obj&quot;)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">?</span>:
+                    <p>String with the info</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_explodeIndices" class="method item">
+    <h3 class="name"><code>explodeIndices</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l937"><code>..&#x2F;src&#x2F;mesh.js:937</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Breaks the indices</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_flipNormals" class="method item">
+    <h3 class="name"><code>flipNormals</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>stream_type</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l808"><code>..&#x2F;src&#x2F;mesh.js:808</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Multiplies every normal by -1 and uploads it</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">stream_type</code>
+                        <span class="type">Enum</span>
+
+
+                    <div class="param-description">
+                        <p>default gl.STATIC_DRAW (other: gl.DYNAMIC_DRAW, gl.STREAM_DRAW)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_freeData" class="method item">
+    <h3 class="name"><code>freeData</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l1366"><code>..&#x2F;src&#x2F;mesh.js:1366</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Remove all local memory from the streams (leaving it only in the VRAM) to save RAM</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_generateMetadata" class="method item">
+    <h3 class="name"><code>generateMetadata</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l678"><code>..&#x2F;src&#x2F;mesh.js:678</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Computes some data about the mesh</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_getBoundingBox" class="method item">
+    <h3 class="name"><code>getBoundingBox</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/BBox.html" class="crosslink">BBox</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l1331"><code>..&#x2F;src&#x2F;mesh.js:1331</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns the bounding box, if it is not computed, then computes it</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/BBox.html" class="crosslink">BBox</a></span>:
+                    <p>bounding box</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getBuffer" class="method item">
+    <h3 class="name"><code>getBuffer</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Buffer</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l505"><code>..&#x2F;src&#x2F;mesh.js:505</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a vertex buffer</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>of vertex buffer</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Buffer</span>:
+                    <p>the buffer</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getIndexBuffer" class="method item">
+    <h3 class="name"><code>getIndexBuffer</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Buffer</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l516"><code>..&#x2F;src&#x2F;mesh.js:516</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a index buffer</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>of index buffer</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Buffer</span>:
+                    <p>the buffer</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getMemory" class="method item">
+    <h3 class="name"><code>getMemory</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Number</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l1426"><code>..&#x2F;src&#x2F;mesh.js:1426</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the amount of memory used by this mesh in bytes (sum of all buffers)</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Number</span>:
+                    <p>bytes</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getScreenQuad" class="method item">
+    <h3 class="name"><code>getScreenQuad</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/GL.Mesh.html" class="crosslink">GL.Mesh</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l1731"><code>..&#x2F;src&#x2F;mesh.js:1731</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a shared mesh containing a quad to be used when rendering to the screen
+Reusing the same quad helps not filling the memory</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/GL.Mesh.html" class="crosslink">GL.Mesh</a></span>:
+                    <p>the screen quad</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getVertexBuffer" class="method item">
+    <h3 class="name"><code>getVertexBuffer</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Buffer</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l465"><code>..&#x2F;src&#x2F;mesh.js:465</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a vertex buffer</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>of vertex buffer</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Buffer</span>:
+                    <p>the buffer</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getVertexNumber" class="method item">
+    <h3 class="name"><code>getVertexNumber</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>vertices</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l1284"><code>..&#x2F;src&#x2F;mesh.js:1284</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Computes bounding information</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">vertices</code>
+                        <span class="type">Typed Array</span>
+
+
+                    <div class="param-description">
+                        <p>array containing all the vertices</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_Mesh.circle" class="method item">
+    <h3 class="name"><code>Mesh.circle</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_primitives.js.html#l154"><code>..&#x2F;src&#x2F;primitives.js:154</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a circle mesh</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>valid options: size,radius, xz = in xz plane, otherwise xy plane</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_Mesh.computeBounding" class="method item">
+    <h3 class="name"><code>Mesh.computeBounding</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>vertices</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l1296"><code>..&#x2F;src&#x2F;mesh.js:1296</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Computes bounding information</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">vertices</code>
+                        <span class="type">Typed Array</span>
+
+
+                    <div class="param-description">
+                        <p>array containing all the vertices</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_Mesh.cube" class="method item">
+    <h3 class="name"><code>Mesh.cube</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_primitives.js.html#l89"><code>..&#x2F;src&#x2F;primitives.js:89</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a cube mesh</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>valid options: size</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_Mesh.cube" class="method item">
+    <h3 class="name"><code>Mesh.cube</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_primitives.js.html#l116"><code>..&#x2F;src&#x2F;primitives.js:116</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a cube mesh of a given size</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>valid options: size, sizex, sizey, sizez</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_Mesh.cylinder" class="method item">
+    <h3 class="name"><code>Mesh.cylinder</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_primitives.js.html#l264"><code>..&#x2F;src&#x2F;primitives.js:264</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a cube mesh</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>valid options: radius, height, subdivisions</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_Mesh.fromOBJ" class="method item">
+    <h3 class="name"><code>Mesh.fromOBJ</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>meshes</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l1672"><code>..&#x2F;src&#x2F;mesh.js:1672</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns am empty mesh and loads a mesh and parses it using the Mesh.parsers, by default only OBJ is supported</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">meshes</code>
+                        <span class="type">Array</span>
+
+
+                    <div class="param-description">
+                        <p>array containing all the meshes</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_Mesh.grid" class="method item">
+    <h3 class="name"><code>Mesh.grid</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_primitives.js.html#l474"><code>..&#x2F;src&#x2F;primitives.js:474</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a grid mesh (must be rendered using gl.LINES)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>valid options: size, lines</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_Mesh.icosahedron" class="method item">
+    <h3 class="name"><code>Mesh.icosahedron</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_primitives.js.html#l513"><code>..&#x2F;src&#x2F;primitives.js:513</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a icosahedron mesh (useful to create spheres by subdivision)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>valid options: radius, subdivisions (max: 6)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_Mesh.load" class="method item">
+    <h3 class="name"><code>Mesh.load</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>buffers</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+                <li class="arg">
+                        <code>output_mesh</code>
+                </li>
+                <li class="arg">
+                        <code>gl</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l1495"><code>..&#x2F;src&#x2F;mesh.js:1495</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Static method for the class Mesh to create a mesh from a list of common streams</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">buffers</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>object will all the buffers</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>[optional]</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">output_mesh</code>
+                        <span class="type">Mesh</span>
+
+
+                    <div class="param-description">
+                        <p>[optional] mesh to store the mesh, otherwise is created</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">gl</code>
+                        <span class="type">WebGLContext</span>
+
+
+                    <div class="param-description">
+                        <p>[optional] if omitted, the <a href="http://global.gl">global.gl</a> is used</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_Mesh.mergeMeshes" class="method item">
+    <h3 class="name"><code>Mesh.mergeMeshes</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>meshes</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/GL.Mesh.html" class="crosslink">GL.Mesh</a> | Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l1512"><code>..&#x2F;src&#x2F;mesh.js:1512</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a mesh with all the meshes merged (you can apply transforms individually to every buffer)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">meshes</code>
+                        <span class="type">Array</span>
+
+
+                    <div class="param-description">
+                        <p>array containing object like { mesh:, matrix:, texture_matrix: }</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>{ only_data: to get the mesh data without uploading it }</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/GL.Mesh.html" class="crosslink">GL.Mesh</a> | Object</span>:
+                    <p>the mesh in GL.Mesh format or Object format (if options.only_data is true)</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_Mesh.parseOBJ" class="method item">
+    <h3 class="name"><code>Mesh.parseOBJ</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>data</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_parsers.js.html#l2"><code>..&#x2F;src&#x2F;parsers.js:2</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Parses a OBJ string and returns an object with the info ready to be passed to GL.Mesh.load</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">data</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>all the OBJ info to be parsed</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    <p>mesh information (vertices, coords, normals, indices)</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_Mesh.plane" class="method item">
+    <h3 class="name"><code>Mesh.plane</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_primitives.js.html#l6"><code>..&#x2F;src&#x2F;primitives.js:6</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a planar mesh (you can choose how many subdivisions)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>valid options: detail, detailX, detailY, size, width, heigth, xz (horizontal plane)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_Mesh.plane2D" class="method item">
+    <h3 class="name"><code>Mesh.plane2D</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_primitives.js.html#l63"><code>..&#x2F;src&#x2F;primitives.js:63</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a 2D Mesh (be careful, stream is vertices2D, used for 2D engines )</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_Mesh.point" class="method item">
+    <h3 class="name"><code>Mesh.point</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_primitives.js.html#l80"><code>..&#x2F;src&#x2F;primitives.js:80</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a point mesh</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>no options</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_Mesh.sphere" class="method item">
+    <h3 class="name"><code>Mesh.sphere</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_primitives.js.html#l377"><code>..&#x2F;src&#x2F;primitives.js:377</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a sphere mesh</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>valid options: radius, lat, long, subdivisions, hemi</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_parse" class="method item">
+    <h3 class="name"><code>parse</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>data</code>
+                </li>
+                <li class="arg">
+                        <code>format</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">?</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l1698"><code>..&#x2F;src&#x2F;mesh.js:1698</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>given some data an information about the format, it search for a parser in Mesh.parsers and tries to extract the mesh information
+Only obj supported now</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">data</code>
+                        <span class="type"></span>
+
+
+                    <div class="param-description">
+                        <p>could be string or ArrayBuffer</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">format</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>parser file format name (p.e. &quot;obj&quot;)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">?</span>:
+                    <p>depending on the parser</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_removeIndexBuffer" class="method item">
+    <h3 class="name"><code>removeIndexBuffer</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+                <li class="arg">
+                        <code>free</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l527"><code>..&#x2F;src&#x2F;mesh.js:527</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Removes an index buffer from the mesh</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>&quot;vertices&quot;,&quot;normals&quot;...</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">free</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>if you want to remove the data from the GPU</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_removeVertexBuffer" class="method item">
+    <h3 class="name"><code>removeVertexBuffer</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+                <li class="arg">
+                        <code>free</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l450"><code>..&#x2F;src&#x2F;mesh.js:450</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Removes a vertex buffer from the mesh</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>&quot;vertices&quot;,&quot;normals&quot;...</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">free</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>if you want to remove the data from the GPU</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setBounding" class="method item">
+    <h3 class="name"><code>setBounding</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>center</code>
+                </li>
+                <li class="arg">
+                        <code>half_size</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l1355"><code>..&#x2F;src&#x2F;mesh.js:1355</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>forces a bounding box to be set</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">center</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>center of the bounding box</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">half_size</code>
+                        <span class="type">Vec3</span>
+
+
+                    <div class="param-description">
+                        <p>vector from the center to positive corner</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_simplify" class="method item">
+    <h3 class="name"><code>simplify</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Mesh</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l1443"><code>..&#x2F;src&#x2F;mesh.js:1443</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns a low poly version of the mesh that takes much less memory (but breaks tiling of uvs and smoothing groups)</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Mesh</span>:
+                    <p>simplified mesh</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_toObject" class="method item">
+    <h3 class="name"><code>toObject</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l650"><code>..&#x2F;src&#x2F;mesh.js:650</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Creates an object with the info of the mesh (useful to transfer to workers)</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_updateBounding" class="method item">
+    <h3 class="name"><code>updateBounding</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l1343"><code>..&#x2F;src&#x2F;mesh.js:1343</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Update bounding information of this mesh</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_upload" class="method item">
+    <h3 class="name"><code>upload</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>buffer_type</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_mesh.js.html#l543"><code>..&#x2F;src&#x2F;mesh.js:543</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Uploads data inside buffers to VRAM.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">buffer_type</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>gl.STATIC_DRAW, gl.DYNAMIC_DRAW, gl.STREAM_DRAW</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+            </div>
+
+
+
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

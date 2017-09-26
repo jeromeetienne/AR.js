@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>LS.SceneNode</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/LS.Animation.html">LS.Animation</a></li>
+                                <li><a href="../classes/LS.Animation.Take.html">LS.Animation.Take</a></li>
+                                <li><a href="../classes/LS.Animation.Track.html">LS.Animation.Track</a></li>
+                                <li><a href="../classes/LS.Collision.html">LS.Collision</a></li>
+                                <li><a href="../classes/LS.Component.html">LS.Component</a></li>
+                                <li><a href="../classes/LS.ComponentContainer.html">LS.ComponentContainer</a></li>
+                                <li><a href="../classes/LS.Components.Camera.html">LS.Components.Camera</a></li>
+                                <li><a href="../classes/LS.Components.CameraController.html">LS.Components.CameraController</a></li>
+                                <li><a href="../classes/LS.Components.CameraDirector.html">LS.Components.CameraDirector</a></li>
+                                <li><a href="../classes/LS.Components.CameraFX.html">LS.Components.CameraFX</a></li>
+                                <li><a href="../classes/LS.Components.Canvas3D.html">LS.Components.Canvas3D</a></li>
+                                <li><a href="../classes/LS.Components.CustomData.html">LS.Components.CustomData</a></li>
+                                <li><a href="../classes/LS.Components.FollowNode.html">LS.Components.FollowNode</a></li>
+                                <li><a href="../classes/LS.Components.FrameFX.html">LS.Components.FrameFX</a></li>
+                                <li><a href="../classes/LS.Components.FXGraphComponent.html">LS.Components.FXGraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.FXStack.html">LS.Components.FXStack</a></li>
+                                <li><a href="../classes/LS.Components.GeometricPrimitive.html">LS.Components.GeometricPrimitive</a></li>
+                                <li><a href="../classes/LS.Components.GraphComponent.html">LS.Components.GraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.MeshRenderer.html">LS.Components.MeshRenderer</a></li>
+                                <li><a href="../classes/LS.Components.NodeManipulator.html">LS.Components.NodeManipulator</a></li>
+                                <li><a href="../classes/LS.Components.PlayAnimation.html">LS.Components.PlayAnimation</a></li>
+                                <li><a href="../classes/LS.Components.Poser.html">LS.Components.Poser</a></li>
+                                <li><a href="../classes/LS.Components.RealtimeReflector.html">LS.Components.RealtimeReflector</a></li>
+                                <li><a href="../classes/LS.Components.Rotator.html">LS.Components.Rotator</a></li>
+                                <li><a href="../classes/LS.Components.Script.html">LS.Components.Script</a></li>
+                                <li><a href="../classes/LS.Components.SkinDeformer.html">LS.Components.SkinDeformer</a></li>
+                                <li><a href="../classes/LS.Components.Spline.html">LS.Components.Spline</a></li>
+                                <li><a href="../classes/LS.Components.SVGRenderer.html">LS.Components.SVGRenderer</a></li>
+                                <li><a href="../classes/LS.Components.Target.html">LS.Components.Target</a></li>
+                                <li><a href="../classes/LS.Components.Transform.html">LS.Components.Transform</a></li>
+                                <li><a href="../classes/LS.Components.VRCameraController.html">LS.Components.VRCameraController</a></li>
+                                <li><a href="../classes/LS.CompositePattern.html">LS.CompositePattern</a></li>
+                                <li><a href="../classes/LS.DebugRender.html">LS.DebugRender</a></li>
+                                <li><a href="../classes/LS.Draw.html">LS.Draw</a></li>
+                                <li><a href="../classes/LS.Formats.html">LS.Formats</a></li>
+                                <li><a href="../classes/LS.GLSLCode.html">LS.GLSLCode</a></li>
+                                <li><a href="../classes/LS.GUI.html">LS.GUI</a></li>
+                                <li><a href="../classes/LS.Input.html">LS.Input</a></li>
+                                <li><a href="../classes/LS.InteractiveController.html">LS.InteractiveController</a></li>
+                                <li><a href="../classes/LS.Knob.html">LS.Knob</a></li>
+                                <li><a href="../classes/LS.Light.html">LS.Light</a></li>
+                                <li><a href="../classes/LS.LightFX.html">LS.LightFX</a></li>
+                                <li><a href="../classes/LS.LS.html">LS.LS</a></li>
+                                <li><a href="../classes/LS.LScript.html">LS.LScript</a></li>
+                                <li><a href="../classes/LS.Material.html">LS.Material</a></li>
+                                <li><a href="../classes/LS.Pack.html">LS.Pack</a></li>
+                                <li><a href="../classes/LS.Physics.html">LS.Physics</a></li>
+                                <li><a href="../classes/LS.PhysicsInstance.html">LS.PhysicsInstance</a></li>
+                                <li><a href="../classes/LS.Picking.html">LS.Picking</a></li>
+                                <li><a href="../classes/LS.Player.html">LS.Player</a></li>
+                                <li><a href="../classes/LS.Prefab.html">LS.Prefab</a></li>
+                                <li><a href="../classes/LS.Project.html">LS.Project</a></li>
+                                <li><a href="../classes/LS.Renderer.html">LS.Renderer</a></li>
+                                <li><a href="../classes/LS.RenderFrameContext.html">LS.RenderFrameContext</a></li>
+                                <li><a href="../classes/LS.RenderInstance.html">LS.RenderInstance</a></li>
+                                <li><a href="../classes/LS.RenderSettings.html">LS.RenderSettings</a></li>
+                                <li><a href="../classes/LS.RenderState.html">LS.RenderState</a></li>
+                                <li><a href="../classes/LS.Resource.html">LS.Resource</a></li>
+                                <li><a href="../classes/LS.ResourcesManager.html">LS.ResourcesManager</a></li>
+                                <li><a href="../classes/LS.SceneNode.html">LS.SceneNode</a></li>
+                                <li><a href="../classes/LS.SceneTree.html">LS.SceneTree</a></li>
+                                <li><a href="../classes/LS.ShaderCode.html">LS.ShaderCode</a></li>
+                                <li><a href="../classes/LS.ShaderGraph.html">LS.ShaderGraph</a></li>
+                                <li><a href="../classes/LS.ShaderMaterial.html">LS.ShaderMaterial</a></li>
+                                <li><a href="../classes/LS.ShaderQuery.html">LS.ShaderQuery</a></li>
+                                <li><a href="../classes/LS.ShadersManager.html">LS.ShadersManager</a></li>
+                                <li><a href="../classes/LS.SpatialContainer.html">LS.SpatialContainer</a></li>
+                                <li><a href="../classes/LS.StandardMaterial.html">LS.StandardMaterial</a></li>
+                                <li><a href="../classes/LS.UnityMaterial.html">LS.UnityMaterial</a></li>
+                                <li><a href="../classes/LS.WBin.html">LS.WBin</a></li>
+                                <li><a href="../classes/LSQ.html">LSQ</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/LS.html">LS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1>LS.SceneNode Class</h1>
+<div class="box meta">
+
+
+        <div class="foundat">
+            Defined in: <a href="../files/.._src_sceneNode.js.html#l3"><code>..&#x2F;src&#x2F;sceneNode.js:3</code></a>
+        </div>
+
+            Module: <a href="../modules/LS.html">LS</a>
+
+</div>
+
+
+<div class="box intro">
+    <p>The SceneNode class represents and object in the scene
+Is the base class for all objects in the scene as meshes, lights, cameras, and so</p>
+
+</div>
+
+    <div class="constructor">
+        <h2>Constructor</h2>
+<div id="method_LS.SceneNode" class="method item">
+    <h3 class="name"><code>LS.SceneNode</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l3"><code>..&#x2F;src&#x2F;sceneNode.js:3</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>the name for this node (otherwise a random one is computed)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+    </div>
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+            <li class="api-class-tab events"><a href="#events">Events</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_clone">clone</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_configure">configure</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_destroy">destroy</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getLocator">getLocator</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getPropertyInfo">getPropertyInfo</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getPropertyInfoFromPath">getPropertyInfoFromPath</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getPropertyValue">getPropertyValue</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getPropertyValueFromPath">getPropertyValueFromPath</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getResources">getResources</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_insidePrefab">insidePrefab</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isInLayer">isInLayer</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_reloadFromPrefab">reloadFromPrefab</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_serialize">serialize</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setLayer">setLayer</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setMesh">setMesh</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setName">setName</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setPropertyValue">setPropertyValue</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setPropertyValueFromPath">setPropertyValueFromPath</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties">
+                            <li class="index-item property">
+                                <a href="#property_className">className</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+                <div class="index-section events">
+                    <h3>Events</h3>
+
+                    <ul class="index-list events">
+                            <li class="index-item event">
+                                <a href="#event_name_changed">name_changed</a>
+
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_transformChanged">transformChanged</a>
+
+                            </li>
+                    </ul>
+                </div>
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_clone" class="method item">
+    <h3 class="name"><code>clone</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l961"><code>..&#x2F;src&#x2F;sceneNode.js:961</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>remember clones this node and returns the new copy (you need to add it to the scene to see it)</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    <p>returns a cloned version of this node</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_configure" class="method item">
+    <h3 class="name"><code>configure</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>info</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l983"><code>..&#x2F;src&#x2F;sceneNode.js:983</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Configure this node from an object containing the info</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">info</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>the object with all the info (comes from the serialize method)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_destroy" class="method item">
+    <h3 class="name"><code>destroy</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>time</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l305"><code>..&#x2F;src&#x2F;sceneNode.js:305</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Destroys this node</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">time</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>[optional] time in seconds to wait till destroying the node</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_getLocator" class="method item">
+    <h3 class="name"><code>getLocator</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>property_name</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l327"><code>..&#x2F;src&#x2F;sceneNode.js:327</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the locator string of this node</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">property_name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>[optional] you can pass the name of a property in this node to get the locator of that one</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <p>the locator string of this node</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getPropertyInfo" class="method item">
+    <h3 class="name"><code>getPropertyInfo</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>locator</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l340"><code>..&#x2F;src&#x2F;sceneNode.js:340</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns and object with info about a property given a locator</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">locator</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    <p>object with { node, target, name, value and type }</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getPropertyInfoFromPath" class="method item">
+    <h3 class="name"><code>getPropertyInfoFromPath</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>path</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l352"><code>..&#x2F;src&#x2F;sceneNode.js:352</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns and object with info about a property given a locator in path format</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">path</code>
+                        <span class="type">Array</span>
+
+
+                    <div class="param-description">
+                        <p>a locator in path format (split by /)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    <p>object with { node, target, name, value and type }</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getPropertyValue" class="method item">
+    <h3 class="name"><code>getPropertyValue</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>locaator</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l470"><code>..&#x2F;src&#x2F;sceneNode.js:470</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the value of a property given a locator in string format</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">locaator</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"></span>:
+                    <p>the value of that property</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getPropertyValueFromPath" class="method item">
+    <h3 class="name"><code>getPropertyValueFromPath</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>locator</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l482"><code>..&#x2F;src&#x2F;sceneNode.js:482</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the value of a property given a locator in path format</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">locator</code>
+                        <span class="type">Array</span>
+
+
+                    <div class="param-description">
+                        <p>in path format (array)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"></span>:
+                    <p>the value of that property</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getResources" class="method item">
+    <h3 class="name"><code>getResources</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>res</code>
+                </li>
+                <li class="arg">
+                        <code>include_children</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l689"><code>..&#x2F;src&#x2F;sceneNode.js:689</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns all the resources used by this node and its components (you can include the resources from the children too)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">res</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>object where to store the resources used (in &quot;res_name&quot;:LS.TYPE format)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">include_children</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>if you want to add also the resources used by the children nodes</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    <p>the same object passed is returned</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_insidePrefab" class="method item">
+    <h3 class="name"><code>insidePrefab</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l944"><code>..&#x2F;src&#x2F;sceneNode.js:944</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the root node of the prefab incase it is inside a prefab, otherwise null</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    <p>returns the node where the prefab starts</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_isInLayer" class="method item">
+    <h3 class="name"><code>isInLayer</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>index</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l900"><code>..&#x2F;src&#x2F;sceneNode.js:900</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>checks if this node is in the given layer</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">index</code>
+                        <span class="type">Number | String</span>
+
+
+                    <div class="param-description">
+                        <p>of layer or name according to scene.layer_names</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    <p>true if belongs to this layer</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_reloadFromPrefab" class="method item">
+    <h3 class="name"><code>reloadFromPrefab</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l831"><code>..&#x2F;src&#x2F;sceneNode.js:831</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Apply prefab info (skipping the root components) to node, so all children will be removed and components lost and overwritten
+It is called from prefab.applyToNodes when a prefab is loaded in memory</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_serialize" class="method item">
+    <h3 class="name"><code>serialize</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>ignore_prefab</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l1148"><code>..&#x2F;src&#x2F;sceneNode.js:1148</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Serializes this node by creating an object with all the info
+it contains info about the components too</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">ignore_prefab</code>
+                        <span class="type">Bool</span>
+
+
+                    <div class="param-description">
+                        <p>serializing wont returns children if it is a prefab, if you set this to ignore_prefab it will return all the info</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    <p>returns the object with the info</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_setLayer" class="method item">
+    <h3 class="name"><code>setLayer</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>the</code>
+                </li>
+                <li class="arg">
+                        <code>value</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l867"><code>..&#x2F;src&#x2F;sceneNode.js:867</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Assigns this node to one layer</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">the</code>
+                        <span class="type">Number | String</span>
+
+
+                    <div class="param-description">
+                        <p>index of the layer or the name (according to scene.layer_names)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">value</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setMesh" class="method item">
+    <h3 class="name"><code>setMesh</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>mesh_name</code>
+                </li>
+                <li class="arg">
+                        <code>submesh_id</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l764"><code>..&#x2F;src&#x2F;sceneNode.js:764</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Simple way to assign a mesh to a node, it created a MeshRenderer component or reuses and existing one and assigns the mesh</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">mesh_name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>the name of the mesh (path to the file)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">submesh_id</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>if you want to assign a submesh</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setName" class="method item">
+    <h3 class="name"><code>setName</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>new_name</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l91"><code>..&#x2F;src&#x2F;sceneNode.js:91</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>changes the node name</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">new_name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>the new name</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    <p>returns true if the name changed</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_setPropertyValue" class="method item">
+    <h3 class="name"><code>setPropertyValue</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>locator</code>
+                </li>
+                <li class="arg">
+                        <code>value</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l584"><code>..&#x2F;src&#x2F;sceneNode.js:584</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>assigns a value to a property given the locator for that property</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">locator</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">value</code>
+                        <span class="type"></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setPropertyValueFromPath" class="method item">
+    <h3 class="name"><code>setPropertyValueFromPath</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>path</code>
+                </li>
+                <li class="arg">
+                        <code>value</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[optional]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l596"><code>..&#x2F;src&#x2F;sceneNode.js:596</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>given a locator in path mode (array) and a value, it searches for the corresponding value and applies it</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">path</code>
+                        <span class="type">Array</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">value</code>
+                        <span class="type"></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[optional]</code>
+                        <span class="type">Number</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>offset used to skip the firsst positions in the array</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+            </div>
+
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_className" class="property item">
+    <h3 class="name"><code>className</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_sceneNode.js.html#l278"><code>..&#x2F;src&#x2F;sceneNode.js:278</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+            </div>
+
+
+            <div id="events" class="api-class-tabpanel">
+                <h2 class="off-left">Events</h2>
+
+                    <div id="event_name_changed" class="events item">
+                        <h3 class="name"><code>name_changed</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._src_sceneNode.js.html#l260"><code>..&#x2F;src&#x2F;sceneNode.js:260</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>Node changed name</p>
+                    
+                        </div>
+                    
+                            <div class="params">
+                                <h4>Event Payload:</h4>
+                    
+                                <ul class="params-list">
+                                    <li class="param">
+                                            <code class="param-name">new_name</code>
+                                            <span class="type">String</span>
+                    
+                    
+                                        <div class="param-description">
+                                             
+                                        </div>
+                    
+                                    </li>
+                                </ul>
+                            </div>
+                    
+                    
+                    </div>
+                    <div id="event_transformChanged" class="events item">
+                        <h3 class="name"><code>transformChanged</code></h3>
+                        <span class="type"></span>
+                    
+                    
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/.._src_sceneNode.js.html#l49"><code>..&#x2F;src&#x2F;sceneNode.js:49</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            
+                        </div>
+                    
+                    
+                    
+                    </div>
+            </div>
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>litegl.js: mesh example</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<style type='text/css'>
+		html, body { width: 100%; height: 100%; margin: 0; padding: 0 }
+		body { background-color: #DDD;}
+		h1 { color: #777; background-color: #CCC; }
+	</style>
+	<script type="text/javascript" src="../external/gl-matrix.js"></script>
+	<script type="text/javascript" src="../build/litegl.js"></script>
+	<script type="text/javascript">
+	
+	function init()
+	{
+		//create the rendering context
+		var container = document.body;
+
+		var gl = GL.create({width: container.offsetWidth, height: container.offsetHeight});
+		container.appendChild(gl.canvas);
+		gl.animate(); //launch loop
+
+		var resolution = 256;
+
+		//build the mesh
+		var mesh = GL.Mesh.plane({xz: true, detail: 180, size:100});
+		var type = gl.FLOAT; //gl.HIGH_PRECISION_FORMAT;
+		var tex = new GL.Texture(resolution, resolution, { wrap: gl.MIRRORED_REPEAT, type: type, filter: gl.LINEAR });
+		var tex2 = new GL.Texture(resolution, resolution, { wrap: gl.MIRRORED_REPEAT, type: type, filter: gl.LINEAR });
+
+		var start_tex = GL.Texture.fromURL("../../../games/bwr/data/circle.png",null,function(t){
+			t.copyTo(tex);
+		});
+
+		//create basic matrices for cameras and transformation
+		var proj = mat4.create();
+		var view = mat4.create();
+		var model = mat4.create();
+		var mvp = mat4.create();
+		var temp = mat4.create();
+
+		//get mouse actions
+		gl.captureMouse();
+
+		//set the camera position
+		var cam_pos = [0,50,100];
+		mat4.perspective(proj, 45 * DEG2RAD, gl.canvas.width / gl.canvas.height, 0.1, 1000);
+		mat4.lookAt(view, cam_pos,[0,0,0], [0,1,0]);
+		var last_collision = [0,0,0];
+
+
+		//fuild simulation shader
+		var simulation_shader = new Shader( GL.Shader.SCREEN_VERTEX_SHADER,  '\
+				precision highp float;\
+				varying vec2 v_coord;\
+				uniform sampler2D u_texture;\
+				uniform float u_offset;\
+				uniform float u_attenuation;\
+				void main() {\
+				  const float off = 0.5;\
+				  vec4 color = texture2D( u_texture, v_coord ) - off;\
+				  \
+				  float top = texture2D( u_texture, v_coord + vec2(0.0, u_offset) ).x - off;\
+				  float bottom = texture2D( u_texture, v_coord + vec2(0.0, -u_offset) ).x - off;\
+				  float left = texture2D( u_texture, v_coord + vec2(u_offset, 0.0) ).x - off;\
+				  float right = texture2D( u_texture, v_coord + vec2(-u_offset, 0.0) ).x - off;\
+				  float average = (top + bottom + right + left) * 0.25;\
+				  \
+				  color.g += (average - color.r) * 2.0;\
+  				  color.g *= u_attenuation;\
+				  color.r += color.g;\
+				  \
+				  vec3 vright = vec3( 1.0, (left - right) * 20.0, 0.0 );\
+				  vec3 vfront = -vec3( 0.0, (top - bottom) * 20.0, 1.0 );\
+				  vec3 N = normalize( cross(vright, vfront) );\
+				  vec3 colorN = (N / N.y);\
+				  \
+				  gl_FragColor = vec4( color.r + off, color.g + off, colorN.x, colorN.z );\
+				}\
+			');
+
+		//basic phong shader
+		var shader = new Shader('\
+				precision highp float;\
+				attribute vec3 a_vertex;\
+				attribute vec3 a_normal;\
+				varying vec3 v_position;\
+				varying vec3 v_normal;\
+				uniform mat4 u_mvp;\
+				uniform mat4 u_model;\
+				uniform sampler2D u_texture;\
+				void main() {\
+				    gl_PointSize = 2.0;\n\
+					vec3 pos = a_vertex;\n\
+					vec4 tex = texture2D( u_texture, pos.xz / 100.0 + vec2(0.5) );\n\
+					pos.y = (tex.x * 20.0 - 10.0); \n\
+					vec3 N = normalize( vec3(tex.z,1.0,tex.w) );\
+					v_normal = (u_model * vec4(N,0.0)).xyz;\
+					v_position = (u_model * vec4(pos,1.0)).xyz;\
+					gl_Position = u_mvp * vec4(pos,1.0);\
+				}\
+				', '\
+				precision highp float;\
+				varying vec3 v_position;\
+				varying vec3 v_normal;\
+				uniform vec3 u_campos;\
+				uniform vec3 u_lightvector;\
+				uniform vec4 u_color;\
+				void main() {\
+				  vec3 N = normalize(v_normal);\
+				  vec3 E = normalize(u_campos - v_position);\
+				  vec3 R = reflect(E,N);\
+				  float light = max(0.0, dot(u_lightvector,N)) + pow( max(0.0, dot(-R,u_lightvector)),40.0);\
+				  gl_FragColor = vec4(u_color.xyz * light, u_color.a);\
+				}\
+			');
+
+		var paint_shader = new Shader("\n\
+			precision highp float;\n\
+			attribute vec3 a_vertex;\n\
+			void main() { \n\
+			    gl_PointSize = 2.0;\n\
+				gl_Position = vec4(a_vertex, 1.0); \n\
+			}",
+			GL.Shader.SCREEN_FLAT_FRAGMENT_SHADER);
+
+		//generic gl flags and settings
+		gl.clearColor(0.1,0.1,0.1,1);
+		gl.enable( gl.DEPTH_TEST );
+
+		var uniforms = {
+			u_color: [1,1,1,1],
+			u_lightvector: vec3.normalize(vec3.create(),[1,1,1]),
+			u_model: model,
+			u_mvp: mvp,
+			u_texture: 0,
+			u_campos: cam_pos
+		};
+
+		//rendering loop
+		gl.ondraw = function()
+		{
+			gl.disable (gl.DEPTH_TEST);
+			gl.disable (gl.BLEND);
+			if(tex.ready !== false)
+			{
+				//run simulation
+				tex2.drawTo( function() {
+					var mesh = GL.Mesh.getScreenQuad();
+					tex.bind(1);
+					simulation_shader.uniforms({u_texture:1, u_attenuation: 0.995, u_offset: 1/tex.width}).draw( mesh );
+				});
+				var tmp = tex;
+				tex = tex2;
+				tex2 = tmp;
+			}
+			
+			gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
+
+			//create modelview and projection matrices
+			mat4.multiply(temp,view,model);
+			mat4.multiply(mvp,proj,temp);
+
+			//render mesh using the shader
+			gl.enable (gl.DEPTH_TEST);
+			tex2.bind(0);
+			shader.uniforms(uniforms).draw(mesh, gl.TRIANGLES);
+
+			//render simulation state
+			tex2.renderQuad(10,10,100,100);
+		};
+
+		function paint(x,y)
+		{
+			var RT = new GL.Raytracer( view, proj );
+			var dir = RT.getRayForPixel( x, y );
+			var center = cam_pos;
+			
+			if( geo.testRayPlane( center, dir, [0,0,0],[0,1,0], last_collision ) )
+			{
+				var plane_pos = [ last_collision[0] / (50), last_collision[2] / (50), 0.0 ];
+				gl.disable( gl.DEPTH_TEST );
+				tex.drawTo(function(){
+					var mesh = GL.Mesh.load({vertices: plane_pos});
+					//gl.enable( gl.BLEND );
+					gl.blendFunc( gl.ONE, gl.ONE );
+					paint_shader.uniforms({u_color: [0.5,0.5,0.0,0.0]}).draw( mesh, gl.POINT );
+					gl.disable( gl.BLEND );
+				});
+			}
+		}
+
+
+		gl.onmousedown = function(e)
+		{
+			paint(e.canvasx, gl.canvas.height -  e.canvasy);
+		},
+
+		gl.onmousemove = function(e)
+		{
+			if(e.dragging)
+				paint(e.canvasx, gl.canvas.height - e.canvasy);
+		},
+
+		//update loop
+		gl.onupdate = function(dt)
+		{
+			//rotate world
+			//mat4.rotateY(model,model,dt*0.2);
+		};
+	}	
+	
+	</script>
+</head>
+<body>
+<script>init();</script>
+</body>
+</html>
+
+

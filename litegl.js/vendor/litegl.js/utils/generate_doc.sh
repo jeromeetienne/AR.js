@@ -1,0 +1,1 @@
+yuidoc ../src -o ../doc

@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>../src/materials/unityMaterial.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/LS.Animation.html">LS.Animation</a></li>
+                                <li><a href="../classes/LS.Animation.Take.html">LS.Animation.Take</a></li>
+                                <li><a href="../classes/LS.Animation.Track.html">LS.Animation.Track</a></li>
+                                <li><a href="../classes/LS.Collision.html">LS.Collision</a></li>
+                                <li><a href="../classes/LS.Component.html">LS.Component</a></li>
+                                <li><a href="../classes/LS.ComponentContainer.html">LS.ComponentContainer</a></li>
+                                <li><a href="../classes/LS.Components.Camera.html">LS.Components.Camera</a></li>
+                                <li><a href="../classes/LS.Components.CameraController.html">LS.Components.CameraController</a></li>
+                                <li><a href="../classes/LS.Components.CameraDirector.html">LS.Components.CameraDirector</a></li>
+                                <li><a href="../classes/LS.Components.CameraFX.html">LS.Components.CameraFX</a></li>
+                                <li><a href="../classes/LS.Components.Canvas3D.html">LS.Components.Canvas3D</a></li>
+                                <li><a href="../classes/LS.Components.CustomData.html">LS.Components.CustomData</a></li>
+                                <li><a href="../classes/LS.Components.FollowNode.html">LS.Components.FollowNode</a></li>
+                                <li><a href="../classes/LS.Components.FrameFX.html">LS.Components.FrameFX</a></li>
+                                <li><a href="../classes/LS.Components.FXGraphComponent.html">LS.Components.FXGraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.FXStack.html">LS.Components.FXStack</a></li>
+                                <li><a href="../classes/LS.Components.GeometricPrimitive.html">LS.Components.GeometricPrimitive</a></li>
+                                <li><a href="../classes/LS.Components.GraphComponent.html">LS.Components.GraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.MeshRenderer.html">LS.Components.MeshRenderer</a></li>
+                                <li><a href="../classes/LS.Components.NodeManipulator.html">LS.Components.NodeManipulator</a></li>
+                                <li><a href="../classes/LS.Components.PlayAnimation.html">LS.Components.PlayAnimation</a></li>
+                                <li><a href="../classes/LS.Components.Poser.html">LS.Components.Poser</a></li>
+                                <li><a href="../classes/LS.Components.RealtimeReflector.html">LS.Components.RealtimeReflector</a></li>
+                                <li><a href="../classes/LS.Components.Rotator.html">LS.Components.Rotator</a></li>
+                                <li><a href="../classes/LS.Components.Script.html">LS.Components.Script</a></li>
+                                <li><a href="../classes/LS.Components.SkinDeformer.html">LS.Components.SkinDeformer</a></li>
+                                <li><a href="../classes/LS.Components.Spline.html">LS.Components.Spline</a></li>
+                                <li><a href="../classes/LS.Components.SVGRenderer.html">LS.Components.SVGRenderer</a></li>
+                                <li><a href="../classes/LS.Components.Target.html">LS.Components.Target</a></li>
+                                <li><a href="../classes/LS.Components.Transform.html">LS.Components.Transform</a></li>
+                                <li><a href="../classes/LS.Components.VRCameraController.html">LS.Components.VRCameraController</a></li>
+                                <li><a href="../classes/LS.CompositePattern.html">LS.CompositePattern</a></li>
+                                <li><a href="../classes/LS.DebugRender.html">LS.DebugRender</a></li>
+                                <li><a href="../classes/LS.Draw.html">LS.Draw</a></li>
+                                <li><a href="../classes/LS.Formats.html">LS.Formats</a></li>
+                                <li><a href="../classes/LS.GLSLCode.html">LS.GLSLCode</a></li>
+                                <li><a href="../classes/LS.GUI.html">LS.GUI</a></li>
+                                <li><a href="../classes/LS.Input.html">LS.Input</a></li>
+                                <li><a href="../classes/LS.InteractiveController.html">LS.InteractiveController</a></li>
+                                <li><a href="../classes/LS.Knob.html">LS.Knob</a></li>
+                                <li><a href="../classes/LS.Light.html">LS.Light</a></li>
+                                <li><a href="../classes/LS.LightFX.html">LS.LightFX</a></li>
+                                <li><a href="../classes/LS.LS.html">LS.LS</a></li>
+                                <li><a href="../classes/LS.LScript.html">LS.LScript</a></li>
+                                <li><a href="../classes/LS.Material.html">LS.Material</a></li>
+                                <li><a href="../classes/LS.Pack.html">LS.Pack</a></li>
+                                <li><a href="../classes/LS.Physics.html">LS.Physics</a></li>
+                                <li><a href="../classes/LS.PhysicsInstance.html">LS.PhysicsInstance</a></li>
+                                <li><a href="../classes/LS.Picking.html">LS.Picking</a></li>
+                                <li><a href="../classes/LS.Player.html">LS.Player</a></li>
+                                <li><a href="../classes/LS.Prefab.html">LS.Prefab</a></li>
+                                <li><a href="../classes/LS.Project.html">LS.Project</a></li>
+                                <li><a href="../classes/LS.Renderer.html">LS.Renderer</a></li>
+                                <li><a href="../classes/LS.RenderFrameContext.html">LS.RenderFrameContext</a></li>
+                                <li><a href="../classes/LS.RenderInstance.html">LS.RenderInstance</a></li>
+                                <li><a href="../classes/LS.RenderSettings.html">LS.RenderSettings</a></li>
+                                <li><a href="../classes/LS.RenderState.html">LS.RenderState</a></li>
+                                <li><a href="../classes/LS.Resource.html">LS.Resource</a></li>
+                                <li><a href="../classes/LS.ResourcesManager.html">LS.ResourcesManager</a></li>
+                                <li><a href="../classes/LS.SceneNode.html">LS.SceneNode</a></li>
+                                <li><a href="../classes/LS.SceneTree.html">LS.SceneTree</a></li>
+                                <li><a href="../classes/LS.ShaderCode.html">LS.ShaderCode</a></li>
+                                <li><a href="../classes/LS.ShaderGraph.html">LS.ShaderGraph</a></li>
+                                <li><a href="../classes/LS.ShaderMaterial.html">LS.ShaderMaterial</a></li>
+                                <li><a href="../classes/LS.ShaderQuery.html">LS.ShaderQuery</a></li>
+                                <li><a href="../classes/LS.ShadersManager.html">LS.ShadersManager</a></li>
+                                <li><a href="../classes/LS.SpatialContainer.html">LS.SpatialContainer</a></li>
+                                <li><a href="../classes/LS.StandardMaterial.html">LS.StandardMaterial</a></li>
+                                <li><a href="../classes/LS.UnityMaterial.html">LS.UnityMaterial</a></li>
+                                <li><a href="../classes/LS.WBin.html">LS.WBin</a></li>
+                                <li><a href="../classes/LSQ.html">LSQ</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/LS.html">LS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: ../src/materials/unityMaterial.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+
+/**
+* UnityMaterial allows to use Unity ShaderLab materials
+* @namespace LS
+* @class UnityMaterial
+* @constructor
+* @param {Object} object [optional] to configure from
+*/
+function UnityMaterial( o )
+{
+	Material.call( this, null );
+
+	this._shader = null;
+	this._shader_version = -1;
+	this._shader_flags = 0; //?
+
+	this._uniforms = {};
+	this._samplers = [];
+	this._properties = [];
+	this._properties_by_name = {};
+
+	if(o) 
+		this.configure(o);
+}
+
+Object.defineProperty( UnityMaterial.prototype, &quot;shader&quot;, {
+	enumerable: true,
+	get: function() {
+		return this._shader;
+	},
+	set: function(v) {
+		if(v)
+			v = LS.ResourcesManager.cleanFullpath(v);
+		if(this._shader == v)
+			return;
+		this._shader = v;
+		this.processShaderCode();
+	}
+});
+
+Object.defineProperty( UnityMaterial.prototype, &quot;properties&quot;, {
+	enumerable: true,
+	get: function() {
+		return this._properties;
+	},
+	set: function(v) {
+		if(!v)
+			return;
+		this._properties = v;
+		this._properties_by_name = {};
+		for(var i in this._properties)
+		{
+			var p = this._properties[i];
+			this._properties_by_name[ p.name ] = p;
+		}
+	}
+});
+
+/**
+* Makes one shader variable (uniform) public so it can be assigned from the engine (or edited from the editor)
+* @method createUniform
+* @param {String} name the property name as it should be shown
+* @param {String} uniform the uniform name in the shader
+* @param {String} type the var type in case we want to edit it (use LS.TYPES)
+* @param {*} value
+* @param {Object} options an object containing all the possible options (used mostly for widgets)
+*/
+UnityMaterial.prototype.createUniform = function( name, uniform, type, value, options )
+{
+	if(!name || !uniform)
+		throw(&quot;parameter missing in createUniform&quot;);
+
+	//
+	type = type || &quot;Number&quot;;
+	if( type.constructor !== String )
+		throw(&quot;type must be string&quot;);
+
+	//cast to typed-array
+	value = value || 0;
+	if(value &amp;&amp; value.length)
+		value = new Float32Array( value );//cast them always
+	else
+	{
+		//create a value, otherwise is null
+		switch (type)
+		{
+			case &quot;vec2&quot;: value = vec2.create(); break;
+			case &quot;color&quot;:
+			case &quot;vec3&quot;: value = vec3.create(); break;
+			case &quot;color4&quot;:
+			case &quot;vec4&quot;: value = vec4.create(); break;
+			case &quot;mat3&quot;: value = mat3.create(); break;
+			case &quot;mat4&quot;: value = mat4.create(); break;
+			default:
+		}
+	}
+
+	//define info
+	var prop = { name: name, uniform: uniform, value: value, type: type, is_texture: 0 };
+
+	//mark as texture (because this need to go to the textures container so they are binded)
+	if(type.toLowerCase() == &quot;texture&quot; || type == &quot;sampler2D&quot; || type == &quot;samplerCube&quot; || type == &quot;sampler&quot;)
+		prop.is_texture = (type == &quot;samplerCube&quot;) ? 2 : 1;
+
+	if(prop.is_texture)
+	{
+		prop.sampler = {};
+		prop.type = &quot;sampler&quot;;
+		prop.sampler_slot = this._samplers.length;
+		this._samplers.push( prop.sampler );
+	}
+
+	if(options)
+		for(var i in options)
+			prop[i] = options[i];
+
+	this._properties.push( prop );
+	this._properties_by_name[ name ] = prop;
+}
+
+/**
+* Similar to createUniform but for textures, it helps specifying sampler options
+* @method createSampler
+* @param {String} name the property name as it should be shown
+* @param {String} uniform the uniform name in the shader
+* @param {Object} options an object containing all the possible options (used mostly for widgets)
+* @param {String} value default value (texture name)
+*/
+UnityMaterial.prototype.createSampler = function( name, uniform, sampler_options, value  )
+{
+	if(!name || !uniform)
+		throw(&quot;parameter missing in createSampler&quot;);
+
+	var sampler = {
+		texture: value
+	};
+
+	var prop = { name: name, uniform: uniform, value: sampler, type: &quot;sampler&quot;, is_texture: 1, sampler_slot: -1 };
+
+	if(sampler_options)
+	{
+		if(sampler_options.filter)
+		{
+			sampler.magFilter = sampler_options.filter;
+			sampler.minFilter = sampler_options.filter;
+			delete sampler_options.filter;
+		}
+
+		if(sampler_options.wrap)
+		{
+			sampler.wrapS = sampler_options.wrap;
+			sampler.wrapT = sampler_options.wrap;
+			delete sampler_options.wrap;
+		}
+
+		for(var i in sampler_options)
+			sampler[i] = sampler_options[i];
+	}
+	prop.sampler_slot = this._samplers.length;
+	this._properties.push( prop );
+	this._properties_by_name[ name ] = prop;
+	this._samplers.push( prop.value );
+}
+
+/**
+* Creates a property for this material, this property wont be passed to the shader but can be used from source code.
+* You must used this function if you want the data to be stored when serializing or changing the ShaderCode
+* @method createProperty
+* @param {String} name the property name as it should be shown
+* @param {*} value the default value
+* @param {String} type the data type (use LS.TYPES)
+* @param {Object} options an object containing all the possible options (used mostly for widgets)
+*/
+UnityMaterial.prototype.createProperty = function( name, value, type, options )
+{
+	var prop = this._properties_by_name[ name ];
+	if(prop &amp;&amp; prop.type == type) //already exist with the same type
+		return;
+
+	prop = { name: name, type: type, internal: true, value: value };
+	if(options)
+		for(var i in options)
+			prop[i] = options[i];
+
+	this._properties.push( prop );
+	this._properties_by_name[ name ] = prop;
+
+	Object.defineProperty( this, name, {
+		get: function() { 
+			var prop = this._properties_by_name[ name ]; //fetch it because could have been overwritten
+			if(prop)
+				return prop.value;
+		},
+		set: function(v) { 
+			var prop = this._properties_by_name[ name ]; //fetch it because could have been overwritten
+			if(!prop)
+				return;
+			if(prop.value &amp;&amp; prop.value.set) //for typed arrays
+				prop.value.set( v );
+			else
+				prop.value = v;
+		},
+		enumerable: false, //must not be serialized
+		configurable: true //allows to overwrite this property
+	});
+}
+
+//called when preparing materials before rendering the scene
+UnityMaterial.prototype.prepare = function( scene )
+{
+	this.fillUniforms();
+
+	if( this.onPrepare )
+		this.onPrepare( scene );
+}
+
+//called when filling uniforms from prepare
+UnityMaterial.prototype.fillUniforms = function()
+{
+	//gather uniforms &amp; samplers
+	var samplers = this._samplers;
+	samplers.length = 0;
+
+	this._uniforms.u_material_color = this._color;
+
+	for(var i = 0; i &lt; this._properties.length; ++i)
+	{
+		var p = this._properties[i];
+		if(p.internal) //internal is a property that is not for the shader (is for internal computations)
+			continue;
+
+		if(p.is_texture)
+		{
+			this._uniforms[ p.uniform ] = samplers.length;
+			if(p.value)
+				samplers.push( p.value );
+			else
+				samplers.push( &quot; &quot; ); //force missing texture
+		}
+		else
+			this._uniforms[ p.uniform ] = p.value;
+	}
+}
+
+//assigns a value to a property
+UnityMaterial.prototype.setProperty = function(name, value)
+{
+	//redirect to base material
+	if( Material.prototype.setProperty.call(this,name,value) )
+		return true;
+
+	if(name == &quot;shader&quot;)
+		this.shader = value;
+	else if(name == &quot;properties&quot;)
+	{
+		this.properties.length = 0;
+		this._properties_by_name = {};
+		for(var i = 0; i &lt; value.length; ++i)
+		{
+			var prop = value[i];
+			if(prop.is_texture &amp;&amp; prop.value &amp;&amp; prop.value.constructor === String)
+				prop.value = { texture: prop.value };
+			this.properties[i] = prop;
+			this._properties_by_name[ prop.name ] = prop;
+			this._samplers.push( prop.value );
+		}
+	}
+	else if( this._properties_by_name[ name ] )
+	{
+		var prop = this._properties_by_name[ name ];
+		if( !prop.value || !prop.value.length)
+			prop.value = value;
+		else
+			prop.value.set( value );
+	}
+	else
+		return false;
+	return true;
+}
+
+//check the ShaderCode associated and applies it to this material (keeping the state of the properties)
+UnityMaterial.prototype.processShaderCode = function()
+{
+	if(!this._shader)
+	{
+		this._properties.length = 0;
+		this._properties_by_name = {};
+		this._samplers.length = 0;
+		return false;
+	}
+
+	//get shader code
+	var shader_code = LS.ResourcesManager.getResource( this.shader );
+	if(!shader_code || shader_code.constructor !== LS.ShaderCode )
+		return false;
+
+	var old_properties = this._properties_by_name;
+	this._properties.length = 0;
+	this._properties_by_name = {};
+	this._samplers.length = 0;
+
+	//reset material properties
+	this._queue = LS.RenderQueue.GEOMETRY;
+	this.render_state.init();
+
+	//clear old functions
+	for(var i in this)
+	{
+		if(!this.hasOwnProperty(i))
+			continue;
+		if( this[i] &amp;&amp; this[i].constructor === Function )
+			delete this[i];
+	}
+
+	//apply init 
+	if( shader_code._functions.init )
+	{
+		if(!LS.catch_exceptions)
+			shader_code._functions.init.call( this );
+		else
+		{
+			try
+			{
+				shader_code._functions.init.call( this );
+			}
+			catch (err)
+			{
+				LS.dispatchCodeError(err);
+			}
+		}
+	}
+
+	for(var i in shader_code._global_uniforms)
+	{
+		var global = shader_code._global_uniforms[i];
+		if( global.disabled ) //in case this var is not found in the shader
+			continue;
+		this.createUniform( global.name, global.uniform, global.type, global.value, global.options );
+	}
+
+	//restore old values
+	this.assignOldProperties( old_properties );
+
+	//set stuff
+	//TODO
+
+	this._shader_version = shader_code._version;
+}
+
+//used after changing the code of the ShaderCode and wanting to reload the material keeping the old properties
+UnityMaterial.prototype.assignOldProperties = function( old_properties )
+{
+	//get shader code
+	var shader = null;
+	var shader_code = this.getShaderCode();
+	if( shader_code )
+		shader = shader_code.getShader();
+
+	for(var i = 0; i &lt; this._properties.length; ++i)
+	{
+		var new_prop = this._properties[i];
+
+		if(!old_properties[ new_prop.name ])
+			continue;
+		var old = old_properties[ new_prop.name ];
+		if(old.value === undefined)
+			continue;
+
+
+		//validate
+		if( !old.internal &amp;&amp; shader )
+		{
+			var uniform_info = shader.uniformInfo[ new_prop.uniform ];
+			if(!uniform_info)
+				continue;
+			if(new_prop.value !== undefined)
+			{
+				if( !GL.Shader.validateValue( new_prop.value, uniform_info ) )
+				{
+					new_prop.value = undefined;
+					continue;
+				}
+			}
+		}
+
+		//this is to keep current values when coding the shader from the editor
+		if( new_prop.value &amp;&amp; new_prop.value.set ) //special case for typed arrays avoiding generating GC
+		{
+			//this is to be careful when an array changes sizes
+			if( old.value &amp;&amp; old.value.length &amp;&amp; new_prop.value.length &amp;&amp; old.value.length &lt;= new_prop.value.length)
+				new_prop.value.set( old.value );
+			else
+				new_prop.value = old.value;
+		}
+		else
+			new_prop.value = old.value;
+	}
+}
+
+//called from LS.Renderer when rendering an instance
+UnityMaterial.prototype.renderInstance = function( instance, render_settings, pass )
+{
+	if(!this.shader)
+		return true; //skip rendering
+
+	//get shader code
+	var shader_code = LS.ResourcesManager.getResource( this.shader );
+	if(!shader_code || shader_code.constructor !== LS.ShaderCode )
+		return true; //skip rendering
+
+	//this is in case the shader has been modified in the editor...
+	if( shader_code._version !== this._shader_version )
+		this.processShaderCode();
+
+	//some globals
+	var renderer = LS.Renderer;
+	var camera = LS.Renderer._current_camera;
+	var scene = LS.Renderer._current_scene;
+	var model = instance.matrix;
+
+	//node matrix info
+	var instance_final_query = instance._final_query;
+	var instance_final_samplers = instance._final_samplers;
+	var render_uniforms = LS.Renderer._render_uniforms;
+
+	//maybe this two should be somewhere else
+	render_uniforms.u_model = model; 
+	render_uniforms.u_normal_model = instance.normal_matrix; 
+
+	//compute flags
+	var block_flags = instance.computeShaderBlockFlags();
+
+	//global stuff
+	this.render_state.enable();
+	LS.Renderer.bindSamplers( this._samplers );
+
+	if(this.onRenderInstance)
+		this.onRenderInstance( instance );
+
+	//add flags related to lights
+	var lights = null;
+
+	if( pass.id == COLOR_PASS &amp;&amp; this._light_mode !== Material.NO_LIGHTS )
+		lights = LS.Renderer.getNearLights( instance );
+
+	if(!lights)
+	{
+		//extract shader compiled
+		var shader = shader_code.getShader( pass.name, block_flags );
+		if(!shader)
+		{
+			//var shader = shader_code.getShader( &quot;surface&quot;, block_flags );
+			return false;
+		}
+
+		//assign
+		shader.uniformsArray( [ scene._uniforms, camera._uniforms, render_uniforms, light ? light._uniforms : null, this._uniforms, instance.uniforms ] );
+
+		//render
+		instance.render( shader );
+		renderer._rendercalls += 1;
+	
+		return true;
+	}
+
+	var prev_shader = null;
+	for(var i = 0; i &lt; lights.length; ++i)
+	{
+		var light = lights[i];
+		block_flags = light.applyShaderBlockFlags( block_flags, pass, render_settings );
+
+		//extract shader compiled
+		var shader = shader_code.getShader( null, block_flags );
+		if(!shader)
+			continue;
+
+		//light texture like shadowmap and cookie
+		LS.Renderer.bindSamplers( light._samplers );
+
+		//assign
+		if(prev_shader != shader)
+			shader.uniformsArray( [ scene._uniforms, camera._uniforms, render_uniforms, light._uniforms, this._uniforms, instance.uniforms ] );
+		else
+			shader.uniforms( light._uniforms );
+		prev_shader = shader;
+
+		if(i == 1)
+		{
+			shader.uniforms({ u_ambient_light: LS.ZEROS});
+			gl.depthMask( false );
+			gl.depthFunc( gl.EQUAL );
+			gl.enable( gl.BLEND );
+			gl.blendFunc( gl.SRC_ALPHA, gl.ONE );
+		}
+
+		//render
+		instance.render( shader );
+		renderer._rendercalls += 1;
+	}
+
+	//optimize this
+	gl.disable( gl.BLEND );
+	gl.depthMask( true );
+	gl.depthFunc( gl.LESS );
+
+	return true;
+}
+
+UnityMaterial.prototype.renderShadowInstance = function( instance, render_settings, pass )
+{
+	return this.renderInstance( instance, render_settings, pass );
+}
+
+/**
+* Collects all the resources needed by this material (textures)
+* @method getResources
+* @param {Object} resources object where all the resources are stored
+* @return {Texture}
+*/
+UnityMaterial.prototype.getResources = function ( res )
+{
+	if(this.shader)
+		res[ this.shader ] = LS.ShaderCode;
+
+	for(var i in this._properties)
+	{
+		var p = this._properties[i];
+		if(p.value &amp;&amp; p.is_texture)
+		{
+			if(!p.value)
+				continue;
+			var name = null;
+			if(p.value.texture)
+				name = 	p.value.texture;
+			else
+				name = res[ p.value ];
+			if(name &amp;&amp; name.constructor === String)
+				res[name] = GL.Texture;
+		}
+	}
+	return res;
+}
+
+
+UnityMaterial.prototype.getPropertyInfoFromPath = function( path )
+{
+	if( path.length &lt; 1)
+		return;
+
+	var info = Material.prototype.getPropertyInfoFromPath.call(this,path);
+	if(info)
+		return info;
+
+	var varname = path[0];
+
+	for(var i = 0, l = this.properties.length; i &lt; l; ++i )
+	{
+		var prop = this.properties[i];
+		if(prop.name != varname)
+			continue;
+
+		return {
+			node: this._root,
+			target: this,
+			name: prop.name,
+			value: prop.value,
+			type: prop.type
+		};
+	}
+
+	return;
+}
+
+//get shader code
+UnityMaterial.prototype.getShaderCode = function()
+{
+	var shader_code = LS.ResourcesManager.getResource( this.shader );
+	if(!shader_code || shader_code.constructor !== LS.ShaderCode )
+		return null;
+	return shader_code;
+}
+
+/**
+* Takes an input texture and applies the UnityMaterial, the result is shown on the viewport or stored in the output_texture
+* The ShaderCode must contain a &quot;fx&quot; method.
+* Similar to the method BlitTexture in Unity
+* @method applyToTexture
+* @param {Texture} input_texture
+* @param {Texture} output_texture [optional] where to store the result, if omitted it will be shown in the viewport
+*/
+UnityMaterial.prototype.applyToTexture = function( input_texture, output_texture )
+{
+	if( !this.shader || !input_texture )
+		return false;
+
+	//get shader code
+	var shader_code = this.getShaderCode();
+	if(!shader_code)
+		return false;
+
+	//extract shader compiled
+	var shader = shader_code.getShader(&quot;fx&quot;);
+	if(!shader)
+		return false;
+
+	//global vars
+	this.fillUniforms();
+	this._uniforms.u_time = LS.GlobalScene._time;
+	this._uniforms.u_viewport = gl.viewport_data;
+
+	//bind samplers
+	LS.Renderer.bindSamplers( this._samplers );
+
+	gl.disable( gl.DEPTH_TEST );
+	gl.disable( gl.CULL_FACE );
+
+	//render
+	if(!output_texture)
+		input_texture.toViewport( shader, this._uniforms );
+	else
+		output_texture.drawTo( function(){
+			input_texture.toViewport( shader, this._uniforms );
+		});
+}
+
+
+LS.registerMaterialClass( UnityMaterial );
+LS.UnityMaterial = UnityMaterial;
+
+
+//Register ShaderBlocks
+//TODO?
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

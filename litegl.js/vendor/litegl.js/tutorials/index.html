@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<!--
+<meta property="og:title" content="GameEditor" />
+<meta property="og:description" content="GameEditor for simple games" />
+<meta property="og:image" content="" />
+-->
+
+<title>litegl.js: tutorials</title>
+	<link type="text/css" rel="stylesheet" media="all" href="https://github.com/assets/github-c066013be20516a6aae45467044fa109f18bd0c6.css">
+	<link type="text/css" rel="stylesheet" media="all" href="https://github.com/assets/github2-97081caeb5890bc349a9ff52de33ac5ba1a4b6cc.css">
+	<link type="text/css" rel="stylesheet" media="all" href="https://github.com/assets/styleguide-4a2ef42768c9e616cf8022dec2fe99290430ac2c.css">
+	<link rel="stylesheet" type="text/css" href="../style.css" />
+	<style type='text/css'>
+	</style>
+</head>
+<body>
+
+<div id="wrap">
+	<div id="main">
+		<div id="content" class="markdown-body">
+			<h1>Learning LiteGL.js</h1>
+			<p>Here is a list of basic tutorials to learn how to use properly LightGL.</p>
+			<p>In this tutorials we cover basic usage for most of the important classes in the framework.</p>
+			<p>Remember that for all the matrix and vector use this framework relyes on glMatrix 2.0, a widely used library for fast matrix transformation, meant to have good performance although having a sintax that could be fustrating at the beginning. Please check the tutorials about glMatrix in its website.</p>
+			<a name="usage"></a>
+			<h2>Creating the application</h2>
+
+			<p>Include the litegl.js script in your HTML</p>
+			<pre>&lt;script src="js/litegl.js"&gt;&lt;/script&gt;</pre>
+
+			<p>In your javascript code create the context by typing:</p>
+			<pre>var gl = GL.create({width:800, height:600});</pre>
+
+			<p>This will create a canvas with webgl enabled, but it wont be visible till you hook this canvas to the DOM.</p>
+			<p>To attach it to the DOM:</p>
+			<pre>document.getElementById("mycontainer").appendChild( gl.canvas );</pre>
+
+			<p>Now we want to add the callbacks what will be called when the app needs to redraw or update:</p>
+			<pre>gl.ondraw = function() { ... }</pre>
+			<pre>gl.onupdate = function(dt) { ... }</pre>
+
+			<p>If you are encapsulating your app inside a class and you want to access the properties of the class by using the operator <strong>this</strong>, we encourage to define the bindings like this:</p>
+
+			<pre>gl.ondraw = (function() { ... }).bind(this);</pre>
+			<pre>gl.onupdate = (function(dt) { ... }).bind(this);</pre>
+
+			<p>To read the input you can hook callbacks to different actions, but you need to start capturing the input too:</p>
+			<pre>gl.captureMouse();
+gl.onmousedown = function(e) { ... }</pre>
+			<p>You have the next events: <strong>onmousedown, onmousemove, onmouseup, onmousewheel</strong></p>
+
+			<p>The same for keyboard, you have <strong>onkeydown, onkeyup</strong></p>
+			<pre>gl.captureKeys();
+gl.onkeydown = function(e) { ... }</pre>
+
+			<p>To compile a shader you submit the source code for the shader. The code could be retrieved from a hidden HTML tag on the website, from a text file using a XMLHttpRequest or with an inline string on the source code:</p>
+			<pre>var shader = new Shader( vertex_shader_code, fragment_shader_code); </pre>
+
+			<p>To create a mesh you can use the class mesh, the fastest way to create a mesh is using the static method GL.Matrix.load:</p>
+			<pre>var mesh_info = {
+	vertices:[0,0,0, 1,1,0, 0,1,0],
+	colors:[1,0,0,1, 0,1,0,1, 0,0,1,1]
+};
+
+var mesh = GL.Mesh.load(mesh_info);
+</pre>
+
+			<p>There are provided functions to create basic meshes like cubes, spheres or planes:</p>
+			<pre>var mesh = GL.Mesh.cube({size:1});</pre>
+
+			<p>To render the mesh just call the shader passing it first the uniforms and then the mesh:</p>
+			<pre>shader.uniforms( my_uniforms ).draw( mesh ); </pre>
+
+
+			<a name="doc"></a>
+			<h2>For more documentation</h2>
+			<p><a href="doc">Click here to read the documentation</a>, it is automatically generated using yui, and can be located in the doc folder.</p>
+			<p>Check also the <a href="http://glmatrix.net/docs/2.2.0/symbols/vec3.html">gl-matrix documentation</a> to a better understanding of how to operate with matrices and vectors.</p>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
+

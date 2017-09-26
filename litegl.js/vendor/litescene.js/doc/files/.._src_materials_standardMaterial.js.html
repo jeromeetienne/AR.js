@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>../src/materials/standardMaterial.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/LS.Animation.html">LS.Animation</a></li>
+                                <li><a href="../classes/LS.Animation.Take.html">LS.Animation.Take</a></li>
+                                <li><a href="../classes/LS.Animation.Track.html">LS.Animation.Track</a></li>
+                                <li><a href="../classes/LS.Collision.html">LS.Collision</a></li>
+                                <li><a href="../classes/LS.Component.html">LS.Component</a></li>
+                                <li><a href="../classes/LS.ComponentContainer.html">LS.ComponentContainer</a></li>
+                                <li><a href="../classes/LS.Components.Camera.html">LS.Components.Camera</a></li>
+                                <li><a href="../classes/LS.Components.CameraController.html">LS.Components.CameraController</a></li>
+                                <li><a href="../classes/LS.Components.CameraDirector.html">LS.Components.CameraDirector</a></li>
+                                <li><a href="../classes/LS.Components.CameraFX.html">LS.Components.CameraFX</a></li>
+                                <li><a href="../classes/LS.Components.Canvas3D.html">LS.Components.Canvas3D</a></li>
+                                <li><a href="../classes/LS.Components.CustomData.html">LS.Components.CustomData</a></li>
+                                <li><a href="../classes/LS.Components.FollowNode.html">LS.Components.FollowNode</a></li>
+                                <li><a href="../classes/LS.Components.FrameFX.html">LS.Components.FrameFX</a></li>
+                                <li><a href="../classes/LS.Components.FXGraphComponent.html">LS.Components.FXGraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.FXStack.html">LS.Components.FXStack</a></li>
+                                <li><a href="../classes/LS.Components.GeometricPrimitive.html">LS.Components.GeometricPrimitive</a></li>
+                                <li><a href="../classes/LS.Components.GraphComponent.html">LS.Components.GraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.MeshRenderer.html">LS.Components.MeshRenderer</a></li>
+                                <li><a href="../classes/LS.Components.NodeManipulator.html">LS.Components.NodeManipulator</a></li>
+                                <li><a href="../classes/LS.Components.PlayAnimation.html">LS.Components.PlayAnimation</a></li>
+                                <li><a href="../classes/LS.Components.Poser.html">LS.Components.Poser</a></li>
+                                <li><a href="../classes/LS.Components.RealtimeReflector.html">LS.Components.RealtimeReflector</a></li>
+                                <li><a href="../classes/LS.Components.Rotator.html">LS.Components.Rotator</a></li>
+                                <li><a href="../classes/LS.Components.Script.html">LS.Components.Script</a></li>
+                                <li><a href="../classes/LS.Components.SkinDeformer.html">LS.Components.SkinDeformer</a></li>
+                                <li><a href="../classes/LS.Components.Spline.html">LS.Components.Spline</a></li>
+                                <li><a href="../classes/LS.Components.SVGRenderer.html">LS.Components.SVGRenderer</a></li>
+                                <li><a href="../classes/LS.Components.Target.html">LS.Components.Target</a></li>
+                                <li><a href="../classes/LS.Components.Transform.html">LS.Components.Transform</a></li>
+                                <li><a href="../classes/LS.Components.VRCameraController.html">LS.Components.VRCameraController</a></li>
+                                <li><a href="../classes/LS.CompositePattern.html">LS.CompositePattern</a></li>
+                                <li><a href="../classes/LS.DebugRender.html">LS.DebugRender</a></li>
+                                <li><a href="../classes/LS.Draw.html">LS.Draw</a></li>
+                                <li><a href="../classes/LS.Formats.html">LS.Formats</a></li>
+                                <li><a href="../classes/LS.GLSLCode.html">LS.GLSLCode</a></li>
+                                <li><a href="../classes/LS.GUI.html">LS.GUI</a></li>
+                                <li><a href="../classes/LS.Input.html">LS.Input</a></li>
+                                <li><a href="../classes/LS.InteractiveController.html">LS.InteractiveController</a></li>
+                                <li><a href="../classes/LS.Knob.html">LS.Knob</a></li>
+                                <li><a href="../classes/LS.Light.html">LS.Light</a></li>
+                                <li><a href="../classes/LS.LightFX.html">LS.LightFX</a></li>
+                                <li><a href="../classes/LS.LS.html">LS.LS</a></li>
+                                <li><a href="../classes/LS.LScript.html">LS.LScript</a></li>
+                                <li><a href="../classes/LS.Material.html">LS.Material</a></li>
+                                <li><a href="../classes/LS.Pack.html">LS.Pack</a></li>
+                                <li><a href="../classes/LS.Physics.html">LS.Physics</a></li>
+                                <li><a href="../classes/LS.PhysicsInstance.html">LS.PhysicsInstance</a></li>
+                                <li><a href="../classes/LS.Picking.html">LS.Picking</a></li>
+                                <li><a href="../classes/LS.Player.html">LS.Player</a></li>
+                                <li><a href="../classes/LS.Prefab.html">LS.Prefab</a></li>
+                                <li><a href="../classes/LS.Project.html">LS.Project</a></li>
+                                <li><a href="../classes/LS.Renderer.html">LS.Renderer</a></li>
+                                <li><a href="../classes/LS.RenderFrameContext.html">LS.RenderFrameContext</a></li>
+                                <li><a href="../classes/LS.RenderInstance.html">LS.RenderInstance</a></li>
+                                <li><a href="../classes/LS.RenderSettings.html">LS.RenderSettings</a></li>
+                                <li><a href="../classes/LS.RenderState.html">LS.RenderState</a></li>
+                                <li><a href="../classes/LS.Resource.html">LS.Resource</a></li>
+                                <li><a href="../classes/LS.ResourcesManager.html">LS.ResourcesManager</a></li>
+                                <li><a href="../classes/LS.SceneNode.html">LS.SceneNode</a></li>
+                                <li><a href="../classes/LS.SceneTree.html">LS.SceneTree</a></li>
+                                <li><a href="../classes/LS.ShaderCode.html">LS.ShaderCode</a></li>
+                                <li><a href="../classes/LS.ShaderGraph.html">LS.ShaderGraph</a></li>
+                                <li><a href="../classes/LS.ShaderMaterial.html">LS.ShaderMaterial</a></li>
+                                <li><a href="../classes/LS.ShaderQuery.html">LS.ShaderQuery</a></li>
+                                <li><a href="../classes/LS.ShadersManager.html">LS.ShadersManager</a></li>
+                                <li><a href="../classes/LS.SpatialContainer.html">LS.SpatialContainer</a></li>
+                                <li><a href="../classes/LS.StandardMaterial.html">LS.StandardMaterial</a></li>
+                                <li><a href="../classes/LS.UnityMaterial.html">LS.UnityMaterial</a></li>
+                                <li><a href="../classes/LS.WBin.html">LS.WBin</a></li>
+                                <li><a href="../classes/LSQ.html">LSQ</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/LS.html">LS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: ../src/materials/standardMaterial.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+
+
+
+//StandardMaterial class **************************
+/* Warning: a material is not a component, because it can be shared by multiple nodes */
+
+/**
+* StandardMaterial class improves the material class
+* @namespace LS
+* @class StandardMaterial
+* @constructor
+* @param {Object} object [optional] to configure from
+*/
+
+function StandardMaterial(o)
+{
+	Material.call(this,null); //do not pass the data object, it is called later
+
+	this.blend_mode = LS.Blend.NORMAL;
+
+	this.shader_name = &quot;global&quot;;
+
+	this.createProperty( &quot;diffuse&quot;, new Float32Array([1.0,1.0,1.0]), &quot;color&quot; );
+	this.createProperty( &quot;ambient&quot;, new Float32Array([1.0,1.0,1.0]), &quot;color&quot; );
+	this.createProperty( &quot;emissive&quot;, new Float32Array([0,0,0,0]), &quot;color&quot; );
+	//this.emissive = new Float32Array([0.0,0.0,0.0]);
+	this.backlight_factor = 0;
+
+	this._specular_data = vec2.fromValues( 0.1, 10.0 );
+	this.specular_on_top = false;
+	this.specular_on_alpha = false;
+	this.reflection_factor = 0.0;
+	this.reflection_fresnel = 1.0;
+	this.reflection_additive = false;
+	this.reflection_specular = false;
+	this.createProperty( &quot;velvet&quot;, new Float32Array([0.5,0.5,0.5]), &quot;color&quot; );
+	this.velvet_exp = 0.0;
+	this.velvet_additive = false;
+	this._velvet_info = vec4.create();
+	this._detail = new Float32Array([0.0, 10, 10]);
+	this._extra_data = vec4.create();
+
+	this.normalmap_factor = 1.0;
+	this.normalmap_tangent = true;
+	this.displacementmap_factor = 0.1;
+	this.bumpmap_factor = 1.0;
+	this.use_scene_ambient = true;
+
+	//used to change the render state
+	this.flags = {
+		alpha_test: false,
+		alpha_test_shadows: false,
+		two_sided: false,
+		flip_normals: false,
+		depth_test: true,
+		depth_write: true,
+		ignore_lights: false,
+		cast_shadows: true,
+		receive_shadows: true,
+		ignore_frustum: false
+	};
+
+	//used for special fx 
+	this.extra_surface_shader_code = &quot;&quot;;
+
+	this._uniforms = {};
+	this._samplers = [];
+
+	this.extra_uniforms = {};
+
+	if(o) 
+		this.configure(o);
+}
+
+Object.defineProperty( StandardMaterial.prototype, &#x27;detail_factor&#x27;, {
+	get: function() { return this._detail[0]; },
+	set: function(v) { this._detail[0] = v; },
+	enumerable: true
+});
+
+Object.defineProperty( StandardMaterial.prototype, &#x27;detail_scale&#x27;, {
+	get: function() { return this._detail.subarray(1,3); },
+	set: function(v) { this._detail[1] = v[0]; this._detail[2] = v[1]; },
+	enumerable: true
+});
+
+Object.defineProperty( StandardMaterial.prototype, &#x27;emissive_extra&#x27;, {
+	get: function() { return this._emissive[3]; },
+	set: function(v) { this._emissive[3] = v; },
+	enumerable: true
+});
+
+Object.defineProperty( StandardMaterial.prototype, &#x27;extra_factor&#x27;, {
+	get: function() { return this._extra_data[3]; },
+	set: function(v) { this._extra_data[3] = v; },
+	enumerable: true
+});
+
+Object.defineProperty( StandardMaterial.prototype, &#x27;extra_color&#x27;, {
+	get: function() { return this._extra_data.subarray(0,3); },
+	set: function(v) { this._extra_data.set( v ); },
+	enumerable: true
+});
+
+Object.defineProperty( StandardMaterial.prototype, &#x27;specular_factor&#x27;, {
+	get: function() { return this._specular_data[0]; },
+	set: function(v) { 
+		if( v != null &amp;&amp; v.constructor === Number)
+			this._specular_data[0] = v;
+	},
+	enumerable: true
+});
+
+Object.defineProperty( StandardMaterial.prototype, &#x27;specular_gloss&#x27;, {
+	get: function() { return this._specular_data[1]; },
+	set: function(v) { this._specular_data[1] = v; },
+	enumerable: true
+});
+
+StandardMaterial[&quot;@blend_mode&quot;] = { type: &quot;enum&quot;, values: LS.Blend };
+
+StandardMaterial.DETAIL_TEXTURE = &quot;detail&quot;;
+StandardMaterial.NORMAL_TEXTURE = &quot;normal&quot;;
+StandardMaterial.DISPLACEMENT_TEXTURE = &quot;displacement&quot;;
+StandardMaterial.BUMP_TEXTURE = &quot;bump&quot;;
+StandardMaterial.REFLECTIVITY_TEXTURE = &quot;reflectivity&quot;;
+StandardMaterial.IRRADIANCE_TEXTURE = &quot;irradiance&quot;;
+StandardMaterial.EXTRA_TEXTURE = &quot;extra&quot;;
+
+StandardMaterial.prototype.prepare = function( scene )
+{
+	var flags = this.flags;
+
+	var render_state = this._render_state;
+
+	//set flags in render state
+	render_state.cull_face = !flags.two_sided;
+	render_state.front_face = flags.flip_normals ? GL.CW : GL.CCW;
+	render_state.depth_test = flags.depth_test;
+	render_state.depth_mask = flags.depth_write;
+
+	render_state.blend = this.blend_mode != LS.Blend.NORMAL;
+	if( this.blend_mode != LS.Blend.NORMAL )
+	{
+		var func = LS.BlendFunctions[ this.blend_mode ];
+		if(func)
+		{
+			render_state.blendFunc0 = func[0];
+			render_state.blendFunc1 = func[1];
+		}
+	}
+
+	this.fillShaderQuery( scene ); //update shader macros on this material
+	this.fillUniforms( scene ); //update uniforms
+
+	//set up macros
+	if( flags.alpha_test )
+		this._query.macros.USE_ALPHA_TEST = &quot;0.5&quot;;
+	else if(this._query.macros[&quot;USE_ALPHA_TEST&quot;])
+		delete this._query.macros[&quot;USE_ALPHA_TEST&quot;];
+
+}
+
+// RENDERING METHODS
+StandardMaterial.prototype.fillShaderQuery = function( scene )
+{
+	var query = this._query;
+	query.clear();
+
+	//iterate through textures in the material
+	for(var i in this.textures) 
+	{
+		var texture_info = this.getTextureSampler(i);
+		if(!texture_info) continue;
+		var texture_uvs = texture_info.uvs || Material.DEFAULT_UVS[i] || &quot;0&quot;;
+
+		var texture = Material.getTextureFromSampler( texture_info );
+		if(!texture) //loading or non-existant
+			continue;
+
+		if(i == &quot;normal&quot;)
+		{
+			if(this.normalmap_factor != 0.0 &amp;&amp; (!this.normalmap_tangent || (this.normalmap_tangent &amp;&amp; gl.derivatives_supported)) )
+			{
+				query.macros.USE_NORMAL_TEXTURE = &quot;uvs_&quot; + texture_uvs;
+				if(this.normalmap_factor != 0.0)
+					query.macros.USE_NORMALMAP_FACTOR = &quot;&quot;;
+				if(this.normalmap_tangent &amp;&amp; gl.derivatives_supported)
+					query.macros.USE_TANGENT_NORMALMAP = &quot;&quot;;
+			}
+			continue;
+		}
+		else if(i == &quot;displacement&quot;)
+		{
+			if(this.displacementmap_factor != 0.0 &amp;&amp; gl.derivatives_supported )
+			{
+				query.macros.USE_DISPLACEMENT_TEXTURE = &quot;uvs_&quot; + texture_uvs;
+				if(this.displacementmap_factor != 1.0)
+					query.macros.USE_DISPLACEMENTMAP_FACTOR = &quot;&quot;;
+			}
+			continue;
+		}
+		else if(i == &quot;bump&quot;)
+		{
+			if(this.bump_factor != 0.0 &amp;&amp; gl.derivatives_supported )
+			{
+				query.macros.USE_BUMP_TEXTURE = &quot;uvs_&quot; + texture_uvs;
+				if(this.bumpmap_factor != 1.0)
+					query.macros.USE_BUMP_FACTOR = &quot;&quot;;
+			}
+			continue;
+		}
+
+		query.macros[ &quot;USE_&quot; + i.toUpperCase() + (texture.texture_type == gl.TEXTURE_2D ? &quot;_TEXTURE&quot; : &quot;_CUBEMAP&quot;) ] = &quot;uvs_&quot; + texture_uvs;
+	}
+
+	if(this.velvet &amp;&amp; this.velvet_exp) //first light only
+		query.macros.USE_VELVET = &quot;&quot;;
+	
+	if(this.emissive_material) //dont know whats this
+		query.macros.USE_EMISSIVE_MATERIAL = &quot;&quot;;
+	
+	if(this.specular_on_top)
+		query.macros.USE_SPECULAR_ONTOP = &quot;&quot;;
+	if(this.specular_on_alpha)
+		query.macros.USE_SPECULAR_ON_ALPHA = &quot;&quot;;
+	if(this.reflection_specular)
+		query.macros.USE_SPECULAR_IN_REFLECTION = &quot;&quot;;
+	if(this.backlight_factor &gt; 0.001)
+		query.macros.USE_BACKLIGHT = &quot;&quot;;
+
+	if(this.reflection_factor &gt; 0.0) 
+		query.macros.USE_REFLECTION = &quot;&quot;;
+
+	//extra code
+	if(this.extra_surface_shader_code)
+	{
+		var code = null;
+		if(this._last_extra_surface_shader_code != this.extra_surface_shader_code)
+		{
+			code = Material.processShaderCode( this.extra_surface_shader_code );
+			this._last_processed_extra_surface_shader_code = code;
+		}
+		else
+			code = this._last_processed_extra_surface_shader_code;
+		if(code)
+			query.macros.USE_EXTRA_SURFACE_SHADER_CODE = code;
+	}
+
+	//extra macros
+	if(this.extra_macros)
+		for(var im in this.extra_macros)
+			query.macros[im] = this.extra_macros[im];
+}
+
+StandardMaterial.prototype.fillUniforms = function( scene, options )
+{
+	var uniforms = {};
+	var samplers = []; //array with the samplers in the binding order
+
+	uniforms.u_material_color = this._color;
+
+	//uniforms.u_ambient_color = node.flags.ignore_lights ? [1,1,1] : [scene.ambient_color[0] * this.ambient[0], scene.ambient_color[1] * this.ambient[1], scene.ambient_color[2] * this.ambient[2]];
+	//if(this.use_scene_ambient &amp;&amp; scene.info &amp;&amp; !this.textures[&quot;ambient&quot;])
+	//	uniforms.u_ambient_color = vec3.fromValues(scene.info.ambient_color[0] * this.ambient[0], scene.info.ambient_color[1] * this.ambient[1], scene.info.ambient_color[2] * this.ambient[2]);
+	//else
+	uniforms.u_ambient_color = this.ambient;
+
+	uniforms.u_emissive_color = this.emissive || vec4.create();
+	uniforms.u_specular = this._specular_data;
+	uniforms.u_reflection_info = vec2.fromValues( (this.reflection_additive ? -this.reflection_factor : this.reflection_factor), this.reflection_fresnel );
+	uniforms.u_backlight_factor = this.backlight_factor;
+	uniforms.u_normalmap_factor = this.normalmap_factor;
+	uniforms.u_displacementmap_factor = this.displacementmap_factor;
+	uniforms.u_bumpmap_factor = this.bumpmap_factor;
+
+	this._velvet_info.set( this.velvet );
+	this._velvet_info[3] = this.velvet_additive ? this.velvet_exp : -this.velvet_exp;
+	uniforms.u_velvet_info = this._velvet_info;
+
+	uniforms.u_detail_info = this._detail;
+
+	uniforms.u_extra_data = this._extra_data;
+
+	uniforms.u_texture_matrix = this.uvs_matrix;
+
+	//iterate through textures in the material
+	var last_texture_slot = 0;
+	for(var i in this.textures) 
+	{
+		var sampler = this.getTextureSampler(i);
+		if(!sampler)
+			continue;
+
+		var texture = sampler.texture;
+		if(!texture)
+			continue;
+
+		if(texture.constructor === String)
+			texture = LS.ResourcesManager.textures[texture];
+		else if (texture.constructor != Texture)
+			continue;		
+		
+		if(!texture)  //loading or non-existant
+			sampler = { texture: &quot;:missing&quot; };
+
+		var slot = last_texture_slot;
+		if( i == &quot;environment&quot; )
+			slot = LS.Renderer.ENVIRONMENT_TEXTURE_SLOT;
+		else if( i == &quot;irradiance&quot; )
+			slot = LS.Renderer.IRRADIANCE_TEXTURE_SLOT;
+		else
+			last_texture_slot++;
+
+		samplers[ slot ] = sampler;
+		var uniform_name = i + ( (!texture || texture.texture_type == gl.TEXTURE_2D) ? &quot;_texture&quot; : &quot;_cubemap&quot;);
+		uniforms[ uniform_name ] = slot;
+	}
+
+	//add extra uniforms
+	for(var i in this.extra_uniforms)
+		uniforms[i] = this.extra_uniforms[i];
+
+	this._uniforms = uniforms;
+	this._samplers = samplers;
+}
+
+StandardMaterial.prototype.getTextureChannels = function()
+{
+	return [ Material.COLOR_TEXTURE, Material.OPACITY_TEXTURE, Material.AMBIENT_TEXTURE, Material.SPECULAR_TEXTURE, Material.EMISSIVE_TEXTURE, StandardMaterial.DETAIL_TEXTURE, StandardMaterial.NORMAL_TEXTURE, StandardMaterial.DISPLACEMENT_TEXTURE, StandardMaterial.BUMP_TEXTURE, StandardMaterial.REFLECTIVITY_TEXTURE, Material.ENVIRONMENT_TEXTURE, StandardMaterial.IRRADIANCE_TEXTURE, StandardMaterial.EXTRA_TEXTURE ];
+}
+
+/**
+* assign a value to a property in a safe way
+* @method setProperty
+* @param {Object} object to configure from
+*/
+StandardMaterial.prototype.setProperty = function(name, value)
+{
+	//redirect to base material
+	if( Material.prototype.setProperty.call(this,name,value) )
+		return true;
+
+	//regular
+	switch(name)
+	{
+		//objects
+		case &quot;render_state&quot;:
+		//numbers
+		case &quot;specular_factor&quot;:
+		case &quot;specular_gloss&quot;:
+		case &quot;backlight_factor&quot;:
+		case &quot;reflection_factor&quot;:
+		case &quot;reflection_fresnel&quot;:
+		case &quot;velvet_exp&quot;:
+		case &quot;velvet_additive&quot;:
+		case &quot;normalmap_tangent&quot;:
+		case &quot;normalmap_factor&quot;:
+		case &quot;displacementmap_factor&quot;:
+		case &quot;extra_factor&quot;:
+		case &quot;detail_factor&quot;:
+		case &quot;emissive_extra&quot;:
+		//strings
+		//bools
+		case &quot;specular_on_top&quot;:
+		case &quot;specular_on_alpha&quot;:
+		case &quot;normalmap_tangent&quot;:
+		case &quot;reflection_specular&quot;:
+		case &quot;use_scene_ambient&quot;:
+		case &quot;extra_surface_shader_code&quot;:
+		case &quot;blend_mode&quot;:
+			if(value !== null)
+				this[name] = value; 
+			break;
+		case &quot;flags&quot;:
+			if(value)
+			{
+				for(var i in value)
+					this.flags[i] = value[i];
+			}
+			break;
+		//vectors
+		case &quot;ambient&quot;:	
+		case &quot;diffuse&quot;: 
+		case &quot;emissive&quot;: 
+		case &quot;velvet&quot;:
+		case &quot;detail_scale&quot;:
+		case &quot;extra_color&quot;:
+			if(this[name].length == value.length)
+				this[name].set(value);
+			break;
+		case &quot;extra_uniforms&quot;:
+			this.extra_uniforms = LS.cloneObject(value);
+			break;
+		default:
+			return false;
+	}
+	return true;
+}
+
+/**
+* gets all the properties and its types
+* @method getPropertiesInfo
+* @return {Object} object with name:type
+*/
+StandardMaterial.prototype.getPropertiesInfo = function()
+{
+	//get from the regular material
+	var o = Material.prototype.getPropertiesInfo.call(this);
+
+	//add some more
+	o.merge({
+		blend_mode: LS.TYPES.NUMBER,
+		specular_factor: LS.TYPES.NUMBER,
+		specular_gloss: LS.TYPES.NUMBER,
+		backlight_factor: LS.TYPES.NUMBER,
+		reflection_factor: LS.TYPES.NUMBER,
+		reflection_fresnel: LS.TYPES.NUMBER,
+		velvet_exp: LS.TYPES.NUMBER,
+
+		normalmap_factor: LS.TYPES.NUMBER,
+		displacementmap_factor: LS.TYPES.NUMBER,
+		emissive_extra: LS.TYPES.NUMBER,
+		extra_factor: LS.TYPES.NUMBER,
+		extra_surface_shader_code: LS.TYPES.STRING,
+
+		ambient: LS.TYPES.VEC3,
+		emissive: LS.TYPES.VEC3,
+		velvet: LS.TYPES.VEC3,
+		extra_color: LS.TYPES.VEC3,
+		detail_factor: LS.TYPES.NUMBER,
+		detail_scale: LS.TYPES.VEC2,
+
+		specular_on_top: LS.TYPES.BOOLEAN,
+		normalmap_tangent: LS.TYPES.BOOLEAN,
+		reflection_specular: LS.TYPES.BOOLEAN,
+		use_scene_ambient: LS.TYPES.BOOLEAN,
+		velvet_additive: LS.TYPES.BOOLEAN
+	});
+
+	return o;
+}
+
+StandardMaterial.prototype.getPropertyInfoFromPath = function( path )
+{
+	if( path.length &lt; 1)
+		return;
+
+	var info = Material.prototype.getPropertyInfoFromPath.call(this,path);
+	if(info)
+		return info;
+
+	var varname = path[0];
+	var type;
+
+	switch(varname)
+	{
+		case &quot;blend_mode&quot;:
+		case &quot;backlight_factor&quot;:
+		case &quot;reflection_factor&quot;:
+		case &quot;reflection_fresnel&quot;:
+		case &quot;velvet_exp&quot;:
+		case &quot;normalmap_factor&quot;:
+		case &quot;displacementmap_factor&quot;:
+		case &quot;emissive_extra&quot;:
+		case &quot;extra_factor&quot;:
+		case &quot;detail_factor&quot;:
+			type = LS.TYPES.NUMBER; break;
+		case &quot;extra_surface_shader_code&quot;:
+			type = LS.TYPES.STRING; break;
+		case &quot;ambient&quot;:
+		case &quot;emissive&quot;:
+		case &quot;velvet&quot;:
+		case &quot;extra_color&quot;:
+			type = LS.TYPES.VEC3; break;
+		case &quot;detail_scale&quot;:
+			type = LS.TYPES.VEC2; break;
+		case &quot;specular_on_top&quot;:
+		case &quot;specular_on_alpha&quot;:
+		case &quot;normalmap_tangent&quot;:
+		case &quot;reflection_specular&quot;:
+		case &quot;use_scene_ambient&quot;:
+		case &quot;velvet_additive&quot;:
+			type = LS.TYPES.BOOLEAN; break;
+		default:
+			return null;
+	}
+
+	return {
+		node: this._root,
+		target: this,
+		name: varname,
+		value: this[varname],
+		type: type
+	};
+}
+
+LS.registerMaterialClass( StandardMaterial );
+LS.StandardMaterial = StandardMaterial;
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

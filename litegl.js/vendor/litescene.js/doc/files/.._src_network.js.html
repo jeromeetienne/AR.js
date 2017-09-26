@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>../src/network.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/LS.Animation.html">LS.Animation</a></li>
+                                <li><a href="../classes/LS.Animation.Take.html">LS.Animation.Take</a></li>
+                                <li><a href="../classes/LS.Animation.Track.html">LS.Animation.Track</a></li>
+                                <li><a href="../classes/LS.Collision.html">LS.Collision</a></li>
+                                <li><a href="../classes/LS.Component.html">LS.Component</a></li>
+                                <li><a href="../classes/LS.ComponentContainer.html">LS.ComponentContainer</a></li>
+                                <li><a href="../classes/LS.Components.Camera.html">LS.Components.Camera</a></li>
+                                <li><a href="../classes/LS.Components.CameraController.html">LS.Components.CameraController</a></li>
+                                <li><a href="../classes/LS.Components.CameraDirector.html">LS.Components.CameraDirector</a></li>
+                                <li><a href="../classes/LS.Components.CameraFX.html">LS.Components.CameraFX</a></li>
+                                <li><a href="../classes/LS.Components.Canvas3D.html">LS.Components.Canvas3D</a></li>
+                                <li><a href="../classes/LS.Components.CustomData.html">LS.Components.CustomData</a></li>
+                                <li><a href="../classes/LS.Components.FollowNode.html">LS.Components.FollowNode</a></li>
+                                <li><a href="../classes/LS.Components.FrameFX.html">LS.Components.FrameFX</a></li>
+                                <li><a href="../classes/LS.Components.FXGraphComponent.html">LS.Components.FXGraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.FXStack.html">LS.Components.FXStack</a></li>
+                                <li><a href="../classes/LS.Components.GeometricPrimitive.html">LS.Components.GeometricPrimitive</a></li>
+                                <li><a href="../classes/LS.Components.GraphComponent.html">LS.Components.GraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.MeshRenderer.html">LS.Components.MeshRenderer</a></li>
+                                <li><a href="../classes/LS.Components.NodeManipulator.html">LS.Components.NodeManipulator</a></li>
+                                <li><a href="../classes/LS.Components.PlayAnimation.html">LS.Components.PlayAnimation</a></li>
+                                <li><a href="../classes/LS.Components.Poser.html">LS.Components.Poser</a></li>
+                                <li><a href="../classes/LS.Components.RealtimeReflector.html">LS.Components.RealtimeReflector</a></li>
+                                <li><a href="../classes/LS.Components.Rotator.html">LS.Components.Rotator</a></li>
+                                <li><a href="../classes/LS.Components.Script.html">LS.Components.Script</a></li>
+                                <li><a href="../classes/LS.Components.SkinDeformer.html">LS.Components.SkinDeformer</a></li>
+                                <li><a href="../classes/LS.Components.Spline.html">LS.Components.Spline</a></li>
+                                <li><a href="../classes/LS.Components.SVGRenderer.html">LS.Components.SVGRenderer</a></li>
+                                <li><a href="../classes/LS.Components.Target.html">LS.Components.Target</a></li>
+                                <li><a href="../classes/LS.Components.Transform.html">LS.Components.Transform</a></li>
+                                <li><a href="../classes/LS.Components.VRCameraController.html">LS.Components.VRCameraController</a></li>
+                                <li><a href="../classes/LS.CompositePattern.html">LS.CompositePattern</a></li>
+                                <li><a href="../classes/LS.DebugRender.html">LS.DebugRender</a></li>
+                                <li><a href="../classes/LS.Draw.html">LS.Draw</a></li>
+                                <li><a href="../classes/LS.Formats.html">LS.Formats</a></li>
+                                <li><a href="../classes/LS.GLSLCode.html">LS.GLSLCode</a></li>
+                                <li><a href="../classes/LS.GUI.html">LS.GUI</a></li>
+                                <li><a href="../classes/LS.Input.html">LS.Input</a></li>
+                                <li><a href="../classes/LS.InteractiveController.html">LS.InteractiveController</a></li>
+                                <li><a href="../classes/LS.Knob.html">LS.Knob</a></li>
+                                <li><a href="../classes/LS.Light.html">LS.Light</a></li>
+                                <li><a href="../classes/LS.LightFX.html">LS.LightFX</a></li>
+                                <li><a href="../classes/LS.LS.html">LS.LS</a></li>
+                                <li><a href="../classes/LS.LScript.html">LS.LScript</a></li>
+                                <li><a href="../classes/LS.Material.html">LS.Material</a></li>
+                                <li><a href="../classes/LS.Pack.html">LS.Pack</a></li>
+                                <li><a href="../classes/LS.Physics.html">LS.Physics</a></li>
+                                <li><a href="../classes/LS.PhysicsInstance.html">LS.PhysicsInstance</a></li>
+                                <li><a href="../classes/LS.Picking.html">LS.Picking</a></li>
+                                <li><a href="../classes/LS.Player.html">LS.Player</a></li>
+                                <li><a href="../classes/LS.Prefab.html">LS.Prefab</a></li>
+                                <li><a href="../classes/LS.Project.html">LS.Project</a></li>
+                                <li><a href="../classes/LS.Renderer.html">LS.Renderer</a></li>
+                                <li><a href="../classes/LS.RenderFrameContext.html">LS.RenderFrameContext</a></li>
+                                <li><a href="../classes/LS.RenderInstance.html">LS.RenderInstance</a></li>
+                                <li><a href="../classes/LS.RenderSettings.html">LS.RenderSettings</a></li>
+                                <li><a href="../classes/LS.RenderState.html">LS.RenderState</a></li>
+                                <li><a href="../classes/LS.Resource.html">LS.Resource</a></li>
+                                <li><a href="../classes/LS.ResourcesManager.html">LS.ResourcesManager</a></li>
+                                <li><a href="../classes/LS.SceneNode.html">LS.SceneNode</a></li>
+                                <li><a href="../classes/LS.SceneTree.html">LS.SceneTree</a></li>
+                                <li><a href="../classes/LS.ShaderCode.html">LS.ShaderCode</a></li>
+                                <li><a href="../classes/LS.ShaderGraph.html">LS.ShaderGraph</a></li>
+                                <li><a href="../classes/LS.ShaderMaterial.html">LS.ShaderMaterial</a></li>
+                                <li><a href="../classes/LS.ShaderQuery.html">LS.ShaderQuery</a></li>
+                                <li><a href="../classes/LS.ShadersManager.html">LS.ShadersManager</a></li>
+                                <li><a href="../classes/LS.SpatialContainer.html">LS.SpatialContainer</a></li>
+                                <li><a href="../classes/LS.StandardMaterial.html">LS.StandardMaterial</a></li>
+                                <li><a href="../classes/LS.UnityMaterial.html">LS.UnityMaterial</a></li>
+                                <li><a href="../classes/LS.WBin.html">LS.WBin</a></li>
+                                <li><a href="../classes/LSQ.html">LSQ</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/LS.html">LS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: ../src/network.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+var Network = {
+
+	default_dataType: &quot;arraybuffer&quot;,
+	protocol: null,
+
+	withCredentials: false, //for CORS urls: not sure which one is the best for every case so I leave it configurable
+
+	/**
+	* A front-end for XMLHttpRequest so it is simpler and more cross-platform
+	*
+	* @method request
+	* @param {Object} request object with the fields for the request: 
+    *			dataType: result type {text,xml,json,binary,arraybuffer,image}, data: object with form fields, callbacks supported: {success, error, progress}
+	* @return {XMLHttpRequest} the XMLHttpRequest of the petition
+	*/
+	request: function(request)
+	{
+		if(typeof(request) === &quot;string&quot;)
+			throw(&quot;LS.Network.request expects object, not string. Use LS.Network.requestText or LS.Network.requestJSON&quot;);
+
+		//change protocol when working over https
+		var url = request.url;
+		if( this.protocol === null )
+			this.protocol = LS.ResourcesManager.getProtocol( location.href );
+		var protocol = LS.ResourcesManager.getProtocol( url );
+		if( this.protocol == &quot;https&quot; &amp;&amp; protocol &amp;&amp; protocol != &quot;https&quot; )
+			url = &quot;https&quot; + url.substr( url.indexOf(&quot;:&quot;) );
+
+		//update dataType
+		var dataType = request.dataType || this.default_dataType;
+		if(dataType == &quot;json&quot;) //parse it locally
+			dataType = &quot;text&quot;;
+		else if(dataType == &quot;xml&quot;) //parse it locally
+			dataType = &quot;text&quot;;
+		else if (dataType == &quot;binary&quot;)
+		{
+			//request.mimeType = &quot;text/plain; charset=x-user-defined&quot;;
+			dataType = &quot;arraybuffer&quot;;
+			request.mimeType = &quot;application/octet-stream&quot;;
+		}	
+		else if(dataType == &quot;image&quot;) //special case: images are loaded using regular images request
+		{
+			var img = new Image();
+			img.onload = function() {
+				if(request.success)
+					request.success.call(this);
+			};
+			img.onerror = request.error;
+			img.src = url;
+			return img;
+		}
+
+		//regular case, use AJAX call
+        var xhr = new XMLHttpRequest();
+        xhr.open(request.data ? &#x27;POST&#x27; : &#x27;GET&#x27;, url, true);
+		xhr.withCredentials = this.withCredentials; //if true doesnt work
+		if(request.withCredentials !== undefined)
+			xhr.withCredentials = request.withCredentials;
+        if(dataType)
+            xhr.responseType = dataType;
+        if (request.mimeType)
+            xhr.overrideMimeType( request.mimeType );
+		if(request.nocache)
+			xhr.setRequestHeader(&#x27;Cache-Control&#x27;, &#x27;no-cache&#x27;);
+        xhr.onload = function(load)
+		{
+			var response = this.response;
+			if(this.status &amp;&amp; this.status != 200) //status 0 is when working with local files
+			{
+				var err = &quot;Error &quot; + this.status;
+				if(request.error)
+					request.error(err);
+				return;
+			}
+	
+			//parse input
+			if(request.dataType == &quot;json&quot;) //chrome doesnt support json format
+			{
+				try
+				{
+					response = JSON.parse(response);
+				}
+				catch (err)
+				{
+					if(request.error)
+						request.error(err);
+				}
+			}
+			else if(request.dataType == &quot;xml&quot;)
+			{
+				try
+				{
+					var xmlparser = new DOMParser();
+					response = xmlparser.parseFromString(response,&quot;text/xml&quot;);
+				}
+				catch (err)
+				{
+					if(request.error)
+						request.error(err);
+				}
+			}
+
+			//call callback
+			if(LS.catch_errors)
+			{
+				try
+				{
+					if(request.success)
+						request.success.call(this, response, request.url );
+					LEvent.trigger(xhr,&quot;done&quot;,response);
+				}
+				catch (err)
+				{
+					LEvent.trigger(LS,&quot;code_error&quot;,err);
+				}
+			}
+			else
+			{
+				if(request.success)
+					request.success.call(this, response, request.url );
+				LEvent.trigger(xhr,&quot;done&quot;,response);
+			}
+		};
+        xhr.onerror = function(err) {
+			if(request.error)
+				request.error(err);
+			LEvent.trigger(this,&quot;fail&quot;, err);
+		}
+
+		if( request.uploadProgress )
+		{
+			xhr.upload.addEventListener(&quot;progress&quot;, function(e){
+				var progress = 0;
+				if (e.lengthComputable)
+					progress = e.loaded / e.total;
+				request.uploadProgress( e, progress );
+			}, false);
+		}
+
+		if( request.progress )
+			xhr.addEventListener( &quot;progress&quot;, function(e){
+				var progress = 0;
+				if (e.lengthComputable)
+					progress = e.loaded / e.total;
+				request.progress( e, progress );
+			});
+
+        xhr.send(request.data);
+
+		return xhr;
+	},
+
+	/**
+	* retrieve a text file from url (you can bind LEvents to done and fail)
+	* @method requestText
+	* @param {string} url
+	* @param {object} params form params
+	* @param {function} callback( data )
+	*/
+	requestText: function(url, data, callback, callback_error)
+	{
+		if(typeof(data) == &quot;function&quot;)
+		{
+			callback = data;
+			data = null;
+		}
+		return LS.Network.request({url:url, dataType:&quot;text&quot;, success: callback, error: callback_error});
+	},
+
+	/**
+	* retrieve a JSON file from url (you can bind LEvents to done and fail)
+	* @method requestJSON
+	* @param {string} url
+	* @param {object} params form params
+	* @param {function} callback( json )
+	*/
+	requestJSON: function(url, data, callback, callback_error)
+	{
+		if(typeof(data) == &quot;function&quot;)
+		{
+			callback = data;
+			data = null;
+		}
+		return LS.Network.request({url:url, data:data, dataType:&quot;json&quot;, success: callback, error: callback_error });
+	},
+
+	/**
+	* retrieve a file from url (you can bind LEvents to done and fail)
+	* @method requestFile
+	* @param {string} url
+	* @param {object} params form params
+	* @param {function} callback( file )
+	*/
+	requestFile: function(url, data, callback, callback_error)
+	{
+		if(typeof(data) == &quot;function&quot;)
+		{
+			callback = data;
+			data = null;
+		}
+		return LS.Network.request({url:url, data:data, success: callback, error: callback_error });
+	},
+
+	/**
+	* Request script and inserts it in the DOM
+	* @method requestScript
+	* @param {String} url could be an array with urls to load in order
+	* @param {Function} on_complete
+	* @param {Function} on_error
+	* @param {Function} on_progress (if several files are required, on_progress is called after every file is added to the DOM)
+	**/
+	requestScript: function( url, on_complete, on_error, on_progress )
+	{
+		if( !url )
+			throw(&quot;No url&quot;);
+
+		if( LS._block_scripts )
+		{
+			console.error(&quot;Safety: LS.block_scripts enabled, cannot request script&quot;);
+			return;
+		}
+
+		if( url.constructor === String )
+			url = [url];
+
+		var total = url.length;
+		var size = total;
+		for( var i in url )
+		{
+			var script = document.createElement(&#x27;script&#x27;);
+			script.num = i;
+			script.type = &#x27;text/javascript&#x27;;
+			script.src = url[i];
+			script.async = false;
+			//if( script.src.substr(0,5) == &quot;blob:&quot;) //local scripts could contain utf-8
+				script.charset = &quot;UTF-8&quot;;
+			script.onload = function(e) { 
+				total--;
+				if(total)
+				{
+					if(on_progress)
+						on_progress(this.src, this.num);
+				}
+				else if(on_complete)
+					on_complete();
+			};
+			if(on_error)
+				script.onerror = function(err) { 
+					on_error(err, this.src, this.num );
+				}
+			document.getElementsByTagName(&#x27;head&#x27;)[0].appendChild( script );
+		}
+	},
+
+	requestFont: function( name, url )
+	{
+		if(!name || !url)
+			throw(&quot;LS.Network.requestFont: Wrong font name or url&quot;);
+
+		var fonts = this._loaded_fonts;
+		if(!fonts)
+			fonts = this._loaded_fonts = {};
+
+		if(fonts[name] == url)
+			return;
+		fonts[name] = url;
+
+		var style = document.getElementById(&quot;ls_fonts&quot;);
+		if(!style)
+		{
+			style = document.createElement(&quot;style&quot;);
+			style.id = &quot;ls_fonts&quot;;
+			style.setAttribute(&quot;type&quot;,&quot;text/css&quot;);
+			document.head.appendChild(style);
+		}
+		var str = &quot;&quot;;
+		for(var i in fonts)
+		{
+			var url = fonts[i];
+			str += &quot;@font-face {\n&quot; +
+					&quot;\tfont-family: \&quot;&quot;+i+&quot;\&quot;;\n&quot; + 
+					&quot;\tsrc: url(&#x27;&quot;+url+&quot;&#x27;);\n&quot; + 
+			&quot;}\n&quot;;
+		}
+		style.innerHTML = str;
+	}
+
+	//NOT TESTED: to load script asyncronously, not finished. similar to require.js
+	/*
+	requireScript: function(files, on_complete)
+	{
+		if(typeof(files) == &quot;string&quot;)
+			files = [files];
+
+		//store for the callback
+		var last = files[ files.length - 1];
+		if(on_complete)
+		{
+			if(!ResourcesManager._waiting_callbacks[ last ])
+				ResourcesManager._waiting_callbacks[ last ] = [on_complete];
+			else
+				ResourcesManager._waiting_callbacks[ last ].push(on_complete);
+		}
+		require_file(files);
+
+		function require_file(files)
+		{
+			//avoid require twice a file
+			var url = files.shift(1); 
+			while( ResourcesManager._required_files[url] &amp;&amp; url )
+				url = files.shift(1);
+
+			ResourcesManager._required_files[url] = true;
+
+			LS.Network.request({
+				url: url,
+				success: function(response)
+				{
+					eval(response);
+					if( ResourcesManager._waiting_callbacks[ url ] )
+						for(var i in ResourcesManager._waiting_callbacks[ url ])
+							ResourcesManager._waiting_callbacks[ url ][i]();
+					require_file(files);
+				}
+			});
+		}
+	},
+	_required_files: {},
+	_waiting_callbacks: {}
+	*/
+};
+
+LS.Network = Network;
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

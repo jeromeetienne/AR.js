@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<!--
+<meta property="og:title" content="GameEditor" />
+<meta property="og:description" content="GameEditor for simple games" />
+<meta property="og:image" content="" />
+-->
+
+<title>litegl.js</title>
+	<link type="text/css" rel="stylesheet" media="all" href="https://github.com/assets/github-c066013be20516a6aae45467044fa109f18bd0c6.css">
+	<link type="text/css" rel="stylesheet" media="all" href="https://github.com/assets/github2-97081caeb5890bc349a9ff52de33ac5ba1a4b6cc.css">
+	<link type="text/css" rel="stylesheet" media="all" href="https://github.com/assets/styleguide-4a2ef42768c9e616cf8022dec2fe99290430ac2c.css">
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<style type='text/css'>
+	</style>
+</head>
+<body>
+
+<div id="wrap">
+	<div id="main">
+		<div id="content" class="markdown-body">
+			<h1>litegl.js</h1>
+			<p>Litegl.js is a library that wraps WebGL to make it more user-friendly by creating classes for managing different items like Buffer, Mesh, Texture, Shader and other common aspects of any WebGL applications.</p>
+			<p>It is a fork from <a href="https://github.com/evanw/lightgl.js/">LightGL.js</a> by <a href="http://madebyevan.com">Evan Wallace</a>, but some major changes have been made.</p>
+			<p>Some of the main differences:</p>
+			<ul>
+				<li>Matrices have been replaced by glMatrix</li>
+				<li>Meshes are forced to be stored in ArrayBuffer formats</li>
+				<li>Meshes support range rendering with offset</li>
+				<li>Removed fixed pipeline behaviour</li>
+				<li>Better event handling (mouse position, mouse wheel, dragging)</li>
+				<li>Textures expanded to support Arraybuffers and Cubemaps</li>
+				<li>Allows to work with multiple WebGL contexts in the same page.</li>
+			</ul>
+
+			<p>This library has been used in several projects like <a href="https://github.com/jagenjo/rendeer.js">Rendeer.js</a> or <a href="https://github.com/jagenjo/Canvas2DtoWebGL">Canvas2DtoWebGL</a>.</p>
+
+			<a name="download"></a>
+			<h2>Download</h2>
+			<p>You can download the full source code from <a href="https://github.com/jagenjo/litegl.js">GitHub</a>, or use just the library using this link <a href="http://tamats.com/webglstudio/litegl/build/litegl.js">litegl.js</a> (<a href="http://tamats.com/webglstudio/litegl/build/litegl.min.js">compressed version</a>)</p>
+			
+			<a name="usage"></a>
+			<h2>Usage</h2>
+
+			<p>Include the script</p>
+			<pre>&lt;script src="js/litegl.js"&gt;&lt;/script&gt;</pre>
+
+			<p>Create the context by typing:</p>
+			<pre>var gl = GL.create({width:800, height:600});</pre>
+
+			<p>Attach it to the DOM:</p>
+			<pre>document.getElementById("mycontainer").appendChild( gl.canvas )</pre>
+
+			<p>Hook events</p>
+			<pre>gl.ondraw = function() { ... }</pre>
+			<pre>gl.onupdate = function(dt) { ... }</pre>
+
+			<p>Get input</p>
+			<pre>gl.captureMouse();
+gl.onmousedown = function(e) { ... }</pre>
+
+			<p>Compile shader</p>
+			<pre>var shader = new Shader( vertex_shader_code, fragment_shader_code); </pre>
+
+			<p>Create Mesh</p>
+			<pre>var mesh = Mesh.cube(); </pre>
+
+			<p>Render</p>
+			<pre>shader.uniforms( my_uniforms ).draw( mesh ); </pre>
+
+			<a name="examples"></a>
+			<h2>Examples</h2>
+			<p>Check the examples in the <a href="examples">examples folder</a>.</p>
+
+			<a name="doc"></a>
+			<h2>Documentation</h2>
+			<p><a href="doc">Click here to read the documentation</a>, it is automatically generated using yui, and can be located in the doc folder.</p>
+			<p>Check also the <a href="http://glmatrix.net/docs/2.2.0/symbols/vec3.html">gl-matrix documentation</a> to a better understanding of how to operate with matrices and vectors.</p>
+
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
+

@@ -1,0 +1,576 @@
+{
+    "object_type": "SceneTree",
+    "local_repository": null,
+    "ambient_color": [0.2, 0.2, 0.2],
+    "background_color": [0.1, 0.1, 0.1, 1],
+    "textures": {},
+    "extra": {},
+    "root": {
+        "id": "root",
+        "flags": {
+            "visible": true,
+            "selectable": true,
+            "two_sided": false,
+            "flip_normals": false,
+            "cast_shadows": true,
+            "receive_shadows": true,
+            "ignore_lights": false,
+            "alpha_test": false,
+            "alpha_shadows": false,
+            "depth_test": true,
+            "depth_write": true
+        },
+        "extra": {},
+        "children": [{
+            "id": "monitor",
+            "material": {
+                "color": [1, 1, 1],
+                "opacity": 1,
+                "shader_name": "global",
+                "blend_mode": "normal",
+                "specular_factor": 0.1,
+                "specular_gloss": 10,
+                "uvs_matrix": [1, 0, 0, 0, 1, 0, 0, 0, 1],
+                "textures": {
+                    "color": "monitor_textura.png"
+                },
+                "material_class": "Material"
+            },
+            "flags": {
+                "visible": true,
+                "selectable": true,
+                "two_sided": false,
+                "flip_normals": false,
+                "cast_shadows": true,
+                "receive_shadows": true,
+                "ignore_lights": false,
+                "alpha_test": false,
+                "alpha_shadows": false,
+                "depth_test": true,
+                "depth_write": true
+            },
+            "extra": {},
+            "children": [{
+                "id": "screen",
+                "material": {
+                    "color": [0.5, 0.5, 0.5],
+                    "opacity": 1,
+                    "shader_name": "global",
+                    "ambient": [1, 1, 1],
+                    "diffuse": [1, 1, 1],
+                    "emissive": [-0.03355832397937775, -0.03355832397937775, -0.03355832397937775],
+                    "backlight_factor": 0,
+                    "specular_factor": 2,
+                    "specular_gloss": 100,
+                    "specular_ontop": true,
+                    "reflection_factor": 0,
+                    "reflection_fresnel": 1,
+                    "reflection_additive": false,
+                    "reflection_specular": false,
+                    "velvet": [0.5, 0.5, 0.5],
+                    "velvet_exp": 0,
+                    "velvet_additive": false,
+                    "detail": [-0.003355832304805517, 256, 256],
+                    "uvs_matrix": [1, 0, 0, 0, 1, 0, 0, 465.43115234375, 1],
+                    "extra_factor": 0,
+                    "extra_color": [0, 0, 0],
+                    "blend_mode": "normal",
+                    "normalmap_factor": 1,
+                    "displacementmap_factor": 0.1,
+                    "bumpmap_factor": 1,
+                    "use_scene_ambient": true,
+                    "textures": {
+                        "emissive": "c64pot.png",
+                        "emissive_uvs": "transformed",
+                        "detail": "pattern_rgb.png",
+                        "color": "empty-screen.png"
+                    },
+                    "extra_uniforms": {},
+                    "alpha": 0.9,
+                    "material_class": "StandardMaterial"
+                },
+                "flags": {
+                    "visible": true,
+                    "selectable": true,
+                    "two_sided": false,
+                    "flip_normals": false,
+                    "cast_shadows": true,
+                    "receive_shadows": true,
+                    "ignore_lights": false,
+                    "alpha_test": false,
+                    "alpha_shadows": false,
+                    "depth_test": true,
+                    "depth_write": true,
+                    "seen_by_picking": false
+                },
+                "extra": {},
+                "components": [
+                    ["Transform", {
+                        "position": [0, 0, 0],
+                        "rotation": [0, 0, 0, 1],
+                        "scale": [1, 1, 1],
+                        "matrix": [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
+                    }],
+                    ["MeshRenderer", {
+                        "mesh": "screen.obj"
+                    }]
+                ]
+            }, {
+                "id": "light",
+                "flags": {
+                    "visible": true,
+                    "selectable": true,
+                    "two_sided": false,
+                    "flip_normals": false,
+                    "cast_shadows": true,
+                    "receive_shadows": true,
+                    "ignore_lights": false,
+                    "alpha_test": false,
+                    "alpha_shadows": false,
+                    "depth_test": true,
+                    "depth_write": true
+                },
+                "extra": {},
+                "components": [
+                    ["Transform", {
+                        "position": [20, 35, -32],
+                        "rotation": [0, 0, 0, 1],
+                        "scale": [1, 1, 1],
+                        "matrix": [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 20, 35, -32, 1]
+                    }],
+                    ["Light", {
+                        "position": [0, 0, 0],
+                        "target": [0, 0, 1],
+                        "up": [0, 1, 0],
+                        "enabled": false,
+                        "near": 1,
+                        "far": 1000,
+                        "angle": 45,
+                        "angle_end": 60,
+                        "constant_diffuse": false,
+                        "use_specular": true,
+                        "linear_attenuation": false,
+                        "range_attenuation": true,
+                        "att_start": 0,
+                        "att_end": 120,
+                        "offset": 0,
+                        "spot_cone": true,
+                        "use_target": false,
+                        "color": [0.4, 0.5, 1],
+                        "intensity": 1,
+                        "cast_shadows": false,
+                        "shadow_bias": 0.005,
+                        "shadowmap_resolution": 1024,
+                        "type": 1,
+                        "frustum_size": 50
+                    }]
+                ]
+            }, {
+                "id": "button",
+                "material": {
+                    "color": [1, 1, 1],
+                    "opacity": 1,
+                    "shader_name": "global",
+                    "ambient": [1, 1, 1],
+                    "diffuse": [1, 1, 1],
+                    "emissive": [0.5, 0.5, 0.5],
+                    "backlight_factor": 0,
+                    "specular_factor": 0.1,
+                    "specular_gloss": 10,
+                    "specular_ontop": false,
+                    "reflection_factor": 0,
+                    "reflection_fresnel": 1,
+                    "reflection_additive": false,
+                    "reflection_specular": false,
+                    "velvet": [0.5, 0.5, 0.5],
+                    "velvet_exp": 0,
+                    "velvet_additive": false,
+                    "detail": [0, 10, 10],
+                    "uvs_matrix": [1, 0, 0, 0, 1, 0, 0, 0, 1],
+                    "extra_factor": 0,
+                    "extra_color": [0, 0, 0],
+                    "blend_mode": "normal",
+                    "normalmap_factor": 1,
+                    "displacementmap_factor": 0.1,
+                    "bumpmap_factor": 1,
+                    "use_scene_ambient": true,
+                    "textures": {
+                        "color": "button_power.png",
+                        "emissive": "button_power.png"
+                    },
+                    "extra_uniforms": {},
+                    "material_class": "StandardMaterial"
+                },
+                "flags": {
+                    "visible": true,
+                    "selectable": true,
+                    "two_sided": false,
+                    "flip_normals": false,
+                    "cast_shadows": false,
+                    "receive_shadows": true,
+                    "ignore_lights": false,
+                    "alpha_test": false,
+                    "alpha_shadows": false,
+                    "depth_test": true,
+                    "depth_write": true,
+                    "interactive": true
+                },
+                "extra": {},
+                "components": [
+                    ["Transform", {
+                        "position": [-8.5, 9.5, -34],
+                        "rotation": [0, -0.15643446147441864, 0, 0.9876883625984192],
+                        "scale": [1, 1, 1],
+                        "matrix": [0.9510565400123596, 0, 0.30901700258255005, 0, 0, 1, 0, 0, -0.30901700258255005, 0, 0.9510565400123596, 0, -8.5, 9.5, -34, 1]
+                    }],
+                    ["MeshRenderer", {
+                        "mesh": "button.obj"
+                    }]
+                ]
+            }, {
+                "id": "knob",
+                "material": {
+                    "color": [1, 1, 1],
+                    "opacity": 1,
+                    "shader_name": "global",
+                    "ambient": [1, 1, 1],
+                    "diffuse": [1, 1, 1],
+                    "emissive": [0, 0, 0],
+                    "backlight_factor": 0,
+                    "specular_factor": 0.5,
+                    "specular_gloss": 10,
+                    "specular_ontop": false,
+                    "reflection_factor": 0,
+                    "reflection_fresnel": 1,
+                    "reflection_additive": false,
+                    "reflection_specular": false,
+                    "velvet": [0.5, 0.5, 0.5],
+                    "velvet_exp": 0,
+                    "velvet_additive": false,
+                    "detail": [0, 10, 10],
+                    "uvs_matrix": [1, 0, 0, 0, 1, 0, 0, 0, 1],
+                    "extra_factor": 0,
+                    "extra_color": [0, 0, 0],
+                    "blend_mode": "normal",
+                    "normalmap_factor": 1,
+                    "displacementmap_factor": 0.1,
+                    "bumpmap_factor": 1,
+                    "use_scene_ambient": true,
+                    "textures": {
+                        "color": "knob.png"
+                    },
+                    "extra_uniforms": {},
+                    "material_class": "StandardMaterial"
+                },
+                "flags": {
+                    "visible": true,
+                    "selectable": true,
+                    "two_sided": false,
+                    "flip_normals": false,
+                    "cast_shadows": false,
+                    "receive_shadows": true,
+                    "ignore_lights": false,
+                    "alpha_test": false,
+                    "alpha_shadows": false,
+                    "depth_test": true,
+                    "depth_write": true
+                },
+                "extra": {},
+                "components": [
+                    ["Transform", {
+                        "position": [14.5, 9.5, -34],
+                        "rotation": [0, 0, 0.8660253882408142, 0.5],
+                        "scale": [1.2000000476837158, 1.2000000476837158, 1.2000000476837158],
+                        "matrix": [-0.5999999642372131, 1.039230465888977, 0, 0, -1.039230465888977, -0.5999999642372131, 0, 0, 0, 0, 1.2000000476837158, 0, 14.5, 9.5, -34, 1]
+                    }],
+                    ["KnobComponent", {
+                        "value": 1,
+                        "delta": 0.01,
+                        "steps": 0,
+                        "min_value": 0,
+                        "max_value": 1,
+                        "min_angle": -120,
+                        "max_angle": 120,
+                        "axis": [0, 0, 1]
+                    }],
+                    ["MeshRenderer", {
+                        "mesh": "knob.obj"
+                    }]
+                ]
+            }, {
+                "id": "knob2",
+                "material": {
+                    "color": [1, 1, 1],
+                    "opacity": 1,
+                    "shader_name": "global",
+                    "ambient": [1, 1, 1],
+                    "diffuse": [1, 1, 1],
+                    "emissive": [0, 0, 0],
+                    "backlight_factor": 0,
+                    "specular_factor": 0.5,
+                    "specular_gloss": 10,
+                    "specular_ontop": false,
+                    "reflection_factor": 0,
+                    "reflection_fresnel": 1,
+                    "reflection_additive": false,
+                    "reflection_specular": false,
+                    "velvet": [0.5, 0.5, 0.5],
+                    "velvet_exp": 0,
+                    "velvet_additive": false,
+                    "detail": [0, 10, 10],
+                    "uvs_matrix": [1, 0, 0, 0, 1, 0, 0, 0, 1],
+                    "extra_factor": 0,
+                    "extra_color": [0, 0, 0],
+                    "blend_mode": "normal",
+                    "normalmap_factor": 1,
+                    "displacementmap_factor": 0.1,
+                    "bumpmap_factor": 1,
+                    "use_scene_ambient": true,
+                    "textures": {
+                        "color": "knob.png"
+                    },
+                    "extra_uniforms": {},
+                    "material_class": "StandardMaterial"
+                },
+                "flags": {
+                    "visible": true,
+                    "selectable": true,
+                    "two_sided": false,
+                    "flip_normals": false,
+                    "cast_shadows": false,
+                    "receive_shadows": true,
+                    "ignore_lights": false,
+                    "alpha_test": false,
+                    "alpha_shadows": false,
+                    "depth_test": true,
+                    "depth_write": true
+                },
+                "extra": {},
+                "components": [
+                    ["Transform", {
+                        "position": [21, 9.5, -34],
+                        "rotation": [0, 0, 0.06279052048921585, 0.9980267286300659],
+                        "scale": [1.2000000476837158, 1.2000000476837158, 1.2000000476837158],
+                        "matrix": [1.190537691116333, 0.15039989352226257, 0, 0, -0.15039989352226257, 1.190537691116333, 0, 0, 0, 0, 1.2000000476837158, 0, 21, 9.5, -34, 1]
+                    }],
+                    ["KnobComponent", {
+                        "value": 0.5299999999999999,
+                        "delta": 0.01,
+                        "steps": 0,
+                        "min_value": 0,
+                        "max_value": 1,
+                        "min_angle": -120,
+                        "max_angle": 120,
+                        "axis": [0, 0, 1]
+                    }],
+                    ["MeshRenderer", {
+                        "mesh": "knob.obj"
+                    }]
+                ]
+            }, {
+                "id": "knob3",
+                "material": {
+                    "color": [1, 1, 1],
+                    "opacity": 1,
+                    "shader_name": "global",
+                    "ambient": [1, 1, 1],
+                    "diffuse": [1, 1, 1],
+                    "emissive": [0, 0, 0],
+                    "backlight_factor": 0,
+                    "specular_factor": 0.5,
+                    "specular_gloss": 10,
+                    "specular_ontop": false,
+                    "reflection_factor": 0,
+                    "reflection_fresnel": 1,
+                    "reflection_additive": false,
+                    "reflection_specular": false,
+                    "velvet": [0.5, 0.5, 0.5],
+                    "velvet_exp": 0,
+                    "velvet_additive": false,
+                    "detail": [0, 10, 10],
+                    "uvs_matrix": [1, 0, 0, 0, 1, 0, 0, 0, 1],
+                    "extra_factor": 0,
+                    "extra_color": [0, 0, 0],
+                    "blend_mode": "normal",
+                    "normalmap_factor": 1,
+                    "displacementmap_factor": 0.1,
+                    "bumpmap_factor": 1,
+                    "use_scene_ambient": true,
+                    "textures": {
+                        "color": "knob2.png"
+                    },
+                    "extra_uniforms": {},
+                    "material_class": "StandardMaterial"
+                },
+                "flags": {
+                    "visible": true,
+                    "selectable": true,
+                    "two_sided": false,
+                    "flip_normals": false,
+                    "cast_shadows": true,
+                    "receive_shadows": true,
+                    "ignore_lights": false,
+                    "alpha_test": false,
+                    "alpha_shadows": false,
+                    "depth_test": true,
+                    "depth_write": true
+                },
+                "extra": {},
+                "components": [
+                    ["Transform", {
+                        "position": [-26, 42, -34.5],
+                        "rotation": [0, 0, 0.30901700258255005, 0.9510565400123596],
+                        "scale": [1.2000000476837158, 1.2000000476837158, 1.2000000476837158],
+                        "matrix": [0.970820426940918, 0.7053424119949341, 0, 0, -0.7053424119949341, 0.970820426940918, 0, 0, 0, 0, 1.2000000476837158, 0, -26, 42, -34.5, 1]
+                    }],
+                    ["KnobComponent", {
+                        "value": 0.6500000000000001,
+                        "delta": 0.01,
+                        "steps": 0,
+                        "min_value": 0,
+                        "max_value": 1,
+                        "min_angle": -120,
+                        "max_angle": 120,
+                        "axis": [0, 0, 1]
+                    }],
+                    ["MeshRenderer", {
+                        "mesh": "bigknob.obj"
+                    }]
+                ]
+            }, {
+                "id": "postit",
+                "material": {
+                    "color": [1, 1, 1],
+                    "opacity": 1,
+                    "shader_name": "global",
+                    "ambient": [1, 1, 1],
+                    "diffuse": [1, 1, 1],
+                    "emissive": [0.05000000074505806, 0.05000000074505806, 0.05000000074505806],
+                    "backlight_factor": 0,
+                    "specular_factor": 0.1,
+                    "specular_gloss": 10,
+                    "specular_ontop": false,
+                    "reflection_factor": 0,
+                    "reflection_fresnel": 1,
+                    "reflection_additive": false,
+                    "reflection_specular": false,
+                    "velvet": [0.5, 0.5, 0.5],
+                    "velvet_exp": 0,
+                    "velvet_additive": false,
+                    "detail": [0, 10, 10],
+                    "uvs_matrix": [1, 0, 0, 0, 1, 0, 0, 0, 1],
+                    "extra_factor": 0,
+                    "extra_color": [0, 0, 0],
+                    "blend_mode": "normal",
+                    "normalmap_factor": 1,
+                    "displacementmap_factor": 0.1,
+                    "bumpmap_factor": 1,
+                    "use_scene_ambient": true,
+                    "textures": {
+                        "color": "postit.png",
+                        "emissive": "postit_hidden.png"
+                    },
+                    "extra_uniforms": {},
+                    "material_class": "StandardMaterial"
+                },
+                "flags": {
+                    "visible": true,
+                    "selectable": true,
+                    "two_sided": false,
+                    "flip_normals": false,
+                    "cast_shadows": false,
+                    "receive_shadows": true,
+                    "ignore_lights": false,
+                    "alpha_test": false,
+                    "alpha_shadows": false,
+                    "depth_test": true,
+                    "depth_write": true,
+                    "twosided": true
+                },
+                "extra": {},
+                "components": [
+                    ["Transform", {
+                        "position": [0, 0, 0],
+                        "rotation": [0, 0, 0, 1],
+                        "scale": [1, 1, 1],
+                        "matrix": [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
+                    }],
+                    ["MeshRenderer", {
+                        "mesh": "postit.obj"
+                    }]
+                ]
+            }],
+            "components": [
+                ["Transform", {
+                    "position": [0, 0, 0],
+                    "rotation": [0, 0.9537179470062256, 0, -0.30070629715919495],
+                    "scale": [1, 1, 1],
+                    "matrix": [-0.8191558718681335, 0, 0.5735780000686646, 0, 0, 1, 0, 0, -0.5735780000686646, 0, -0.8191558718681335, 0, 0, 0, 0, 1]
+                }],
+                ["NodeManipulator", {
+                    "rot_speed": [1, 0],
+                    "smooth": false
+                }],
+                ["MeshRenderer", {
+                    "mesh": "monitor.obj"
+                }]
+            ]
+        }],
+        "components": [
+            ["Camera", {
+                "enabled": true,
+                "type": 1,
+                "eye": [150, 40, 100],
+                "center": [0, 35, 0],
+                "up": [0, 1, 0],
+                "near": 1,
+                "far": 1000,
+                "fov": 45,
+                "aspect": 1.25,
+                "frustum_size": 50,
+                "viewport": [0, 0, 1, 1],
+                "to_texture": "",
+                "texture_size": 512
+            }],
+            ["Light", {
+                "position": [0, 100, 150],
+                "target": [0, 0, 0],
+                "up": [0, 1, 0],
+                "enabled": true,
+                "near": 1,
+                "far": 500,
+                "angle": 45,
+                "angle_end": 60,
+                "constant_diffuse": false,
+                "use_specular": true,
+                "linear_attenuation": false,
+                "range_attenuation": false,
+                "att_start": 0,
+                "att_end": 1000,
+                "offset": 0,
+                "spot_cone": true,
+                "use_target": false,
+                "color": [0.6, 0.6, 0.6],
+                "intensity": 1,
+                "cast_shadows": true,
+                "shadow_bias": 0.001,
+                "shadowmap_resolution": 1024,
+                "type": 2,
+                "frustum_size": 50,
+                "size": 200,
+                "resolution": 2048,
+                "hard_shadows": false,
+                "projective_texture": "window.png"
+            }],
+            ["CameraController", {
+                "speed": 10,
+                "rot_speed": 0,
+                "wheel_speed": 1,
+                "smooth": false,
+                "allow_panning": true,
+                "cam_type": "orbit",
+                "orbit_center": null
+            }]
+        ]
+    }
+}

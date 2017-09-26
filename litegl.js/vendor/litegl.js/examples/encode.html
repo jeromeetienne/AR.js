@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>litegl.js: mesh encoding example</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<style type='text/css'>
+		html, body { width: 100%; height: 100%; margin: 0; padding: 0 }
+		body { background-color: #DDD;}
+		h1 { color: #777; background-color: #CCC; }
+		button { position: fixed; top: 0; left: 0; z-index:1; padding:0.2em; font-size: 2em;}
+	</style>
+
+</head>
+<body>
+	<button>Click to save Mesh to OBJ</button>
+
+	<script type="text/javascript" src="../external/gl-matrix.js"></script>
+	<script type="text/javascript" src="../build/litegl.js"></script>
+	<script type="text/javascript">
+	//create the rendering context
+	var container = document.body;
+
+	var gl = GL.create({width: container.offsetWidth, height: container.offsetHeight});
+	container.appendChild(gl.canvas);
+	gl.animate(); //launch loop
+
+	var mesh = GL.Mesh.sphere();
+
+	//build the mesh
+	var objects = [];
+	for(var i = 0; i < 40; i++)
+	{
+		var object = { mesh: mesh };
+		object.matrix = mat4.create();
+		objects.push(object);
+	}
+
+	//create basic matrices for cameras and transformation
+	var proj = mat4.create();
+	var view = mat4.create();
+	var model = mat4.create();
+	var mvp = mat4.create();
+	var temp = mat4.create();
+
+	//set the camera position
+	mat4.perspective(proj, 45 * DEG2RAD, gl.canvas.width / gl.canvas.height, 0.1, 1000);
+	mat4.lookAt(view, [0,20,20],[0,0,0], [0,1,0]);
+
+	//basic phong shader
+	var shader = new Shader('\
+			precision highp float;\
+			attribute vec3 a_vertex;\
+			attribute vec3 a_normal;\
+			varying vec3 v_normal;\
+			uniform mat4 u_mvp;\
+			uniform mat4 u_model;\
+			void main() {\
+				v_normal = (u_model * vec4(a_normal,0.0)).xyz;\
+				gl_Position = u_mvp * vec4(a_vertex,1.0);\
+			}\
+			', '\
+			precision highp float;\
+			varying vec3 v_normal;\
+			uniform vec3 u_lightvector;\
+			uniform vec4 u_color;\
+			void main() {\
+			  vec3 N = normalize(v_normal);\
+			  gl_FragColor = u_color * max(0.0, dot(u_lightvector,N));\
+			}\
+		');
+
+
+	//generic gl flags and settings
+	gl.clearColor(0.1,0.1,0.1,1);
+	gl.enable( gl.DEPTH_TEST );
+
+	var uniforms = {
+		u_color: [1,1,1,1],
+		u_lightvector: vec3.normalize(vec3.create(),[1,1,1]),
+		u_model: model,
+		u_mvp: mvp
+	};
+
+	//rendering loop
+	gl.ondraw = function()
+	{
+		gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
+
+		//create modelview and projection matrices
+		for(var i in objects)
+		{
+			var object = objects[i];
+			mat4.multiply(temp,view,object.matrix);
+			mat4.multiply(mvp,proj,temp);
+
+			//render mesh using the shader
+			uniforms.u_model = object.matrix;
+			shader.uniforms(uniforms).draw(object.mesh);
+		}
+	};
+
+	//update loop
+	gl.onupdate = function(dt)
+	{
+		var time = getTime() * 0.001;
+		var offset = 2 * Math.PI / objects.length;
+		for(var i in objects)
+		{
+			var object = objects[i];
+			var matrix = object.matrix;
+			mat4.identity( matrix );
+			mat4.translate( matrix, matrix, [ Math.sin( i * offset + time * 2 ) * 10, Math.sin( i * offset * 3 + time ) * 2, Math.cos( i * offset + time ) * 10 ] );
+			var s = Math.sin( i + time * 2) * 0.5 + 1.1;
+			mat4.scale( matrix, matrix, [ s, s, s] );
+		}
+	};
+
+
+	//storing
+	document.querySelector("button").addEventListener("click", function(){
+		//merge all meshes
+		var mesh = GL.Mesh.mergeMeshes( objects );
+		var encoded = mesh.encode("obj");
+		var blob = new Blob([encoded], {type: "text/plain;charset=utf-8"});
+		var url = window.URL.createObjectURL(blob);
+		var a = document.createElement("a");
+        a.href = url;
+        a.download ="mesh.obj";
+        a.click();
+        window.URL.revokeObjectURL(url);
+	});
+	</script>
+</body>
+</html>
+
+

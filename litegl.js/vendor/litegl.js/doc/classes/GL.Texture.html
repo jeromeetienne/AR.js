@@ -1,0 +1,2865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>GL.Texture</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/BBox.html">BBox</a></li>
+                                <li><a href="../classes/geo.html">geo</a></li>
+                                <li><a href="../classes/GL.html">GL</a></li>
+                                <li><a href="../classes/gl.html">gl</a></li>
+                                <li><a href="../classes/GL.Buffer.html">GL.Buffer</a></li>
+                                <li><a href="../classes/GL.FBO.html">GL.FBO</a></li>
+                                <li><a href="../classes/GL.Indexer.html">GL.Indexer</a></li>
+                                <li><a href="../classes/GL.Mesh.html">GL.Mesh</a></li>
+                                <li><a href="../classes/GL.Octree.html">GL.Octree</a></li>
+                                <li><a href="../classes/GL.Shader.html">GL.Shader</a></li>
+                                <li><a href="../classes/GL.Texture.html">GL.Texture</a></li>
+                                <li><a href="../classes/LEvent.html">LEvent</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1>GL.Texture Class</h1>
+<div class="box meta">
+
+
+        <div class="foundat">
+            Defined in: <a href="../files/.._src_texture.js.html#l5"><code>..&#x2F;src&#x2F;texture.js:5</code></a>
+        </div>
+
+
+</div>
+
+
+<div class="box intro">
+    <p>Texture class to upload images to the GPU, default is gl.TEXTURE_2D, gl.RGBA of gl.UNSIGNED_BYTE with filters set to gl.LINEAR and wrap to gl.CLAMP_TO_EDGE <br/>
+There is a list of options <br/>
+========================== <br/>
+- texture_type: gl.TEXTURE_2D, gl.TEXTURE_CUBE_MAP, default gl.TEXTURE_2D <br/>
+- format: gl.RGB, gl.RGBA, gl.DEPTH_COMPONENT, default gl.RGBA <br/>
+- type: gl.UNSIGNED_BYTE, gl.UNSIGNED_SHORT, gl.HALF_FLOAT_OES, gl.FLOAT, default gl.UNSIGNED_BYTE <br/>
+- filter: filtering for mag and min: gl.NEAREST or gl.LINEAR, default gl.NEAREST <br/>
+- magFilter: magnifying filter: gl.NEAREST, gl.LINEAR, default gl.NEAREST <br/>
+- minFilter: minifying filter: gl.NEAREST, gl.LINEAR, gl.LINEAR_MIPMAP_LINEAR, default gl.NEAREST <br/>
+- wrap: texture wrapping: gl.CLAMP_TO_EDGE, gl.REPEAT, gl.MIRROR, default gl.CLAMP_TO_EDGE (also accepts wrapT and wrapS for separate settings) <br/>
+- pixel_data: ArrayBufferView with the pixel data to upload to the texture, otherwise the texture will be black <br/>
+- premultiply_alpha : multiply the color by the alpha value when uploading, default FALSE <br/>
+- no_flip : do not flip in Y, default TRUE <br/>
+- anisotropic : number of anisotropic fetches, default 0 <br/></p>
+
+</div>
+
+    <div class="constructor">
+        <h2>Constructor</h2>
+<div id="method_GL.Texture" class="method item">
+    <h3 class="name"><code>GL.Texture</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>width</code>
+                </li>
+                <li class="arg">
+                        <code>height</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l5"><code>..&#x2F;src&#x2F;texture.js:5</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">width</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>texture width (any supported but Power of Two allows to have mipmaps), 0 means no memory reserved till its filled</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">height</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>texture height (any supported but Power of Two allows to have mipmaps), 0 means no memory reserved till its filled</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>Check the list in the description</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+    </div>
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method">
+                                <a href="#method_applyBlur">applyBlur</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_bind">bind</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_blend">blend</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_copyTo">copyTo</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_delete">delete</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_drawTo">drawTo</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_drawToColorAndDepth">drawToColorAndDepth</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_drawToColorAndDepth">drawToColorAndDepth</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_fill">fill</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_generateMetadata">generateMetadata</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getPixels">getPixels</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isDepthSupported">isDepthSupported</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_renderQuad">renderQuad</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Texture.cubemapFromImage">Texture.cubemapFromImage</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Texture.cubemapFromImages">Texture.cubemapFromImages</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Texture.cubemapFromURL">Texture.cubemapFromURL</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Texture.fromDDSInMemory">Texture.fromDDSInMemory</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Texture.fromImage">Texture.fromImage</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Texture.fromShader">Texture.fromShader</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Texture.fromTexture">Texture.fromTexture</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Texture.fromTexture">Texture.fromTexture</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Texture.fromURL">Texture.fromURL</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Texture.fromVideo">Texture.fromVideo</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Texture.generateCubemapCrossFaces">Texture.generateCubemapCrossFaces</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Texture.getBlackTexture">Texture.getBlackTexture</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Texture.getWhiteTexture">Texture.getWhiteTexture</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_Texture.setUploadOptions">Texture.setUploadOptions</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_toBase64">toBase64</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_toBlob">toBlob</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_toCanvas">toCanvas</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_toViewport">toViewport</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_unbind">unbind</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_uploadData">uploadData</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_uploadImage">uploadImage</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_applyBlur" class="method item">
+    <h3 class="name"><code>applyBlur</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>offsetx</code>
+                </li>
+                <li class="arg">
+                        <code>offsety</code>
+                </li>
+                <li class="arg">
+                        <code>intensity</code>
+                </li>
+                <li class="arg">
+                        <code>temp_texture</code>
+                </li>
+                <li class="arg">
+                        <code>output_texture</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Texture</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l826"><code>..&#x2F;src&#x2F;texture.js:826</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Applies a blur filter of four pixels to the texture (be careful using it, it is slow)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">offsetx</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>scalar that multiplies the offset when fetching pixels horizontally (default 1)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">offsety</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>scalar that multiplies the offset when fetching pixels vertically (default 1)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">intensity</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>scalar that multiplies the result (default 1)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">temp_texture</code>
+                        <span class="type">Texture</span>
+
+
+                    <div class="param-description">
+                        <p>blur needs a temp texture, if not supplied it will create a new one each time!</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">output_texture</code>
+                        <span class="type">Texture</span>
+
+
+                    <div class="param-description">
+                        <p>[optional] if not passed the output is the own texture</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Texture</span>:
+                    <p>returns the temp_texture in case you want to reuse it</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_bind" class="method item">
+    <h3 class="name"><code>bind</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>unit</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Number</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l202"><code>..&#x2F;src&#x2F;texture.js:202</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Binds the texture to one texture unit</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">unit</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>texture unit</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Number</span>:
+                    <p>returns the texture unit</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_blend" class="method item">
+    <h3 class="name"><code>blend</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>a</code>
+                </li>
+                <li class="arg">
+                        <code>b</code>
+                </li>
+                <li class="arg">
+                        <code>out</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l1590"><code>..&#x2F;src&#x2F;texture.js:1590</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>blends texture A and B and stores the result in OUT</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">a</code>
+                        <span class="type">Texture</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">b</code>
+                        <span class="type">Texture</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">out</code>
+                        <span class="type">Texture</span>
+
+
+                    <div class="param-description">
+                        <p>[optional]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_copyTo" class="method item">
+    <h3 class="name"><code>copyTo</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>target_texture</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[shader=null]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[uniforms=null]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l652"><code>..&#x2F;src&#x2F;texture.js:652</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Copy content of one texture into another</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">target_texture</code>
+                        <span class="type"><a href="../classes/GL.Texture.html" class="crosslink">GL.Texture</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[shader=null]</code>
+                        <span class="type"><a href="../classes/GL.Shader.html" class="crosslink">GL.Shader</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>optional shader to apply while copying</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[uniforms=null]</code>
+                        <span class="type">Object</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>optional uniforms for the shader</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_delete" class="method item">
+    <h3 class="name"><code>delete</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l143"><code>..&#x2F;src&#x2F;texture.js:143</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Free the texture memory from the GPU, sets the texture handler to null</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_drawTo" class="method item">
+    <h3 class="name"><code>drawTo</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l356"><code>..&#x2F;src&#x2F;texture.js:356</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Render to texture using FBO, just pass the callback to a rendering function and the content of the texture will be updated
+If the texture is a cubemap, the callback will be called six times, once per face, the number of the face is passed as a second parameter
+for further info about how to set up the propper cubemap camera, check the GL.Texture.cubemap_camera_parameters with the direction and up vector for every face.</p>
+<p>Keep in mind that it tries to reuse the last renderbuffer for the depth, and if it cannot (different size) it creates a new one (throwing the old)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                        <p>function that does all the rendering inside this texture</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_drawToColorAndDepth" class="method item">
+    <h3 class="name"><code>drawToColorAndDepth</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>color_texture</code>
+                </li>
+                <li class="arg">
+                        <code>depth_texture</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l504"><code>..&#x2F;src&#x2F;texture.js:504</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Static version of drawTo meant to be used with several buffers</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">color_texture</code>
+                        <span class="type">Texture</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">depth_texture</code>
+                        <span class="type">Texture</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_drawToColorAndDepth" class="method item">
+    <h3 class="name"><code>drawToColorAndDepth</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>color_texture</code>
+                </li>
+                <li class="arg">
+                        <code>depth_texture</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l616"><code>..&#x2F;src&#x2F;texture.js:616</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Similar to drawTo but it also stores the depth in a depth texture</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">color_texture</code>
+                        <span class="type">Texture</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">depth_texture</code>
+                        <span class="type">Texture</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_fill" class="method item">
+    <h3 class="name"><code>fill</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>color</code>
+                </li>
+                <li class="arg">
+                        <code>skip_mipmaps</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l773"><code>..&#x2F;src&#x2F;texture.js:773</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Fills the texture with a constant color (uses gl.clear)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">color</code>
+                        <span class="type">Vec4</span>
+
+
+                    <div class="param-description">
+                        <p>rgba</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">skip_mipmaps</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>if true the mipmaps wont be updated</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_generateMetadata" class="method item">
+    <h3 class="name"><code>generateMetadata</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l1561"><code>..&#x2F;src&#x2F;texture.js:1561</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>generates some basic metadata about the image</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getPixels" class="method item">
+    <h3 class="name"><code>getPixels</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>type</code>
+                </li>
+                <li class="arg">
+                        <code>force_rgba</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">ArrayBuffer</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l1348"><code>..&#x2F;src&#x2F;texture.js:1348</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns an ArrayBuffer with the pixels in the texture, they are fliped in Y</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">type</code>
+                        <span class="type">Enum</span>
+
+
+                    <div class="param-description">
+                        <p>gl.UNSIGNED_BYTE or gl.FLOAT, if omited then the one in the texture is read</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">force_rgba</code>
+                        <span class="type">Bool</span>
+
+
+                    <div class="param-description">
+                        <p>if yo want to force the output to have 4 components per pixel (useful to transfer to canvas)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">ArrayBuffer</span>:
+                    <p>the data ( Uint8Array or Float32Array )</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_isDepthSupported" class="method item">
+    <h3 class="name"><code>isDepthSupported</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l192"><code>..&#x2F;src&#x2F;texture.js:192</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns if depth texture is supported by the GPU</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+                    <p>true if supported</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_renderQuad" class="method item">
+    <h3 class="name"><code>renderQuad</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>x</code>
+                </li>
+                <li class="arg">
+                        <code>y</code>
+                </li>
+                <li class="arg">
+                        <code>width</code>
+                </li>
+                <li class="arg">
+                        <code>height</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l795"><code>..&#x2F;src&#x2F;texture.js:795</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Render texture in a quad of specified area</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">x</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">y</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">width</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">height</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_Texture.cubemapFromImage" class="method item">
+    <h3 class="name"><code>Texture.cubemapFromImage</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>image</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Texture</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l1221"><code>..&#x2F;src&#x2F;texture.js:1221</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Create a cubemap texture from a single image that contains all six images
+If it is a cross, it must be horizontally aligned, and options.is_cross must be equal to the column where the top and bottom are located (usually 1 or 2)
+otherwise it assumes the 6 images are arranged vertically, in the order of OpenGL: +X, -X, +Y, -Y, +Z, -Z</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">image</code>
+                        <span class="type">Image</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Texture</span>:
+                    <p>the texture</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_Texture.cubemapFromImages" class="method item">
+    <h3 class="name"><code>Texture.cubemapFromImages</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>images</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Texture</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l1169"><code>..&#x2F;src&#x2F;texture.js:1169</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Create a cubemap texture from a set of 6 images</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">images</code>
+                        <span class="type">Array</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Texture</span>:
+                    <p>the texture</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_Texture.cubemapFromURL" class="method item">
+    <h3 class="name"><code>Texture.cubemapFromURL</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>image</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+                <li class="arg">
+                        <code>on_complete</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Texture</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l1306"><code>..&#x2F;src&#x2F;texture.js:1306</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Create a cubemap texture from a single image url that contains the six images
+if it is a cross, it must be horizontally aligned, and options.is_cross must be equal to the column where the top and bottom are located (usually 1 or 2)
+otherwise it assumes the 6 images are arranged vertically.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">image</code>
+                        <span class="type">Image</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">on_complete</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                        <p>callback</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Texture</span>:
+                    <p>the texture</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_Texture.fromDDSInMemory" class="method item">
+    <h3 class="name"><code>Texture.fromDDSInMemory</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>DDS</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Texture</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l1122"><code>..&#x2F;src&#x2F;texture.js:1122</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Create a texture from an ArrayBuffer containing the pixels</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">DDS</code>
+                        <span class="type">ArrayBuffer</span>
+
+
+                    <div class="param-description">
+                        <p>data</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Texture</span>:
+                    <p>the texture</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_Texture.fromImage" class="method item">
+    <h3 class="name"><code>Texture.fromImage</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>image</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Texture</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l997"><code>..&#x2F;src&#x2F;texture.js:997</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Create a texture from an Image</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">image</code>
+                        <span class="type">Image</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Texture</span>:
+                    <p>the texture</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_Texture.fromShader" class="method item">
+    <h3 class="name"><code>Texture.fromShader</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>width</code>
+                </li>
+                <li class="arg">
+                        <code>height</code>
+                </li>
+                <li class="arg">
+                        <code>shader</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Texture</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l1144"><code>..&#x2F;src&#x2F;texture.js:1144</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Create a generative texture from a shader ( must GL.Shader.getScreenShader as reference for the shader )</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">width</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">height</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">shader</code>
+                        <span class="type">Shader</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Texture</span>:
+                    <p>the texture</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_Texture.fromTexture" class="method item">
+    <h3 class="name"><code>Texture.fromTexture</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>old_texture</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Texture</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l1063"><code>..&#x2F;src&#x2F;texture.js:1063</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Create a clone of a texture</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">old_texture</code>
+                        <span class="type">Texture</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Texture</span>:
+                    <p>the texture</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_Texture.fromTexture" class="method item">
+    <h3 class="name"><code>Texture.fromTexture</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>width</code>
+                </li>
+                <li class="arg">
+                        <code>height</code>
+                </li>
+                <li class="arg">
+                        <code>pixels</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Texture</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l1086"><code>..&#x2F;src&#x2F;texture.js:1086</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Create a texture from an ArrayBuffer containing the pixels</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">width</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">height</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">pixels</code>
+                        <span class="type">ArrayBuffer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Texture</span>:
+                    <p>the texture</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_Texture.fromURL" class="method item">
+    <h3 class="name"><code>Texture.fromURL</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>url</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+                <li class="arg">
+                        <code>on_complete</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Texture</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l935"><code>..&#x2F;src&#x2F;texture.js:935</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Loads and uploads a texture from a url</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">url</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">on_complete</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Texture</span>:
+                    <p>the texture</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_Texture.fromVideo" class="method item">
+    <h3 class="name"><code>Texture.fromVideo</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>video</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Texture</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l1040"><code>..&#x2F;src&#x2F;texture.js:1040</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Create a texture from a Video</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">video</code>
+                        <span class="type">Video</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Texture</span>:
+                    <p>the texture</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_Texture.generateCubemapCrossFaces" class="method item">
+    <h3 class="name"><code>Texture.generateCubemapCrossFaces</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>width</code>
+                </li>
+                <li class="arg">
+                        <code>column</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l1283"><code>..&#x2F;src&#x2F;texture.js:1283</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Given the width and the height of an image, and in which column is the top and bottom sides of the cubemap, it gets the info to pass to Texture.cubemapFromImage in options.faces</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">width</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>of the CROSS image (not the side image)</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">column</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>the column where the top and the bottom is located</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    <p>object to pass to Texture.cubemapFromImage in options.faces</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_Texture.getBlackTexture" class="method item">
+    <h3 class="name"><code>Texture.getBlackTexture</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Texture</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l1653"><code>..&#x2F;src&#x2F;texture.js:1653</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns a black texture of 1x1 pixel</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Texture</span>:
+                    <p>the black texture</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_Texture.getWhiteTexture" class="method item">
+    <h3 class="name"><code>Texture.getWhiteTexture</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Texture</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l1637"><code>..&#x2F;src&#x2F;texture.js:1637</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns a white texture of 1x1 pixel</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Texture</span>:
+                    <p>the white texture</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_Texture.setUploadOptions" class="method item">
+    <h3 class="name"><code>Texture.setUploadOptions</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l248"><code>..&#x2F;src&#x2F;texture.js:248</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Unbinds the texture</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>a list of options to upload the texture</p>
+<ul>
+<li>premultiply_alpha : multiply the color by the alpha value, default FALSE</li>
+<li>no_flip : do not flip in Y, default TRUE</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_toBase64" class="method item">
+    <h3 class="name"><code>toBase64</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>flip_y</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l1525"><code>..&#x2F;src&#x2F;texture.js:1525</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns a base64 String containing all the data from the texture</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">flip_y</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>if you want to flip vertically the image, WebGL saves the images upside down</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
+                    <p>the data in base64 format</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_toBlob" class="method item">
+    <h3 class="name"><code>toBlob</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Blob</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l1481"><code>..&#x2F;src&#x2F;texture.js:1481</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>returns a Blob containing all the data from the texture</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Blob</span>:
+                    <p>the blob containing the data</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_toCanvas" class="method item">
+    <h3 class="name"><code>toCanvas</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>canvas</code>
+                </li>
+                <li class="arg">
+                        <code>flip_y</code>
+                </li>
+                <li class="arg">
+                        <code>max_size</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l1403"><code>..&#x2F;src&#x2F;texture.js:1403</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Copy texture content to a canvas</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">canvas</code>
+                        <span class="type">Canvas</span>
+
+
+                    <div class="param-description">
+                        <p>must have the same size, if different the canvas will be resized</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">flip_y</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>optional, flip vertically</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">max_size</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>optional, if it is supplied the canvas wont be bigger of max_size (the image will be scaled down)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_toViewport" class="method item">
+    <h3 class="name"><code>toViewport</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>shader</code>
+                </li>
+                <li class="arg">
+                        <code>uniforms</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l756"><code>..&#x2F;src&#x2F;texture.js:756</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Render texture in a quad to full viewport size</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">shader</code>
+                        <span class="type">Shader</span>
+
+
+                    <div class="param-description">
+                        <p>to apply, otherwise a default textured shader is applied [optional]</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">uniforms</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>for the shader if needed [optional]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_unbind" class="method item">
+    <h3 class="name"><code>unbind</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>unit</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Number</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l221"><code>..&#x2F;src&#x2F;texture.js:221</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Unbinds the texture</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">unit</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>texture unit</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Number</span>:
+                    <p>returns the texture unit</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_uploadData" class="method item">
+    <h3 class="name"><code>uploadData</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>data</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l309"><code>..&#x2F;src&#x2F;texture.js:309</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Uploads data to the GPU (data must have the appropiate size)</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">data</code>
+                        <span class="type">ArrayBuffer</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>[optional] upload options (premultiply_alpha, no_flip)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_uploadImage" class="method item">
+    <h3 class="name"><code>uploadImage</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>img</code>
+                </li>
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/.._src_texture.js.html#l272"><code>..&#x2F;src&#x2F;texture.js:272</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Given an Image/Canvas/Video it uploads it to the GPU</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">img</code>
+                        <span class="type">Image</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>[optional] upload options (premultiply_alpha, no_flip)</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+            </div>
+
+
+
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

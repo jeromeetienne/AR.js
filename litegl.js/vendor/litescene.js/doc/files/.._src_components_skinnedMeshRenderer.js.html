@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>../src/components/skinnedMeshRenderer.js</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/LS.Animation.html">LS.Animation</a></li>
+                                <li><a href="../classes/LS.Animation.Take.html">LS.Animation.Take</a></li>
+                                <li><a href="../classes/LS.Animation.Track.html">LS.Animation.Track</a></li>
+                                <li><a href="../classes/LS.Collision.html">LS.Collision</a></li>
+                                <li><a href="../classes/LS.Component.html">LS.Component</a></li>
+                                <li><a href="../classes/LS.ComponentContainer.html">LS.ComponentContainer</a></li>
+                                <li><a href="../classes/LS.Components.Camera.html">LS.Components.Camera</a></li>
+                                <li><a href="../classes/LS.Components.CameraController.html">LS.Components.CameraController</a></li>
+                                <li><a href="../classes/LS.Components.CameraDirector.html">LS.Components.CameraDirector</a></li>
+                                <li><a href="../classes/LS.Components.CameraFX.html">LS.Components.CameraFX</a></li>
+                                <li><a href="../classes/LS.Components.Canvas3D.html">LS.Components.Canvas3D</a></li>
+                                <li><a href="../classes/LS.Components.CustomData.html">LS.Components.CustomData</a></li>
+                                <li><a href="../classes/LS.Components.FollowNode.html">LS.Components.FollowNode</a></li>
+                                <li><a href="../classes/LS.Components.FrameFX.html">LS.Components.FrameFX</a></li>
+                                <li><a href="../classes/LS.Components.FXGraphComponent.html">LS.Components.FXGraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.FXStack.html">LS.Components.FXStack</a></li>
+                                <li><a href="../classes/LS.Components.GeometricPrimitive.html">LS.Components.GeometricPrimitive</a></li>
+                                <li><a href="../classes/LS.Components.GraphComponent.html">LS.Components.GraphComponent</a></li>
+                                <li><a href="../classes/LS.Components.MeshRenderer.html">LS.Components.MeshRenderer</a></li>
+                                <li><a href="../classes/LS.Components.NodeManipulator.html">LS.Components.NodeManipulator</a></li>
+                                <li><a href="../classes/LS.Components.PlayAnimation.html">LS.Components.PlayAnimation</a></li>
+                                <li><a href="../classes/LS.Components.Poser.html">LS.Components.Poser</a></li>
+                                <li><a href="../classes/LS.Components.RealtimeReflector.html">LS.Components.RealtimeReflector</a></li>
+                                <li><a href="../classes/LS.Components.Rotator.html">LS.Components.Rotator</a></li>
+                                <li><a href="../classes/LS.Components.Script.html">LS.Components.Script</a></li>
+                                <li><a href="../classes/LS.Components.SkinDeformer.html">LS.Components.SkinDeformer</a></li>
+                                <li><a href="../classes/LS.Components.Spline.html">LS.Components.Spline</a></li>
+                                <li><a href="../classes/LS.Components.SVGRenderer.html">LS.Components.SVGRenderer</a></li>
+                                <li><a href="../classes/LS.Components.Target.html">LS.Components.Target</a></li>
+                                <li><a href="../classes/LS.Components.Transform.html">LS.Components.Transform</a></li>
+                                <li><a href="../classes/LS.Components.VRCameraController.html">LS.Components.VRCameraController</a></li>
+                                <li><a href="../classes/LS.CompositePattern.html">LS.CompositePattern</a></li>
+                                <li><a href="../classes/LS.DebugRender.html">LS.DebugRender</a></li>
+                                <li><a href="../classes/LS.Draw.html">LS.Draw</a></li>
+                                <li><a href="../classes/LS.Formats.html">LS.Formats</a></li>
+                                <li><a href="../classes/LS.GLSLCode.html">LS.GLSLCode</a></li>
+                                <li><a href="../classes/LS.GUI.html">LS.GUI</a></li>
+                                <li><a href="../classes/LS.Input.html">LS.Input</a></li>
+                                <li><a href="../classes/LS.InteractiveController.html">LS.InteractiveController</a></li>
+                                <li><a href="../classes/LS.Knob.html">LS.Knob</a></li>
+                                <li><a href="../classes/LS.Light.html">LS.Light</a></li>
+                                <li><a href="../classes/LS.LightFX.html">LS.LightFX</a></li>
+                                <li><a href="../classes/LS.LS.html">LS.LS</a></li>
+                                <li><a href="../classes/LS.LScript.html">LS.LScript</a></li>
+                                <li><a href="../classes/LS.Material.html">LS.Material</a></li>
+                                <li><a href="../classes/LS.Pack.html">LS.Pack</a></li>
+                                <li><a href="../classes/LS.Physics.html">LS.Physics</a></li>
+                                <li><a href="../classes/LS.PhysicsInstance.html">LS.PhysicsInstance</a></li>
+                                <li><a href="../classes/LS.Picking.html">LS.Picking</a></li>
+                                <li><a href="../classes/LS.Player.html">LS.Player</a></li>
+                                <li><a href="../classes/LS.Prefab.html">LS.Prefab</a></li>
+                                <li><a href="../classes/LS.Project.html">LS.Project</a></li>
+                                <li><a href="../classes/LS.Renderer.html">LS.Renderer</a></li>
+                                <li><a href="../classes/LS.RenderFrameContext.html">LS.RenderFrameContext</a></li>
+                                <li><a href="../classes/LS.RenderInstance.html">LS.RenderInstance</a></li>
+                                <li><a href="../classes/LS.RenderSettings.html">LS.RenderSettings</a></li>
+                                <li><a href="../classes/LS.RenderState.html">LS.RenderState</a></li>
+                                <li><a href="../classes/LS.Resource.html">LS.Resource</a></li>
+                                <li><a href="../classes/LS.ResourcesManager.html">LS.ResourcesManager</a></li>
+                                <li><a href="../classes/LS.SceneNode.html">LS.SceneNode</a></li>
+                                <li><a href="../classes/LS.SceneTree.html">LS.SceneTree</a></li>
+                                <li><a href="../classes/LS.ShaderCode.html">LS.ShaderCode</a></li>
+                                <li><a href="../classes/LS.ShaderGraph.html">LS.ShaderGraph</a></li>
+                                <li><a href="../classes/LS.ShaderMaterial.html">LS.ShaderMaterial</a></li>
+                                <li><a href="../classes/LS.ShaderQuery.html">LS.ShaderQuery</a></li>
+                                <li><a href="../classes/LS.ShadersManager.html">LS.ShadersManager</a></li>
+                                <li><a href="../classes/LS.SpatialContainer.html">LS.SpatialContainer</a></li>
+                                <li><a href="../classes/LS.StandardMaterial.html">LS.StandardMaterial</a></li>
+                                <li><a href="../classes/LS.UnityMaterial.html">LS.UnityMaterial</a></li>
+                                <li><a href="../classes/LS.WBin.html">LS.WBin</a></li>
+                                <li><a href="../classes/LSQ.html">LSQ</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/LS.html">LS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: ../src/components/skinnedMeshRenderer.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+
+function SkinnedMeshRenderer(o)
+{
+	this.enabled = true;
+	this.apply_skinning = true;
+	this.cpu_skinning = false;
+	this.mesh = null;
+	this.lod_mesh = null;
+	this.submesh_id = -1;
+	this.material = null;
+	this._primitive = -1;
+	this.point_size = 0.1;
+	this.two_sided = false;
+	this.ignore_transform = true;
+	//this.factor = 1;
+
+	//check how many floats can we put in a uniform
+	if(!SkinnedMeshRenderer.num_supported_uniforms &amp;&amp; global.gl )
+	{
+		SkinnedMeshRenderer.num_supported_uniforms = gl.getParameter( gl.MAX_VERTEX_UNIFORM_VECTORS );
+		SkinnedMeshRenderer.num_supported_textures = gl.getParameter( gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS );
+		//check if GPU skinning is supported
+		if( SkinnedMeshRenderer.num_supported_uniforms &lt; SkinnedMeshRenderer.MAX_BONES*3 &amp;&amp; SkinnedMeshRenderer.num_supported_textures == 0)
+			SkinnedMeshRenderer.gpu_skinning_supported = false;
+	}
+
+	if(o)
+		this.configure(o);
+
+	if(!MeshRenderer._identity) //used to avoir garbage
+		MeshRenderer._identity = mat4.create();
+}
+
+Object.defineProperty( SkinnedMeshRenderer.prototype, &#x27;primitive&#x27;, {
+	get: function() { return this._primitive; },
+	set: function(v) { 
+		v = (v === undefined || v === null ? -1 : v|0);
+		if(v != -1 &amp;&amp; v != 0 &amp;&amp; v!= 1 &amp;&amp; v!= 4 &amp;&amp; v!= 10)
+			return;
+		this._primitive = v;
+	},
+	enumerable: true
+});
+
+SkinnedMeshRenderer.MAX_BONES = 64;
+SkinnedMeshRenderer.gpu_skinning_supported = true;
+SkinnedMeshRenderer.icon = &quot;mini-icon-stickman.png&quot;;
+
+//vars
+SkinnedMeshRenderer[&quot;@mesh&quot;] = { widget: &quot;mesh&quot; };
+SkinnedMeshRenderer[&quot;@lod_mesh&quot;] = { widget: &quot;mesh&quot; };
+SkinnedMeshRenderer[&quot;@primitive&quot;] = {widget:&quot;combo&quot;, values: {&quot;Default&quot;:null, &quot;Points&quot;: 0, &quot;Lines&quot;:1, &quot;Triangles&quot;:4, &quot;Wireframe&quot;:10 }};
+SkinnedMeshRenderer[&quot;@submesh_id&quot;] = {widget:&quot;combo&quot;, values: function() {
+	var component = this.instance;
+	var mesh = component.getMesh();
+	if(!mesh) return null;
+	if(!mesh || !mesh.info || !mesh.info.groups || mesh.info.groups.length &lt; 2)
+		return null;
+
+	var t = {&quot;all&quot;:null};
+	for(var i = 0; i &lt; mesh.info.groups.length; ++i)
+		t[mesh.info.groups[i].name] = i;
+	return t;
+}};
+
+SkinnedMeshRenderer.prototype.onAddedToNode = function(node)
+{
+	if(!node.meshrenderer)
+		node.meshrenderer = this;
+	LEvent.bind(node, &quot;collectRenderInstances&quot;, this.onCollectInstances, this);
+}
+
+SkinnedMeshRenderer.prototype.onRemovedFromNode = function(node)
+{
+	if(node.meshrenderer)
+		delete node[&quot;meshrenderer&quot;];
+	LEvent.unbind(node, &quot;collectRenderInstances&quot;, this.onCollectInstances, this);
+}
+
+/**
+* Configure from a serialized object
+* @method configure
+* @param {Object} object with the serialized info
+*/
+SkinnedMeshRenderer.prototype.configure = function(o)
+{
+	if(o.enabled != null)
+		this.enabled = !!(o.enabled);
+	this.cpu_skinning = !!(o.cpu_skinning);
+	this.ignore_transform = !!(o.ignore_transform);
+
+	this.mesh = o.mesh;
+	this.lod_mesh = o.lod_mesh;
+	this.submesh_id = o.submesh_id;
+	this.primitive = o.primitive; //gl.TRIANGLES
+	this.two_sided = !!o.two_sided;
+	if(o.point_size !== undefined)
+		this.point_size = o.point_size;
+	if(o.material)
+		this.material = typeof(o.material) == &quot;string&quot; ? o.material : new Material(o.material);
+}
+
+/**
+* Serialize the object 
+* @method serialize
+* @return {Object} object with the serialized info
+*/
+SkinnedMeshRenderer.prototype.serialize = function()
+{
+	var o = { 
+		object_class: &quot;SkinnedMeshRenderer&quot;,
+		enabled: this.enabled,
+		apply_skinning: this.apply_skinning,
+		cpu_skinning: this.cpu_skinning,
+		ignore_transform: this.ignore_transform,
+		mesh: this.mesh,
+		lod_mesh: this.lod_mesh,
+		primitive: this.primitive,
+		submesh_id: this.submesh_id,
+		two_sided: this.two_sided,
+		point_size: this.point_size
+	};
+
+	if(this.material)
+		o.material = typeof(this.material) == &quot;string&quot; ? this.material : this.material.serialize();
+
+	return o;
+}
+
+SkinnedMeshRenderer.prototype.getMesh = function() {
+	return LS.ResourcesManager.getMesh(this.mesh);
+}
+
+SkinnedMeshRenderer.prototype.getLODMesh = function() {
+	return LS.ResourcesManager.getMesh(this.lod_mesh);
+}
+
+SkinnedMeshRenderer.prototype.getResources = function(res)
+{
+	if(typeof(this.mesh) == &quot;string&quot;)
+		res[this.mesh] = Mesh;
+	if(typeof(this.lod_mesh) == &quot;string&quot;)
+		res[this.lod_mesh] = Mesh;
+	return res;
+}
+
+SkinnedMeshRenderer.prototype.onResourceRenamed = function (old_name, new_name, resource)
+{
+	if(this.mesh == old_name)
+		this.mesh = new_name;
+	if(this.lod_mesh == old_name)
+		this.lod_mesh = new_name;
+}
+
+SkinnedMeshRenderer.prototype.getNodeMatrix = function(name)
+{
+	var scene = this._root.scene;
+	if(!scene)
+		return null;
+
+	var node = scene.getNode( name );
+	if(!node)
+		return null;
+	node._is_bone = true;
+	return node.transform.getGlobalMatrixRef();
+}
+
+//checks the list of bones in mesh.bones and retrieves its matrices
+SkinnedMeshRenderer.prototype.getBoneMatrices = function(ref_mesh)
+{
+	//bone matrices
+	var bones = this._last_bones;
+
+	//reuse bone matrices
+	if(!this._last_bones || this._last_bones.length != ref_mesh.bones.length )
+	{
+		bones = this._last_bones = [];
+		for(var i = 0; i &lt; ref_mesh.bones.length; ++i)
+			bones[i] = mat4.create();
+	}
+
+	for(var i = 0; i &lt; ref_mesh.bones.length; ++i)
+	{
+		var m = bones[i]; //mat4.create();
+		var joint = ref_mesh.bones[i];
+		var mat = this.getNodeMatrix( joint[0] ); //get the current matrix from the bone Node transform
+		if(!mat)
+		{
+			mat4.identity( m );
+		}
+		else
+		{
+			var inv = joint[1];
+			mat4.multiply( m, mat, inv );
+			if(ref_mesh.bind_matrix)
+				mat4.multiply( m, m, ref_mesh.bind_matrix);
+		}
+
+		//bones[i].push( m ); //multiply by the inv bindpose matrix
+	}
+
+	return bones;
+}
+
+SkinnedMeshRenderer.prototype.onCollectInstances = function(e, instances, options)
+{
+	if(!this.enabled)
+		return;
+
+	var mesh = this.getMesh();
+	if(!mesh)
+		return null;
+
+	var node = this._root;
+	if(!this._root)
+		return;
+
+	var RI = this._render_instance;
+	if(!RI)
+		this._render_instance = RI = new LS.RenderInstance(this._root, this);
+
+	//this mesh doesnt have skinning info
+	if(!mesh.getBuffer(&quot;vertices&quot;) || !mesh.getBuffer(&quot;bone_indices&quot;))
+		return;
+
+	if(!this.apply_skinning)
+	{
+		RI.setMesh( mesh, this.primitive );
+		//remove the flags to avoid recomputing shaders
+		delete RI.query.macros[&quot;USE_SKINNING&quot;]; 
+		delete RI.query.macros[&quot;USE_SKINNING_TEXTURE&quot;];
+		delete RI.samplers[&quot;u_bones&quot;];
+	}
+	else if( SkinnedMeshRenderer.gpu_skinning_supported &amp;&amp; !this.cpu_skinning ) 
+	{
+		RI.setMesh(mesh, this.primitive);
+
+		//add skinning
+		RI.query.macros[&quot;USE_SKINNING&quot;] = &quot;&quot;;
+		
+		//retrieve all the bones
+		var bones = this.getBoneMatrices(mesh);
+		var bones_size = bones.length * 12;
+
+		var u_bones = this._u_bones;
+		if(!u_bones || u_bones.length != bones_size)
+			this._u_bones = u_bones = new Float32Array( bones_size );
+
+		//pack the bones in one single array (also skip the last row, is always 0,0,0,1)
+		for(var i = 0; i &lt; bones.length; i++)
+		{
+			mat4.transpose( bones[i], bones[i] );
+			u_bones.set( bones[i].subarray(0,12), i * 12, (i+1) * 12 );
+		}
+
+		//can we pass the bones as a uniform?
+		if( SkinnedMeshRenderer.num_supported_uniforms &gt;= bones_size )
+		{
+			//upload the bones as uniform (faster but doesnt work in all GPUs)
+			RI.uniforms[&quot;u_bones&quot;] = u_bones;
+			if(bones.length &gt; SkinnedMeshRenderer.MAX_BONES)
+				RI.query.macros[&quot;MAX_BONES&quot;] = bones.length.toString();
+			delete RI.samplers[&quot;u_bones&quot;]; //use uniforms, not samplers
+		}
+		else if( SkinnedMeshRenderer.num_supported_textures &gt; 0 ) //upload the bones as a float texture (slower)
+		{
+			var texture = this._bones_texture;
+			if(!texture)
+			{
+				texture = this._bones_texture = new GL.Texture( 1, bones.length * 3, { format: gl.RGBA, type: gl.FLOAT, filter: gl.NEAREST} ); //3 rows of 4 values per matrix
+				texture._data = new Float32Array( texture.width * texture.height * 4 );
+			}
+
+			texture._data.set( u_bones );
+			texture.uploadData( texture._data, { no_flip: true } );
+			LS.RM.textures[&quot;:bones&quot;] = texture; //debug
+			RI.query.macros[&quot;USE_SKINNING_TEXTURE&quot;] = &quot;&quot;;
+			RI.samplers[&quot;u_bones&quot;] = texture;
+			delete RI.uniforms[&quot;u_bones&quot;]; //use samplers, not uniforms
+		}
+		else
+			console.error(&quot;impossible to get here&quot;)
+	}
+	else //cpu skinning (mega slow)
+	{
+		if(!this._skinned_mesh || this._skinned_mesh._reference != mesh)
+		{
+			this._skinned_mesh = new GL.Mesh();
+			this._skinned_mesh._reference = mesh;
+			var vertex_buffer = mesh.getBuffer(&quot;vertices&quot;);
+			var normal_buffer = mesh.getBuffer(&quot;normals&quot;);
+
+			//clone 
+			for (var i in mesh.vertexBuffers)
+				this._skinned_mesh.vertexBuffers[i] = mesh.vertexBuffers[i];
+			for (var i in mesh.indexBuffers)
+				this._skinned_mesh.indexBuffers[i] = mesh.indexBuffers[i];
+
+			//new ones clonning old ones
+			this._skinned_mesh.createVertexBuffer(&quot;vertices&quot;,&quot;a_vertex&quot;, 3, new Float32Array( vertex_buffer.data ), gl.STREAM_DRAW );
+			if(normal_buffer)
+				this._skinned_mesh.createVertexBuffer(&quot;normals&quot;,&quot;a_normal&quot;, 3, new Float32Array( normal_buffer.data ), gl.STREAM_DRAW );
+		}
+
+
+		//apply cpu skinning
+		this.applySkin( mesh, this._skinned_mesh );
+		RI.setMesh(this._skinned_mesh, this.primitive);
+		//remove the flags to avoid recomputing shaders
+		delete RI.query.macros[&quot;USE_SKINNING&quot;]; 
+		delete RI.query.macros[&quot;USE_SKINNING_TEXTURE&quot;];
+		delete RI.samplers[&quot;u_bones&quot;];
+	}
+
+	//do not need to update
+	//RI.matrix.set( this._root.transform._global_matrix );
+	if( this.ignore_transform )
+		mat4.identity( RI.matrix );
+	else
+		this._root.transform.getGlobalMatrix( RI.matrix );
+	mat4.multiplyVec3( RI.center, RI.matrix, vec3.create() );
+
+	if(this.submesh_id != -1 &amp;&amp; this.submesh_id != null &amp;&amp; mesh.info &amp;&amp; mesh.info.groups)
+	{
+		var group = mesh.info.groups[this.submesh_id];
+		if(group)
+			RI.setRange( group.start, group.length );
+	}
+	else
+		RI.setRange(0,-1);
+
+	RI.material = this.material || this._root.getMaterial();
+
+	if( this.apply_skinning )
+		RI.use_bounding = false; //no frustum test in skinned meshes, hard to compute the frustrum in CPU
+
+	if(this.primitive == gl.POINTS)
+	{
+		RI.uniforms.u_point_size = this.point_size;
+		RI.query.macros[&quot;USE_POINTS&quot;] = &quot;&quot;;
+	}
+
+	instances.push(RI);
+	//return RI;
+}
+
+
+SkinnedMeshRenderer.zero_matrix = new Float32Array(16);
+
+SkinnedMeshRenderer.prototype.applySkin = function(ref_mesh, skin_mesh)
+{
+	var original_vertices = ref_mesh.getBuffer(&quot;vertices&quot;).data;
+	var original_normals = null;
+	if(ref_mesh.getBuffer(&quot;normals&quot;))
+		original_normals = ref_mesh.getBuffer(&quot;normals&quot;).data;
+
+	var weights = ref_mesh.getBuffer(&quot;weights&quot;).data;
+	var bone_indices = ref_mesh.getBuffer(&quot;bone_indices&quot;).data;
+
+	var vertices_buffer = skin_mesh.getBuffer(&quot;vertices&quot;);
+	var vertices = vertices_buffer.data;
+
+	var normals_buffer = null;
+	var normals = null;
+
+	if(original_normals)
+	{
+		normals_buffer = skin_mesh.getBuffer(&quot;normals&quot;);
+		normals = normals_buffer.data;
+	}
+
+	//bone matrices
+	var bones = this.getBoneMatrices( ref_mesh );
+	if(bones.length == 0) //no bones found
+		return null;
+
+	//var factor = this.factor; //for debug
+
+	//apply skinning per vertex
+	var temp = vec3.create();
+	var ov_temp = vec3.create();
+	var temp_matrix = mat4.create();
+	for(var i = 0, l = vertices.length / 3; i &lt; l; ++i)
+	{
+		var ov = original_vertices.subarray(i*3, i*3+3);
+
+		var b = bone_indices.subarray(i*4, i*4+4);
+		var w = weights.subarray(i*4, i*4+4);
+		var v = vertices.subarray(i*3, i*3+3);
+
+		var bmat = [ bones[ b[0] ], bones[ b[1] ], bones[ b[2] ], bones[ b[3] ] ];
+
+		temp_matrix.set( SkinnedMeshRenderer.zero_matrix );
+		mat4.scaleAndAdd( temp_matrix, temp_matrix, bmat[0], w[0] );
+		if(w[1] &gt; 0.0) mat4.scaleAndAdd( temp_matrix, temp_matrix, bmat[1], w[1] );
+		if(w[2] &gt; 0.0) mat4.scaleAndAdd( temp_matrix, temp_matrix, bmat[2], w[2] );
+		if(w[3] &gt; 0.0) mat4.scaleAndAdd( temp_matrix, temp_matrix, bmat[3], w[3] );
+
+		mat4.multiplyVec3(v, temp_matrix, original_vertices.subarray(i*3, i*3+3) );
+		if(normals)
+		{
+			var n = normals.subarray(i*3, i*3+3);
+			mat4.rotateVec3(n, temp_matrix, original_normals.subarray(i*3, i*3+3) );
+		}
+		
+		//we could also multiply the normal but this is already superslow...
+
+		/* apply weights
+		v[0] = v[1] = v[2] = 0.0; //reset
+		mat4.multiplyVec3(v, bmat[0], ov_temp);
+		vec3.scale(v,v,w[0]);
+		for(var j = 1; j &lt; 4; ++j)
+			if(w[j] &gt; 0.0)
+			{
+				mat4.multiplyVec3(temp, bmat[j], ov_temp);
+				vec3.scaleAndAdd(v, v, temp, w[j]);
+			}
+		//*/
+
+		//if(factor != 1) vec3.lerp( v, ov, v, factor);
+	}
+
+	//upload
+	vertices_buffer.upload(gl.STREAM_DRAW);
+	if(normals_buffer)
+		normals_buffer.upload(gl.STREAM_DRAW);
+}
+
+SkinnedMeshRenderer.prototype.extractSkeleton = function()
+{
+	//TODO
+}
+
+LS.registerComponent(SkinnedMeshRenderer);
+LS.SkinnedMeshRenderer = SkinnedMeshRenderer;
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

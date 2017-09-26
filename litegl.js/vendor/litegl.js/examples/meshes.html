@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>litegl.js: mesh example</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<style type='text/css'>
+		html, body { width: 100%; height: 100%; margin: 0; padding: 0 }
+		body { background-color: #DDD;}
+		h1 { color: #777; background-color: #CCC; }
+	</style>
+
+</head>
+<body>
+
+	<script type="text/javascript" src="../external/gl-matrix.js"></script>
+	<script type="text/javascript" src="../build/litegl.js"></script>
+	<script type="text/javascript">
+	//create the rendering context
+	var container = document.body;
+
+	var gl = GL.create({width: container.offsetWidth, height: container.offsetHeight});
+	container.appendChild(gl.canvas);
+	gl.animate(); //launch loop
+	gl.captureMouse(true);
+
+	//build the mesh
+	var objects = [];
+	for(var i = 0; i < 11; i++)
+	{
+		var object = {};
+		object.primitive = gl.TRIANGLES;
+		object.model = mat4.create();
+		mat4.translate( object.model, object.model, [ (i%5) * 3 - 5.5, 0, ((i/5)|0) * -4 + 2] );
+		objects.push(object);
+	}
+
+	objects[0].mesh = GL.Mesh.plane();
+	objects[1].mesh = GL.Mesh.plane({xz:true});
+	objects[2].mesh = GL.Mesh.circle({xz:true});
+	objects[3].mesh = GL.Mesh.cube();
+	objects[4].mesh = GL.Mesh.box({sizey:2});
+	objects[5].mesh = GL.Mesh.sphere();
+	objects[6].mesh = GL.Mesh.sphere({hemi:true});
+	objects[7].mesh = GL.Mesh.cylinder({radius:0.5});
+	objects[8].mesh = GL.Mesh.grid({size:1});
+	objects[8].primitive = gl.LINES;
+	objects[9].mesh = GL.Mesh.icosahedron({size:1,subdivisions:1});
+	objects[10].mesh = GL.Mesh.cone({radius:0.5,height:1});
+
+	//create basic matrices for cameras and transformation
+	var proj = mat4.create();
+	var view = mat4.create();
+	var model = mat4.create();
+	var mvp = mat4.create();
+	var temp = mat4.create();
+
+	//set the camera position
+	mat4.perspective(proj, 45 * DEG2RAD, gl.canvas.width / gl.canvas.height, 0.1, 1000);
+	mat4.lookAt(view, [0,10,10],[0,0,0], [0,1,0]);
+
+	//basic phong shader
+	var shader = new Shader('\
+			precision highp float;\
+			attribute vec3 a_vertex;\
+			attribute vec3 a_normal;\
+			varying vec3 v_normal;\
+			uniform mat4 u_mvp;\
+			uniform mat4 u_model;\
+			void main() {\
+				v_normal = (u_model * vec4(a_normal,0.0)).xyz;\
+				gl_Position = u_mvp * vec4(a_vertex,1.0);\
+			}\
+			', '\
+			precision highp float;\
+			varying vec3 v_normal;\
+			uniform vec3 u_lightvector;\
+			uniform vec4 u_color;\
+			void main() {\
+			  vec3 N = normalize(v_normal);\
+			  gl_FragColor = u_color * max(0.0, dot(u_lightvector,N));\
+			}\
+		');
+
+
+	//generic gl flags and settings
+	gl.clearColor(0.1,0.1,0.1,1);
+	gl.enable( gl.DEPTH_TEST );
+
+	var uniforms = {
+		u_color: [1,1,1,1],
+		u_lightvector: vec3.normalize(vec3.create(),[1,1,1]),
+		u_model: model,
+		u_mvp: mvp
+	};
+
+	var height = 10;
+
+	//rendering loop
+	gl.ondraw = function()
+	{
+		gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT );
+		mat4.lookAt(view, [0,height,10],[0,0,0], [0,1,0]);
+
+		//create modelview and projection matrices
+		for(var i in objects)
+		{
+			var object = objects[i];
+			mat4.multiply(temp,view,object.model);
+			mat4.multiply(mvp,proj,temp);
+
+			//render mesh using the shader
+			uniforms.u_model = object.model;
+			shader.uniforms(uniforms).draw(object.mesh, object.primitive);
+		}
+	};
+
+	//update loop
+	gl.onupdate = function(dt)
+	{
+		//rotate world
+		for(var i in objects)
+			mat4.rotateY(objects[i].model, objects[i].model, dt*0.2);
+	};
+
+	gl.onmousemove = function(e)
+	{
+		if(e.dragging)
+			height += e.deltay * 0.1;
+	}
+	
+	</script>
+</body>
+</html>
+
+

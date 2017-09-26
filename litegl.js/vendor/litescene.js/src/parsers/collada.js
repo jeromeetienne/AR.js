@@ -1,0 +1,1 @@
+../../../collada/src/collada.js
