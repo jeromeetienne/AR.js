@@ -132,6 +132,8 @@ var arAnchor = new ARjs.Anchor(lARSession._arSession, arProfile.defaultMarkerPar
 onRenderFcts.push(function(){
 	var liteglCamera = LS.GlobalScene.getCamera()
 	lARSession.updateAnchor(arAnchor, liteglCamera)
+	
+	monitorNode.visible = arAnchor.controls.object3d.visible	
 })
 
 
