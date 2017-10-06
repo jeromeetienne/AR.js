@@ -50,7 +50,7 @@ ARjs.Source = THREEx.ArToolkitSource = function(parameters){
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-ARjs.Source.prototype.init = function(onReady, onError){
+ARjs.Source.prototype.init = function(onReady, onError, stream){
 	var _this = this
 
         if( this.parameters.sourceType === 'image' ){
@@ -60,7 +60,9 @@ ARjs.Source.prototype.init = function(onReady, onError){
         }else if( this.parameters.sourceType === 'webcam' ){
                 // var domElement = this._initSourceWebcamOld(onSourceReady)                        
                 var domElement = this._initSourceWebcam(onSourceReady, onError)                        
-        }else{
+        }else if( this.parameters.sourceType === 'stream' ){
+			var domElement = this._initSourceStream(onSourceReady, stream)                        
+		}else{
                 console.assert(false)
         }
 
@@ -224,6 +226,31 @@ ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
 			message: error.message
 		});
 	});
+
+	return domElement
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//          handle stream source
+////////////////////////////////////////////////////////////////////////////////
+
+ARjs.Source.prototype._initSourceStream = function(onReady, stream) {
+	var _this = this
+
+	var domElement = document.createElement('video');
+	domElement.setAttribute('autoplay', '');
+	domElement.setAttribute('muted', '');
+	domElement.setAttribute('playsinline', '');
+	domElement.style.width = this.parameters.displayWidth+'px'
+	domElement.style.height = this.parameters.displayHeight+'px'
+	domElement.srcObject = stream;
+	domElement.play();
+
+	var interval = setInterval(function() {
+		if (!domElement.videoWidth)	return;
+		onReady()
+		clearInterval(interval)
+	}, 1000/50);
 
 	return domElement
 }
