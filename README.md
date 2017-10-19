@@ -107,7 +107,7 @@ by
 [@AndraConnect](https://twitter.com/AndraConnect).
 
 ```html
-<script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+<script src="https://aframe.io/releases/0.6.0/aframe.min.js"></script>
 <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
 <body style='margin : 0px; overflow: hidden;'>
 	<a-scene embedded artoolkit='sourceType: webcam;'>
