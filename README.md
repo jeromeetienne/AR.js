@@ -233,7 +233,7 @@ Credits: @HelloDeadline, @sorianog
 
 # How To Release ?
 
-This one is mainly for [me](@jerome_etienne) to remember :)
+This one is mainly for [me](https://twitter.com/jerome_etienne) to remember :)
 
 ```bash
 # replace REVISION to the proper version
