@@ -2,15 +2,15 @@
 Augmented reality for a-frame.
 
 ```html
-<!-- add artoolkit into your scene -->
-<a-scene artoolkit>
+<!-- add arjs into your scene -->
+<a-scene arjs>
         <!-- define a marker -->
-        <a-marker>
+        <a-anchor>
                 <!-- define the content to be displayed on top of the marker -->
-                <a-cube>
-        </a-marker>
+                <a-box color="#2EAFAC"></a-box>
+        </a-anchor>
         <!-- define a simple camera -->
-        <a-entity camera></a-entity>
+        <a-camera-static/>
 </a-scene>
 ```
 
@@ -19,32 +19,32 @@ Here are the demos
 
 - [basic.html](https://jeromeetienne.github.io/AR.js/aframe/examples/basic.html) 
 basic minimal examples. Good to get started
-- [demo.html](https://jeromeetienne.github.io/AR.js/aframe/examples/demo.html) 
-shows you all the possibilities of aframe-ar. You can play around
+<!-- - [demo.html](https://jeromeetienne.github.io/AR.js/aframe/examples/demo.html) 
+shows you all the possibilities of aframe-ar. You can play around -->
 - [marker-camera.html](https://jeromeetienne.github.io/AR.js/aframe/examples/marker-camera.html):
 Move the camera instead of using the usual "camera looking toward negative-z and modelViewMatrix"
 - [multiple-independent-markers.html](https://jeromeetienne.github.io/AR.js/aframe/examples/multiple-independent-markers.html):
 Handle multiple indepant markers in a single scene.
-- [hatsune-minecraft.html](https://jeromeetienne.github.io/AR.js/aframe/examples/minecraft.html): 
-include a hatsune miku or minecraft avatar on the marker
+<!-- - [hatsune-minecraft.html](https://jeromeetienne.github.io/AR.js/aframe/examples/minecraft.html): 
+include a hatsune miku or minecraft avatar on the marker -->
 
 # artoolkit system
 
 | Attribute | Description |
 | --- | --- |
-| debug | true if one should display artoolkit debug canvas, false otherwise |
-| detectionMode | the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix'] |
-| matrixCodeType | type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5] |
-| cameraParametersUrl | url of the camera parameters |
-| maxDetectionRate | tune the maximum rate of pose detection in the source image |
-| sourceType | type of source - ['webcam', 'image', 'video'] |
-| sourceUrl | url of the source - valid if sourceType = image|video |
-| sourceWidth | resolution of at which we initialize the source image |
-| sourceHeight | resolution of at which we initialize the source image |
-| displayWidth | resolution displayed for the source  |
-| displayHeight | resolution displayed for the source  |
-| canvasWidth | resolution of at which we detect pose in the source image |
-| canvasHeight | resolution of at which we detect pose in the source image |
+| `debugUIEnabled` | true if one should display artoolkit debug canvas, false otherwise |
+| `detectionMode` | the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix'] |
+| `matrixCodeType` | type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5] |
+| `cameraParametersUrl` | url of the camera parameters |
+| `maxDetectionRate` | tune the maximum rate of pose detection in the source image |
+| `sourceType` | type of source - ['webcam', 'image', 'video'] |
+| `sourceUrl` | url of the source - valid if sourceType = image|video |
+| `sourceWidth` | resolution of at which we initialize the source image |
+| `sourceHeight` | resolution of at which we initialize the source image |
+| `displayWidth` | resolution displayed for the source  |
+| `displayHeight` | resolution displayed for the source  |
+| `canvasWidth` | resolution of at which we detect pose in the source image |
+| `canvasHeight` | resolution of at which we detect pose in the source image |
 
 # \<a-marker\>
 
@@ -74,7 +74,7 @@ modelView is able to provide multiple *independent* markers.
 <!-- add artoolkit into your scene -->
 <a-scene artoolkit>
         <!-- define your scene as usual -->
-        <a-cube>
+        <a-box></a-box>
         <!-- define a camera inside the <a-marker-camera> -->
         <a-marker-camera preset='hiro'><a-marker-camera>
 </a-scene>
