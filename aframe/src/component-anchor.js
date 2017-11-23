@@ -72,28 +72,37 @@ AFRAME.registerComponent('arjs-anchor', {
 			arProfile.changeMatrixMode(_this.data.changeMatrixMode)
 
 			// honor this.data.preset
+			var markerParameters = Object.assign({}, arProfile.defaultMarkerParameters)
+
 			if( _this.data.preset === 'hiro' ){
-				arProfile.defaultMarkerParameters.type = 'pattern'
-				arProfile.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL+'examples/marker-training/examples/pattern-files/pattern-hiro.patt'
-				arProfile.defaultMarkerParameters.markersAreaEnabled = false
+				markerParameters.type = 'pattern'
+				markerParameters.patternUrl = THREEx.ArToolkitContext.baseURL+'examples/marker-training/examples/pattern-files/pattern-hiro.patt'
+				markerParameters.markersAreaEnabled = false
 			}else if( _this.data.preset === 'kanji' ){
-				arProfile.defaultMarkerParameters.type = 'pattern'
-				arProfile.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL+'examples/marker-training/examples/pattern-files/pattern-kanji.patt'
-				arProfile.defaultMarkerParameters.markersAreaEnabled = false
+				markerParameters.type = 'pattern'
+				markerParameters.patternUrl = THREEx.ArToolkitContext.baseURL+'examples/marker-training/examples/pattern-files/pattern-kanji.patt'
+				markerParameters.markersAreaEnabled = false
 			}else if( _this.data.preset === 'area' ){
-				arProfile.defaultMarkerParameters.type = 'barcode'
-				arProfile.defaultMarkerParameters.barcodeValue = 1001	
-				arProfile.defaultMarkerParameters.markersAreaEnabled = true
-			}else {
+				markerParameters.type = 'barcode'
+				markerParameters.barcodeValue = 1001
+				markerParameters.markersAreaEnabled = true
+			}else if( _this.data.type === 'barcode' ){
+				markerParameters = {
+					type:               _this.data.type,
+					changeMatrixMode:   'modelViewMatrix',
+					barcodeValue:       _this.data.barcodeValue,
+					markersAreaEnabled: false
+				}
+			}else{
 				// console.assert( this.data.preset === '', 'illegal preset value '+this.data.preset)
-			}		
+			}
 
 			//////////////////////////////////////////////////////////////////////////////
 			//		create arAnchor
 			//////////////////////////////////////////////////////////////////////////////
 			
 			var arSession = arjsSystem._arSession
-			var arAnchor = _this._arAnchor = new ARjs.Anchor(arSession, arProfile.defaultMarkerParameters)
+			var arAnchor  = _this._arAnchor = new ARjs.Anchor(arSession, markerParameters)
 
 			// it is now considered isReady
 			_this.isReady = true
