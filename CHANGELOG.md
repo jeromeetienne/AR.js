@@ -1,6 +1,9 @@
 # 1.5.5-dev
 
 - Fix cross domain issue with [https://webxr.io/augmented-website/](https://webxr.io/augmented-website/)
+- reduced npm package size from 250mbyte to 3.5mbyte #256 (thanks @paztis)
+- fixed perspective in artoolkit portrait #212 (thanks @pikilipita)
+- fixed barcode in a-frame #260 (thanks @basbase)
 
 ## Tests
 - Made tests to report failure - yeah i know it is silly but before it reported
