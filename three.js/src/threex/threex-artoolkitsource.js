@@ -341,12 +341,33 @@ ARjs.Source.prototype.onResizeElement = function(){
 		this.domElement.style.marginLeft = '0px'
 	}
 }
-
+/*
 ARjs.Source.prototype.copyElementSizeTo = function(otherElement){
 	otherElement.style.width = this.domElement.style.width
 	otherElement.style.height = this.domElement.style.height	
 	otherElement.style.marginLeft = this.domElement.style.marginLeft
 	otherElement.style.marginTop = this.domElement.style.marginTop
+}
+*/
+
+ARjs.Source.prototype.copyElementSizeTo = function(otherElement){
+
+	if (window.innerWidth > window.innerHeight)
+	{
+		//landscape
+		otherElement.style.width = this.domElement.style.width
+		otherElement.style.height = this.domElement.style.height
+		otherElement.style.marginLeft = this.domElement.style.marginLeft
+		otherElement.style.marginTop = this.domElement.style.marginTop
+	}
+	else {
+		//portrait
+		otherElement.style.height = this.domElement.style.height
+		otherElement.style.width = (parseInt(otherElement.style.height) * 4/3)+"px";
+		otherElement.style.marginLeft = ((window.innerWidth- parseInt(otherElement.style.width))/2)+"px";
+		otherElement.style.marginTop = 0;
+	}
+
 }
 
 //////////////////////////////////////////////////////////////////////////////
