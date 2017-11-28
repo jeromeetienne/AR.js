@@ -1,4 +1,4 @@
-# Markers on WebARonARCore
+## Markers on WebARonARCore
 - WebARonARCore got some issue with WebRTC and cant access the camera directly 
   i can workaround this issue by rendering the video with ARView into a canvas
   and then process with canvas with the usual canvas processing
@@ -6,7 +6,12 @@
 - Test with a standalone 
   - first render arcore video in a canvas
   - get this canvas, process it 
-  - use dev.html
+  - use dev.html ?
+  - take a example from them and move it to ar.js ?
+- take three.ar.js boilerplate
+  - use their three.js canvas as source for markers
+  - 
+  
 
 ## Porting ARCore
 - merge THREE.ARView into ARjs.TangoVideoMesh

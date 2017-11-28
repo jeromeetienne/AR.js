@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>three.ar.js - Boilerplate</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no,
+        minimum-scale=1.0, maximum-scale=1.0">
+        <style>
+        body {
+                font-family: monospace;
+                margin: 0;
+                overflow: hidden;
+                position: fixed;
+                width: 100%;
+                height: 100vh;
+                -webkit-user-select: none;
+                user-select: none;
+        }
+        #info {
+                position: absolute;
+                left: 50%;
+                bottom: 0;
+                transform: translate(-50%, 0);
+                margin: 1em;
+                z-index: 10;
+                display: block;
+                line-height: 2em;
+                text-align: center;
+        }
+        #info * {
+                color: #fff;
+        }
+        .title {
+                background-color: rgba(40, 40, 40, 0.4);
+                padding: 0.4em 0.6em;
+                border-radius: 0.1em;
+        }
+        .links {
+                background-color: rgba(40, 40, 40, 0.6);
+                padding: 0.4em 0.6em;
+                border-radius: 0.1em;
+        }
+        canvas {
+                position: absolute;
+                top: 0;
+                left: 0;
+        }
+        </style>
+</head>
+<body>
+        <div id="info">
+                <span class="title">marker detection + arcore</span><br/>
+                <span class="links">
+                        <a href="https://github.com/jeromeetienne/ar.js">ar.js</a> -
+                        <a href="..">examples</a>
+                </span>
+        </div>
+        <script src="../vendor/three-ar.js/third_party/three.js/three.js"></script>
+        <script src="../vendor/three-ar.js/third_party/three.js/VRControls.js"></script>
+        <script src="../vendor/three-ar.js/dist/three.ar.js"></script>
+        
+        <!-- jsartookit -->
+        <script src='../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
+        <script src='../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
+        <!-- include threex.artoolkit -->
+        <script src='../src/threex/threex-artoolkitsource.js'></script>
+        <script src='../src/threex/threex-artoolkitcontext.js'></script>
+        <script src='../src/threex/threex-artoolkitprofile.js'></script>
+        <script src='../src/threex/threex-arbasecontrols.js'></script>
+        <script src='../src/threex/threex-armarkercontrols.js'></script>
+        <script src='../src/threex/threex-arsmoothedcontrols.js'></script>
+        <script>ARjs.Context.baseURL = '../'</script>
+        
+        <script>
+
+	// array of functions for the rendering loop
+	var onRenderFcts= [];
+        
+        var vrDisplay, vrControls, arView;
+        var canvas, camera, scene, renderer;
+        var BOX_DISTANCE = 1.5;
+        var BOX_SIZE = 0.25;
+        var BOX_QUANTITY = 6;
+        var boxesAdded = false;
+        
+        /**
+        * Use the `getARDisplay()` utility to leverage the WebVR API
+        * to see if there are any AR-capable WebVR VRDisplays. Returns
+        * a valid display if found. Otherwise, display the unsupported
+        * browser message.
+        */
+        THREE.ARUtils.getARDisplay().then(function (display) {
+                if (display) {
+                        vrDisplay = display;
+                        init();
+                } else {
+                        THREE.ARUtils.displayUnsupportedMessage();
+                }
+        });
+        
+        function init() {
+                // Setup the three.js rendering environment
+                renderer = new THREE.WebGLRenderer({ alpha: true });
+                renderer.setPixelRatio(window.devicePixelRatio);
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.autoClear = false;
+                canvas = renderer.domElement;
+                document.body.appendChild(canvas);
+                scene = new THREE.Scene();
+                
+                // Creating the ARView, which is the object that handles
+                // the rendering of the camera stream behind the three.js
+                // scene
+                arView = new THREE.ARView(vrDisplay, renderer);
+                
+                // The ARPerspectiveCamera is very similar to THREE.PerspectiveCamera,
+                // except when using an AR-capable browser, the camera uses
+                // the projection matrix provided from the device, so that the
+                // perspective camera's depth planes and field of view matches
+                // the physical camera on the device.
+                camera = new THREE.ARPerspectiveCamera(
+                        vrDisplay,
+                        60,
+                        window.innerWidth / window.innerHeight,
+                        vrDisplay.depthNear,
+                        vrDisplay.depthFar
+                );
+                
+                // VRControls is a utility from three.js that applies the device's
+                // orientation/position to the perspective camera, keeping our
+                // real world and virtual world in sync.
+                vrControls = new THREE.VRControls(camera);
+                
+                // Bind our event handlers
+                window.addEventListener('resize', onWindowResize, false);
+                
+                // Kick off the render loop!
+                update();
+        }
+        
+        /**
+        * The render loop, called once per frame. Handles updating
+        * our scene and rendering.
+        */
+        function update() {
+                // Clears color from the frame before rendering the camera (arView) or scene.
+                renderer.clearColor();
+                
+                // Render the device's camera stream on screen first of all.
+                // It allows to get the right pose synchronized with the right frame.
+                arView.render();
+                
+                // Update our camera projection matrix in the event that
+                // the near or far planes have updated
+                camera.updateProjectionMatrix();
+                
+                // Update our perspective camera's positioning
+                vrControls.update();
+                
+                // If we have not added boxes yet, and we have positional
+                // information applied to our camera (it can take a few seconds),
+                // and the camera's Y position is not undefined or 0, create boxes
+                if (!boxesAdded && !camera.position.y) {
+                        addBoxes();
+                }
+                
+                // Render our three.js virtual scene
+                renderer.clearDepth();
+                renderer.render(scene, camera);
+
+		// call each update function
+		onRenderFcts.forEach(function(onRenderFct){
+			onRenderFct()
+		})
+
+                // Kick off the requestAnimationFrame to call this function
+                // when a new VRDisplay frame is rendered
+                vrDisplay.requestAnimationFrame(update);
+        }
+        
+        /**
+        * On window resize, update the perspective camera's aspect ratio,
+        * and call `updateProjectionMatrix` so that we can get the latest
+        * projection matrix provided from the device
+        */
+        function onWindowResize () {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        /**
+        * Once we have position information applied to our camera,
+        * create some boxes at the same height as the camera
+        */
+        function addBoxes () {
+                // Create some cubes around the origin point
+                for (var i = 0; i < BOX_QUANTITY; i++) {
+                        var angle = Math.PI * 2 * (i / BOX_QUANTITY);
+                        var geometry = new THREE.BoxGeometry(BOX_SIZE, BOX_SIZE, BOX_SIZE);
+                        var material = new THREE.MeshNormalMaterial();
+                        var cube = new THREE.Mesh(geometry, material);
+                        cube.position.set(Math.cos(angle) * BOX_DISTANCE, camera.position.y - 0.25, Math.sin(angle) * BOX_DISTANCE);
+                        scene.add(cube);
+                }
+                
+                // Flip this switch so that we only perform this once
+                boxesAdded = true;
+        }
+        
+        //////////////////////////////////////////////////////////////////////////////
+        //                Code Separator
+        //////////////////////////////////////////////////////////////////////////////
+
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          handle arToolkitSource
+	////////////////////////////////////////////////////////////////////////////////
+
+	var arToolkitSource = new THREEx.ArToolkitSource({
+		// to read from the webcam 
+		sourceType : 'canvas',
+                sourceCanvas: renderer.domElement,
+	})
+        // 
+	// arToolkitSource.init(function onReady(){
+	// 	onResize()
+	// })
+        // 
+	// // handle resize
+	// window.addEventListener('resize', function(){
+	// 	onResize()
+	// })
+	// function onResize(){
+	// 	arToolkitSource.onResizeElement()	
+	// 	arToolkitSource.copyElementSizeTo(renderer.domElement)	
+	// 	if( arToolkitContext.arController !== null ){
+	// 		arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)	
+	// 	}	
+	// }
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          initialize arToolkitContext
+	////////////////////////////////////////////////////////////////////////////////	
+
+	// create atToolkitContext
+	var arToolkitContext = new THREEx.ArToolkitContext({
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
+		// debug: true,
+		// detectionMode: 'mono_and_matrix',
+		detectionMode: 'mono',
+		// detectionMode: 'color_and_matrix',
+		// matrixCodeType: '3x3',
+
+		canvasWidth: 80*3,
+		canvasHeight: 60*3,
+
+		maxDetectionRate: 30,
+	})
+	// // initialize it
+	// arToolkitContext.init(function onCompleted(){
+	// 	// copy projection matrix to camera
+	// 	camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+	// })
+
+	// update artoolkit on every frame
+	onRenderFcts.push(function(){
+		if( arToolkitSource.ready === false )	return
+
+		arToolkitContext.update( arToolkitSource.domElement )
+	})
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          Create a ArMarkerControls
+	////////////////////////////////////////////////////////////////////////////////
+	
+	var markerRoot = new THREE.Group
+	// scene.add(markerRoot)
+	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
+		// type: 'barcode',
+		// barcodeValue: 5,
+		
+		type : 'pattern',
+		patternUrl : THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt',
+	})
+</script>
+</body>
+</html>

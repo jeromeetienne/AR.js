@@ -9,10 +9,12 @@ ARjs.Source = THREEx.ArToolkitSource = function(parameters){
 
 	// handle default parameters
 	this.parameters = {
-		// type of source - ['webcam', 'image', 'video']
+		// type of source - ['webcam', 'image', 'video', 'canvas']
 		sourceType : 'webcam',
 		// url of the source - valid if sourceType = image|video
 		sourceUrl : null,
+		// canvas of the source - valid IIF sourceType = canvas
+		sourceCanvas : null,
 		
 		// resolution of at which we initialize in the source image
 		sourceWidth: 640,
@@ -58,8 +60,9 @@ ARjs.Source.prototype.init = function(onReady, onError){
         }else if( this.parameters.sourceType === 'video' ){
                 var domElement = this._initSourceVideo(onSourceReady, onError)                        
         }else if( this.parameters.sourceType === 'webcam' ){
-                // var domElement = this._initSourceWebcamOld(onSourceReady)                        
                 var domElement = this._initSourceWebcam(onSourceReady, onError)                        
+        }else if( this.parameters.sourceType === 'canvas' ){
+                var domElement = this._initSourceCanvas(onSourceReady, onError)                        
         }else{
                 console.assert(false)
         }
@@ -84,7 +87,6 @@ ARjs.Source.prototype.init = function(onReady, onError){
 ////////////////////////////////////////////////////////////////////////////////
 //          init image source
 ////////////////////////////////////////////////////////////////////////////////
-
 
 ARjs.Source.prototype._initSourceImage = function(onReady) {
 	// TODO make it static
@@ -227,6 +229,24 @@ ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
 
 	return domElement
 }
+
+////////////////////////////////////////////////////////////////////////////////
+//          init canvas source
+////////////////////////////////////////////////////////////////////////////////
+
+ARjs.Source.prototype._initSourceCanvas = function(onReady) {
+	console.assert( this.parameters.sourceCanvas !== null, 'sourceCanvas isnt set')
+        var domElement = this.parameters.sourceCanvas
+	debugger
+
+	// wait until the video stream is ready
+	setTimeout(function() {
+		onReady()
+	}, 0);
+
+	return domElement                
+}
+
 
 //////////////////////////////////////////////////////////////////////////////
 //		Handle Mobile Torch
