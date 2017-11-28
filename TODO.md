@@ -1,3 +1,13 @@
+# Markers on WebARonARCore
+- WebARonARCore got some issue with WebRTC and cant access the camera directly 
+  i can workaround this issue by rendering the video with ARView into a canvas
+  and then process with canvas with the usual canvas processing
+- when should i update the client on the phone ?
+- Test with a standalone 
+  - first render arcore video in a canvas
+  - get this canvas, process it 
+  - use dev.html
+
 ## Porting ARCore
 - merge THREE.ARView into ARjs.TangoVideoMesh
 - when can i merge into dev ?

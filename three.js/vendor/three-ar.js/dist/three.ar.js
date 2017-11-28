@@ -1,162 +1,116 @@
-/*
- * Copyright 2017 Google Inc. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the 'License');
+/**
+ * @license
+ * three.ar.js
+ * Copyright (c) 2017 Google
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
+ * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 
+/**
+ * @license
+ * gl-preserve-state
+ * Copyright (c) 2016, Brandon Jones.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('three')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'three'], factory) :
+	(factory((global['three-ar'] = {}),global.THREE));
+}(this, (function (exports,three) { 'use strict';
 
-"use strict";
+var global$1 = typeof global !== "undefined" ? global :
+            typeof self !== "undefined" ? self :
+            typeof window !== "undefined" ? window : {};
 
+var noop = function noop() {};
+var opacityRemap = function opacityRemap(mat) {
+  if (mat.opacity === 0) {
+    mat.opacity = 1;
+  }
+};
+var loadObj = function loadObj(objPath, materialCreator, OBJLoader) {
+  return new Promise(function (resolve, reject) {
+    var loader = new OBJLoader();
+    if (materialCreator) {
+      Object.keys(materialCreator.materials).forEach(function (k) {
+        return opacityRemap(materialCreator.materials[k]);
+      });
+      loader.setMaterials(materialCreator);
+    }
+    loader.load(objPath, resolve, noop, reject);
+  });
+};
+var loadMtl = function loadMtl(mtlPath, MTLLoader) {
+  return new Promise(function (resolve, reject) {
+    var loader = new MTLLoader();
+    loader.setTexturePath(mtlPath.substr(0, mtlPath.lastIndexOf('/') + 1));
+    loader.setMaterialOptions({ ignoreZeroRGBs: true });
+    loader.load(mtlPath, resolve, noop, reject);
+  });
+};
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+var colors = ['#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800'].map(function (hex) {
+  return new three.Color(hex);
 });
-exports.displayUnsupportedMessage = exports.placeObjectAtHit = exports.loadBlocksModel = exports.getARDisplay = exports.isARDisplay = exports.isARKit = exports.isTango = undefined;
-
-var _loaders = __webpack_require__(8);
-
-var LEARN_MORE_LINK = 'https://developers.google.com/ar/develop/web/getting-started'; /*
-                                                                                       * Copyright 2017 Google Inc. All Rights Reserved.
-                                                                                       * Licensed under the Apache License, Version 2.0 (the 'License');
-                                                                                       * you may not use this file except in compliance with the License.
-                                                                                       * You may obtain a copy of the License at
-                                                                                       *
-                                                                                       *     http://www.apache.org/licenses/LICENSE-2.0
-                                                                                       *
-                                                                                       * Unless required by applicable law or agreed to in writing, software
-                                                                                       * distributed under the License is distributed on an 'AS IS' BASIS,
-                                                                                       * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                       * See the License for the specific language governing permissions and
-                                                                                       * limitations under the License.
-                                                                                       */
-
-var UNSUPPORTED_MESSAGE = 'This augmented reality experience requires WebARonARCore or WebARonARKit: experimental browsers from Google, available Android and iOS. Learn more <a href="' + LEARN_MORE_LINK + '">here</a>.';
-
-THREE.ARUtils = Object.create(null);
-
-THREE.ARUtils.isTango = function (display) {
+var LEARN_MORE_LINK = 'https://developers.google.com/ar/develop/web/getting-started';
+var UNSUPPORTED_MESSAGE = 'This augmented reality experience requires\n  WebARonARCore or WebARonARKit, experimental browsers from Google\n  for Android and iOS. Learn more at the <a href="' + LEARN_MORE_LINK + '">Google Developers site</a>.';
+var ARUtils = Object.create(null);
+ARUtils.isTango = function (display) {
   return display && display.displayName.toLowerCase().includes('tango');
 };
-var isTango = exports.isTango = THREE.ARUtils.isTango;
-
-THREE.ARUtils.isARKit = function (display) {
+var isTango = ARUtils.isTango;
+ARUtils.isARKit = function (display) {
   return display && display.displayName.toLowerCase().includes('arkit');
 };
-var isARKit = exports.isARKit = THREE.ARUtils.isARKit;
-
-THREE.ARUtils.isARDisplay = function (display) {
+var isARKit = ARUtils.isARKit;
+ARUtils.isARDisplay = function (display) {
   return isARKit(display) || isTango(display);
 };
-var isARDisplay = exports.isARDisplay = THREE.ARUtils.isARDisplay;
-
-/**
- * Returns a promise that resolves to either to a VRDisplay with
- * AR capabilities, or null if no valid AR devices found on the platform.
- *
- * @return {Promise<VRDisplay?>}
- */
-THREE.ARUtils.getARDisplay = function () {
+var isARDisplay = ARUtils.isARDisplay;
+ARUtils.getARDisplay = function () {
   return new Promise(function (resolve, reject) {
     if (!navigator.getVRDisplays) {
       resolve(null);
       return;
     }
-
     navigator.getVRDisplays().then(function (displays) {
       if (!displays && displays.length === 0) {
         resolve(null);
         return;
       }
-
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
-
       try {
         for (var _iterator = displays[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var display = _step.value;
-
           if (isARDisplay(display)) {
             resolve(display);
             return;
@@ -176,79 +130,55 @@ THREE.ARUtils.getARDisplay = function () {
           }
         }
       }
-
       resolve(null);
     });
   });
 };
-var getARDisplay = exports.getARDisplay = THREE.ARUtils.getARDisplay;
 
-/**
- * Takes a path for an OBJ model and optionally a path for an MTL
- * texture and returns a promise resolving to a THREE.Mesh loaded with
- * the appropriate material. Can be used on downloaded models from Blocks.
- *
- * @param {string} objPath
- * @param {string} mtlPath
- * @return {THREE.Mesh}
- */
-THREE.ARUtils.loadBlocksModel = function (objPath, mtlPath) {
+ARUtils.loadModel = function () {
+  var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   return new Promise(function (resolve, reject) {
-    if (!THREE.OBJLoader || !THREE.MTLLoader) {
-      reject(new Error('Must include THREE.OBJLoader and THREE.MTLLoader'));
+    var mtlPath = config.mtlPath,
+        objPath = config.objPath;
+    var OBJLoader = config.OBJLoader || (global$1.THREE ? global$1.THREE.OBJLoader : null);
+    var MTLLoader = config.MTLLoader || (global$1.THREE ? global$1.THREE.MTLLoader : null);
+    if (!config.objPath) {
+      reject(new Error('`objPath` must be specified.'));
       return;
     }
-
-    var p = Promise.resolve();
-
-    if (mtlPath) {
-      p = (0, _loaders.loadMtl)(mtlPath);
+    if (!OBJLoader) {
+      reject(new Error('Missing OBJLoader as third argument, or window.THREE.OBJLoader existence'));
+      return;
     }
-
-    p.then(function (materials) {
-      if (materials) {
-        materials.preload();
+    if (config.mtlPath && !MTLLoader) {
+      reject(new Error('Missing MTLLoader as fourth argument, or window.THREE.MTLLoader existence'));
+      return;
+    }
+    var p = Promise.resolve();
+    if (mtlPath) {
+      p = loadMtl(mtlPath, MTLLoader);
+    }
+    p.then(function (materialCreator) {
+      if (materialCreator) {
+        materialCreator.preload();
       }
-      return (0, _loaders.loadObj)(objPath, materials);
-    }).then(function (obj) {
-      var model = obj.children[0];
-      model.geometry.applyMatrix(new THREE.Matrix4().makeRotationY(THREE.Math.degToRad(-90)));
-
-      return model;
+      return loadObj(objPath, materialCreator, OBJLoader);
     }).then(resolve, reject);
   });
 };
-var loadBlocksModel = exports.loadBlocksModel = THREE.ARUtils.loadBlocksModel;
 
-var model = new THREE.Matrix4();
-var tempPos = new THREE.Vector3();
-var tempQuat = new THREE.Quaternion();
-var tempScale = new THREE.Vector3();
-
-/**
- * Takes a THREE.Object3D and a VRHit and positions and optionally orients
- * the object according to the transform of the VRHit. Can provide an
- * easing value between 0 and 1 corresponding to the lerp between the
- * object's current position/orientation, and the position/orientation of the
- * hit.
- *
- * @param {THREE.Object3D} object
- * @param {VRHit} hit
- * @param {number} easing
- * @param {boolean} applyOrientation
- */
-THREE.ARUtils.placeObjectAtHit = function (object, hit) {
+var model = new three.Matrix4();
+var tempPos = new three.Vector3();
+var tempQuat = new three.Quaternion();
+var tempScale = new three.Vector3();
+ARUtils.placeObjectAtHit = function (object, hit) {
   var easing = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
   var applyOrientation = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-
   if (!hit || !hit.modelMatrix) {
     throw new Error('placeObjectAtHit requires a VRHit object');
   }
-
   model.fromArray(hit.modelMatrix);
-
   model.decompose(tempPos, tempQuat, tempScale);
-
   if (easing === 1) {
     object.position.copy(tempPos);
     if (applyOrientation) {
@@ -261,13 +191,12 @@ THREE.ARUtils.placeObjectAtHit = function (object, hit) {
     }
   }
 };
-var placeObjectAtHit = exports.placeObjectAtHit = THREE.ARUtils.placeObjectAtHit;
-
-/**
- * Injects a DOM element into the current page prompting the user that
- * their browser does not support these AR features.
- */
-THREE.ARUtils.displayUnsupportedMessage = function () {
+var placeObjectAtHit = ARUtils.placeObjectAtHit;
+ARUtils.getRandomPaletteColor = function () {
+  return colors[Math.floor(Math.random() * colors.length)];
+};
+var getRandomPaletteColor = ARUtils.getRandomPaletteColor;
+ARUtils.displayUnsupportedMessage = function (customMessage) {
   var element = document.createElement('div');
   element.id = 'webgl-error-message';
   element.style.fontFamily = 'monospace';
@@ -280,88 +209,472 @@ THREE.ARUtils.displayUnsupportedMessage = function () {
   element.style.padding = '1.5em';
   element.style.width = '400px';
   element.style.margin = '5em auto 0';
-  element.innerHTML = UNSUPPORTED_MESSAGE;
+  element.innerHTML = typeof customMessage === 'string' ? customMessage : UNSUPPORTED_MESSAGE;
   document.body.appendChild(element);
 };
-var displayUnsupportedMessage = exports.displayUnsupportedMessage = THREE.ARUtils.displayUnsupportedMessage;
 
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
+var vertexShader = "precision mediump float;precision mediump int;uniform mat4 modelViewMatrix;uniform mat4 modelMatrix;uniform mat4 projectionMatrix;attribute vec3 position;varying vec3 vPosition;void main(){vPosition=(modelMatrix*vec4(position,1.0)).xyz;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}";
 
-"use strict";
+var fragmentShader = "precision highp float;varying vec3 vPosition;\n#define countX 7.0\n#define countY 4.0\n#define gridAlpha 0.75\nuniform float dotRadius;uniform vec3 dotColor;uniform vec3 lineColor;uniform vec3 backgroundColor;uniform float alpha;float Circle(in vec2 p,float r){return length(p)-r;}float Line(in vec2 p,in vec2 a,in vec2 b){vec2 pa=p-a;vec2 ba=b-a;float t=clamp(dot(pa,ba)/dot(ba,ba),0.0,1.0);vec2 pt=a+t*ba;return length(pt-p);}float Union(float a,float b){return min(a,b);}void main(){vec2 count=vec2(countX,countY);vec2 size=vec2(1.0)/count;vec2 halfSize=size*0.5;vec2 uv=mod(vPosition.xz*1.5,size)-halfSize;float dots=Circle(uv-vec2(halfSize.x,0.0),dotRadius);dots=Union(dots,Circle(uv+vec2(halfSize.x,0.0),dotRadius));dots=Union(dots,Circle(uv+vec2(0.0,halfSize.y),dotRadius));dots=Union(dots,Circle(uv-vec2(0.0,halfSize.y),dotRadius));float lines=Line(uv,vec2(0.0,halfSize.y),-vec2(halfSize.x,0.0));lines=Union(lines,Line(uv,vec2(0.0,-halfSize.y),-vec2(halfSize.x,0.0)));lines=Union(lines,Line(uv,vec2(0.0,-halfSize.y),vec2(halfSize.x,0.0)));lines=Union(lines,Line(uv,vec2(0.0,halfSize.y),vec2(halfSize.x,0.0)));lines=Union(lines,Line(uv,vec2(-halfSize.x,halfSize.y),vec2(halfSize.x,halfSize.y)));lines=Union(lines,Line(uv,vec2(-halfSize.x,-halfSize.y),vec2(halfSize.x,-halfSize.y)));lines=Union(lines,Line(uv,vec2(-halfSize.x,0.0),vec2(halfSize.x,0.0)));lines=clamp(smoothstep(0.0,0.0035,lines),0.0,1.0);dots=clamp(smoothstep(0.0,0.001,dots),0.0,1.0);float result=Union(dots,lines);gl_FragColor=vec4(mix(backgroundColor+mix(dotColor,lineColor,dots),backgroundColor,result),mix(gridAlpha,alpha,result));}";
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+
+
+
+var asyncGenerator = function () {
+  function AwaitValue(value) {
+    this.value = value;
+  }
+
+  function AsyncGenerator(gen) {
+    var front, back;
+
+    function send(key, arg) {
+      return new Promise(function (resolve, reject) {
+        var request = {
+          key: key,
+          arg: arg,
+          resolve: resolve,
+          reject: reject,
+          next: null
+        };
+
+        if (back) {
+          back = back.next = request;
+        } else {
+          front = back = request;
+          resume(key, arg);
+        }
+      });
+    }
+
+    function resume(key, arg) {
+      try {
+        var result = gen[key](arg);
+        var value = result.value;
+
+        if (value instanceof AwaitValue) {
+          Promise.resolve(value.value).then(function (arg) {
+            resume("next", arg);
+          }, function (arg) {
+            resume("throw", arg);
+          });
+        } else {
+          settle(result.done ? "return" : "normal", result.value);
+        }
+      } catch (err) {
+        settle("throw", err);
+      }
+    }
+
+    function settle(type, value) {
+      switch (type) {
+        case "return":
+          front.resolve({
+            value: value,
+            done: true
+          });
+          break;
+
+        case "throw":
+          front.reject(value);
+          break;
+
+        default:
+          front.resolve({
+            value: value,
+            done: false
+          });
+          break;
+      }
+
+      front = front.next;
+
+      if (front) {
+        resume(front.key, front.arg);
+      } else {
+        back = null;
+      }
+    }
+
+    this._invoke = send;
+
+    if (typeof gen.return !== "function") {
+      this.return = undefined;
+    }
+  }
+
+  if (typeof Symbol === "function" && Symbol.asyncIterator) {
+    AsyncGenerator.prototype[Symbol.asyncIterator] = function () {
+      return this;
+    };
+  }
+
+  AsyncGenerator.prototype.next = function (arg) {
+    return this._invoke("next", arg);
+  };
+
+  AsyncGenerator.prototype.throw = function (arg) {
+    return this._invoke("throw", arg);
+  };
+
+  AsyncGenerator.prototype.return = function (arg) {
+    return this._invoke("return", arg);
+  };
+
+  return {
+    wrap: function (fn) {
+      return function () {
+        return new AsyncGenerator(fn.apply(this, arguments));
+      };
+    },
+    await: function (value) {
+      return new AwaitValue(value);
+    }
+  };
+}();
+
+
+
+
+
+var classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+
+var createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+
+
+
+
+
+
+
+var get = function get(object, property, receiver) {
+  if (object === null) object = Function.prototype;
+  var desc = Object.getOwnPropertyDescriptor(object, property);
+
+  if (desc === undefined) {
+    var parent = Object.getPrototypeOf(object);
+
+    if (parent === null) {
+      return undefined;
+    } else {
+      return get(parent, property, receiver);
+    }
+  } else if ("value" in desc) {
+    return desc.value;
+  } else {
+    var getter = desc.get;
+
+    if (getter === undefined) {
+      return undefined;
+    }
+
+    return getter.call(receiver);
+  }
+};
+
+var inherits = function (subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+};
+
+
+
+
+
+
+
+
+
+
+
+var possibleConstructorReturn = function (self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return call && (typeof call === "object" || typeof call === "function") ? call : self;
+};
+
+
+
+
+
+var slicedToArray = function () {
+  function sliceIterator(arr, i) {
+    var _arr = [];
+    var _n = true;
+    var _d = false;
+    var _e = undefined;
+
+    try {
+      for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {
+        _arr.push(_s.value);
+
+        if (i && _arr.length === i) break;
+      }
+    } catch (err) {
+      _d = true;
+      _e = err;
+    } finally {
+      try {
+        if (!_n && _i["return"]) _i["return"]();
+      } finally {
+        if (_d) throw _e;
+      }
+    }
+
+    return _arr;
+  }
+
+  return function (arr, i) {
+    if (Array.isArray(arr)) {
+      return arr;
+    } else if (Symbol.iterator in Object(arr)) {
+      return sliceIterator(arr, i);
+    } else {
+      throw new TypeError("Invalid attempt to destructure non-iterable instance");
+    }
+  };
+}();
+
+var DEFAULT_MATERIAL = new three.RawShaderMaterial({
+  side: three.DoubleSide,
+  transparent: true,
+  uniforms: {
+    dotColor: {
+      value: new three.Color(0xffffff)
+    },
+    lineColor: {
+      value: new three.Color(0x707070)
+    },
+    backgroundColor: {
+      value: new three.Color(0x404040)
+    },
+    dotRadius: {
+      value: 0.006666666667
+    },
+    alpha: {
+      value: 0.4
+    }
+  },
+  vertexShader: vertexShader,
+  fragmentShader: fragmentShader
 });
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/*
- * Copyright 2017 Google Inc. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the 'License');
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+var ARPlanes = function (_Object3D) {
+  inherits(ARPlanes, _Object3D);
+  function ARPlanes(vrDisplay) {
+    classCallCheck(this, ARPlanes);
+    var _this = possibleConstructorReturn(this, (ARPlanes.__proto__ || Object.getPrototypeOf(ARPlanes)).call(this));
+    _this.addPlane_ = function (plane) {
+      var planeObj = _this.createPlane(plane);
+      if (planeObj) {
+        _this.add(planeObj);
+        _this.planes.set(plane.identifier, planeObj);
+      }
+    };
+    _this.removePlane_ = function (identifier) {
+      var existing = _this.planes.get(identifier);
+      if (existing) {
+        _this.remove(existing);
+      }
+      _this.planes.delete(identifier);
+    };
+    _this.onPlaneAdded_ = function (event) {
+      event.planes.forEach(function (plane) {
+        return _this.addPlane_(plane);
+      });
+    };
+    _this.onPlaneUpdated_ = function (event) {
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+      try {
+        for (var _iterator = event.planes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var plane = _step.value;
+          _this.removePlane_(plane.identifier);
+          _this.addPlane_(plane);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    };
+    _this.onPlaneRemoved_ = function (event) {
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+      try {
+        for (var _iterator2 = event.planes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var plane = _step2.value;
+          _this.removePlane_(plane.identifier);
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+    };
+    _this.vrDisplay = vrDisplay;
+    _this.planes = new Map();
+    _this.materials = new Map();
+    return _this;
+  }
+  createClass(ARPlanes, [{
+    key: 'enable',
+    value: function enable() {
+      this.vrDisplay.getPlanes().forEach(this.addPlane_);
+      this.vrDisplay.addEventListener('planesadded', this.onPlaneAdded_);
+      this.vrDisplay.addEventListener('planesupdated', this.onPlaneUpdated_);
+      this.vrDisplay.addEventListener('planesremoved', this.onPlaneRemoved_);
+    }
+  }, {
+    key: 'disable',
+    value: function disable() {
+      this.vrDisplay.removeEventListener('planesadded', this.onPlaneAdded_);
+      this.vrDisplay.removeEventListener('planesupdated', this.onPlaneUpdated_);
+      this.vrDisplay.removeEventListener('planesremoved', this.onPlaneRemoved_);
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
+      try {
+        for (var _iterator3 = this.planes.keys()[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var identifier = _step3.value;
+          this.removePlane_(identifier);
+        }
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+            _iterator3.return();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
+        }
+      }
+      this.materials.clear();
+    }
+  }, {
+    key: 'createPlane',
+    value: function createPlane(plane) {
+      if (plane.vertices.length == 0) {
+        return null;
+      }
+      var geo = new three.Geometry();
+      for (var pt = 0; pt < plane.vertices.length / 3; pt++) {
+        geo.vertices.push(new three.Vector3(plane.vertices[pt * 3], plane.vertices[pt * 3 + 1], plane.vertices[pt * 3 + 2]));
+      }
+      for (var face = 0; face < geo.vertices.length - 2; face++) {
+        geo.faces.push(new three.Face3(0, face + 1, face + 2));
+      }
+      var material = void 0;
+      if (this.materials.has(plane.identifier)) {
+        material = this.materials.get(plane.identifier);
+      } else {
+        var color = getRandomPaletteColor();
+        material = DEFAULT_MATERIAL.clone();
+        material.uniforms.backgroundColor.value = color;
+        this.materials.set(plane.identifier, material);
+      }
+      var planeObj = new three.Mesh(geo, material);
+      var mm = plane.modelMatrix;
+      planeObj.matrixAutoUpdate = false;
+      planeObj.matrix.set(mm[0], mm[4], mm[8], mm[12], mm[1], mm[5], mm[9], mm[13], mm[2], mm[6], mm[10], mm[14], mm[3], mm[7], mm[11], mm[15]);
+      this.add(planeObj);
+      return planeObj;
+    }
+  }, {
+    key: 'size',
+    value: function size() {
+      return this.planes.size;
+    }
+  }]);
+  return ARPlanes;
+}(three.Object3D);
 
 var DEFAULTS = {
   open: true,
   showLastHit: true,
-  showPoseStatus: true
+  showPoseStatus: true,
+  showPlanes: false
 };
-
 var SUCCESS_COLOR = '#00ff00';
 var FAILURE_COLOR = '#ff0077';
-
-// A cache to store original native VRDisplay methods
-// since WebARonARKit does not provide a VRDisplay.prototype[method],
-// and assuming the first time ARDebug proxies a method is the
-// 'native' version, this caches the correct method if we proxy a method twice
+var PLANES_POLLING_TIMER = 500;
+var THROTTLE_SPEED = 500;
 var cachedVRDisplayMethods = new Map();
-
-/**
- * A throttle function to limit number of DOM writes
- * in the ARDebug view.
- *
- * @param {Function} fn
- * @param {number} timer
- * @param {Object} scope
- *
- * @return {Function}
- */
 function throttle(fn, timer, scope) {
   var lastFired = void 0;
   var timeout = void 0;
-
   return function () {
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
-
     var current = +new Date();
     var until = void 0;
-
     if (lastFired) {
       until = lastFired + timer - current;
     }
-
     if (until == undefined || until < 0) {
       lastFired = current;
       fn.apply(scope, args);
@@ -374,93 +687,53 @@ function throttle(fn, timer, scope) {
     }
   };
 }
-/**
- * Class for creating a mesh that fires raycasts and lerps
- * a 3D object along the surface
- */
-
 var ARDebug = function () {
-  /**
-   * @param {VRDisplay} vrDisplay
-   * @param {Object} config
-   * @param {boolean} config.open
-   * @param {boolean} config.showLastHit
-   * @param {boolean} config.showPoseStatus
-   */
-  function ARDebug(vrDisplay) {
-    var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-    _classCallCheck(this, ARDebug);
-
-    this.config = Object.assign({}, config, DEFAULTS);
+  function ARDebug(vrDisplay, scene, config) {
+    classCallCheck(this, ARDebug);
+    if (typeof config === 'undefined' && scene && scene.type !== 'Scene') {
+      config = scene;
+      scene = null;
+    }
+    this.config = Object.assign({}, DEFAULTS, config);
     this.vrDisplay = vrDisplay;
-
     this._view = new ARDebugView({ open: this.config.open });
-
     if (this.config.showLastHit && this.vrDisplay.hitTest) {
       this._view.addRow('hit-test', new ARDebugHitTestRow(vrDisplay));
     }
-
     if (this.config.showPoseStatus && this.vrDisplay.getFrameData) {
       this._view.addRow('pose-status', new ARDebugPoseRow(vrDisplay));
     }
+    if (this.config.showPlanes && this.vrDisplay.getPlanes) {
+      if (!scene) {
+        console.warn('ARDebug `{ showPlanes: true }` option requires ' + 'passing in a THREE.Scene as the second parameter ' + 'in the constructor.');
+      } else {
+        this._view.addRow('show-planes', new ARDebugPlanesRow(vrDisplay, scene));
+      }
+    }
   }
-
-  /**
-   * Opens the debug panel.
-   */
-
-
-  _createClass(ARDebug, [{
+  createClass(ARDebug, [{
     key: 'open',
     value: function open() {
       this._view.open();
     }
-
-    /**
-     * Closes the debug panel.
-     */
-
   }, {
     key: 'close',
     value: function close() {
       this._view.close();
     }
-
-    /**
-     * Returns the root DOM element for the panel.
-     *
-     * @return {HTMLElement}
-     */
-
   }, {
     key: 'getElement',
     value: function getElement() {
       return this._view.getElement();
     }
   }]);
-
   return ARDebug;
 }();
-
-/**
- * An implementation that interfaces with the DOM, used
- * by ARDebug
- */
-
-
 var ARDebugView = function () {
-  /**
-   * @param {Object} config
-   * @param {boolean} config.open
-   */
   function ARDebugView() {
     var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    _classCallCheck(this, ARDebugView);
-
+    classCallCheck(this, ARDebugView);
     this.rows = new Map();
-
     this.el = document.createElement('div');
     this.el.style.backgroundColor = '#333';
     this.el.style.padding = '5px';
@@ -472,14 +745,12 @@ var ARDebugView = function () {
     this.el.style.width = '200px';
     this.el.style.fontSize = '12px';
     this.el.style.zIndex = 9999;
-
     this._rowsEl = document.createElement('div');
     this._rowsEl.style.transitionProperty = 'max-height';
     this._rowsEl.style.transitionDuration = '0.5s';
     this._rowsEl.style.transitionDelay = '0s';
     this._rowsEl.style.transitionTimingFunction = 'ease-out';
     this._rowsEl.style.overflow = 'hidden';
-
     this._controls = document.createElement('div');
     this._controls.style.fontSize = '13px';
     this._controls.style.fontWeight = 'bold';
@@ -487,20 +758,11 @@ var ARDebugView = function () {
     this._controls.style.textAlign = 'center';
     this._controls.style.cursor = 'pointer';
     this._controls.addEventListener('click', this.toggleControls.bind(this));
-
-    // Initialize the view as open or closed
     config.open ? this.open() : this.close();
-
     this.el.appendChild(this._rowsEl);
     this.el.appendChild(this._controls);
   }
-
-  /**
-   * Toggles between open and close modes.
-   */
-
-
-  _createClass(ARDebugView, [{
+  createClass(ARDebugView, [{
     key: 'toggleControls',
     value: function toggleControls() {
       if (this._isOpen) {
@@ -509,31 +771,20 @@ var ARDebugView = function () {
         this.open();
       }
     }
-
-    /**
-     * Opens the debugging panel.
-     */
-
   }, {
     key: 'open',
     value: function open() {
-      // Use max-height with large value to transition
-      // to/from a non-specific height (like auto/100%)
-      // https://stackoverflow.com/a/8331169
-      // @TODO investigate a more complete solution with correct timing,
-      // via something like http://n12v.com/css-transition-to-from-auto/
       this._rowsEl.style.maxHeight = '100px';
       this._isOpen = true;
       this._controls.textContent = 'Close ARDebug';
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
-
       try {
         for (var _iterator = this.rows[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var _step$value = _slicedToArray(_step.value, 2),
-              row = _step$value[1];
-
+          var _ref = _step.value;
+          var _ref2 = slicedToArray(_ref, 2);
+          var row = _ref2[1];
           row.enable();
         }
       } catch (err) {
@@ -551,11 +802,6 @@ var ARDebugView = function () {
         }
       }
     }
-
-    /**
-     * Closes the debugging panel.
-     */
-
   }, {
     key: 'close',
     value: function close() {
@@ -565,12 +811,11 @@ var ARDebugView = function () {
       var _iteratorNormalCompletion2 = true;
       var _didIteratorError2 = false;
       var _iteratorError2 = undefined;
-
       try {
         for (var _iterator2 = this.rows[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var _step2$value = _slicedToArray(_step2.value, 2),
-              row = _step2$value[1];
-
+          var _ref3 = _step2.value;
+          var _ref4 = slicedToArray(_ref3, 2);
+          var row = _ref4[1];
           row.disable();
         }
       } catch (err) {
@@ -588,54 +833,26 @@ var ARDebugView = function () {
         }
       }
     }
-
-    /**
-     * Returns the ARDebugView root element.
-     *
-     * @return {HTMLElement}
-     */
-
   }, {
     key: 'getElement',
     value: function getElement() {
       return this.el;
     }
-
-    /**
-     * Adds a row to the ARDebugView.
-     *
-     * @param {string} id
-     * @param {ARDebugRow} row
-     */
-
   }, {
     key: 'addRow',
     value: function addRow(id, row) {
       this.rows.set(id, row);
-
       if (this._isOpen) {
         row.enable();
       }
-
       this._rowsEl.appendChild(row.getElement());
     }
   }]);
-
   return ARDebugView;
 }();
-
-/**
- * A class that implements features being a row in the ARDebugView.
- */
-
-
 var ARDebugRow = function () {
-  /**
-   * @param {string} title
-   */
   function ARDebugRow(title) {
-    _classCallCheck(this, ARDebugRow);
-
+    classCallCheck(this, ARDebugRow);
     this.el = document.createElement('div');
     this.el.style.width = '100%';
     this.el.style.borderTop = '1px solid rgb(54, 54, 54)';
@@ -643,539 +860,372 @@ var ARDebugRow = function () {
     this.el.style.position = 'relative';
     this.el.style.padding = '3px 0px';
     this.el.style.overflow = 'hidden';
-
     this._titleEl = document.createElement('span');
     this._titleEl.style.fontWeight = 'bold';
     this._titleEl.textContent = title;
-
     this._dataEl = document.createElement('span');
     this._dataEl.style.position = 'absolute';
     this._dataEl.style.left = '40px';
-
-    // Create a text element to update so we can avoid
-    // forced reflows when updating
-    // https://stackoverflow.com/a/17203046
     this._dataElText = document.createTextNode('');
     this._dataEl.appendChild(this._dataElText);
-
     this.el.appendChild(this._titleEl);
     this.el.appendChild(this._dataEl);
-
-    this.update = throttle(this.update, 500, this);
+    this._throttledWriteToDOM = throttle(this._writeToDOM, THROTTLE_SPEED, this);
   }
-
-  /**
-   * Enables the proxying and inspection functionality of
-   * this row. Should be implemented by child class.
-   */
-
-
-  _createClass(ARDebugRow, [{
+  createClass(ARDebugRow, [{
     key: 'enable',
     value: function enable() {
       throw new Error('Implement in child class');
     }
-
-    /**
-     * Disables the proxying and inspection functionality of
-     * this row. Should be implemented by child class.
-     */
-
   }, {
     key: 'disable',
     value: function disable() {
       throw new Error('Implement in child class');
     }
-
-    /**
-     * Returns the ARDebugRow's root element.
-     *
-     * @return {HTMLElement}
-     */
-
   }, {
     key: 'getElement',
     value: function getElement() {
       return this.el;
     }
-
-    /**
-     * Updates the row's value.
-     *
-     * @param {string} value
-     * @param {boolean} isSuccess
-     */
-
   }, {
     key: 'update',
-    value: function update(value, isSuccess) {
+    value: function update(value, isSuccess, renderImmediately) {
+      if (renderImmediately) {
+        this._writeToDOM(value, isSuccess);
+      } else {
+        this._throttledWriteToDOM(value, isSuccess);
+      }
+    }
+  }, {
+    key: '_writeToDOM',
+    value: function _writeToDOM(value, isSuccess) {
       this._dataElText.nodeValue = value;
       this._dataEl.style.color = isSuccess ? SUCCESS_COLOR : FAILURE_COLOR;
     }
   }]);
-
   return ARDebugRow;
 }();
-
-/**
- * The ARDebugRow subclass for displaying hit information
- * by wrapping `vrDisplay.hitTest` and displaying the results.
- */
-
-
 var ARDebugHitTestRow = function (_ARDebugRow) {
-  _inherits(ARDebugHitTestRow, _ARDebugRow);
-
-  /**
-   * @param {VRDisplay} vrDisplay
-   */
+  inherits(ARDebugHitTestRow, _ARDebugRow);
   function ARDebugHitTestRow(vrDisplay) {
-    _classCallCheck(this, ARDebugHitTestRow);
-
-    var _this = _possibleConstructorReturn(this, (ARDebugHitTestRow.__proto__ || Object.getPrototypeOf(ARDebugHitTestRow)).call(this, 'Hit'));
-
+    classCallCheck(this, ARDebugHitTestRow);
+    var _this = possibleConstructorReturn(this, (ARDebugHitTestRow.__proto__ || Object.getPrototypeOf(ARDebugHitTestRow)).call(this, 'Hit'));
     _this.vrDisplay = vrDisplay;
     _this._onHitTest = _this._onHitTest.bind(_this);
-
-    // Store the native hit test, or proxy the native `hitTest` call with our own
     _this._nativeHitTest = cachedVRDisplayMethods.get('hitTest') || _this.vrDisplay.hitTest;
     cachedVRDisplayMethods.set('hitTest', _this._nativeHitTest);
-
     _this._didPreviouslyHit = null;
     return _this;
   }
-
-  /**
-   * Enables the tracking of hit test information.
-   */
-
-
-  _createClass(ARDebugHitTestRow, [{
+  createClass(ARDebugHitTestRow, [{
     key: 'enable',
     value: function enable() {
       this.vrDisplay.hitTest = this._onHitTest;
     }
-
-    /**
-     * Disables the tracking of hit test information.
-     */
-
   }, {
     key: 'disable',
     value: function disable() {
       this.vrDisplay.hitTest = this._nativeHitTest;
     }
-
-    /**
-     * @param {VRHit} hit
-     * @return {string}
-     */
-
   }, {
     key: '_hitToString',
     value: function _hitToString(hit) {
       var mm = hit.modelMatrix;
       return mm[12].toFixed(2) + ', ' + mm[13].toFixed(2) + ', ' + mm[14].toFixed(2);
     }
-
-    /**
-     * @param {number} x
-     * @param {number} y
-     * @return {VRHit?}
-     */
-
   }, {
     key: '_onHitTest',
     value: function _onHitTest(x, y) {
       var hits = this._nativeHitTest.call(this.vrDisplay, x, y);
-
       var t = (parseInt(performance.now(), 10) / 1000).toFixed(1);
       var didHit = hits && hits.length;
-
-      this.update((didHit ? this._hitToString(hits[0]) : 'MISS') + ' @ ' + t + 's', didHit);
+      var value = (didHit ? this._hitToString(hits[0]) : 'MISS') + ' @ ' + t + 's';
+      this.update(value, didHit, didHit !== this._didPreviouslyHit);
       this._didPreviouslyHit = didHit;
       return hits;
     }
   }]);
-
   return ARDebugHitTestRow;
 }(ARDebugRow);
-
-/**
- * The ARDebugRow subclass for displaying pose information
- * by wrapping `vrDisplay.getFrameData` and displaying the results.
- */
-
-
 var ARDebugPoseRow = function (_ARDebugRow2) {
-  _inherits(ARDebugPoseRow, _ARDebugRow2);
-
-  /**
-   * @param {VRDisplay} vrDisplay
-   */
+  inherits(ARDebugPoseRow, _ARDebugRow2);
   function ARDebugPoseRow(vrDisplay) {
-    _classCallCheck(this, ARDebugPoseRow);
-
-    var _this2 = _possibleConstructorReturn(this, (ARDebugPoseRow.__proto__ || Object.getPrototypeOf(ARDebugPoseRow)).call(this, 'Pose'));
-
+    classCallCheck(this, ARDebugPoseRow);
+    var _this2 = possibleConstructorReturn(this, (ARDebugPoseRow.__proto__ || Object.getPrototypeOf(ARDebugPoseRow)).call(this, 'Pose'));
     _this2.vrDisplay = vrDisplay;
     _this2._onGetFrameData = _this2._onGetFrameData.bind(_this2);
-
-    // Store the native hit test, or proxy the native `hitTest` call with our own
     _this2._nativeGetFrameData = cachedVRDisplayMethods.get('getFrameData') || _this2.vrDisplay.getFrameData;
     cachedVRDisplayMethods.set('getFrameData', _this2._nativeGetFrameData);
-
-    _this2.update('Looking for position...');
+    _this2.update('Looking for position...', false, true);
     _this2._initialPose = false;
     return _this2;
   }
-
-  /**
-   * Enables displaying and pulling getFrameData
-   */
-
-
-  _createClass(ARDebugPoseRow, [{
+  createClass(ARDebugPoseRow, [{
     key: 'enable',
     value: function enable() {
       this.vrDisplay.getFrameData = this._onGetFrameData;
     }
-
-    /**
-     * Disables displaying and pulling getFrameData
-     */
-
   }, {
     key: 'disable',
     value: function disable() {
       this.vrDisplay.getFrameData = this._nativeGetFrameData;
     }
-
-    /**
-     * @param {VRPose} pose
-     * @return {string}
-     */
-
   }, {
     key: '_poseToString',
     value: function _poseToString(pose) {
       return pose[0].toFixed(2) + ', ' + pose[1].toFixed(2) + ', ' + pose[2].toFixed(2);
     }
-
-    /**
-     * Wrapper around getFrameData
-     *
-     * @param {VRFrameData} frameData
-     * @return {boolean}
-     */
-
   }, {
     key: '_onGetFrameData',
     value: function _onGetFrameData(frameData) {
       var results = this._nativeGetFrameData.call(this.vrDisplay, frameData);
       var pose = frameData && frameData.pose && frameData.pose.position;
-      // Ensure we have a valid pose; while the pose SHOULD be null when not
-      // provided by the VRDisplay, on WebARonARCore, the xyz values of position
-      // are all 0 -- mark this as an invalid pose
       var isValidPose = pose && typeof pose[0] === 'number' && typeof pose[1] === 'number' && typeof pose[2] === 'number' && !(pose[0] === 0 && pose[1] === 0 && pose[2] === 0);
-
-      // If we haven't received a pose yet, and still don't have a valid pose
-      // leave the message how it is
       if (!this._initialPose && !isValidPose) {
         return results;
       }
-
+      var renderImmediately = isValidPose !== this._lastPoseValid;
       if (isValidPose) {
-        this.update(this._poseToString(pose), true);
+        this.update(this._poseToString(pose), true, renderImmediately);
       } else if (!isValidPose && this._lastPoseValid !== false) {
-        this.update('Position lost', false);
+        this.update('Position lost', false, renderImmediately);
       }
-
       this._lastPoseValid = isValidPose;
       this._initialPose = true;
-
       return results;
     }
   }]);
-
   return ARDebugPoseRow;
 }(ARDebugRow);
+var ARDebugPlanesRow = function (_ARDebugRow3) {
+  inherits(ARDebugPlanesRow, _ARDebugRow3);
+  function ARDebugPlanesRow(vrDisplay, scene) {
+    classCallCheck(this, ARDebugPlanesRow);
+    var _this3 = possibleConstructorReturn(this, (ARDebugPlanesRow.__proto__ || Object.getPrototypeOf(ARDebugPlanesRow)).call(this, 'Planes'));
+    _this3.vrDisplay = vrDisplay;
+    _this3.planes = new ARPlanes(_this3.vrDisplay);
+    _this3._onPoll = _this3._onPoll.bind(_this3);
+    _this3.update('Looking for planes...', false, true);
+    if (scene) {
+      scene.add(_this3.planes);
+    }
+    return _this3;
+  }
+  createClass(ARDebugPlanesRow, [{
+    key: 'enable',
+    value: function enable() {
+      if (this._timer) {
+        this.disable();
+      }
+      this._timer = setInterval(this._onPoll, PLANES_POLLING_TIMER);
+      this.planes.enable();
+    }
+  }, {
+    key: 'disable',
+    value: function disable() {
+      clearInterval(this._timer);
+      this._timer = null;
+      this.planes.disable();
+    }
+  }, {
+    key: '_planesToString',
+    value: function _planesToString(count) {
+      return count + ' plane' + (count === 1 ? '' : 's') + ' found';
+    }
+  }, {
+    key: '_onPoll',
+    value: function _onPoll() {
+      var planeCount = this.planes.size();
+      if (this._lastPlaneCount !== planeCount) {
+        this.update(this._planesToString(planeCount), planeCount > 0, true);
+      }
+      this._lastPlaneCount = planeCount;
+    }
+  }]);
+  return ARDebugPlanesRow;
+}(ARDebugRow);
 
-THREE.ARDebug = ARDebug;
-exports.default = ARDebug;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/*
- * Copyright 2017 Google Inc. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the 'License');
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-// Reuse the frame data for getting the projection matrix
 var frameData = void 0;
-
-/**
- * Class extending a THREE.PerspectiveCamera, attempting
- * to use the projection matrix provided from an AR-enabled
- * VRDisplay. If no AR-enabled VRDisplay found, uses provided
- * parameters.
- */
-
-var ARPerspectiveCamera = function (_THREE$PerspectiveCam) {
-  _inherits(ARPerspectiveCamera, _THREE$PerspectiveCam);
-
-  /**
-   * @param {VRDisplay} vrDisplay
-   * @param {number} fov
-   * @param {number} aspect
-   * @param {number} near
-   * @param {number} far
-   */
+var ARPerspectiveCamera = function (_PerspectiveCamera) {
+  inherits(ARPerspectiveCamera, _PerspectiveCamera);
   function ARPerspectiveCamera(vrDisplay, fov, aspect, near, far) {
-    _classCallCheck(this, ARPerspectiveCamera);
-
-    var _this = _possibleConstructorReturn(this, (ARPerspectiveCamera.__proto__ || Object.getPrototypeOf(ARPerspectiveCamera)).call(this, fov, aspect, near, far));
-
+    classCallCheck(this, ARPerspectiveCamera);
+    var _this = possibleConstructorReturn(this, (ARPerspectiveCamera.__proto__ || Object.getPrototypeOf(ARPerspectiveCamera)).call(this, fov, aspect, near, far));
     _this.isARPerpsectiveCamera = true;
     _this.vrDisplay = vrDisplay;
     _this.updateProjectionMatrix();
-
     if (!vrDisplay || !vrDisplay.capabilities.hasPassThroughCamera) {
-      console.warn("ARPerspectiveCamera does not a VRDisplay with\n                    a pass through camera. Using supplied values and defaults\n                    instead of device camera intrinsics");
+      console.warn('ARPerspectiveCamera does not a VRDisplay with\n                    a pass through camera. Using supplied values and defaults\n                    instead of device camera intrinsics');
     }
     return _this;
   }
-
-  /**
-   * Updates the underlying `projectionMatrix` property from
-   * the AR-enabled VRDisplay, or falls back to
-   * THREE.PerspectiveCamera.prototype.updateProjectionMatrix
-   */
-
-
-  _createClass(ARPerspectiveCamera, [{
-    key: "updateProjectionMatrix",
+  createClass(ARPerspectiveCamera, [{
+    key: 'updateProjectionMatrix',
     value: function updateProjectionMatrix() {
       var projMatrix = this.getProjectionMatrix();
       if (!projMatrix) {
-        _get(ARPerspectiveCamera.prototype.__proto__ || Object.getPrototypeOf(ARPerspectiveCamera.prototype), "updateProjectionMatrix", this).call(this);
+        get(ARPerspectiveCamera.prototype.__proto__ || Object.getPrototypeOf(ARPerspectiveCamera.prototype), 'updateProjectionMatrix', this).call(this);
         return;
       }
-
       this.projectionMatrix.fromArray(projMatrix);
     }
-
-    /**
-     * Gets the projection matrix from AR-enabled VRDisplay
-     * if possible.
-     * @return {!Float32Array}
-     */
-
   }, {
-    key: "getProjectionMatrix",
+    key: 'getProjectionMatrix',
     value: function getProjectionMatrix() {
       if (this.vrDisplay && this.vrDisplay.getFrameData) {
         if (!frameData) {
           frameData = new VRFrameData();
         }
         this.vrDisplay.getFrameData(frameData);
-
-        // Can use either left or right projection matrix
         return frameData.leftProjectionMatrix;
       }
       return null;
     }
   }]);
-
   return ARPerspectiveCamera;
-}(THREE.PerspectiveCamera);
+}(three.PerspectiveCamera);
 
-THREE.ARPerspectiveCamera = ARPerspectiveCamera;
-exports.default = ARPerspectiveCamera;
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _ARUtils = __webpack_require__(0);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Copyright 2017 Google Inc. All Rights Reserved.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Licensed under the Apache License, Version 2.0 (the 'License');
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * you may not use this file except in compliance with the License.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * You may obtain a copy of the License at
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *     http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * distributed under the License is distributed on an 'AS IS' BASIS,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * See the License for the specific language governing permissions and
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * limitations under the License.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
-
-/**
- * Class for creating a mesh that fires raycasts and lerps
- * a 3D object along the surface
- */
-var ARReticle = function (_THREE$Mesh) {
-  _inherits(ARReticle, _THREE$Mesh);
-
-  /**
-   * @param {VRDisplay} vrDisplay
-   * @param {number} innerRadius
-   * @param {number} outerRadius
-   * @param {number} color
-   * @param {number} easing
-   */
+var ARReticle = function (_Mesh) {
+  inherits(ARReticle, _Mesh);
   function ARReticle(vrDisplay) {
     var innerRadius = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.02;
     var outerRadius = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0.05;
     var color = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0xff0077;
     var easing = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0.25;
-
-    _classCallCheck(this, ARReticle);
-
-    var geometry = new THREE.RingGeometry(innerRadius, outerRadius, 36, 64);
-    var material = new THREE.MeshBasicMaterial({ color: color });
-
-    // Orient the geometry so it's position is flat on a horizontal surface
-    geometry.applyMatrix(new THREE.Matrix4().makeRotationX(THREE.Math.degToRad(-90)));
-
-    var _this = _possibleConstructorReturn(this, (ARReticle.__proto__ || Object.getPrototypeOf(ARReticle)).call(this, geometry, material));
-
+    classCallCheck(this, ARReticle);
+    var geometry = new three.RingGeometry(innerRadius, outerRadius, 36, 64);
+    var material = new three.MeshBasicMaterial({ color: color });
+    geometry.applyMatrix(new three.Matrix4().makeRotationX(three.Math.degToRad(-90)));
+    var _this = possibleConstructorReturn(this, (ARReticle.__proto__ || Object.getPrototypeOf(ARReticle)).call(this, geometry, material));
     _this.visible = false;
-
     _this.easing = easing;
     _this.applyOrientation = true;
     _this.vrDisplay = vrDisplay;
-    _this._planeDir = new THREE.Vector3();
+    _this._planeDir = new three.Vector3();
     return _this;
   }
-
-  /**
-   * Attempt to fire a raycast from normalized screen coordinates
-   * x and y and lerp the reticle to the position.
-   *
-   * @param {number} x
-   * @param {number} y
-   */
-
-
-  _createClass(ARReticle, [{
+  createClass(ARReticle, [{
     key: 'update',
     value: function update() {
       var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0.5;
       var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0.5;
-
       if (!this.vrDisplay || !this.vrDisplay.hitTest) {
         return;
       }
-
       var hit = this.vrDisplay.hitTest(x, y);
       if (hit && hit.length > 0) {
         this.visible = true;
-        (0, _ARUtils.placeObjectAtHit)(this, hit[0], this.applyOrientation, this.easing);
+        placeObjectAtHit(this, hit[0], this.applyOrientation, this.easing);
       }
     }
   }]);
-
   return ARReticle;
-}(THREE.Mesh);
+}(three.Mesh);
 
-THREE.ARReticle = ARReticle;
-exports.default = ARReticle;
+var vertexSource = "attribute vec3 aVertexPosition;attribute vec2 aTextureCoord;varying vec2 vTextureCoord;void main(void){gl_Position=vec4(aVertexPosition,1.0);vTextureCoord=aTextureCoord;}";
 
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
+var fragmentSource = "\n#extension GL_OES_EGL_image_external : require\nprecision mediump float;varying vec2 vTextureCoord;uniform samplerExternalOES uSampler;void main(void){gl_FragColor=texture2D(uSampler,vTextureCoord);}";
 
-"use strict";
+function WGLUPreserveGLState(gl, bindings, callback) {
+  if (!bindings) {
+    callback(gl);
+    return;
+  }
+  var boundValues = [];
+  var activeTexture = null;
+  for (var i = 0; i < bindings.length; ++i) {
+    var binding = bindings[i];
+    switch (binding) {
+      case gl.TEXTURE_BINDING_2D:
+      case gl.TEXTURE_BINDING_CUBE_MAP:
+        var textureUnit = bindings[++i];
+        if (textureUnit < gl.TEXTURE0 || textureUnit > gl.TEXTURE31) {
+          console.error("TEXTURE_BINDING_2D or TEXTURE_BINDING_CUBE_MAP must be followed by a valid texture unit");
+          boundValues.push(null, null);
+          break;
+        }
+        if (!activeTexture) {
+          activeTexture = gl.getParameter(gl.ACTIVE_TEXTURE);
+        }
+        gl.activeTexture(textureUnit);
+        boundValues.push(gl.getParameter(binding), null);
+        break;
+      case gl.ACTIVE_TEXTURE:
+        activeTexture = gl.getParameter(gl.ACTIVE_TEXTURE);
+        boundValues.push(null);
+        break;
+      default:
+        boundValues.push(gl.getParameter(binding));
+        break;
+    }
+  }
+  callback(gl);
+  for (var i = 0; i < bindings.length; ++i) {
+    var binding = bindings[i];
+    var boundValue = boundValues[i];
+    switch (binding) {
+      case gl.ACTIVE_TEXTURE:
+        break;
+      case gl.ARRAY_BUFFER_BINDING:
+        gl.bindBuffer(gl.ARRAY_BUFFER, boundValue);
+        break;
+      case gl.COLOR_CLEAR_VALUE:
+        gl.clearColor(boundValue[0], boundValue[1], boundValue[2], boundValue[3]);
+        break;
+      case gl.COLOR_WRITEMASK:
+        gl.colorMask(boundValue[0], boundValue[1], boundValue[2], boundValue[3]);
+        break;
+      case gl.CURRENT_PROGRAM:
+        gl.useProgram(boundValue);
+        break;
+      case gl.ELEMENT_ARRAY_BUFFER_BINDING:
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, boundValue);
+        break;
+      case gl.FRAMEBUFFER_BINDING:
+        gl.bindFramebuffer(gl.FRAMEBUFFER, boundValue);
+        break;
+      case gl.RENDERBUFFER_BINDING:
+        gl.bindRenderbuffer(gl.RENDERBUFFER, boundValue);
+        break;
+      case gl.TEXTURE_BINDING_2D:
+        var textureUnit = bindings[++i];
+        if (textureUnit < gl.TEXTURE0 || textureUnit > gl.TEXTURE31)
+          break;
+        gl.activeTexture(textureUnit);
+        gl.bindTexture(gl.TEXTURE_2D, boundValue);
+        break;
+      case gl.TEXTURE_BINDING_CUBE_MAP:
+        var textureUnit = bindings[++i];
+        if (textureUnit < gl.TEXTURE0 || textureUnit > gl.TEXTURE31)
+          break;
+        gl.activeTexture(textureUnit);
+        gl.bindTexture(gl.TEXTURE_CUBE_MAP, boundValue);
+        break;
+      case gl.VIEWPORT:
+        gl.viewport(boundValue[0], boundValue[1], boundValue[2], boundValue[3]);
+        break;
+      case gl.BLEND:
+      case gl.CULL_FACE:
+      case gl.DEPTH_TEST:
+      case gl.SCISSOR_TEST:
+      case gl.STENCIL_TEST:
+        if (boundValue) {
+          gl.enable(binding);
+        } else {
+          gl.disable(binding);
+        }
+        break;
+      default:
+        console.log("No GL restore behavior for 0x" + binding.toString(16));
+        break;
+    }
+    if (activeTexture) {
+      gl.activeTexture(activeTexture);
+    }
+  }
+}
+var glPreserveState = WGLUPreserveGLState;
 
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /*
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Copyright 2017 Google Inc. All Rights Reserved.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Licensed under the Apache License, Version 2.0 (the 'License');
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * you may not use this file except in compliance with the License.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * You may obtain a copy of the License at
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *     http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * distributed under the License is distributed on an 'AS IS' BASIS,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * See the License for the specific language governing permissions and
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * limitations under the License.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
-
-var _ARUtils = __webpack_require__(0);
-
-var _arview = __webpack_require__(6);
-
-var _arview2 = _interopRequireDefault(_arview);
-
-var _arview3 = __webpack_require__(5);
-
-var _arview4 = _interopRequireDefault(_arview3);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Creates and load a shader from a string, type specifies either 'vertex' or 'fragment'
- *
- * @param {WebGLRenderingContext} gl
- * @param {string} str
- * @param {string} type
- * @return {!WebGLShader}
- */
 function getShader(gl, str, type) {
   var shader = void 0;
   if (type == 'fragment') {
@@ -1185,55 +1235,31 @@ function getShader(gl, str, type) {
   } else {
     return null;
   }
-
   gl.shaderSource(shader, str);
   gl.compileShader(shader);
-
   var result = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
   if (!result) {
     alert(gl.getShaderInfoLog(shader));
     return null;
   }
-
   return shader;
 }
-
-/**
- * Creates a shader program from vertex and fragment shader sources
- *
- * @param {WebGLRenderingContext} gl
- * @param {string} vs
- * @param {string} fs
- * @return {!WebGLProgram}
- */
 function getProgram(gl, vs, fs) {
   var vertexShader = getShader(gl, vs, 'vertex');
   var fragmentShader = getShader(gl, fs, 'fragment');
   if (!fragmentShader) {
     return null;
   }
-
   var shaderProgram = gl.createProgram();
   gl.attachShader(shaderProgram, vertexShader);
   gl.attachShader(shaderProgram, fragmentShader);
   gl.linkProgram(shaderProgram);
-
   var result = gl.getProgramParameter(shaderProgram, gl.LINK_STATUS);
   if (!result) {
     alert('Could not initialise arview shaders');
   }
-
   return shaderProgram;
 }
-
-/**
- * Calculate the correct orientation depending on the device and the camera
- * orientations.
- *
- * @param {number} screenOrientation
- * @param {number} seeThroughCameraOrientation
- * @return {number}
- */
 function combineOrientations(screenOrientation, seeThroughCameraOrientation) {
   var seeThroughCameraOrientationIndex = 0;
   switch (seeThroughCameraOrientation) {
@@ -1271,34 +1297,19 @@ function combineOrientations(screenOrientation, seeThroughCameraOrientation) {
   }
   return ret % 4;
 }
-
-/**
- * Renders the ar camera's video texture
- */
-
 var ARVideoRenderer = function () {
-  /**
-   * @param {VRDisplay} vrDisplay
-   * @param {WebGLRenderingContext} gl
-   */
   function ARVideoRenderer(vrDisplay, gl) {
-    _classCallCheck(this, ARVideoRenderer);
-
+    classCallCheck(this, ARVideoRenderer);
     this.vrDisplay = vrDisplay;
     this.gl = gl;
     if (this.vrDisplay) {
       this.passThroughCamera = vrDisplay.getPassThroughCamera();
-      this.program = getProgram(gl, _arview2.default, _arview4.default);
+      this.program = getProgram(gl, vertexSource, fragmentSource);
     }
-
     gl.useProgram(this.program);
-
-    // Setup a quad
     this.vertexPositionAttribute = gl.getAttribLocation(this.program, 'aVertexPosition');
     this.textureCoordAttribute = gl.getAttribLocation(this.program, 'aTextureCoord');
-
     this.samplerUniform = gl.getUniformLocation(this.program, 'uSampler');
-
     this.vertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
     var vertices = [-1.0, 1.0, 0.0, -1.0, -1.0, 0.0, 1.0, 1.0, 0.0, 1.0, -1.0, 0.0];
@@ -1306,11 +1317,8 @@ var ARVideoRenderer = function () {
     gl.bufferData(gl.ARRAY_BUFFER, f32Vertices, gl.STATIC_DRAW);
     this.vertexPositionBuffer.itemSize = 3;
     this.vertexPositionBuffer.numItems = 12;
-
     this.textureCoordBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.textureCoordBuffer);
-    // Precalculate different texture UV coordinates depending on the possible
-    // orientations of the device depending if there is a VRDisplay or not
     var textureCoords = null;
     if (this.vrDisplay) {
       var u = this.passThroughCamera.width / this.passThroughCamera.textureWidth;
@@ -1319,20 +1327,15 @@ var ARVideoRenderer = function () {
     } else {
       textureCoords = [[0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0], [1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0], [1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0], [0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0]];
     }
-
     this.f32TextureCoords = [];
     for (var i = 0; i < textureCoords.length; i++) {
       this.f32TextureCoords.push(new Float32Array(textureCoords[i]));
     }
-    // Store the current combined orientation to check if it has changed
-    // during the update calls and use the correct texture coordinates.
     this.combinedOrientation = combineOrientations(screen.orientation.angle, this.passThroughCamera.orientation);
-
     gl.bufferData(gl.ARRAY_BUFFER, this.f32TextureCoords[this.combinedOrientation], gl.STATIC_DRAW);
     this.textureCoordBuffer.itemSize = 2;
     this.textureCoordBuffer.numItems = 8;
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
-
     this.indexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
     var indices = [0, 1, 2, 2, 1, 3];
@@ -1341,249 +1344,162 @@ var ARVideoRenderer = function () {
     this.indexBuffer.itemSize = 1;
     this.indexBuffer.numItems = 6;
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-
     this.texture = gl.createTexture();
     gl.useProgram(null);
-
-    // The projection matrix will be based on an identify orthographic camera
     this.projectionMatrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
     this.mvMatrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
     return this;
   }
-
-  /**
-   * Renders the quad
-   */
-
-
-  _createClass(ARVideoRenderer, [{
+  createClass(ARVideoRenderer, [{
     key: 'render',
     value: function render() {
+      var _this = this;
       var gl = this.gl;
-      gl.useProgram(this.program);
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
-      gl.enableVertexAttribArray(this.vertexPositionAttribute);
-      gl.vertexAttribPointer(this.vertexPositionAttribute, this.vertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.textureCoordBuffer);
-
-      // Check the current orientation of the device combined with the
-      // orientation of the VRSeeThroughCamera to determine the correct UV
-      // coordinates to be used.
-      var combinedOrientation = combineOrientations(screen.orientation.angle, this.passThroughCamera.orientation);
-      if (combinedOrientation !== this.combinedOrientation) {
-        this.combinedOrientation = combinedOrientation;
-        gl.bufferData(gl.ARRAY_BUFFER, this.f32TextureCoords[this.combinedOrientation], gl.STATIC_DRAW);
-      }
-      gl.enableVertexAttribArray(this.textureCoordAttribute);
-      gl.vertexAttribPointer(this.textureCoordAttribute, this.textureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-      gl.activeTexture(gl.TEXTURE0);
-      gl.bindTexture(gl.TEXTURE_EXTERNAL_OES, this.texture);
-      // Update the content of the texture in every frame.
-      gl.texImage2D(gl.TEXTURE_EXTERNAL_OES, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, this.passThroughCamera);
-      gl.uniform1i(this.samplerUniform, 0);
-
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-
-      gl.drawElements(gl.TRIANGLES, this.indexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
-
-      // Disable enabled states to allow other render calls to correctly work
-      gl.bindTexture(gl.TEXTURE_EXTERNAL_OES, null);
-      gl.disableVertexAttribArray(this.vertexPositionAttribute);
-      gl.disableVertexAttribArray(this.textureCoordAttribute);
-      gl.bindBuffer(gl.ARRAY_BUFFER, null);
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-      gl.useProgram(null);
+      var bindings = [gl.ARRAY_BUFFER_BINDING, gl.ELEMENT_ARRAY_BUFFER_BINDING, gl.CURRENT_PROGRAM];
+      glPreserveState(gl, bindings, function () {
+        gl.useProgram(_this.program);
+        gl.bindBuffer(gl.ARRAY_BUFFER, _this.vertexPositionBuffer);
+        gl.enableVertexAttribArray(_this.vertexPositionAttribute);
+        gl.vertexAttribPointer(_this.vertexPositionAttribute, _this.vertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, _this.textureCoordBuffer);
+        var combinedOrientation = combineOrientations(screen.orientation.angle, _this.passThroughCamera.orientation);
+        if (combinedOrientation !== _this.combinedOrientation) {
+          _this.combinedOrientation = combinedOrientation;
+          gl.bufferData(gl.ARRAY_BUFFER, _this.f32TextureCoords[_this.combinedOrientation], gl.STATIC_DRAW);
+        }
+        gl.enableVertexAttribArray(_this.textureCoordAttribute);
+        gl.vertexAttribPointer(_this.textureCoordAttribute, _this.textureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_EXTERNAL_OES, _this.texture);
+        gl.texImage2D(gl.TEXTURE_EXTERNAL_OES, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, _this.passThroughCamera);
+        gl.uniform1i(_this.samplerUniform, 0);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, _this.indexBuffer);
+        gl.drawElements(gl.TRIANGLES, _this.indexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+      });
     }
   }]);
-
   return ARVideoRenderer;
 }();
-
-/**
- * A helper class that takes a VRDisplay with AR capabilities
- * and renders the see through camera to the passed in WebGLRenderer's
- * context.
- */
-
-
 var ARView = function () {
-  /**
-   * @param {VRDisplay} vrDisplay
-   * @param {THREE.WebGLRenderer} renderer
-   */
   function ARView(vrDisplay, renderer) {
-    _classCallCheck(this, ARView);
-
+    classCallCheck(this, ARView);
     this.vrDisplay = vrDisplay;
-    if ((0, _ARUtils.isARKit)(this.vrDisplay)) {
+    if (isARKit(this.vrDisplay)) {
       return;
     }
     this.renderer = renderer;
     this.gl = renderer.context;
-
     this.videoRenderer = new ARVideoRenderer(vrDisplay, this.gl);
-    this.renderer.resetGLState();
-
-    // Cache the width/height so we're not potentially forcing
-    // a reflow if there's been a style invalidation
     this.width = window.innerWidth;
     this.height = window.innerHeight;
     window.addEventListener('resize', this.onWindowResize.bind(this), false);
   }
-
-  /**
-   * Updates the stored width/height of window on resize.
-   */
-
-
-  _createClass(ARView, [{
+  createClass(ARView, [{
     key: 'onWindowResize',
     value: function onWindowResize() {
       this.width = window.innerWidth;
       this.height = window.innerHeight;
     }
-
-    /**
-     * Renders the see through camera to the passed in renderer
-     */
-
   }, {
     key: 'render',
     value: function render() {
-      if ((0, _ARUtils.isARKit)(this.vrDisplay)) {
+      if (isARKit(this.vrDisplay)) {
         return;
       }
-
       var gl = this.gl;
       var dpr = window.devicePixelRatio;
       var width = this.width * dpr;
       var height = this.height * dpr;
-
       if (gl.viewportWidth !== width) {
         gl.viewportWidth = width;
       }
-
       if (gl.viewportHeight !== height) {
         gl.viewportHeight = height;
       }
-
       this.gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
       this.videoRenderer.render();
-      this.renderer.resetGLState();
     }
   }]);
-
   return ARView;
 }();
 
-THREE.ARView = ARView;
-exports.default = ARView;
+(function () {
+  if (window.webarSpeechRecognitionInstance) {
+    var addEventHandlingToObject = function addEventHandlingToObject(object) {
+      object.listeners = {};
+      object.addEventListener = function (eventType, callback) {
+        if (!callback) {
+          return this;
+        }
+        var listeners = this.listeners[eventType];
+        if (!listeners) {
+          this.listeners[eventType] = listeners = [];
+        }
+        if (listeners.indexOf(callback) < 0) {
+          listeners.push(callback);
+        }
+        return this;
+      };
+      object.removeEventListener = function (eventType, callback) {
+        if (!callback) {
+          return this;
+        }
+        var listeners = this.listeners[eventType];
+        if (listeners) {
+          var i = listeners.indexOf(callback);
+          if (i >= 0) {
+            this.listeners[eventType] = listeners.splice(i, 1);
+          }
+        }
+        return this;
+      };
+      object.callEventListeners = function (eventType, event) {
+        if (!event) {
+          event = { target: this };
+        }
+        if (!event.target) {
+          event.target = this;
+        }
+        event.type = eventType;
+        var onEventType = 'on' + eventType;
+        if (typeof this[onEventType] === 'function') {
+          this[onEventType](event);
+        }
+        var listeners = this.listeners[eventType];
+        if (listeners) {
+          for (var i = 0; i < listeners.length; i++) {
+            var typeofListener = _typeof(listeners[i]);
+            if (typeofListener === 'object') {
+              listeners[i].handleEvent(event);
+            } else if (typeofListener === 'function') {
+              listeners[i](event);
+            }
+          }
+        }
+        return this;
+      };
+    };
+    addEventHandlingToObject(window.webarSpeechRecognitionInstance);
+    window.webkitSpeechRecognition = function () {
+      return window.webarSpeechRecognitionInstance;
+    };
+  }
+})();
 
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
+if (typeof window !== 'undefined' && _typeof(window.THREE) === 'object') {
+  window.THREE.ARDebug = ARDebug;
+  window.THREE.ARPerspectiveCamera = ARPerspectiveCamera;
+  window.THREE.ARReticle = ARReticle;
+  window.THREE.ARUtils = ARUtils;
+  window.THREE.ARView = ARView;
+}
 
-"use strict";
+exports.ARDebug = ARDebug;
+exports.ARPerspectiveCamera = ARPerspectiveCamera;
+exports.ARReticle = ARReticle;
+exports.ARUtils = ARUtils;
+exports.ARView = ARView;
 
+Object.defineProperty(exports, '__esModule', { value: true });
 
-module.exports = "// Copyright 2017 Google Inc. All Rights Reserved.\n// Licensed under the Apache License, Version 2.0 (the 'License');\n// you may not use this file except in compliance with the License.\n// You may obtain a copy of the License at\n//\n// http://www.apache.org/licenses/LICENSE-2.0\n//\n// Unless required by applicable law or agreed to in writing, software\n// distributed under the License is distributed on an 'AS IS' BASIS,\n// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n// See the License for the specific language governing permissions and\n// limitations under the License.\n\n#extension GL_OES_EGL_image_external : require\n\nprecision mediump float;\n#define GLSLIFY 1\n\nvarying vec2 vTextureCoord;\n\nuniform samplerExternalOES uSampler;\n\nvoid main(void) {\n  gl_FragColor = texture2D(uSampler, vTextureCoord);\n}\n";
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = "#define GLSLIFY 1\n// Copyright 2017 Google Inc. All Rights Reserved.\n// Licensed under the Apache License, Version 2.0 (the 'License');\n// you may not use this file except in compliance with the License.\n// You may obtain a copy of the License at\n//\n// http://www.apache.org/licenses/LICENSE-2.0\n//\n// Unless required by applicable law or agreed to in writing, software\n// distributed under the License is distributed on an 'AS IS' BASIS,\n// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n// See the License for the specific language governing permissions and\n// limitations under the License.\n\nattribute vec3 aVertexPosition;\nattribute vec2 aTextureCoord;\n\nvarying vec2 vTextureCoord;\n\nvoid main(void) {\n  gl_Position = vec4(aVertexPosition, 1.0);\n  vTextureCoord = aTextureCoord;\n}\n";
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _ARDebug = __webpack_require__(1);
-
-var _ARDebug2 = _interopRequireDefault(_ARDebug);
-
-var _ARPerspectiveCamera = __webpack_require__(2);
-
-var _ARPerspectiveCamera2 = _interopRequireDefault(_ARPerspectiveCamera);
-
-var _ARReticle = __webpack_require__(3);
-
-var _ARReticle2 = _interopRequireDefault(_ARReticle);
-
-var _ARUtils = __webpack_require__(0);
-
-var _ARUtils2 = _interopRequireDefault(_ARUtils);
-
-var _ARView = __webpack_require__(4);
-
-var _ARView2 = _interopRequireDefault(_ARView);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-/*
- * Copyright 2017 Google Inc. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the 'License');
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-/**
- * This module contains promisified loaders for internal use for
- * exposed ARUtils.
- */
-
-var noop = function noop() {};
-
-var loadObj = exports.loadObj = function loadObj(objPath, materials) {
-  return new Promise(function (resolve, reject) {
-    var loader = new THREE.OBJLoader();
-
-    if (materials) {
-      loader.setMaterials(materials);
-    }
-
-    loader.load(objPath, resolve, noop, reject);
-  });
-};
-
-var loadMtl = exports.loadMtl = function loadMtl(mtlPath) {
-  return new Promise(function (resolve, reject) {
-    var loader = new THREE.MTLLoader();
-    var pathChunks = mtlPath.split('/');
-
-    if (pathChunks.length >= 2) {
-      loader.setTexturePath(pathChunks[pathChunks.length - 2]);
-    }
-
-    loader.load(mtlPath, resolve, noop, reject);
-  });
-};
-
-/***/ })
-/******/ ]);
+})));

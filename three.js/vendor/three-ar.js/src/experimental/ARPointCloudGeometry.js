@@ -13,12 +13,14 @@
  * limitations under the License.
  */
 
+import { BufferGeometry, BufferAttribute } from 'three';
+
 const MAX_FLOAT32_VALUE = 3.4028e38;
 
 /**
  * Renders a VRPointCloud.
  */
-class ARPointCloudGeometry extends THREE.BufferGeometry {
+class ARPointCloudGeometry extends BufferGeometry {
   /**
    * @param {VRDisplay} vrDisplay
    * @param {VRPointCloud} pointCloud
@@ -43,9 +45,9 @@ class ARPointCloudGeometry extends THREE.BufferGeometry {
       colors[i] = colors[i + 1] = colors[i + 2] = 1;
     }
 
-    this._positions = new THREE.BufferAttribute(points, 3);
+    this._positions = new BufferAttribute(points, 3);
     this.addAttribute('position', this._positions);
-    this._colors = new THREE.BufferAttribute(colors, 3);
+    this._colors = new BufferAttribute(colors, 3);
     this.addAttribute('color', this._colors);
 
     this.computeBoundingSphere();
@@ -73,5 +75,7 @@ class ARPointCloudGeometry extends THREE.BufferGeometry {
   }
 }
 
-THREE.ARPointCloudGeometry = ARPointCloudGeometry;
+if (typeof window !== 'undefined' && typeof window.THREE === 'object') {
+  window.THREE.ARPointCloudGeometry = ARPointCloudGeometry;
+}
 export default ARPointCloudGeometry;

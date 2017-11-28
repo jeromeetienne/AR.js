@@ -1,0 +1,409 @@
+<!--
+/*
+ * Copyright 2017 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>three.ar.js - Record At Camera</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no,
+  minimum-scale=1.0, maximum-scale=1.0">
+  <style>
+    body {
+      font-family: monospace;
+      margin: 0;
+      overflow: hidden;
+      position: fixed;
+      width: 100%;
+      height: 100vh;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    #info {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translate(-50%, 0);
+      margin: 1em;
+      z-index: 10;
+      display: block;
+      line-height: 2em;
+      text-align: center;
+    }
+    #info * {
+      color: #fff;
+    }
+    .title {
+      background-color: rgba(40, 40, 40, 0.4);
+      padding: 0.4em 0.6em;
+      border-radius: 0.1em;
+    }
+    .links {
+      background-color: rgba(40, 40, 40, 0.6);
+      padding: 0.4em 0.6em;
+      border-radius: 0.1em;
+    }
+    #buttons {
+      left: 50%;
+      position: absolute;
+      bottom: 35px;
+      z-index: 11;
+      transform: translate(-50%, 0);
+      margin: 1em;
+      display: block;
+      width: 100%;
+      line-height: 3em;
+      text-align: center;
+      font-size: 20px;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="info">
+  <span class="title">Tap anywhere and hold to record audio.</span><br/>
+  <span class="links">
+    <a href="https://github.com/google-ar/three.ar.js">three.ar.js</a> -
+    <a href="https://developers.google.com/ar/develop/web/getting-started#examples">examples</a>
+  </span>
+</div>
+<div id="buttons">
+  <button id="erase" onclick="deleteAudioElements()">Erase all recordings</button>
+</div>
+<script src="../third_party/three.js/three.js"></script>
+<script src="../third_party/three.js/VRControls.js"></script>
+<script src="../dist/three.ar.js"></script>
+<script src="https://cdn.rawgit.com/google/songbird/master/build/songbird.min.js"></script>
+
+<script>
+var vrDisplay;
+var vrFrameData;
+var vrControls;
+var arView;
+var canvas;
+var camera;
+var scene;
+var renderer;
+var clone;
+var shapes = [];
+
+var audioContext = window.AudioContext ? new AudioContext() : null;
+
+var AMBISONIC_ORDER = 3;
+var SONGBIRD_OPTIONS = {
+  ambisonicOrder: AMBISONIC_ORDER
+};
+
+var currentAudioElement;
+var audioChunks = [];
+var currentAudioElementPosition;
+var currentAudioElementOrientation;
+
+var audioElements = [];
+
+var songbird;
+
+var LEARN_MORE_LINK = 'https://developers.google.com/ar/develop/web/getting-started#examples';
+var AUDIO_UNSUPPORTED_MESSAGE = `This augmented reality experience requires getUserMedia(),
+    which is not supported on this browser. See other demos on the
+    <a href="${LEARN_MORE_LINK}">Google Developers site</a>.`;
+
+/**
+ * Use the `getARDisplay()` utility to leverage the WebVR API
+ * to see if there are any AR-capable WebVR VRDisplays. Returns
+ * a valid display if found. Otherwise, display the unsupported
+ * browser message.
+ */
+THREE.ARUtils.getARDisplay().then(function (display) {
+  if (!audioContext) {
+    THREE.ARUtils.displayUnsupportedMessage(AUDIO_UNSUPPORTED_MESSAGE);
+  } else if (display) {
+    vrFrameData = new VRFrameData();
+    vrDisplay = display;
+    init();
+  } else {
+    THREE.ARUtils.displayUnsupportedMessage();
+  }
+});
+
+function init() {
+  // Create a (2nd-order Ambisonic) Songbird scene.
+  songbird = new Songbird(audioContext, SONGBIRD_OPTIONS);
+
+  // Turn on the debugging panel
+  var arDebug = new THREE.ARDebug(vrDisplay);
+  document.body.appendChild(arDebug.getElement());
+
+  // Setup the three.js rendering environment
+  renderer = new THREE.WebGLRenderer({alpha: true});
+  renderer.setPixelRatio(window.devicePixelRatio);
+  console.log('setRenderer size', window.innerWidth, window.innerHeight);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.autoClear = false;
+  canvas = renderer.domElement;
+  document.body.appendChild(canvas);
+  scene = new THREE.Scene();
+
+  // Creating the ARView, which is the object that handles
+  // the rendering of the camera stream behind the three.js
+  // scene
+  arView = new THREE.ARView(vrDisplay, renderer);
+
+  // The ARPerspectiveCamera is very similar to THREE.PerspectiveCamera,
+  // except when using an AR-capable browser, the camera uses
+  // the projection matrix provided from the device, so that the
+  // perspective camera's depth planes and field of view matches
+  // the physical camera on the device.
+  camera = new THREE.ARPerspectiveCamera(
+    vrDisplay,
+    60,
+    window.innerWidth / window.innerHeight,
+    vrDisplay.depthNear,
+    vrDisplay.depthFar
+  );
+
+  // VRControls is a utility from three.js that applies the device's
+  // orientation/position to the perspective camera, keeping our
+  // real world and virtual world in sync.
+  vrControls = new THREE.VRControls(camera);
+
+  // Create the geometry that we'll copy and place in the
+  // scene when the user clicks the screen
+  makeVisualRecordingObject();
+
+  // Bind our event handlers
+  window.addEventListener('resize', onWindowResize, false);
+  canvas.addEventListener('touchstart', onTouchDown, false);
+  canvas.addEventListener('touchend', onTouchUp, false);
+
+  // Send songbird's binaural output to stereo out.
+  songbird.output.connect(audioContext.destination);
+
+  // Set up audio recording
+  navigator.mediaDevices.getUserMedia({audio: true})
+    .then(function (stream) {
+      rec = new MediaRecorder(stream);
+      rec.ondataavailable = function (audioData) {
+        if (audioData.data.size > 0) {
+          audioChunks.push(audioData.data);
+        }
+        if (rec.state == 'inactive') {
+          console.log('about to create and play recording');
+          var blob = new Blob(audioChunks);
+          currentAudioElement.src = URL.createObjectURL(blob);
+          currentAudioElement.loop = true;
+          currentAudioElement.play();
+        }
+      }
+    })
+    .catch(function (e) {
+      console.log(e)
+    });
+
+  // Kick off the render loop!
+  update();
+}
+
+/**
+ * The render loop, called once per frame. Handles updating
+ * our scene and rendering.
+ */
+function update() {
+  // Render the device's camera stream on screen
+  arView.render();
+
+  // Update our camera projection matrix in the event that
+  // the near or far planes have updated
+  camera.updateProjectionMatrix();
+
+  // From the WebVR API, populate `vrFrameData` with
+  // updated information for the frame
+  vrDisplay.getFrameData(vrFrameData);
+
+  // Update our perspective camera's positioning
+  vrControls.update();
+
+  // Render our three.js virtual scene
+  renderer.clearDepth();
+  renderer.render(scene, camera);
+
+  // Update camera location for audio
+  songbird.setListenerFromMatrix(camera.matrix);
+
+  // Kick off the requestAnimationFrame to call this function
+  // when a new VRDisplay frame is rendered
+  vrDisplay.requestAnimationFrame(update);
+}
+
+/**
+ * On window resize, update the perspective camera's aspect ratio,
+ * and call `updateProjectionMatrix` so that we can get the latest
+ * projection matrix provided from the device
+ */
+function onWindowResize() {
+  console.log('setRenderer size', window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+/**
+ * When clicking on the screen, create a shape at the user's
+ * current position and start recording.
+ */
+function onTouchDown() {
+  audioChunks = [];
+  rec.start();
+
+  // Fetch the pose data from the current frame
+  var pose = vrFrameData.pose;
+
+  drawShape(pose.position, pose.orientation, 0xcc0000);
+  createAudioElement(pose.position, pose.orientation);
+}
+
+/**
+ * Draw shape to represent location of recorded audio.
+ * @param position Position of shape
+ * @param orientation Orientation of shape
+ * @param shapeColor Color of shape
+ */
+function drawShape(position, orientation, shapeColor) {
+  // Convert the pose orientation and position into
+  // THREE.Quaternion and THREE.Vector3 respectively
+  var ori = new THREE.Quaternion(
+    orientation[0],
+    orientation[1],
+    orientation[2],
+    orientation[3]
+  );
+  var pos = new THREE.Vector3(
+    position[0],
+    position[1],
+    position[2]
+  );
+  var dirMtx = new THREE.Matrix4();
+  dirMtx.makeRotationFromQuaternion(ori);
+
+  var newShapeOffset = new THREE.Vector3(0, 0, -1.0);
+  newShapeOffset.transformDirection(dirMtx);
+  var SHAPE_OFFSET_SCALING = 0.02;
+  pos.addScaledVector(newShapeOffset, SHAPE_OFFSET_SCALING);
+  clone = group.clone();
+  scene.add(clone);
+  clone.position.copy(pos);
+  clone.quaternion.copy(ori);
+  for (var i = 0; i < clone.children.length; i++) {
+    clone.children[i].material = new THREE.MeshBasicMaterial({color: shapeColor})
+  }
+  shapes.push(clone);
+  clone.name = shapes.indexOf(clone);
+}
+
+function createAudioElement(position, orientation) {
+  // Create an audio element. Feed into audio graph.
+  currentAudioElement = document.createElement('audio');
+  //currentAudioElement.loop = true;
+  //currentAudioElement.autoplay = true;
+  document.body.appendChild(currentAudioElement);
+  audioElements.push(currentAudioElement);
+
+  // Create an AudioNode from the audio element.
+  var audioElementSource = audioContext.createMediaElementSource(currentAudioElement);
+
+  // Create a Source, connect desired audio input to it.
+  var SOURCE_OPTIONS = {
+    minDistance: 0.1,
+    maxDistance: 2,
+    rolloff: 'logarithmic',
+    alpha: 0,
+    sharpness: 1,
+    sourceWidth: 0,
+    gain: 5
+  };
+
+  var source = songbird.createSource(SOURCE_OPTIONS);
+  audioElementSource.connect(source.input);
+
+  // The source position is relative to the origin.
+  source.setPosition(position[0], position[1], position[2]);
+  console.log('Position of audio source: ' +
+    position[0] + ', ' + position[1] + ', ' + position[2]);
+  currentAudioElementPosition = position;
+  currentAudioElementOrientation = orientation;
+}
+
+/**
+ * When touch ends, stop recording and change color of the cube for user feedback.
+ */
+function onTouchUp() {
+  console.log('about to stop recording');
+  rec.stop();
+  for (var i = 0; i < clone.children.length; i++) {
+    clone.children[i].material = new THREE.MeshBasicMaterial({color: 0xcccccc})
+  }
+}
+
+/**
+ * Remove all <audio> elements from the DOM, along with their displayed
+ */
+function deleteAudioElements() {
+  for (var i = 0; i < audioElements.length; i++) {
+    var audioElement = audioElements[i];
+    audioElement.parentNode.removeChild(audioElement);
+    console.log("remove audio element");
+  }
+  audioElements = [];
+
+  for (var j = 0; j < shapes.length; j++) {
+    var aShape = shapes[j];
+    console.log("removing shape");
+    scene.remove(scene.getObjectByName(aShape.name));
+  }
+  shapes = [];
+}
+
+/**
+ * Create object to represent recording, a sphere described by random lines.
+ */
+function makeVisualRecordingObject() {
+  group = new THREE.Object3D();
+  group.name = 'group';
+  var NUM_LINES = 200;
+  var SIZE_LINE = .4;
+  var SCALAR_MULTIPLY_FACTOR = .01;
+  var VERTEX_2_VARIATION = .5;
+  for (var i = 0; i < NUM_LINES; i++) {
+    var geometry = new THREE.Geometry();
+    var vertex = new THREE.Vector3(Math.random() * SIZE_LINE - SIZE_LINE / 2,
+      Math.random() * SIZE_LINE - SIZE_LINE / 2, Math.random() * SIZE_LINE - SIZE_LINE / 2);
+    vertex.normalize();
+    vertex.multiplyScalar(SCALAR_MULTIPLY_FACTOR);
+    geometry.vertices.push(vertex);
+    var vertex2 = vertex.clone();
+    vertex2.multiplyScalar(Math.random() * VERTEX_2_VARIATION + VERTEX_2_VARIATION * 2);
+    geometry.vertices.push(vertex2);
+    var line = new THREE.Line(geometry, new THREE.LineBasicMaterial({color: 0xff0000, opacity: 1}));
+    group.add(line);
+  }
+}
+</script>
+</body>
+</html>

@@ -16,6 +16,7 @@
 import { isARKit } from './ARUtils';
 import vertexSource from './shaders/arview.vert';
 import fragmentSource from './shaders/arview.frag';
+import preserveGLState from 'gl-preserve-state';
 
 /**
  * Creates and load a shader from a string, type specifies either 'vertex' or 'fragment'
@@ -240,74 +241,74 @@ class ARVideoRenderer {
    */
   render() {
     let gl = this.gl;
-    gl.useProgram(this.program);
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
-    gl.enableVertexAttribArray(this.vertexPositionAttribute);
-    gl.vertexAttribPointer(
-      this.vertexPositionAttribute,
-      this.vertexPositionBuffer.itemSize,
-      gl.FLOAT,
-      false,
-      0,
-      0
-    );
+    const bindings = [
+      gl.ARRAY_BUFFER_BINDING,
+      gl.ELEMENT_ARRAY_BUFFER_BINDING,
+      gl.CURRENT_PROGRAM,
+    ];
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.textureCoordBuffer);
-
-    // Check the current orientation of the device combined with the
-    // orientation of the VRSeeThroughCamera to determine the correct UV
-    // coordinates to be used.
-    let combinedOrientation = combineOrientations(
-      screen.orientation.angle,
-      this.passThroughCamera.orientation
-    );
-    if (combinedOrientation !== this.combinedOrientation) {
-      this.combinedOrientation = combinedOrientation;
-      gl.bufferData(
-        gl.ARRAY_BUFFER,
-        this.f32TextureCoords[this.combinedOrientation],
-        gl.STATIC_DRAW
+    preserveGLState(gl, bindings, () => {
+      gl.useProgram(this.program);
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
+      gl.enableVertexAttribArray(this.vertexPositionAttribute);
+      gl.vertexAttribPointer(
+        this.vertexPositionAttribute,
+        this.vertexPositionBuffer.itemSize,
+        gl.FLOAT,
+        false,
+        0,
+        0
       );
-    }
-    gl.enableVertexAttribArray(this.textureCoordAttribute);
-    gl.vertexAttribPointer(
-      this.textureCoordAttribute,
-      this.textureCoordBuffer.itemSize,
-      gl.FLOAT,
-      false,
-      0,
-      0
-    );
 
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_EXTERNAL_OES, this.texture);
-    // Update the content of the texture in every frame.
-    gl.texImage2D(
-      gl.TEXTURE_EXTERNAL_OES,
-      0,
-      gl.RGB,
-      gl.RGB,
-      gl.UNSIGNED_BYTE,
-      this.passThroughCamera
-    );
-    gl.uniform1i(this.samplerUniform, 0);
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.textureCoordBuffer);
 
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+      // Check the current orientation of the device combined with the
+      // orientation of the VRSeeThroughCamera to determine the correct UV
+      // coordinates to be used.
+      let combinedOrientation = combineOrientations(
+        screen.orientation.angle,
+        this.passThroughCamera.orientation
+      );
+      if (combinedOrientation !== this.combinedOrientation) {
+        this.combinedOrientation = combinedOrientation;
+        gl.bufferData(
+          gl.ARRAY_BUFFER,
+          this.f32TextureCoords[this.combinedOrientation],
+          gl.STATIC_DRAW
+        );
+      }
+      gl.enableVertexAttribArray(this.textureCoordAttribute);
+      gl.vertexAttribPointer(
+        this.textureCoordAttribute,
+        this.textureCoordBuffer.itemSize,
+        gl.FLOAT,
+        false,
+        0,
+        0
+      );
 
-    gl.drawElements(
-      gl.TRIANGLES,
-      this.indexBuffer.numItems,
-      gl.UNSIGNED_SHORT,
-      0
-    );
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_EXTERNAL_OES, this.texture);
+      // Update the content of the texture in every frame.
+      gl.texImage2D(
+        gl.TEXTURE_EXTERNAL_OES,
+        0,
+        gl.RGB,
+        gl.RGB,
+        gl.UNSIGNED_BYTE,
+        this.passThroughCamera
+      );
+      gl.uniform1i(this.samplerUniform, 0);
 
-    // Disable enabled states to allow other render calls to correctly work
-    gl.bindTexture(gl.TEXTURE_EXTERNAL_OES, null);
-    gl.disableVertexAttribArray(this.vertexPositionAttribute);
-    gl.disableVertexAttribArray(this.textureCoordAttribute);
-    gl.bindBuffer(gl.ARRAY_BUFFER, null);
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-    gl.useProgram(null);
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+
+      gl.drawElements(
+        gl.TRIANGLES,
+        this.indexBuffer.numItems,
+        gl.UNSIGNED_SHORT,
+        0
+      );
+    });
   }
 }
 
@@ -330,7 +331,6 @@ class ARView {
     this.gl = renderer.context;
 
     this.videoRenderer = new ARVideoRenderer(vrDisplay, this.gl);
-    this.renderer.resetGLState();
 
     // Cache the width/height so we're not potentially forcing
     // a reflow if there's been a style invalidation
@@ -370,9 +370,7 @@ class ARView {
 
     this.gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     this.videoRenderer.render();
-    this.renderer.resetGLState();
   }
 }
 
-THREE.ARView = ARView;
 export default ARView;

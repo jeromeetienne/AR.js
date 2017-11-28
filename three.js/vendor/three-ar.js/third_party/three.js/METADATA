@@ -11,6 +11,6 @@ third_party {
     type: GIT
     value: "git@github.com:mrdoob/three.js.git"
   }
-  version: "r86"
-  last_upgrade_date { year: 2017 month: 7 day: 27 }
+  version: "r87"
+  last_upgrade_date { year: 2017 month: 9 day: 14 }
 }

@@ -1,0 +1,384 @@
+<!--
+/*
+ * Copyright 2017 Google Inc. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>three.ar.js - Occlusion</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no,
+  minimum-scale=1.0, maximum-scale=1.0">
+
+  <style>
+    body {
+      font-family: Monospace;
+      background-color: #000000;
+      margin: 0px;
+      overflow: hidden;
+    }
+
+    #info {
+      background-color: rgba(40, 40, 40, 0.4);
+      bottom: 0;
+      box-sizing: border-box;
+      color: rgba(255, 255, 255, 0.7);
+      left: 50%;
+      line-height: 1.3em;
+      padding: 0.75em;
+      position: absolute;
+      text-align: center;
+      transform: translate(-50%, 0);
+      width: 100%;
+      z-index: 10;
+    }
+
+    .divider {
+      color: rgba(255, 255, 255, 0.2);
+      padding: 0 0.5em;
+    }
+
+    #info a {
+      text-decoration: none;
+      color: white;
+    }
+
+    #dat {
+      user-select: none;
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-Index: 200;
+    }
+
+    #glFullscreen {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    a { color: skyblue }
+  </style>
+</head>
+<body>
+<div id="info">
+    <a href="https://github.com/google-ar/three.ar.js">three.ar.js</a><span class="divider">|</span>Touch anywhere to create a teapot and see occlusion
+</div>
+<script src="../third_party/dat.gui/dat.gui.js"></script>
+<script src="../third_party/three.js/three.js"></script>
+<script src="../third_party/three.js/TeapotBufferGeometry.js"></script>
+<script src="../third_party/three.js/VRControls.js"></script>
+<script src="../dist/three.ar.js"></script>
+<script>
+VRPointCloudWrapper = function(vrDisplay) {
+  this._vrDisplay = vrDisplay;
+
+  this._numberOfPointsInLastPointCloud = 0;
+
+  this._bufferGeometry = new THREE.BufferGeometry();
+  this._bufferGeometry.frustumCulled = false;
+
+  var positions = null;
+  if (vrDisplay) {
+    this._pointCloud = new VRPointCloud();
+    vrDisplay.getPointCloud(this._pointCloud, false, 0, false);
+    positions = this._pointCloud.points;
+  }
+  else {
+    positions = new Float32Array(
+        [-1, 1, -2, 1, 1, -2, 1, -1, -2, -1, -1, -2 ]);
+  }
+  var colors = new Float32Array( positions.length );
+
+  var color = new THREE.Color();
+
+  for ( var i = 0; i < colors.length; i += 3 ) {
+    if (vrDisplay) {
+      positions[ i ]     = VRPointCloudWrapper.MAX_FLOAT32_VALUE;
+      positions[ i + 1 ] = VRPointCloudWrapper.MAX_FLOAT32_VALUE;
+      positions[ i + 2 ] = VRPointCloudWrapper.MAX_FLOAT32_VALUE;
+    }
+    color.setRGB( 1, 1, 1 );
+    colors[ i ]     = color.r;
+    colors[ i + 1 ] = color.g;
+    colors[ i + 2 ] = color.b;
+  }
+
+  this._positions = new THREE.BufferAttribute( positions, 3 );
+  this._bufferGeometry.addAttribute( 'position', this._positions );
+  this._colors = new THREE.BufferAttribute( colors, 3 );
+  this._bufferGeometry.addAttribute( 'color', this._colors );
+
+  this._bufferGeometry.computeBoundingSphere();
+
+  return this;
+};
+
+VRPointCloudWrapper.MAX_FLOAT32_VALUE = 3.4028e38;
+
+VRPointCloudWrapper.prototype.getBufferGeometry = function() {
+  return this._bufferGeometry;
+};
+
+VRPointCloudWrapper.prototype.update = function(updateBufferGeometry, pointsToSkip, transformPoints) {
+  if (!this._vrDisplay) return;
+  this._vrDisplay.getPointCloud(this._pointCloud,
+                                !updateBufferGeometry, typeof(pointsToSkip) === "number" ?
+                                                       pointsToSkip : 0, !!transformPoints);
+  if (!updateBufferGeometry) return;
+  if (this._pointCloud.numberOfPoints > 0) {
+    this._positions.needsUpdate = true;
+  }
+};
+
+// These shaders allow to only render the points that are not in the
+// same plane as the picking plane.
+// The distance uniform is a threshold to determine a marging to consider
+// a point in the picking plane or not.
+// The varying v_discard is used to let the fragment shader know which
+// points should be discarded and which should not.
+var points_vertexShader =
+  "attribute vec3 position;\n" +
+  "uniform float size;\n" +
+  "uniform mat4 modelViewMatrix;\n" +
+  "uniform mat4 projectionMatrix;\n" +
+  "uniform vec4 plane;\n" +
+  "uniform float distance;\n" +
+  "varying float v_discard;\n" +
+  "void main(void) {\n" +
+  "  vec4 v4Position = vec4(position, 1.0);\n" +
+  "  float d = dot(plane, v4Position);\n" +
+  "  v_discard = 0.0;\n" +
+  "  if (abs(d) < distance) v_discard = 1.0;\n" +
+  "  gl_PointSize = size;\n" +
+  "  gl_Position = projectionMatrix * modelViewMatrix * v4Position;\n" +
+  "}";
+var points_fragmentShader =
+  "precision mediump float;\n" +
+  "uniform vec3 color;\n" +
+  "uniform float opacity;\n" +
+  "varying float v_discard;\n" +
+  "void main(void) {\n" +
+  "  if (v_discard > 0.0) discard;\n" +
+  "  gl_FragColor = vec4( color, opacity );\n" +
+  "}";
+
+function GUI() {
+  this.showSeeThroughCamera = true;
+  this.usePointCloudForDepth = true;
+  this.transformPoints = true;
+  return this;
+}
+var vrDisplay;
+var vrControls;
+var arView;
+
+var canvas;
+var camera;
+var scene;
+var renderer;
+
+var container;
+var pointsScene, pointCloud, points;
+var model;
+var gui;
+var pos = new THREE.Vector3(); // Avoid GC.
+var MODEL_SIZE_IN_METERS = 0.1;
+
+/**
+ * Use the `getARDisplay()` utility to leverage the WebVR API
+ * to see if there are any AR-capable WebVR VRDisplays. Returns
+ * a valid display if found. Otherwise, display the unsupported
+ * browser message.
+ */
+THREE.ARUtils.getARDisplay().then(function (display) {
+  if (display) {
+    vrDisplay = display;
+    init();
+  } else {
+    THREE.ARUtils.displayUnsupportedMessage();
+  }
+});
+
+function init() {
+  // Initialize the dat.GUI.
+  var datGUI = new dat.GUI();
+  gui = new GUI();
+  datGUI.add(gui, "showSeeThroughCamera").name("Show seethrough camera");
+  datGUI.add(gui, "usePointCloudForDepth").name("Use point cloud for depth");
+  datGUI.add(gui, "transformPoints").name("Transform points");
+
+  // Initialize everything related to ThreeJS.
+  container = document.createElement('div');
+  document.body.appendChild(container);
+
+  // Setup the three.js rendering environment
+  renderer = new THREE.WebGLRenderer({ alpha: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.autoClear = false;
+  canvas = renderer.domElement;
+  document.body.appendChild(canvas);
+  scene = new THREE.Scene();
+
+  // Creating the ARView, which is the object that handles
+  // the rendering of the camera stream behind the three.js
+  // scene
+  arView = new THREE.ARView(vrDisplay, renderer);
+
+  // The ARPerspectiveCamera is very similar to THREE.PerspectiveCamera,
+  // except when using an AR-capable browser, the camera uses
+  // the projection matrix provided from the device, so that the
+  // perspective camera's depth planes and field of view matches
+  // the physical camera on the device.
+  camera = new THREE.ARPerspectiveCamera(vrDisplay, 60, window.innerWidth / window.innerHeight, 0.01, 100);
+
+  // Create a model to be placed in the world using picking
+  model = new THREE.Mesh(new THREE.TeapotBufferGeometry(MODEL_SIZE_IN_METERS, 15),
+    new THREE.MeshLambertMaterial( {color: 0x888888 } ));
+  model.geometry.translate(0, MODEL_SIZE_IN_METERS / 2, 0);
+  model.position.set(0, 0, -2);
+  scene.add(model);
+  // Everything related to the point cloud that uses its own scene
+  // to render it specifically for occlusion
+  pointsScene = new THREE.Scene();
+  // Use a custom shader for the points so the points that are considered
+  // to be in the same plane as the picking plane are discarded.
+  // This way, the model will not be occluded by the points in the
+  // same plane as the picking plane.
+  var pointsMaterial = new THREE.RawShaderMaterial({
+    uniforms: {
+      size: { value: 30 },
+      opacity: { value: 0.1 },
+      color: { value: new THREE.Color(0xffffff) },
+      plane: { value: new THREE.Vector4() },
+      distance: { value: 0.05 }
+    },
+    vertexShader: points_vertexShader,
+    fragmentShader: points_fragmentShader
+  });
+  pointCloud = new VRPointCloudWrapper(vrDisplay, true);
+  points = new THREE.Points(pointCloud.getBufferGeometry(),
+    pointsMaterial);
+  // Points are changing all the time so calculating the frustum culling
+  // volume is not very convenient.
+  points.frustumCulled = false;
+  pointsScene.add(points);
+  // Control the perspective camera using the VR pose.
+  vrControls = new THREE.VRControls(camera);
+  // Add some lighting
+  var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+  directionalLight.position.set( 0, 1, 0);
+  scene.add(directionalLight);
+
+  // Control the resizing of the window to correctly display the scene.
+  window.addEventListener( 'resize', onWindowResize, false );
+  // Wherever the user clicks in the screen, place the model.
+  renderer.domElement.addEventListener("click", function(event) {
+    pos.x = event.pageX / window.innerWidth;
+    pos.y = event.pageY / window.innerHeight;
+    picking();
+  });
+  // Control the rotation of the model
+  var lastX = 0;
+  renderer.domElement.addEventListener("touchstart", function(event) {
+    if (event.changedTouches.length > 0) {
+      lastX = event.changedTouches[0].pageX;
+    }
+  });
+  renderer.domElement.addEventListener("touchmove", function(event) {
+    if (event.changedTouches.length > 0 && vrDisplay) {
+      var x = event.changedTouches[0].pageX;
+      var diffX = x - lastX;
+      lastX = x;
+      model.rotateX(THREE.Math.degToRad(diffX));
+    }
+  });
+
+  update();
+}
+function picking() {
+  if (vrDisplay) {
+    var hits = vrDisplay.hitTest(pos.x, pos.y);
+    if (hits && hits.length > 0) {
+      var hit = hits[0];
+      // Place the teapot model at the position and orientation of the hit.
+      THREE.ARUtils.placeObjectAtHit(model, hit, 1, true);
+      points.material.uniforms.plane.value.fromArray(
+          [hit.modelMatrix[4], hit.modelMatrix[5], hit.modelMatrix[6], hit.modelMatrix[7]]);
+    }
+    else {
+      console.warn("Could not retrieve the correct point and plane.");
+    }
+  }
+}
+
+function update() {
+  // Render the device's camera stream on screen first of all.
+  // It allows to get the right pose synchronized with the right frame.
+  arView.render();
+
+  // Update our camera projection matrix in the event that
+  // the near or far planes have updated
+  camera.updateProjectionMatrix();
+
+  // Update our perspective camera's positioning
+  vrControls.update();
+
+  // Render our three.js virtual scene
+  renderer.clearDepth();
+
+  // If continuous picking is enabled, use the center of the screen
+  // to continuously pick.
+  if (gui.continuousPicking) {
+    pos.x = 0.5;
+    pos.y = 0.5;
+    picking();
+  }
+
+  // Update the point cloud. Only if the point cloud will be shown the
+  // geometry is also updated.
+  pointCloud.update(gui.usePointCloudForDepth, 0, gui.transformPoints);
+
+  // Render the point cloud to the depth buffer only to obscure parts of the
+  // teapot model that are behind real-world objects.
+  if (this.gui.usePointCloudForDepth) {
+    // This colorMask function makes it so we only write to the depth buffer.
+    this.renderer.context.colorMask(false, false, false, false);
+    this.renderer.render(pointsScene, camera);
+    // Re-enable writing to the color buffer.
+    this.renderer.context.colorMask(true, true, true, true);
+  }
+
+  renderer.render(scene, camera);
+
+  vrDisplay.requestAnimationFrame(update);
+}
+
+/**
+ * On window resize, update the perspective camera's aspect ratio,
+ * and call `updateProjectionMatrix` so that we can get the latest
+ * projection matrix provided from the device
+ */
+function onWindowResize () {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+</script>
+</body>
+</html>

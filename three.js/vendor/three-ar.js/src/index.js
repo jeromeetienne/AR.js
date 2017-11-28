@@ -19,3 +19,23 @@ import ARPerspectiveCamera from './ARPerspectiveCamera';
 import ARReticle from './ARReticle';
 import ARUtils from './ARUtils';
 import ARView from './ARView';
+import './ARSpeechRecognition';
+
+// If including three.ar.js as a standalone script tag,
+// we'll need to expose these objects directly by attaching
+// them on the THREE global
+if (typeof window !== 'undefined' && typeof window.THREE === 'object') {
+  window.THREE.ARDebug = ARDebug;
+  window.THREE.ARPerspectiveCamera = ARPerspectiveCamera;
+  window.THREE.ARReticle = ARReticle;
+  window.THREE.ARUtils = ARUtils;
+  window.THREE.ARView = ARView;
+}
+
+export {
+  ARDebug,
+  ARPerspectiveCamera,
+  ARReticle,
+  ARUtils,
+  ARView,
+};

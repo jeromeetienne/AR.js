@@ -13,13 +13,14 @@
  * limitations under the License.
  */
 
+import { Color, RawShaderMaterial } from 'three';
 import fragmentShader from './shaders/point-cloud-depth.frag';
 import vertexShader from './shaders/point-cloud-depth.vert';
 
 const DEFAULT_CONFIG = {
   size: 10.0,
-  nearColor: new THREE.Color(0xff0000),
-  farColor: new THREE.Color(0x0000ff),
+  nearColor: new Color(0xff0000),
+  farColor: new Color(0x0000ff),
   range: 5.0,
   useHSVInterpolation: true,
 };
@@ -28,7 +29,7 @@ const DEFAULT_CONFIG = {
  * Class extending a THREE Material to render each point
  * in a VRPointCloud based on depth.
  */
-class ARPointCloudDepthMaterial extends THREE.RawShaderMaterial {
+class ARPointCloudDepthMaterial extends RawShaderMaterial {
   /**
    * @param {Object} config
    */
@@ -60,5 +61,7 @@ class ARPointCloudDepthMaterial extends THREE.RawShaderMaterial {
   }
 }
 
-THREE.ARPointCloudDepthMaterial = ARPointCloudDepthMaterial;
+if (typeof window !== 'undefined' && typeof window.THREE === 'object') {
+  window.THREE.ARPointCloudDepthMaterial = ARPointCloudDepthMaterial;
+}
 export default ARPointCloudDepthMaterial;

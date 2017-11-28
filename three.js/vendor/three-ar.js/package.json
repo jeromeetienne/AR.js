@@ -1,0 +1,57 @@
+{
+  "name": "three.ar.js",
+  "version": "0.1.6",
+  "description": "A helper three.js library for building AR web experiences that run in WebARonARKit and WebARonARCore",
+  "main": "./dist/three.ar.js",
+  "scripts": {
+    "build": "rollup -c",
+    "build-min": "rollup -c rollup.config.min.js",
+    "build-all": "npm run build && npm run build-min",
+    "watch": "rollup -c -w",
+    "lint": "eslint 'src/**/*.js'",
+    "test": "npm run lint",
+    "preversion": "npm test",
+    "version": "npm run build-all && git add dist/*",
+    "postversion": "git push && git push --tags && npm publish"
+  },
+  "author": "Jordan Santell <jsantell@google.com>",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^8.0.1",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "base64-image-loader": "^1.2.0",
+    "eslint": "^4.5.0",
+    "eslint-config-google": "^0.9.1",
+    "glsl-y-hsv": "^1.0.0",
+    "rollup": "^0.50.0",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-cleanup": "^1.0.1",
+    "rollup-plugin-commonjs": "^8.2.1",
+    "rollup-plugin-glsl": "^1.1.0",
+    "rollup-plugin-json": "^2.3.0",
+    "rollup-plugin-node-globals": "^1.1.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-uglify": "^2.0.1"
+  },
+  "keywords": [
+    "webar",
+    "webvr",
+    "webxr",
+    "arcore",
+    "arkit",
+    "webaronarcore",
+    "webaronarkit",
+    "augmented reality"
+  ],
+  "peerDependencies": {
+    "three": "*"
+  },
+  "repository": "https://github.com/google-ar/three.ar.js",
+  "dependencies": {
+    "gl-preserve-state": "^1.0.0"
+  }
+}

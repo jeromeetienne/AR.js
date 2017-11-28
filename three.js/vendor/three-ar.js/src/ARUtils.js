@@ -13,25 +13,46 @@
  * limitations under the License.
  */
 
+import { Color, Matrix4, Quaternion, Vector3 } from 'three';
+
 import { loadMtl, loadObj } from './loaders';
+
+const colors = [
+  '#F44336',
+  '#E91E63',
+  '#9C27B0',
+  '#673AB7',
+  '#3F51B5',
+  '#2196F3',
+  '#03A9F4',
+  '#00BCD4',
+  '#009688',
+  '#4CAF50',
+  '#8BC34A',
+  '#CDDC39',
+  '#FFEB3B',
+  '#FFC107',
+  '#FF9800',
+].map(hex => new Color(hex));
 
 const LEARN_MORE_LINK = 'https://developers.google.com/ar/develop/web/getting-started';
 const UNSUPPORTED_MESSAGE = `This augmented reality experience requires
-  WebARonARCore or WebARonARKit, experimental browsers from Google 
-  for Android and iOS. Learn more at<a href="${LEARN_MORE_LINK}">developers.google.com</a>.`;
+  WebARonARCore or WebARonARKit, experimental browsers from Google
+  for Android and iOS. Learn more at the <a href="${LEARN_MORE_LINK}">Google Developers site</a>.`;
 
-THREE.ARUtils = Object.create(null);
 
-THREE.ARUtils.isTango = display =>
+const ARUtils = Object.create(null);
+
+ARUtils.isTango = display =>
   display && display.displayName.toLowerCase().includes('tango');
-export const isTango = THREE.ARUtils.isTango;
+export const isTango = ARUtils.isTango;
 
-THREE.ARUtils.isARKit = display =>
+ARUtils.isARKit = display =>
   display && display.displayName.toLowerCase().includes('arkit');
-export const isARKit = THREE.ARUtils.isARKit;
+export const isARKit = ARUtils.isARKit;
 
-THREE.ARUtils.isARDisplay = display => isARKit(display) || isTango(display);
-export const isARDisplay = THREE.ARUtils.isARDisplay;
+ARUtils.isARDisplay = display => isARKit(display) || isTango(display);
+export const isARDisplay = ARUtils.isARDisplay;
 
 /**
  * Returns a promise that resolves to either to a VRDisplay with
@@ -39,7 +60,7 @@ export const isARDisplay = THREE.ARUtils.isARDisplay;
  *
  * @return {Promise<VRDisplay?>}
  */
-THREE.ARUtils.getARDisplay = () => new Promise((resolve, reject) => {
+ARUtils.getARDisplay = () => new Promise((resolve, reject) => {
   if (!navigator.getVRDisplays) {
     resolve(null);
     return;
@@ -60,49 +81,63 @@ THREE.ARUtils.getARDisplay = () => new Promise((resolve, reject) => {
     resolve(null);
   });
 });
-export const getARDisplay = THREE.ARUtils.getARDisplay;
+export const getARDisplay = ARUtils.getARDisplay;
 
 /**
  * Takes a path for an OBJ model and optionally a path for an MTL
- * texture and returns a promise resolving to a THREE.Mesh loaded with
+ * texture and returns a promise resolving to a THREE.Group loaded with
  * the appropriate material. Can be used on downloaded models from Blocks.
  *
- * @param {string} objPath
- * @param {string} mtlPath
- * @return {THREE.Mesh}
+ * NOTE: loading function will remap materials in the .mtl file whose specular,
+ * diffuse, or ambient contribution is (0, 0, 0) to (1, 1, 1). As well as materials
+ * whose dissolve is 0 (which becomes an opacity of 0) to 1.
+ *
+ * @param {Object} config
+ * @param {string} config.objPath
+ * @param {string} config.mtlPath
+ * @param {THREE.OBJLoader} config.OBJLoader
+ * @param {THREE.MTLLoader} config.MTLLoader
+ * @return {THREE.Group}
  */
-THREE.ARUtils.loadBlocksModel = (objPath, mtlPath) => new Promise((resolve, reject) => {
-  if (!THREE.OBJLoader || !THREE.MTLLoader) {
-    reject(new Error('Must include THREE.OBJLoader and THREE.MTLLoader'));
+ARUtils.loadModel = (config = {}) => new Promise((resolve, reject) => {
+  const { mtlPath, objPath } = config;
+  const OBJLoader = config.OBJLoader || (global.THREE ? global.THREE.OBJLoader : null);
+  const MTLLoader = config.MTLLoader || (global.THREE ? global.THREE.MTLLoader : null);
+
+  if (!config.objPath) {
+    reject(new Error('`objPath` must be specified.'));
+    return;
+  }
+
+  if (!OBJLoader) {
+    reject(new Error('Missing OBJLoader as third argument, or window.THREE.OBJLoader existence'));
+    return;
+  }
+
+  if (config.mtlPath && !MTLLoader) {
+    reject(new Error('Missing MTLLoader as fourth argument, or window.THREE.MTLLoader existence'));
     return;
   }
 
   let p = Promise.resolve();
 
   if (mtlPath) {
-    p = loadMtl(mtlPath);
+    p = loadMtl(mtlPath, MTLLoader);
   }
 
-  p.then(materials => {
-    if (materials) {
-      materials.preload();
+  p.then(materialCreator => {
+    if (materialCreator) {
+      materialCreator.preload();
     }
-    return loadObj(objPath, materials);
-  }).then(obj => {
-    const model = obj.children[0];
-    model.geometry.applyMatrix(
-      new THREE.Matrix4().makeRotationY(THREE.Math.degToRad(-90))
-    );
-
-    return model;
+    return loadObj(objPath, materialCreator, OBJLoader);
   }).then(resolve, reject);
 });
-export const loadBlocksModel = THREE.ARUtils.loadBlocksModel;
+export const loadModel = ARUtils.loadModel;
 
-const model = new THREE.Matrix4();
-const tempPos = new THREE.Vector3();
-const tempQuat = new THREE.Quaternion();
-const tempScale = new THREE.Vector3();
+const model = new Matrix4();
+const tempPos = new Vector3();
+const tempQuat = new Quaternion();
+const tempScale = new Vector3();
 
 /**
  * Takes a THREE.Object3D and a VRHit and positions and optionally orients
@@ -116,7 +151,7 @@ const tempScale = new THREE.Vector3();
  * @param {number} easing
  * @param {boolean} applyOrientation
  */
-THREE.ARUtils.placeObjectAtHit = (object, hit, easing=1, applyOrientation=false) => {
+ARUtils.placeObjectAtHit = (object, hit, easing = 1, applyOrientation = false) => {
   if (!hit || !hit.modelMatrix) {
     throw new Error('placeObjectAtHit requires a VRHit object');
   }
@@ -137,13 +172,24 @@ THREE.ARUtils.placeObjectAtHit = (object, hit, easing=1, applyOrientation=false)
     }
   }
 };
-export const placeObjectAtHit = THREE.ARUtils.placeObjectAtHit;
+export const placeObjectAtHit = ARUtils.placeObjectAtHit;
+
+/**
+ * Returns a random color from the stored palette.
+ * @return {THREE.Color}
+ */
+ARUtils.getRandomPaletteColor = () => {
+  return colors[Math.floor(Math.random() * colors.length)];
+};
+export const getRandomPaletteColor = ARUtils.getRandomPaletteColor;
 
 /**
  * Injects a DOM element into the current page prompting the user that
  * their browser does not support these AR features.
+ *
+ * @param {string} customMessage
  */
-THREE.ARUtils.displayUnsupportedMessage = () => {
+ARUtils.displayUnsupportedMessage = customMessage => {
   const element = document.createElement('div');
   element.id = 'webgl-error-message';
   element.style.fontFamily = 'monospace';
@@ -156,7 +202,9 @@ THREE.ARUtils.displayUnsupportedMessage = () => {
   element.style.padding = '1.5em';
   element.style.width = '400px';
   element.style.margin = '5em auto 0';
-  element.innerHTML = UNSUPPORTED_MESSAGE;
+  element.innerHTML = typeof(customMessage) === 'string' ? customMessage : UNSUPPORTED_MESSAGE;
   document.body.appendChild(element);
 };
-export const displayUnsupportedMessage = THREE.ARUtils.displayUnsupportedMessage;
+export const displayUnsupportedMessage = ARUtils.displayUnsupportedMessage;
+
+export default ARUtils;
