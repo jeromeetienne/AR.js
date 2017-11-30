@@ -237,12 +237,11 @@ ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
 ARjs.Source.prototype._initSourceCanvas = function(onReady) {
 	console.assert( this.parameters.sourceCanvas !== null, 'sourceCanvas isnt set')
         var domElement = this.parameters.sourceCanvas
-	debugger
 
 	// wait until the video stream is ready
-	setTimeout(function() {
+	setTimeout(function(){
 		onReady()
-	}, 0);
+	}, 0)
 
 	return domElement                
 }
