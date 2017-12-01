@@ -7,7 +7,7 @@ It is the main part of my [AR.js effort](http://github.com/jeromeetienne/AR.js)
 
 threex.artoolkit is composed of 3 classes
 
-- ```THREEx.ArToolkitSource``` : It is the image which gonna analized to do the position tracking.
+- ```THREEx.ArToolkitSource``` : It is the image which is analyzed to do the position tracking.
   It can be the webcam, a video or even an image
 - ```THREEx.ArToolkitContext```: It is the main engine. It will actually find the marker position
   in the image source.
