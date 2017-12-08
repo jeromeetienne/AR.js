@@ -1,4 +1,5 @@
 <!-- Please don't delete this template or we'll close your issue -->
+<!-- Make sure all PR are originating from the dev branch -->
 **What kind of change does this PR introduce?**
 <!-- Can be a new feature, a bugfix, or refactoring, etc -->
 ** Can it be referenced to an Issue? If so what is the issue # ?**
