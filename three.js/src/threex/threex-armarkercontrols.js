@@ -1,6 +1,7 @@
+var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
-THREEx.ArMarkerControls = function(context, object3d, parameters){
+ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, parameters){
 	var _this = this
 
 	THREEx.ArBaseControls.call(this, object3d)
@@ -77,10 +78,10 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 	}else console.assert(false)
 }
 
-THREEx.ArMarkerControls.prototype = Object.create( THREEx.ArBaseControls.prototype );
-THREEx.ArMarkerControls.prototype.constructor = THREEx.ArMarkerControls;
+ARjs.MarkerControls.prototype = Object.create( THREEx.ArBaseControls.prototype );
+ARjs.MarkerControls.prototype.constructor = THREEx.ArMarkerControls;
 
-THREEx.ArMarkerControls.prototype.dispose = function(){
+ARjs.MarkerControls.prototype.dispose = function(){
 	this.context.removeMarker(this)
 
 	// TODO remove the event listener if needed
@@ -95,7 +96,7 @@ THREEx.ArMarkerControls.prototype.dispose = function(){
  * When you actually got a new modelViewMatrix, you need to perfom a whole bunch 
  * of things. it is done here.
  */
-THREEx.ArMarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatrix){
+ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatrix){
 	var markerObject3D = this.object3d;
 
 	// mark object as visible
@@ -146,7 +147,7 @@ THREEx.ArMarkerControls.prototype.updateWithModelViewMatrix = function(modelView
  * - silly heuristic for now
  * - should be improved
  */
-THREEx.ArMarkerControls.prototype.name = function(){
+ARjs.MarkerControls.prototype.name = function(){
 	var name = ''
 	name += this.parameters.type;
 	if( this.parameters.type === 'pattern' ){
@@ -164,7 +165,7 @@ THREEx.ArMarkerControls.prototype.name = function(){
 //////////////////////////////////////////////////////////////////////////////
 //		init for Artoolkit
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArMarkerControls.prototype._initArtoolkit = function(){
+ARjs.MarkerControls.prototype._initArtoolkit = function(){
 	var _this = this
 
 	var artoolkitMarkerId = null
@@ -231,14 +232,14 @@ THREEx.ArMarkerControls.prototype._initArtoolkit = function(){
 //////////////////////////////////////////////////////////////////////////////
 //		aruco specific
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArMarkerControls.prototype._initAruco = function(){
+ARjs.MarkerControls.prototype._initAruco = function(){
 	this._arucoPosit = new POS.Posit(this.parameters.size, _this.context.arucoContext.canvas.width)
 }
 
 //////////////////////////////////////////////////////////////////////////////
 //		init for Artoolkit
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArMarkerControls.prototype._initTango = function(){
+ARjs.MarkerControls.prototype._initTango = function(){
 	var _this = this
 	console.log('init tango ArMarkerControls')
 }

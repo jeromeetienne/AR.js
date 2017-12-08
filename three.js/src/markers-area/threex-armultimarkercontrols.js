@@ -4,10 +4,10 @@ var THREEx = THREEx || {}
 ARjs.MarkersAreaControls = THREEx.ArMultiMarkerControls = function(arToolkitContext, object3d, parameters){
 	var _this = this
 	THREEx.ArBaseControls.call(this, object3d)
-	
+
 	if( arguments.length > 3 )	console.assert('wrong api for', THREEx.ArMultiMarkerControls)
 
-// have a parameters in argument
+	// have a parameters in argument
 	this.parameters = {
 		// list of controls for each subMarker
 		subMarkersControls: parameters.subMarkersControls,

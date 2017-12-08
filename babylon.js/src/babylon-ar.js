@@ -70,6 +70,9 @@ ARjs.Babylon.init = function(babylonEngine, babylonScene, babylonCamera){
 	document.querySelector('#arjsDebugUIContainer').appendChild(anchorDebugUI.domElement)
 }
 
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
 ARjs.Babylon.Session = function(arProfile, canvasElement){
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
@@ -155,6 +158,7 @@ ARjs.Babylon.Session.prototype.updateAnchor = function(arAnchor, babylonCamera){
 	var threejsCamera = this._camera
 
 	arAnchor.update()
+
 	ARjs.Babylon.updateObjectPose(babylonCamera, threejsCamera)
 }
 
@@ -190,7 +194,7 @@ ARjs.Babylon.updateObjectPose = function(babylonObject3D, threeObject3D){
 	// use modelViewMatrix
 	var modelViewMatrix = threeObject3D.matrix
 	babylonObject3D._computedViewMatrix = new BABYLON.Matrix.FromArray(modelViewMatrix.toArray());
-	babylonObject3D._computedViewMatrix.invert()	
+	babylonObject3D._computedViewMatrix.invert()
 }
 
 // function initRenderThreejs
@@ -254,5 +258,4 @@ ARjs.Babylon._addThreejsDebug = function(bARSession, arAnchor){
 			onRenderFct(deltaMsec/1000, nowMsec/1000)
 		})
 	})
-	
 }

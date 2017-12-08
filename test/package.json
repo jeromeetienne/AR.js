@@ -8,12 +8,15 @@
     "webdriverio": "^4.8.0"
   },
   "devDependencies": {
+    "wdio-concise-reporter": "^0.1.2",
     "wdio-selenium-standalone-service": "0.0.9",
+    "wdio-spec-reporter": "^0.1.2",
     "wdio-static-server-service": "^1.0.1",
+    "wdio-teamcity-reporter": "^1.1.1",
     "wdio-visual-regression-service": "^0.8.0"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "make test"
   },
   "author": "",
   "license": "ISC"
