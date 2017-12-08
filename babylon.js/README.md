@@ -12,3 +12,12 @@ first include [babylon-ar.js](https://github.com/jeromeetienne/AR.js/tree/master
 ```javascript
 ARjs.Babylon.init(engine, scene, camera)
 ```
+
+## custom markers:
+Currently the path to the marker is hardcode within babylon-ar.js @502015
+```javascript
+if( trackingBackend === 'artoolkit' ){
+		file.subMarkersControls[0].parameters.type = 'pattern'
+		file.subMarkersControls[0].parameters.patternUrl = absoluteBaseURL + 'hiro.patt'
+```
+If you change the ARjs.Context.baseURL also clear your browsers local storage for the domain, as this parameter is stored here as well.
