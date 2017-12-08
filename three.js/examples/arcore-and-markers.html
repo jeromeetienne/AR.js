@@ -21,7 +21,7 @@
                 position: absolute;
                 left: 50%;
                 bottom: 0;
-                transform: translate(-50%, 0)
+                transform: translate(-50%, 0);
                 margin: 1em;
                 z-index: 10;
                 display: block;
@@ -32,12 +32,12 @@
                 color: #fff;
         }
         .title {
-                background-color: rgba(40, 40, 40, 0.4)
+                background-color: rgba(40, 40, 40, 0.4);
                 padding: 0.4em 0.6em;
                 border-radius: 0.1em;
         }
         .links {
-                background-color: rgba(40, 40, 40, 0.6)
+                background-color: rgba(40, 40, 40, 0.6);
                 padding: 0.4em 0.6em;
                 border-radius: 0.1em;
         }
@@ -52,10 +52,7 @@
         <div id="info">
                 <span class="title">marker detection + arcore</span><br/>
                 <span class="links">
-                        <a href="https://github.com/jeromeetienne/ar.js">ar.js</a> -
-                        <a href="..">examples</a>
-                        <br/>
-                        markerroot <span class='markerroot_status'>marker invisible</span>
+                        Marker <span class='markerroot_status'>marker invisible</span>
                 </span>
         </div>
         <script src="../vendor/three-ar.js/third_party/three.js/three.js"></script>
@@ -78,10 +75,10 @@
         
         <script>
 
+        var APP_ENV = 'dev'
+
 	// array of functions for the rendering loop
 	var onRenderFcts= [];
-        var vrFrameData;
-
         var vrDisplay, vrControls, arView;
         var canvas, camera, scene, renderer;
         var BOX_DISTANCE = 1.5;
@@ -105,8 +102,6 @@
         })
         
         function init() {
-                vrFrameData = new VRFrameData()
-
                 // Setup the three.js rendering environment
                 renderer = new THREE.WebGLRenderer({ alpha: true })
                 renderer.setPixelRatio(window.devicePixelRatio)
@@ -179,7 +174,7 @@
                 // If we have not added boxes yet, and we have positional
                 // information applied to our camera (it can take a few seconds),
                 // and the camera's Y position is not undefined or 0, create boxes
-                if (!boxesAdded && !camera.position.y) {
+                if (!boxesAdded && !camera.position.y && APP_ENV === 'dev') {
                         addBoxes()
                 }
                 
@@ -258,7 +253,7 @@
         /**
          * load the model - just to make it shinier :)
          */
-        function loadModel(originMesh, onLoad){
+        function loadModel(sceneOrigin, onLoad){
 
                 // Load model
                 THREE.ARUtils.loadModel({
@@ -266,12 +261,10 @@
                         mtlPath: '../vendor/three-ar.js/examples/assets/ArcticFox_Posed.mtl',
                 }).then(function(model) {
                         var group = new THREE.Group
+                        group.scale.multiplyScalar(0.3)
+                        group.position.y -= 0.05
 
-                        for(var x = -2; x <= 2; x++){
-                                var mesh = model.clone()
-                                mesh.position.x = x * 3
-                                group.add(mesh)
-                        }
+                        group.add(model)
                         
                         onLoad && onLoad(group)
                 })                
@@ -284,30 +277,34 @@
 
         function initMarkerReco(){
                 //////////////////////////////////////////////////////////////////////////////
-                //                init originMesh
+                //                init sceneOrigin
                 //////////////////////////////////////////////////////////////////////////////
-                var originMesh = new THREE.Group
-                scene.add(originMesh)
-                
-                var geometry = new THREE.BoxGeometry(1, 1, 1)
-                var material = new THREE.MeshNormalMaterial({
-                        wireframe: true
-                })
-                var cube = new THREE.Mesh(geometry, material)
-                cube.scale.multiplyScalar(0.08)
-                // cube.position.z = geometry.parameters.height * cube.scale.z / 2
-                originMesh.add(cube)
-                
+                var sceneOrigin = new THREE.Group
+                scene.add(sceneOrigin)
+
                 var axisHelper = new THREE.AxisHelper
                 axisHelper.scale.multiplyScalar(0.08)
-                // axisHelper.rotation.x = -Math.PI/2
-                originMesh.add(axisHelper)
-
+                sceneOrigin.add(axisHelper)                        
                 
-                // loadModel(originMesh, function onLoad(model){
-                //         model.scale.multiplyScalar(0.08)
-                //         originMesh.add( model )                    
-                // })
+                if( APP_ENV === 'dev' ){
+                        var geometry = new THREE.BoxGeometry(1, 1, 1)
+                        var material = new THREE.MeshNormalMaterial({
+                                side: THREE.DoubleSide,
+                                opacity: 0.4,
+                                transparent: true,
+                        })
+                        var cube = new THREE.Mesh(geometry, material)
+                        cube.scale.multiplyScalar(0.08)
+                        // cube.position.z = geometry.parameters.height * cube.scale.z / 2
+                        sceneOrigin.add(cube)
+                        
+                }
+                
+                if( APP_ENV === 'prod' ){
+                        loadModel(sceneOrigin, function onLoad(model){
+                                sceneOrigin.add( model )                    
+                        })
+                }
 
         	////////////////////////////////////////////////////////////////////////////////
         	//          handle arToolkitSource
@@ -345,11 +342,6 @@
         		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
         		detectionMode: 'mono',
 
-        		// canvasWidth: 80*3,
-        		// canvasHeight: 60*3,
-        		// canvasWidth: Math.floor(1442/10),
-        		// canvasHeight: Math.floor(2226/10),
-
         		canvasWidth: Math.floor(renderer.domElement.width/5),
         		canvasHeight: Math.floor(renderer.domElement.height/5),
 
@@ -360,14 +352,14 @@ window.arToolkitContext = arToolkitContext
 
         	// initialize it
         	arToolkitContext.init(function onCompleted(){
-        	// 	// copy projection matrix to camera
+        		// copy projection matrix to camera
         		// camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() )
 
-                        // display the pure ar.js world
-                        var debugRenderer = new ThreejsDebugRenderer(arToolkitContext)
-                        onRenderFcts.push(function(){
-                                debugRenderer.update(markerRoot)
-                        })
+                        // // display the pure ar.js world
+                        // var debugRenderer = new ThreejsDebugRenderer(arToolkitContext)
+                        // onRenderFcts.push(function(){
+                        //         debugRenderer.update(markerRoot)
+                        // })
 
         	})
 
@@ -391,10 +383,9 @@ window.arToolkitContext = arToolkitContext
         		patternUrl : THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt',
         	})
 
-                // onRenderFcts.push(function(){
-                //         console.log('camera.position', camera.position.x.toFixed(2))
-                // })
-
+                //////////////////////////////////////////////////////////////////////////////
+                //                display markerRoot position - only for debug
+                //////////////////////////////////////////////////////////////////////////////
                 onRenderFcts.push(function(){
                         displayInfoDebug()
                 })
@@ -413,65 +404,42 @@ window.arToolkitContext = arToolkitContext
                         }
                 }
                 
+                // resync on click
                 document.body.addEventListener('click', function(){
-                        // resyncVRFrameDataCameraOrigin()
-                        resyncMarkerPositionQuaternion()
+                        resyncWithMarkerPose()
                 })
 
                 // resync at everyframe from debug
                 onRenderFcts.push(function(){
-                        resyncMarkerPositionQuaternion()
-                })
+                        resyncWithMarkerPose()
+                })                        
                 
-                function resyncVRFrameDataCameraOrigin(){
 
-                        // Fetch the pose data from the current frame
-                        vrDisplay.getFrameData(vrFrameData)
-                        var pose = vrFrameData.pose;
+                function resyncWithMarkerPose(){
+                        if( markerRoot.visible !== true )       return                                
 
-                        // Convert the pose orientation and position into
-                        // THREE.Quaternion and THREE.Vector3 respectively
-                        var quaternion = new THREE.Quaternion(
-                                pose.orientation[0],
-                                pose.orientation[1],
-                                pose.orientation[2],
-                                pose.orientation[3]
-                        )
-
-                        var position = new THREE.Vector3(
-                                pose.position[0],
-                                pose.position[1],
-                                pose.position[2]
-                        )
-
-                        // put it in front of the camera
-                        // var rotationMatrix = new THREE.Matrix4()
-                        // rotationMatrix.makeRotationFromQuaternion(quaternion)
-                        // 
-                        // var push = new THREE.Vector3(0, 0, -1.0)
-                        // push.transformDirection(rotationMatrix)
-                        // position.addScaledVector(push, 0.2)
-
-                        originMesh.position.copy(position)
-                        originMesh.quaternion.copy(quaternion)
-                }
-
-                function resyncMarkerPositionQuaternion(){
-                        if( markerRoot.visible !== true ){
-                                originMesh.visible = false
-                                return                                
-                        }
-                        originMesh.visible = true
+                        sceneOrigin.visible = true
 
                         var quaternion = new THREE.Quaternion
                 	// var projectionAxisTransformMatrix = new THREE.Matrix4()
                 	// projectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
                 	// projectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
 
-                        var camRotationMatrix = new THREE.Matrix4().extractRotation(camera.matrix)
+                        var cameraRotationMatrix = new THREE.Matrix4().extractRotation(camera.matrix)
+                        var markerRotationMatrix = new THREE.Matrix4().extractRotation(markerRoot.matrix)
+
+                	// markerRotationMatrix.multiply(new THREE.Matrix4().makeRotationZ(-Math.PI))
+                	// markerRotationMatrix.multiply(new THREE.Matrix4().makeRotationY(-Math.PI))
+
+                	// cameraRotationMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
+
                         var matrix = new THREE.Matrix4
-                        // matrix.multiply(new THREE.Matrix4().makeRotationFromQuaternion(markerRoot.quaternion))
-                        matrix.multiply(camRotationMatrix)
+                	matrix.multiply(new THREE.Matrix4().getInverse(cameraRotationMatrix))
+                	// matrix.multiply(new THREE.Matrix4().getInverse(markerRotationMatrix))
+                	// matrix.multiply(new THREE.Matrix4().getInverse(markerRotationMatrix))
+                	matrix.multiply(markerRotationMatrix)
+                        // matrix.multiply(cameraRotationMatrix)
+                	// matrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
                 	// matrix.multiply(new THREE.Matrix4().makeRotationX(-Math.PI/2))
                 	matrix.decompose(new THREE.Vector3, quaternion, new THREE.Vector3)
 
@@ -480,14 +448,22 @@ window.arToolkitContext = arToolkitContext
                         position.copy(camera.position)
                         
                         // add the marker position to this position
-                        var vector3 = markerRoot.position.clone().multiplyScalar(0.1)   // FIXME why 0.1 ??
+                        var camera2markerVector3 = markerRoot.position.clone().multiplyScalar(0.1)   // FIXME why 0.1 ??
                         var rotationMatrix = new THREE.Matrix4().makeRotationFromQuaternion(camera.quaternion)
-                        vector3.applyMatrix4(rotationMatrix)
-                        position.add(vector3)
+                        camera2markerVector3.applyMatrix4(rotationMatrix)
+                        position.add(camera2markerVector3)
 
-                        // copy position/quaternion into originMesh
-                        originMesh.position.copy(position)
-                        originMesh.quaternion.copy(quaternion)
+                        // copy position/quaternion into sceneOrigin
+                        sceneOrigin.position.copy(position)
+                        sceneOrigin.quaternion.copy(quaternion)
+                        
+                        //////////////////////////////////////////////////////////////////////////////
+                        //      set orientation to lookAt the camera
+                        //////////////////////////////////////////////////////////////////////////////
+                        
+                        // var targetLookAt = new THREE.Vector3().copy(camera.position)
+                        // targetLookAt.y = sceneOrigin.position.y
+                        // sceneOrigin.lookAt(targetLookAt)
                 }
         }
 
