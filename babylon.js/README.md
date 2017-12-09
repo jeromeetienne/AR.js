@@ -15,6 +15,7 @@ ARjs.Babylon.init(engine, scene, camera)
 
 ## custom markers:
 Currently the path to the marker is hardcode within babylon-ar.js @502015
+This is clearly a temporary kludge, and i would love if somebody provide a pull request to make it tunable.
 ```javascript
 if( trackingBackend === 'artoolkit' ){
 		file.subMarkersControls[0].parameters.type = 'pattern'
