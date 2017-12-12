@@ -1,41 +1,66 @@
-<!DOCTYPE html>
-<!-- <script src="vendor/aframe.min.js"></script> -->
-<script src="vendor/aframe.min.js"></script>
-<!-- jsartookit -->
-<script src="../../three.js/vendor/jsartoolkit5/build/artoolkit.min.js"></script>
-<script src="../../three.js/vendor/jsartoolkit5/js/artoolkit.api.js"></script>
+<!-- <script src="vendor/aframe/build/aframe.min.js"></script> -->
+<script src="vendor/aframe/build/aframe.js"></script>
+<!-- include for artoolkit trackingBackend -->
+<script src='../../three.js/vendor/jsartoolkit5/build/artoolkit.min.js'></script>
+<script src='../../three.js/vendor/jsartoolkit5/js/artoolkit.api.js'></script>
+<!-- include for aruco trackingBackend -->
+<script src='../../three.js/vendor/js-aruco/src/svd.js'></script> 
+<script src='../../three.js/vendor/js-aruco/src/posit1.js'></script> 
+<script src='../../three.js/vendor/js-aruco/src/cv.js'></script> 
+<script src='../../three.js/vendor/js-aruco/src/aruco.js'></script> 
+<script src='../../three.js/src/threex/threex-aruco/threex-arucocontext.js'></script> 
+<script src='../../three.js/src/threex/threex-aruco/threex-arucodebug.js'></script>
+<!-- include for tango trackingBackend -->
+<script src='../../three.js/vendor/chromium-tango/THREE.WebAR.js'></script>
 <!-- include ar.js -->
-<script src="../../three.js/threex-artoolkitcontext.js"></script>
-<script src="../../three.js/threex-artoolkitsource.js"></script>
-<script src='../../three.js/threex-artoolkitprofile.js'></script>
-<script src="../../three.js/threex-arbasecontrols.js"></script>
-<script src="../../three.js/threex-armarkercontrols.js"></script>
-<script src="../../three.js/threex-armarkerhelper.js"></script>
-<script src="../../three.js/threex-arsmoothedcontrols.js"></script>
+<script src='../../three.js/src/threex/threex-artoolkitprofile.js'></script>
+<script src='../../three.js/src/threex/threex-artoolkitsource.js'></script>
+<script src='../../three.js/src/threex/threex-artoolkitcontext.js'></script>
+<script src='../../three.js/src/threex/threex-arbasecontrols.js'></script>
+<script src='../../three.js/src/threex/threex-armarkercontrols.js'></script>
+<script src='../../three.js/src/threex/threex-arsmoothedcontrols.js'></script>
+<script src='../../three.js/src/threex/threex-hittesting-plane.js'></script>
+<script src='../../three.js/src/threex/threex-hittesting-tango.js'></script>
+<script src='../../three.js/src/threex/threex-armarkerhelper.js'></script>
+<script src='../../three.js/src/new-api/arjs-utils.js'></script>
+<script src='../../three.js/src/new-api/arjs-session.js'></script>
+<script src='../../three.js/src/new-api/arjs-anchor.js'></script>
+<script src='../../three.js/src/new-api/arjs-hittesting.js'></script>
+<script src='../../three.js/src/new-api/arjs-tangovideomesh.js'></script>
+<script src='../../three.js/src/new-api/arjs-tangopointcloud.js'></script>
+<script src='../../three.js/src/new-api/arjs-debugui.js'></script>
+<script src='../../three.js/src/markers-area/threex-armultimarkerutils.js'></script>
+<script src='../../three.js/src/markers-area/threex-armultimarkercontrols.js'></script>
+<script src='../../three.js/src/markers-area/threex-armultimarkerlearning.js'></script>
+<!-- include aframe-ar.js -->
+<script src="../src/system-arjs.js"></script>
+<script src="../src/component-anchor.js"></script>
+<script src="../src/component-hit-testing.js"></script>
 
-<script src='../../three.js/examples/multi-markers/threex-armultimarkerutils.js'></script>
-<script src='../../three.js/examples/multi-markers/threex-armultimarkercontrols.js'></script>
-<script src='../../three.js/examples/multi-markers/threex-armultimarkerlearning.js'></script>
-<!-- aframe-artoolkit -->
-<script src="../aframe-ar.js"></script>
+<!-- start the body of your page -->
+<body style='margin : 0px; overflow: hidden;'>
+	<!-- add some info at the top of the page -->
+	<div style='position: fixed; top: 10px; width:100%; text-align: center; z-index: 1;'>
+		<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - tango example for a-frame by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+	</div>
 
+	<!-- Define your 3d scene and enabled ar.js -->
+	<a-scene embedded arjs='trackingMethod: best;'>
 
-<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: fixed; top: 10px; width:inherit; text-align: center; z-index: 1;'>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - example for a-frame
-	<br/>
-	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
-</div>
-	<!-- <a-scene embedded artoolkit='sourceType: video; sourceUrl:../../data/videos/headtracking.mp4;'> -->
-	<!-- <a-scene embedded artoolkit='sourceType: image; sourceUrl:../../data/images/armchair.jpg;'> -->
-	<a-scene embedded arjs='sourceType: webcam;'>
-	<!-- <a-scene artoolkit='sourceType: image; sourceUrl:../../data/images/screenshot.png'> -->
-	<!-- <a-scene artoolkit='sourceType: image; sourceUrl:../../data/images/img.jpg'> -->
-	<!-- <a-scene artoolkit='sourceType: webcam'> -->
+		<!-- Create a anchor to attach your augmented reality -->
+		<a-anchor hit-testing-enabled='true'>
 
-		<a-box depth="1" height="1" width="1" position='0 0.5 0' material='opacity: 0.5; side:double; color:blue;'></a-box>
-		
-		<!-- <a-marker-camera type='pattern' patternUrl='../../data/data/patt.hiro'></a-marker-camera> -->
-		<a-marker-camera preset='hiro'></a-marker-camera>
+			<!-- Add your augmented reality here -->
+			<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'>
+				<a-torus-knot radius='0.26' radius-tubular='0.05'>
+					<a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
+				</a-torus-knot>
+			</a-box>
+
+		</a-anchor>
+
+		<!-- Define a static camera -->
+		<a-camera-static/>
+
 	</a-scene>
 </body>
-</html>

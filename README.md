@@ -41,7 +41,7 @@ It is thanks to the hard work from others, that we can today reach this mythic 6
 So i would like to thanks :
 
 - **three.js** for being a great library to do 3d on the web.
-- **artoolkit!** years of development and experiences on doing augmented reality
+- **artoolkit**! years of development and experiences on doing augmented reality
 - **emscripten and asm.js**! thus we could compile artoolkit c into javascript
 - **chromium**! thanks for being so fast!
 
@@ -107,14 +107,19 @@ by
 [@AndraConnect](https://twitter.com/AndraConnect).
 
 ```html
-<script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
-<script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
-<body style='margin : 0px; overflow: hidden;'>
-	<a-scene embedded artoolkit='sourceType: webcam;'>
-		<a-box position='0 0 0.5' material='opacity: 0.5;'></a-box>
-		<a-marker-camera preset='hiro'></a-marker-camera>
-	</a-scene>
-</body>
+<!doctype HTML>
+<html>
+<script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
+<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/build/aframe-ar.js"> </script>
+  <body style='margin : 0px; overflow: hidden;'>
+    <a-scene embedded arjs>
+  	<a-marker preset="hiro">
+            <a-box position='0 0.5 0' material='color: black;'></a-box>
+  	</a-marker>
+  	<a-entity camera></a-entity>
+    </a-scene>
+  </body>
+</html>
 ```
 
 See on [codepen](https://codepen.io/jeromeetienne/pen/mRqqzb) or [bl.ocks.org](https://bl.ocks.org/jeromeetienne/feeb69257803e69f18dc3ea5f4fc6d71)
@@ -165,7 +170,7 @@ Some applications:
 - [WebAR Playground](https://jeromeetienne.github.io/webar-playground/) :
   Playground running in WebAR with ar.js/chromiumAR
 
-[ALL EXAMPLES](docs/misc/EXAMPLES.md)
+[ALL EXAMPLES](https://jeromeetienne.github.io/AR.js-docs/misc/EXAMPLES.html)
 
 # Folders
 - ```/three.js``` is the extension to use it with [pure three.js](https://threejs.org)
@@ -218,8 +223,49 @@ Credits: @HelloDeadline, @sorianog
 
 # Future
 
-[FUTURE.md](docs/FUTURE.md)
+[FUTURE.md](https://jeromeetienne.github.io/AR.js-docs/misc/FUTURE.html)
 
 # FAQ
 
-[FAQ.md](docs/FAQ.md)
+[FAQ.md](https://jeromeetienne.github.io/AR.js-docs/misc/FAQ.html)
+
+
+
+# How To Release ?
+
+This one is mainly for [me](@jerome_etienne) to remember :)
+
+```bash
+# replace REVISION to the proper version
+atom three.js/src/threex/threex-artoolkitcontext.js package.json README.md
+
+# Rebuild a-frame and webvr-polyfill
+make minify
+
+# Commit everything
+git add . && git commit -a -m 'Last commit before release'
+
+# Go to master branch
+git checkout master
+
+# Merge dev branch into master branch
+git merge dev
+
+# tag the release
+git tag 1.5.1
+
+# push the tag on github
+git push origin --tags
+
+# push commits tag on github
+git push
+
+# update npm package.json
+npm publish
+
+# Come back to dev branch
+git checkout dev
+
+# update the a-frame codepen
+open "https://codepen.io/jeromeetienne/pen/mRqqzb?editors=1000#0"
+```

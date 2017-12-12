@@ -174,7 +174,7 @@
                 onRenderFcts.push(function(){
                         // Update the point cloud. Only if the point cloud will be shown the
                         // geometry is also updated.
-                        vrPointCloud.update(parameters.showPointCloud, parameters.pointsToSkip)                        
+                        vrPointCloud.update(parameters.showPointCloud, parameters.pointsToSkip, true)                        
                 })
                 // handle datGUI
                 datGUI.add(parameters, 'showPointCloud').onFinishChange(function(value) {

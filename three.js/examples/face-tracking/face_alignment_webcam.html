@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+        <meta charset="utf-8">
+        <title>tracking.js - face alignment with camera</title>
+        <!-- here is the frame around each example - to be removed - to a fullscreen video - working on mobile too -->
+        <!-- <link rel="stylesheet" href="assets/demo.css"> -->
+        
+        <script src='vendor/tracking.js/build/tracking.js'></script>
+        <script src='vendor/tracking.js/build/data/face-min.js'></script>
+        <script src='vendor/tracking.js/src/alignment/training/Landmarks.js'></script>
+        <script src='vendor/tracking.js/src/alignment/training/Regressor.js'></script>
+        <script src='tracking-lbf-utils.js'></script>
+        
+        <script src='../vendor/three.js/examples/js/libs/dat.gui.min.js'></script>
+</head>
+<body>
+        <style>
+                #videoWebcam {
+                        position: absolute;
+                        top: 0px;
+                        left: 0px;
+                        width : 320px;
+                        height: auto;
+                        zoom: 3;
+                }
+                #canvasDetection {
+                        position: absolute;
+                        top: 0px;
+                        left: 0px;
+                        width : 320px;
+                        height: auto;
+                        zoom: 3;
+                }
+        </style>
+	<video id='videoWebcam' width="368" height="288" autoplay loop>
+		<source src="./assets/franck.mp4" type="video/mp4"/>
+		<source src="./assets/franck.ogv" type="video/ogg"/>
+	</video>
+        <!-- <video id="videoWebcam" preload autoplay loop muted></video> -->
+        <canvas id="canvasDetection"></canvas>
+        
+<script>
+        var canvasDetection = document.querySelector('#canvasDetection');
+        canvasDetection.width = 320
+        canvasDetection.height = 240
+        var context = canvasDetection.getContext('2d');
+        
+        // tracking.LBF.maxNumStages = 10
+        var tracker = new tracking.LandmarksTracker();
+        tracker.setEdgesDensity(0.1);
+        tracker.setInitialScale(4);
+        tracker.setStepSize(2);
+
+        tracker.setInitialScale(4);
+        tracker.setStepSize(2);
+
+        var faceDebug = new tracking.LBF.Debug(canvasDetection)
+        var landmarkSmoother = new tracking.LBF.LandmarksSmoother(0.5)
+
+
+        var videoElement = document.querySelector('#videoWebcam')
+        tracking.track(videoElement, tracker)
+        // tracking.track(videoElement, tracker, { camera: true })
+
+        //////////////////////////////////////////////////////////////////////////////
+        //                Code Separator
+        //////////////////////////////////////////////////////////////////////////////
+        var parameters = {
+                boundinBoxVisible : true,
+        }
+        
+        var gui = new dat.GUI();
+        gui.add(tracker, 'edgesDensity', 0.1, 0.5).step(0.01).listen();
+        gui.add(tracker, 'initialScale', 1.0, 10.0).step(0.1).listen();
+        gui.add(tracker, 'stepSize', 0.5, 5).step(0.1).listen();
+        
+
+        gui.add(landmarkSmoother, 'lerpFactor', 0.0, 1).listen().name('Landmarks Lerp');
+        gui.add(parameters, 'boundinBoxVisible').listen().name('bounding box');
+        Object.keys(tracking.LBF.LandmarkFeatures).forEach(function(featureLabel){
+                gui.add(faceDebug.parameters, featureLabel + 'Visible').listen().name(featureLabel);
+        })
+
+        //////////////////////////////////////////////////////////////////////////////
+        //                Code Separator
+        //////////////////////////////////////////////////////////////////////////////
+        tracker.on('track', function(event) {
+                // clear debug canvasDetection
+                context.clearRect(0,0,canvasDetection.width, canvasDetection.height);
+
+                if( event.data === undefined ) return;
+                
+                event.data.faces.forEach(function(boundingBox, faceIndex) {
+                        var faceLandmarks = event.data.landmarks[faceIndex]
+
+                        if( parameters.boundinBoxVisible === true ){
+                                faceDebug.displayFaceBoundingBox(boundingBox, faceIndex)
+                        }
+
+                        // lerpFacesLandmarks
+                        landmarkSmoother.update(faceLandmarks)
+                        
+                        // display each faceLandmarks
+                        faceDebug.displayLandmarksDot(landmarkSmoother.lerpedLandmarks)
+                });
+        })
+</script></body>

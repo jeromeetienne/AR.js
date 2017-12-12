@@ -1,0 +1,42 @@
+<!-- include a-frame -->
+<script src="../vendor/aframe/build/aframe.min.js"></script>
+
+<!-- include ar.js for aframe -->
+<script src='../../build/aframe-ar.js'></script>
+<script>ARjs.Context.baseURL = '../../../three.js/'</script>
+
+<script src="https://3d.io/releases/3dio-js/1.x.x-beta/3dio.min.js"></script>
+
+<!-- include shadowonly-plane -->
+<script src='../demo-firefox-release/src/aframe-shadow-plane.js'></script>
+
+<!-- start the body of your page -->
+<body style='margin : 0px; overflow: hidden;'>
+	<!-- add some info at the top of the page -->
+	<div style='position: fixed; top: 10px; width:100%; text-align: center; z-index: 1;'>
+		<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - Example of furniture from <a href='https://furniture.3d.io'>3d.io</a> - by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+	</div>
+
+	<!-- Define your 3d scene and enabled ar.js -->
+	<a-scene embedded arjs='trackingMethod: best;'>
+
+		<!-- Create a anchor to attach your augmented reality -->
+		<a-anchor hit-testing-enabled='true'>
+
+			<!-- Add your augmented reality here -->
+
+ 			<a-entity io3d-furniture="id:6dd21c5f-33e0-4b90-a064-365c9f6c825a" shadow='receive: true' scale='3 3 3' rotation='-90 0 0' position='0 0.9 0.8'></a-entity>
+			<!-- add shadow only ground -->
+			<a-entity shadowonly-plane='width: 3; height: 3; opacity: 0.7'></a-entity>
+
+
+			<!-- full building -->
+			<!-- <a-entity io3d-data3d="key:/3f995099-d624-4c8e-ab6b-1fd5e3799173/170515-0913-4p3ktf/1e588a3b-90ac-4a32-b5b8-ff2fda7f87c4.gz.data3d.buffer"></a-entity> -->
+
+		</a-anchor>
+
+		<!-- Define a static camera -->
+		<a-camera-static/>
+
+	</a-scene>
+</body>

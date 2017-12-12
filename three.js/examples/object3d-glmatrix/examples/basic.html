@@ -1,0 +1,17 @@
+<script src='../vendor/gl-matrix.js'></script>
+<script src='../arjs-math.js'></script>
+<script src='../arjs-object3d.js'></script>
+<script src='../arjs-camera.js'></script>
+<script>
+	var object3d = new ARjs.Object3D()
+	vec3.set(object3d.position, 2, 0, 0)
+
+	var aChild = new ARjs.Camera()
+	vec3.set(aChild.position, 1, 0, 0)
+	
+	object3d.add(aChild)
+	
+	object3d.updateMatrixWorld()
+
+	console.log(aChild.decomposeMatrix().position)
+</script>

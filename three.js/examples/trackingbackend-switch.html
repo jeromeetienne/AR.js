@@ -10,19 +10,19 @@
 <script src='../vendor/js-aruco/src/posit1.js'></script> 
 <script src='../vendor/js-aruco/src/cv.js'></script> 
 <script src='../vendor/js-aruco/src/aruco.js'></script> 
-<script src='../threex/threex-aruco/threex-arucocontext.js'></script> 
-<script src='../threex/threex-aruco/threex-arucodebug.js'></script>
+<script src='../src/threex/threex-aruco/threex-arucocontext.js'></script> 
+<script src='../src/threex/threex-aruco/threex-arucodebug.js'></script>
 <!-- include for tango trackingBackend -->
 <script src='../vendor/chromium-tango/THREE.WebAR.js'></script>
 <!-- include ar.js -->
-<script src='../arjs-utils.js'></script>
-<script src='../threex-artoolkitsource.js'></script>
-<script src='../threex-artoolkitcontext.js'></script>
-<script src='../threex-artoolkitprofile.js'></script>
-<script src='../threex-arbasecontrols.js'></script>
-<script src='../threex-armarkercontrols.js'></script>
-<script src='../threex-arsmoothedcontrols.js'></script>
-<script src='../threex-arclickability.js'></script>
+<script src='../src/new-api/arjs-utils.js'></script>
+<script src='../src/threex/threex-artoolkitsource.js'></script>
+<script src='../src/threex/threex-artoolkitcontext.js'></script>
+<script src='../src/threex/threex-artoolkitprofile.js'></script>
+<script src='../src/threex/threex-arbasecontrols.js'></script>
+<script src='../src/threex/threex-armarkercontrols.js'></script>
+<script src='../src/threex/threex-arsmoothedcontrols.js'></script>
+<script src='../src/threex/threex-arclickability.js'></script>
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
@@ -37,22 +37,35 @@
 	<strong>Tracking Backend:</strong> <span id='currentTracking'>unknown</span>
 	- 
 	Switch to : 
-	<a href='#artoolkit' onclick='location.reload()'>artoolkit</a>
+	<a href='?artoolkit'>artoolkit</a>
 	/ 
-	<a href='#aruco' onclick='location.reload()'>aruco</a>
+	<a href='?aruco'>aruco</a>
 	/ 
-	<a href='#tango' onclick='location.reload()'>tango</a>
+	<a href='?tango'>tango</a>
 </div><script>
-	var trackingBackend = location.hash.substring(1) ? location.hash.substring(1) : 'artoolkit'
+	var trackingBackend = location.search.substring(1) ? location.search.substring(1) : 'artoolkit'
 	document.querySelector('#currentTracking').innerHTML = trackingBackend
 	
 	// if we are running on tango device, ensure trackingBackend is 'tango'
 	if( trackingBackend !== 'tango' && ARjs.Utils.isTango() === true ){
-		location.hash = '#tango'
+		location.search = '#tango'
 		location.reload()
 	}
 	
+	// TODO make the multi-markers too
+	// - aruco-area
+	// - artoolkit-area
+	// - trackingMethod=
+	// - trackingBackend=
+	// 
+	// - thus you got the whole stack available here
+	// - it dramatically reduce the boilerplate
+	// - it is the base of the aframe ar.js, the base of webar-playground
+	// - maybe put all that in a class
+	// - this is the base of a typical AR.js application - aka support all tracking transparantly
+	// 
 	
+	// TODO is that required ?
 	var changeMatrixMode = 'cameraTransformMatrix'
 	// var changeMatrixMode = 'modelViewMatrix'
 	
@@ -79,14 +92,6 @@
 	// init scene and camera
 	var scene	= new THREE.Scene();
 	
-	//////////////////////////////////////////////////////////////////////////////
-	//                handle videoPlane 
-	//////////////////////////////////////////////////////////////////////////////
-	
-	// Create the see through camera scene and camera
-	var sceneOrtho = new THREE.Scene()
-	var cameraOrtho = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 100 )
-	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize the camera
 	//////////////////////////////////////////////////////////////////////////////////
@@ -110,12 +115,12 @@
 	var arToolkitSource = new THREEx.ArToolkitSource(arProfile.sourceParameters)	
 	
 	arToolkitSource.init(function onReady(){
-		arToolkitSource.onResize2(arContext, renderer, camera)
+		arToolkitSource.onResize(arContext, renderer, camera)
 	})
 	
 	// handle resize
 	window.addEventListener('resize', function(){
-		arToolkitSource.onResize2(arContext, renderer, camera)
+		arToolkitSource.onResize(arContext, renderer, camera)
 	})
 	
 	////////////////////////////////////////////////////////////////////////////////
@@ -129,40 +134,7 @@
 	arContext.init()
 	
 	arContext.addEventListener('initialized', function(event){
-		arToolkitSource.onResize2(arContext, renderer, camera)
-	})
-
-	arContext.addEventListener('initialized', function(event){
-		if( trackingBackend !== 'tango' )	return
-		var vrDisplay = arContext._tangoContext.vrDisplay
-		console.assert(vrDisplay, 'vrDisplay MUST be defined')
-		// special case for trackingBackend tango
-		if( arContext.parameters.trackingBackend !== 'tango' )	return
-		// if vrDisplay isnt for tango do nothing
-		if( vrDisplay.displayName !== "Tango VR Device" )	return
-		// init videoPlane
-		var videoPlane = THREE.WebAR.createVRSeeThroughCameraMesh(vrDisplay)
-		sceneOrtho.add(videoPlane)
-		onRenderFcts.push(function(){
-			// Make sure that the camera is correctly displayed depending on the device and camera orientations.
-			THREE.WebAR.updateCameraMeshOrientation(vrDisplay, videoPlane)                        
-		})		
-	})
-
-	// picking to set object position - tango only
-        renderer.domElement.addEventListener("click", function(event) {
-		if( trackingBackend !== 'tango' )	return
-
-		var mousePosition = new THREE.Vector3();
-                mousePosition.x = event.pageX / window.innerWidth;
-                mousePosition.y = event.pageY / window.innerHeight;
-
-		var result = THREEx.ARClickability.tangoPickingPointCloud(arContext, mousePosition.x, mousePosition.y)
-		if( result === null )	return
-
-		arWorldRoot.position.copy(result.position)
-		arWorldRoot.quaternion.copy(result.quaternion)
-		arWorldRoot.scale.set(1,1,1).multiplyScalar(0.1)
+		arToolkitSource.onResize(arContext, renderer, camera)
 	})
 	
 	// update artoolkit on every frame
@@ -187,6 +159,12 @@
 	}else if( changeMatrixMode === 'cameraTransformMatrix' ){
 		var markerControls = new THREEx.ArMarkerControls(arContext, camera, arProfile.defaultMarkerParameters)
 	}else console.assert(false)
+// FIXME tango - the pickability is on the marker
+// - aka handle the object positioning in a special function of ArMarkerControls
+// - arkitanchor is like ArMarkerControls
+// - make it generic to work on plane too, if the marker is markerBased
+// - rename it ArAnchorControls ?
+// - thus it is clear it isnt a marker - good for arkit and tango
 
 	if( changeMatrixMode === 'cameraTransformMatrix' ){
 		onRenderFcts.push(function(){
@@ -207,6 +185,50 @@
 	var arWorldRoot = new THREE.Group()
 	// markerRoot.add(arWorldRoot)
 	smoothedRoot.add(arWorldRoot)
+
+
+	//////////////////////////////////////////////////////////////////////////////
+	//                handle videoMesh for tango
+	//////////////////////////////////////////////////////////////////////////////
+	
+	if( trackingBackend === 'tango' ){
+		// Create the see through camera scene and camera
+		var sceneVideoMesh = new THREE.Scene()
+		var cameraVideoMesh = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 100 )		
+		// tango only - init cameraMesh
+		arContext.addEventListener('initialized', function(event){
+			// sanity check
+			console.assert( arContext.parameters.trackingBackend === 'tango' )
+			// variable declaration
+			var vrDisplay = arContext._tangoContext.vrDisplay
+			console.assert(vrDisplay, 'vrDisplay MUST be defined')
+			// if vrDisplay isnt for tango, do nothing. It may be another vrDisplay (e.g. webvr emulator in chrome)
+			if( vrDisplay.displayName !== "Tango VR Device" )	return
+			// init videoPlane
+			var videoMesh = THREE.WebAR.createVRSeeThroughCameraMesh(vrDisplay)
+			sceneVideoMesh.add(videoMesh)
+			onRenderFcts.push(function(){
+				// Make sure that the camera is correctly displayed depending on the device and camera orientations.
+				THREE.WebAR.updateCameraMeshOrientation(vrDisplay, videoMesh)                        
+			})
+		})
+	}
+
+	// tango only - picking to set object position
+        renderer.domElement.addEventListener("click", function(event) {
+		if( arContext.parameters.trackingBackend !== 'tango' )	return
+
+		var mousePosition = new THREE.Vector3();
+                mousePosition.x = event.pageX / window.innerWidth;
+                mousePosition.y = event.pageY / window.innerHeight;
+
+		var result = THREEx.ARClickability.tangoPickingPointCloud(arContext, mousePosition.x, mousePosition.y)
+		if( result === null )	return
+
+		arWorldRoot.position.copy(result.position)
+		arWorldRoot.quaternion.copy(result.quaternion)
+		arWorldRoot.scale.set(1,1,1).multiplyScalar(0.1)
+	})
 	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
@@ -245,8 +267,9 @@
 		// Render the see through camera scene
 		renderer.clear()
 		
+		// render videoMesh for tango
 		if( arContext.parameters.trackingBackend === 'tango'){                                
-			renderer.render( sceneOrtho, cameraOrtho )
+			renderer.render( sceneVideoMesh, cameraVideoMesh )
 			// Render the perspective scene
 			renderer.clearDepth()
 		}

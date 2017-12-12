@@ -7,12 +7,12 @@
 <script src='../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
 <script src='../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
 <!-- include threex.artoolkit -->
-<script src='../threex-artoolkitsource.js'></script>
-<script src='../threex-artoolkitcontext.js'></script>
-<script src='../threex-artoolkitprofile.js'></script>
-<script src='../threex-arbasecontrols.js'></script>
-<script src='../threex-armarkercontrols.js'></script>
-<script src='../threex-arsmoothedcontrols.js'></script>
+<script src='../src/threex/threex-artoolkitsource.js'></script>
+<script src='../src/threex/threex-artoolkitcontext.js'></script>
+<script src='../src/threex/threex-artoolkitprofile.js'></script>
+<script src='../src/threex/threex-arbasecontrols.js'></script>
+<script src='../src/threex/threex-armarkercontrols.js'></script>
+<script src='../src/threex/threex-arsmoothedcontrols.js'></script>
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
@@ -85,10 +85,10 @@
 		onResize()
 	})
 	function onResize(){
-		arToolkitSource.onResize()	
-		arToolkitSource.copySizeTo(renderer.domElement)	
+		arToolkitSource.onResizeElement()	
+		arToolkitSource.copyElementSizeTo(renderer.domElement)	
 		if( arToolkitContext.arController !== null ){
-			arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
+			arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)	
 		}	
 	}
 
@@ -105,8 +105,8 @@
 		// detectionMode: 'color_and_matrix',
 		// matrixCodeType: '3x3',
 
-		// canvasWidth: 80*3,
-		// canvasHeight: 60*3,
+		canvasWidth: 80*3,
+		canvasHeight: 60*3,
 
 		maxDetectionRate: 30,
 	})

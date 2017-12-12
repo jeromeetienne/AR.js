@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<script src="vendor/aframe.min.js"></script>
-<!-- include aframe-artoolkit -->
+<script src="vendor/aframe/build/aframe.min.js"></script>
+<!-- include aframe-ar.js -->
 <script src="../build/aframe-ar.js"></script>
 
-<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: fixed; top: 10px; width:inherit; text-align: center; z-index: 1;'>
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: fixed; top: 10px; width:100%; text-align: center; z-index: 1;'>
 	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - example for a-frame
 	<br/>
 	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
@@ -17,7 +17,7 @@
 		<!-- handle hiro marker -->
 		<a-marker preset='hiro'>
 			<a-box position='0 0.5 0' material='opacity: 0.5; side: double;color:red;'>
-				<a-torus-knot radius='0.27' radius-tubular='0.05'>
+				<a-torus-knot radius='0.26' radius-tubular='0.05'>
 					<a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
 				</a-torus-knot>
 			</a-box>
@@ -26,7 +26,7 @@
 		<!-- handle hiro marker -->
 		<a-marker type='barcode' barcodeValue='5'>
 			<a-box position='0 0.5 0' material='opacity: 0.5; side: double;color:pink;'>
-				<a-torus-knot radius='0.27' radius-tubular='0.05'>
+				<a-torus-knot radius='0.26' radius-tubular='0.05'>
 					<a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
 				</a-torus-knot>
 			</a-box>
@@ -35,7 +35,7 @@
 		<!-- handle kanji marker -->
 		<a-marker preset='kanji'>
 			<a-box position='0 0.5 0' material='opacity: 0.5; side: double;color:green;'>
-				<a-torus-knot radius='0.27' radius-tubular='0.05'>
+				<a-torus-knot radius='0.26' radius-tubular='0.05'>
 					<a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
 				</a-torus-knot>
 			</a-box>

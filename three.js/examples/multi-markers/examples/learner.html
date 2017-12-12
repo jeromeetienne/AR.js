@@ -11,16 +11,16 @@
 <script src='../../../vendor/js-aruco/src/posit1.js'></script> 
 <script src='../../../vendor/js-aruco/src/cv.js'></script> 
 <script src='../../../vendor/js-aruco/src/aruco.js'></script> 
-<script src='../../../threex/threex-aruco/threex-arucocontext.js'></script> 
-<script src='../../../threex/threex-aruco/threex-arucodebug.js'></script>
+<script src='../../../src/threex/threex-aruco/threex-arucocontext.js'></script> 
+<script src='../../../src/threex/threex-aruco/threex-arucodebug.js'></script>
 <!-- include threex.artoolkit -->
-<script src='../../../threex-artoolkitsource.js'></script>
-<script src='../../../threex-artoolkitcontext.js'></script>
-<script src='../../../threex-artoolkitprofile.js'></script>
-<script src='../../../threex-arbasecontrols.js'></script>
-<script src='../../../threex-armarkercontrols.js'></script>
-<script src='../../../threex-armarkerhelper.js'></script>
-<script src='../../../threex-arsmoothedcontrols.js'></script>
+<script src='../../../src/threex/threex-artoolkitsource.js'></script>
+<script src='../../../src/threex/threex-artoolkitcontext.js'></script>
+<script src='../../../src/threex/threex-artoolkitprofile.js'></script>
+<script src='../../../src/threex/threex-arbasecontrols.js'></script>
+<script src='../../../src/threex/threex-armarkercontrols.js'></script>
+<script src='../../../src/threex/threex-armarkerhelper.js'></script>
+<script src='../../../src/threex/threex-arsmoothedcontrols.js'></script>
 <script>THREEx.ArToolkitContext.baseURL = '../../../'</script>
 
 <script src='../threex-armultimarkerutils.js'></script>
@@ -85,9 +85,9 @@
 	//		parse urlOptions
 	//////////////////////////////////////////////////////////////////////////////
 	
-	var hasHash = location.hash.substring(1) !== '' ? true : false
+	var hasHash = location.search.substring(1) !== '' ? true : false
 	if( hasHash === true ){
-		var urlOptions = JSON.parse(location.hash.substring(1))
+		var urlOptions = JSON.parse(decodeURIComponent(location.search.substring(1)))
 	}else{
 		var urlOptions = {
 			backURL : null,
@@ -131,16 +131,16 @@
 		onResize()
 	})
 	function onResize(){
-		arToolkitSource.onResize()
-		arToolkitSource.copySizeTo(renderer.domElement)	
+		arToolkitSource.onResizeElement()
+		arToolkitSource.copyElementSizeTo(renderer.domElement)	
 		if( urlOptions.trackingBackend === 'aruco' ){
-			arToolkitSource.copySizeTo(arToolkitContext.arucoContext.canvas)	
+			arToolkitSource.copyElementSizeTo(arToolkitContext.arucoContext.canvas)	
 
 			camera.aspect = renderer.domElement.width / renderer.domElement.height;
 			camera.updateProjectionMatrix();			
 		}else if( urlOptions.trackingBackend === 'artoolkit' ){
 			if( arToolkitContext.arController !== null ){
-				arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
+				arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)	
 			}	
 		}else console.assert(false)
 	}

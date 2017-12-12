@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<!-- include aframe -->
+<script src="https://aframe.io/releases/0.6.0/aframe.min.js"></script>
+
+<!-- include aframe-ar.js -->
+<script src="../../build/aframe-ar.js"></script>
+
+<!-- threex minecraft -->
+<script src='vendor/threex.minecraft/a-frame/build/aframe-minecraft.min.js'></script>
+<script>THREEx.MinecraftChar.baseUrl = 'vendor/threex.minecraft/'</script>
+
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: fixed; top: 10px; width:100%; text-align: center; z-index: 1;'>
+	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - example for a-frame
+	<br/>
+	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+</div>
+        <a-scene embedded arjs='sourceType: image; sourceUrl:../../../data/images/armchair.jpg; detectionMode: mono_and_matrix;' antialias="true">        
+
+		<a-marker type='unknown' minConfidence='0'>                
+		<!-- <a-marker type='pattern' url='../../data/data/patt.hiro' size='1'> -->
+	                <!-- Add a minecraft character -->
+	                <a-minecraft></a-minecraft>
+		</a-marker>
+
+		<a-entity camera></a-entity>
+        </a-scene>
+</body>
+</html>

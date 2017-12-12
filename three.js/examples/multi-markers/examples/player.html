@@ -11,16 +11,16 @@
 <script src='../../../vendor/js-aruco/src/posit1.js'></script> 
 <script src='../../../vendor/js-aruco/src/cv.js'></script> 
 <script src='../../../vendor/js-aruco/src/aruco.js'></script> 
-<script src='../../../threex/threex-aruco/threex-arucocontext.js'></script> 
-<script src='../../../threex/threex-aruco/threex-arucodebug.js'></script>
+<script src='../../../src/threex/threex-aruco/threex-arucocontext.js'></script> 
+<script src='../../../src/threex/threex-aruco/threex-arucodebug.js'></script>
 <!-- include threex.artoolkit -->
-<script src='../../../threex-artoolkitsource.js'></script>
-<script src='../../../threex-artoolkitcontext.js'></script>
-<script src='../../../threex-artoolkitprofile.js'></script>
-<script src='../../../threex-arbasecontrols.js'></script>
-<script src='../../../threex-armarkercontrols.js'></script>
-<script src='../../../threex-armarkerhelper.js'></script>
-<script src='../../../threex-arsmoothedcontrols.js'></script>
+<script src='../../../src/threex/threex-artoolkitsource.js'></script>
+<script src='../../../src/threex/threex-artoolkitcontext.js'></script>
+<script src='../../../src/threex/threex-artoolkitprofile.js'></script>
+<script src='../../../src/threex/threex-arbasecontrols.js'></script>
+<script src='../../../src/threex/threex-armarkercontrols.js'></script>
+<script src='../../../src/threex/threex-armarkerhelper.js'></script>
+<script src='../../../src/threex/threex-arsmoothedcontrols.js'></script>
 <script>THREEx.ArToolkitContext.baseURL = '../../../'</script>
 
 <script src='../threex-armultimarkerutils.js'></script>
@@ -30,17 +30,11 @@
 <script src='threex-screenasportal/threex-screenasportal.js'></script>
 <script>THREEx.ScreenAsPortal.baseURL = 'threex-screenasportal/'</script>
 
-<style>
-	#recordButton:hover {
-		cursor: pointer;
-	}
-</style>
-
-
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
 	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - Multi marker
 	by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 </div>
+<!-- info at the top of page -->
 <div style='position: fixed; bottom: 10px; width:100%; text-align: center;z-index:1';>
 	tracking backend: 
 		<a href='javascript:void(0)' onclick='trackingBackendSet("artoolkit")'>artoolkit</a>
@@ -51,7 +45,13 @@
 	-
 	<a href='javascript:void(0)' onclick='resetMarkerFile()'>reset area</a>
 </div>
+<!-- display record button -->
 <div style='position: fixed; bottom: 16px; right: 16px; z-index:1';>
+	<style>
+		#recordButton:hover {
+			cursor: pointer;
+		}
+	</style>
 	<img id='recordButton' src="images/record-start.png" width='64px'  height='64px'>
 </div>
 <script>
@@ -82,7 +82,7 @@
 
 	var hasHash = location.hash.substring(1) !== '' ? true : false
 	if( hasHash === true ){
-		var urlOptions = JSON.parse(location.hash.substring(1))
+		var urlOptions = JSON.parse(decodeURIComponent(location.hash.substring(1)))
 	}else{
 		var urlOptions = {
 			trackingBackend: 'artoolkit',
@@ -91,7 +91,7 @@
 	window.urlOptions = urlOptions
 	urlOptionsUpdate()
 	function urlOptionsUpdate(){
-		location.hash = '#'+JSON.stringify(urlOptions)
+		location.hash = '#'+encodeURIComponent(JSON.stringify(urlOptions))
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -110,11 +110,11 @@
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
 
-	var artoolkitProfile = new THREEx.ArToolkitProfile()
+	var artoolkitProfile = new ARjs.Profile()
 	artoolkitProfile.sourceWebcam()
 		.trackingBackend(urlOptions.trackingBackend)
 
-	var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)
+	var arToolkitSource = new ARjs.Source(artoolkitProfile.sourceParameters)
 
 	arToolkitSource.init(function onReady(){
 		onResize()
@@ -125,14 +125,14 @@
 		onResize()
 	})
 	function onResize(){
-		arToolkitSource.onResize()
-		arToolkitSource.copySizeTo(renderer.domElement)	
+		arToolkitSource.onResizeElement()
+		arToolkitSource.copyElementSizeTo(renderer.domElement)	
 		if( urlOptions.trackingBackend === 'artoolkit' ){
 			if( arToolkitContext.arController !== null ){
-				arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
+				arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)	
 			}	
 		}else if( urlOptions.trackingBackend === 'aruco' ){
-			arToolkitSource.copySizeTo(arToolkitContext.arucoContext.canvas)	
+			arToolkitSource.copyElementSizeTo(arToolkitContext.arucoContext.canvas)	
 			camera.aspect = renderer.domElement.width / renderer.domElement.height;
 			camera.updateProjectionMatrix();			
 		}else console.assert(false)
@@ -143,7 +143,7 @@
 	////////////////////////////////////////////////////////////////////////////////	
 
 	// create atToolkitContext
-	var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
+	var arToolkitContext = new ARjs.Context(artoolkitProfile.contextParameters)
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
 		// if artoolkit, copy projection matrix to camera
@@ -252,8 +252,8 @@
 		// markerRoot.add(arWorldRoot)
 
 
-		var screenAsPortal = new THREEx.ScreenAsPortal(multiMarkerFile)
-		arWorldRoot.add(screenAsPortal.object3d)
+		// var screenAsPortal = new THREEx.ScreenAsPortal(multiMarkerFile)
+		// arWorldRoot.add(screenAsPortal.object3d)
 
 		var mesh = new THREE.AxisHelper()
 		arWorldRoot.add(mesh)
