@@ -3,6 +3,8 @@ var THREEx = THREEx || {}
 THREEx.ArMarkerControls = function(context, object3d, parameters){
 	var _this = this
 
+	console.log( "Using this marker: ", parameters.patternUrl);
+
 	THREEx.ArBaseControls.call(this, object3d)
 
 	this.context = context
