@@ -21,7 +21,7 @@ If you wanna chat, check [![Gitter chat](https://badges.gitter.im/AR-js/Lobby.pn
 # Try it on Mobile
 
 It works on all platforms. Android, IOS and window phone. It run **any browser with WebGL and WebRTC**.
-(for IOS, you need to update to ios11)
+(for IOS, you need to update to ios11 and try it on Safari!)
 
 To try on your phone is only 2 easy steps, check it out!
 
@@ -59,6 +59,7 @@ i am all exited by what people are gonna with it :)
 We are still early in the project but here are some initial numbers to give you an idea.
 
 - I got 60fps stable on nexus6p
+- Test on [iPhone 6 Plus around 60fps ](https://drive.google.com/open?id=14BmEyL6gjofh276m5AosXmJrNFFYq2dO)
 - Some reports [Sony Xperia Z2 (2.5 years old) runs around 50fps](https://twitter.com/leinadkalpot/status/834121238087925763) - this is a 170euro phone
 - Some reports [~50fps on a old nexus5, and ~60fps on nexus 9](https://twitter.com/Ellyll/status/834312442926751744) - nexus5 is 3.5 years old!
 - Some reports it working on windows phone edge!! [13fps on Lumia 950](https://twitter.com/leinadkalpot/status/834299384510763012) for some.
