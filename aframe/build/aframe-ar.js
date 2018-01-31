@@ -5253,7 +5253,7 @@ Object.assign( ARjs.Context.prototype, THREE.EventDispatcher.prototype );
 // ARjs.Context.baseURL = '../'
 // default to github page
 ARjs.Context.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
-ARjs.Context.REVISION = '1.5.1'
+ARjs.Context.REVISION = '1.5.2'
 
 
 
@@ -8230,6 +8230,12 @@ AFRAME.registerComponent('arjs-anchor', {
 			type: 'number',
 			default: 0.6,
 		},
+
+		// Whether to emit events when the element is found or lost.
+		emitevents: {
+			type: 'boolean',
+			default: false,
+		}
 	},
 	init: function () {
 		var _this = this
@@ -8347,7 +8353,16 @@ AFRAME.registerComponent('arjs-anchor', {
 		//		honor visibility
 		//////////////////////////////////////////////////////////////////////////////
 		if( _this._arAnchor.parameters.changeMatrixMode === 'modelViewMatrix' ){
+			var wasVisible = _this.el.object3D.visible
 			_this.el.object3D.visible = this._arAnchor.object3d.visible
+
+			if( _this.data.emitevents ){
+				if( _this.el.object3D.visible && !wasVisible ){
+					_this.el.emit('markerFound')
+				}else if( !_this.el.object3D.visible && wasVisible ){
+					_this.el.emit('markerLost')
+				}
+			}
 		}else if( _this._arAnchor.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
 			_this.el.sceneEl.object3D.visible = this._arAnchor.object3d.visible
 		}else console.assert(false)
@@ -8404,6 +8419,7 @@ AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitiv
 		'preset': 'arjs-anchor.preset',
 		'minConfidence': 'arjs-anchor.minConfidence',
 		'markerhelpers': 'arjs-anchor.markerhelpers',
+		'emitevents': 'arjs-anchor.emitevents',
 
 		'hit-testing-renderDebug': 'arjs-hit-testing.renderDebug',
 		'hit-testing-enabled': 'arjs-hit-testing.enabled',
