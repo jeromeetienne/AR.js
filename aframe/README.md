@@ -27,6 +27,8 @@ Move the camera instead of using the usual "camera looking toward negative-z and
 Handle multiple indepant markers in a single scene.
 <!-- - [hatsune-minecraft.html](https://jeromeetienne.github.io/AR.js/aframe/examples/minecraft.html): 
 include a hatsune miku or minecraft avatar on the marker -->
+- [marker-events.html](https://jeromeetienne.github.io/AR.js/aframe/examples/marker-events.html):
+Emit events when markers are found and lost, and register the respective event listeners.
 
 # artoolkit system
 
@@ -57,6 +59,7 @@ Here are the attributes for this entity
 | url | url of the pattern - IIF type='pattern' | artoolkitmarker.patternUrl |
 | value | value of the barcode - IIF type='barcode' | artoolkitmarker.barcodeValue |
 | preset | parameters preset - ['hiro', 'kanji'] | artoolkitmarker.preset |
+| emitevents | emits 'markerFound' and 'markerLost' events - ['true', 'false'] | - |
 
 
 # \<a-marker-camera\>
