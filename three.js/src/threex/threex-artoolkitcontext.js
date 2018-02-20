@@ -8,7 +8,7 @@ ARjs.Context = THREEx.ArToolkitContext = function(parameters){
 	
 	// handle default parameters
 	this.parameters = {
-		// AR backend - ['artoolkit', 'aruco', 'tango']
+		// AR backend - ['artoolkit', 'aruco']
 		trackingBackend: 'artoolkit',
 		// debug - true if one should display artoolkit debug canvas, false otherwise
 		debug: false,
@@ -31,7 +31,7 @@ ARjs.Context = THREEx.ArToolkitContext = function(parameters){
 		imageSmoothingEnabled : false,
 	}
 	// parameters sanity check
-	console.assert(['artoolkit', 'aruco', 'tango'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
+	console.assert(['artoolkit', 'aruco'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
 	console.assert(['color', 'color_and_matrix', 'mono', 'mono_and_matrix'].indexOf(this.parameters.detectionMode) !== -1, 'invalid parameter detectionMode', this.parameters.detectionMode)
 	
         this.arController = null;
@@ -89,8 +89,6 @@ ARjs.Context.createDefaultCamera = function( trackingBackend ){
 		var camera = new THREE.Camera();
 	}else if( trackingBackend === 'aruco' ){
 		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
-	}else if( trackingBackend === 'tango' ){
-		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
 	}else console.assert(false)
 	return camera
 }
@@ -105,8 +103,6 @@ ARjs.Context.prototype.init = function(onCompleted){
 		this._initArtoolkit(done)
 	}else if( this.parameters.trackingBackend === 'aruco' ){
 		this._initAruco(done)
-	}else if( this.parameters.trackingBackend === 'tango' ){
-		this._initTango(done)
 	}else console.assert(false)
 	return
 	
@@ -147,8 +143,6 @@ ARjs.Context.prototype.update = function(srcElement){
 		this._updateArtoolkit(srcElement)		
 	}else if( this.parameters.trackingBackend === 'aruco' ){
 		this._updateAruco(srcElement)
-	}else if( this.parameters.trackingBackend === 'tango' ){
-		this._updateTango(srcElement)
 	}else{
 		console.assert(false)
 	}
@@ -323,103 +317,4 @@ ARjs.Context.prototype._updateAruco = function(srcElement){
 
 		foundControls.updateWithModelViewMatrix(tmpObject3d.matrix)
 	})
-}
-
-//////////////////////////////////////////////////////////////////////////////
-//		tango specific 
-//////////////////////////////////////////////////////////////////////////////
-ARjs.Context.prototype._initTango = function(onCompleted){
-	var _this = this
-	// check webvr is available
-	if (navigator.getVRDisplays){
-		// do nothing
-	} else if (navigator.getVRDevices){
-		alert("Your browser supports WebVR but not the latest version. See <a href='http://webvr.info'>webvr.info</a> for more info.");
-	} else {
-		alert("Your browser does not support WebVR. See <a href='http://webvr.info'>webvr.info</a> for assistance.");
-	}
-
-
-	this._tangoContext = {
-		vrDisplay: null,
-		vrPointCloud: null,
-		frameData: new VRFrameData(),
-	}
-	
-
-	// get vrDisplay
-	navigator.getVRDisplays().then(function (vrDisplays){
-		if( vrDisplays.length === 0 )	alert('no vrDisplays available')
-		var vrDisplay = _this._tangoContext.vrDisplay = vrDisplays[0]
-
-		console.log('vrDisplays.displayName :', vrDisplay.displayName)
-
-		// init vrPointCloud
-		if( vrDisplay.displayName === "Tango VR Device" ){
-                	_this._tangoContext.vrPointCloud = new THREE.WebAR.VRPointCloud(vrDisplay, true)
-		}
-
-		// NOTE it doesnt seem necessary and it fails on tango
-		// var canvasElement = document.createElement('canvas')
-		// document.body.appendChild(canvasElement)
-		// _this._tangoContext.requestPresent([{ source: canvasElement }]).then(function(){
-		// 	console.log('vrdisplay request accepted')
-		// });
-
-		onCompleted()
-	});
-}
-
-
-ARjs.Context.prototype._updateTango = function(srcElement){
-	// console.log('update aruco here')
-	var _this = this
-	var arMarkersControls = this._arMarkersControls
-	var tangoContext= this._tangoContext
-	var vrDisplay = this._tangoContext.vrDisplay
-
-	// check vrDisplay is already initialized
-	if( vrDisplay === null )	return
-
-
-        // Update the point cloud. Only if the point cloud will be shown the geometry is also updated.
-	if( vrDisplay.displayName === "Tango VR Device" ){
-	        var showPointCloud = true
-		var pointsToSkip = 0
-	        _this._tangoContext.vrPointCloud.update(showPointCloud, pointsToSkip, true)                        		
-	}
-
-
-	if( this._arMarkersControls.length === 0 )	return
-
-	// TODO here do a fake search on barcode/1001 ?
-
-	var foundControls = this._arMarkersControls[0]
-	
-	var frameData = this._tangoContext.frameData
-
-	// read frameData
-	vrDisplay.getFrameData(frameData);
-
-	if( frameData.pose.position === null )		return
-	if( frameData.pose.orientation === null )	return
-
-	// create cameraTransformMatrix
-	var position = new THREE.Vector3().fromArray(frameData.pose.position)
-	var quaternion = new THREE.Quaternion().fromArray(frameData.pose.orientation)
-	var scale = new THREE.Vector3(1,1,1)
-	var cameraTransformMatrix = new THREE.Matrix4().compose(position, quaternion, scale)
-	// compute modelViewMatrix from cameraTransformMatrix
-	var modelViewMatrix = new THREE.Matrix4()
-	modelViewMatrix.getInverse( cameraTransformMatrix )	
-
-	foundControls.updateWithModelViewMatrix(modelViewMatrix)
-		
-	// console.log('position', position)
-	// if( position.x !== 0 ||  position.y !== 0 ||  position.z !== 0 ){		
-	// 	console.log('vrDisplay tracking')
-	// }else{
-	// 	console.log('vrDisplay NOT tracking')
-	// }
-
 }

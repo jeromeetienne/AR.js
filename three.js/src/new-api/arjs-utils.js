@@ -14,24 +14,10 @@ ARjs.Utils.createDefaultCamera = function(trackingMethod){
 		var camera = new THREE.Camera();
 	}else if( trackingBackend === 'aruco' ){
 		var camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.01, 100);
-	}else if( trackingBackend === 'tango' ){
-		var camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.01, 100);
 	}else console.assert(false, 'unknown trackingBackend: '+trackingBackend)
 
 	return camera
 }
-
-/**
- * test if the code is running on tango
- * 
- * @return {boolean} - true if running on tango, false otherwise
- */
-ARjs.Utils.isTango = function(){
-	// FIXME: this test is super bad
-	var isTango = navigator.userAgent.match('Chrome/57.0.2987.5') !== null ? true : false
-	return isTango
-}
-
 
 /**
  * parse tracking method
@@ -42,8 +28,8 @@ ARjs.Utils.isTango = function(){
 ARjs.Utils.parseTrackingMethod = function(trackingMethod){
 
 	if( trackingMethod === 'best' ){
-		trackingMethod = ARjs.Utils.isTango() ? 'tango' : 'area-artoolkit'
-	}	
+		trackingMethod = 'area-artoolkit'
+	}
 
 	if( trackingMethod.startsWith('area-') ){
 		return {

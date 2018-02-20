@@ -14,14 +14,7 @@ ARjs.HitTesting = function(arSession){
 
 	this.enabled = true
 	this._arSession = arSession
-	this._hitTestingPlane = null
-	this._hitTestingTango = null
-
-	if( trackingBackend === 'tango' ){
-		_this._hitTestingTango = new THREEx.HitTestingTango(arContext)
-	}else{
-		_this._hitTestingPlane = new THREEx.HitTestingPlane(arSession.arSource.domElement)
-	}
+	this._hitTestingPlane = new THREEx.HitTestingPlane(arSession.arSource.domElement)
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -37,9 +30,7 @@ ARjs.HitTesting.prototype.update = function (camera, pickingRoot, changeMatrixMo
 	// if it isnt enabled, do nothing
 	if( this.enabled === false )	return
 
-	if( this._hitTestingTango !== null ){
-		this._hitTestingTango.update()
-	}else if( this._hitTestingPlane !== null ){
+	if( this._hitTestingPlane !== null ){
 		this._hitTestingPlane.update(camera, pickingRoot, changeMatrixMode)
 	}else console.assert(false)
 }
@@ -62,13 +53,8 @@ ARjs.HitTesting.prototype.testDomEvent = function(domEvent){
 	// if it isnt enabled, do nothing
 	if( this.enabled === false )	return []
 	
-	if( trackingBackend === 'tango' ){
-        	var mouseX = domEvent.pageX / window.innerWidth
-        	var mouseY = domEvent.pageY / window.innerHeight
-	}else{		
-		var mouseX = domEvent.clientX / arSource.domElementWidth()
-		var mouseY = domEvent.clientY / arSource.domElementHeight()
-	}
+	var mouseX = domEvent.clientX / arSource.domElementWidth()
+	var mouseY = domEvent.clientY / arSource.domElementHeight()
 
 	return this.test(mouseX, mouseY)
 }
@@ -88,12 +74,7 @@ ARjs.HitTesting.prototype.test = function(mouseX, mouseY){
 	// if it isnt enabled, do nothing
 	if( this.enabled === false )	return []
 
-	var result = null
-	if( trackingBackend === 'tango' ){
-		var result = this._hitTestingTango.test(mouseX, mouseY)
-	}else{
-		var result = this._hitTestingPlane.test(mouseX, mouseY)
-	}
+	var result = this._hitTestingPlane.test(mouseX, mouseY)
 			
 	// if no result is found, return now
 	if( result === null )	return hitTestResults

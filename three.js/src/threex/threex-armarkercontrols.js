@@ -73,8 +73,6 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, para
 		// TODO create a ._initAruco
 		// put aruco second
 		this._arucoPosit = new POS.Posit(this.parameters.size, _this.context.arucoContext.canvas.width)
-	}else if( _this.context.parameters.trackingBackend === 'tango' ){
-		this._initTango()
 	}else console.assert(false)
 }
 
@@ -110,17 +108,13 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatr
 		modelViewMatrix.copy(tmpMatrix)		
 	}else if( this.context.parameters.trackingBackend === 'aruco' ){
 		// ...
-	}else if( this.context.parameters.trackingBackend === 'tango' ){
-		// ...
 	}else console.assert(false)
 
 
-	if( this.context.parameters.trackingBackend !== 'tango' ){
 
-		// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
-		var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
-		modelViewMatrix.multiply(markerAxisTransformMatrix)
-	}
+	// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
+	var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
+	modelViewMatrix.multiply(markerAxisTransformMatrix)
 
 	// change markerObject3D.matrix based on parameters.changeMatrixMode
 	if( this.parameters.changeMatrixMode === 'modelViewMatrix' ){
@@ -234,12 +228,4 @@ ARjs.MarkerControls.prototype._initArtoolkit = function(){
 //////////////////////////////////////////////////////////////////////////////
 ARjs.MarkerControls.prototype._initAruco = function(){
 	this._arucoPosit = new POS.Posit(this.parameters.size, _this.context.arucoContext.canvas.width)
-}
-
-//////////////////////////////////////////////////////////////////////////////
-//		init for Artoolkit
-//////////////////////////////////////////////////////////////////////////////
-ARjs.MarkerControls.prototype._initTango = function(){
-	var _this = this
-	console.log('init tango ArMarkerControls')
 }

@@ -6,7 +6,7 @@ var ARjs = ARjs || {}
  * 
  * @param {ARjs.Anchor} arAnchor - the anchor to user
  */
-ARjs.SessionDebugUI = function(arSession, tangoPointCloud){
+ARjs.SessionDebugUI = function(arSession){
 	var trackingBackend = arSession.arContext.parameters.trackingBackend
 
 	this.domElement = document.createElement('div')
@@ -47,30 +47,6 @@ ARjs.SessionDebugUI = function(arSession, tangoPointCloud){
 		// domElement.setAttribute('target', '_blank')
 		domElement.href = ARjs.SessionDebugUI.AugmentedWebsiteURL + '?'+location.href
 		this.domElement.appendChild(domElement)						
-	}
-
-	//////////////////////////////////////////////////////////////////////////////
-	//		toggle-point-cloud
-	//////////////////////////////////////////////////////////////////////////////
-
-	if( trackingBackend === 'tango' && tangoPointCloud ){
-		var domElement = document.createElement('button')
-		this.domElement.appendChild(domElement)
-
-		domElement.id= 'buttonTangoTogglePointCloud'
-		domElement.innerHTML = 'toggle-point-cloud'
-		domElement.href='javascript:void(0)'
-
-		domElement.addEventListener('click', function(){
-			var scene = arSession.parameters.scene
-	// TODO how tangoPointCloud, get connected here ???
-	// in arguments simply ?
-			if( tangoPointCloud.object3d.parent ){
-				scene.remove(tangoPointCloud.object3d)
-			}else{
-				scene.add(tangoPointCloud.object3d)			
-			}
-		})
 	}
 }
 

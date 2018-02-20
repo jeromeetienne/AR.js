@@ -103,7 +103,6 @@ ARjs.Anchor = function(arSession, markerParameters){
 	//////////////////////////////////////////////////////////////////////////////
 	
 	var shouldBeSmoothed = true
-	if( arContext.parameters.trackingBackend === 'tango' ) shouldBeSmoothed = false 
 
 	if( shouldBeSmoothed === true ){
 		// build a smoothedControls
