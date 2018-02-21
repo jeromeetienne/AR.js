@@ -1,8 +1,8 @@
-var THREEx = THREEx || {}
+var THREEx = THREEx || {};
 
 THREEx.ArucoMarkerGenerator = function(){
 	
-}
+};
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
@@ -11,7 +11,7 @@ THREEx.ArucoMarkerGenerator.createSVG = function(markerId, svgSize){
 	var domElement = document.createElement('div');
 	domElement.innerHTML = new ArucoMarker(markerId).toSVG(svgSize);	
 	return domElement
-}
+};
 
 THREEx.ArucoMarkerGenerator.createImage = function(markerId, width){
 	// create canvas
@@ -24,7 +24,7 @@ THREEx.ArucoMarkerGenerator.createImage = function(markerId, width){
 
 	// return imageElement
 	return imageElement;
-}
+};
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
@@ -56,4 +56,4 @@ THREEx.ArucoMarkerGenerator.createCanvas = function(markerId, width){
 	}
 	
 	return canvas
-}
+};
