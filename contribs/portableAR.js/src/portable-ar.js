@@ -26,7 +26,6 @@ var EasyARjs = function(canvasEl, options){
 	var threejsCamera = ARjs.Utils.createDefaultCamera(trackingMethod)
 	threejsScene.add(threejsCamera)
 
-
 	//////////////////////////////////////////////////////////////////////////////
 	//		init three.js renderer - never rendered except if options.renderThreejs === true
 	//////////////////////////////////////////////////////////////////////////////
