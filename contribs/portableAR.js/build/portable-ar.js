@@ -52304,61 +52304,39 @@ ARjs.MarkersAreaUtils.buildMarkersAreaFileFromResolution = function(trackingBack
 		parameters.barcodeValue = layout2Barcode[layout]
 	}
 }
-// @namespace
-var ARjs = ARjs || {}
-
-ARjs.Babylon = {}
-
-ARjs.Babylon.init = function(babylonEngine, babylonScene, babylonCamera){
+var EasyARjs = function(canvasEl, options){
+	// handle default options
+	options = options || {}
+	options.debugUI = options.debugUI !== undefined ? options.debugUI : false
+	options.renderThreejs = options.renderThreejs !== undefined ? options.renderThreejs : false
+	this.options = options
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		create arjsProfile
+	//////////////////////////////////////////////////////////////////////////////
+	
 	var trackingMethod = 'area-artoolkit'
-	var arProfile = new ARjs.Profile()
+	var arjsProfile = new ARjs.Profile()
 		.sourceWebcam()
 		.trackingMethod(trackingMethod)
 		.changeMatrixMode('cameraTransformMatrix')
 		.defaultMarker()
 		.checkIfValid()
 
-	
-	var bARSession = new ARjs.Babylon.Session(arProfile, canvas)
-	var arSession = bARSession._arSession
-	engine.runRenderLoop(function(){
-		bARSession.updateProjectionMatrix(babylonCamera)
-		bARSession.update()
-	})
+	//////////////////////////////////////////////////////////////////////////////
+	//		init three.js scene/camera
+	//////////////////////////////////////////////////////////////////////////////
+	// init scene and camera
+	var threejsScene= new THREE.Scene()
 
-	////////////////////////////////////////////////////////////////////////////////
-	//          Create a ARjs.Anchor
-	////////////////////////////////////////////////////////////////////////////////
-	var arAnchor = new ARjs.Anchor(bARSession._arSession, arProfile.defaultMarkerParameters)
-	engine.runRenderLoop(function(){
-		bARSession.updateAnchor(arAnchor, babylonCamera)
-	})
+	var threejsCamera = ARjs.Utils.createDefaultCamera(trackingMethod)
+	threejsScene.add(threejsCamera)
 
-	
-	// add three.js debug
-	// ARjs.Babylon._addThreejsDebug(bARSession, arAnchor)
 
 	//////////////////////////////////////////////////////////////////////////////
-	//		tango specifics
+	//		init three.js renderer - never rendered except if options.renderThreejs === true
 	//////////////////////////////////////////////////////////////////////////////
-	
-	if( arProfile.contextParameters.trackingBackend === 'tango' ){
-		// init tangoVideoMesh
-		var tangoVideoMesh = new ARjs.TangoVideoMesh(arSession)
-		onRenderFcts.push(function(){
-			tangoVideoMesh.update()
-		})
-	}
-
-	if( arProfile.contextParameters.trackingBackend === 'tango' ){
-		// init tangoPointCloud
-		var tangoPointCloud = new ARjs.TangoPointCloud(arSession)
-		scene.add(tangoPointCloud.object3d)
-	}
-
-	//////////////////////////////////////////////////////////////////////////////
-	//		DebugUI
-	//////////////////////////////////////////////////////////////////////////////
+<<<<<<< HEAD:babylon.js/build/babylon-ar.js
 
 	// create arjsDebugUIContainer if needed
 	if( document.querySelector('#arjsDebugUIContainer') === null ){
@@ -52382,87 +52360,79 @@ ARjs.Babylon.init = function(babylonEngine, babylonScene, babylonCamera){
 ARjs.Babylon.Session = function(arProfile, canvasElement){
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
+=======
+	// init threejsRenderer
+	// NOTE: can i avoid to have a renderer ?
+	var threejsRenderer	= new THREE.WebGLRenderer({
+>>>>>>> babylonjs-cleanup:contribs/portableAR.js/build/portable-ar.js
 		antialias: true,
 		alpha: true
 	})
-	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-	renderer.setSize( 640, 480 )
-	renderer.domElement.style.position = 'absolute'
-	renderer.domElement.style.top = '0px'
-	renderer.domElement.style.left = '0px'
-// NOTE: can i avoid to have a renderer ?
+	threejsRenderer.setClearColor(new THREE.Color('lightgrey'), 0)
+	threejsRenderer.setSize( 640, 480 )
+	threejsRenderer.domElement.style.position = 'absolute'
+	threejsRenderer.domElement.style.top = '0px'
+	threejsRenderer.domElement.style.left = '0px'
 
-
-	// init scene and camera
-	var scene	= new THREE.Scene()
-
-	var trackingMethod = 'area-artoolkit'
-
-	//////////////////////////////////////////////////////////////////////////////////
-	//		Initialize the camera
-	//////////////////////////////////////////////////////////////////////////////////
-
-	var camera = ARjs.Utils.createDefaultCamera(trackingMethod)
-	scene.add(camera)
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		build ARjs.Session
 	//////////////////////////////////////////////////////////////////////////////
-// NOTE: this goes directly in 
-	var arSession = new ARjs.Session({
-		scene: scene,
-		renderer: renderer,
-		camera: camera,
-		sourceParameters: arProfile.sourceParameters,
-		contextParameters: arProfile.contextParameters		
+
+	var arjsSession = new ARjs.Session({
+		scene: threejsScene,
+		renderer: threejsRenderer,
+		camera: threejsCamera,
+		sourceParameters: arjsProfile.sourceParameters,
+		contextParameters: arjsProfile.contextParameters		
 	})
-
-	//////////////////////////////////////////////////////////////////////////////
-	//		tango specifics
-	//////////////////////////////////////////////////////////////////////////////
 	
-	if( arProfile.contextParameters.trackingBackend === 'tango' ){
-		// init tangoVideoMesh
-		var tangoVideoMesh = new ARjs.TangoVideoMesh(arSession)
-		onRenderFcts.push(function(){
-			tangoVideoMesh.update()
-		})
-	}
 
-	if( arProfile.contextParameters.trackingBackend === 'tango' ){
-		// init tangoPointCloud
-		var tangoPointCloud = new ARjs.TangoPointCloud(arSession)
-		scene.add(tangoPointCloud.object3d)
-	}
+	////////////////////////////////////////////////////////////////////////////////
+	//          Create a ARjs.Anchor
+	////////////////////////////////////////////////////////////////////////////////
+	var arjsAnchor = new ARjs.Anchor(arjsSession, arjsProfile.defaultMarkerParameters)
 
-	
+	this.cameraProjectionMatrix = []
+	this.cameraTransformMatrix = []
+
 	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
+	//		update function
 	//////////////////////////////////////////////////////////////////////////////
-
-
 	this.update = function(){
+		// update arjsSession
+		arjsSession.update()
 
-		arSession.update()		
-		scene.updateMatrixWorld()
+		// update the arjsAnchor
+		arjsAnchor.update()
 
-		// resize babylon canvas - put that in bARSession
-		arSession.arSource.copyElementSizeTo(canvasElement)
+		// resize babylon canvas
+		arjsSession.arSource.copyElementSizeTo(canvasEl)
+	
+		// copy camera projectionMatrix and transformMatrix
+		this.cameraProjectionMatrix = threejsCamera.projectionMatrix.toArray()
+		this.cameraTransformMatrix = threejsCamera.matrix.toArray()
 	}
 
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		add options
+	//////////////////////////////////////////////////////////////////////////////
 
-	this._tangoPointCloud = tangoPointCloud
-	this._tangoVideoMesh = tangoVideoMesh
-	this._renderer = renderer
-	this._scene = scene
-	this._camera = camera
-	this._arSession = arSession
+	// add debugUI
+	if( this.options.debugUI === true ){
+		this._initOptionsDebugUI(arjsSession, arjsAnchor)
+	}
+
+	// add three.js debug
+	if( this.options.renderThreejs === true ){
+		this._initOptionRenderThreejs(treejsRenderer, threejsScene, threejsCamera, arjsAnchor)
+	}
 
 }
 
-ARjs.Babylon.Session.prototype.updateAnchor = function(arAnchor, babylonCamera){
-	var threejsCamera = this._camera
 
+<<<<<<< HEAD:babylon.js/build/babylon-ar.js
 	arAnchor.update()
 
 	ARjs.Babylon.updateObjectPose(babylonCamera, threejsCamera)
@@ -52473,27 +52443,31 @@ ARjs.Babylon.Session.prototype.updateProjectionMatrix = function(babylonCamera){
 	var babylonMatrix = BABYLON.Matrix.FromArray(projectionMatrixArr)
 	babylonCamera.freezeProjectionMatrix(babylonMatrix)
 }
+=======
+>>>>>>> babylonjs-cleanup:contribs/portableAR.js/build/portable-ar.js
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 
-ARjs.Babylon.createCamera = function(scene){
-	var babylonCamera = new BABYLON.ArcRotateCamera("blabla",  0, 0, 0, new BABYLON.Vector3(0, 0, -1), scene);
+EasyARjs.prototype._initOptionsDebugUI = function(arjsSession, arjsAnchor){
+	// create arjsDebugUIContainer if needed
+	if( document.querySelector('#arjsDebugUIContainer') === null ){
+		var domElement = document.createElement('div')
+		domElement.id = 'arjsDebugUIContainer'
+		domElement.setAttribute('style', 'position: fixed; bottom: 10px; width:100%; text-align: center; z-index: 1;color: grey;')
+		document.body.appendChild(domElement)
+	}
 
-	// hard code a fov which is kinda similar to default camera
-	// scene.activeCamera.fovmode = BABYLON.Camera.fovmode_HORIZONTAL_FIXED;
-	// scene.activeCamera.fov = 2*22 / 180*Math.PI
 
-	return babylonCamera
+	var sessionDebugUI = new ARjs.SessionDebugUI(arjsSession)
+	document.querySelector('#arjsDebugUIContainer').appendChild(sessionDebugUI.domElement)
+
+	var anchorDebugUI = new ARjs.AnchorDebugUI(arjsAnchor)
+	document.querySelector('#arjsDebugUIContainer').appendChild(anchorDebugUI.domElement)		
 }
 
-ARjs.Babylon.updateCamera = function(babylonCamera, threeCamera){
-	var projectionMatrixArr = threeCamera.projectionMatrix.toArray()
-	var babylonMatrix = BABYLON.Matrix.FromArray(projectionMatrixArr)
-	babylonCamera.freezeProjectionMatrix(babylonMatrix)
-}
-
+<<<<<<< HEAD:babylon.js/build/babylon-ar.js
 ARjs.Babylon.updateObjectPose = function(babylonObject3D, threeObject3D){
 	threeObject3D.updateMatrixWorld()
 
@@ -52502,21 +52476,22 @@ ARjs.Babylon.updateObjectPose = function(babylonObject3D, threeObject3D){
 	babylonObject3D._computedViewMatrix = new BABYLON.Matrix.FromArray(modelViewMatrix.toArray());
 	babylonObject3D._computedViewMatrix.invert()
 }
+=======
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+>>>>>>> babylonjs-cleanup:contribs/portableAR.js/build/portable-ar.js
 
 // function initRenderThreejs
-ARjs.Babylon._addThreejsDebug = function(bARSession, arAnchor){
+EasyARjs.prototype._initOptionRenderThreejs = function(renderer, scene, camera, arjsAnchor){
 	// array of functions for the rendering loop
 	var onRenderFcts= [];
+
+	var arWorldRoot = arjsAnchor.object3d
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
-	
-	var scene = bARSession._scene
-	var renderer = bARSession._renderer
-	var camera = bARSession._camera
-	
-	var arWorldRoot = arAnchor.object3d
 	
 	// add a torus knot	
 	var geometry	= new THREE.CubeGeometry(1,1,1)
@@ -52563,5 +52538,9 @@ ARjs.Babylon._addThreejsDebug = function(bARSession, arAnchor){
 		onRenderFcts.forEach(function(onRenderFct){
 			onRenderFct(deltaMsec/1000, nowMsec/1000)
 		})
+<<<<<<< HEAD:babylon.js/build/babylon-ar.js
 	})
+=======
+	})	
+>>>>>>> babylonjs-cleanup:contribs/portableAR.js/build/portable-ar.js
 }

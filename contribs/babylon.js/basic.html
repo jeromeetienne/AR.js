@@ -7,8 +7,9 @@
 	<title>Babylon.js sample code</title>
 	<!-- include babylon.js -->
 	<script src="vendor/babylon.max.js"></script> 
+
 	<!-- babylon-ar.js -->
-	<script src="../build/babylon-ar.js"></script>
+	<script src="../portableAR.js/build/portable-ar.js"></script>
 	<script>ARjs.Context.baseURL = '../../three.js/'</script> 
 
 	<style>
@@ -40,6 +41,7 @@
 		<canvas id="renderCanvas"></canvas>
 	</div>
 	<script>
+;(function(){
 	//////////////////////////////////////////////////////////////////////////////
 	//		initialize babylon.js engine
 	//////////////////////////////////////////////////////////////////////////////
@@ -89,9 +91,29 @@
 	scene.clearColor = new BABYLON.Color4(0, 0, 0, 0)
 		
 	////////////////////////////////////////////////////////////////////////////////
-	//          	Set up Arjs.Profile
+	//          	Set up EasyARjs
 	////////////////////////////////////////////////////////////////////////////////
-	ARjs.Babylon.init(engine, scene, scene.cameras[0])
+	// create a easyARjs instance
+	var easyARjs = new EasyARjs(canvas, {
+		debugUI : true,
+		// renderThreejs: true
+	})
+	// run on every iteration of babylon.js engine
+	engine.runRenderLoop(function(){
+
+		// update easyARjs
+		easyARjs.update()
+
+		// update babylon camera with easyARjs cameraProjectionMatrix
+		var babylonCamera = scene.cameras[0]
+		var babylonMatrix = BABYLON.Matrix.FromArray(easyARjs.cameraProjectionMatrix)
+		babylonCamera.freezeProjectionMatrix(babylonMatrix)
+
+		// update babylon camera with easyARjs cameraTransformMatrix
+		var babylonMatrix = BABYLON.Matrix.FromArray(easyARjs.cameraTransformMatrix);
+		babylonCamera._computedViewMatrix = babylonMatrix
+		babylonCamera._computedViewMatrix.invert()
+	})
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
@@ -104,6 +126,7 @@
 	window.addEventListener("resize", function () {
 		engine.resize();
 	});
+})()
 	</script>
 </body>
 </html>
