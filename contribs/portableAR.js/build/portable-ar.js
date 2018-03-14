@@ -52332,39 +52332,12 @@ var EasyARjs = function(canvasEl, options){
 	var threejsCamera = ARjs.Utils.createDefaultCamera(trackingMethod)
 	threejsScene.add(threejsCamera)
 
-
 	//////////////////////////////////////////////////////////////////////////////
 	//		init three.js renderer - never rendered except if options.renderThreejs === true
 	//////////////////////////////////////////////////////////////////////////////
-<<<<<<< HEAD:babylon.js/build/babylon-ar.js
-
-	// create arjsDebugUIContainer if needed
-	if( document.querySelector('#arjsDebugUIContainer') === null ){
-		var domElement = document.createElement('div')
-		domElement.id = 'arjsDebugUIContainer'
-		domElement.setAttribute('style', 'position: fixed; bottom: 10px; width:100%; text-align: center; z-index: 1;color: grey;')
-		document.body.appendChild(domElement)
-	}
-
-
-	var sessionDebugUI = new ARjs.SessionDebugUI(arSession, tangoPointCloud)
-	document.querySelector('#arjsDebugUIContainer').appendChild(sessionDebugUI.domElement)
-
-	var anchorDebugUI = new ARjs.AnchorDebugUI(arAnchor)
-	document.querySelector('#arjsDebugUIContainer').appendChild(anchorDebugUI.domElement)
-}
-
-//////////////////////////////////////////////////////////////////////////////
-//		Code Separator
-//////////////////////////////////////////////////////////////////////////////
-ARjs.Babylon.Session = function(arProfile, canvasElement){
-	// init renderer
-	var renderer	= new THREE.WebGLRenderer({
-=======
 	// init threejsRenderer
 	// NOTE: can i avoid to have a renderer ?
 	var threejsRenderer	= new THREE.WebGLRenderer({
->>>>>>> babylonjs-cleanup:contribs/portableAR.js/build/portable-ar.js
 		antialias: true,
 		alpha: true
 	})
@@ -52432,19 +52405,6 @@ ARjs.Babylon.Session = function(arProfile, canvasElement){
 }
 
 
-<<<<<<< HEAD:babylon.js/build/babylon-ar.js
-	arAnchor.update()
-
-	ARjs.Babylon.updateObjectPose(babylonCamera, threejsCamera)
-}
-
-ARjs.Babylon.Session.prototype.updateProjectionMatrix = function(babylonCamera){
-	var projectionMatrixArr = this._camera.projectionMatrix.toArray()
-	var babylonMatrix = BABYLON.Matrix.FromArray(projectionMatrixArr)
-	babylonCamera.freezeProjectionMatrix(babylonMatrix)
-}
-=======
->>>>>>> babylonjs-cleanup:contribs/portableAR.js/build/portable-ar.js
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
@@ -52467,20 +52427,9 @@ EasyARjs.prototype._initOptionsDebugUI = function(arjsSession, arjsAnchor){
 	document.querySelector('#arjsDebugUIContainer').appendChild(anchorDebugUI.domElement)		
 }
 
-<<<<<<< HEAD:babylon.js/build/babylon-ar.js
-ARjs.Babylon.updateObjectPose = function(babylonObject3D, threeObject3D){
-	threeObject3D.updateMatrixWorld()
-
-	// use modelViewMatrix
-	var modelViewMatrix = threeObject3D.matrix
-	babylonObject3D._computedViewMatrix = new BABYLON.Matrix.FromArray(modelViewMatrix.toArray());
-	babylonObject3D._computedViewMatrix.invert()
-}
-=======
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
->>>>>>> babylonjs-cleanup:contribs/portableAR.js/build/portable-ar.js
 
 // function initRenderThreejs
 EasyARjs.prototype._initOptionRenderThreejs = function(renderer, scene, camera, arjsAnchor){
@@ -52538,9 +52487,5 @@ EasyARjs.prototype._initOptionRenderThreejs = function(renderer, scene, camera, 
 		onRenderFcts.forEach(function(onRenderFct){
 			onRenderFct(deltaMsec/1000, nowMsec/1000)
 		})
-<<<<<<< HEAD:babylon.js/build/babylon-ar.js
-	})
-=======
 	})	
->>>>>>> babylonjs-cleanup:contribs/portableAR.js/build/portable-ar.js
 }
