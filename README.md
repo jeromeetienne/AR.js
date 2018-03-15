@@ -242,7 +242,6 @@ atom CHANGELOG.md
 # replace REVISION to the proper version, search/replace on the version string should do it
 atom three.js/src/threex/threex-artoolkitcontext.js package.json README.md
 
-
 # Rebuild and minify everything - aka a-frame and three.js
 make minify
 
@@ -256,7 +255,7 @@ git checkout master
 git merge dev
 
 # tag the release
-git tag 1.5.1
+git tag 1.5.5
 
 # push the tag on github
 git push origin --tags
