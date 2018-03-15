@@ -1,17 +1,17 @@
 # reorganize the repo
 - DONE rename EasyARjs into PortableARjs 
-- remove webvr-polyfill
+- DONE remove webvr-polyfill
+- put threex.screenasportal elsewhere ?
+  - three.js/demos ? YES
+  - http://127.0.0.1:8080/three.js/examples/multi-markers/examples/threex-screenasportal/
 - merge to master
+- remove all the artoolkit in classname and filename
+  - just keep a layer for backward compatibility
+- DONE put three.js/experiments/shadow markercloak + liquid-marker as /demos
+- make ar.js marker by default in the multi marker screen
 
 ---
 
-- remove all the examples which are only demos
-  - aframe/demos three.js/demos instead of examples
-  - maybe put them in a arjs-demos repository ?
-  - currently move them in this repo, in their own directory
-  - demos/three.js demos/aframe
-  - make them as standalone as possible, aka copy dependancy in their
-  - when it is ready
 - remove three.js dependancy
 - remove any tango support
 - clean up data
