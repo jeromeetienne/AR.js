@@ -10,6 +10,11 @@
 <script src='vendor/tracking.js/src/alignment/training/Landmarks.js'></script>
 <script src='vendor/tracking.js/src/alignment/training/Regressor.js'></script>
 
+<!-- include local tracking.js utils -->
+<script src='js/tracking-lbf-debug.js'></script>
+<script src='js/tracking-lbf-landmark-features.js'></script>
+<script src='js/tracking-lbf-landmarks-smoother.js'></script>
+
 <body>
 <script>
 	//////////////////////////////////////////////////////////////////////////////////
@@ -99,14 +104,20 @@
 </script>
 
 <link rel="stylesheet" href="css/main.css">
-<!-- for video source -->
-<!-- <video id='videoWebcam' width="368" height="288" autoplay loop>
-	<source src="./assets/franck.mp4" type="video/mp4"/>
-	<source src="./assets/franck.ogv" type="video/ogg"/>
-</video> -->
-<!-- for webcam -->
-<video id="videoWebcam" preload autoplay loop muted></video>
+
+<div class="fullscreen-bg">
+	<!-- for video source -->
+	<!-- <video id='videoWebcam' width="368" height="288" preload autoplay loop muted>
+		<source src="./assets/franck.mp4" type="video/mp4"/>
+		<source src="./assets/franck.ogv" type="video/ogg"/>
+	</video> -->
+	<!-- for webcam -->
+	<video id="videoWebcam" width="320" height="240" class='fullscreen-bg__video' preload autoplay loop muted></video>
+</div>
+
+
 <canvas id="canvasDetection"></canvas>        
+
 <script>
         var canvasDetection = document.querySelector('#canvasDetection');
         canvasDetection.width = 320
@@ -115,12 +126,10 @@
 
         // tracking.LBF.maxNumStages = 10
         var tracker = new tracking.LandmarksTracker();
-        tracker.setEdgesDensity(0.1);
-        tracker.setInitialScale(4);
-        tracker.setStepSize(2);
+        tracker.setEdgesDensity(0.18);
+        tracker.setInitialScale(2.4);
+        tracker.setStepSize(1.1);
 
-        tracker.setInitialScale(1);
-        tracker.setStepSize(2);
 
         
         var gui = new dat.GUI();
@@ -184,7 +193,7 @@
         //                Code Separator
         //////////////////////////////////////////////////////////////////////////////
         var parameters = {
-                landmarkLerpFactor : 0.7,
+                landmarkLerpFactor : 0.4,
                 boundinBoxVisible : true,
                 jawVisible : true,
                 eyeBrowLVisible : true,

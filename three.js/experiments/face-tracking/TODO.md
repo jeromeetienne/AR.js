@@ -1,3 +1,9 @@
+- DONE port experiment ar-with-facetracking
+- DONE use js/tracking-lbf in ar-with-facetracking
+
+- implement a visibleDelay, invisibleDelay in smoother
+  - like with ar.js
+
 - make face detection fullscreen
 - Render viewport with good function
   - https://github.com/mrdoob/three.js/blob/master/src/cameras/PerspectiveCamera.js#L112

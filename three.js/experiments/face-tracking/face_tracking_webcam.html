@@ -3,15 +3,19 @@
 <head>
         <meta charset="utf-8">
         <title>tracking.js - face alignment with camera</title>
-        <!-- here is the frame around each example - to be removed - to a fullscreen video - working on mobile too -->
-        <!-- <link rel="stylesheet" href="assets/demo.css"> -->
-        
+                
+        <!-- include tracking.js lbf face tracking -->
         <script src='vendor/tracking.js/build/tracking.js'></script>
         <script src='vendor/tracking.js/build/data/face-min.js'></script>
         <script src='vendor/tracking.js/src/alignment/training/Landmarks.js'></script>
         <script src='vendor/tracking.js/src/alignment/training/Regressor.js'></script>
-        <script src='js/tracking-lbf-utils.js'></script>
         
+        <!-- include local tracking.js utils -->
+        <script src='js/tracking-lbf-debug.js'></script>
+        <script src='js/tracking-lbf-landmark-features.js'></script>
+        <script src='js/tracking-lbf-landmarks-smoother.js'></script>
+        
+        <!-- include dat.gui -->
         <script src='../vendor/three.js/examples/js/libs/dat.gui.min.js'></script>
 </head>
 <body>
@@ -33,7 +37,6 @@
                         zoom: 3;
                 }
         </style>
-        <canvas id="canvasDetection"></canvas>
 
         <!-- FOR VIDEO SOURCE -->
 	<!-- <video id='videoWebcam' width="368" height="288" autoplay loop>
@@ -43,7 +46,8 @@
         
         <!-- FOR WEBCAM SOURCE -->
         <video id="videoWebcam" preload autoplay loop muted></video>
-        
+
+        <canvas id="canvasDetection"></canvas>        
 <script>
         var canvasDetection = document.querySelector('#canvasDetection');
         canvasDetection.width = 320
@@ -52,15 +56,12 @@
         
         // tracking.LBF.maxNumStages = 10
         var tracker = new tracking.LandmarksTracker();
-        tracker.setEdgesDensity(0.1);
-        tracker.setInitialScale(4);
-        tracker.setStepSize(2);
-
-        tracker.setInitialScale(4);
-        tracker.setStepSize(2);
+        tracker.setEdgesDensity(0.18);
+        tracker.setInitialScale(2.4);
+        tracker.setStepSize(0.8);        
 
         var faceDebug = new tracking.LBF.Debug(canvasDetection)
-        var landmarkSmoother = new tracking.LBF.LandmarksSmoother(0.5)
+        var landmarkSmoother = new tracking.LBF.LandmarksSmoother(0.4)
 
 
         var videoElement = document.querySelector('#videoWebcam')
