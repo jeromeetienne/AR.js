@@ -5,8 +5,9 @@
 - fixed perspective in artoolkit portrait #212 (thanks @pikilipita)
 - fixed barcode in a-frame #260 (thanks @basbase)
 - created portableAR.js - a simple way to port ar.js to a non-three.js framework
-  - it is in contribs/portableAR.js
-  - ported babylon.js to portableAR.js
+  - it is in /three.js/contribs/portableAR.js
+  - in [examples/]() you can find babylon.js using portableAR.js
+
 
 ## Tests
 - Made tests to report failure - yeah i know it is silly but before it reported

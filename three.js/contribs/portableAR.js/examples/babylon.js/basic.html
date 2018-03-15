@@ -9,8 +9,8 @@
 	<script src="vendor/babylon.max.js"></script> 
 
 	<!-- babylon-ar.js -->
-	<script src="../portableAR.js/build/portable-ar.js"></script>
-	<script>ARjs.Context.baseURL = '../../three.js/'</script> 
+	<script src="../../build/portable-ar.js"></script>
+	<script>ARjs.Context.baseURL = '../../../../'</script> 
 
 	<style>
 	html, body {
@@ -34,7 +34,7 @@
 	Support for <a href=''>babylon.js</a>
 	- by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 	<br/>
-	<a href='../../three.js/examples/multi-markers/markers-page/' target='_blank'>Markers page</a>
+	<a href='../examples/multi-markers/markers-page/' target='_blank'>Markers page</a>
 </div>
 	
 	<div id="canvasZone">
@@ -93,24 +93,24 @@
 	////////////////////////////////////////////////////////////////////////////////
 	//          	Set up EasyARjs
 	////////////////////////////////////////////////////////////////////////////////
-	// create a easyARjs instance
-	var easyARjs = new EasyARjs(canvas, {
+	// create a portableARjs instance
+	var portableARjs = new PortableARjs(canvas, {
 		debugUI : true,
 		// renderThreejs: true
 	})
 	// run on every iteration of babylon.js engine
 	engine.runRenderLoop(function(){
 
-		// update easyARjs
-		easyARjs.update()
+		// update portableARjs
+		portableARjs.update()
 
-		// update babylon camera with easyARjs cameraProjectionMatrix
+		// update babylon camera with portableARjs cameraProjectionMatrix
 		var babylonCamera = scene.cameras[0]
-		var babylonMatrix = BABYLON.Matrix.FromArray(easyARjs.cameraProjectionMatrix)
+		var babylonMatrix = BABYLON.Matrix.FromArray(portableARjs.cameraProjectionMatrix)
 		babylonCamera.freezeProjectionMatrix(babylonMatrix)
 
-		// update babylon camera with easyARjs cameraTransformMatrix
-		var babylonMatrix = BABYLON.Matrix.FromArray(easyARjs.cameraTransformMatrix);
+		// update babylon camera with portableARjs cameraTransformMatrix
+		var babylonMatrix = BABYLON.Matrix.FromArray(portableARjs.cameraTransformMatrix);
 		babylonCamera._computedViewMatrix = babylonMatrix
 		babylonCamera._computedViewMatrix.invert()
 	})
