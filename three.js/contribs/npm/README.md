@@ -1,4 +1,3 @@
-experimentation to export ar.js in npm
+# experimentation to export ar.js in npm
 
-
-uncomplete. i dunno enougth about the npm ecosystem to do it
+very incomplete and obsolete. i dunno enougth about the npm ecosystem to do it
