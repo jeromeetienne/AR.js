@@ -7,7 +7,9 @@
 - created [portableAR.js](https://github.com/jeromeetienne/AR.js/tree/dev/three.js/contribs/portableAR.js) - a simple way to port ar.js to a non-three.js framework
   - it is in /three.js/contribs/portableAR.js
   - in [examples/](https://github.com/jeromeetienne/AR.js/tree/dev/three.js/contribs/portableAR.js/examples/babylon.js) you can find babylon.js using portableAR.js
-
+- made webvr-polyfill obsolete 
+  - it was more a toy than something currently useful
+  - it was far from complete, not even in a workable state, anyway
 
 ## Tests
 - Made tests to report failure - yeah i know it is silly but before it reported
