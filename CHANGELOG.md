@@ -1,4 +1,4 @@
-# 1.5.5-dev
+# 1.5.5
 
 - Fix cross domain issue with [https://webxr.io/augmented-website/](https://webxr.io/augmented-website/)
 - reduced npm package size from 250mbyte to 3.5mbyte #256 (thanks @paztis)

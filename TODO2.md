@@ -4,6 +4,8 @@
 
 - merge to master
 
+- in demos/ and experiments/ avoid to have .html directly, move each experiments in its own folders
+- make a nice examples of face tracking
 - in threex.jsaruco
   - fix path in examples
   - experiments with focal change - dat.gui to tune 
@@ -12,8 +14,6 @@
   - three.js/demos ? YES
   - http://127.0.0.1:8080/three.js/examples/multi-markers/examples/threex-screenasportal/
 - multi-marker: make ar.js marker by default in the multi marker screen
-- in demos/ and experiments/ avoid to have .html directly, move each experiments in its own folders
-- make a nice examples of face tracking
 
 - remove all the artoolkit in classname and filename
   - just keep a layer for backward compatibility
