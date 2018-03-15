@@ -1,8 +1,10 @@
 # reorganize the repo
-- rename EasyARjs into PortableARjs 
+- DONE rename EasyARjs into PortableARjs 
 - remove webvr-polyfill
 - merge to master
+
 ---
+
 - remove all the examples which are only demos
   - aframe/demos three.js/demos instead of examples
   - maybe put them in a arjs-demos repository ?

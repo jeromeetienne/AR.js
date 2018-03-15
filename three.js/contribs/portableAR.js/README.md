@@ -3,6 +3,7 @@
 This is a repackaged AR.js specifically repackaged to be super easy to port.
 
 There is a [babylon.js example](examples/babylon.js/)
+([demo](https://jeromeetienne.github.io/AR.js/three.js/contribs/portableAR.js/examples/babylon.js/basic.html))
 
 # How to use
 
