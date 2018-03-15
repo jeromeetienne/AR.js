@@ -10,7 +10,7 @@
         <script src='vendor/tracking.js/build/data/face-min.js'></script>
         <script src='vendor/tracking.js/src/alignment/training/Landmarks.js'></script>
         <script src='vendor/tracking.js/src/alignment/training/Regressor.js'></script>
-        <script src='tracking-lbf-utils.js'></script>
+        <script src='js/tracking-lbf-utils.js'></script>
         
         <script src='../vendor/three.js/examples/js/libs/dat.gui.min.js'></script>
 </head>
@@ -33,12 +33,16 @@
                         zoom: 3;
                 }
         </style>
-	<video id='videoWebcam' width="368" height="288" autoplay loop>
+        <canvas id="canvasDetection"></canvas>
+
+        <!-- FOR VIDEO SOURCE -->
+	<!-- <video id='videoWebcam' width="368" height="288" autoplay loop>
 		<source src="./assets/franck.mp4" type="video/mp4"/>
 		<source src="./assets/franck.ogv" type="video/ogg"/>
-	</video>
-        <!-- <video id="videoWebcam" preload autoplay loop muted></video> -->
-        <canvas id="canvasDetection"></canvas>
+	</video> -->
+        
+        <!-- FOR WEBCAM SOURCE -->
+        <video id="videoWebcam" preload autoplay loop muted></video>
         
 <script>
         var canvasDetection = document.querySelector('#canvasDetection');
@@ -60,8 +64,12 @@
 
 
         var videoElement = document.querySelector('#videoWebcam')
-        tracking.track(videoElement, tracker)
-        // tracking.track(videoElement, tracker, { camera: true })
+
+        // FOR VIDEO SOURCE
+        // tracking.track(videoElement, tracker)
+
+        // FOR WEBCAM SOURCE
+        tracking.track(videoElement, tracker, { camera: true })
 
         //////////////////////////////////////////////////////////////////////////////
         //                Code Separator
