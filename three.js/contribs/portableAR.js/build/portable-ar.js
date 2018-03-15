@@ -45139,15 +45139,13 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 			image = this.image;
 		}
 
-		if (image.videoWidth > image.videoHeight)
-		{
-			//landscape
+		if( (image.nodeName === 'IMG' && image.width > image.height ) ||
+			(image.nodeName === 'VIDEO' && image.videoWidth > image.videoHeight) ){
+			// if landscape
 			this.ctx.drawImage(image, 0, 0, this.canvas.width, this.canvas.height); // draw video
-		}
-		else {
-
+		}else{
+			// if portrait
 			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-			//portrait
 			var scale = this.canvas.height / this.canvas.width;
 			var scaledHeight = this.canvas.width*scale;
 			var scaledWidth = this.canvas.height*scale;
@@ -52304,7 +52302,7 @@ ARjs.MarkersAreaUtils.buildMarkersAreaFileFromResolution = function(trackingBack
 		parameters.barcodeValue = layout2Barcode[layout]
 	}
 }
-var EasyARjs = function(canvasEl, options){
+var PortableARjs = function(canvasEl, options){
 	// handle default options
 	options = options || {}
 	options.debugUI = options.debugUI !== undefined ? options.debugUI : false
@@ -52410,7 +52408,7 @@ var EasyARjs = function(canvasEl, options){
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 
-EasyARjs.prototype._initOptionsDebugUI = function(arjsSession, arjsAnchor){
+PortableARjs.prototype._initOptionsDebugUI = function(arjsSession, arjsAnchor){
 	// create arjsDebugUIContainer if needed
 	if( document.querySelector('#arjsDebugUIContainer') === null ){
 		var domElement = document.createElement('div')
@@ -52432,7 +52430,7 @@ EasyARjs.prototype._initOptionsDebugUI = function(arjsSession, arjsAnchor){
 //////////////////////////////////////////////////////////////////////////////
 
 // function initRenderThreejs
-EasyARjs.prototype._initOptionRenderThreejs = function(renderer, scene, camera, arjsAnchor){
+PortableARjs.prototype._initOptionRenderThreejs = function(renderer, scene, camera, arjsAnchor){
 	// array of functions for the rendering loop
 	var onRenderFcts= [];
 

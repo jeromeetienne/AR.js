@@ -1,4 +1,4 @@
-var EasyARjs = function(canvasEl, options){
+var PortableARjs = function(canvasEl, options){
 	// handle default options
 	options = options || {}
 	options.debugUI = options.debugUI !== undefined ? options.debugUI : false
@@ -104,7 +104,7 @@ var EasyARjs = function(canvasEl, options){
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 
-EasyARjs.prototype._initOptionsDebugUI = function(arjsSession, arjsAnchor){
+PortableARjs.prototype._initOptionsDebugUI = function(arjsSession, arjsAnchor){
 	// create arjsDebugUIContainer if needed
 	if( document.querySelector('#arjsDebugUIContainer') === null ){
 		var domElement = document.createElement('div')
@@ -126,7 +126,7 @@ EasyARjs.prototype._initOptionsDebugUI = function(arjsSession, arjsAnchor){
 //////////////////////////////////////////////////////////////////////////////
 
 // function initRenderThreejs
-EasyARjs.prototype._initOptionRenderThreejs = function(renderer, scene, camera, arjsAnchor){
+PortableARjs.prototype._initOptionRenderThreejs = function(renderer, scene, camera, arjsAnchor){
 	// array of functions for the rendering loop
 	var onRenderFcts= [];
 
