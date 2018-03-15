@@ -4,9 +4,9 @@
 - reduced npm package size from 250mbyte to 3.5mbyte #256 (thanks @paztis)
 - fixed perspective in artoolkit portrait #212 (thanks @pikilipita)
 - fixed barcode in a-frame #260 (thanks @basbase)
-- created portableAR.js - a simple way to port ar.js to a non-three.js framework
+- created [portableAR.js](https://github.com/jeromeetienne/AR.js/tree/dev/three.js/contribs/portableAR.js) - a simple way to port ar.js to a non-three.js framework
   - it is in /three.js/contribs/portableAR.js
-  - in [examples/]() you can find babylon.js using portableAR.js
+  - in [examples/](https://github.com/jeromeetienne/AR.js/tree/dev/three.js/contribs/portableAR.js/examples/babylon.js) you can find babylon.js using portableAR.js
 
 
 ## Tests
