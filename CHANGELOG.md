@@ -1,3 +1,7 @@
+# 1.6.0-dev
+
+nothing yet...
+
 # 1.5.5
 
 - Fix cross domain issue with [https://webxr.io/augmented-website/](https://webxr.io/augmented-website/)

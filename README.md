@@ -246,7 +246,7 @@ atom three.js/src/threex/threex-artoolkitcontext.js package.json README.md
 make minify
 
 # Commit everything
-git add . && git commit -a -m 'Last commit before release'
+git add . && git commit -a -m 'Last commit before release' && git push
 
 # Go to master branch
 git checkout master
