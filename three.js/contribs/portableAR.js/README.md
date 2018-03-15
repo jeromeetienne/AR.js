@@ -2,13 +2,15 @@
 
 This is a repackaged AR.js specifically repackaged to be super easy to port.
 
+There is a [babylon.js example](examples/babylon.js/)
+
 # How to use
 
 First create the class
 
 ```js
-// create a easyARjs instance
-var easyARjs = new EasyARjs(webglCanvas, {
+// create a portableARjs instance
+var portableARjs = new PortableARjs(webglCanvas, {
 	// debugUI : true,
 	// renderThreejs: true
 })
@@ -17,12 +19,12 @@ var easyARjs = new EasyARjs(webglCanvas, {
 Second update it on every frame
 
 ```js
-// on every frame, be sure to update easyARjs
-easyARjs.update()
+// on every frame, be sure to update portableARjs
+portableARjs.update()
 
-// now easyARjs.cameraProjectionMatrix is the projection matrix for the camera
+// now portableARjs.cameraProjectionMatrix is the projection matrix for the camera
 // - it is a matrix4x4 as an Array(16)
 
-// now easyARjs.cameraTransformMatrix is the tranform matrix for the camera
+// now portableARjs.cameraTransformMatrix is the tranform matrix for the camera
 // - it is a matrix4x4 as an Array(16)
 ```
