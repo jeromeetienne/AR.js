@@ -10,6 +10,9 @@
 - made webvr-polyfill obsolete 
   - it was more a toy than something currently useful
   - it was far from complete, not even in a workable state, anyway
+- reorganized ```examples/``` folder
+  - created ```demos/``` to contain working demos
+  - created ```experiments/``` to contain work in progress
 
 ## Tests
 - Made tests to report failure - yeah i know it is silly but before it reported

@@ -1029,15 +1029,13 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 			image = this.image;
 		}
 
-		if (image.videoWidth > image.videoHeight)
-		{
-			//landscape
+		if( (image.nodeName === 'IMG' && image.width > image.height ) ||
+			(image.nodeName === 'VIDEO' && image.videoWidth > image.videoHeight) ){
+			// if landscape
 			this.ctx.drawImage(image, 0, 0, this.canvas.width, this.canvas.height); // draw video
-		}
-		else {
-
+		}else{
+			// if portrait
 			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-			//portrait
 			var scale = this.canvas.height / this.canvas.width;
 			var scaledHeight = this.canvas.width*scale;
 			var scaledWidth = this.canvas.height*scale;
