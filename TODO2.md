@@ -1,4 +1,7 @@
-
+# Porting thinner border
+- TODO make the generator.html able to tune that too
+- add it in the testing ?
+- check that it works well, then commit to dev and release to master
 
 
 ---
@@ -6,7 +9,7 @@
 - threex.jsaruco see about tuning the fov manually
 - in threex.jsaruco
   - fix path in examples
-  - experiments with focal change - dat.gui to tune 
+  - experiments with focal change - dat.gui to tune
   - can you find a value which works on macbook
 - multi-marker: put threex.screenasportal elsewhere ?
   - three.js/demos ? YES
@@ -24,7 +27,7 @@
 - clean up data
 
 # reorganize the repo
-- DONE rename EasyARjs into PortableARjs 
+- DONE rename EasyARjs into PortableARjs
 - DONE remove webvr-polyfill
 - DONE merge to master
 - DONE in demos/ and experiments/ avoid to have .html directly, move each experiments in its own folders

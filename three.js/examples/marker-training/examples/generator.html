@@ -89,13 +89,34 @@
 		<div class='mdl-tooltip' for='buttonUpload'>
 			Upload the image to put inside the marker
 		</div>
+
+		<div class='mdl-grid'>
+			<div class='mdl-cell mdl-cell--3-col'></div>
+			<div class='mdl-cell mdl-cell--6-col'>
+				<label class="mdl-js-ripple-effect" for="patternRatioSlider">
+					<span class="">Pattern Ratio 0.50</span>
+					<input id='patternRatioSlider' class="mdl-slider mdl-js-slider" type="range" min="10" max="90" value="50" >
+				</label>
+				<div class='mdl-tooltip' for='patternRatioSlider'>
+					Set size of inner image vs black border
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class='mdl-cell mdl-cell--4-col'>
 		<button id='buttonDownloadEncoded' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>
-			Download
+			Download Marker
 		</button>
 		<div class='mdl-tooltip' for='buttonDownloadEncoded'>
 			Download marker encoded from the uploaded image
+		</div>
+		<br/>
+		<br/>
+		<button id='buttonDownloadFullImage' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>
+			Download Image
+		</button>
+		<div class='mdl-tooltip' for='buttonDownloadFullImage'>
+			Download marker image
 		</div>
 	</div>
 	<div class='mdl-cell mdl-cell--4-col'>
@@ -131,6 +152,7 @@
 </div>
 
 <div class='mdl-grid'>
+
 	<div class='mdl-cell mdl-cell--3-col'></div>
 	<div class='mdl-cell mdl-cell--6-col'>
 		<div id='imageContainer'></div>
@@ -158,6 +180,31 @@
 		})
 	})
 
+
+	document.querySelector('#buttonDownloadFullImage').addEventListener('click', function(){
+		// debugger
+		if( innerImageURL === null ){
+			alert('upload a file first')
+			return
+		}
+		// console.assert(fullMarkerURL)
+		var win = window.open(fullMarkerURL, '_blank');
+		win.focus();
+	})
+
+
+
+	document.querySelector('#patternRatioSlider').addEventListener('input', function(){
+		// update the patternRatio number
+		var patternRatio = document.querySelector('#patternRatioSlider').value/100
+		var domElement = document.querySelector('[for=patternRatioSlider] span')
+		domElement.innerHTML = `Pattern Ratio ${patternRatio.toFixed(2)}`
+
+		// update fullMarkerImage
+		updateFullMarkerImage()
+	})
+
+
 	document.querySelector('#fileinput').addEventListener('change', function(){
 		var file = this.files[0];
 		// debugger
@@ -170,25 +217,15 @@
 		reader.readAsDataURL(file);
 	})
 
-	function downloadFullMarkerImage(){
-		if( innerImageURL === null ){
-			alert('upload a file first')
-			return
-		}
-		console.assert(fullMarkerURL)
-		var win = window.open(fullMarkerURL, '_blank');
-		win.focus();
-	}
-
 	function updateFullMarkerImage(){
-		var patternRatio = 0.9	// TODO make it tunable
+		// get patternRatio
+		var patternRatio = document.querySelector('#patternRatioSlider').value/100
+
 		THREEx.ArPatternFile.buildFullMarker(innerImageURL, patternRatio, function onComplete(markerUrl){
 			fullMarkerURL = markerUrl
 
 			var fullMarkerImage = document.createElement('img')
 			fullMarkerImage.src = fullMarkerURL
-
-			fullMarkerImage.addEventListener('click', downloadFullMarkerImage)
 
 			// put fullMarkerImage into #imageContainer
 			var container = document.querySelector('#imageContainer')
@@ -198,7 +235,7 @@
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
+	//		Handle PDF
 	//////////////////////////////////////////////////////////////////////////////
 	document.querySelector('#buttonDownloadPDFOnePerPage').addEventListener('click', generatePdfOnePerPage)
 	document.querySelector('#buttonDownloadPDFTwoPerPage').addEventListener('click', generatePdfTwoPerPage)
