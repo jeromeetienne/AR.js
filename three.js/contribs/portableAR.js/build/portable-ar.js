@@ -48886,7 +48886,7 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, para
 	this.object3d = object3d
 	this.object3d.matrixAutoUpdate = false;
 	this.object3d.visible = false
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		setParameters
 	//////////////////////////////////////////////////////////////////////////////
@@ -48945,7 +48945,7 @@ ARjs.MarkerControls.prototype.dispose = function(){
 //////////////////////////////////////////////////////////////////////////////
 
 /**
- * When you actually got a new modelViewMatrix, you need to perfom a whole bunch 
+ * When you actually got a new modelViewMatrix, you need to perfom a whole bunch
  * of things. it is done here.
  */
 ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatrix){
@@ -48958,8 +48958,8 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatr
 		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
 		var tmpMatrix = new THREE.Matrix4().copy(this.context._artoolkitProjectionAxisTransformMatrix)
 		tmpMatrix.multiply(modelViewMatrix)
-		
-		modelViewMatrix.copy(tmpMatrix)		
+
+		modelViewMatrix.copy(tmpMatrix)
 	}else if( this.context.parameters.trackingBackend === 'aruco' ){
 		// ...
 	}else if( this.context.parameters.trackingBackend === 'tango' ){
@@ -48995,7 +48995,7 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatr
 //////////////////////////////////////////////////////////////////////////////
 
 /**
- * provide a name for a marker 
+ * provide a name for a marker
  * - silly heuristic for now
  * - should be improved
  */
@@ -49034,13 +49034,11 @@ ARjs.MarkerControls.prototype._initArtoolkit = function(){
 	}, 1000/50)
 
 	return
-	
+
 	function postInit(){
 		// check if arController is init
 		var arController = _this.context.arController
 		console.assert(arController !== null )
-
-arController.setPattRatio(0.7);
 
 		// start tracking this pattern
 		if( _this.parameters.type === 'pattern' ){
@@ -49070,7 +49068,7 @@ arController.setPattRatio(0.7);
 				onMarkerFound(event)
 			}
 		})
-		
+
 	}
 
 	function onMarkerFound(event){
@@ -49293,9 +49291,9 @@ var THREEx = THREEx || {}
 
 ARjs.Context = THREEx.ArToolkitContext = function(parameters){
 	var _this = this
-	
+
 	_this._updatedAt = null
-	
+
 	// handle default parameters
 	this.parameters = {
 		// AR backend - ['artoolkit', 'aruco', 'tango']
@@ -49306,7 +49304,7 @@ ARjs.Context = THREEx.ArToolkitContext = function(parameters){
 		detectionMode: 'mono',
 		// type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
 		matrixCodeType: '3x3',
-		
+
 		// url of the camera parameters
 		cameraParametersUrl: ARjs.Context.baseURL + 'parameters/camera_para.dat',
 
@@ -49315,7 +49313,10 @@ ARjs.Context = THREEx.ArToolkitContext = function(parameters){
 		// resolution of at which we detect pose in the source image
 		canvasWidth: 640,
 		canvasHeight: 480,
-		
+
+		// the patternRatio inside the artoolkit marker - artoolkit only
+		patternRatio: 0.5,
+
 		// enable image smoothing or not for canvas copy - default to true
 		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
 		imageSmoothingEnabled : false,
@@ -49323,15 +49324,15 @@ ARjs.Context = THREEx.ArToolkitContext = function(parameters){
 	// parameters sanity check
 	console.assert(['artoolkit', 'aruco', 'tango'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
 	console.assert(['color', 'color_and_matrix', 'mono', 'mono_and_matrix'].indexOf(this.parameters.detectionMode) !== -1, 'invalid parameter detectionMode', this.parameters.detectionMode)
-	
+
         this.arController = null;
         this.arucoContext = null;
-	
+
 	_this.initialized = false
 
 
 	this._arMarkersControls = []
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		setParameters
 	//////////////////////////////////////////////////////////////////////////////
@@ -49399,7 +49400,7 @@ ARjs.Context.prototype.init = function(onCompleted){
 		this._initTango(done)
 	}else console.assert(false)
 	return
-	
+
 	function done(){
 		// dispatch event
 		_this.dispatchEvent({
@@ -49407,7 +49408,7 @@ ARjs.Context.prototype.init = function(onCompleted){
 		});
 
 		_this.initialized = true
-		
+
 		onCompleted && onCompleted()
 	}
 
@@ -49434,7 +49435,7 @@ ARjs.Context.prototype.update = function(srcElement){
 
 	// process this frame
 	if(this.parameters.trackingBackend === 'artoolkit'){
-		this._updateArtoolkit(srcElement)		
+		this._updateArtoolkit(srcElement)
 	}else if( this.parameters.trackingBackend === 'aruco' ){
 		this._updateAruco(srcElement)
 	}else if( this.parameters.trackingBackend === 'tango' ){
@@ -49490,8 +49491,8 @@ ARjs.Context.prototype._initArtoolkit = function(onCompleted){
 		arController.ctx.mozImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
 		arController.ctx.webkitImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
 		arController.ctx.msImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
-		arController.ctx.imageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;			
- 		
+		arController.ctx.imageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+
 		// honor this.parameters.debug
                 if( _this.parameters.debug === true ){
 			arController.debugSetup();
@@ -49525,7 +49526,12 @@ ARjs.Context.prototype._initArtoolkit = function(onCompleted){
 		var matrixCodeType = matrixCodeTypes[_this.parameters.matrixCodeType]
 		console.assert(matrixCodeType !== undefined)
 		arController.setMatrixCodeType(matrixCodeType);
-		
+
+
+		// set the patternRatio for artoolkit
+		arController.setPattRatio(_this.parameters.patternRatio);
+console.log('set pattRatio', _this.parameters.patternRatio)
+debugger
 
 		// set thresholding in artoolkit
 		// this seems to be the default
@@ -49535,8 +49541,8 @@ ARjs.Context.prototype._initArtoolkit = function(onCompleted){
 		// arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_AUTO_OTSU)
 
 		// notify
-                onCompleted()                
-        })		
+                onCompleted()
+        })
 	return this
 }
 
@@ -49544,20 +49550,20 @@ ARjs.Context.prototype._initArtoolkit = function(onCompleted){
  * return the projection matrix
  */
 ARjs.Context.prototype.getProjectionMatrix = function(srcElement){
-	
-	
+
+
 // FIXME rename this function to say it is artoolkit specific - getArtoolkitProjectMatrix
 // keep a backward compatibility with a console.warn
-	
+
 	console.assert( this.parameters.trackingBackend === 'artoolkit' )
 	console.assert(this.arController, 'arController MUST be initialized to call this function')
 	// get projectionMatrixArr from artoolkit
 	var projectionMatrixArr = this.arController.getCameraMatrix();
-	var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)		
-		
+	var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)
+
 	// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
 	projectionMatrix.multiply(this._artoolkitProjectionAxisTransformMatrix)
-	
+
 	// return the result
 	return projectionMatrix
 }
@@ -49567,11 +49573,11 @@ ARjs.Context.prototype._updateArtoolkit = function(srcElement){
 }
 
 //////////////////////////////////////////////////////////////////////////////
-//		aruco specific 
+//		aruco specific
 //////////////////////////////////////////////////////////////////////////////
 ARjs.Context.prototype._initAruco = function(onCompleted){
 	this.arucoContext = new THREEx.ArucoContext()
-	
+
 	// honor this.parameters.canvasWidth/.canvasHeight
 	this.arucoContext.canvas.width = this.parameters.canvasWidth
 	this.arucoContext.canvas.height = this.parameters.canvasHeight
@@ -49581,9 +49587,9 @@ ARjs.Context.prototype._initAruco = function(onCompleted){
 	// context.mozImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
 	context.webkitImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
 	context.msImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
-	context.imageSmoothingEnabled = this.parameters.imageSmoothingEnabled;			
+	context.imageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
 
-	
+
 	setTimeout(function(){
 		onCompleted()
 	}, 0)
@@ -49595,7 +49601,7 @@ ARjs.Context.prototype._updateAruco = function(srcElement){
 	var _this = this
 	var arMarkersControls = this._arMarkersControls
         var detectedMarkers = this.arucoContext.detect(srcElement)
-	
+
 	detectedMarkers.forEach(function(detectedMarker){
 		var foundControls = null
 		for(var i = 0; i < arMarkersControls.length; i++){
@@ -49616,7 +49622,7 @@ ARjs.Context.prototype._updateAruco = function(srcElement){
 }
 
 //////////////////////////////////////////////////////////////////////////////
-//		tango specific 
+//		tango specific
 //////////////////////////////////////////////////////////////////////////////
 ARjs.Context.prototype._initTango = function(onCompleted){
 	var _this = this
@@ -49635,7 +49641,7 @@ ARjs.Context.prototype._initTango = function(onCompleted){
 		vrPointCloud: null,
 		frameData: new VRFrameData(),
 	}
-	
+
 
 	// get vrDisplay
 	navigator.getVRDisplays().then(function (vrDisplays){
@@ -49676,7 +49682,7 @@ ARjs.Context.prototype._updateTango = function(srcElement){
 	if( vrDisplay.displayName === "Tango VR Device" ){
 	        var showPointCloud = true
 		var pointsToSkip = 0
-	        _this._tangoContext.vrPointCloud.update(showPointCloud, pointsToSkip, true)                        		
+	        _this._tangoContext.vrPointCloud.update(showPointCloud, pointsToSkip, true)
 	}
 
 
@@ -49685,7 +49691,7 @@ ARjs.Context.prototype._updateTango = function(srcElement){
 	// TODO here do a fake search on barcode/1001 ?
 
 	var foundControls = this._arMarkersControls[0]
-	
+
 	var frameData = this._tangoContext.frameData
 
 	// read frameData
@@ -49701,12 +49707,12 @@ ARjs.Context.prototype._updateTango = function(srcElement){
 	var cameraTransformMatrix = new THREE.Matrix4().compose(position, quaternion, scale)
 	// compute modelViewMatrix from cameraTransformMatrix
 	var modelViewMatrix = new THREE.Matrix4()
-	modelViewMatrix.getInverse( cameraTransformMatrix )	
+	modelViewMatrix.getInverse( cameraTransformMatrix )
 
 	foundControls.updateWithModelViewMatrix(modelViewMatrix)
-		
+
 	// console.log('position', position)
-	// if( position.x !== 0 ||  position.y !== 0 ||  position.z !== 0 ){		
+	// if( position.x !== 0 ||  position.y !== 0 ||  position.z !== 0 ){
 	// 	console.log('vrDisplay tracking')
 	// }else{
 	// 	console.log('vrDisplay NOT tracking')
