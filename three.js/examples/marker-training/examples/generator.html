@@ -25,14 +25,14 @@
 	div.mdl-cell {
 		text-align: center;
 	}
-	
+
 	h1 a {
 		text-decoration: none;
 	}
 	h1 a:hover {
 		text-decoration: underline;
 	}
-	
+
 	#topRightButtons {
 		position: fixed;
 		top: 1em;
@@ -76,7 +76,7 @@
 		dialogElement.showModal()
 	})
 </script>
-  
+
 <!-- *********************************************************************** -->
 <!-- *********************************************************************** -->
 <!-- *********************************************************************** -->
@@ -104,7 +104,7 @@
 		</button>
 		<div class='mdl-tooltip' for='buttonDownloadPDFOnePerPage'>
 			Download markers as PDF
-			<br/> 
+			<br/>
 			One marker per page
 		</div>
 		<br/>
@@ -114,7 +114,7 @@
 		</button>
 		<div class='mdl-tooltip' for='buttonDownloadPDFTwoPerPage'>
 			Download markers as PDF
-			<br/> 
+			<br/>
 			Two marker per page
 		</div>
 		<br/>
@@ -124,10 +124,10 @@
 		</button>
 		<div class='mdl-tooltip' for='buttonDownloadPDFSixPerPage'>
 			Download markers as PDF.
-			<br/> 
+			<br/>
 			Six marker per page
 		</div>
-	</div>	
+	</div>
 </div>
 
 <div class='mdl-grid'>
@@ -143,10 +143,10 @@
 <script>
 	var innerImageURL = null
 	var fullMarkerURL = null
-	
+
 	innerImageURL = 'inner-images/inner-arjs.png'
 	updateFullMarkerImage()
-	
+
 	document.querySelector('#buttonDownloadEncoded').addEventListener('click', function(){
 		if( innerImageURL === null ){
 			alert('upload a file first')
@@ -157,7 +157,7 @@
 			THREEx.ArPatternFile.triggerDownload(patternFileString)
 		})
 	})
-	
+
 	document.querySelector('#fileinput').addEventListener('change', function(){
 		var file = this.files[0];
 		// debugger
@@ -168,8 +168,8 @@
 			updateFullMarkerImage()
 		};
 		reader.readAsDataURL(file);
-	})	
-	
+	})
+
 	function downloadFullMarkerImage(){
 		if( innerImageURL === null ){
 			alert('upload a file first')
@@ -177,23 +177,24 @@
 		}
 		console.assert(fullMarkerURL)
 		var win = window.open(fullMarkerURL, '_blank');
-		win.focus();		
+		win.focus();
 	}
 
 	function updateFullMarkerImage(){
-		THREEx.ArPatternFile.buildFullMarker(innerImageURL, function onComplete(markerUrl){
+		var patternRatio = 0.9	// TODO make it tunable
+		THREEx.ArPatternFile.buildFullMarker(innerImageURL, patternRatio, function onComplete(markerUrl){
 			fullMarkerURL = markerUrl
 
 			var fullMarkerImage = document.createElement('img')
 			fullMarkerImage.src = fullMarkerURL
-			
+
 			fullMarkerImage.addEventListener('click', downloadFullMarkerImage)
 
 			// put fullMarkerImage into #imageContainer
 			var container = document.querySelector('#imageContainer')
 			while (container.firstChild) container.removeChild(container.firstChild);
 			container.appendChild(fullMarkerImage)
-		})		
+		})
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -202,7 +203,7 @@
 	document.querySelector('#buttonDownloadPDFOnePerPage').addEventListener('click', generatePdfOnePerPage)
 	document.querySelector('#buttonDownloadPDFTwoPerPage').addEventListener('click', generatePdfTwoPerPage)
 	document.querySelector('#buttonDownloadPDFSixPerPage').addEventListener('click', generatePdfSixPerPage)
-		
+
 	function generatePdfOnePerPage(){
 	        var docDefinition = {
 			content: [
@@ -245,7 +246,7 @@
 			                                image: fullMarkerURL,
 			                                width: 250,
 			                        },
-					]			
+					]
 				},
 				{
 					columns: [
@@ -257,7 +258,7 @@
 			                                image: fullMarkerURL,
 			                                width: 250,
 			                        },
-					]					
+					]
 				},
 				{
 					columns: [
@@ -269,7 +270,7 @@
 			                                image: fullMarkerURL,
 			                                width: 250,
 			                        },
-					]					
+					]
 				},
 	                ],
 	        }
