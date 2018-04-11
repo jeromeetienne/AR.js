@@ -1,10 +1,9 @@
-# reorganize the repo
-- DONE rename EasyARjs into PortableARjs 
-- DONE remove webvr-polyfill
-- DONE merge to master
 
-- in demos/ and experiments/ avoid to have .html directly, move each experiments in its own folders
-- make a nice examples of face tracking
+
+
+---
+- DONE make a nice examples of face tracking
+- threex.jsaruco see about tuning the fov manually
 - in threex.jsaruco
   - fix path in examples
   - experiments with focal change - dat.gui to tune 
@@ -23,6 +22,13 @@
 - remove three.js dependancy
 - remove any tango support
 - clean up data
+
+# reorganize the repo
+- DONE rename EasyARjs into PortableARjs 
+- DONE remove webvr-polyfill
+- DONE merge to master
+- DONE in demos/ and experiments/ avoid to have .html directly, move each experiments in its own folders
+
 
 
 - DONE fix the testing, seems to have projection issue on image read, works on webcam tho
