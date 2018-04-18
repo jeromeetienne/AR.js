@@ -13,12 +13,12 @@
 I am focusing hard on making AR for the web a reality.
 This repository is where I publish the code.
 Contact me anytime [@jerome_etienne](https://twitter.com/jerome_etienne).
-Stuff are still moving fast, We reached a good status tho.
+Stuff are still moving fast. We reached a good status quo.
 An article has been published on [uploadvr](https://uploadvr.com/ar-js-efficient-augmented-reality-for-the-web/).
 So I wanted to publish thus people can try it and have fun with it :)
 
 - **Very Fast** : it runs efficiently even on phones. [60 fps on my 2 year-old phone](https://twitter.com/jerome_etienne/status/831333879810236421)!
-- **Web-based** : It is a pure web solution, so no installation required. Full javascript based on three.js + jsartoolkit5
+- **Web-based** : It is a pure web solution, so no installation required. Full javascript based on `three.js` + `jsartoolkit5`
 - **Open Source** : It is completely open source and free of charge!
 - **Standards** : It works on any phone with [webgl](http://caniuse.com/#feat=webgl) and [webrtc](http://caniuse.com/#feat=stream)
 
@@ -26,14 +26,13 @@ So I wanted to publish thus people can try it and have fun with it :)
 
 # Try it on Mobile
 
-It works on all platforms. Android, IOS and window phone. It run **any browser with WebGL and WebRTC**.
+It works on all platforms. Android, IOS and window phone. It run on **any browser with WebGL and WebRTC**.
 (for IOS, you need to update to ios11)
 
 To try on your phone is only 2 easy steps, check it out!
 
 1. Open this [hiro marker image](https://jeromeetienne.github.io/AR.js/data/images/HIRO.jpg) in your desktop browser.
-1. Open this [augmented reality webapps](https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html) in your phone browser, and point it
-to your screen.
+1. Open this [augmented reality webapps](https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html) in your phone browser, and point it to your screen.
 
 **You are done!** It will open a webpage which read the phone webcam, localize a hiro marker and add 3d on top of it, as you can see below.
 
@@ -54,11 +53,11 @@ So i would like to thanks :
 Only thanks to all of them, i could do my part : Optimizing performance from 5fps on high-end
 phone, to 60fps on 2years old phone.
 
-After all this work done by a lot of people, we have a *web-based augmented reality solution fast enough for mobile*!
+After all this work done by a lot of people, we have a *web-based augmented reality solution fast enough for mobile!*
 
 Now, many people got a phone powerful enough to do web AR in their pocket.
 I think this performance improvement makes web AR a reality.
-i am all exited by what people are gonna with it :)
+i am all excited by what people are gonna with it :)
 
 # Performance
 
@@ -70,27 +69,27 @@ We are still early in the project but here are some initial numbers to give you 
 - Some reports it working on windows phone edge!! [13fps on Lumia 950](https://twitter.com/leinadkalpot/status/834299384510763012) for some.
   [40-45fps on lumia 930](https://twitter.com/fastclemmy/status/834817155665391616) for others.
 
-Obviously you mileage may vary. The performance you get will depend on 3 things: How heavy your 3D is, How you tune your parameters
+Obviously you mileage may vary. The performance you get will depend on 3 things: How heavy your 3D is, how you tune your parameters
 and the hardware that you are using.
 
 ![screenshot](https://cloud.githubusercontent.com/assets/252962/23068128/40343608-f51a-11e6-8cb3-900e37a7f658.jpg)
 
 # Full Featured Marker based
-With this project, we bring more performance to artoolkit.
-artoolkit is a software with years of experience doing augmented reality. It is able to do a lot!
+With this project, we bring more performance to `artoolkit`.
+`artoolkit` is a software with years of experience doing augmented reality. It is able to do a lot!
 
 It is marker based. It supports a wide range of markers: multiple types of markers [pattern](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_training)/[barcode](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_barcode)
 multiple independent markers at the same time, or [multiple markers acting as a single marker](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_multi)
 up to you to choose.
 
 # What’s New?
-Recently, we’ve been getting creative and working on developing new things with AR.js. One of them is playing around with [shadows](https://twitter.com/jerome_etienne/status/837240034847764480), syncing the position of virtual lights with reality for a more life-like finish:
+Recently, we’ve been getting creative and working on developing new things with `AR.js`. One of them is playing around with [shadows](https://twitter.com/jerome_etienne/status/837240034847764480), syncing the position of virtual lights with reality for a more life-like finish:
 ![screen shot 2017-03-16 at 21 06 24](https://cloud.githubusercontent.com/assets/6317076/24018623/7f787ba8-0a8c-11e7-8088-fea4799b5d09.png)
 
-We’ve been collaborating very closely with [Fredrick Blomqvist](https://twitter.com/snigelpaogat). His input has had a great impact on AR.js innovation and we want to thank him. Together, we’ve been implementing [refraction](https://twitter.com/jerome_etienne/status/838749280999518208), giving the 3d a transparent/glassy effect. It ended up having a nice polished look. What do you guys think?
+We’ve been collaborating very closely with [Fredrick Blomqvist](https://twitter.com/snigelpaogat). His input has had a great impact on `AR.js` innovation and we want to thank him. Together, we’ve been implementing [refraction](https://twitter.com/jerome_etienne/status/838749280999518208), giving the 3d a transparent/glassy effect. It ended up having a nice polished look. What do you guys think?
 ![screen shot 2017-03-06 at 16 31 28](https://cloud.githubusercontent.com/assets/6317076/23832948/9b64c79e-0736-11e7-9cb8-747f6a8fc082.png)
 
-Other crazy ideas we’ve been working on include a [hole in the wall](https://twitter.com/jerome_etienne/status/836754117964017664) and a [portal into another world](https://twitter.com/jerome_etienne/status/838404908235776000). We want to take AR.js to new dimensions.
+Other crazy ideas we’ve been working on include a [hole in the wall](https://twitter.com/jerome_etienne/status/836754117964017664) and a [portal into another world](https://twitter.com/jerome_etienne/status/838404908235776000). We want to take `AR.js` to new dimensions.
 ![screen shot 2017-03-12 at 15 19 51](https://cloud.githubusercontent.com/assets/6317076/23833024/b2e045be-0737-11e7-9ef0-8e1ac9e49ba8.png)
 ![screen shot 2017-03-07 at 10 08 39](https://cloud.githubusercontent.com/assets/6317076/23833015/947f6abe-0737-11e7-9a0d-1ea919f6ffbe.png)
 
@@ -99,9 +98,9 @@ Other crazy ideas we’ve been working on include a [hole in the wall](https://t
 - "The marker must be a portal from where the virtual emerges." by @AndraConnect - #AR principles at dinner 😏 [tweet](https://twitter.com/jerome_etienne/status/842112692211056640)
 
 # Status
-- At the three.js level is the main one. It is working well and efficiently
+- At the `three.js` level is the main one. It is working well and efficiently
 - a-frame component - it export ```<a-marker>``` tag. It becomes real easy to use.
-  It allows the things three.js extension does. Here are some slides
+  It allows the things `three.js` extension does. Here are some slides
   [aframe-artoolkit](http://jeromeetienne.github.io/slides/artoolkit-aframe/)
 - webvr-polyfill: it is kind of working - still a work-in-progress
 
@@ -132,7 +131,7 @@ See on [codepen](https://codepen.io/jeromeetienne/pen/mRqqzb) or [bl.ocks.org](h
 
 # Posts on medium
 We started a [AR.js blog](https://medium.com/arjs), thus we can write about
-all the crazy ideas related to AR.js.
+all the crazy ideas related to `AR.js`.
 
 - ["Area Learning with Multi-Markers in AR.js - For a Larger & More Stable Augmented Reality"](https://medium.com/arjs/area-learning-with-multi-markers-in-ar-js-1ff03a2f9fbe)
   by [@AndraConnect](https://twitter.com/AndraConnect)
@@ -149,10 +148,10 @@ all the crazy ideas related to AR.js.
 
 # Great Posts by Users
 
-- How to write a AR.js application ?
+- How to write an `AR.js` application ?
 Here is a [full tutorial](https://marmelab.com/blog/2017/06/19/augmented-reality-html5.html)
 by [marmelab](https://marmelab.com/) featuring [François Zaninotto](https://twitter.com/francoisz).
-It explain how to code a full application on phone! Step by Steps, with explaination and videos. 
+It explain how to code a full application on phone! Step by Step, with explanation and videos. 
 Very great! the perfect step if you want to start writing AR application today.
 - Great post about [WebAR for designer](http://www.nexusinteractivearts.com/webar/)
 by [nexus interactive arts](http://www.nexusinteractivearts.com/)
@@ -184,8 +183,8 @@ Some applications:
 - ```/webvr-polyfill``` is the WebVR polyfill so you can reuse your #AR / #VR content easily
 
 # Licenses
-It is **all open source** ! jsartoolkit5 is under LGPLv3 license and additional permission.
-And All my code in AR.js repository is under MIT license. :)
+It is **all open source** ! `jsartoolkit5` is under LGPLv3 license and additional permission.
+And All my code in `AR.js` repository is under MIT license. :)
 
 For legal details, be sure to check [jsartoolkit5 license](https://github.com/artoolkit/jsartoolkit5/blob/master/LICENSE.txt)
 and [AR.js license](https://github.com/jeromeetienne/AR.js/blob/master/LICENSE.txt).
@@ -204,14 +203,14 @@ And obviously, we can still do more parameters tweaking :)
 
 I would like people start experience augmented reality and play with it.
 This is highly creative! Just look at this [puzzle game in #AR playing with mirror and laser beam](https://www.youtube.com/watch?v=OzLJb7HitvA).
-You could do it with AR.js, so opensource and running on normal phones, no need to buy a new device. isn't that great!
+You could do it with `AR.js`, so open source and running on normal phones, no need to buy a new device. isn't that great!
 
 
 Augmented reality on phone have applications in many fields:
 [history education](https://www.youtube.com/watch?v=gyp8ZYtyu_M)
 , [science](https://www.youtube.com/watch?v=gMxdBdLpVgc)
 or [gaming](https://www.youtube.com/watch?v=kEMDgvfFUcI).
-I exited to see what people will do with AR.js :)
+I am excited to see what people will do with AR.js :)
 
 
 # Browser Support
