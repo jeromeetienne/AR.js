@@ -7,9 +7,9 @@
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - three.js camera transform
+	<a href="https://github.com/germanviscuso/AR.js/" target="_blank">AR.js</a> - three.js camera transform
 	<br/>
-	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+	Contact me any time at <a href='https://twitter.com/germanviscuso' target='_blank'>@germanviscuso</a>
 </div><script>
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
@@ -106,8 +106,9 @@
 	// init controls for camera
 	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
 		type : 'pattern',
-		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
 		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
+		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.infy',
 		// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
 		changeMatrixMode: 'cameraTransformMatrix'
 	})
