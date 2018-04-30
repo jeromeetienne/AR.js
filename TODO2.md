@@ -1,11 +1,29 @@
 # Porting thinner border
 - TODO make the generator.html able to tune that too
-- add it in the testing ?
+- add it in the testing ? how ?
+  - well first generate/take an image with a marker with a thin border
+  - then try to do a detection on it.
+  - in the test, either we just take a screenshot
+  - either i detect if there is a detection of it
+- change that i broke something ? super unlikely
+  - be sure not to leave a mess tho
+  - where to put an example ?
+  - only aframe examples
+  - currently there are 2 examples
 - check that it works well, then commit to dev and release to master
+- how to know if it works well ?
+  - test manually
+  - add example in aframe
+  - add a test
+    - just take an picture of the generator with a marker
+    - TODO make test-runner.html to accept url of the image i want
 
+- test for setPattRatio
+  - aframe doesnt load image in test-runner.html
+  - but work in three.js/test-runner.html so likely a small issue in ar.js aframe
 
 ---
-- DONE make a nice examples of face tracking
+
 - threex.jsaruco see about tuning the fov manually
 - in threex.jsaruco
   - fix path in examples
@@ -16,23 +34,22 @@
   - http://127.0.0.1:8080/three.js/examples/multi-markers/examples/threex-screenasportal/
 - multi-marker: make ar.js marker by default in the multi marker screen
 
-- remove all the artoolkit in classname and filename
-  - just keep a layer for backward compatibility
-- DONE put three.js/experiments/shadow markercloak + liquid-marker as /demos
 
 ---
-
+# Clean AR.js
+- remove all the artoolkit in classname and filename
+  - just keep a layer for backward compatibility
 - remove three.js dependancy
 - remove any tango support
 - clean up data
 
-# reorganize the repo
+---
+
+- DONE put three.js/experiments/shadow markercloak + liquid-marker as /demos
+- DONE in arjs-face make a nice examples of face tracking
 - DONE rename EasyARjs into PortableARjs
 - DONE remove webvr-polyfill
 - DONE merge to master
 - DONE in demos/ and experiments/ avoid to have .html directly, move each experiments in its own folders
-
-
-
 - DONE fix the testing, seems to have projection issue on image read, works on webcam tho
 - DONE import the new babylon.js port
