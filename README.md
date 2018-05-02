@@ -1,6 +1,6 @@
 
  # AR.js - Augmented Reality for the Web
- 
+
  [![Augmented Website](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://github.com/jeromeetienne/AR.js)
 
 [![npm](https://img.shields.io/npm/v/ar.js.svg)](https://www.npmjs.com/package/ar.js)
@@ -152,7 +152,7 @@ all the crazy ideas related to AR.js.
 - How to write a AR.js application ?
 Here is a [full tutorial](https://marmelab.com/blog/2017/06/19/augmented-reality-html5.html)
 by [marmelab](https://marmelab.com/) featuring [François Zaninotto](https://twitter.com/francoisz).
-It explain how to code a full application on phone! Step by Steps, with explaination and videos. 
+It explain how to code a full application on phone! Step by Steps, with explaination and videos.
 Very great! the perfect step if you want to start writing AR application today.
 - Great post about [WebAR for designer](http://www.nexusinteractivearts.com/webar/)
 by [nexus interactive arts](http://www.nexusinteractivearts.com/)
@@ -261,7 +261,7 @@ git checkout master
 git merge dev
 
 # tag the release
-git tag 1.5.5
+git tag 1.6.0
 
 # push the tag on github
 git push origin --tags
