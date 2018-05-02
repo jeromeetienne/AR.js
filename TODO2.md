@@ -16,10 +16,10 @@
     - TODO make test-runner.html to accept url of the image i want
 
 - test for setPattRatio
-  - aframe doesnt load image in test-runner.html
+  - aframe doesnt load image in test-runner.html - but works in default-tinner-border.html
   - but work in three.js/test-runner.html so likely a small issue in ar.js aframe
 - change test-runner to get sourceImageURL in the query
-  - change the formats
+  - change the formats2
 ---
 
 - threex.jsaruco see about tuning the fov manually
