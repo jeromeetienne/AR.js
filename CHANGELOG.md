@@ -1,4 +1,4 @@
-# 1.6.0-dev
+# 1.6.0
 
 - implemented patternRatio in aframe/three.js - a way to reduce the ugly black border
   - aka something to make the pattern marker border thinner
