@@ -1,10 +1,7 @@
 # Porting thinner border
-- TODO make the generator.html able to tune that too
-- add it in the testing ? how ?
-  - well first generate/take an image with a marker with a thin border
-  - then try to do a detection on it.
-  - in the test, either we just take a screenshot
-  - either i detect if there is a detection of it
+- DONE make the generator.html able to tune setPattRatio
+- add a test in three.js/test
+  - able to set setPattRatio
 - change that i broke something ? super unlikely
   - be sure not to leave a mess tho
   - where to put an example ?
@@ -21,7 +18,8 @@
 - test for setPattRatio
   - aframe doesnt load image in test-runner.html
   - but work in three.js/test-runner.html so likely a small issue in ar.js aframe
-
+- change test-runner to get sourceImageURL in the query
+  - change the formats
 ---
 
 - threex.jsaruco see about tuning the fov manually

@@ -239,11 +239,8 @@ ARjs.Context.prototype._initArtoolkit = function(onCompleted){
 		console.assert(matrixCodeType !== undefined)
 		arController.setMatrixCodeType(matrixCodeType);
 
-
 		// set the patternRatio for artoolkit
 		arController.setPattRatio(_this.parameters.patternRatio);
-console.log('set pattRatio', _this.parameters.patternRatio)
-debugger
 
 		// set thresholding in artoolkit
 		// this seems to be the default
