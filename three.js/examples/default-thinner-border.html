@@ -55,9 +55,8 @@
 	////////////////////////////////////////////////////////////////////////////////
 
 	var artoolkitProfile = new THREEx.ArToolkitProfile()
-	artoolkitProfile.sourceWebcam()
-	// artoolkitProfile.sourceVideo(THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4').kanjiMarker();
-	// artoolkitProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg').hiroMarker()
+	// artoolkitProfile.sourceWebcam()
+	artoolkitProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../test/data/images/marker-artoolkit-pattern-pattratio-09.png')
 
 	var arToolkitSource = new THREEx.ArToolkitSource(artoolkitProfile.sourceParameters)
 
@@ -81,7 +80,8 @@
 	//          initialize arToolkitContext
 	////////////////////////////////////////////////////////////////////////////////
 
-artoolkitProfile.contextParameters.patternRatio = 0.9
+	// set patternRatio
+	artoolkitProfile.contextParameters.patternRatio = 0.9
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
@@ -112,13 +112,13 @@ artoolkitProfile.contextParameters.patternRatio = 0.9
 	})
 
 
-	// // build a smoothedControls
-	// var smoothedGroup = new THREE.Group()
-	// scene.add(smoothedGroup)
-	// var smoothedControls = new THREEx.ArSmoothedControls(smoothedGroup)
-	// onRenderFcts.push(function(delta){
-	// 	smoothedControls.update(markerGroup)
-	// })
+	// build a smoothedControls
+	var smoothedGroup = new THREE.Group()
+	scene.add(smoothedGroup)
+	var smoothedControls = new THREEx.ArSmoothedControls(smoothedGroup)
+	onRenderFcts.push(function(delta){
+		smoothedControls.update(markerGroup)
+	})
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
@@ -126,7 +126,7 @@ artoolkitProfile.contextParameters.patternRatio = 0.9
 
 
 	var markerScene = new THREE.Scene()
-	markerGroup.add(markerScene)
+	smoothedGroup.add(markerScene)
 
 	var mesh = new THREE.AxisHelper()
 	markerScene.add(mesh)
@@ -155,12 +155,9 @@ artoolkitProfile.contextParameters.patternRatio = 0.9
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
 	//////////////////////////////////////////////////////////////////////////////////
-	var stats = new Stats();
-	document.body.appendChild( stats.dom );
 	// render the scene
 	onRenderFcts.push(function(){
 		renderer.render( scene, camera );
-		stats.update();
 	})
 
 	// run the rendering loop
