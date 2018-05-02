@@ -1,4 +1,14 @@
-# AR.js - Efficient Augmented Reality for the Web
+
+ # AR.js - Augmented Reality for the Web
+ 
+ [![Augmented Website](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://github.com/jeromeetienne/AR.js)
+
+[![npm](https://img.shields.io/npm/v/ar.js.svg)](https://www.npmjs.com/package/ar.js)
+[![npm](https://img.shields.io/npm/dt/ar.js.svg)](https://www.npmjs.com/package/ar.js)
+<br class="badge-separator" />
+[![Gitter chat](https://badges.gitter.im/AR-js/Lobby.png)](https://gitter.im/AR-js/Lobby)
+<span class="badge-patreon"><a href="https://patreon.com/jerome_etienne" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/patreon-donate-yellow.svg" alt="Patreon donate button" /></a></span>
+[![Twitter Follow](https://img.shields.io/twitter/follow/jerome_etienne.svg?style=plastic&label=Twitter&style=plastic)](https://twitter.com/jerome_etienne)
 
 I am focusing hard on making AR for the web a reality.
 This repository is where I publish the code.
@@ -13,10 +23,6 @@ So I wanted to publish thus people can try it and have fun with it :)
 - **Standards** : It works on any phone with [webgl](http://caniuse.com/#feat=webgl) and [webrtc](http://caniuse.com/#feat=stream)
 
 [![AR.js 1.0 Video](https://cloud.githubusercontent.com/assets/252962/23441016/ab6900ce-fe17-11e6-971b-24614fb8ac0e.png)](https://youtu.be/0MtvjFg7tik)
-
-
-
-If you wanna chat, check [![Gitter chat](https://badges.gitter.im/AR-js/Lobby.png)](https://gitter.im/AR-js/Lobby)
 
 # Try it on Mobile
 
