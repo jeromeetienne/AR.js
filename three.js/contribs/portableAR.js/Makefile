@@ -6,7 +6,7 @@ build:
 	(cd ../../ && make build)
 	cat 	\
 		../../examples/vendor/three.js/build/three.js	\
-		../../build/ar.js					\
+		../../build/ar.js				\
 		src/portable-ar.js				\
 		> build/portable-ar.js 
 

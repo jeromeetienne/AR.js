@@ -10,7 +10,7 @@
 
 	<!-- babylon-ar.js -->
 	<script src="../../build/portable-ar.js"></script>
-	<script>ARjs.Context.baseURL = '../../../../'</script> 
+	<script>ARjs.Context.baseURL = '../../../../'</script>
 
 	<style>
 	html, body {
@@ -31,10 +31,10 @@
 </head>
 <body><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
 	<a href='https://github.com/jeromeetienne/AR.js/' target='_blank'>AR.js</a> - 
-	Support for <a href=''>babylon.js</a>
+	Support for <a href='https://www.babylonjs.com/'>babylon.js</a>
 	- by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 	<br/>
-	<a href='../examples/multi-markers/markers-page/' target='_blank'>Markers page</a>
+	<a href='../../../../examples/multi-markers/markers-page/' target='_blank'>Markers page</a>
 </div>
 	
 	<div id="canvasZone">
@@ -94,15 +94,16 @@
 	//          	Set up EasyARjs
 	////////////////////////////////////////////////////////////////////////////////
 	// create a portableARjs instance
-	var portableARjs = new PortableARjs(canvas, {
+	var portableARjs = new PortableARjs({
 		debugUI : true,
 		// renderThreejs: true
 	})
+window.portableARjs = portableARjs
 	// run on every iteration of babylon.js engine
 	engine.runRenderLoop(function(){
 
 		// update portableARjs
-		portableARjs.update()
+		portableARjs.update(canvas)
 
 		// update babylon camera with portableARjs cameraProjectionMatrix
 		var babylonCamera = scene.cameras[0]

@@ -49903,11 +49903,13 @@ ARjs.Source = THREEx.ArToolkitSource = function(parameters){
 
 	// handle default parameters
 	this.parameters = {
-		// type of source - ['webcam', 'image', 'video']
+		// type of source - ['webcam', 'image', 'video', 'rawDomElement']
 		sourceType : 'webcam',
 		// url of the source - valid if sourceType = image|video
 		sourceUrl : null,
-		
+		// domElement of the source - valid IIF sourceType = rawDomElement
+		sourceRawDomElement : null,
+
 		// resolution of at which we initialize in the source image
 		sourceWidth: 640,
 		sourceHeight: 480,
@@ -49915,6 +49917,7 @@ ARjs.Source = THREEx.ArToolkitSource = function(parameters){
 		displayWidth: 640,
 		displayHeight: 480,
 	}
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		setParameters
 	//////////////////////////////////////////////////////////////////////////////
@@ -49952,8 +49955,9 @@ ARjs.Source.prototype.init = function(onReady, onError){
         }else if( this.parameters.sourceType === 'video' ){
                 var domElement = this._initSourceVideo(onSourceReady, onError)                        
         }else if( this.parameters.sourceType === 'webcam' ){
-                // var domElement = this._initSourceWebcamOld(onSourceReady)                        
-                var domElement = this._initSourceWebcam(onSourceReady, onError)                        
+                var domElement = this._initSourceWebcam(onSourceReady, onError)
+        }else if( this.parameters.sourceType === 'rawDomElement' ){
+                var domElement = this._initSourceRawDomElement(onSourceReady, onError)                 
         }else{
                 console.assert(false)
         }
@@ -50120,6 +50124,22 @@ ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
 	});
 
 	return domElement
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//          init domElement source
+////////////////////////////////////////////////////////////////////////////////
+
+ARjs.Source.prototype._initSourceRawDomElement = function(onReady) {
+	console.assert( this.parameters.sourceRawDomElement !== null, 'sourceRawDomElement isnt set')
+        var domElement = this.parameters.sourceRawDomElement
+
+	// wait until the video stream is ready
+	setTimeout(function(){
+		onReady()
+	}, 0)
+
+	return domElement                
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -51164,7 +51184,6 @@ ARjs.Session = function(parameters){
 	console.assert(this.parameters.renderer instanceof THREE.WebGLRenderer)
 	console.assert(this.parameters.camera instanceof THREE.Camera)
 	console.assert(this.parameters.scene instanceof THREE.Scene)
-	
 
 	// backward emulation
 	Object.defineProperty(this, 'renderer', {get: function(){
@@ -52307,12 +52326,15 @@ ARjs.MarkersAreaUtils.buildMarkersAreaFileFromResolution = function(trackingBack
 		parameters.barcodeValue = layout2Barcode[layout]
 	}
 }
-var PortableARjs = function(canvasEl, options){
+var PortableARjs = function(options){
+	// sanity check
+	console.assert(arguments.length <= 1)
 	// handle default options
 	options = options || {}
 	options.debugUI = options.debugUI !== undefined ? options.debugUI : false
 	options.renderThreejs = options.renderThreejs !== undefined ? options.renderThreejs : false
 	this.options = options
+	this._paused = false
 	
 	//////////////////////////////////////////////////////////////////////////////
 	//		create arjsProfile
@@ -52362,35 +52384,17 @@ var PortableARjs = function(canvasEl, options){
 		sourceParameters: arjsProfile.sourceParameters,
 		contextParameters: arjsProfile.contextParameters		
 	})
-	
+	this._arjsSession = arjsSession
 
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ARjs.Anchor
 	////////////////////////////////////////////////////////////////////////////////
 	var arjsAnchor = new ARjs.Anchor(arjsSession, arjsProfile.defaultMarkerParameters)
+	this._arjsAnchor = arjsAnchor
 
 	this.cameraProjectionMatrix = []
 	this.cameraTransformMatrix = []
 
-	//////////////////////////////////////////////////////////////////////////////
-	//		update function
-	//////////////////////////////////////////////////////////////////////////////
-	this.update = function(){
-		// update arjsSession
-		arjsSession.update()
-
-		// update the arjsAnchor
-		arjsAnchor.update()
-
-		// resize babylon canvas
-		arjsSession.arSource.copyElementSizeTo(canvasEl)
-	
-		// copy camera projectionMatrix and transformMatrix
-		this.cameraProjectionMatrix = threejsCamera.projectionMatrix.toArray()
-		this.cameraTransformMatrix = threejsCamera.matrix.toArray()
-	}
-
-	
 	//////////////////////////////////////////////////////////////////////////////
 	//		add options
 	//////////////////////////////////////////////////////////////////////////////
@@ -52407,7 +52411,39 @@ var PortableARjs = function(canvasEl, options){
 
 }
 
+PortableARjs.prototype.update = function (canvasEl) {
+	// honor this._paused 
+	if( this._paused === true )	return
 
+	// update arjsSession
+	this._arjsSession.update()
+
+	// update the arjsAnchor
+	this._arjsAnchor.update()
+
+	// resize babylon canvas
+	this._arjsSession.arSource.copyElementSizeTo(canvasEl)
+
+	// copy camera projectionMatrix and transformMatrix
+	var threejsCamera = this._arjsSession.parameters.camera
+	this.cameraProjectionMatrix = threejsCamera.projectionMatrix.toArray()
+	this.cameraTransformMatrix = threejsCamera.matrix.toArray()
+};
+
+PortableARjs.prototype.pause = function (canvasEl) {
+	// if it is already paused, do nothing
+	if( this._paused === true )	return
+
+	this._paused = true
+	
+	
+}
+PortableARjs.prototype.unpause = function (canvasEl) {
+	// if it is already not paused, do nothing
+	if( this._paused === false )	return
+
+	this._paused = false
+}
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator

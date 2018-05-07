@@ -9,11 +9,13 @@ ARjs.Source = THREEx.ArToolkitSource = function(parameters){
 
 	// handle default parameters
 	this.parameters = {
-		// type of source - ['webcam', 'image', 'video']
+		// type of source - ['webcam', 'image', 'video', 'rawDomElement']
 		sourceType : 'webcam',
 		// url of the source - valid if sourceType = image|video
 		sourceUrl : null,
-		
+		// domElement of the source - valid IIF sourceType = rawDomElement
+		sourceRawDomElement : null,
+
 		// resolution of at which we initialize in the source image
 		sourceWidth: 640,
 		sourceHeight: 480,
@@ -21,6 +23,7 @@ ARjs.Source = THREEx.ArToolkitSource = function(parameters){
 		displayWidth: 640,
 		displayHeight: 480,
 	}
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		setParameters
 	//////////////////////////////////////////////////////////////////////////////
@@ -58,8 +61,9 @@ ARjs.Source.prototype.init = function(onReady, onError){
         }else if( this.parameters.sourceType === 'video' ){
                 var domElement = this._initSourceVideo(onSourceReady, onError)                        
         }else if( this.parameters.sourceType === 'webcam' ){
-                // var domElement = this._initSourceWebcamOld(onSourceReady)                        
-                var domElement = this._initSourceWebcam(onSourceReady, onError)                        
+                var domElement = this._initSourceWebcam(onSourceReady, onError)
+        }else if( this.parameters.sourceType === 'rawDomElement' ){
+                var domElement = this._initSourceRawDomElement(onSourceReady, onError)                 
         }else{
                 console.assert(false)
         }
@@ -226,6 +230,22 @@ ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
 	});
 
 	return domElement
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//          init domElement source
+////////////////////////////////////////////////////////////////////////////////
+
+ARjs.Source.prototype._initSourceRawDomElement = function(onReady) {
+	console.assert( this.parameters.sourceRawDomElement !== null, 'sourceRawDomElement isnt set')
+        var domElement = this.parameters.sourceRawDomElement
+
+	// wait until the video stream is ready
+	setTimeout(function(){
+		onReady()
+	}, 0)
+
+	return domElement                
 }
 
 //////////////////////////////////////////////////////////////////////////////

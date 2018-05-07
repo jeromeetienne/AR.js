@@ -49,7 +49,6 @@ ARjs.Session = function(parameters){
 	console.assert(this.parameters.renderer instanceof THREE.WebGLRenderer)
 	console.assert(this.parameters.camera instanceof THREE.Camera)
 	console.assert(this.parameters.scene instanceof THREE.Scene)
-	
 
 	// backward emulation
 	Object.defineProperty(this, 'renderer', {get: function(){
