@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+- 'node'
+install: true
+script: true
+deploy:
+  provider: npm
+  email: YOUR_EMAIL_ADDRESS
+  api_key: YOUR_AUTH_TOKEN
+  on:
+    tags: true
