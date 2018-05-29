@@ -1,3 +1,8 @@
+# Change startup to make it restartable
+- how to write a test case ? clone the basic.html
+- Have a button to pause/init 
+
+---
 - fix subMarkerControls visibility in babylon.js
   - put subMarkerControls visibility into an external file. with 2 handling for three.js and babylon.js
 - still visible when marker out of screen
@@ -9,5 +14,5 @@
 - DONE resize to handle
 - DONE camera projection matrix to set
 - FIXED babylon.js object very shacky - while three.js super stable - reason unkonwn
-- DONE put the gatefunctions in a babylon-ar.js 
+- DONE put the gatefunctions in a babylon-ar.js
 - DONE port it to new api ar-session.js
