@@ -1,9 +1,29 @@
-# 1.5.5-dev
+# 1.6.1-dev
+
+... nothing yet
+
+# 1.6.0
+
+- implemented patternRatio in aframe/three.js - a way to reduce the ugly black border
+  - aka something to make the pattern marker border thinner
+  - change (generator.html)[https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html] to support patternRatio
+  - added examples in [aframe](https://jeromeetienne.github.io/AR.js/aframe/examples/default-thinner-border.html) and [three.js](https://jeromeetienne.github.io/AR.js/three.js/examples/default-thinner-border.html)
+
+# 1.5.5
 
 - Fix cross domain issue with [https://webxr.io/augmented-website/](https://webxr.io/augmented-website/)
 - reduced npm package size from 250mbyte to 3.5mbyte #256 (thanks @paztis)
 - fixed perspective in artoolkit portrait #212 (thanks @pikilipita)
 - fixed barcode in a-frame #260 (thanks @basbase)
+- created [portableAR.js](https://github.com/jeromeetienne/AR.js/tree/dev/three.js/contribs/portableAR.js) - a simple way to port ar.js to a non-three.js framework
+  - it is in /three.js/contribs/portableAR.js
+  - in [examples/](https://github.com/jeromeetienne/AR.js/tree/dev/three.js/contribs/portableAR.js/examples/babylon.js) you can find babylon.js using portableAR.js
+- made webvr-polyfill obsolete
+  - it was more a toy than something currently useful
+  - it was far from complete, not even in a workable state, anyway
+- reorganized ```examples/``` folder
+  - created ```demos/``` to contain working demos
+  - created ```experiments/``` to contain work in progress
 
 ## Tests
 - Made tests to report failure - yeah i know it is silly but before it reported
@@ -44,7 +64,7 @@
 
 # 1.4.10
 
-- support for markers-area 
+- support for markers-area
   - Efficient user friendly area scanning
   - More Versatile than single marker tracking 0 larger areas than single markers
   - More Robust than single marker tracking - even if only one sub marker is visible it is still tracking
@@ -75,7 +95,7 @@
 - minimal.html just got a little bit cleaner
   - aka the simplest way to do AR on the web
   - or webar in less than 10 lines of html! on codepen
-- finished hole-in-the-wall demo - 
+- finished hole-in-the-wall demo -
   [duck on my desk tweet](https://twitter.com/jerome_etienne/status/846751371185541121)
 - support preset in a-frame a-marker - preset = ["hiro" | "kanji"]
 - experiementation in dead-reckoning ... not conclusive

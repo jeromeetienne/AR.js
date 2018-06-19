@@ -1,4 +1,14 @@
-# AR.js - Efficient Augmented Reality for the Web
+
+ # AR.js - Augmented Reality for the Web
+
+ [![Augmented Website](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://github.com/jeromeetienne/AR.js)
+
+[![npm](https://img.shields.io/npm/v/ar.js.svg)](https://www.npmjs.com/package/ar.js)
+[![npm](https://img.shields.io/npm/dt/ar.js.svg)](https://www.npmjs.com/package/ar.js)
+<br class="badge-separator" />
+[![Gitter chat](https://badges.gitter.im/AR-js/Lobby.png)](https://gitter.im/AR-js/Lobby)
+<span class="badge-patreon"><a href="https://patreon.com/jerome_etienne" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/patreon-donate-yellow.svg" alt="Patreon donate button" /></a></span>
+[![Twitter Follow](https://img.shields.io/twitter/follow/jerome_etienne.svg?style=plastic&label=Twitter&style=plastic)](https://twitter.com/jerome_etienne)
 
 I am focusing hard on making AR for the web a reality.
 This repository is where I publish the code.
@@ -13,10 +23,6 @@ So I wanted to publish thus people can try it and have fun with it :)
 - **Standards** : It works on any phone with [webgl](http://caniuse.com/#feat=webgl) and [webrtc](http://caniuse.com/#feat=stream)
 
 [![AR.js 1.0 Video](https://cloud.githubusercontent.com/assets/252962/23441016/ab6900ce-fe17-11e6-971b-24614fb8ac0e.png)](https://youtu.be/0MtvjFg7tik)
-
-
-
-If you wanna chat, check [![Gitter chat](https://badges.gitter.im/AR-js/Lobby.png)](https://gitter.im/AR-js/Lobby)
 
 # Try it on Mobile
 
@@ -146,7 +152,7 @@ all the crazy ideas related to AR.js.
 - How to write a AR.js application ?
 Here is a [full tutorial](https://marmelab.com/blog/2017/06/19/augmented-reality-html5.html)
 by [marmelab](https://marmelab.com/) featuring [François Zaninotto](https://twitter.com/francoisz).
-It explain how to code a full application on phone! Step by Steps, with explaination and videos. 
+It explain how to code a full application on phone! Step by Steps, with explaination and videos.
 Very great! the perfect step if you want to start writing AR application today.
 - Great post about [WebAR for designer](http://www.nexusinteractivearts.com/webar/)
 by [nexus interactive arts](http://www.nexusinteractivearts.com/)
@@ -236,14 +242,17 @@ Credits: @HelloDeadline, @sorianog
 This one is mainly for [me](@jerome_etienne) to remember :)
 
 ```bash
-# replace REVISION to the proper version
+# Update CHANGELOG.md - remove the -dev into version
+atom CHANGELOG.md
+
+# replace REVISION to the proper version, search/replace on the version string should do it
 atom three.js/src/threex/threex-artoolkitcontext.js package.json README.md
 
-# Rebuild a-frame and webvr-polyfill
+# Rebuild and minify everything - aka a-frame and three.js
 make minify
 
 # Commit everything
-git add . && git commit -a -m 'Last commit before release'
+git add . && git commit -a -m 'Last commit before release' && git push
 
 # Go to master branch
 git checkout master
@@ -252,7 +261,7 @@ git checkout master
 git merge dev
 
 # tag the release
-git tag 1.5.2
+git tag 1.6.0
 
 # push the tag on github
 git push origin --tags
@@ -266,6 +275,9 @@ npm publish
 # Come back to dev branch
 git checkout dev
 
-# update the a-frame codepen
+# Update CHANGELOG.md - start new dev version
+atom CHANGELOG.md
+
+# update the a-frame codepen if needed
 open "https://codepen.io/jeromeetienne/pen/mRqqzb?editors=1000#0"
 ```
