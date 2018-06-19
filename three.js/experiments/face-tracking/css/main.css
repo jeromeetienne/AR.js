@@ -1,0 +1,58 @@
+
+body, html {
+	margin: 0;
+	padding: 0;
+}
+
+
+#videoWebcam {
+        width : 320px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        height: auto;
+}
+
+
+#canvasDetection {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width : 320px;
+        height: auto;
+}
+
+
+
+
+/* css for fullscreen video from https://slicejack.com/fullscreen-html5-video-background-css/ */
+/* .fullscreen-bg {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	overflow: hidden;
+	z-index: -100;
+}
+
+.fullscreen-bg__video {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+@media (min-aspect-ratio: 16/12) {
+	.fullscreen-bg__video {
+		height: 300%;
+		top: -100%;
+	}
+}
+
+@media (max-aspect-ratio: 16/12) {
+	.fullscreen-bg__video {
+		width: 300%;
+		left: -100%;
+	}    
+}     */

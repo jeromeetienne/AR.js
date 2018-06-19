@@ -25,14 +25,14 @@
 	div.mdl-cell {
 		text-align: center;
 	}
-	
+
 	h1 a {
 		text-decoration: none;
 	}
 	h1 a:hover {
 		text-decoration: underline;
 	}
-	
+
 	#topRightButtons {
 		position: fixed;
 		top: 1em;
@@ -76,7 +76,7 @@
 		dialogElement.showModal()
 	})
 </script>
-  
+
 <!-- *********************************************************************** -->
 <!-- *********************************************************************** -->
 <!-- *********************************************************************** -->
@@ -89,13 +89,34 @@
 		<div class='mdl-tooltip' for='buttonUpload'>
 			Upload the image to put inside the marker
 		</div>
+
+		<div class='mdl-grid'>
+			<div class='mdl-cell mdl-cell--3-col'></div>
+			<div class='mdl-cell mdl-cell--6-col'>
+				<label class="mdl-js-ripple-effect" for="patternRatioSlider">
+					<span class="">Pattern Ratio 0.50</span>
+					<input id='patternRatioSlider' class="mdl-slider mdl-js-slider" type="range" min="10" max="90" value="50" >
+				</label>
+				<div class='mdl-tooltip' for='patternRatioSlider'>
+					Set size of inner image vs black border
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class='mdl-cell mdl-cell--4-col'>
 		<button id='buttonDownloadEncoded' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>
-			Download
+			Download Marker
 		</button>
 		<div class='mdl-tooltip' for='buttonDownloadEncoded'>
 			Download marker encoded from the uploaded image
+		</div>
+		<br/>
+		<br/>
+		<button id='buttonDownloadFullImage' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>
+			Download Image
+		</button>
+		<div class='mdl-tooltip' for='buttonDownloadFullImage'>
+			Download marker image
 		</div>
 	</div>
 	<div class='mdl-cell mdl-cell--4-col'>
@@ -104,7 +125,7 @@
 		</button>
 		<div class='mdl-tooltip' for='buttonDownloadPDFOnePerPage'>
 			Download markers as PDF
-			<br/> 
+			<br/>
 			One marker per page
 		</div>
 		<br/>
@@ -114,7 +135,7 @@
 		</button>
 		<div class='mdl-tooltip' for='buttonDownloadPDFTwoPerPage'>
 			Download markers as PDF
-			<br/> 
+			<br/>
 			Two marker per page
 		</div>
 		<br/>
@@ -124,13 +145,14 @@
 		</button>
 		<div class='mdl-tooltip' for='buttonDownloadPDFSixPerPage'>
 			Download markers as PDF.
-			<br/> 
+			<br/>
 			Six marker per page
 		</div>
-	</div>	
+	</div>
 </div>
 
 <div class='mdl-grid'>
+
 	<div class='mdl-cell mdl-cell--3-col'></div>
 	<div class='mdl-cell mdl-cell--6-col'>
 		<div id='imageContainer'></div>
@@ -143,10 +165,10 @@
 <script>
 	var innerImageURL = null
 	var fullMarkerURL = null
-	
+
 	innerImageURL = 'inner-images/inner-arjs.png'
 	updateFullMarkerImage()
-	
+
 	document.querySelector('#buttonDownloadEncoded').addEventListener('click', function(){
 		if( innerImageURL === null ){
 			alert('upload a file first')
@@ -157,7 +179,37 @@
 			THREEx.ArPatternFile.triggerDownload(patternFileString)
 		})
 	})
-	
+
+
+	document.querySelector('#buttonDownloadFullImage').addEventListener('click', function(){
+		// debugger
+		if( innerImageURL === null ){
+			alert('upload a file first')
+			return
+		}
+
+		// tech from https://stackoverflow.com/questions/3665115/create-a-file-in-memory-for-user-to-download-not-through-server
+		var domElement = window.document.createElement('a');
+		domElement.href = fullMarkerURL;
+		domElement.download = 'marker.png';
+		document.body.appendChild(domElement)
+		domElement.click();
+		document.body.removeChild(domElement)
+	})
+
+
+
+	document.querySelector('#patternRatioSlider').addEventListener('input', function(){
+		// update the patternRatio number
+		var patternRatio = document.querySelector('#patternRatioSlider').value/100
+		var domElement = document.querySelector('[for=patternRatioSlider] span')
+		domElement.innerHTML = `Pattern Ratio ${patternRatio.toFixed(2)}`
+
+		// update fullMarkerImage
+		updateFullMarkerImage()
+	})
+
+
 	document.querySelector('#fileinput').addEventListener('change', function(){
 		var file = this.files[0];
 		// debugger
@@ -168,41 +220,32 @@
 			updateFullMarkerImage()
 		};
 		reader.readAsDataURL(file);
-	})	
-	
-	function downloadFullMarkerImage(){
-		if( innerImageURL === null ){
-			alert('upload a file first')
-			return
-		}
-		console.assert(fullMarkerURL)
-		var win = window.open(fullMarkerURL, '_blank');
-		win.focus();		
-	}
+	})
 
 	function updateFullMarkerImage(){
-		THREEx.ArPatternFile.buildFullMarker(innerImageURL, function onComplete(markerUrl){
+		// get patternRatio
+		var patternRatio = document.querySelector('#patternRatioSlider').value/100
+
+		THREEx.ArPatternFile.buildFullMarker(innerImageURL, patternRatio, function onComplete(markerUrl){
 			fullMarkerURL = markerUrl
 
 			var fullMarkerImage = document.createElement('img')
 			fullMarkerImage.src = fullMarkerURL
-			
-			fullMarkerImage.addEventListener('click', downloadFullMarkerImage)
 
 			// put fullMarkerImage into #imageContainer
 			var container = document.querySelector('#imageContainer')
 			while (container.firstChild) container.removeChild(container.firstChild);
 			container.appendChild(fullMarkerImage)
-		})		
+		})
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
+	//		Handle PDF
 	//////////////////////////////////////////////////////////////////////////////
 	document.querySelector('#buttonDownloadPDFOnePerPage').addEventListener('click', generatePdfOnePerPage)
 	document.querySelector('#buttonDownloadPDFTwoPerPage').addEventListener('click', generatePdfTwoPerPage)
 	document.querySelector('#buttonDownloadPDFSixPerPage').addEventListener('click', generatePdfSixPerPage)
-		
+
 	function generatePdfOnePerPage(){
 	        var docDefinition = {
 			content: [
@@ -245,7 +288,7 @@
 			                                image: fullMarkerURL,
 			                                width: 250,
 			                        },
-					]			
+					]
 				},
 				{
 					columns: [
@@ -257,7 +300,7 @@
 			                                image: fullMarkerURL,
 			                                width: 250,
 			                        },
-					]					
+					]
 				},
 				{
 					columns: [
@@ -269,7 +312,7 @@
 			                                image: fullMarkerURL,
 			                                width: 250,
 			                        },
-					]					
+					]
 				},
 	                ],
 	        }

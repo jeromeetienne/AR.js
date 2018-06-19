@@ -73,7 +73,7 @@ AFRAME.registerComponent('arjs-anchor', {
 			//		update arProfile
 			//////////////////////////////////////////////////////////////////////////////
 			var arProfile = arjsSystem._arProfile
-			
+
 			// arProfile.changeMatrixMode('modelViewMatrix')
 			arProfile.changeMatrixMode(_this.data.changeMatrixMode)
 
@@ -99,14 +99,18 @@ AFRAME.registerComponent('arjs-anchor', {
 					barcodeValue:       _this.data.barcodeValue,
 					markersAreaEnabled: false
 				}
-			}else{
+			}else if( _this.data.type === 'pattern' ){
+				markerParameters.type = _this.data.type
+				markerParameters.patternUrl = _this.data.patternUrl;
+				markerParameters.markersAreaEnabled = false
+			}else {
 				// console.assert( this.data.preset === '', 'illegal preset value '+this.data.preset)
 			}
 
 			//////////////////////////////////////////////////////////////////////////////
 			//		create arAnchor
 			//////////////////////////////////////////////////////////////////////////////
-			
+
 			var arSession = arjsSystem._arSession
 			var arAnchor  = _this._arAnchor = new ARjs.Anchor(arSession, markerParameters)
 
@@ -127,7 +131,7 @@ AFRAME.registerComponent('arjs-anchor', {
 				}
 				// create anchorDebugUI
 				var anchorDebugUI = new ARjs.AnchorDebugUI(arAnchor)
-				containerElement.appendChild(anchorDebugUI.domElement)		
+				containerElement.appendChild(anchorDebugUI.domElement)
 			}
 		}, 1000/60)
 	},
@@ -150,7 +154,7 @@ AFRAME.registerComponent('arjs-anchor', {
 		//		honor pose
 		//////////////////////////////////////////////////////////////////////////////
 		var arWorldRoot = this._arAnchor.object3d
-		arWorldRoot.updateMatrixWorld(true)		
+		arWorldRoot.updateMatrixWorld(true)
 		arWorldRoot.matrixWorld.decompose(this.el.object3D.position, this.el.object3D.quaternion, this.el.object3D.scale)
 
 		//////////////////////////////////////////////////////////////////////////////
@@ -209,7 +213,7 @@ AFRAME.registerPrimitive('a-camera-static', AFRAME.utils.extendDeep({}, AFRAME.p
 //////////////////////////////////////////////////////////////////////////////
 //		backward compatibility
 //////////////////////////////////////////////////////////////////////////////
-// FIXME 
+// FIXME
 AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
 	defaultComponents: {
 		'arjs-anchor': {},
