@@ -63,6 +63,10 @@ AFRAME.registerSystem('arjs', {
 			type: 'number',
 			default: -1
 		},
+		deviceId : {
+			type: 'string',
+			default: ''
+		},
 		displayWidth : {
 			type: 'number',
 			default: -1
@@ -119,6 +123,7 @@ AFRAME.registerSystem('arjs', {
 		if( this.data.sourceUrl !== '' )		arProfile.sourceParameters.sourceUrl = this.data.sourceUrl
 		if( this.data.sourceWidth !== -1 )		arProfile.sourceParameters.sourceWidth = this.data.sourceWidth
 		if( this.data.sourceHeight !== -1 )		arProfile.sourceParameters.sourceHeight = this.data.sourceHeight
+		if( this.data.deviceId !== '' )		arProfile.sourceParameters.deviceId = this.data.deviceId
 		if( this.data.displayWidth !== -1 )		arProfile.sourceParameters.displayWidth = this.data.displayWidth
 		if( this.data.displayHeight !== -1 )		arProfile.sourceParameters.displayHeight = this.data.displayHeight
 
