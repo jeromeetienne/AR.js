@@ -26,8 +26,7 @@ So I wanted to publish thus people can try it and have fun with it :)
 
 # Try it on Mobile
 
-It works on all platforms. Android, IOS and window phone. It run **any browser with WebGL and WebRTC**.
-(for IOS, you need to update to ios11)
+It works on all platforms. Android, iOS and window phone. It runs on **any browser with WebGL and WebRTC** (for iOS, you need to update to iOS 11).
 
 To try on your phone is only 2 easy steps, check it out!
 
@@ -223,7 +222,7 @@ Demo tested on the following browser setups:
 - **Android native 5.0** (doesn't work, doesn't ask for permission, I see white background and text)
 - **Chrome on Android 4.4.2** (works!)
 - **Chrome on Android 5.0** (doesn't work, asks for permission, I see black background, text and a chart)
-- **Safari and Chrome on iOS 8.2 (iPad)** (doesn't work, doesn't ask for permission, I see white background and text)
+- **Safari and Chrome on iOS < 11** (doesn't work, doesn't ask for permission, I see white background and text)
 - **Microsoft Edge on Windows 10** (Chrome on Google Pixel phone to view hologram)
 
 Credits: @HelloDeadline, @sorianog
