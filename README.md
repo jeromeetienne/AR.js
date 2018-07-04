@@ -46,21 +46,21 @@ to your screen.
 So we shown it is now possible to do 60fps web-based augmented reality on a phone.
 This is great for sure but how did we get here ? **By standing on the shoulders of giants!**
 It is thanks to the hard work from others, that we can today reach this mythic 60fps AR.
-So i would like to thanks :
+So I would like to thank :
 
 - **three.js** for being a great library to do 3d on the web.
 - **artoolkit**! years of development and experiences on doing augmented reality
 - **emscripten and asm.js**! thus we could compile artoolkit c into javascript
 - **chromium**! thanks for being so fast!
 
-Only thanks to all of them, i could do my part : Optimizing performance from 5fps on high-end
+Only thanks to all of them, I could do my part : Optimizing performance from 5fps on high-end
 phone, to 60fps on 2years old phone.
 
 After all this work done by a lot of people, we have a *web-based augmented reality solution fast enough for mobile*!
 
-Now, many people got a phone powerful enough to do web AR in their pocket.
+Now, many people have a phone powerful enough to do web AR in their pocket.
 I think this performance improvement makes web AR a reality.
-i am all exited by what people are gonna with it :)
+I am very exited by what people are going to do with it :)
 
 # Performance
 
