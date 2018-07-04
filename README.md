@@ -26,7 +26,7 @@ So I wanted to publish thus people can try it and have fun with it :)
 
 # Try it on Mobile
 
-It works on all platforms. Android, IOS and window phone. It run **any browser with WebGL and WebRTC**.
+It works on all platforms. Android, IOS and windows phone. It run **any browser with WebGL and WebRTC**.
 (for IOS, you need to update to ios11)
 
 To try on your phone is only 2 easy steps, check it out!
@@ -60,7 +60,7 @@ After all this work done by a lot of people, we have a *web-based augmented real
 
 Now, many people got a phone powerful enough to do web AR in their pocket.
 I think this performance improvement makes web AR a reality.
-i am all exited by what people are gonna with it :)
+I am all excited by what people are gonna with it :)
 
 # Performance
 
