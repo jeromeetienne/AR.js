@@ -35,7 +35,7 @@ include a hatsune miku or minecraft avatar on the marker -->
 | `debugUIEnabled` | true if one should display artoolkit debug canvas, false otherwise |
 | `detectionMode` | the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix'] |
 | `matrixCodeType` | type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5] |
-| `patternRatio` | width of marker borders. |
+| `patternRatio` | width of marker borders |
 | `cameraParametersUrl` | url of the camera parameters |
 | `maxDetectionRate` | tune the maximum rate of pose detection in the source image |
 | `sourceType` | type of source - ['webcam', 'image', 'video'] |
