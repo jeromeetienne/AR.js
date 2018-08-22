@@ -1,24 +1,29 @@
 {
-  "name": "ar.js",
+  "name": "node-ar.js",
   "version": "1.6.0",
   "description": "Efficient Augmented Reality for the Web",
-  "main": "three.js",
+  "main": "three.js/build/ar.cjs.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup three.js/src/threex/index.js -o three.js/build/ar.cjs.js -f cjs"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jeromeetienne/AR.js.git"
+    "url": "git+https://github.com/josephrexme/AR.js.git"
   },
   "keywords": [
     "AR",
     "VR",
     "three.js"
   ],
-  "author": "jerome.etienne@gmail.com",
+  "author": "Joseph Rex <silverdust>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jeromeetienne/AR.js/issues"
+    "url": "https://github.com/josephrexme/AR.js/issues"
   },
-  "homepage": "https://github.com/jeromeetienne/AR.js#readme"
+  "homepage": "https://github.com/josephrexme/AR.js#readme",
+  "dependencies": {
+    "jsartoolkit5": "0.0.4",
+    "three": "^0.95.0"
+  }
 }

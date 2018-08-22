@@ -1,6 +1,6 @@
 var THREEx = THREEx || {}
 
-THREEx.ArucoDebug = function(arucoContext){
+const ArucoDebug = function(arucoContext){
 	this.arucoContext = arucoContext
 
 // TODO to rename canvasElement into canvas
@@ -9,20 +9,20 @@ THREEx.ArucoDebug = function(arucoContext){
 	this.canvasElement.height = this.arucoContext.canvas.height
 }
 
-THREEx.ArucoDebug.prototype.setSize = function (width, height) {
+ArucoDebug.prototype.setSize = function (width, height) {
         if( this.canvasElement.width !== width )	this.canvasElement.width = width
         if( this.canvasElement.height !== height )	this.canvasElement.height = height
 }
 
 
-THREEx.ArucoDebug.prototype.clear = function(){
+ArucoDebug.prototype.clear = function(){
 	var canvas = this.canvasElement
 	var context = canvas.getContext('2d');
 	context.clearRect(0,0,canvas.width, canvas.height)
 	
 }
 	
-THREEx.ArucoDebug.prototype.drawContoursContours = function(){
+ArucoDebug.prototype.drawContoursContours = function(){
 	var contours = this.arucoContext.detector.contours
 	var canvas = this.canvasElement
 	this.drawContours(contours, 0, 0, canvas.width, canvas.height, function(hole){
@@ -30,7 +30,7 @@ THREEx.ArucoDebug.prototype.drawContoursContours = function(){
 	})
 }
 
-THREEx.ArucoDebug.prototype.drawContoursPolys = function(){
+ArucoDebug.prototype.drawContoursPolys = function(){
 	var contours = this.arucoContext.detector.polys
 	var canvas = this.canvasElement
 	this.drawContours(contours, 0, 0, canvas.width, canvas.height, function(){
@@ -39,7 +39,7 @@ THREEx.ArucoDebug.prototype.drawContoursPolys = function(){
 }
 
 
-THREEx.ArucoDebug.prototype.drawContoursCandidates = function(){
+ArucoDebug.prototype.drawContoursCandidates = function(){
 	var contours = this.arucoContext.detector.candidates
 	var canvas = this.canvasElement
 	this.drawContours(contours, 0, 0, canvas.width, canvas.height, function(){
@@ -47,7 +47,7 @@ THREEx.ArucoDebug.prototype.drawContoursCandidates = function(){
 	})
 }
 
-THREEx.ArucoDebug.prototype.drawContours = function(contours, x, y, width, height, fn){
+ArucoDebug.prototype.drawContours = function(contours, x, y, width, height, fn){
 	var i = contours.length, j, contour, point;
 	var canvas = this.canvasElement
 	var context = canvas.getContext('2d');
@@ -74,12 +74,12 @@ THREEx.ArucoDebug.prototype.drawContours = function(contours, x, y, width, heigh
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////    
 
-THREEx.ArucoDebug.prototype.drawDetectorGrey = function(){
+ArucoDebug.prototype.drawDetectorGrey = function(){
 	var cvImage = arucoContext.detector.grey
         this.drawCVImage( cvImage )
 }
 
-THREEx.ArucoDebug.prototype.drawDetectorThreshold = function(){
+ArucoDebug.prototype.drawDetectorThreshold = function(){
 	var cvImage = arucoContext.detector.thres
         this.drawCVImage( cvImage )
 }
@@ -87,7 +87,7 @@ THREEx.ArucoDebug.prototype.drawDetectorThreshold = function(){
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArucoDebug.prototype.drawCVImage = function(cvImage){
+ArucoDebug.prototype.drawCVImage = function(cvImage){
 	var detector = this.arucoContext.detector
 
 	var canvas = this.canvasElement
@@ -99,7 +99,7 @@ THREEx.ArucoDebug.prototype.drawCVImage = function(cvImage){
 }
 
 
-THREEx.ArucoDebug.prototype.copyCVImage2ImageData = function(cvImage, imageData){
+ArucoDebug.prototype.copyCVImage2ImageData = function(cvImage, imageData){
 	var i = cvImage.data.length, j = (i * 4) + 3;
 	
 	while(i --){
@@ -113,7 +113,7 @@ THREEx.ArucoDebug.prototype.copyCVImage2ImageData = function(cvImage, imageData)
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArucoDebug.prototype.drawVideo = function(videoElement){
+ArucoDebug.prototype.drawVideo = function(videoElement){
 	var canvas = this.canvasElement
 	var context = canvas.getContext('2d');
 	context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
@@ -122,7 +122,7 @@ THREEx.ArucoDebug.prototype.drawVideo = function(videoElement){
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArucoDebug.prototype.drawMarkerIDs = function(markers){
+ArucoDebug.prototype.drawMarkerIDs = function(markers){
 	var canvas = this.canvasElement
 	var context = canvas.getContext('2d');
 	var corners, corner, x, y, i, j;
@@ -151,7 +151,7 @@ THREEx.ArucoDebug.prototype.drawMarkerIDs = function(markers){
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-THREEx.ArucoDebug.prototype.drawMarkerCorners = function(markers){
+ArucoDebug.prototype.drawMarkerCorners = function(markers){
 	var canvas = this.canvasElement
         var corners, corner, i, j;
         var context = canvas.getContext('2d');
@@ -180,3 +180,6 @@ THREEx.ArucoDebug.prototype.drawMarkerCorners = function(markers){
 	context.restore();
 
 }
+
+THREEx.ArucoDebug = ArucoDebug;
+export default ArucoDebug;

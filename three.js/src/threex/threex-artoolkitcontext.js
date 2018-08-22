@@ -1,7 +1,12 @@
+import * as THREE from 'three';
+import { ARCameraParam, ARController, artoolkit } from 'jsartoolkit5';
+import MarkerControls from './threex-armarkercontrols';
+import ArucoContext from './threex-aruco/threex-arucocontext';
+
 var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
-ARjs.Context = THREEx.ArToolkitContext = function(parameters){
+const Context = function(parameters){
 	var _this = this
 
 	_this._updatedAt = null
@@ -18,7 +23,7 @@ ARjs.Context = THREEx.ArToolkitContext = function(parameters){
 		matrixCodeType: '3x3',
 
 		// url of the camera parameters
-		cameraParametersUrl: ARjs.Context.baseURL + 'parameters/camera_para.dat',
+		cameraParametersUrl: Context.baseURL + 'parameters/camera_para.dat',
 
 		// tune the maximum rate of pose detection in the source image
 		maxDetectionRate: 60,
@@ -55,14 +60,14 @@ ARjs.Context = THREEx.ArToolkitContext = function(parameters){
 			var newValue = parameters[ key ]
 
 			if( newValue === undefined ){
-				console.warn( "THREEx.ArToolkitContext: '" + key + "' parameter is undefined." )
+				console.warn( "ArToolkitContext: '" + key + "' parameter is undefined." )
 				continue
 			}
 
 			var currentValue = _this.parameters[ key ]
 
 			if( currentValue === undefined ){
-				console.warn( "THREEx.ArToolkitContext: '" + key + "' is not a property of this material." )
+				console.warn( "ArToolkitContext: '" + key + "' is not a property of this material." )
 				continue
 			}
 
@@ -71,12 +76,12 @@ ARjs.Context = THREEx.ArToolkitContext = function(parameters){
 	}
 }
 
-Object.assign( ARjs.Context.prototype, THREE.EventDispatcher.prototype );
+Object.assign( Context.prototype, THREE.EventDispatcher.prototype );
 
-// ARjs.Context.baseURL = '../'
+// Context.baseURL = '../'
 // default to github page
-ARjs.Context.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
-ARjs.Context.REVISION = '1.6.0'
+Context.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
+Context.REVISION = '1.6.0'
 
 
 
@@ -85,7 +90,7 @@ ARjs.Context.REVISION = '1.6.0'
  * @param {string} trackingBackend - the tracking to user
  * @return {THREE.Camera} the created camera
  */
-ARjs.Context.createDefaultCamera = function( trackingBackend ){
+Context.createDefaultCamera = function( trackingBackend ){
 	console.assert(false, 'use ARjs.Utils.createDefaultCamera instead')
 	// Create a camera
 	if( trackingBackend === 'artoolkit' ){
@@ -102,7 +107,7 @@ ARjs.Context.createDefaultCamera = function( trackingBackend ){
 //////////////////////////////////////////////////////////////////////////////
 //		init functions
 //////////////////////////////////////////////////////////////////////////////
-ARjs.Context.prototype.init = function(onCompleted){
+Context.prototype.init = function(onCompleted){
 	var _this = this
 	if( this.parameters.trackingBackend === 'artoolkit' ){
 		this._initArtoolkit(done)
@@ -128,7 +133,7 @@ ARjs.Context.prototype.init = function(onCompleted){
 ////////////////////////////////////////////////////////////////////////////////
 //          update function
 ////////////////////////////////////////////////////////////////////////////////
-ARjs.Context.prototype.update = function(srcElement){
+Context.prototype.update = function(srcElement){
 
 	// be sure arController is fully initialized
         if(this.parameters.trackingBackend === 'artoolkit' && this.arController === null) return false;
@@ -169,13 +174,13 @@ ARjs.Context.prototype.update = function(srcElement){
 ////////////////////////////////////////////////////////////////////////////////
 //          Add/Remove markerControls
 ////////////////////////////////////////////////////////////////////////////////
-ARjs.Context.prototype.addMarker = function(arMarkerControls){
-	console.assert(arMarkerControls instanceof THREEx.ArMarkerControls)
+Context.prototype.addMarker = function(arMarkerControls){
+	console.assert(arMarkerControls instanceof MarkerControls)
 	this._arMarkersControls.push(arMarkerControls)
 }
 
-ARjs.Context.prototype.removeMarker = function(arMarkerControls){
-	console.assert(arMarkerControls instanceof THREEx.ArMarkerControls)
+Context.prototype.removeMarker = function(arMarkerControls){
+	console.assert(arMarkerControls instanceof MarkerControls)
 	// console.log('remove marker for', arMarkerControls)
 	var index = this.arMarkerControlss.indexOf(artoolkitMarker);
 	console.assert(index !== index )
@@ -185,7 +190,7 @@ ARjs.Context.prototype.removeMarker = function(arMarkerControls){
 //////////////////////////////////////////////////////////////////////////////
 //		artoolkit specific
 //////////////////////////////////////////////////////////////////////////////
-ARjs.Context.prototype._initArtoolkit = function(onCompleted){
+Context.prototype._initArtoolkit = function(onCompleted){
         var _this = this
 
 	// set this._artoolkitProjectionAxisTransformMatrix to change artoolkit projection matrix axis to match usual webgl one
@@ -258,7 +263,7 @@ ARjs.Context.prototype._initArtoolkit = function(onCompleted){
 /**
  * return the projection matrix
  */
-ARjs.Context.prototype.getProjectionMatrix = function(srcElement){
+Context.prototype.getProjectionMatrix = function(srcElement){
 
 
 // FIXME rename this function to say it is artoolkit specific - getArtoolkitProjectMatrix
@@ -277,15 +282,15 @@ ARjs.Context.prototype.getProjectionMatrix = function(srcElement){
 	return projectionMatrix
 }
 
-ARjs.Context.prototype._updateArtoolkit = function(srcElement){
+Context.prototype._updateArtoolkit = function(srcElement){
 	this.arController.process(srcElement)
 }
 
 //////////////////////////////////////////////////////////////////////////////
 //		aruco specific
 //////////////////////////////////////////////////////////////////////////////
-ARjs.Context.prototype._initAruco = function(onCompleted){
-	this.arucoContext = new THREEx.ArucoContext()
+Context.prototype._initAruco = function(onCompleted){
+	this.arucoContext = new ArucoContext()
 
 	// honor this.parameters.canvasWidth/.canvasHeight
 	this.arucoContext.canvas.width = this.parameters.canvasWidth
@@ -305,7 +310,7 @@ ARjs.Context.prototype._initAruco = function(onCompleted){
 }
 
 
-ARjs.Context.prototype._updateAruco = function(srcElement){
+Context.prototype._updateAruco = function(srcElement){
 	// console.log('update aruco here')
 	var _this = this
 	var arMarkersControls = this._arMarkersControls
@@ -333,7 +338,7 @@ ARjs.Context.prototype._updateAruco = function(srcElement){
 //////////////////////////////////////////////////////////////////////////////
 //		tango specific
 //////////////////////////////////////////////////////////////////////////////
-ARjs.Context.prototype._initTango = function(onCompleted){
+Context.prototype._initTango = function(onCompleted){
 	var _this = this
 	// check webvr is available
 	if (navigator.getVRDisplays){
@@ -376,7 +381,7 @@ ARjs.Context.prototype._initTango = function(onCompleted){
 }
 
 
-ARjs.Context.prototype._updateTango = function(srcElement){
+Context.prototype._updateTango = function(srcElement){
 	// console.log('update aruco here')
 	var _this = this
 	var arMarkersControls = this._arMarkersControls
@@ -428,3 +433,6 @@ ARjs.Context.prototype._updateTango = function(srcElement){
 	// }
 
 }
+
+ARjs.Context = THREEx.ArToolkitContext = Context;
+export default Context;

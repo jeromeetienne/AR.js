@@ -1,6 +1,7 @@
+import * as THREE from 'three';
 var THREEx = THREEx || {}
 
-THREEx.ArBaseControls = function(object3d){
+const ArBaseControls = function(object3d){
 	this.id = THREEx.ArBaseControls.id++
 
 	this.object3d = object3d
@@ -13,9 +14,9 @@ THREEx.ArBaseControls = function(object3d){
 	// this.dispatchEvent({ type: 'becameUnVisible' })
 }
 
-THREEx.ArBaseControls.id = 0
+ArBaseControls.id = 0
 
-Object.assign( THREEx.ArBaseControls.prototype, THREE.EventDispatcher.prototype );
+Object.assign( ArBaseControls.prototype, THREE.EventDispatcher.prototype );
 
 //////////////////////////////////////////////////////////////////////////////
 //		Functions
@@ -23,14 +24,17 @@ Object.assign( THREEx.ArBaseControls.prototype, THREE.EventDispatcher.prototype 
 /**
  * error catching function for update()
  */
-THREEx.ArBaseControls.prototype.update = function(){
+ArBaseControls.prototype.update = function(){
 	console.assert(false, 'you need to implement your own update')
 }
 
 /**
  * error catching function for name()
  */
-THREEx.ArBaseControls.prototype.name = function(){
+ArBaseControls.prototype.name = function(){
 	console.assert(false, 'you need to implement your own .name()')
 	return 'Not yet implemented - name()'
 }
+
+THREEx.ArBaseControls = ArBaseControls;
+export default ArBaseControls;

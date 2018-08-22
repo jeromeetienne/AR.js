@@ -1,3 +1,4 @@
+import ArBaseControls from './threex-arbasecontrols';
 var THREEx = THREEx || {}
 
 /**
@@ -7,10 +8,10 @@ var THREEx = THREEx || {}
  * @param {[type]} object3d   [description]
  * @param {[type]} parameters [description]
  */
-THREEx.ArSmoothedControls = function(object3d, parameters){
+const SmoothedControls = function(object3d, parameters){
 	var _this = this
 	
-	THREEx.ArBaseControls.call(this, object3d)
+	ArBaseControls.call(this, object3d)
 	
 	// copy parameters
 	this.object3d.visible = false
@@ -62,14 +63,14 @@ THREEx.ArSmoothedControls = function(object3d, parameters){
 	}
 }
 	
-THREEx.ArSmoothedControls.prototype = Object.create( THREEx.ArBaseControls.prototype );
-THREEx.ArSmoothedControls.prototype.constructor = THREEx.ArSmoothedControls;
+SmoothedControls.prototype = Object.create( ArBaseControls.prototype );
+SmoothedControls.prototype.constructor = SmoothedControls;
 
 //////////////////////////////////////////////////////////////////////////////
 //		update function
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
+SmoothedControls.prototype.update = function(targetObject3d){
 	var object3d = this.object3d
 	var parameters = this.parameters
 	var wasVisible = object3d.visible
@@ -150,3 +151,5 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 		object3d.scale.lerp(targetObject3d.scale, parameters.lerpScale)
 	}
 }
+THREEx.ArSmoothedControls = SmoothedControls;
+export default SmoothedControls;

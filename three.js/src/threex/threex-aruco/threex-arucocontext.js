@@ -1,6 +1,8 @@
+import ArucoDebug from './threex-arucodebug';
+
 var THREEx = THREEx || {}
 
-THREEx.ArucoContext = function(parameters){
+const ArucoContext = function(parameters){
 	// handle default parameters
 	parameters = parameters || {}
 	this.parameters = {
@@ -16,17 +18,17 @@ THREEx.ArucoContext = function(parameters){
                 
         this.detector = new AR.Detector()
         
-        // setup THREEx.ArucoDebug if needed
+        // setup ArucoDebug if needed
         this.debug = null
         if( parameters.debug == true ){
-                this.debug = new THREEx.ArucoDebug(this)
+                this.debug = new ArucoDebug(this)
         }
 	
 	// honor parameters.canvasWidth/.canvasHeight
 	this.setSize(this.parameters.canvasWidth, this.parameters.canvasHeight)
 }
 
-THREEx.ArucoContext.prototype.setSize = function (width, height) {
+ArucoContext.prototype.setSize = function (width, height) {
         this.canvas.width = width
         this.canvas.height = height
         if( this.debug !== null ){
@@ -34,7 +36,7 @@ THREEx.ArucoContext.prototype.setSize = function (width, height) {
         }
 }
 
-THREEx.ArucoContext.prototype.detect = function (videoElement) {
+ArucoContext.prototype.detect = function (videoElement) {
 	var _this = this
         var canvas = this.canvas
         
@@ -51,7 +53,7 @@ THREEx.ArucoContext.prototype.detect = function (videoElement) {
 /**
  * crappy function to update a object3d with a detectedMarker - super crappy
  */
-THREEx.ArucoContext.prototype.updateObject3D = function(object3D, arucoPosit, markerSize, detectedMarker){
+ArucoContext.prototype.updateObject3D = function(object3D, arucoPosit, markerSize, detectedMarker){
         var markerCorners = detectedMarker.corners;
         var canvas = this.canvas
 
@@ -84,3 +86,6 @@ THREEx.ArucoContext.prototype.updateObject3D = function(object3D, arucoPosit, ma
         object3D.scale.y = markerSize;
         object3D.scale.z = markerSize;
 }
+
+THREEx.ArucoContext = ArucoContext;
+export default ArucoContext;
