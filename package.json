@@ -1,6 +1,6 @@
 {
   "name": "node-ar.js",
-  "version": "0.0.2",
+  "version": "0.0.3-2.0",
   "description": "Efficient Augmented Reality for the Web",
   "main": "three.js/build/ar.cjs.js",
   "scripts": {
