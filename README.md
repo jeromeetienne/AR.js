@@ -60,6 +60,16 @@ Now, many people got a phone powerful enough to do web AR in their pocket.
 I think this performance improvement makes web AR a reality.
 I am all exited by what people are going to do with it :)
 
+# Use in node
+```
+import {
+    ArToolkitSource,
+    ArToolkitContext,
+    ArMarkerControls,
+    ArSmoothedControls
+} from 'node-ar.js';
+``
+
 # Performance
 
 We are still early in the project but here are some initial numbers to give you an idea.
