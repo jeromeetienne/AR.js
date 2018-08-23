@@ -2,6 +2,8 @@
 
 Node.js installable AR.js based on [AR.js](http://npm.im/ar.js) by [jeromeetienne](https://github.com/jeromeetienne).
 
+- AR.js v1.6.0
+
 ## Usage
 
 ```js
