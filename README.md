@@ -22,7 +22,7 @@ const arToolkitSource = new _artoolkitsource({
 });
 ```
 
-Currently, the other modules use a pre-installed 0.95.x version of node.js.
+Currently, the other modules use a pre-installed 0.95.x version of THREE.js.
 
 Other modules can be used simply as:
 
