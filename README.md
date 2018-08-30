@@ -48,5 +48,8 @@ const smoothedControls = new ArSmoothedControls(smoothedRoot, {
 });
 ```
 
+### Example
+Example usage can be found in [this repository](https://github.com/josephrexme/node-ar-example)
+
 ### TODO
 Decouple all modules from THREE.js and make them rely on installer's THREE.js version
