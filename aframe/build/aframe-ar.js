@@ -5797,7 +5797,10 @@ ARjs.Source = THREEx.ArToolkitSource = function(parameters){
 		sourceType : 'webcam',
 		// url of the source - valid if sourceType = image|video
 		sourceUrl : null,
-		
+
+		// Device id of the camera to use (optional)
+		deviceId : null,
+
 		// resolution of at which we initialize in the source image
 		sourceWidth: 640,
 		sourceHeight: 480,
@@ -5979,7 +5982,14 @@ ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
 					// max: 1080
 				}
 		  	}
-                }
+		}
+
+		if (null !== _this.parameters.deviceId) {
+			userMediaConstraints.video.deviceId = {
+				exact: _this.parameters.deviceId
+			};
+		}
+
 		// get a device which satisfy the constraints
 		navigator.mediaDevices.getUserMedia(userMediaConstraints).then(function success(stream) {
 			// set the .src of the domElement
@@ -8579,6 +8589,10 @@ AFRAME.registerSystem('arjs', {
 			type: 'number',
 			default: -1
 		},
+		deviceId : {
+			type: 'string',
+			default: ''
+		},
 		displayWidth : {
 			type: 'number',
 			default: -1
@@ -8635,6 +8649,7 @@ AFRAME.registerSystem('arjs', {
 		if( this.data.sourceUrl !== '' )		arProfile.sourceParameters.sourceUrl = this.data.sourceUrl
 		if( this.data.sourceWidth !== -1 )		arProfile.sourceParameters.sourceWidth = this.data.sourceWidth
 		if( this.data.sourceHeight !== -1 )		arProfile.sourceParameters.sourceHeight = this.data.sourceHeight
+		if( this.data.deviceId !== '' )		arProfile.sourceParameters.deviceId = this.data.deviceId
 		if( this.data.displayWidth !== -1 )		arProfile.sourceParameters.displayWidth = this.data.displayWidth
 		if( this.data.displayHeight !== -1 )		arProfile.sourceParameters.displayHeight = this.data.displayHeight
 
