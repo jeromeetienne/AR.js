@@ -2,7 +2,7 @@
 
 ## aframe-ar.js
 
-- aframe-ar.js - `<a-marker>` elements will emit `markerFound` and `markerLost` events - thanks @nikolaymihaylov! PR #303 
+- aframe-ar.js - `<a-marker>` elements will emit `markerFound` and `markerLost` events - thanks @nikolaymihaylov! Pull Request (#303](https://github.com/jeromeetienne/AR.js/pull/303)
 
 ## Demos
 
