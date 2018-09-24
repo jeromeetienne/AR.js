@@ -6,6 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "three.js/build",
+    "aframe/build",
+    "data",
+    "three.js/examples/basic.html",
+    "three.js/examples/vendor/three.js/build/three.min.js",
+    "aframe/examples/basic.html",
+    "aframe/examples/vendor/aframe/build/aframe.min.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jeromeetienne/AR.js.git"
@@ -13,7 +22,8 @@
   "keywords": [
     "AR",
     "VR",
-    "three.js"
+    "three.js",
+    "augmented reality"
   ],
   "author": "jerome.etienne@gmail.com",
   "license": "MIT",
