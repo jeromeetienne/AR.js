@@ -8,9 +8,6 @@
 		init: function () {
 			var marker = this.el;
 
-			// Make the element emit events when found and when lost.
-			marker.setAttribute('emitevents', 'true');
-
 			marker.addEventListener('markerFound', function() {
 				var markerId = marker.id;
 				console.log('markerFound', markerId);
