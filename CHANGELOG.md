@@ -1,4 +1,4 @@
-# 1.6.2-dev
+# 1.6.2
 
 - Adds TravisCI config with NPM deployment configured - thanks @joestrong - 
 [#344](https://github.com/jeromeetienne/AR.js/pull/344)
