@@ -1,6 +1,6 @@
 # 1.6.3-dev
 
-Nothing yet...
+- added a ```npm run build``` script for travis
 
 # 1.6.2
 
