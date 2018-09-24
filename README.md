@@ -1,7 +1,6 @@
+# AR.js - Augmented Reality for the Web
 
- # AR.js - Augmented Reality for the Web
-
- [![Augmented Website](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://github.com/jeromeetienne/AR.js)
+[![Augmented Website](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://github.com/jeromeetienne/AR.js)
 
 [![npm](https://img.shields.io/npm/v/ar.js.svg)](https://www.npmjs.com/package/ar.js)
 [![npm](https://img.shields.io/npm/dt/ar.js.svg)](https://www.npmjs.com/package/ar.js)
@@ -261,7 +260,7 @@ git checkout master
 git merge dev
 
 # tag the release
-git tag 1.6.0
+git tag 1.6.1
 
 # push the tag on github
 git push origin --tags
