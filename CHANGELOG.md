@@ -1,6 +1,12 @@
 # 1.6.1-dev
 
-... nothing yet
+## aframe-ar.js
+
+- aframe-ar.js - `<a-marker>` elements will emit `markerFound` and `markerLost` events, if they have `emitevents='true'` set.
+
+## Demos
+
+- Created [an example](https://jeromeetienne.github.io/AR.js/aframe/examples/marker-events.html) that demonstrates emitting events when markers are found and lost, and registering the respective event listeners.
 
 # 1.6.0
 
