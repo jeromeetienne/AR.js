@@ -17,7 +17,7 @@ Stuff are still moving fast, We reached a good status tho.
 An article has been published on [uploadvr](https://uploadvr.com/ar-js-efficient-augmented-reality-for-the-web/).
 So I wanted to publish thus people can try it and have fun with it :)
 
-- **Very Fast** : it runs efficiently even on phones. [60 fps on my 2 year-old phone](https://twitter.com/jerome_etienne/status/831333879810236421)!
+- **Very Fast** : it runs efficiently even on phones - [60 fps on my 2 year-old phone](https://twitter.com/jerome_etienne/status/831333879810236421)!
 - **Web-based** : It is a pure web solution, so no installation required. Full javascript based on three.js + jsartoolkit5
 - **Open Source** : It is completely open source and free of charge!
 - **Standards** : It works on any phone with [webgl](http://caniuse.com/#feat=webgl) and [webrtc](http://caniuse.com/#feat=stream)
@@ -26,8 +26,7 @@ So I wanted to publish thus people can try it and have fun with it :)
 
 # Try it on Mobile
 
-It works on all platforms. Android, IOS and window phone. It run **any browser with WebGL and WebRTC**.
-(for IOS, you need to update to ios11)
+It works on all platforms. Android, IOS and window phone. It runs on **any browser with WebGL and WebRTC** (for iOS, you need to update to iOS11),
 
 To try on your phone is only 2 easy steps, check it out!
 
@@ -44,14 +43,14 @@ to your screen.
 So we shown it is now possible to do 60fps web-based augmented reality on a phone.
 This is great for sure but how did we get here ? **By standing on the shoulders of giants!**
 It is thanks to the hard work from others, that we can today reach this mythic 60fps AR.
-So i would like to thanks :
+So I would like to thanks :
 
 - **three.js** for being a great library to do 3d on the web.
 - **artoolkit**! years of development and experiences on doing augmented reality
 - **emscripten and asm.js**! thus we could compile artoolkit c into javascript
 - **chromium**! thanks for being so fast!
 
-Only thanks to all of them, i could do my part : Optimizing performance from 5fps on high-end
+Only thanks to all of them, I could do my part : Optimizing performance from 5fps on high-end
 phone, to 60fps on 2years old phone.
 
 After all this work done by a lot of people, we have a *web-based augmented reality solution fast enough for mobile*!
@@ -79,22 +78,29 @@ and the hardware that you are using.
 With this project, we bring more performance to artoolkit.
 artoolkit is a software with years of experience doing augmented reality. It is able to do a lot!
 
-It is marker based. It supports a wide range of markers: multiple types of markers [pattern](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_training)/[barcode](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_barcode)
-multiple independent markers at the same time, or [multiple markers acting as a single marker](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_multi)
+It is marker based. It supports a wide range of markers: multiple types of markers [pattern](https://github.com/artoolkit/artoolkit5/tree/master/doc/patterns)/[barcode](https://github.com/artoolkit/artoolkit-docs/blob/master/3_Marker_Training/marker_barcode.md)
+multiple independent markers at the same time, or [multiple markers acting as a single marker](https://github.com/artoolkit/artoolkit-docs/blob/master/3_Marker_Training/marker_multi.md)
 up to you to choose.
+
+More details about markers:
+
+* [Artoolkit Open Doc](https://github.com/artoolkit/artoolkit-docs/tree/master/3_Marker_Training)
+* [Detailed Article about markers](https://medium.com/chialab-open-source/ar-js-the-simpliest-way-to-get-cross-browser-ar-on-the-web-8f670dd45462) by [@nicolocarpignoli](https://github.com/nicolocarpignoli) 
 
 # What’s New?
 Recently, we’ve been getting creative and working on developing new things with AR.js. One of them is playing around with [shadows](https://twitter.com/jerome_etienne/status/837240034847764480), syncing the position of virtual lights with reality for a more life-like finish:
 ![screen shot 2017-03-16 at 21 06 24](https://cloud.githubusercontent.com/assets/6317076/24018623/7f787ba8-0a8c-11e7-8088-fea4799b5d09.png)
 
 We’ve been collaborating very closely with [Fredrick Blomqvist](https://twitter.com/snigelpaogat). His input has had a great impact on AR.js innovation and we want to thank him. Together, we’ve been implementing [refraction](https://twitter.com/jerome_etienne/status/838749280999518208), giving the 3d a transparent/glassy effect. It ended up having a nice polished look. What do you guys think?
+
 ![screen shot 2017-03-06 at 16 31 28](https://cloud.githubusercontent.com/assets/6317076/23832948/9b64c79e-0736-11e7-9cb8-747f6a8fc082.png)
 
 Other crazy ideas we’ve been working on include a [hole in the wall](https://twitter.com/jerome_etienne/status/836754117964017664) and a [portal into another world](https://twitter.com/jerome_etienne/status/838404908235776000). We want to take AR.js to new dimensions.
+
 ![screen shot 2017-03-12 at 15 19 51](https://cloud.githubusercontent.com/assets/6317076/23833024/b2e045be-0737-11e7-9ef0-8e1ac9e49ba8.png)
 ![screen shot 2017-03-07 at 10 08 39](https://cloud.githubusercontent.com/assets/6317076/23833015/947f6abe-0737-11e7-9a0d-1ea919f6ffbe.png)
 
-# principles
+# Principles
 - "Shared #ar is a lot more real than solo #AR." - Augmented reality principle [tweet](https://twitter.com/jerome_etienne/status/847889867296124933)
 - "The marker must be a portal from where the virtual emerges." by @AndraConnect - #AR principles at dinner 😏 [tweet](https://twitter.com/jerome_etienne/status/842112692211056640)
 
