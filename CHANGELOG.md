@@ -1,6 +1,11 @@
-# 1.6.0-dev
+# 1.6.2
+- Now AR.js emits events when a marker is found and lost, when using aframe's `<a-marker>` [merged PR](https://github.com/jeromeetienne/AR.js/pull/303)
+- configured travis CI
+- minor bug fixes
 
-nothing yet...
+# 1.6.1
+
+# 1.6.0
 
 # 1.5.5
 
@@ -11,7 +16,7 @@ nothing yet...
 - created [portableAR.js](https://github.com/jeromeetienne/AR.js/tree/dev/three.js/contribs/portableAR.js) - a simple way to port ar.js to a non-three.js framework
   - it is in /three.js/contribs/portableAR.js
   - in [examples/](https://github.com/jeromeetienne/AR.js/tree/dev/three.js/contribs/portableAR.js/examples/babylon.js) you can find babylon.js using portableAR.js
-- made webvr-polyfill obsolete 
+- made webvr-polyfill obsolete
   - it was more a toy than something currently useful
   - it was far from complete, not even in a workable state, anyway
 - reorganized ```examples/``` folder
@@ -49,7 +54,7 @@ nothing yet...
 
 # 1.4.10
 
-- support for markers-area 
+- support for markers-area
   - Efficient user friendly area scanning
   - More Versatile than single marker tracking 0 larger areas than single markers
   - More Robust than single marker tracking - even if only one sub marker is visible it is still tracking
@@ -80,7 +85,7 @@ nothing yet...
 - minimal.html just got a little bit cleaner
   - aka the simplest way to do AR on the web
   - or webar in less than 10 lines of html! on codepen
-- finished hole-in-the-wall demo - 
+- finished hole-in-the-wall demo -
   [duck on my desk tweet](https://twitter.com/jerome_etienne/status/846751371185541121)
 - support preset in a-frame a-marker - preset = ["hiro" | "kanji"]
 - experiementation in dead-reckoning ... not conclusive
