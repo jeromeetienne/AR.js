@@ -1,6 +1,6 @@
 
  # AR.js - Augmented Reality for the Web
- 
+
  [![Augmented Website](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://github.com/jeromeetienne/AR.js)
 
 [![npm](https://img.shields.io/npm/v/ar.js.svg)](https://www.npmjs.com/package/ar.js)
@@ -85,7 +85,7 @@ up to you to choose.
 More details about markers:
 
 * [Artoolkit Open Doc](https://github.com/artoolkit/artoolkit-docs/tree/master/3_Marker_Training)
-* [Detailed Article about markers](https://medium.com/chialab-open-source/ar-js-the-simpliest-way-to-get-cross-browser-ar-on-the-web-8f670dd45462) by [@nicolocarpignoli](https://github.com/nicolocarpignoli) 
+* [Detailed Article about markers](https://medium.com/chialab-open-source/ar-js-the-simpliest-way-to-get-cross-browser-ar-on-the-web-8f670dd45462) by [@nicolocarpignoli](https://github.com/nicolocarpignoli)
 
 # What’s New?
 Recently, we’ve been getting creative and working on developing new things with AR.js. One of them is playing around with [shadows](https://twitter.com/jerome_etienne/status/837240034847764480), syncing the position of virtual lights with reality for a more life-like finish:
@@ -111,7 +111,9 @@ Other crazy ideas we’ve been working on include a [hole in the wall](https://t
   [aframe-artoolkit](http://jeromeetienne.github.io/slides/artoolkit-aframe/)
 - webvr-polyfill: it is kind of working - still a work-in-progress
 
-# Augmented reality for the web in less than 10 lines of html
+#  Guides
+
+## Augmented reality for the web in less than 10 lines of html
 
 A-Frame magic :) All details are explained in this super post
 ["Augmented Reality in 10 Lines of HTML - AR.js with a-frame magic"](https://medium.com/arjs/augmented-reality-in-10-lines-of-html-4e193ea9fdbf)
@@ -136,32 +138,34 @@ by
 
 See on [codepen](https://codepen.io/jeromeetienne/pen/mRqqzb) or [bl.ocks.org](https://bl.ocks.org/jeromeetienne/feeb69257803e69f18dc3ea5f4fc6d71)
 
-# Posts on medium
+## For beginners
 We started a [AR.js blog](https://medium.com/arjs), thus we can write about
 all the crazy ideas related to AR.js.
 
-- ["Area Learning with Multi-Markers in AR.js - For a Larger & More Stable Augmented Reality"](https://medium.com/arjs/area-learning-with-multi-markers-in-ar-js-1ff03a2f9fbe)
-  by [@AndraConnect](https://twitter.com/AndraConnect)
+- [Details about 3D models that can be used with AR.js](https://medium.com/@akashkuttappa/using-3d-models-with-ar-js-and-a-frame-84d462efe498)
+- [AR.js introduction and insight on patterns](https://medium.com/chialab-open-source/ar-js-the-simpliest-way-to-get-cross-browser-ar-on-the-web-8f670dd45462)
 - ["WebVR for Augmented Reality - Using WebVR to write cross-platform AR applications"](https://medium.com/arjs/webvr-for-augmented-reality-f1e69a505902)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)
 - ["Augmenting The Web Page - Bringing augmenting reality to normal web pages"](https://medium.com/arjs/augmenting-the-web-page-e893f2d199b8)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)
 - ["Server Rendering for Augmented Reality - Cloud Rendering with Web Standards"](https://medium.com/arjs/server-rendering-for-augmented-reality-2de0a71aae04)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)
-- ["AR-Code:a Fast Path to Augmented Reality - From qrcode to AR.js content"](https://medium.com/arjs/ar-code-a-fast-path-to-augmented-reality-60e51be3cbdf)
+- ["AR-Code:a Fast Path to Augmented Reality - From QR Code to AR.js content"](https://medium.com/arjs/ar-code-a-fast-path-to-augmented-reality-60e51be3cbdf)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)
-- ["Augmented Reality in 10 Lines of HTML - AR.js with a-frame magic"](https://medium.com/arjs/augmented-reality-in-10-lines-of-html-4e193ea9fdbf)
-  by [@AndraConnect](https://twitter.com/AndraConnect)
-
-# Great Posts by Users
-
 - How to write a AR.js application ?
 Here is a [full tutorial](https://marmelab.com/blog/2017/06/19/augmented-reality-html5.html)
 by [marmelab](https://marmelab.com/) featuring [François Zaninotto](https://twitter.com/francoisz).
-It explain how to code a full application on phone! Step by Steps, with explaination and videos. 
+It explain how to code a full application on phone! Step by Steps, with explaination and videos.
 Very great! the perfect step if you want to start writing AR application today.
+
+## Advanced guides
+
+- ["Area Learning with Multi-Markers in AR.js - For a Larger & More Stable Augmented Reality"](https://medium.com/arjs/area-learning-with-multi-markers-in-ar-js-1ff03a2f9fbe)
+  by [@AndraConnect](https://twitter.com/AndraConnect)
 - Great post about [WebAR for designer](http://www.nexusinteractivearts.com/webar/)
 by [nexus interactive arts](http://www.nexusinteractivearts.com/)
+- [How to deliver AR.js only with a QR Code](https://medium.com/@nicolcarpignoli/how-to-deliver-ar-on-the-web-only-with-a-qr-code-613874cfc537)
+- [How to handle click with AR.js](https://medium.com/chialab-open-source/how-to-handle-click-events-on-ar-js-58fcacb77c4)
 
 # Augmented Website
 [Seminal post](https://medium.com/arjs/augmenting-the-web-page-e893f2d199b8) explaining the concept.
@@ -179,8 +183,6 @@ Some applications:
 - [ARCode Generator](https://jeromeetienne.github.io/AR.js/three.js/examples/arcode.html) :
   Generator of AR-Code
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arcode.html))
-- [WebAR Playground](https://jeromeetienne.github.io/webar-playground/) :
-  Playground running in WebAR with ar.js/chromiumAR
 
 [ALL EXAMPLES](https://jeromeetienne.github.io/AR.js-docs/misc/EXAMPLES.html)
 
@@ -190,14 +192,14 @@ Some applications:
 - ```/webvr-polyfill``` is the WebVR polyfill so you can reuse your #AR / #VR content easily
 
 # Licenses
-It is **all open source** ! jsartoolkit5 is under LGPLv3 license and additional permission.
+It is **all open source**! jsartoolkit5 is under LGPLv3 license and additional permission.
 And All my code in AR.js repository is under MIT license. :)
 
 For legal details, be sure to check [jsartoolkit5 license](https://github.com/artoolkit/jsartoolkit5/blob/master/LICENSE.txt)
 and [AR.js license](https://github.com/jeromeetienne/AR.js/blob/master/LICENSE.txt).
 
 # Change Log
-[CHANGELOG.md](https://github.com/jeromeetienne/AR.js/blob/master/CHANGELOG.md)
+[AR.js changelog](https://github.com/jeromeetienne/AR.js/blob/master/CHANGELOG.md)
 
 # What's Next ?
 
@@ -233,57 +235,10 @@ Demo tested on the following browser setups:
 Credits: @HelloDeadline, @sorianog
 
 
-# Future
+# Last but not least
 
-[FUTURE.md](https://jeromeetienne.github.io/AR.js-docs/misc/FUTURE.html)
+* [About Future](https://jeromeetienne.github.io/AR.js-docs/misc/FUTURE.html)
 
-# FAQ
+* [FAQ](https://jeromeetienne.github.io/AR.js-docs/misc/FAQ.html)
 
-[FAQ.md](https://jeromeetienne.github.io/AR.js-docs/misc/FAQ.html)
-
-
-
-# How To Release ?
-
-This one is mainly for [me](@jerome_etienne) to remember :)
-
-```bash
-# Update CHANGELOG.md - remove the -dev into version
-atom CHANGELOG.md
-
-# replace REVISION to the proper version, search/replace on the version string should do it
-atom three.js/src/threex/threex-artoolkitcontext.js package.json README.md
-
-# Rebuild and minify everything - aka a-frame and three.js
-make minify
-
-# Commit everything
-git add . && git commit -a -m 'Last commit before release' && git push
-
-# Go to master branch
-git checkout master
-
-# Merge dev branch into master branch
-git merge dev
-
-# tag the release
-git tag 1.5.5
-
-# push the tag on github
-git push origin --tags
-
-# push commits tag on github
-git push
-
-# update npm package.json
-npm publish
-
-# Come back to dev branch
-git checkout dev
-
-# Update CHANGELOG.md - start new dev version
-atom CHANGELOG.md
-
-# update the a-frame codepen if needed
-open "https://codepen.io/jeromeetienne/pen/mRqqzb?editors=1000#0"
-```
+* [How to Release](https://jeromeetienne.github.io/AR.js/HOW_TO_RELEASE.md)
