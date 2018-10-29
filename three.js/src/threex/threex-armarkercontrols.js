@@ -34,7 +34,7 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, para
 	this.object3d = object3d
 	this.object3d.matrixAutoUpdate = false;
 	this.object3d.visible = false
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		setParameters
 	//////////////////////////////////////////////////////////////////////////////
@@ -93,7 +93,7 @@ ARjs.MarkerControls.prototype.dispose = function(){
 //////////////////////////////////////////////////////////////////////////////
 
 /**
- * When you actually got a new modelViewMatrix, you need to perfom a whole bunch 
+ * When you actually got a new modelViewMatrix, you need to perfom a whole bunch
  * of things. it is done here.
  */
 ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatrix){
@@ -106,8 +106,8 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatr
 		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
 		var tmpMatrix = new THREE.Matrix4().copy(this.context._artoolkitProjectionAxisTransformMatrix)
 		tmpMatrix.multiply(modelViewMatrix)
-		
-		modelViewMatrix.copy(tmpMatrix)		
+
+		modelViewMatrix.copy(tmpMatrix)
 	}else if( this.context.parameters.trackingBackend === 'aruco' ){
 		// ...
 	}else if( this.context.parameters.trackingBackend === 'tango' ){
@@ -143,7 +143,7 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatr
 //////////////////////////////////////////////////////////////////////////////
 
 /**
- * provide a name for a marker 
+ * provide a name for a marker
  * - silly heuristic for now
  * - should be improved
  */
@@ -182,7 +182,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function(){
 	}, 1000/50)
 
 	return
-	
+
 	function postInit(){
 		// check if arController is init
 		var arController = _this.context.arController
@@ -216,7 +216,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function(){
 				onMarkerFound(event)
 			}
 		})
-		
+
 	}
 
 	function onMarkerFound(event){

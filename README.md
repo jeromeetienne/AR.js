@@ -4,6 +4,7 @@
 
 [![npm](https://img.shields.io/npm/v/ar.js.svg)](https://www.npmjs.com/package/ar.js)
 [![npm](https://img.shields.io/npm/dt/ar.js.svg)](https://www.npmjs.com/package/ar.js)
+[![Build Status](https://travis-ci.org/jeromeetienne/AR.js.svg?branch=master)](https://travis-ci.org/jeromeetienne/AR.js)
 <br class="badge-separator" />
 [![Gitter chat](https://badges.gitter.im/AR-js/Lobby.png)](https://gitter.im/AR-js/Lobby)
 <span class="badge-patreon"><a href="https://patreon.com/jerome_etienne" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/patreon-donate-yellow.svg" alt="Patreon donate button" /></a></span>
@@ -12,9 +13,9 @@
 I am focusing hard on making AR for the web a reality.
 This repository is where I publish the code.
 Contact me anytime [@jerome_etienne](https://twitter.com/jerome_etienne).
-Stuff are still moving fast, We reached a good status tho.
+Stuff is still moving fast, we have reached a good status though.
 An article has been published on [uploadvr](https://uploadvr.com/ar-js-efficient-augmented-reality-for-the-web/).
-So I wanted to publish thus people can try it and have fun with it :)
+So I wanted to publish this so people can try it and have fun with it :)
 
 - **Very Fast** : it runs efficiently even on phones - [60 fps on my 2 year-old phone](https://twitter.com/jerome_etienne/status/831333879810236421)!
 - **Web-based** : It is a pure web solution, so no installation required. Full javascript based on three.js + jsartoolkit5
@@ -27,11 +28,12 @@ So I wanted to publish thus people can try it and have fun with it :)
 
 It works on all platforms. Android, IOS and window phone. It runs on **any browser with WebGL and WebRTC** (for iOS, you need to update to iOS11),
 
-To try on your phone is only 2 easy steps, check it out!
+To try it on your phone, it is only 2 easy steps, check it out!
 
 1. Open this [hiro marker image](https://jeromeetienne.github.io/AR.js/data/images/HIRO.jpg) in your desktop browser.
-1. Open this [augmented reality webapps](https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html) in your phone browser, and point it
-to your screen.
+1. Open this [augmented reality webapps](https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html) in your phone browser, and point it at your screen.
+
+![qrcode pointing to the webapp](https://raw.githubusercontent.com/aloisdg/Documents/master/Image/qrcode.png)
 
 **You are done!** It will open a webpage which read the phone webcam, localize a hiro marker and add 3d on top of it, as you can see below.
 
@@ -42,8 +44,7 @@ AR.js uses `artoolkit`, and so it is marker based.
 `artoolkit` is a software with years of experience doing augmented reality. It is able to do a lot!
 
 It supports a wide range of markers: multiple types of markers [pattern](https://github.com/artoolkit/artoolkit5/tree/master/doc/patterns)/[barcode](https://github.com/artoolkit/artoolkit-docs/blob/master/3_Marker_Training/marker_barcode.md)
-multiple independent markers at the same time, or [multiple markers acting as a single marker](https://github.com/artoolkit/artoolkit-docs/blob/master/3_Marker_Training/marker_multi.md)
-up to you to choose.
+multiple independent markers at the same time, or [multiple markers acting as a single marker](https://github.com/artoolkit/artoolkit-docs/blob/master/3_Marker_Training/marker_multi.md) up to you to choose.
 
 More details about markers:
 
@@ -142,7 +143,6 @@ We are still early in the project but here are some initial numbers to give you 
 Obviously you mileage may vary. The performance you get will depend on 3 things: How heavy your 3D is, How you tune your parameters
 and the hardware that you are using.
 
-
 # Standing on the Shoulders of Giants
 
 So we shown it is now possible to do 60fps web-based augmented reality on a phone.
@@ -217,7 +217,7 @@ Demo tested on the following browser setups:
 - **Android native 5.0** (doesn't work, doesn't ask for permission, I see white background and text)
 - **Chrome on Android 4.4.2** (works!)
 - **Chrome on Android 5.0** (doesn't work, asks for permission, I see black background, text and a chart)
-- **Safari and Chrome on iOS 8.2 (iPad)** (doesn't work, doesn't ask for permission, I see white background and text)
+- **Safari and Chrome on iOS < 11** (doesn't work, doesn't ask for permission, I see white background and text)
 - **Microsoft Edge on Windows 10** (Chrome on Google Pixel phone to view hologram)
 
 Credits: @HelloDeadline, @sorianog
