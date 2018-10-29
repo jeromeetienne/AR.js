@@ -23,7 +23,7 @@ cleanResults:
 ################################################################################
 ################################################################################
 
-server:
-	java -jar -Dwebdriver.gecko.driver=./bin/geckodriver \
-		-Dwebdriver.chrome.driver=./bin/chromedriver \
-		bin/selenium-server-standalone-3.0.1.jar
+# server:
+# 	java -jar -Dwebdriver.gecko.driver=./bin/geckodriver \
+# 		-Dwebdriver.chrome.driver=./bin/chromedriver \
+# 		bin/selenium-server-standalone-3.0.1.jar

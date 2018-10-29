@@ -1,11 +1,21 @@
 {
   "name": "ar.js",
-  "version": "1.5.5",
+  "version": "1.6.2",
   "description": "Efficient Augmented Reality for the Web",
-  "main": "three.js",
+  "main": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "make minify"
   },
+  "files": [
+    "three.js/build",
+    "aframe/build",
+    "data",
+    "three.js/examples/basic.html",
+    "three.js/examples/vendor/three.js/build/three.min.js",
+    "aframe/examples/basic.html",
+    "aframe/examples/vendor/aframe/build/aframe.min.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jeromeetienne/AR.js.git"
@@ -13,7 +23,8 @@
   "keywords": [
     "AR",
     "VR",
-    "three.js"
+    "three.js",
+    "augmented reality"
   ],
   "author": "jerome.etienne@gmail.com",
   "license": "MIT",
