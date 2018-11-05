@@ -237,4 +237,4 @@ and [AR.js license](https://github.com/jeromeetienne/AR.js/blob/master/LICENSE.t
 
 * [FAQ](https://jeromeetienne.github.io/AR.js-docs/misc/FAQ.html)
 
-* [How to Release](https://jeromeetienne.github.io/AR.js/HOW_TO_RELEASE.md)
+* [How to Release](https://github.com/jeromeetienne/AR.js/blob/master/HOW_TO_RELEASE.md)
