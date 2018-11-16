@@ -155,10 +155,21 @@ AFRAME.registerComponent('arjs-anchor', {
 		//		honor visibility
 		//////////////////////////////////////////////////////////////////////////////
 		if( _this._arAnchor.parameters.changeMatrixMode === 'modelViewMatrix' ){
+			var wasVisible = _this.el.object3D.visible
 			_this.el.object3D.visible = this._arAnchor.object3d.visible
 		}else if( _this._arAnchor.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
+			var wasVisible = _this.el.sceneEl.object3D.visible
 			_this.el.sceneEl.object3D.visible = this._arAnchor.object3d.visible
 		}else console.assert(false)
+
+		// emit markerFound markerLost
+		if( _this._arAnchor.object3d.visible === true && wasVisible === false ){
+			_this.el.emit('markerFound')
+		}else if( _this._arAnchor.object3d.visible === false && wasVisible === true ){
+			_this.el.emit('markerLost')
+		}
+
+
 	}
 })
 

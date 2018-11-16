@@ -1,10 +1,10 @@
+# AR.js - Augmented Reality for the Web
 
- # AR.js - Augmented Reality for the Web
-
- [![Augmented Website](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://github.com/jeromeetienne/AR.js)
+[![Augmented Website](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://github.com/jeromeetienne/AR.js)
 
 [![npm](https://img.shields.io/npm/v/ar.js.svg)](https://www.npmjs.com/package/ar.js)
 [![npm](https://img.shields.io/npm/dt/ar.js.svg)](https://www.npmjs.com/package/ar.js)
+[![Build Status](https://travis-ci.org/jeromeetienne/AR.js.svg?branch=master)](https://travis-ci.org/jeromeetienne/AR.js)
 <br class="badge-separator" />
 [![Gitter chat](https://badges.gitter.im/AR-js/Lobby.png)](https://gitter.im/AR-js/Lobby)
 <span class="badge-patreon"><a href="https://patreon.com/jerome_etienne" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/patreon-donate-yellow.svg" alt="Patreon donate button" /></a></span>
@@ -13,9 +13,9 @@
 I am focusing hard on making AR for the web a reality.
 This repository is where I publish the code.
 Contact me anytime [@jerome_etienne](https://twitter.com/jerome_etienne).
-Stuff are still moving fast, We reached a good status tho.
+Stuff is still moving fast, we have reached a good status though.
 An article has been published on [uploadvr](https://uploadvr.com/ar-js-efficient-augmented-reality-for-the-web/).
-So I wanted to publish thus people can try it and have fun with it :)
+So I wanted to publish this so people can try it and have fun with it :)
 
 - **Very Fast** : it runs efficiently even on phones. [60 fps on my 2 year-old phone](https://twitter.com/jerome_etienne/status/831333879810236421)!
 - **Web-based** : It is a pure web solution, so no installation required. Full javascript based on three.js + jsartoolkit5
@@ -26,14 +26,14 @@ So I wanted to publish thus people can try it and have fun with it :)
 
 # Try it on Mobile
 
-It works on all platforms. Android, IOS and window phone. It run **any browser with WebGL and WebRTC**.
-(for IOS, you need to update to ios11)
+It works on all platforms. Android, iOS and window phone. It runs on **any browser with WebGL and WebRTC** (for iOS, you need to update to iOS 11).
 
-To try on your phone is only 2 easy steps, check it out!
+To try it on your phone, it is only 2 easy steps, check it out!
 
 1. Open this [hiro marker image](https://jeromeetienne.github.io/AR.js/data/images/HIRO.jpg) in your desktop browser.
-1. Open this [augmented reality webapps](https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html) in your phone browser, and point it
-to your screen.
+1. Open this [augmented reality webapps](https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html) in your phone browser, and point it at your screen.
+
+![qrcode pointing to the webapp](https://raw.githubusercontent.com/aloisdg/Documents/master/Image/qrcode.png)
 
 **You are done!** It will open a webpage which read the phone webcam, localize a hiro marker and add 3d on top of it, as you can see below.
 
@@ -47,27 +47,27 @@ It is thanks to the hard work from others, that we can today reach this mythic 6
 So I would like to thank:
 
 - **three.js** for being a great library to do 3d on the web.
-- **artoolkit**! years of development and experiences on doing augmented reality
+- **artoolkit**! for years of development and experiences on doing augmented reality
 - **emscripten and asm.js**! thus we could compile artoolkit c into javascript
 - **chromium**! thanks for being so fast!
 
 Only thanks to all of them, I could do my part : Optimizing performance from 5fps on high-end
 phone, to 60fps on 2years old phone.
 
-After all this work done by a lot of people, we have a *web-based augmented reality solution fast enough for mobile*!
+After all this work that has been done by a lot of people, we have a *web-based augmented reality solution fast enough for mobile*!
 
-Now, many people got a phone powerful enough to do web AR in their pocket.
+Now, many people have a phone powerful enough to do web AR in their pocket.
 I think this performance improvement makes web AR a reality.
 I am all exited by what people are going to do with it :)
 
 # Performance
 
-We are still early in the project but here are some initial numbers to give you an idea.
+We are still early in the project, but here are some initial numbers to give you an idea.
 
-- I got 60fps stable on nexus6p
-- Some reports [Sony Xperia Z2 (2.5 years old) runs around 50fps](https://twitter.com/leinadkalpot/status/834121238087925763) - this is a 170euro phone
+- I've gotten 60fps stable on nexus6p
+- Some reports [Sony Xperia Z2 (2.5 years old) runs around 50fps](https://twitter.com/leinadkalpot/status/834121238087925763) - This is a 170 Euro phone
 - Some reports [~50fps on a old nexus5, and ~60fps on nexus 9](https://twitter.com/Ellyll/status/834312442926751744) - nexus5 is 3.5 years old!
-- Some reports it working on windows phone edge!! [13fps on Lumia 950](https://twitter.com/leinadkalpot/status/834299384510763012) for some.
+- Some report it working on Edge on Windows phone!! [13fps on Lumia 950](https://twitter.com/leinadkalpot/status/834299384510763012) for some.
   [40-45fps on lumia 930](https://twitter.com/fastclemmy/status/834817155665391616) for others.
 
 Obviously your mileage may vary. The performance you get will depend on 3 things: How heavy your 3D is, How you tune your parameters
@@ -77,7 +77,7 @@ and the hardware that you are using.
 
 # Full Featured Marker based
 With this project, we bring more performance to artoolkit.
-artoolkit is a software with years of experience doing augmented reality. It is able to do a lot!
+artoolkit is software with years of experience doing augmented reality. It is able to do a lot!
 
 It is marker based. It supports a wide range of markers: multiple types of markers [pattern](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_training)/[barcode](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_barcode)
 multiple independent markers at the same time, or [multiple markers acting as a single marker](https://artoolkit.org/documentation/doku.php?id=3_Marker_Training:marker_multi)
@@ -221,7 +221,7 @@ Demo tested on the following browser setups:
 - **Android native 5.0** (doesn't work, doesn't ask for permission, I see white background and text)
 - **Chrome on Android 4.4.2** (works!)
 - **Chrome on Android 5.0** (doesn't work, asks for permission, I see black background, text and a chart)
-- **Safari and Chrome on iOS 8.2 (iPad)** (doesn't work, doesn't ask for permission, I see white background and text)
+- **Safari and Chrome on iOS < 11** (doesn't work, doesn't ask for permission, I see white background and text)
 - **Microsoft Edge on Windows 10** (Chrome on Google Pixel phone to view hologram)
 
 Credits: @HelloDeadline, @sorianog
@@ -239,7 +239,7 @@ Credits: @HelloDeadline, @sorianog
 
 # How To Release ?
 
-This one is mainly for [me](@jerome_etienne) to remember :)
+This one is mainly for [me](https://twitter.com/jerome_etienne) to remember :)
 
 ```bash
 # Update CHANGELOG.md - remove the -dev into version
@@ -261,7 +261,7 @@ git checkout master
 git merge dev
 
 # tag the release
-git tag 1.6.0
+git tag 1.6.2
 
 # push the tag on github
 git push origin --tags

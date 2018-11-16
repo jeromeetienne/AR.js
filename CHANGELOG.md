@@ -1,3 +1,18 @@
+# 1.6.2
+
+- Adds TravisCI config with NPM deployment configured - thanks @joestrong - 
+[#344](https://github.com/jeromeetienne/AR.js/pull/344)
+
+# 1.6.1
+
+## aframe-ar.js
+
+- aframe-ar.js - `<a-marker>` elements will emit `markerFound` and `markerLost` events - thanks @nikolaymihaylov! Pull Request [#303](https://github.com/jeromeetienne/AR.js/pull/303)
+
+## Demos
+
+- Created [an example](https://jeromeetienne.github.io/AR.js/aframe/examples/marker-events.html) that demonstrates emitting events when markers are found and lost, and registering the respective event listeners.
+
 # 1.6.0
 
 - implemented patternRatio in aframe/three.js - a way to reduce the ugly black border
