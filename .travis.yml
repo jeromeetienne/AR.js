@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+- node
+install: true
+script: true
+deploy:
+  provider: npm
+  email: jerome.etienne@gmail.com
+  api_key:
+    secure: Ay1lboi9vTEP8xC4sTMBKIXQGKuG61pdmKifNf2D/IEL2OMuHUtPTrgshkl3S/lWOp2LyHGzjZH+zrFTqsjYHwlOwBlywGCzxeID090zOQampMmeFngbJl4jItg8Ri5Kuhbg088vQ4Id1kxm19YfZDXBpKQb2BiuyQntFRBIZXa0HN0hgOUySwWdFdxrfLLNkmdNcI+L6wuSG933i/GBmLy2XhliR/trhZV4gpqEJF9q7auE2IYWXL3hqDKctY8hyXA3lnPd6CvSSNXN71uIRpho1jCcgykCcY8RdNRwr6J9XgyGRt4mta/0JCpQ2BwZsbIGX9krfkckOS7rHq6TTEx2wY3k1WtxVM37NUCE53Qgre5EP4u16WRkOMGN8WNPSodp0+tZ8fZGLA6PQ7ImTFWuJWBgcHul4m1konmhUF/v+K3vV6EjY8m6KYztwJElnXxcPkm0iA2Kju4KM6qNrVIpKTu9K95R7zzkUdp9iD9HE2sTJol0J1DFkuumbcbCT3brVMN4U+2KR753anMRaEBItfed0qSRapq2JK0cBDRjPI81+NJkI1LEMtFY9CyKL2Sx+55iqS0X102n3NN8VTHt7YBsI3556Gy3s1PX1t2IClHycYCF0sa5RK63DSbrtuSJCsmQRtUybKiqG5XbF7pV9Bh3LNXOjTgN0h4H9bI=
+  on:
+    tags: true
