@@ -1,3 +1,7 @@
+# 1.6.3-dev
+
+- added a ```npm run build``` script for travis
+
 # 1.6.2
 
 - Adds TravisCI config with NPM deployment configured - thanks @joestrong - 
