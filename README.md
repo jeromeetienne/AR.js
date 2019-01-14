@@ -207,7 +207,7 @@ Augmented reality on phone have applications in many fields:
 [history education](https://www.youtube.com/watch?v=gyp8ZYtyu_M)
 , [science](https://www.youtube.com/watch?v=gMxdBdLpVgc)
 or [gaming](https://www.youtube.com/watch?v=kEMDgvfFUcI).
-I exited to see what people will do with AR.js :)
+I am exited to see what people will do with AR.js :)
 
 
 # Browser Support
