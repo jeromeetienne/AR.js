@@ -70,11 +70,11 @@ THREEx.ArPatternFile.encodeImage = function(image){
 //		trigger download
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArPatternFile.triggerDownload =  function(patternFileString){
+THREEx.ArPatternFile.triggerDownload =  function(patternFileString, fileName = 'pattern-marker.patt'){
 	// tech from https://stackoverflow.com/questions/3665115/create-a-file-in-memory-for-user-to-download-not-through-server
 	var domElement = window.document.createElement('a');
 	domElement.href = window.URL.createObjectURL(new Blob([patternFileString], {type: 'text/plain'}));
-	domElement.download = 'pattern-marker.patt';
+	domElement.download = fileName;
 	document.body.appendChild(domElement)
 	domElement.click();
 	document.body.removeChild(domElement)
