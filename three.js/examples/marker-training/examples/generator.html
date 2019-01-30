@@ -185,6 +185,7 @@
 <script>
 	var innerImageURL = null
 	var fullMarkerURL = null
+	var imageName = null
 
 	innerImageURL = 'inner-images/inner-arjs.png'
 	updateFullMarkerImage()
@@ -196,7 +197,7 @@
 		}
 		console.assert(innerImageURL)
 		THREEx.ArPatternFile.encodeImageURL(innerImageURL, function onComplete(patternFileString){
-			THREEx.ArPatternFile.triggerDownload(patternFileString)
+			THREEx.ArPatternFile.triggerDownload(patternFileString, "pattern-" + (imageName || "marker") + ".patt")
 		})
 	})
 
@@ -211,7 +212,7 @@
 		// tech from https://stackoverflow.com/questions/3665115/create-a-file-in-memory-for-user-to-download-not-through-server
 		var domElement = window.document.createElement('a');
 		domElement.href = fullMarkerURL;
-		domElement.download = 'marker.png';
+		domElement.download = "pattern-" + (imageName || 'marker') + '.png';
 		document.body.appendChild(domElement)
 		domElement.click();
 		document.body.removeChild(domElement)
@@ -242,6 +243,10 @@
 
 	document.querySelector('#fileinput').addEventListener('change', function(){
 		var file = this.files[0];
+		imageName = file.name
+		// remove file extension
+		imageName = imageName.substring(0, imageName.lastIndexOf('.')) || imageName
+		
 		// debugger
 
 		var reader = new FileReader();
