@@ -33,6 +33,11 @@
 		text-decoration: underline;
 	}
 
+	#imageContainer img {
+		width: 100%;
+		max-width: 512px;
+	}
+
 	#topRightButtons {
 		position: fixed;
 		top: 1em;
@@ -102,6 +107,21 @@
 				</div>
 			</div>
 		</div>
+
+		<div class='mdl-grid'>
+			<div class='mdl-cell mdl-cell--3-col'></div>
+
+			<div class='mdl-cell mdl-cell--6-col'>
+				<label class="mdl-js-ripple-effect" for="imageSize">
+					<span class="">Image size 512px</span>
+					<input id='imageSize' class="mdl-slider mdl-js-slider" type="range" min="150" max="2500" value="512" >
+				</label>
+				<div class='mdl-tooltip' for='patternRatioSlider'>
+					Set the pixel width/height of the image.
+				</div>
+			</div>
+		</div>
+
 	</div>
 	<div class='mdl-cell mdl-cell--4-col'>
 		<button id='buttonDownloadEncoded' class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent'>
@@ -209,6 +229,16 @@
 		updateFullMarkerImage()
 	})
 
+	document.querySelector('#imageSize').addEventListener('input', function(){
+		// update the patternRatio number
+		var imageSize = document.querySelector('#imageSize').value
+		var domElement = document.querySelector('[for=imageSize] span')
+		domElement.innerHTML = `Image size ${imageSize}px`
+
+		// update fullMarkerImage
+		updateFullMarkerImage()
+	})
+
 
 	document.querySelector('#fileinput').addEventListener('change', function(){
 		var file = this.files[0];
@@ -225,8 +255,9 @@
 	function updateFullMarkerImage(){
 		// get patternRatio
 		var patternRatio = document.querySelector('#patternRatioSlider').value/100
+		var imageSize = document.querySelector('#imageSize').value
 
-		THREEx.ArPatternFile.buildFullMarker(innerImageURL, patternRatio, function onComplete(markerUrl){
+		THREEx.ArPatternFile.buildFullMarker(innerImageURL, patternRatio, imageSize, function onComplete(markerUrl){
 			fullMarkerURL = markerUrl
 
 			var fullMarkerImage = document.createElement('img')
