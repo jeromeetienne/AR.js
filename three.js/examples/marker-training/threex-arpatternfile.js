@@ -70,17 +70,17 @@ THREEx.ArPatternFile.encodeImage = function(image){
 //		trigger download
 //////////////////////////////////////////////////////////////////////////////
 
-THREEx.ArPatternFile.triggerDownload =  function(patternFileString){
+THREEx.ArPatternFile.triggerDownload =  function(patternFileString, fileName = 'pattern-marker.patt'){
 	// tech from https://stackoverflow.com/questions/3665115/create-a-file-in-memory-for-user-to-download-not-through-server
 	var domElement = window.document.createElement('a');
 	domElement.href = window.URL.createObjectURL(new Blob([patternFileString], {type: 'text/plain'}));
-	domElement.download = 'pattern-marker.patt';
+	domElement.download = fileName;
 	document.body.appendChild(domElement)
 	domElement.click();
 	document.body.removeChild(domElement)
 }
 
-THREEx.ArPatternFile.buildFullMarker =  function(innerImageURL, pattRatio, onComplete){
+THREEx.ArPatternFile.buildFullMarker =  function(innerImageURL, pattRatio, size, onComplete){
 	var whiteMargin = 0.1
 	var blackMargin = (1 - 2 * whiteMargin) * ((1-pattRatio)/2)
 	// var blackMargin = 0.2
@@ -89,7 +89,7 @@ THREEx.ArPatternFile.buildFullMarker =  function(innerImageURL, pattRatio, onCom
 
 	var canvas = document.createElement('canvas');
 	var context = canvas.getContext('2d')
-	canvas.width = canvas.height = 512
+	canvas.width = canvas.height = size
 
 	context.fillStyle = 'white';
 	context.fillRect(0,0,canvas.width, canvas.height)
