@@ -53,6 +53,8 @@ More details about markers:
 
 #  Get Started
 
+⚠️ *Be aware that most recent features are currently released on `dev` branch.*
+
 ## Augmented reality for the web in less than 10 lines of html
 
 A-Frame magic :) All details are explained in this super post
