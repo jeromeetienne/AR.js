@@ -51,6 +51,19 @@ More details about markers:
 * [Artoolkit Open Doc](https://github.com/artoolkit/artoolkit-docs/tree/master/3_Marker_Training)
 * [Detailed Article about markers](https://medium.com/chialab-open-source/ar-js-the-simpliest-way-to-get-cross-browser-ar-on-the-web-8f670dd45462) by [@nicolocarpignoli](https://github.com/nicolocarpignoli)
 
+# Index
+* [Get Started](#Get-Started)
+* [Guides for Beginners](#Guides-for-beginners)
+* [Advance Guides](#Advance-Guides)
+* [Examples](#Examples)
+* [Augmented Website](#Augmented-Website)
+* [Tools](#Tools)
+* [Performance](#Performance)
+* [Status](#Status)
+* [Folders](#Folders)
+* [Browser Support](#Browser-Support)
+* [Licenses](#Licenses)
+
 #  Get Started
 
 ⚠️ *Be aware that most recent features are currently released on `dev` branch.*
@@ -100,7 +113,7 @@ by [marmelab](https://marmelab.com/) featuring [François Zaninotto](https://twi
 It explain how to code a full application on phone! Step by Steps, with explaination and videos.
 Very great! the perfect step if you want to start writing AR application today.
 
-## Advanced guides
+## Advance Guides
 
 - ["Area Learning with Multi-Markers in AR.js - For a Larger & More Stable Augmented Reality"](https://medium.com/arjs/area-learning-with-multi-markers-in-ar-js-1ff03a2f9fbe)
   by [@AndraConnect](https://twitter.com/AndraConnect)
