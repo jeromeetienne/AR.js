@@ -34,6 +34,22 @@ AFRAME.registerComponent('arjs-anchor', {
 			type: 'number',
 			default: 0.6,
 		},
+		smooth: {
+			type: 'boolean',
+			default: true,
+		},
+		smoothCount: {
+			type: 'number',
+			default: 5,
+		},
+		smoothTolerance: {
+			type: 'number',
+			default: 0.01,
+		},
+		smoothThreshold: {
+			type: 'number',
+			default: 2,
+		},
 	},
 	init: function () {
 		var _this = this
@@ -100,6 +116,11 @@ AFRAME.registerComponent('arjs-anchor', {
 			}else {
 				// console.assert( this.data.preset === '', 'illegal preset value '+this.data.preset)
 			}
+
+			markerParameters.smooth = _this.data.smooth;
+			markerParameters.smoothCount = _this.data.smoothCount;
+			markerParameters.smoothTolerance = _this.data.smoothTolerance;
+			markerParameters.smoothThreshold = _this.data.smoothThreshold;
 
 			//////////////////////////////////////////////////////////////////////////////
 			//		create arAnchor

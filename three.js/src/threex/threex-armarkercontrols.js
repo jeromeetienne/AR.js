@@ -21,6 +21,14 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, para
 		changeMatrixMode : 'modelViewMatrix',
 		// minimal confidence in the marke recognition - between [0, 1] - default to 1
 		minConfidence: 0.6,
+		// turn on/off camera smoothing
+		smooth: true,
+		// number of matrices to smooth tracking over, more = smoother but slower follow
+		smoothCount: 5,
+		// distance tolerance for smoothing, if smoothThreshold # of matrices are under tolerance, tracking will stay still
+		smoothTolerance: 0.01,
+		// threshold for smoothing, will keep still unless enough matrices are over tolerance
+		smoothThreshold: 2,
 	}
 
 	// sanity check
@@ -35,10 +43,9 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, para
 	this.object3d.matrixAutoUpdate = false;
 	this.object3d.visible = false
 
-	this.debounceMatrices = []; // last DEBOUNCE_COUNT modelViewMatrix
-	this.DEBOUNCE_COUNT = 10; // average over this many
-	this.AVERAGE_MATRIX_TOLERANCE = .01; // max allowable distance from current matrix entry to average
-	this.AVERAGE_MATRIX_THRESHOLD = 5;
+	if (this.parameters.smooth) {
+		this.smoothMatrices = []; // last DEBOUNCE_COUNT modelViewMatrix
+	}
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		setParameters
@@ -127,43 +134,48 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatr
 		modelViewMatrix.multiply(markerAxisTransformMatrix)
 	}
 
+	var renderReqd = false;
+
 	// change markerObject3D.matrix based on parameters.changeMatrixMode
 	if( this.parameters.changeMatrixMode === 'modelViewMatrix' ){
-		var sum,
-				i, j,
-	 			renderReqd = false,
-	 			averages, // average values for matrix over last DEBOUNCE_COUNT
-	 			exceedsAverageTolerance = 0;
+		if (this.parameters.smooth) {
+			var sum,
+					i, j,
+					averages, // average values for matrix over last smoothCount
+					exceedsAverageTolerance = 0;
 
-		this.debounceMatrices.push(modelViewMatrix.elements.slice()); // add latest
+			this.smoothMatrices.push(modelViewMatrix.elements.slice()); // add latest
 
-		if (this.debounceMatrices.length < (this.DEBOUNCE_COUNT + 1)) {
-			markerObject3D.matrix.copy(modelViewMatrix); // not enough for average
+			if (this.smoothMatrices.length < (this.parameters.smoothCount + 1)) {
+				markerObject3D.matrix.copy(modelViewMatrix); // not enough for average
+			} else {
+				this.smoothMatrices.shift(); // remove oldest entry
+				averages = [];
+
+				for (i in modelViewMatrix.elements) { // loop over entries in matrix
+					sum = 0;
+					for (j in this.smoothMatrices) { // calculate average for this entry
+						sum += this.smoothMatrices[j][i];
+					}
+					averages[i] = sum / this.parameters.smoothCount;
+					// check how many elements vary from the average by at least AVERAGE_MATRIX_TOLERANCE
+					if (Math.abs(averages[i] - modelViewMatrix.elements[i]) >= this.parameters.smoothTolerance) {
+						exceedsAverageTolerance++;
+					}
+				}
+				
+				// if moving (i.e. at least AVERAGE_MATRIX_THRESHOLD entries are over AVERAGE_MATRIX_TOLERANCE)
+				if (exceedsAverageTolerance >= this.parameters.smoothThreshold) {
+					// then update matrix values to average, otherwise, don't render to minimize jitter
+					for (i in modelViewMatrix.elements) {
+						modelViewMatrix.elements[i] = averages[i];
+					}
+					markerObject3D.matrix.copy(modelViewMatrix);
+					renderReqd = true; // render required in animation loop
+				}
+			}
 		} else {
-			this.debounceMatrices.shift(); // remove oldest entry
-			averages = [];
-
-			for (i in modelViewMatrix.elements) { // loop over entries in matrix
-				sum = 0;
-				for (j in this.debounceMatrices) { // calculate average for this entry
-					sum += this.debounceMatrices[j][i];
-				}
-				averages[i] = sum / this.DEBOUNCE_COUNT;
-				// check how many elements vary from the average by at least AVERAGE_MATRIX_TOLERANCE
-				if (Math.abs(averages[i] - modelViewMatrix.elements[i]) >= this.AVERAGE_MATRIX_TOLERANCE) {
-					exceedsAverageTolerance++;
-				}
-			}
-			
-			// if moving (i.e. at least AVERAGE_MATRIX_THRESHOLD entries are over AVERAGE_MATRIX_TOLERANCE)
-			if (exceedsAverageTolerance >= this.AVERAGE_MATRIX_THRESHOLD) {
-				// then update matrix values to average, otherwise, don't render to minimize jitter
-				for (i in modelViewMatrix.elements) {
-					modelViewMatrix.elements[i] = averages[i];
-				}
-				markerObject3D.matrix.copy(modelViewMatrix);
-				renderReqd = true; // render required in animation loop
-			}
+			markerObject3D.matrix.copy(modelViewMatrix)
 		}
 	}else if( this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
 		markerObject3D.matrix.getInverse( modelViewMatrix )
