@@ -211,6 +211,10 @@ AFRAME.registerPrimitive('a-anchor', AFRAME.utils.extendDeep({}, AFRAME.primitiv
 		'preset': 'arjs-anchor.preset',
 		'minConfidence': 'arjs-anchor.minConfidence',
 		'markerhelpers': 'arjs-anchor.markerhelpers',
+		'smooth': 'arjs-anchor.smooth',
+		'smoothCount': 'arjs-anchor.smoothCount',
+		'smoothTolerance': 'arjs-anchor.smoothTolerance',
+		'smoothThreshold': 'arjs-anchor.smoothThreshold',
 
 		'hit-testing-renderDebug': 'arjs-hit-testing.renderDebug',
 		'hit-testing-enabled': 'arjs-hit-testing.enabled',
@@ -244,6 +248,10 @@ AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitiv
 		'preset': 'arjs-anchor.preset',
 		'minConfidence': 'arjs-anchor.minConfidence',
 		'markerhelpers': 'arjs-anchor.markerhelpers',
+		'smooth': 'arjs-anchor.smooth',
+		'smoothCount': 'arjs-anchor.smoothCount',
+		'smoothTolerance': 'arjs-anchor.smoothTolerance',
+		'smoothThreshold': 'arjs-anchor.smoothThreshold',
 
 		'hit-testing-renderDebug': 'arjs-hit-testing.renderDebug',
 		'hit-testing-enabled': 'arjs-hit-testing.enabled',
