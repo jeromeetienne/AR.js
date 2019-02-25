@@ -36,7 +36,7 @@ AFRAME.registerComponent('arjs-anchor', {
 		},
 		smooth: {
 			type: 'boolean',
-			default: true,
+			default: false,
 		},
 		smoothCount: {
 			type: 'number',

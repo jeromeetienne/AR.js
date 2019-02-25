@@ -60,7 +60,7 @@ Here are the attributes for this entity
 | value | value of the barcode - IIF type='barcode' | artoolkitmarker.barcodeValue |
 | preset | parameters preset - ['hiro', 'kanji'] | artoolkitmarker.preset |
 | emitevents | emits 'markerFound' and 'markerLost' events - ['true', 'false'] | - |
-| smooth | turn on/off camera smoothing - ['true', 'false'] - default: true | - |
+| smooth | turn on/off camera smoothing - ['true', 'false'] - default: false | - |
 | smoothCount | number of matrices to smooth tracking over, more = smoother but slower follow - default: 5 | - |
 | smoothTolerance | distance tolerance for smoothing, if smoothThreshold # of matrices are under tolerance, tracking will stay still - default: 0.01 | - |
 | smoothThreshold | threshold for smoothing, will keep still unless enough matrices are over tolerance - default: 2 | - |
