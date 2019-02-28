@@ -54,7 +54,7 @@ More details about markers:
 # Index
 * [Get Started](#Get-Started)
 * [Guides for Beginners](#Guides-for-beginners)
-* [Advance Guides](#Advance-Guides)
+* [Advanced Guides](#Advanced-Guides)
 * [Examples](#Examples)
 * [Augmented Website](#Augmented-Website)
 * [Tools](#Tools)
