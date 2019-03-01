@@ -66,11 +66,11 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, para
 
 			_this.parameters[ key ] = newValue
 		}
-  }
+	}
 
-  if (this.parameters.smooth) {
+	if (this.parameters.smooth) {
 		this.smoothMatrices = []; // last DEBOUNCE_COUNT modelViewMatrix
-  }
+	}
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
