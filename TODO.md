@@ -1,5 +1,5 @@
-INDEX
-=====
+# INDEX
+
 [New API Aframe](#New-API---aframe)
 
 [New API](#New-API)
@@ -24,8 +24,8 @@ INDEX
 # *The following is a part of [TODO.md](https://github.com/jeromeetienne/AR.js/blob/master/TODO.md)*
 _It has not been updated since 26 Aug 2017_
 
-New API - aframe
-================
+# New API - aframe
+
 
 ## WIP
 
@@ -111,8 +111,8 @@ New API - aframe
   - tracking only tho, clearly no video
 
 
-New API
-=======
+# New API
+
 
 ## WIP 
 - honor marker preset
@@ -173,8 +173,8 @@ New API
   - button - goto-learner
 - DONE tango point cloud visible
 
-New build with multiple tracking
-=================================
+# New build with multiple tracking
+
 
 ## WIP
 - support all tracking but split the build
@@ -217,8 +217,8 @@ New build with multiple tracking
   - some work done in webar-playground
   - https://twitter.com/jerome_etienne/status/888008537984708608
 
-aframe-ar.js new
-================
+# aframe-ar.js new
+
 - there is a resize every 1/60 seconds ??
 - test on mobile
 - aframe-ar.js new version
@@ -302,8 +302,8 @@ aframe-ar.js new
 
 ---
 
-TODO
-====
+# TODO
+
 
 ## WIP
 - if artoolkit arbackend and marker facing camera, then change the tweening
@@ -445,8 +445,8 @@ TODO
   
 
 
-webvr-polyfill
-==============
+# webvr-polyfill
+
 - GOAL: works well using only the positional tracking, not the stereo display
   - thus it works well with all three.js examples
 - handle resize - currently the canvas isnt using the css it should
@@ -457,8 +457,8 @@ webvr-polyfill
 - issue with the projection matrix being inverse in y and z
 - LATER: make it work with a-frame
 
-Profile
-=========
+# Profile
+
 - do a threex-artoolkitprofile.js with various performance profile
   - var arToolKitProfile = new THREEx.ARToolKitProfile(type)
   - may be dynamic - for resolution - 'dynamic'
@@ -472,8 +472,8 @@ Profile
   - it has a `<select>` and store it in the storage - desktop-normal - phone-normal - phone-slow - dynamic
   - in ctor, if there is a local storage use this
 
-Idea about performance - js profiling
-=======================================
+# Idea about performance - js profiling
+
 - do it on canary. this is the most advanced tool for that
   - POST: optimising AR.js with chromedevtools
 - more than 70% of the time is used to copy the image in the HEAP
@@ -487,11 +487,11 @@ Idea about performance - js profiling
 
 ---
 
-# *The following is a part of [TODO2.md](https://github.com/jeromeetienne/AR.js/blob/master/TODO2.md)*
+# *The following is a part of [TODO2.md](https://github.com/jeromeetienne/AR.js/blob/8de374e725e4d9d9043aec137438fafdbad58e65/TODO2.md)*
 _It has not been updated since 2 May 2018_
 
-Porting thinner border
-========================
+# Porting thinner border
+
 
 ## WIP
 - add a test in three.js/test
@@ -530,8 +530,8 @@ Porting thinner border
 - DONE make the generator.html able to tune setPattRatio
 
 ---
-Clean AR.js
-===========
+# Clean AR.js
+
 ## WIP
 - remove all the artoolkit in classname and filename
   - just keep a layer for backward compatibility
