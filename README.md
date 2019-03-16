@@ -142,6 +142,9 @@ The service is available [webxr.io/augmented-website](https://webxr.io/augmented
 - [ARCode Generator](https://jeromeetienne.github.io/AR.js/three.js/examples/arcode.html):
   Generator of AR-Code
   ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arcode.html))
+- [AR-gif](https://github.com/rodrigocam/ar-gif):
+   Easy to use web components to do web augmented reality. Currently supporting gifs, but open for contributions to
+   add 3d objects, videos and so on.
 
 # Performance
 
