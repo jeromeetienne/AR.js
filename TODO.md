@@ -1,10 +1,37 @@
-## New API - aframe
+# INDEX
+
+[New API Aframe](#New-API---aframe)
+
+[New API](#New-API)
+
+[New build with multiple tracking](#New-build-with-multiple-tracking)
+
+[aframe-ar.js new](#aframe-ar.js-new)
+
+[TODO](#TODO)
+
+[webvr-polyfill](#webvr-polyfill)
+
+[Profile](#profile)
+
+[Idea about performance - js profiling](#Idea-about-performance---js-profiling)
+
+[Porting thinner border](#Porting-thinner-border)
+
+[Clean AR.js](#Clean-AR.js)
+
+
+# *The following is a part of [TODO.md](https://github.com/jeromeetienne/AR.js/blob/master/TODO.md)*
+_It has not been updated since 26 Aug 2017_
+
+# New API - aframe
+
+
+## WIP
+
 - fix subMarkerControls visibility in babylon.js
   - put subMarkerControls visibility into an external file. with 2 handling for three.js and babylon.js
   
-
-- DONE put multimarkers learner on location.search and not location.hash http://127.0.0.1:3000/three.js/examples/multi-markers/examples/player.html#%7B%22trackingBackend%22%3A%22aruco%22%7D
-- DONE port webar-playground on new API
 
 - once this refactor is done, publish is as AR.js v2.0 with a blog post
 
@@ -15,9 +42,6 @@
   - which version remains in ar.js session and currently
 
 - have a source in images and video. in three.js and aframe.js
-
-- DONE ensure backward compatibility of aframe api
-  - it seems works ?
 
 - remove the area from the trackingMethod
 - better handling of the area stuff in trackingMethod
@@ -39,6 +63,14 @@
     - area-aruco-cameraTransformMatrix
     - what is it on tango ? some fictuous barcode ?
   - trackingBackend is about the session
+
+## Done
+
+- DONE put multimarkers learner on location.search and not location.hash http://127.0.0.1:3000/three.js/examples/multi-markers/examples/player.html##%7B%22trackingBackend%22%3A%22aruco%22%7D
+- DONE port webar-playground on new API
+
+- DONE ensure backward compatibility of aframe api
+  - it seems works ?
 
 - DONE multi-marker learner doesnt work on firefox
 - DONE make trackingBackend switchable in arjs-session.html
@@ -79,8 +111,10 @@
   - tracking only tho, clearly no video
 
 
-## New API
+# New API
 
+
+## WIP 
 - honor marker preset
   - hiro + kanji and area
   - old issue with the same markers ?? deep in jsartoolkit
@@ -116,6 +150,8 @@
   - arkit
   - best
 
+## DONE
+
 - DONE area-artoolkit fails in cameraTransformMatrix
   - wtf ??? so issue upstream ? how to reproduce in three.js
   - is the error in three.js level, or aframe level
@@ -137,7 +173,10 @@
   - button - goto-learner
 - DONE tango point cloud visible
 
-## New build with multiple tracking
+# New build with multiple tracking
+
+
+## WIP
 - support all tracking but split the build
 - ar.js itself
 - ar-tracking-artoolkit.js
@@ -179,6 +218,7 @@
   - https://twitter.com/jerome_etienne/status/888008537984708608
 
 # aframe-ar.js new
+
 - there is a resize every 1/60 seconds ??
 - test on mobile
 - aframe-ar.js new version
@@ -201,8 +241,8 @@
 - rename THREEx.ArToolkitContext.getProjectionMatrix into .getArtoolkitProjectMatrix
 - make multi-marker without page reload
 
----
-  
+## DONE/CLOSED
+
 - DONE make multi-markers to support aruco too
   - add arBackend in learner.html input
   - handle arBackend definition in player.html
@@ -261,7 +301,11 @@
   
 
 ---
+
 # TODO
+
+
+## WIP
 - if artoolkit arbackend and marker facing camera, then change the tweening
   - specific fix to artoolkit
 - TODO super unclear how to get the backward facing camera...
@@ -284,6 +328,10 @@
   - to replace the demo.html in a-frame - which is super broken anyway
   - 3 groups of parameters : source, context, controls. make it 3 group on screen too
 
+- currently the source image ratio is always in 640x480 :(
+  - the aspect of the webcam should depends on the screens
+  - it will improve the accuracy of the marker detection. trackable from further away
+
 ---
 
 - do the initial tunning of camera resolution to have the same aspect as the screen resolution
@@ -293,6 +341,8 @@
     - thus no resize being late issue
 
 ---
+
+## DONE
 
 - DONE do a pass on THREEx.ArToolkitSource
   - IOS support - https://github.com/jeromeetienne/AR.js/issues/90
@@ -327,6 +377,8 @@
   - like you did in threex.arealearning.js
   - if controls.parameters.helperEnabled: true, then the controls will add the helper automatically
 
+- DONE fix projection camera which inversing y axis, and looking toward positive z
+  - this affect webvr polyfill in three.js demo
 
 - about.me in ar - augmented.club - augmented.whoswho - augmented.cat - augmented.fans - ar.codes
   - multiple link
@@ -394,6 +446,7 @@
 
 
 # webvr-polyfill
+
 - GOAL: works well using only the positional tracking, not the stereo display
   - thus it works well with all three.js examples
 - handle resize - currently the canvas isnt using the css it should
@@ -405,6 +458,7 @@
 - LATER: make it work with a-frame
 
 # Profile
+
 - do a threex-artoolkitprofile.js with various performance profile
   - var arToolKitProfile = new THREEx.ARToolKitProfile(type)
   - may be dynamic - for resolution - 'dynamic'
@@ -415,17 +469,11 @@
   - but no database and no authentication needed
 - DONE artoolkit-profile.html to store the profile in localstorage
   - it allows you to select which profile you like
-  - it has a <select> and store it in the storage - desktop-normal - phone-normal - phone-slow - dynamic
+  - it has a `<select>` and store it in the storage - desktop-normal - phone-normal - phone-slow - dynamic
   - in ctor, if there is a local storage use this
 
-# TODO
-- DONE fix projection camera which inversing y axis, and looking toward positive z
-  - this affect webvr polyfill in three.js demo
-- currently the source image ratio is always in 640x480 :(
-  - the aspect of the webcam should depends on the screens
-  - it will improve the accuracy of the marker detection. trackable from further away
-
 # Idea about performance - js profiling
+
 - do it on canary. this is the most advanced tool for that
   - POST: optimising AR.js with chromedevtools
 - more than 70% of the time is used to copy the image in the HEAP
@@ -436,3 +484,68 @@
   - http://kapadia.github.io/emscripten/2013/09/13/emscripten-pointers-and-pointers.html
   - this explains how to pass a pointer from a typearray to c++ 
   - this would avoid the dataHeap.set() - 43%
+
+---
+
+# *The following is a part of [TODO2.md](https://github.com/jeromeetienne/AR.js/blob/8de374e725e4d9d9043aec137438fafdbad58e65/TODO2.md)*
+_It has not been updated since 2 May 2018_
+
+# Porting thinner border
+
+
+## WIP
+- add a test in three.js/test
+  - able to set setPattRatio
+- change that i broke something ? super unlikely
+  - be sure not to leave a mess tho
+  - where to put an example ?
+  - only aframe examples
+  - currently there are 2 examples
+- check that it works well, then commit to dev and release to master
+- how to know if it works well ?
+  - test manually
+  - add example in aframe
+  - add a test
+    - just take an picture of the generator with a marker
+    - TODO make test-runner.html to accept url of the image i want
+
+- test for setPattRatio
+  - aframe doesnt load image in test-runner.html - but works in default-tinner-border.html
+  - but work in three.js/test-runner.html so likely a small issue in ar.js aframe
+- change test-runner to get sourceImageURL in the query
+  - change the formats2
+---
+
+- threex.jsaruco see about tuning the fov manually
+- in threex.jsaruco
+  - fix path in examples
+  - experiments with focal change - dat.gui to tune
+  - can you find a value which works on macbook
+- multi-marker: put threex.screenasportal elsewhere ?
+  - three.js/demos ? YES
+  - http://127.0.0.1:8080/three.js/examples/multi-markers/examples/threex-screenasportal/
+- multi-marker: make ar.js marker by default in the multi marker screen
+
+## DONE
+- DONE make the generator.html able to tune setPattRatio
+
+---
+# Clean AR.js
+
+## WIP
+- remove all the artoolkit in classname and filename
+  - just keep a layer for backward compatibility
+- remove three.js dependancy
+- remove any tango support
+- clean up data
+
+---
+## DONE
+- DONE put three.js/experiments/shadow markercloak + liquid-marker as /demos
+- DONE in arjs-face make a nice examples of face tracking
+- DONE rename EasyARjs into PortableARjs
+- DONE remove webvr-polyfill
+- DONE merge to master
+- DONE in demos/ and experiments/ avoid to have .html directly, move each experiments in its own folders
+- DONE fix the testing, seems to have projection issue on image read, works on webcam tho
+- DONE import the new babylon.js port
