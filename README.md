@@ -71,28 +71,28 @@ More details about markers:
 
 ## Augmented reality for the web in less than 10 lines of html
 
-A-Frame magic :) All details are explained in this super post
-["Augmented Reality in 10 Lines of HTML - AR.js with a-frame magic"](https://medium.com/arjs/augmented-reality-in-10-lines-of-html-4e193ea9fdbf)
-by
-[@AndraConnect](https://twitter.com/AndraConnect).
-
 ```html
 <!doctype HTML>
 <html>
-<script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+<script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
 <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.2/aframe/build/aframe-ar.js"></script>
   <body style='margin : 0px; overflow: hidden;'>
     <a-scene embedded arjs>
-  	<a-marker preset="hiro">
-            <a-box position='0 0.5 0' material='color: black;'></a-box>
-  	</a-marker>
-  	<a-entity camera></a-entity>
+      <a-marker preset="hiro">
+          <a-box position='0 0.5 0' material='color: yellow;'></a-box>
+      </a-marker>
+      <a-entity camera></a-entity>
     </a-scene>
   </body>
 </html>
 ```
 
-See on [codepen](https://codepen.io/jeromeetienne/pen/mRqqzb) or [bl.ocks.org](https://bl.ocks.org/jeromeetienne/feeb69257803e69f18dc3ea5f4fc6d71)
+See on [codepen](https://codepen.io/nicolocarpignoli/pen/vMBgob)
+
+A-Frame magic :) All details are explained in this super post
+["Augmented Reality in 10 Lines of HTML - AR.js with a-frame magic"](https://medium.com/arjs/augmented-reality-in-10-lines-of-html-4e193ea9fdbf)
+by
+[@AndraConnect](https://twitter.com/AndraConnect).
 
 ## Guides for beginners
 We started a [AR.js blog](https://medium.com/arjs), thus we can write about
