@@ -131,11 +131,10 @@ Try to get inspired by this great works:
 - [Examples from official AR.js doc](https://jeromeetienne.github.io/AR.js-docs/misc/EXAMPLES.html)
 
 # Related Projects
-
 - [Examples inspired from AR.js - not AR.js based](https://github.com/stemkoski/AR-Examples) from [@stemkoski](https://github.com/stemkoski)
-- [ARCode Generator](https://jeromeetienne.github.io/AR.js/three.js/examples/arcode.html):
-  Generator of AR-Code
-  ([source](https://github.com/jeromeetienne/AR.js/blob/master/three.js/examples/arcode.html))
+- [AR-gif](https://github.com/rodrigocam/ar-gif):
+   Easy to use web components to do web augmented reality. Currently supporting gifs, but open for contributions to
+   add 3d objects, videos and so on.
 
 ## Augmented Website
 
@@ -143,7 +142,6 @@ Try to get inspired by this great works:
 The service is available [webxr.io/augmented-website](https://webxr.io/augmented-website/)
 
 [![Augmented Website](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://webxr.io/augmented-website/)
-
 
 # Tools
 
