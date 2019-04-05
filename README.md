@@ -66,6 +66,8 @@ More details about markers:
 
 ⚠️ *Be aware that most recent features are currently released on `dev` branch.*
 
+💻If you want to contribute and take part of the AR.js community, it is now possible! Check out this [public trello](https://trello.com/b/63F7JlvD/arjs) board and [ask for an invitation](https://github.com/jeromeetienne/AR.js/issues/469), this way you can discuss with all members and begin to contribute.
+
 
 #  Get Started
 
