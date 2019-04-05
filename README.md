@@ -120,7 +120,7 @@ Very great! the perfect step if you want to start writing AR application today.
   by [@AndraConnect](https://twitter.com/AndraConnect)
 - Great post about [WebAR for designer](http://www.nexusinteractivearts.com/webar/)
 by [nexus interactive arts](http://www.nexusinteractivearts.com/)
-- [How to deliver AR.js only with a QR Code](https://medium.com/@nicolcarpignoli/how-to-deliver-ar-on-the-web-only-with-a-qr-code-613874cfc537)
+- [How to deliver AR.js only with a QR Code](https://medium.com/chialab-open-source/how-to-deliver-ar-on-the-web-only-with-a-qr-code-e24b7b61f8cb)
 - [How to handle click with AR.js](https://medium.com/chialab-open-source/how-to-handle-click-events-on-ar-js-58fcacb77c4)
 
 
