@@ -19,7 +19,7 @@ minify-main: build-main
 
 build-lean:
 	echo	> build/ar.lean.js
-	cat	vendor/jsartoolkit5/js/artoolkit.min.js		>> build/ar.lean.js
+	cat	vendor/jsartoolkit5/build/artoolkit.min.js	>> build/ar.lean.js
 	cat	vendor/signals.min.js				>> build/ar.lean.js
 	cat	src/threex/*.js					\
 		src/new-api/*.js				\
