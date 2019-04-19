@@ -206,6 +206,8 @@ Other crazy ideas we’ve been working on include a [hole in the wall](https://t
   It allows the things three.js extension does. Here are some slides
   [aframe-artoolkit](http://jeromeetienne.github.io/slides/artoolkit-aframe/)
 - webvr-polyfill: it is kind of working - still a work-in-progress
+- Gitter discussion space: https://gitter.im/AR-js/Lobby
+- Trello board for ongoing work: https://trello.com/b/63F7JlvD/arjs
 
 # Folders
 - ```/three.js``` is the extension to use it with [pure three.js](https://threejs.org)
