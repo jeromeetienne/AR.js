@@ -51,32 +51,48 @@ More details about markers:
 * [Artoolkit Open Doc](https://github.com/artoolkit/artoolkit-docs/tree/master/3_Marker_Training)
 * [Detailed Article about markers](https://medium.com/chialab-open-source/ar-js-the-simpliest-way-to-get-cross-browser-ar-on-the-web-8f670dd45462) by [@nicolocarpignoli](https://github.com/nicolocarpignoli)
 
+# Index
+* [Get Started](#Get-Started)
+* [Guides for Beginners](#Guides-for-beginners)
+* [Advanced Guides](#Advanced-Guides)
+* [Examples](#Examples)
+* [Augmented Website](#Augmented-Website)
+* [Tools](#Tools)
+* [Performance](#Performance)
+* [Status](#Status)
+* [Folders](#Folders)
+* [Browser Support](#Browser-Support)
+* [Licenses](#Licenses)
+
+⚠️ *Be aware that most recent features are currently released on `dev` branch.*
+
+
 #  Get Started
 
 ## Augmented reality for the web in less than 10 lines of html
 
-A-Frame magic :) All details are explained in this super post
-["Augmented Reality in 10 Lines of HTML - AR.js with a-frame magic"](https://medium.com/arjs/augmented-reality-in-10-lines-of-html-4e193ea9fdbf)
-by
-[@AndraConnect](https://twitter.com/AndraConnect).
-
 ```html
 <!doctype HTML>
 <html>
-<script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
-<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/build/aframe-ar.js"> </script>
+<script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
+<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.2/aframe/build/aframe-ar.js"></script>
   <body style='margin : 0px; overflow: hidden;'>
     <a-scene embedded arjs>
-  	<a-marker preset="hiro">
-            <a-box position='0 0.5 0' material='color: black;'></a-box>
-  	</a-marker>
-  	<a-entity camera></a-entity>
+      <a-marker preset="hiro">
+          <a-box position='0 0.5 0' material='color: yellow;'></a-box>
+      </a-marker>
+      <a-entity camera></a-entity>
     </a-scene>
   </body>
 </html>
 ```
 
-See on [codepen](https://codepen.io/jeromeetienne/pen/mRqqzb) or [bl.ocks.org](https://bl.ocks.org/jeromeetienne/feeb69257803e69f18dc3ea5f4fc6d71)
+See on [codepen](https://codepen.io/nicolocarpignoli/pen/vMBgob)
+
+A-Frame magic :) All details are explained in this super post
+["Augmented Reality in 10 Lines of HTML - AR.js with a-frame magic"](https://medium.com/arjs/augmented-reality-in-10-lines-of-html-4e193ea9fdbf)
+by
+[@AndraConnect](https://twitter.com/AndraConnect).
 
 ## Guides for beginners
 We started a [AR.js blog](https://medium.com/arjs), thus we can write about
@@ -104,7 +120,7 @@ Very great! the perfect step if you want to start writing AR application today.
   by [@AndraConnect](https://twitter.com/AndraConnect)
 - Great post about [WebAR for designer](http://www.nexusinteractivearts.com/webar/)
 by [nexus interactive arts](http://www.nexusinteractivearts.com/)
-- [How to deliver AR.js only with a QR Code](https://medium.com/@nicolcarpignoli/how-to-deliver-ar-on-the-web-only-with-a-qr-code-613874cfc537)
+- [How to deliver AR.js only with a QR Code](https://medium.com/chialab-open-source/how-to-deliver-ar-on-the-web-only-with-a-qr-code-e24b7b61f8cb)
 - [How to handle click with AR.js](https://medium.com/chialab-open-source/how-to-handle-click-events-on-ar-js-58fcacb77c4)
 
 
@@ -112,15 +128,20 @@ by [nexus interactive arts](http://www.nexusinteractivearts.com/)
 
 Try to get inspired by this great works:
 
-- [Full set of AR.js examples](https://github.com/stemkoski/AR-Examples) from [@stemkoski](https://github.com/stemkoski)
 - [Examples from official AR.js doc](https://jeromeetienne.github.io/AR.js-docs/misc/EXAMPLES.html)
 
+# Related Projects
+- [Examples inspired from AR.js - not AR.js based](https://github.com/stemkoski/AR-Examples) from [@stemkoski](https://github.com/stemkoski)
+- [AR-gif](https://github.com/rodrigocam/ar-gif):
+   Easy to use web components to do web augmented reality. Currently supporting gifs, but open for contributions to
+   add 3d objects, videos and so on.
+
 ## Augmented Website
+
 [Seminal post](https://medium.com/arjs/augmenting-the-web-page-e893f2d199b8) explaining the concept.
 The service is available [webxr.io/augmented-website](https://webxr.io/augmented-website/)
 
 [![Augmented Website](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://webxr.io/augmented-website/)
-
 
 # Tools
 

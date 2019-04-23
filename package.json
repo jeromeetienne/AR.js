@@ -4,7 +4,8 @@
   "description": "Efficient Augmented Reality for the Web",
   "main": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "make minify"
   },
   "files": [
     "three.js/build",
