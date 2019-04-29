@@ -143,6 +143,10 @@ The service is available [webxr.io/augmented-website](https://webxr.io/augmented
 
 [![Augmented Website](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://webxr.io/augmented-website/)
 
+# Community
+- AR.js on gitter: https://gitter.im/AR-js/Lobby
+- Trello board for ongoing work: https://trello.com/b/63F7JlvD/arjs
+
 # Tools
 
 - [Pattern Marker Generator](https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html):
