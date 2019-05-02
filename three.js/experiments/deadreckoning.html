@@ -77,13 +77,13 @@
 
 	arToolkitSource.init(function onReady(){
 		// handle resize of renderer
-		arToolkitSource.onResize(renderer.domElement)
+		arToolkitSource.onResizeElement()
 	})
 
 	// handle resize
 	window.addEventListener('resize', function(){
 		// handle arToolkitSource resize
-		arToolkitSource.onResize(renderer.domElement)
+		arToolkitSource.onResizeElement()
 	})
 
 	////////////////////////////////////////////////////////////////////////////////
