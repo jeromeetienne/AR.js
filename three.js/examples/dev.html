@@ -49,7 +49,7 @@
 	var directionalLight = new THREE.DirectionalLight( 0x887766 );
 	directionalLight.position.set( -1, 1, 1 ).normalize();
 	scene.add( directionalLight );
-	
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
@@ -63,38 +63,38 @@
 	////////////////////////////////////////////////////////////////////////////////
 
 	var arToolkitSource = new THREEx.ArToolkitSource({
-		// to read from the webcam 
+		// to read from the webcam
 		sourceType : 'webcam',
 
 		// // to read from an image
 		// sourceType : 'image',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/armchair.jpg',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/armchair.jpg',
 
 		// to read from a video
 		// sourceType : 'video',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',
 	})
 
 	arToolkitSource.init(function onReady(){
 		onResize()
 	})
-	
+
 	// handle resize
 	window.addEventListener('resize', function(){
 		onResize()
 	})
 	function onResize(){
-		arToolkitSource.onResizeElement()	
-		arToolkitSource.copyElementSizeTo(renderer.domElement)	
+		arToolkitSource.onResizeElement()
+		arToolkitSource.copyElementSizeTo(renderer.domElement)
 		if( arToolkitContext.arController !== null ){
-			arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)	
-		}	
+			arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
-	////////////////////////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////////////////////////
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
@@ -123,17 +123,17 @@
 		arToolkitContext.update( arToolkitSource.domElement )
 	})
 
-	
+
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
-	
+
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
 	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 		// type: 'barcode',
 		// barcodeValue: 5,
-		
+
 		type : 'pattern',
 		patternUrl : THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt',
 	})
@@ -151,8 +151,8 @@
 	})
 	onRenderFcts.push(function(delta){
 		smoothedControls.update(markerRoot)
-	})	
-	
+	})
+
 	// smoothedControls.addEventListener('becameVisible', function(){
 	// 	console.log('becameVisible event notified')
 	// })
@@ -167,7 +167,7 @@
 	// var arWorldRoot = markerRoot
 	var arWorldRoot = smoothedRoot
 
-	var mesh = new THREE.AxisHelper()
+	var mesh = new THREE.AxesHelper()
 	// markerRoot.add(mesh)
 	arWorldRoot.add(mesh)
 
@@ -182,14 +182,14 @@
 	mesh.position.y	= geometry.parameters.height/2
 	// markerRoot.add( mesh );
 	arWorldRoot.add(mesh)
-	
+
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	var material	= new THREE.MeshNormalMaterial(); 
+	var material	= new THREE.MeshNormalMaterial();
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= 0.5
 	// markerRoot.add( mesh );
 	arWorldRoot.add( mesh );
-	
+
 	onRenderFcts.push(function(delta){
 		mesh.rotation.x += delta * Math.PI
 	})
