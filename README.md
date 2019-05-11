@@ -100,13 +100,11 @@ by
 We started a [AR.js blog](https://medium.com/arjs), thus we can write about
 all the crazy ideas related to AR.js.
 
+- [AR.js introduction and insight on markers](https://medium.com/@nicolcarpignoli/ar-js-the-simplest-way-to-get-cross-browser-augmented-reality-on-the-web-10cbc721debc)
 - [Details about 3D models that can be used with AR.js](https://medium.com/@akashkuttappa/using-3d-models-with-ar-js-and-a-frame-84d462efe498)
-- [AR.js introduction and insight on patterns](https://medium.com/chialab-open-source/ar-js-the-simpliest-way-to-get-cross-browser-ar-on-the-web-8f670dd45462)
 - ["WebVR for Augmented Reality - Using WebVR to write cross-platform AR applications"](https://medium.com/arjs/webvr-for-augmented-reality-f1e69a505902)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)
 - ["Augmenting The Web Page - Bringing augmenting reality to normal web pages"](https://medium.com/arjs/augmenting-the-web-page-e893f2d199b8)
-  by [@jerome_etienne](https://twitter.com/jerome_etienne)
-- ["Server Rendering for Augmented Reality - Cloud Rendering with Web Standards"](https://medium.com/arjs/server-rendering-for-augmented-reality-2de0a71aae04)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)
 - ["AR-Code:a Fast Path to Augmented Reality - From QR Code to AR.js content"](https://medium.com/arjs/ar-code-a-fast-path-to-augmented-reality-60e51be3cbdf)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)
@@ -118,12 +116,13 @@ Very great! the perfect step if you want to start writing AR application today.
 
 ## Advanced guides
 
+- [How to deliver AR.js only with a QR Code](https://medium.com/@nicolcarpignoli/how-to-deliver-ar-on-the-web-only-with-a-qr-code-139bb90e82f1)
+- [How to handle click with AR.js](https://medium.com/@nicolcarpignoli/how-to-handle-click-events-on-ar-js-f397ea5994d)
+- [10 tips to enhance your AR.js app performances](https://medium.com/@nicolcarpignoli/10-tips-to-enhance-your-ar-js-app-8b44c6faffca)
 - ["Area Learning with Multi-Markers in AR.js - For a Larger & More Stable Augmented Reality"](https://medium.com/arjs/area-learning-with-multi-markers-in-ar-js-1ff03a2f9fbe)
   by [@AndraConnect](https://twitter.com/AndraConnect)
 - Great post about [WebAR for designer](http://www.nexusinteractivearts.com/webar/)
 by [nexus interactive arts](http://www.nexusinteractivearts.com/)
-- [How to deliver AR.js only with a QR Code](https://medium.com/@nicolcarpignoli/how-to-deliver-ar-on-the-web-only-with-a-qr-code-613874cfc537)
-- [How to handle click with AR.js](https://medium.com/chialab-open-source/how-to-handle-click-events-on-ar-js-58fcacb77c4)
 
 
 # Examples
