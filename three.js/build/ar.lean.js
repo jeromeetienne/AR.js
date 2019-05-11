@@ -1029,15 +1029,13 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 			image = this.image;
 		}
 
-		if (image.videoWidth > image.videoHeight)
-		{
-			//landscape
+		if( (image.nodeName === 'IMG' && image.width > image.height ) ||
+			(image.nodeName === 'VIDEO' && image.videoWidth > image.videoHeight) ){
+			// if landscape
 			this.ctx.drawImage(image, 0, 0, this.canvas.width, this.canvas.height); // draw video
-		}
-		else {
-
+		}else{
+			// if portrait
 			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-			//portrait
 			var scale = this.canvas.height / this.canvas.width;
 			var scaledHeight = this.canvas.width*scale;
 			var scaledWidth = this.canvas.height*scale;
@@ -1716,7 +1714,7 @@ THREEx.ARClickability = function(sourceElement){
 	this._cameraPicking = new THREE.PerspectiveCamera(42, fullWidth / fullHeight, 0.1, 100);	
 
 console.warn('THREEx.ARClickability works only in modelViewMatrix')
-console.warn('OBSOLETE OBSOLETE! instead use THREEx.HitTestingPlane')
+console.warn('OBSOLETE OBSOLETE! instead use THREEx.HitTestingPlane or THREEx.HitTestingTango')
 }
 
 THREEx.ARClickability.prototype.onResize = function(){
@@ -1748,6 +1746,42 @@ THREEx.ARClickability.prototype.computeIntersects = function(domEvent, objects){
 
 THREEx.ARClickability.prototype.update = function(){
 
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.ARClickability.tangoPickingPointCloud = function(artoolkitContext, mouseX, mouseY){
+	
+// THIS IS CRAP!!!! use THREEx.HitTestingTango
+	
+	var vrDisplay = artoolkitContext._tangoContext.vrDisplay
+        if (vrDisplay === null ) return null
+        var pointAndPlane = vrDisplay.getPickingPointAndPlaneInPointCloud(mouseX, mouseY)
+        if( pointAndPlane == null ) {
+                console.warn('Could not retrieve the correct point and plane.')
+                return null
+        }
+	
+	// FIXME not sure what this is
+	var boundingSphereRadius = 0.01	
+	
+	// the bigger the number the likeliest it crash chromium-webar
+
+        // Orient and position the model in the picking point according
+        // to the picking plane. The offset is half of the model size.
+        var object3d = new THREE.Object3D
+        THREE.WebAR.positionAndRotateObject3DWithPickingPointAndPlaneInPointCloud(
+                pointAndPlane, object3d, boundingSphereRadius
+        )
+	object3d.rotateZ(-Math.PI/2)
+
+	// return the result
+	var result = {}
+	result.position = object3d.position
+	result.quaternion = object3d.quaternion
+	return result
 }
 var THREEx = THREEx || {}
 /**
@@ -1995,6 +2029,14 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, para
 		changeMatrixMode : 'modelViewMatrix',
 		// minimal confidence in the marke recognition - between [0, 1] - default to 1
 		minConfidence: 0.6,
+		// turn on/off camera smoothing
+		smooth: false,
+		// number of matrices to smooth tracking over, more = smoother but slower follow
+		smoothCount: 5,
+		// distance tolerance for smoothing, if smoothThreshold # of matrices are under tolerance, tracking will stay still
+		smoothTolerance: 0.01,
+		// threshold for smoothing, will keep still unless enough matrices are over tolerance
+		smoothThreshold: 2,
 	}
 
 	// sanity check
@@ -2008,7 +2050,7 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, para
 	this.object3d = object3d
 	this.object3d.matrixAutoUpdate = false;
 	this.object3d.visible = false
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		setParameters
 	//////////////////////////////////////////////////////////////////////////////
@@ -2034,6 +2076,10 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, para
 		}
 	}
 
+	if (this.parameters.smooth) {
+		this.smoothMatrices = []; // last DEBOUNCE_COUNT modelViewMatrix
+	}
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
@@ -2047,6 +2093,8 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, para
 		// TODO create a ._initAruco
 		// put aruco second
 		this._arucoPosit = new POS.Posit(this.parameters.size, _this.context.arucoContext.canvas.width)
+	}else if( _this.context.parameters.trackingBackend === 'tango' ){
+		this._initTango()
 	}else console.assert(false)
 }
 
@@ -2065,7 +2113,7 @@ ARjs.MarkerControls.prototype.dispose = function(){
 //////////////////////////////////////////////////////////////////////////////
 
 /**
- * When you actually got a new modelViewMatrix, you need to perfom a whole bunch 
+ * When you actually got a new modelViewMatrix, you need to perfom a whole bunch
  * of things. it is done here.
  */
 ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatrix){
@@ -2078,21 +2126,65 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatr
 		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
 		var tmpMatrix = new THREE.Matrix4().copy(this.context._artoolkitProjectionAxisTransformMatrix)
 		tmpMatrix.multiply(modelViewMatrix)
-		
-		modelViewMatrix.copy(tmpMatrix)		
+
+		modelViewMatrix.copy(tmpMatrix)
 	}else if( this.context.parameters.trackingBackend === 'aruco' ){
+		// ...
+	}else if( this.context.parameters.trackingBackend === 'tango' ){
 		// ...
 	}else console.assert(false)
 
 
+	if( this.context.parameters.trackingBackend !== 'tango' ){
 
-	// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
-	var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
-	modelViewMatrix.multiply(markerAxisTransformMatrix)
+		// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
+		var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
+		modelViewMatrix.multiply(markerAxisTransformMatrix)
+	}
+
+	var renderReqd = false;
 
 	// change markerObject3D.matrix based on parameters.changeMatrixMode
 	if( this.parameters.changeMatrixMode === 'modelViewMatrix' ){
-		markerObject3D.matrix.copy(modelViewMatrix)
+		if (this.parameters.smooth) {
+			var sum,
+					i, j,
+					averages, // average values for matrix over last smoothCount
+					exceedsAverageTolerance = 0;
+
+			this.smoothMatrices.push(modelViewMatrix.elements.slice()); // add latest
+
+			if (this.smoothMatrices.length < (this.parameters.smoothCount + 1)) {
+				markerObject3D.matrix.copy(modelViewMatrix); // not enough for average
+			} else {
+				this.smoothMatrices.shift(); // remove oldest entry
+				averages = [];
+
+				for (i in modelViewMatrix.elements) { // loop over entries in matrix
+					sum = 0;
+					for (j in this.smoothMatrices) { // calculate average for this entry
+						sum += this.smoothMatrices[j][i];
+					}
+					averages[i] = sum / this.parameters.smoothCount;
+					// check how many elements vary from the average by at least AVERAGE_MATRIX_TOLERANCE
+					if (Math.abs(averages[i] - modelViewMatrix.elements[i]) >= this.parameters.smoothTolerance) {
+						exceedsAverageTolerance++;
+					}
+				}
+				
+				// if moving (i.e. at least AVERAGE_MATRIX_THRESHOLD entries are over AVERAGE_MATRIX_TOLERANCE)
+				if (exceedsAverageTolerance >= this.parameters.smoothThreshold) {
+					// then update matrix values to average, otherwise, don't render to minimize jitter
+					for (i in modelViewMatrix.elements) {
+						modelViewMatrix.elements[i] = averages[i];
+					}
+					markerObject3D.matrix.copy(modelViewMatrix);
+					renderReqd = true; // render required in animation loop
+				}
+			}
+		} else {
+			markerObject3D.matrix.copy(modelViewMatrix)
+		}
 	}else if( this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
 		markerObject3D.matrix.getInverse( modelViewMatrix )
 	}else {
@@ -2104,6 +2196,8 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatr
 
 	// dispatchEvent
 	this.dispatchEvent( { type: 'markerFound' } );
+
+	return renderReqd;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -2111,7 +2205,7 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatr
 //////////////////////////////////////////////////////////////////////////////
 
 /**
- * provide a name for a marker 
+ * provide a name for a marker
  * - silly heuristic for now
  * - should be improved
  */
@@ -2150,7 +2244,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function(){
 	}, 1000/50)
 
 	return
-	
+
 	function postInit(){
 		// check if arController is init
 		var arController = _this.context.arController
@@ -2184,7 +2278,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function(){
 				onMarkerFound(event)
 			}
 		})
-		
+
 	}
 
 	function onMarkerFound(event){
@@ -2202,6 +2296,14 @@ ARjs.MarkerControls.prototype._initArtoolkit = function(){
 //////////////////////////////////////////////////////////////////////////////
 ARjs.MarkerControls.prototype._initAruco = function(){
 	this._arucoPosit = new POS.Posit(this.parameters.size, _this.context.arucoContext.canvas.width)
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		init for Artoolkit
+//////////////////////////////////////////////////////////////////////////////
+ARjs.MarkerControls.prototype._initTango = function(){
+	var _this = this
+	console.log('init tango ArMarkerControls')
 }
 var THREEx = THREEx || {}
 
@@ -2399,12 +2501,12 @@ var THREEx = THREEx || {}
 
 ARjs.Context = THREEx.ArToolkitContext = function(parameters){
 	var _this = this
-	
+
 	_this._updatedAt = null
-	
+
 	// handle default parameters
 	this.parameters = {
-		// AR backend - ['artoolkit', 'aruco']
+		// AR backend - ['artoolkit', 'aruco', 'tango']
 		trackingBackend: 'artoolkit',
 		// debug - true if one should display artoolkit debug canvas, false otherwise
 		debug: false,
@@ -2412,7 +2514,7 @@ ARjs.Context = THREEx.ArToolkitContext = function(parameters){
 		detectionMode: 'mono',
 		// type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
 		matrixCodeType: '3x3',
-		
+
 		// url of the camera parameters
 		cameraParametersUrl: ARjs.Context.baseURL + 'parameters/camera_para.dat',
 
@@ -2421,23 +2523,26 @@ ARjs.Context = THREEx.ArToolkitContext = function(parameters){
 		// resolution of at which we detect pose in the source image
 		canvasWidth: 640,
 		canvasHeight: 480,
-		
+
+		// the patternRatio inside the artoolkit marker - artoolkit only
+		patternRatio: 0.5,
+
 		// enable image smoothing or not for canvas copy - default to true
 		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
 		imageSmoothingEnabled : false,
 	}
 	// parameters sanity check
-	console.assert(['artoolkit', 'aruco'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
+	console.assert(['artoolkit', 'aruco', 'tango'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
 	console.assert(['color', 'color_and_matrix', 'mono', 'mono_and_matrix'].indexOf(this.parameters.detectionMode) !== -1, 'invalid parameter detectionMode', this.parameters.detectionMode)
-	
+
         this.arController = null;
         this.arucoContext = null;
-	
+
 	_this.initialized = false
 
 
 	this._arMarkersControls = []
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		setParameters
 	//////////////////////////////////////////////////////////////////////////////
@@ -2469,7 +2574,7 @@ Object.assign( ARjs.Context.prototype, THREE.EventDispatcher.prototype );
 // ARjs.Context.baseURL = '../'
 // default to github page
 ARjs.Context.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
-ARjs.Context.REVISION = '1.5.1'
+ARjs.Context.REVISION = '1.6.2'
 
 
 
@@ -2485,6 +2590,8 @@ ARjs.Context.createDefaultCamera = function( trackingBackend ){
 		var camera = new THREE.Camera();
 	}else if( trackingBackend === 'aruco' ){
 		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
+	}else if( trackingBackend === 'tango' ){
+		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
 	}else console.assert(false)
 	return camera
 }
@@ -2499,9 +2606,11 @@ ARjs.Context.prototype.init = function(onCompleted){
 		this._initArtoolkit(done)
 	}else if( this.parameters.trackingBackend === 'aruco' ){
 		this._initAruco(done)
+	}else if( this.parameters.trackingBackend === 'tango' ){
+		this._initTango(done)
 	}else console.assert(false)
 	return
-	
+
 	function done(){
 		// dispatch event
 		_this.dispatchEvent({
@@ -2509,7 +2618,7 @@ ARjs.Context.prototype.init = function(onCompleted){
 		});
 
 		_this.initialized = true
-		
+
 		onCompleted && onCompleted()
 	}
 
@@ -2536,9 +2645,11 @@ ARjs.Context.prototype.update = function(srcElement){
 
 	// process this frame
 	if(this.parameters.trackingBackend === 'artoolkit'){
-		this._updateArtoolkit(srcElement)		
+		this._updateArtoolkit(srcElement)
 	}else if( this.parameters.trackingBackend === 'aruco' ){
 		this._updateAruco(srcElement)
+	}else if( this.parameters.trackingBackend === 'tango' ){
+		this._updateTango(srcElement)
 	}else{
 		console.assert(false)
 	}
@@ -2590,8 +2701,8 @@ ARjs.Context.prototype._initArtoolkit = function(onCompleted){
 		arController.ctx.mozImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
 		arController.ctx.webkitImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
 		arController.ctx.msImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
-		arController.ctx.imageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;			
- 		
+		arController.ctx.imageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+
 		// honor this.parameters.debug
                 if( _this.parameters.debug === true ){
 			arController.debugSetup();
@@ -2625,7 +2736,9 @@ ARjs.Context.prototype._initArtoolkit = function(onCompleted){
 		var matrixCodeType = matrixCodeTypes[_this.parameters.matrixCodeType]
 		console.assert(matrixCodeType !== undefined)
 		arController.setMatrixCodeType(matrixCodeType);
-		
+
+		// set the patternRatio for artoolkit
+		arController.setPattRatio(_this.parameters.patternRatio);
 
 		// set thresholding in artoolkit
 		// this seems to be the default
@@ -2635,8 +2748,8 @@ ARjs.Context.prototype._initArtoolkit = function(onCompleted){
 		// arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_AUTO_OTSU)
 
 		// notify
-                onCompleted()                
-        })		
+                onCompleted()
+        })
 	return this
 }
 
@@ -2644,20 +2757,20 @@ ARjs.Context.prototype._initArtoolkit = function(onCompleted){
  * return the projection matrix
  */
 ARjs.Context.prototype.getProjectionMatrix = function(srcElement){
-	
-	
+
+
 // FIXME rename this function to say it is artoolkit specific - getArtoolkitProjectMatrix
 // keep a backward compatibility with a console.warn
-	
+
 	console.assert( this.parameters.trackingBackend === 'artoolkit' )
 	console.assert(this.arController, 'arController MUST be initialized to call this function')
 	// get projectionMatrixArr from artoolkit
 	var projectionMatrixArr = this.arController.getCameraMatrix();
-	var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)		
-		
+	var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)
+
 	// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
 	projectionMatrix.multiply(this._artoolkitProjectionAxisTransformMatrix)
-	
+
 	// return the result
 	return projectionMatrix
 }
@@ -2667,11 +2780,11 @@ ARjs.Context.prototype._updateArtoolkit = function(srcElement){
 }
 
 //////////////////////////////////////////////////////////////////////////////
-//		aruco specific 
+//		aruco specific
 //////////////////////////////////////////////////////////////////////////////
 ARjs.Context.prototype._initAruco = function(onCompleted){
 	this.arucoContext = new THREEx.ArucoContext()
-	
+
 	// honor this.parameters.canvasWidth/.canvasHeight
 	this.arucoContext.canvas.width = this.parameters.canvasWidth
 	this.arucoContext.canvas.height = this.parameters.canvasHeight
@@ -2681,9 +2794,9 @@ ARjs.Context.prototype._initAruco = function(onCompleted){
 	// context.mozImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
 	context.webkitImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
 	context.msImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
-	context.imageSmoothingEnabled = this.parameters.imageSmoothingEnabled;			
+	context.imageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
 
-	
+
 	setTimeout(function(){
 		onCompleted()
 	}, 0)
@@ -2695,7 +2808,7 @@ ARjs.Context.prototype._updateAruco = function(srcElement){
 	var _this = this
 	var arMarkersControls = this._arMarkersControls
         var detectedMarkers = this.arucoContext.detect(srcElement)
-	
+
 	detectedMarkers.forEach(function(detectedMarker){
 		var foundControls = null
 		for(var i = 0; i < arMarkersControls.length; i++){
@@ -2713,6 +2826,105 @@ ARjs.Context.prototype._updateAruco = function(srcElement){
 
 		foundControls.updateWithModelViewMatrix(tmpObject3d.matrix)
 	})
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		tango specific
+//////////////////////////////////////////////////////////////////////////////
+ARjs.Context.prototype._initTango = function(onCompleted){
+	var _this = this
+	// check webvr is available
+	if (navigator.getVRDisplays){
+		// do nothing
+	} else if (navigator.getVRDevices){
+		alert("Your browser supports WebVR but not the latest version. See <a href='http://webvr.info'>webvr.info</a> for more info.");
+	} else {
+		alert("Your browser does not support WebVR. See <a href='http://webvr.info'>webvr.info</a> for assistance.");
+	}
+
+
+	this._tangoContext = {
+		vrDisplay: null,
+		vrPointCloud: null,
+		frameData: new VRFrameData(),
+	}
+
+
+	// get vrDisplay
+	navigator.getVRDisplays().then(function (vrDisplays){
+		if( vrDisplays.length === 0 )	alert('no vrDisplays available')
+		var vrDisplay = _this._tangoContext.vrDisplay = vrDisplays[0]
+
+		console.log('vrDisplays.displayName :', vrDisplay.displayName)
+
+		// init vrPointCloud
+		if( vrDisplay.displayName === "Tango VR Device" ){
+                	_this._tangoContext.vrPointCloud = new THREE.WebAR.VRPointCloud(vrDisplay, true)
+		}
+
+		// NOTE it doesnt seem necessary and it fails on tango
+		// var canvasElement = document.createElement('canvas')
+		// document.body.appendChild(canvasElement)
+		// _this._tangoContext.requestPresent([{ source: canvasElement }]).then(function(){
+		// 	console.log('vrdisplay request accepted')
+		// });
+
+		onCompleted()
+	});
+}
+
+
+ARjs.Context.prototype._updateTango = function(srcElement){
+	// console.log('update aruco here')
+	var _this = this
+	var arMarkersControls = this._arMarkersControls
+	var tangoContext= this._tangoContext
+	var vrDisplay = this._tangoContext.vrDisplay
+
+	// check vrDisplay is already initialized
+	if( vrDisplay === null )	return
+
+
+        // Update the point cloud. Only if the point cloud will be shown the geometry is also updated.
+	if( vrDisplay.displayName === "Tango VR Device" ){
+	        var showPointCloud = true
+		var pointsToSkip = 0
+	        _this._tangoContext.vrPointCloud.update(showPointCloud, pointsToSkip, true)
+	}
+
+
+	if( this._arMarkersControls.length === 0 )	return
+
+	// TODO here do a fake search on barcode/1001 ?
+
+	var foundControls = this._arMarkersControls[0]
+
+	var frameData = this._tangoContext.frameData
+
+	// read frameData
+	vrDisplay.getFrameData(frameData);
+
+	if( frameData.pose.position === null )		return
+	if( frameData.pose.orientation === null )	return
+
+	// create cameraTransformMatrix
+	var position = new THREE.Vector3().fromArray(frameData.pose.position)
+	var quaternion = new THREE.Quaternion().fromArray(frameData.pose.orientation)
+	var scale = new THREE.Vector3(1,1,1)
+	var cameraTransformMatrix = new THREE.Matrix4().compose(position, quaternion, scale)
+	// compute modelViewMatrix from cameraTransformMatrix
+	var modelViewMatrix = new THREE.Matrix4()
+	modelViewMatrix.getInverse( cameraTransformMatrix )
+
+	foundControls.updateWithModelViewMatrix(modelViewMatrix)
+
+	// console.log('position', position)
+	// if( position.x !== 0 ||  position.y !== 0 ||  position.z !== 0 ){
+	// 	console.log('vrDisplay tracking')
+	// }else{
+	// 	console.log('vrDisplay NOT tracking')
+	// }
+
 }
 var ARjs = ARjs || {}
 var THREEx = THREEx || {}
@@ -2825,6 +3037,10 @@ ARjs.Profile.prototype.defaultMarker = function (trackingBackend) {
 		this.contextParameters.detectionMode = 'mono'
 		this.defaultMarkerParameters.type = 'barcode'
 		this.defaultMarkerParameters.barcodeValue = 1001
+	}else if( trackingBackend === 'tango' ){
+		// FIXME temporary placeholder - to reevaluate later
+		this.defaultMarkerParameters.type = 'barcode'
+		this.defaultMarkerParameters.barcodeValue = 1001
 	}else console.assert(false)
 
 	return this
@@ -2881,6 +3097,9 @@ ARjs.Profile.prototype.trackingMethod = function (trackingMethod) {
  * check if the profile is valid. Throw an exception is not valid
  */
 ARjs.Profile.prototype.checkIfValid = function () {
+	if( this.contextParameters.trackingBackend === 'tango' ){
+		this.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg')
+	}
 	return this
 }
 var ARjs = ARjs || {}
@@ -2898,7 +3117,10 @@ ARjs.Source = THREEx.ArToolkitSource = function(parameters){
 		sourceType : 'webcam',
 		// url of the source - valid if sourceType = image|video
 		sourceUrl : null,
-		
+
+		// Device id of the camera to use (optional)
+		deviceId : null,
+
 		// resolution of at which we initialize in the source image
 		sourceWidth: 640,
 		sourceHeight: 480,
@@ -3080,7 +3302,14 @@ ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
 					// max: 1080
 				}
 		  	}
-                }
+		}
+
+		if (null !== _this.parameters.deviceId) {
+			userMediaConstraints.video.deviceId = {
+				exact: _this.parameters.deviceId
+			};
+		}
+
 		// get a device which satisfy the constraints
 		navigator.mediaDevices.getUserMedia(userMediaConstraints).then(function success(stream) {
 			// set the .src of the domElement
@@ -3297,6 +3526,8 @@ ARjs.Source.prototype.onResize	= function(arToolkitContext, renderer, camera){
 		this.copyElementSizeTo(renderer.domElement)	
 
 		this.copyElementSizeTo(arToolkitContext.arucoContext.canvas)	
+	}else if( trackingBackend === 'tango' ){
+		renderer.setSize( window.innerWidth, window.innerHeight )
 	}else console.assert(false, 'unhandled trackingBackend '+trackingBackend)
 
 
@@ -3308,6 +3539,10 @@ ARjs.Source.prototype.onResize	= function(arToolkitContext, renderer, camera){
 	}else if( trackingBackend === 'aruco' ){	
 		camera.aspect = renderer.domElement.width / renderer.domElement.height;
 		camera.updateProjectionMatrix();			
+	}else if( trackingBackend === 'tango' ){
+		var vrDisplay = arToolkitContext._tangoContext.vrDisplay
+		// make camera fit vrDisplay
+		if( vrDisplay && vrDisplay.displayName === "Tango VR Device" ) THREE.WebAR.resizeVRSeeThroughCamera(vrDisplay, camera)
 	}else console.assert(false, 'unhandled trackingBackend '+trackingBackend)	
 }
 var THREEx = THREEx || {}
@@ -3538,6 +3773,73 @@ THREEx.HitTestingPlane.prototype.renderDebug = function(renderer){
 	// render sceneOrtho
 	renderer.render( this._pickingScene, this._pickingCamera )
 }
+var THREEx = THREEx || {}
+
+/**
+ * @class
+ * 
+ * @return {[type]} [description]
+ */
+THREEx.HitTestingTango = function(arContext){
+	this._arContext = arContext
+	// seems to be the object bounding sphere for picking
+	this.boundingSphereRadius = 0.01
+	// default result scale
+	this.resultScale = new THREE.Vector3(1,1,1).multiplyScalar(1)
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		update function
+//////////////////////////////////////////////////////////////////////////////
+
+THREEx.HitTestingTango.prototype.update = function(){
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//		Code Separator
+//////////////////////////////////////////////////////////////////////////////
+/**
+ * do the actual testing
+ * 
+ * @param {ARjs.Context} arContext - context to use
+ * @param {Number} mouseX    - mouse x coordinate in [0, 1]
+ * @param {Numer} mouseY    - mouse y coordinate in [0, 1]
+ * @return {Object} - result
+ */
+THREEx.HitTestingTango.prototype.test = function(mouseX, mouseY){
+	var vrDisplay = this._arContext._tangoContext.vrDisplay
+        if (vrDisplay === null ) return null
+	
+	if( vrDisplay.displayName !== "Tango VR Device" )	return null
+	
+        var pointAndPlane = vrDisplay.getPickingPointAndPlaneInPointCloud(mouseX, mouseY)
+        if( pointAndPlane == null ) {
+                console.warn('Could not retrieve the correct point and plane.')
+                return null
+        }
+	
+	// FIXME not sure what this is
+	var boundingSphereRadius = 0.01	
+	
+	// the bigger the number the likeliest it crash chromium-webar
+
+        // Orient and position the model in the picking point according
+        // to the picking plane. The offset is half of the model size.
+        var object3d = new THREE.Object3D
+        THREE.WebAR.positionAndRotateObject3DWithPickingPointAndPlaneInPointCloud(
+                pointAndPlane, object3d, this.boundingSphereRadius
+        )
+	object3d.rotateZ(-Math.PI/2)
+
+	// return the result
+	var result = {
+		position : object3d.position,
+		quaternion : object3d.quaternion,
+		scale : this.resultScale,
+	}
+
+	return result
+}
 // @namespace
 var ARjs = ARjs || {}
 
@@ -3643,6 +3945,7 @@ ARjs.Anchor = function(arSession, markerParameters){
 	//////////////////////////////////////////////////////////////////////////////
 	
 	var shouldBeSmoothed = true
+	if( arContext.parameters.trackingBackend === 'tango' ) shouldBeSmoothed = false 
 
 	if( shouldBeSmoothed === true ){
 		// build a smoothedControls
@@ -3682,7 +3985,7 @@ var ARjs = ARjs || {}
  * 
  * @param {ARjs.Anchor} arAnchor - the anchor to user
  */
-ARjs.SessionDebugUI = function(arSession){
+ARjs.SessionDebugUI = function(arSession, tangoPointCloud){
 	var trackingBackend = arSession.arContext.parameters.trackingBackend
 
 	this.domElement = document.createElement('div')
@@ -3723,6 +4026,30 @@ ARjs.SessionDebugUI = function(arSession){
 		// domElement.setAttribute('target', '_blank')
 		domElement.href = ARjs.SessionDebugUI.AugmentedWebsiteURL + '?'+location.href
 		this.domElement.appendChild(domElement)						
+	}
+
+	//////////////////////////////////////////////////////////////////////////////
+	//		toggle-point-cloud
+	//////////////////////////////////////////////////////////////////////////////
+
+	if( trackingBackend === 'tango' && tangoPointCloud ){
+		var domElement = document.createElement('button')
+		this.domElement.appendChild(domElement)
+
+		domElement.id= 'buttonTangoTogglePointCloud'
+		domElement.innerHTML = 'toggle-point-cloud'
+		domElement.href='javascript:void(0)'
+
+		domElement.addEventListener('click', function(){
+			var scene = arSession.parameters.scene
+	// TODO how tangoPointCloud, get connected here ???
+	// in arguments simply ?
+			if( tangoPointCloud.object3d.parent ){
+				scene.remove(tangoPointCloud.object3d)
+			}else{
+				scene.add(tangoPointCloud.object3d)			
+			}
+		})
 	}
 }
 
@@ -3861,7 +4188,14 @@ ARjs.HitTesting = function(arSession){
 
 	this.enabled = true
 	this._arSession = arSession
-	this._hitTestingPlane = new THREEx.HitTestingPlane(arSession.arSource.domElement)
+	this._hitTestingPlane = null
+	this._hitTestingTango = null
+
+	if( trackingBackend === 'tango' ){
+		_this._hitTestingTango = new THREEx.HitTestingTango(arContext)
+	}else{
+		_this._hitTestingPlane = new THREEx.HitTestingPlane(arSession.arSource.domElement)
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -3877,7 +4211,9 @@ ARjs.HitTesting.prototype.update = function (camera, pickingRoot, changeMatrixMo
 	// if it isnt enabled, do nothing
 	if( this.enabled === false )	return
 
-	if( this._hitTestingPlane !== null ){
+	if( this._hitTestingTango !== null ){
+		this._hitTestingTango.update()
+	}else if( this._hitTestingPlane !== null ){
 		this._hitTestingPlane.update(camera, pickingRoot, changeMatrixMode)
 	}else console.assert(false)
 }
@@ -3900,8 +4236,13 @@ ARjs.HitTesting.prototype.testDomEvent = function(domEvent){
 	// if it isnt enabled, do nothing
 	if( this.enabled === false )	return []
 	
-	var mouseX = domEvent.clientX / arSource.domElementWidth()
-	var mouseY = domEvent.clientY / arSource.domElementHeight()
+	if( trackingBackend === 'tango' ){
+        	var mouseX = domEvent.pageX / window.innerWidth
+        	var mouseY = domEvent.pageY / window.innerHeight
+	}else{		
+		var mouseX = domEvent.clientX / arSource.domElementWidth()
+		var mouseY = domEvent.clientY / arSource.domElementHeight()
+	}
 
 	return this.test(mouseX, mouseY)
 }
@@ -3921,7 +4262,12 @@ ARjs.HitTesting.prototype.test = function(mouseX, mouseY){
 	// if it isnt enabled, do nothing
 	if( this.enabled === false )	return []
 
-	var result = this._hitTestingPlane.test(mouseX, mouseY)
+	var result = null
+	if( trackingBackend === 'tango' ){
+		var result = this._hitTestingTango.test(mouseX, mouseY)
+	}else{
+		var result = this._hitTestingPlane.test(mouseX, mouseY)
+	}
 			
 	// if no result is found, return now
 	if( result === null )	return hitTestResults
@@ -4104,6 +4450,88 @@ ARjs.Session = function(parameters){
 ARjs.Session.prototype.onResize = function () {
 	this.arSource.onResize(this.arContext, this.parameters.renderer, this.parameters.camera)	
 };
+// @namespace
+var ARjs = ARjs || {}
+
+ARjs.TangoPointCloud = function(arSession){
+	var _this = this
+	var arContext = arSession.arContext
+	this.object3d = new THREE.Group
+
+console.warn('Work only on cameraTransformMatrix - fix me - useless limitation')
+	
+	arContext.addEventListener('initialized', function(event){
+	        var vrPointCloud = arContext._tangoContext.vrPointCloud
+	        var geometry = vrPointCloud.getBufferGeometry()
+	        var material = new THREE.PointsMaterial({
+	                size: 0.01, 
+        		// colorWrite: false, // good for occlusion
+			depthWrite: false,
+	        })
+	        var pointsObject = new THREE.Points(geometry, material)
+	        // Points are changing all the time so calculating the frustum culling volume is not very convenient.
+	        pointsObject.frustumCulled = false;
+	        pointsObject.renderDepth = 0;
+
+		_this.object3d.add(pointsObject)
+	})
+}
+// @namespace
+var ARjs = ARjs || {}
+
+ARjs.TangoVideoMesh = function(arSession){
+	var arContext = arSession.arContext
+	var renderer = arSession.renderer
+
+	var videoMesh = null
+	var vrDisplay = null
+
+	// Create the see through camera scene and camera
+	var sceneOrtho = new THREE.Scene()
+	var cameraOrtho = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 100 )		
+this._sceneOrtho = sceneOrtho
+this._cameraOrtho = cameraOrtho
+
+	// tango only - init cameraMesh
+	arContext.addEventListener('initialized', function(event){
+		// sanity check
+		console.assert( arContext.parameters.trackingBackend === 'tango' )
+		// variable declaration
+		vrDisplay = arContext._tangoContext.vrDisplay
+		console.assert(vrDisplay, 'vrDisplay MUST be defined')
+		// if vrDisplay isnt for tango, do nothing. It may be another vrDisplay (e.g. webvr emulator in chrome)
+		if( vrDisplay.displayName !== "Tango VR Device" )	return
+		// init videoPlane
+		videoMesh = THREE.WebAR.createVRSeeThroughCameraMesh(vrDisplay)
+		sceneOrtho.add(videoMesh)
+	})
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+	
+	this.update = function(){
+		// sanity check
+		console.assert( arContext.parameters.trackingBackend === 'tango' )
+		// if not yet initialized, return now
+		if( videoMesh === null )	return
+		// Make sure that the camera is correctly displayed depending on the device and camera orientations.
+		THREE.WebAR.updateCameraMeshOrientation(vrDisplay, videoMesh)                        		
+	}
+	
+	//////////////////////////////////////////////////////////////////////////////
+	//		Code Separator
+	//////////////////////////////////////////////////////////////////////////////
+	
+	this.render = function(){
+		// sanity check
+		console.assert( arContext.parameters.trackingBackend === 'tango' )
+		// render sceneOrtho
+		renderer.render( sceneOrtho, cameraOrtho )
+		// Render the perspective scene
+		renderer.clearDepth()		
+	}
+}
 var ARjs = ARjs || {}
 ARjs.Utils = {}
 
@@ -4120,10 +4548,24 @@ ARjs.Utils.createDefaultCamera = function(trackingMethod){
 		var camera = new THREE.Camera();
 	}else if( trackingBackend === 'aruco' ){
 		var camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.01, 100);
+	}else if( trackingBackend === 'tango' ){
+		var camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.01, 100);
 	}else console.assert(false, 'unknown trackingBackend: '+trackingBackend)
 
 	return camera
 }
+
+/**
+ * test if the code is running on tango
+ * 
+ * @return {boolean} - true if running on tango, false otherwise
+ */
+ARjs.Utils.isTango = function(){
+	// FIXME: this test is super bad
+	var isTango = navigator.userAgent.match('Chrome/57.0.2987.5') !== null ? true : false
+	return isTango
+}
+
 
 /**
  * parse tracking method
@@ -4134,8 +4576,8 @@ ARjs.Utils.createDefaultCamera = function(trackingMethod){
 ARjs.Utils.parseTrackingMethod = function(trackingMethod){
 
 	if( trackingMethod === 'best' ){
-		trackingMethod = 'area-artoolkit'
-	}
+		trackingMethod = ARjs.Utils.isTango() ? 'tango' : 'area-artoolkit'
+	}	
 
 	if( trackingMethod.startsWith('area-') ){
 		return {
