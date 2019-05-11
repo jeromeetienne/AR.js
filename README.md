@@ -66,8 +66,6 @@ More details about markers:
 
 ⚠️ *Be aware that most recent features are currently released on `dev` branch.*
 
-💻If you want to contribute and take part of the AR.js community, it is now possible! Check out this [public trello](https://trello.com/b/63F7JlvD/arjs) board and [ask for an invitation](https://github.com/jeromeetienne/AR.js/issues/469), this way you can discuss with all members and begin to contribute.
-
 
 #  Get Started
 
@@ -95,6 +93,7 @@ A-Frame magic :) All details are explained in this super post
 ["Augmented Reality in 10 Lines of HTML - AR.js with a-frame magic"](https://medium.com/arjs/augmented-reality-in-10-lines-of-html-4e193ea9fdbf)
 by
 [@AndraConnect](https://twitter.com/AndraConnect).
+
 
 ## Guides for beginners
 We started a [AR.js blog](https://medium.com/arjs), thus we can write about
@@ -143,6 +142,10 @@ Try to get inspired by this great works:
 The service is available [webxr.io/augmented-website](https://webxr.io/augmented-website/)
 
 [![Augmented Website](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://webxr.io/augmented-website/)
+
+# Community
+- AR.js on gitter: https://gitter.im/AR-js/Lobby
+- Trello board for ongoing work: https://trello.com/b/63F7JlvD/arjs
 
 # Tools
 
