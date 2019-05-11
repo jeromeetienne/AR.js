@@ -4763,6 +4763,14 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, para
 		changeMatrixMode : 'modelViewMatrix',
 		// minimal confidence in the marke recognition - between [0, 1] - default to 1
 		minConfidence: 0.6,
+		// turn on/off camera smoothing
+		smooth: false,
+		// number of matrices to smooth tracking over, more = smoother but slower follow
+		smoothCount: 5,
+		// distance tolerance for smoothing, if smoothThreshold # of matrices are under tolerance, tracking will stay still
+		smoothTolerance: 0.01,
+		// threshold for smoothing, will keep still unless enough matrices are over tolerance
+		smoothThreshold: 2,
 	}
 
 	// sanity check
@@ -4800,6 +4808,10 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, para
 
 			_this.parameters[ key ] = newValue
 		}
+	}
+
+	if (this.parameters.smooth) {
+		this.smoothMatrices = []; // last DEBOUNCE_COUNT modelViewMatrix
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -4864,9 +4876,49 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatr
 		modelViewMatrix.multiply(markerAxisTransformMatrix)
 	}
 
+	var renderReqd = false;
+
 	// change markerObject3D.matrix based on parameters.changeMatrixMode
 	if( this.parameters.changeMatrixMode === 'modelViewMatrix' ){
-		markerObject3D.matrix.copy(modelViewMatrix)
+		if (this.parameters.smooth) {
+			var sum,
+					i, j,
+					averages, // average values for matrix over last smoothCount
+					exceedsAverageTolerance = 0;
+
+			this.smoothMatrices.push(modelViewMatrix.elements.slice()); // add latest
+
+			if (this.smoothMatrices.length < (this.parameters.smoothCount + 1)) {
+				markerObject3D.matrix.copy(modelViewMatrix); // not enough for average
+			} else {
+				this.smoothMatrices.shift(); // remove oldest entry
+				averages = [];
+
+				for (i in modelViewMatrix.elements) { // loop over entries in matrix
+					sum = 0;
+					for (j in this.smoothMatrices) { // calculate average for this entry
+						sum += this.smoothMatrices[j][i];
+					}
+					averages[i] = sum / this.parameters.smoothCount;
+					// check how many elements vary from the average by at least AVERAGE_MATRIX_TOLERANCE
+					if (Math.abs(averages[i] - modelViewMatrix.elements[i]) >= this.parameters.smoothTolerance) {
+						exceedsAverageTolerance++;
+					}
+				}
+				
+				// if moving (i.e. at least AVERAGE_MATRIX_THRESHOLD entries are over AVERAGE_MATRIX_TOLERANCE)
+				if (exceedsAverageTolerance >= this.parameters.smoothThreshold) {
+					// then update matrix values to average, otherwise, don't render to minimize jitter
+					for (i in modelViewMatrix.elements) {
+						modelViewMatrix.elements[i] = averages[i];
+					}
+					markerObject3D.matrix.copy(modelViewMatrix);
+					renderReqd = true; // render required in animation loop
+				}
+			}
+		} else {
+			markerObject3D.matrix.copy(modelViewMatrix)
+		}
 	}else if( this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
 		markerObject3D.matrix.getInverse( modelViewMatrix )
 	}else {
@@ -4878,6 +4930,8 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatr
 
 	// dispatchEvent
 	this.dispatchEvent( { type: 'markerFound' } );
+
+	return renderReqd;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -8243,6 +8297,22 @@ AFRAME.registerComponent('arjs-anchor', {
 			type: 'number',
 			default: 0.6,
 		},
+		smooth: {
+			type: 'boolean',
+			default: false,
+		},
+		smoothCount: {
+			type: 'number',
+			default: 5,
+		},
+		smoothTolerance: {
+			type: 'number',
+			default: 0.01,
+		},
+		smoothThreshold: {
+			type: 'number',
+			default: 2,
+		},
 	},
 	init: function () {
 		var _this = this
@@ -8309,6 +8379,11 @@ AFRAME.registerComponent('arjs-anchor', {
 			}else {
 				// console.assert( this.data.preset === '', 'illegal preset value '+this.data.preset)
 			}
+
+			markerParameters.smooth = _this.data.smooth;
+			markerParameters.smoothCount = _this.data.smoothCount;
+			markerParameters.smoothTolerance = _this.data.smoothTolerance;
+			markerParameters.smoothThreshold = _this.data.smoothThreshold;
 
 			//////////////////////////////////////////////////////////////////////////////
 			//		create arAnchor
@@ -8399,6 +8474,10 @@ AFRAME.registerPrimitive('a-anchor', AFRAME.utils.extendDeep({}, AFRAME.primitiv
 		'preset': 'arjs-anchor.preset',
 		'minConfidence': 'arjs-anchor.minConfidence',
 		'markerhelpers': 'arjs-anchor.markerhelpers',
+		'smooth': 'arjs-anchor.smooth',
+		'smoothCount': 'arjs-anchor.smoothCount',
+		'smoothTolerance': 'arjs-anchor.smoothTolerance',
+		'smoothThreshold': 'arjs-anchor.smoothThreshold',
 
 		'hit-testing-renderDebug': 'arjs-hit-testing.renderDebug',
 		'hit-testing-enabled': 'arjs-hit-testing.enabled',
@@ -8432,6 +8511,10 @@ AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitiv
 		'preset': 'arjs-anchor.preset',
 		'minConfidence': 'arjs-anchor.minConfidence',
 		'markerhelpers': 'arjs-anchor.markerhelpers',
+		'smooth': 'arjs-anchor.smooth',
+		'smoothCount': 'arjs-anchor.smoothCount',
+		'smoothTolerance': 'arjs-anchor.smoothTolerance',
+		'smoothThreshold': 'arjs-anchor.smoothThreshold',
 
 		'hit-testing-renderDebug': 'arjs-hit-testing.renderDebug',
 		'hit-testing-enabled': 'arjs-hit-testing.enabled',
