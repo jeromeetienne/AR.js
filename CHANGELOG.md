@@ -1,3 +1,10 @@
+# 1.7.0
+
+- optionally manage smooth parameter (for video entity glitches and similar problems)
+- generate .patt files keeping uploaded image name
+- enhanced marker generator
+- reduce build size
+
 # 1.6.3-dev
 
 - added a ```npm run build``` script for travis
