@@ -49,7 +49,7 @@ multiple independent markers at the same time, or [multiple markers acting as a 
 More details about markers:
 
 * [Artoolkit Open Doc](https://github.com/artoolkit/artoolkit-docs/tree/master/3_Marker_Training)
-* [Detailed Article about markers](https://medium.com/chialab-open-source/ar-js-the-simpliest-way-to-get-cross-browser-ar-on-the-web-8f670dd45462) by [@nicolocarpignoli](https://github.com/nicolocarpignoli)
+* [Detailed Article about markers](https://medium.com/@nicolcarpignoli/ar-js-the-simplest-way-to-get-cross-browser-augmented-reality-on-the-web-10cbc721debc) by [@nicolocarpignoli](https://twitter.com/nicolocarp)
 
 # Index
 * [Get Started](#Get-Started)
@@ -74,8 +74,8 @@ More details about markers:
 ```html
 <!doctype HTML>
 <html>
-<script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
-<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.2/aframe/build/aframe-ar.js"></script>
+<script src="https://aframe.io/releases/0.9.1/aframe.min.js"></script>
+<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.0/aframe/build/aframe-ar.js"></script>
   <body style='margin : 0px; overflow: hidden;'>
     <a-scene embedded arjs>
       <a-marker preset="hiro">
@@ -102,8 +102,6 @@ all the crazy ideas related to AR.js.
 - [AR.js introduction and insight on markers](https://medium.com/@nicolcarpignoli/ar-js-the-simplest-way-to-get-cross-browser-augmented-reality-on-the-web-10cbc721debc)
 - [Details about 3D models that can be used with AR.js](https://medium.com/@akashkuttappa/using-3d-models-with-ar-js-and-a-frame-84d462efe498)
 - ["WebVR for Augmented Reality - Using WebVR to write cross-platform AR applications"](https://medium.com/arjs/webvr-for-augmented-reality-f1e69a505902)
-  by [@jerome_etienne](https://twitter.com/jerome_etienne)
-- ["Augmenting The Web Page - Bringing augmenting reality to normal web pages"](https://medium.com/arjs/augmenting-the-web-page-e893f2d199b8)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)
 - ["AR-Code:a Fast Path to Augmented Reality - From QR Code to AR.js content"](https://medium.com/arjs/ar-code-a-fast-path-to-augmented-reality-60e51be3cbdf)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)
