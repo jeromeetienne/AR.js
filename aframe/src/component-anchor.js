@@ -209,14 +209,14 @@ AFRAME.registerPrimitive('a-anchor', AFRAME.utils.extendDeep({}, AFRAME.primitiv
 		'url': 'arjs-anchor.patternUrl',
 		'value': 'arjs-anchor.barcodeValue',
 		'preset': 'arjs-anchor.preset',
-		'minConfidence': 'arjs-anchor.minConfidence',
-		'markerhelpers': 'arjs-anchor.markerhelpers',
+		'min-confidence': 'arjs-anchor.minConfidence',
+		'marker-helpers': 'arjs-anchor.markerhelpers',
 		'smooth': 'arjs-anchor.smooth',
-		'smoothCount': 'arjs-anchor.smoothCount',
-		'smoothTolerance': 'arjs-anchor.smoothTolerance',
-		'smoothThreshold': 'arjs-anchor.smoothThreshold',
+		'smooth-count': 'arjs-anchor.smoothCount',
+		'smooth-tolerance': 'arjs-anchor.smoothTolerance',
+		'smooth-threshold': 'arjs-anchor.smoothThreshold',
 
-		'hit-testing-renderDebug': 'arjs-hit-testing.renderDebug',
+		'hit-testing-render-debug': 'arjs-hit-testing.renderDebug',
 		'hit-testing-enabled': 'arjs-hit-testing.enabled',
 	}
 }))
@@ -246,14 +246,14 @@ AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitiv
 		'url': 'arjs-anchor.patternUrl',
 		'value': 'arjs-anchor.barcodeValue',
 		'preset': 'arjs-anchor.preset',
-		'minConfidence': 'arjs-anchor.minConfidence',
-		'markerhelpers': 'arjs-anchor.markerhelpers',
+		'min-confidence': 'arjs-anchor.minConfidence',
+		'marker-helpers': 'arjs-anchor.markerhelpers',
 		'smooth': 'arjs-anchor.smooth',
-		'smoothCount': 'arjs-anchor.smoothCount',
-		'smoothTolerance': 'arjs-anchor.smoothTolerance',
-		'smoothThreshold': 'arjs-anchor.smoothThreshold',
+		'smooth-count': 'arjs-anchor.smoothCount',
+		'smooth-tolerance': 'arjs-anchor.smoothTolerance',
+		'smooth-threshold': 'arjs-anchor.smoothThreshold',
 
-		'hit-testing-renderDebug': 'arjs-hit-testing.renderDebug',
+		'hit-testing-render-debug': 'arjs-hit-testing.renderDebug',
 		'hit-testing-enabled': 'arjs-hit-testing.enabled',
 	}
 }))
@@ -271,7 +271,7 @@ AFRAME.registerPrimitive('a-marker-camera', AFRAME.utils.extendDeep({}, AFRAME.p
 		'url': 'arjs-anchor.patternUrl',
 		'value': 'arjs-anchor.barcodeValue',
 		'preset': 'arjs-anchor.preset',
-		'minConfidence': 'arjs-anchor.minConfidence',
-		'markerhelpers': 'arjs-anchor.markerhelpers',
+		'min-confidence': 'arjs-anchor.minConfidence',
+		'marker-helpers': 'arjs-anchor.markerhelpers',
 	}
 }))
