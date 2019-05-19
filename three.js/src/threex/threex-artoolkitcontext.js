@@ -1,3 +1,5 @@
+import *  as PACKAGE from '../../../package.json';
+
 var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
@@ -76,9 +78,7 @@ Object.assign( ARjs.Context.prototype, THREE.EventDispatcher.prototype );
 // ARjs.Context.baseURL = '../'
 // default to github page
 ARjs.Context.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
-ARjs.Context.REVISION = '1.6.2'
-
-
+ARjs.Context.REVISION = PACKAGE.version;
 
 /**
  * Create a default camera for this trackingBackend
