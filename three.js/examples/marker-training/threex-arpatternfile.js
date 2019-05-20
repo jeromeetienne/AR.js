@@ -80,7 +80,7 @@ THREEx.ArPatternFile.triggerDownload =  function(patternFileString, fileName = '
 	document.body.removeChild(domElement)
 }
 
-THREEx.ArPatternFile.buildFullMarker =  function(innerImageURL, pattRatio, size, onComplete){
+THREEx.ArPatternFile.buildFullMarker =  function(innerImageURL, pattRatio, size, color, onComplete){
 	var whiteMargin = 0.1
 	var blackMargin = (1 - 2 * whiteMargin) * ((1-pattRatio)/2)
 	// var blackMargin = 0.2
@@ -95,7 +95,7 @@ THREEx.ArPatternFile.buildFullMarker =  function(innerImageURL, pattRatio, size,
 	context.fillRect(0,0,canvas.width, canvas.height)
 
 	// copy image on canvas
-	context.fillStyle = 'black';
+	context.fillStyle = color;
 	context.fillRect(
 		whiteMargin * canvas.width,
 		whiteMargin * canvas.height,

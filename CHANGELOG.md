@@ -1,3 +1,7 @@
+# 1.7.1
+
+- added possibility to change border marker color in marker generator
+
 # 1.7.0
 
 - optionally manage smooth parameter (for video entity glitches and similar problems)
