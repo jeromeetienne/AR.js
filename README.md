@@ -103,15 +103,6 @@ all the crazy ideas related to AR.js.
 - [Details about 3D models that can be used with AR.js](https://medium.com/@akashkuttappa/using-3d-models-with-ar-js-and-a-frame-84d462efe498)
 - ["WebVR for Augmented Reality - Using WebVR to write cross-platform AR applications"](https://medium.com/arjs/webvr-for-augmented-reality-f1e69a505902)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)
-==== BASE ====
-- ["Augmenting The Web Page - Bringing augmenting reality to normal web pages"](https://medium.com/arjs/augmenting-the-web-page-e893f2d199b8)
-  by [@jerome_etienne](https://twitter.com/jerome_etienne)
-<<<<<<<<< Temporary merge branch 1
-- ["Server Rendering for Augmented Reality - Cloud Rendering with Web Standards"](https://medium.com/arjs/server-rendering-for-augmented-reality-2de0a71aae04)
-  by [@jerome_etienne](https://twitter.com/jerome_etienne)
-==== BASE ====
-=======
->>>>>>> /tmp/meld-tmp-Remotoaye8y842
 - ["AR-Code:a Fast Path to Augmented Reality - From QR Code to AR.js content"](https://medium.com/arjs/ar-code-a-fast-path-to-augmented-reality-60e51be3cbdf)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)
 - How to write a AR.js application ?
