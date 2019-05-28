@@ -2,17 +2,17 @@
 <meta name='viewport' content='width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0'>
 <!-- three.js library -->
 <script src='../examples/vendor/three.js/build/three.js'></script>
-<!-- include for artoolkit trackingBackend -->
+<!-- include for artoolkit trackingMethod -->
 <script src='../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
 <script src='../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
-<!-- include for aruco trackingBackend -->
+<!-- include for aruco trackingMethod -->
 <script src='../vendor/js-aruco/src/svd.js'></script>
 <script src='../vendor/js-aruco/src/posit1.js'></script>
 <script src='../vendor/js-aruco/src/cv.js'></script>
 <script src='../vendor/js-aruco/src/aruco.js'></script>
 <script src='../src/threex/threex-aruco/threex-arucocontext.js'></script>
 <script src='../src/threex/threex-aruco/threex-arucodebug.js'></script>
-<!-- include for tango trackingBackend -->
+<!-- include for tango trackingMethod -->
 <script src='../vendor/chromium-tango/THREE.WebAR.js'></script>
 <!-- include ar.js -->
 <script src='../src/new-api/arjs-utils.js'></script>
@@ -43,11 +43,11 @@
 	/
 	<a href='?tango'>tango</a>
 </div><script>
-	var trackingBackend = location.search.substring(1) ? location.search.substring(1) : 'artoolkit'
-	document.querySelector('#currentTracking').innerHTML = trackingBackend
+	var trackingMethod = location.search.substring(1) ? location.search.substring(1) : 'artoolkit'
+	document.querySelector('#currentTracking').innerHTML = trackingMethod
 
-	// if we are running on tango device, ensure trackingBackend is 'tango'
-	if( trackingBackend !== 'tango' && ARjs.Utils.isTango() === true ){
+	// if we are running on tango device, ensure trackingMethod is 'tango'
+	if( trackingMethod !== 'tango' && ARjs.Utils.isTango() === true ){
 		location.search = '#tango'
 		location.reload()
 	}
@@ -56,7 +56,7 @@
 	// - aruco-area
 	// - artoolkit-area
 	// - trackingMethod=
-	// - trackingBackend=
+	// - trackingMethod=
 	//
 	// - thus you got the whole stack available here
 	// - it dramatically reduce the boilerplate
@@ -96,7 +96,7 @@
 	//		Initialize the camera
 	//////////////////////////////////////////////////////////////////////////////////
 
-	var camera = ARjs.Utils.createDefaultCamera(trackingBackend)
+	var camera = ARjs.Utils.createDefaultCamera(trackingMethod)
 	scene.add(camera);
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -105,11 +105,11 @@
 
 	var arProfile = new THREEx.ArToolkitProfile()
 		.sourceWebcam()
-		.trackingBackend(trackingBackend)
-		.defaultMarker(trackingBackend)
+		.trackingMethod(trackingMethod)
+		.defaultMarker(trackingMethod)
 
 	// FIXME temporary placeholder - to reevaluate later
-	if( trackingBackend === 'tango' ){
+	if( trackingMethod === 'tango' ){
 		arProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg')
 	}
 	var arToolkitSource = new THREEx.ArToolkitSource(arProfile.sourceParameters)
@@ -191,14 +191,14 @@
 	//                handle videoMesh for tango
 	//////////////////////////////////////////////////////////////////////////////
 
-	if( trackingBackend === 'tango' ){
+	if( trackingMethod === 'tango' ){
 		// Create the see through camera scene and camera
 		var sceneVideoMesh = new THREE.Scene()
 		var cameraVideoMesh = new THREE.OrthographicCamera( -1, 1, 1, -1, 0, 100 )
 		// tango only - init cameraMesh
 		arContext.addEventListener('initialized', function(event){
 			// sanity check
-			console.assert( arContext.parameters.trackingBackend === 'tango' )
+			console.assert( arContext.parameters.trackingMethod === 'tango' )
 			// variable declaration
 			var vrDisplay = arContext._tangoContext.vrDisplay
 			console.assert(vrDisplay, 'vrDisplay MUST be defined')
@@ -216,7 +216,7 @@
 
 	// tango only - picking to set object position
         renderer.domElement.addEventListener("click", function(event) {
-		if( arContext.parameters.trackingBackend !== 'tango' )	return
+		if( arContext.parameters.trackingMethod !== 'tango' )	return
 
 		var mousePosition = new THREE.Vector3();
                 mousePosition.x = event.pageX / window.innerWidth;
@@ -268,7 +268,7 @@
 		renderer.clear()
 
 		// render videoMesh for tango
-		if( arContext.parameters.trackingBackend === 'tango'){
+		if( arContext.parameters.trackingMethod === 'tango'){
 			renderer.render( sceneVideoMesh, cameraVideoMesh )
 			// Render the perspective scene
 			renderer.clearDepth()
