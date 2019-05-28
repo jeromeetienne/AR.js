@@ -77,7 +77,7 @@
 		arToolkitSource.onResizeElement()
 		arToolkitSource.copyElementSizeTo(renderer.domElement)
 		if( arToolkitContext.arController !== null ){
-			arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)	
+			arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
 		}
 	}
 	////////////////////////////////////////////////////////////////////////////////
@@ -189,7 +189,7 @@
 		geometry.verticesNeedUpdate = true
 
 		geometry.computeBoundingSphere();
-		geometry.computeLineDistances();
+		lineMesh.computeLineDistances();
 
 		var length = markerRoot1.position.distanceTo(markerRoot2.position)
 		lineMesh.material.scale = length * 10
