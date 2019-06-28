@@ -315,7 +315,7 @@
 			}
 		} else {
 			setTimeout(tick, 50);
-		}			
+		}
 	};
 
 	tick();

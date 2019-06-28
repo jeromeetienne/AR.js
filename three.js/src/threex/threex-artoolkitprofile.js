@@ -23,7 +23,7 @@ ARjs.Profile.prototype._guessPerformanceLabel = function() {
 			|| navigator.userAgent.match(/iPod/i)
 			|| navigator.userAgent.match(/BlackBerry/i)
 			|| navigator.userAgent.match(/Windows Phone/i)
-			? true : false 
+			? true : false
 	if( isMobile === true ){
 		return 'phone-normal'
 	}
@@ -39,17 +39,17 @@ ARjs.Profile.prototype._guessPerformanceLabel = function() {
  */
 ARjs.Profile.prototype.reset = function () {
 	this.sourceParameters = {
-		// to read from the webcam 
+		// to read from the webcam
 		sourceType : 'webcam',
 	}
 
 	this.contextParameters = {
-		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
+		cameraParametersUrl: '../../data/data/camera_para.dat',
 		detectionMode: 'mono',
 	}
 	this.defaultMarkerParameters = {
 		type : 'pattern',
-		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+		patternUrl : '../../data/data/patt.hiro',
 		changeMatrixMode: 'modelViewMatrix',
 	}
 	return this
@@ -86,7 +86,7 @@ ARjs.Profile.prototype.performance = function(label) {
 		this.contextParameters.canvasWidth = 80*3
 		this.contextParameters.canvasHeight = 60*3
 
-		this.contextParameters.maxDetectionRate = 30		
+		this.contextParameters.maxDetectionRate = 30
 	}else {
 		console.assert(false, 'unknonwn label '+label)
 	}
@@ -104,7 +104,7 @@ ARjs.Profile.prototype.defaultMarker = function (trackingBackend) {
 	if( trackingBackend === 'artoolkit' ){
 		this.contextParameters.detectionMode = 'mono'
 		this.defaultMarkerParameters.type = 'pattern'
-		this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+		this.defaultMarkerParameters.patternUrl = '../../data/data/patt.hiro'
 	}else if( trackingBackend === 'aruco' ){
 		this.contextParameters.detectionMode = 'mono'
 		this.defaultMarkerParameters.type = 'barcode'
@@ -161,7 +161,7 @@ ARjs.Profile.prototype.changeMatrixMode = function (changeMatrixMode) {
 ARjs.Profile.prototype.trackingMethod = function (trackingMethod) {
 	var data = ARjs.Utils.parseTrackingMethod(trackingMethod)
 	this.defaultMarkerParameters.markersAreaEnabled = data.markersAreaEnabled
-	this.contextParameters.trackingBackend = data.trackingBackend	
+	this.contextParameters.trackingBackend = data.trackingBackend
 	return this
 }
 
@@ -170,7 +170,7 @@ ARjs.Profile.prototype.trackingMethod = function (trackingMethod) {
  */
 ARjs.Profile.prototype.checkIfValid = function () {
 	if( this.contextParameters.trackingBackend === 'tango' ){
-		this.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg')
+		this.sourceImage('../../data/images/img.jpg')
 	}
 	return this
 }
