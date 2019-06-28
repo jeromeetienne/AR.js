@@ -157,6 +157,8 @@ ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
 	// init default value
 	onError = onError || function(error){
 		alert('Webcam Error\nName: '+error.name + '\nMessage: '+error.message)
+		const event = new CustomEvent('camera-error', {error});
+		window.dispatchEvent(event);
 	}
 
 	var domElement = document.createElement('video');
@@ -211,10 +213,12 @@ ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
 			// set the .src of the domElement
             domElement.srcObject = stream;
 
+			const event = new CustomEvent('camera-init', {stream});
+			window.dispatchEvent(event);
 			// to start the video, when it is possible to start it only on userevent. like in android
 			document.body.addEventListener('click', function(){
 				domElement.play();
-			})
+			});
 			// domElement.play();
 
 // TODO listen to loadedmetadata instead

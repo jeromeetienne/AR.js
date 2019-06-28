@@ -4,6 +4,16 @@
 <script src="../build/aframe-ar.js"></script>
 <!-- Register an aframe component that allows reacting to marker events -->
 <script>
+    window.addEventListener('camera-init', (data) => {
+        console.log('camera-init', data);
+        // TODO: Add your own code
+    })
+
+    window.addEventListener('camera-error', (error) => {
+        console.log('camera-error', error);
+        // TODO: Add your own code e.g. splash screen, message to user, etc.
+    })
+
 	AFRAME.registerComponent('registerevents', {
 		init: function () {
 			var marker = this.el;
@@ -50,7 +60,7 @@
 				<a-torus-knot radius='0.26' radius-tubular='0.05'>
 					<a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
 				</a-torus-knot>
-			</a-box>			
+			</a-box>
 		</a-marker>
 
 		<!-- add a simple camera -->
