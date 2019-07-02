@@ -34,7 +34,7 @@
 
 	// init scene and camera
 	var scene	= new THREE.Scene();
-	
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
@@ -48,37 +48,37 @@
 	////////////////////////////////////////////////////////////////////////////////
 
 	var arToolkitSource = new THREEx.ArToolkitSource({
-		// to read from the webcam 
+		// to read from the webcam
 		sourceType : 'webcam',
 
 		// to read from an image
 		// sourceType : 'image',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',
 
 		// to read from a video
 		// sourceType : 'video',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',
 	})
 
 	arToolkitSource.init(function onReady(){
 		onResize()
 	})
-	
+
 	// handle resize
 	window.addEventListener('resize', function(){
 		onResize()
 	})
 	function onResize(){
-		arToolkitSource.onResize()	
-		arToolkitSource.copySizeTo(renderer.domElement)	
+		arToolkitSource.onResizeElement()
+		arToolkitSource.copyElementSizeTo(renderer.domElement)
 		if( arToolkitContext.arController !== null ){
-			arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
-		}	
+			arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
+		}
 	}
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
 	////////////////////////////////////////////////////////////////////////////////
-	
+
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
@@ -100,12 +100,12 @@
 
 		arToolkitContext.update( arToolkitSource.domElement )
 	})
-	
-	
+
+
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
-	
+
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
@@ -131,23 +131,23 @@
 
 	var arWorldRoot = smoothedRoot
 
-	// add a torus knot	
-	var geometry	= new THREE.CubeGeometry(1,1,1);
+	// add a torus knot
+	var geometry	= new THREE.BoxGeometry(1,1,1);
 	var material	= new THREE.MeshNormalMaterial({
 		transparent : true,
 		opacity: 0.5,
 		side: THREE.DoubleSide
-	}); 
+	});
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= geometry.parameters.height/2
 	arWorldRoot.add( mesh );
-	
+
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	var material	= new THREE.MeshNormalMaterial(); 
+	var material	= new THREE.MeshNormalMaterial();
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= 0.5
 	arWorldRoot.add( mesh );
-	
+
 	onRenderFcts.push(function(){
 		mesh.rotation.x += 0.1
 	})

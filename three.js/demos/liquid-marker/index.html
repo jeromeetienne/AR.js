@@ -45,24 +45,24 @@
 	</style>
 	<div id="controls" style='display:none'>
 		<div>
-			<label>Stiffness (<span id="k_slider_label">-20</span> kg / s<sup>2</sup>)</label> 
+			<label>Stiffness (<span id="k_slider_label">-20</span> kg / s<sup>2</sup>)</label>
 			<input id="k_slider" type="range" min=0 max=100 value=20></input>
 		</div>
 		<div>
-			<label>Damping (<span id="b_slider_label">-0.5</span> kg / s)</label> 
+			<label>Damping (<span id="b_slider_label">-0.5</span> kg / s)</label>
 			<input id="b_slider" type="range" min=0 max=10 value=0.5 step=0.1></input>
 		</div>
 		<div>
-			<label>Frequency (<span id="f_slider_label">0</span>) Hz</label> 
+			<label>Frequency (<span id="f_slider_label">0</span>) Hz</label>
 			<input id="f_slider" type="range" min=0 max=10 value=0 step=0.1></input>
 		</div>
 		<div>
-			<label>Mass (<span id="m_slider_label">0.5</span>) kg</label> 
+			<label>Mass (<span id="m_slider_label">0.5</span>) kg</label>
 			<input id="m_slider" type="range" min=0.1 max=5 value=0.5 step=0.1></input>
 		</div>
-		
+
 	</div>
-	
+
 <script>
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
@@ -95,7 +95,7 @@
 	var directionalLight = new THREE.DirectionalLight( 0x887766 );
 	directionalLight.position.set( -1, 1, 1 ).normalize();
 	scene.add( directionalLight );
-	
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
@@ -103,7 +103,7 @@
 	// Create a camera
 	var camera = new THREE.Camera();
 	scene.add(camera);
-	
+
 	var listener = new THREE.AudioListener();
 	camera.add( listener );
 
@@ -115,38 +115,38 @@
 		// boingSound.setLoop(true);
 		boingSound.setVolume(0.5);
 	});
-					
+
 	////////////////////////////////////////////////////////////////////////////////
 	//          handle arToolkitSource
 	////////////////////////////////////////////////////////////////////////////////
 
 	var arToolkitSource = new THREEx.ArToolkitSource({
-		// to read from the webcam 
+		// to read from the webcam
 		sourceType : 'webcam',
-		// 
+		//
 		// to read from an image
 		// sourceType : 'image',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',
 
 		// to read from a video
 		// sourceType : 'video',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',
 	})
 
 	arToolkitSource.init(function onReady(){
 		// handle resize of renderer
-		arToolkitSource.onResize(renderer.domElement)		
+		arToolkitSource.onResizeElement(renderer.domElement)
 	})
-	
+
 	// handle resize
 	window.addEventListener('resize', function(){
 		// handle arToolkitSource resize
-		arToolkitSource.onResize(renderer.domElement)		
+		arToolkitSource.onResizeElement(renderer.domElement)		
 	})
 
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
-	////////////////////////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////////////////////////
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
@@ -169,12 +169,12 @@
 
 		arToolkitContext.update( arToolkitSource.domElement )
 	})
-	
-	
+
+
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
-	
+
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
@@ -186,14 +186,14 @@
 	//////////////////////////////////////////////////////////////////////////////////
 	//		build videoTexture
 	//////////////////////////////////////////////////////////////////////////////////
-	
+
 	// get videoTexture
 	if( arToolkitSource.domElement.nodeName === 'VIDEO' ){
 		var videoTexture = new THREE.VideoTexture(arToolkitSource.domElement)
 		// arToolkitSource.domElement.pause()
 	}else if( arToolkitSource.domElement.nodeName === 'IMG' ){
 		var videoTexture = new THREE.Texture(arToolkitSource.domElement)
-		videoTexture.needsUpdate = true		
+		videoTexture.needsUpdate = true
 	}else console.assert(false)
 	// TODO to remove if webgl2 - better visual ?
 	videoTexture.minFilter =  THREE.NearestFilter
@@ -205,18 +205,18 @@
 	var liquidMarker =  new THREEx.ArLiquidMarker(videoTexture);
 	markerRoot.add(liquidMarker.object3d)
 	// liquidMarker.object3d.visible = false
-	
+
 	onRenderFcts.push(function(){
 		liquidMarker.update()
 	})
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
 ;(function(){
 	var globalIntensity = liquidMarker.object3d.material.uniforms.globalIntensity
-	
-	// mass spring system by the great @bkanber - standalone - a few line in a jsfiddle 😍 https://jsfiddle.net/bkanber/pDngH/ 
+
+	// mass spring system by the great @bkanber - standalone - a few line in a jsfiddle 😍 https://jsfiddle.net/bkanber/pDngH/
 
 	/* Spring stiffness, in kg / s^2 */
 	var k = -70;
@@ -228,7 +228,7 @@
 	/* Block position and velocity. */
 	var block = {x: 0, v: 0, mass: 0.2};
 	var wall  = {x: 30,  lx: 30, v: 0, t: 0, frequency: 0};
-	
+
 	var period = 1/60
 	setInterval(function(){
 		/* Move the wall. */
@@ -250,16 +250,16 @@
 
 
 		var globalIntensity = liquidMarker.object3d.material.uniforms.globalIntensity
-		globalIntensity.value = (block.x - 210)/210		
+		globalIntensity.value = (block.x - 210)/210
 	}, 1000*period)
-	
+
 	function triggerBoing(){
 		block.x -= 200
-		boingSound.play()		
+		boingSound.play()
 	}
 	document.body.addEventListener('click', triggerBoing)
 	document.body.addEventListener('keypress', triggerBoing)
-	
+
 	// bind event for parameters tuning
 	// document.querySelector('#controls').style.display = ''
 	document.getElementById('k_slider').onchange = function() {
@@ -267,25 +267,25 @@
 		k = -1 * parseInt(this.value);
 		document.getElementById('k_slider_label').innerHTML = k;
 	};
-	
+
 	document.getElementById('b_slider').onchange = function() {
 		this.innerHTML = this.value;
 		b = -1 * parseFloat(this.value);
 		document.getElementById('b_slider_label').innerHTML = b;
 	};
-	
+
 	document.getElementById('f_slider').onchange = function() {
 		this.innerHTML = this.value;
 		wall.frequency = parseFloat(this.value);
 		document.getElementById('f_slider_label').innerHTML = wall.frequency;
 	};
-	
+
 	document.getElementById('m_slider').onchange = function() {
 		this.innerHTML = this.value;
 		block.mass = parseFloat(this.value);
 		document.getElementById('m_slider_label').innerHTML = block.mass;
 	};
-	
+
 })()
 
 ;(function(){
@@ -297,8 +297,8 @@ return
 	texture.anisotropy = renderer.getMaxAnisotropy()
         texture.repeat.set(50,50)
         texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.RepeatWrapping;	
-	
+        texture.wrapT = THREE.RepeatWrapping;
+
         // var material = new THREE.MeshBasicMaterial({
         //         map: texture,
 	// 	color: 0x01BE00,
@@ -315,25 +315,25 @@ return
 			uniform float opacity;
 			uniform float globalIntensity;
 			uniform float time;
-		
+
 			void main(void){
 				vec2 repeat = vec2(30.0);
 				vec4 color = texture2D( texture, vUv*repeat ).rgba;
 				color.a += 0.5;
 				color.a = globalIntensity;
 				// vec4 color = vec4(1.0);
-	
+
 				float radius = length(vPosition);
 				color *= 1.0-radius*1.6;
 				color.rgb *= 5.0;
-				// 
+				//
 				// // float circleWidth
 				// if( mod(radius-time/5.0, 0.1) < 0.01 ){
 				// 	color *= 10.0 * intensity + 1.0;
 				// }else{
 				// 	color.rgb *= 1.0;
 				// }
-	
+
 				gl_FragColor = color;
 			}
 		`,
@@ -342,7 +342,7 @@ return
 				value: texture
 			},
                         globalIntensity: {
-                                value: 1.0                            
+                                value: 1.0
                         },
                         time: {
                                 value: 0
@@ -359,8 +359,8 @@ return
 	onRenderFcts.push(function(){
 		mesh.material.uniforms.globalIntensity.value = liquidMarker.object3d.material.uniforms.globalIntensity.value
 		mesh.material.uniforms.time.value = performance.now()/1000 - startedAt
-	})	
-	
+	})
+
 	// create the mesh
 	var mesh = new THREE.Mesh( geometry, material );
 	mesh.rotation.x = -Math.PI/2
@@ -372,7 +372,7 @@ return
 	//////////////////////////////////////////////////////////////////////////////
 	//		opacity animation
 	//////////////////////////////////////////////////////////////////////////////
-	
+
 	// // animation opacity
 	// var targetWaveHeight = 1.0
 	// onRenderFcts.push(function(delta){
@@ -384,7 +384,7 @@ return
 	// 			globalIntensity.value = targetWaveHeight
 	// 		}
 	// 	}
-	// 
+	//
 	// 	if( globalIntensity.value < targetWaveHeight ){
 	// 		globalIntensity.value += speed
 	// 		if( globalIntensity.value > targetWaveHeight ){
@@ -393,7 +393,7 @@ return
 	// 	}
 	// 	// console.log(intensity.value)
 	// })
-	// 
+	//
 	// // toggleCloak on click/keypress
 	// function toggleCloak(){
 	// 	if( targetWaveHeight === 1.0 ){
@@ -412,9 +412,9 @@ return
 	// document.body.appendChild( stats.dom );
 	// render the scene
 	onRenderFcts.push(function(){
-		
+
 		renderer.clear();
-		
+
 		renderer.render( scene, camera );
 
 		// stats.update();
