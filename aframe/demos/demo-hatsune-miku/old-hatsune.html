@@ -3,8 +3,8 @@
 <script src="https://aframe.io/releases/0.6.0/aframe.min.js"></script>
 
 <!-- hatsune miku -->
-<script src="https://raw.githack.com/kripken/ammo.js/dcab07bf0e7f2b4b64c01dc45da846344c8f50be/builds/ammo.js"></script>
-<script src="https://raw.githack.com/takahirox/a-mmd/master/build/a-mmd.js"></script>
+<script src="https://cdn.rawgit.com/kripken/ammo.js/dcab07bf0e7f2b4b64c01dc45da846344c8f50be/builds/ammo.js"></script>
+<script src="https://cdn.rawgit.com/takahirox/a-mmd/v1.0.3/build/a-mmd.min.js"></script>
 
 <!-- include aframe-ar.js -->
 <script src="../../build/aframe-ar.js"></script>
@@ -16,9 +16,9 @@
 </div>
         <!-- <a-scene embedded arjs='sourceType: image; sourceUrl:../../data/images/armchair.jpg' antialias="true"> -->
         <a-scene embedded arjs='sourceType: webcam; sourceWidth: 240; sourceHeight: 180;' antialias="true" outline>
-                
+
 		<!-- <a-marker type='unknown' size='1'>                 -->
-		<a-marker preset='hiro' size='1'>                
+		<a-marker preset='hiro' size='1'>
                         <!-- add an hatsune miku -->
                         <a-entity scale="0.08 0.08 0.08">
                                 <a-entity mmd='outline: true' afterglow:2.0;>
@@ -31,7 +31,7 @@
       				<!-- <a-entity mmd="audio:https://raw.githack.com/mrdoob/three.js/dev/examples/models/mmd/audios/wavefile_short.mp3;
                      			audioDelayTime:5.333333333333333; afterglow:2.0;"> -->
                         </a-entity>
-			
+
 			<!-- <a-plane rotation="-90 0 0"
 			       color="rgba(0,0,0, 0)"
 			       height="2"

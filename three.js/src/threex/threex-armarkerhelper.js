@@ -3,7 +3,7 @@ var THREEx = THREEx || {}
 THREEx.ArMarkerHelper = function(markerControls){
 	this.object3d = new THREE.Group
 
-	var mesh = new THREE.AxisHelper()
+	var mesh = new THREE.AxesHelper()
 	this.object3d.add(mesh)
 
 	var text = markerControls.id
@@ -28,12 +28,12 @@ THREEx.ArMarkerHelper = function(markerControls){
 	// var geometry = new THREE.CubeGeometry(1, 1, 1)
 	var geometry = new THREE.PlaneGeometry(1, 1)
 	var material = new THREE.MeshBasicMaterial({
-		map: texture, 
+		map: texture,
 		transparent: true
 	});
 	var mesh = new THREE.Mesh(geometry, material)
 	mesh.rotation.x = -Math.PI/2
 
 	this.object3d.add(mesh)
-	
+
 }
