@@ -34,8 +34,8 @@
 		as defined in the inline script above -->
 		<a-marker preset='hiro' id='marker-hiro' registerevents>
 			<a-box position='0 0.5 0' material='opacity: 0.5; side: double;color:blue;'>
-				<a-torus-knot radius='0.26' radius-tubular='0.05'>
-					<a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
+				<a-torus-knot radius='0.26' radius-tubular='0.05'
+				animation="property: rotation; to:360 0 0; dur: 5000; easing: linear; loop: true">
 				</a-torus-knot>
 			</a-box>
 		</a-marker>
@@ -47,10 +47,10 @@
 		the 'registerevents' in the inline script above -->
 		<a-marker type='barcode' value='5' id='marker-barcode-5'>
 			<a-box position='0 0.5 0' material='opacity: 0.5; side: double;color:red;'>
-				<a-torus-knot radius='0.26' radius-tubular='0.05'>
-					<a-animation attribute="rotation" to="360 0 0" dur="5000" easing='linear' repeat="indefinite"></a-animation>
+				<a-torus-knot radius='0.26' radius-tubular='0.05'
+				animation="property: rotation; to:360 0 0; dur: 5000; easing: linear; loop: true">
 				</a-torus-knot>
-			</a-box>			
+			</a-box>
 		</a-marker>
 
 		<!-- add a simple camera -->

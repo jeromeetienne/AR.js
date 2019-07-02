@@ -22,8 +22,8 @@
 <div style='position: absolute;bottom: 0;right: 0;background-color: rgba(255,255,255,0.4); padding: 1em; z-index: 1;'>
 	<label title='Select the profile you like'>Profile :
 		<select id='artoolkitProfile'>
-		  <option value="desktop-fast">desktop-fast</option> 
-		  <option value="desktop-normal">desktop-normal</option> 
+		  <option value="desktop-fast">desktop-fast</option>
+		  <option value="desktop-normal">desktop-normal</option>
 		  <option value="phone-normal">phone-normal</option>
 		  <option value="phone-slow">phone-slow</option>
 		  <option value="dynamic" selected>dynamic</option>
@@ -60,7 +60,7 @@
 	var directionalLight = new THREE.DirectionalLight( 0x887766 );
 	directionalLight.position.set( -1, 1, 1 ).normalize();
 	scene.add( directionalLight );
-	
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
@@ -68,7 +68,7 @@
 	// Create a camera
 	var camera = new THREE.Camera();
 	scene.add(camera);
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		handle profile ui
 	//////////////////////////////////////////////////////////////////////////////
@@ -90,11 +90,11 @@
 
 
 	var artoolkitProfile = new THREEx.ArToolkitProfile()
-	artoolkitProfile.sourceWebcam().hiroMarker()
+	artoolkitProfile.sourceWebcam()
 	// artoolkitProfile.sourceVideo(THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4').kanjiMarker();
 	// artoolkitProfile.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg').hiroMarker()
 	// artoolkitProfile.performance('desktop-fast')
-	
+
 	if( localStorage.getItem('artoolkitPerformanceProfile') !== null ){
 		var label = localStorage.getItem('artoolkitPerformanceProfile')
 		console.log('Using stored profile', label)
@@ -111,22 +111,22 @@
 	arToolkitSource.init(function onReady(){
 		onResize()
 	})
-	
+
 	// handle resize
 	window.addEventListener('resize', function(){
 		onResize()
 	})
 	function onResize(){
-		arToolkitSource.onResize()	
-		arToolkitSource.copySizeTo(renderer.domElement)	
+		arToolkitSource.onResizeElement()
+		arToolkitSource.copyElementSizeTo(renderer.domElement)
 		if( arToolkitContext.arController !== null ){
-			arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
-		}	
+			arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
+		}
 	}
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
 	////////////////////////////////////////////////////////////////////////////////
-	
+
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
@@ -142,12 +142,12 @@
 
 		arToolkitContext.update( arToolkitSource.domElement )
 	})
-	
-	
+
+
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
-	
+
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, artoolkitProfile.defaultMarkerParameters)
@@ -156,23 +156,23 @@
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
-	// add a torus knot	
+	// add a torus knot
 	var geometry	= new THREE.CubeGeometry(1,1,1);
 	var material	= new THREE.MeshNormalMaterial({
 		transparent : true,
 		opacity: 0.5,
 		side: THREE.DoubleSide
-	}); 
+	});
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= geometry.parameters.height/2
 	markerRoot.add( mesh );
-	
+
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	var material	= new THREE.MeshNormalMaterial(); 
+	var material	= new THREE.MeshNormalMaterial();
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= 0.5
 	markerRoot.add( mesh );
-	
+
 	onRenderFcts.push(function(){
 		mesh.rotation.x += 0.1
 	})
