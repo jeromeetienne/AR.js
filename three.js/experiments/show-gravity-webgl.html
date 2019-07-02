@@ -27,7 +27,7 @@
 
 	// init scene and camera
 	var scene	= new THREE.Scene();
-		
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
@@ -39,31 +39,31 @@
 	window.addEventListener( 'resize', function() {
 		camera.aspect = window.innerWidth / window.innerHeight;
 		camera.updateProjectionMatrix();
-		
+
 		renderer.setSize( window.innerWidth, window.innerHeight );
 	}, false );
-			
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
-	// add a torus knot	
+	// add a torus knot
 	var geometry	= new THREE.CubeGeometry(1,1,1);
 	var material	= new THREE.MeshNormalMaterial({
 		transparent : true,
 		opacity: 0.5,
 		side: THREE.DoubleSide
-	}); 
+	});
 	var meshCube	= new THREE.Mesh( geometry, material );
 	scene.add( meshCube );
-	
-	meshCube.add( new THREE.AxisHelper() )
-	
+
+	meshCube.add( new THREE.AxesHelper() )
+
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	var material	= new THREE.MeshNormalMaterial(); 
+	var material	= new THREE.MeshNormalMaterial();
 	var mesh	= new THREE.Mesh( geometry, material );
 	meshCube.add( mesh );
-	
+
 	onRenderFcts.push(function(delta){
 		mesh.rotation.x += Math.PI*delta
 	})
@@ -74,9 +74,9 @@
 		deviceEuler.y =  event.gamma / 180 * Math.PI
 		deviceEuler.z =  event.alpha / 180 * Math.PI
 		deviceEuler.order = "XZY"
-	
-		var controllerQuaternion = new THREE.Quaternion().setFromEuler(deviceEuler).inverse()			
-		meshCube.quaternion.copy(controllerQuaternion)			
+
+		var controllerQuaternion = new THREE.Quaternion().setFromEuler(deviceEuler).inverse()
+		meshCube.quaternion.copy(controllerQuaternion)
 	});
 
 
@@ -86,31 +86,31 @@
 	// 	deviceEuler.y =  event.gamma / 180 * Math.PI
 	// 	deviceEuler.z =  event.alpha / 180 * Math.PI
 	// 	deviceEuler.order = "XZY"
-	// 
-	// 	var controllerQuaternion = new THREE.Quaternion().setFromEuler(deviceEuler).inverse()			
-	// 	meshCube.quaternion.copy(controllerQuaternion)			
+	//
+	// 	var controllerQuaternion = new THREE.Quaternion().setFromEuler(deviceEuler).inverse()
+	// 	meshCube.quaternion.copy(controllerQuaternion)
 	// });
-	// 
+	//
 
 
 	// window.addEventListener("devicemotion", function onDeviceMotion(event) {
 	// 	// document.querySelector('#accelerationIncludingGravityX').innerHTML = event.accelerationIncludingGravity.x.toFixed(2)
 	// 	// document.querySelector('#accelerationIncludingGravityY').innerHTML = event.accelerationIncludingGravity.y.toFixed(2)
 	// 	// document.querySelector('#accelerationIncludingGravityZ').innerHTML = event.accelerationIncludingGravity.z.toFixed(2)
-	// 	// 
+	// 	//
 	// 	// document.querySelector('#accelerationX').innerHTML = event.acceleration.x.toFixed(2)
 	// 	// document.querySelector('#accelerationY').innerHTML = event.acceleration.y.toFixed(2)
 	// 	// document.querySelector('#accelerationZ').innerHTML = event.acceleration.z.toFixed(2)
-	// 	// 
+	// 	//
 	// 	// document.querySelector('#gravityX').innerHTML = (event.accelerationIncludingGravity.x - event.acceleration.x).toFixed(2)
 	// 	// document.querySelector('#gravityY').innerHTML = (event.accelerationIncludingGravity.y - event.acceleration.y).toFixed(2)
 	// 	// document.querySelector('#gravityZ').innerHTML = (event.accelerationIncludingGravity.z - event.acceleration.z).toFixed(2)
-	// 	// 
+	// 	//
 	// 	var gravity = new THREE.Vector3()
 	// 	gravity.x = event.accelerationIncludingGravity.x - event.acceleration.x
 	// 	gravity.y = event.accelerationIncludingGravity.y - event.acceleration.y
 	// 	gravity.z = event.accelerationIncludingGravity.z - event.acceleration.z
-	// 
+	//
 	// 	meshCube.lookAt(gravity)
 	// });
 
