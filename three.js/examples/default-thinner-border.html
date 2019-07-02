@@ -69,10 +69,10 @@
 		onResize()
 	})
 	function onResize(){
-		arToolkitSource.onResize()
-		arToolkitSource.copySizeTo(renderer.domElement)
+		arToolkitSource.onResizeElement()
+		arToolkitSource.copyElementSizeTo(renderer.domElement)
 		if( arToolkitContext.arController !== null ){
-			arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)
+			arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
 		}
 	}
 
@@ -128,7 +128,7 @@
 	var markerScene = new THREE.Scene()
 	smoothedGroup.add(markerScene)
 
-	var mesh = new THREE.AxisHelper()
+	var mesh = new THREE.AxesHelper()
 	markerScene.add(mesh)
 
 	// add a torus knot

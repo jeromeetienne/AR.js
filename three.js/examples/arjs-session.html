@@ -45,28 +45,28 @@
 	<br/>
 	<a href='../../three.js/examples/multi-markers/markers-page/' target='_blank'>Markers page</a>
 	<br/>
-	<strong>Tracking Backend:</strong> 
+	<strong>Tracking Backend:</strong>
 	<a href='?artoolkit'>artoolkit</a>
-	/ 
+	/
 	<a href='?aruco'>aruco</a>
-	/ 
+	/
 	<a href='?area-artoolkit'>area artoolkit</a>
-	/ 
+	/
 	<a href='?area-aruco'>area aruco</a>
-	/ 
+	/
 	<a href='?tango'>tango</a>
-	/ 
+	/
 	<a href='?best'>best</a>
 </div><script>
 ;(function(){
 	// get tracking method from location.search
 	var trackingMethod = location.search.substring(1) ? location.search.substring(1) : 'best'
-	
-	
+
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////
-	
+
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
 		antialias : true,
@@ -79,20 +79,20 @@
 	renderer.domElement.style.top = '0px'
 	renderer.domElement.style.left = '0px'
 	document.body.appendChild( renderer.domElement );
-	
+
 	// array of functions for the rendering loop
 	var onRenderFcts= [];
-	
+
 	// init scene and camera
 	var scene	= new THREE.Scene();
-	
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize the camera
 	//////////////////////////////////////////////////////////////////////////////////
 
 	var camera = ARjs.Utils.createDefaultCamera(trackingMethod)
 	scene.add(camera)
-	
+
 	////////////////////////////////////////////////////////////////////////////////
 	//          	Set up Arjs.Profile
 	////////////////////////////////////////////////////////////////////////////////
@@ -119,12 +119,12 @@
 		renderer: renderer,
 		camera: camera,
 		sourceParameters: arProfile.sourceParameters,
-		contextParameters: arProfile.contextParameters		
+		contextParameters: arProfile.contextParameters
 	})
 	onRenderFcts.push(function(){
 		arSession.update()
 	})
-	
+
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ARjs.Anchor
 	////////////////////////////////////////////////////////////////////////////////
@@ -137,7 +137,7 @@
 	//////////////////////////////////////////////////////////////////////////////
 	//                handle Hit Tester
 	//////////////////////////////////////////////////////////////////////////////
-	
+
 	var hitTesting = new ARjs.HitTesting(arSession)
 	onRenderFcts.push(function(){
 		hitTesting.update(camera, arAnchor.object3d, arAnchor.parameters.changeMatrixMode)
@@ -155,7 +155,7 @@
 	//////////////////////////////////////////////////////////////////////////////
 	//		tango specifics
 	//////////////////////////////////////////////////////////////////////////////
-	
+
 	if( arProfile.contextParameters.trackingBackend === 'tango' ){
 		// init tangoVideoMesh
 		var tangoVideoMesh = new ARjs.TangoVideoMesh(arSession)
@@ -169,28 +169,28 @@
 		var tangoPointCloud = new ARjs.TangoPointCloud(arSession)
 		scene.add(tangoPointCloud.object3d)
 	}
-	
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object to the arAnchor
 	//////////////////////////////////////////////////////////////////////////////////
 	var arWorldRoot = arAnchor.object3d
 
-	var mesh = new THREE.AxisHelper()
+	var mesh = new THREE.AxesHelper()
 	arWorldRoot.add(mesh)
-	
-	// add a torus knot	
+
+	// add a torus knot
 	var geometry	= new THREE.CubeGeometry(1,1,1);
 	var material	= new THREE.MeshNormalMaterial({
 		transparent : true,
 		opacity: 0.5,
 		side: THREE.DoubleSide
-	}); 
+	});
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= geometry.parameters.height/2
 	arWorldRoot.add( mesh );
-	
+
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	var material	= new THREE.MeshNormalMaterial(); 
+	var material	= new THREE.MeshNormalMaterial();
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= 0.5
 	arWorldRoot.add( mesh );
@@ -198,7 +198,7 @@
 	onRenderFcts.push(function(delta){
 		mesh.rotation.x += Math.PI*delta
 	})
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		DebugUI
 	//////////////////////////////////////////////////////////////////////////////
@@ -221,26 +221,26 @@
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
 	//////////////////////////////////////////////////////////////////////////////////
-	
+
 	// render the scene
 	onRenderFcts.push(function(){
 		// Render the see through camera scene
 		renderer.clear()
-		
+
 		// render tangoVideoMesh
 		if( arProfile.contextParameters.trackingBackend === 'tango' ){
 			tangoVideoMesh.render()
 		}
-		
+
 		// render hitTesting pickingPlane - for debug
-		var renderHitTestingPickingPlane = true 
+		var renderHitTestingPickingPlane = true
 		if( renderHitTestingPickingPlane && hitTesting._hitTestingPlane){
 			hitTesting._hitTestingPlane.renderDebug(renderer)
 		}
-		
+
 		renderer.render( scene, camera );
 	})
-	
+
 	// run the rendering loop
 	var lastTimeMsec= null
 	requestAnimationFrame(function animate(nowMsec){
