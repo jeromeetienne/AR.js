@@ -3,7 +3,7 @@
 threex.artookit is the three.js extension to easily handle [artoolkit](https://github.com/artoolkit/jsartoolkit5).
 It is the main part of my [AR.js effort](http://github.com/jeromeetienne/AR.js)
 
-# Architechture
+# Architecture
 
 threex.artoolkit is composed of 3 classes
 
@@ -41,7 +41,7 @@ var parameters = {
 }
 ```
 
-### THREEx.ArMarkerContext
+### THREEx.ArToolkitContext
 
 ```javascript
 var parameters = {
@@ -51,6 +51,8 @@ var parameters = {
 	detectionMode: 'color_and_matrix',
 	// type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
 	matrixCodeType: '3x3',
+	// Pattern ratio for custom markers
+	patternRatio: 0.5
 	
 	// url of the camera parameters
 	cameraParametersUrl: 'parameters/camera_para.dat',
@@ -67,7 +69,7 @@ var parameters = {
 }
 ```
 
-### THREEx.ArMarkerSource
+### THREEx.ArToolkitSource
 
 ```javascript
 var parameters = {

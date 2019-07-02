@@ -2162,7 +2162,7 @@ var THREEx = THREEx || {}
 THREEx.ArMarkerHelper = function(markerControls){
 	this.object3d = new THREE.Group
 
-	var mesh = new THREE.AxisHelper()
+	var mesh = new THREE.AxesHelper()
 	this.object3d.add(mesh)
 
 	var text = markerControls.id

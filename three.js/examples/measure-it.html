@@ -53,36 +53,36 @@
 	////////////////////////////////////////////////////////////////////////////////
 
 	var arToolkitSource = new THREEx.ArToolkitSource({
-		// to read from the webcam 
+		// to read from the webcam
 		sourceType : 'webcam',
-		
+
 		// to read from an image
 		// sourceType : 'image',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',
 
 		// to read from a video
 		// sourceType : 'video',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',
 	})
 
 	arToolkitSource.init(function onReady(){
 		onResize()
 	})
-	
+
 	// handle resize
 	window.addEventListener('resize', function(){
 		onResize()
 	})
 	function onResize(){
-		arToolkitSource.onResize()	
-		arToolkitSource.copySizeTo(renderer.domElement)	
+		arToolkitSource.onResizeElement()
+		arToolkitSource.copyElementSizeTo(renderer.domElement)
 		if( arToolkitContext.arController !== null ){
-			arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
-		}	
+			arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
+		}
 	}
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
-	////////////////////////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////////////////////////
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
@@ -101,9 +101,9 @@
 
 		arToolkitContext.update( arToolkitSource.domElement )
 	})
-	
+
 ;(function(){
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		markerRoot1
 	//////////////////////////////////////////////////////////////////////////////
@@ -122,7 +122,7 @@
 	var geometry	= new THREE.OctahedronGeometry( 0.1, 0 )
 	var material	= new THREE.MeshNormalMaterial({
 		wireframe: true
-	}); 
+	});
 	var mesh	= new THREE.Mesh( geometry, material );
 	markerRoot1.add( mesh );
 
@@ -144,7 +144,7 @@
 	var geometry	= new THREE.OctahedronGeometry( 0.1, 0 )
 	var material	= new THREE.MeshNormalMaterial({
 		wireframe: true
-	}); 
+	});
 	var mesh	= new THREE.Mesh( geometry, material );
 	markerRoot2.add( mesh );
 })()
@@ -153,7 +153,7 @@
 ;(function(){
 	var markerRoot1 = scene.getObjectByName('marker1')
 	var markerRoot2 = scene.getObjectByName('marker2')
-	
+
 	var container = new THREE.Group
 	scene.add(container)
 
@@ -167,7 +167,7 @@
 			document.querySelector('.scanningSpinner').style.display = ''
 		}
 	})
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		build lineMesh
 	//////////////////////////////////////////////////////////////////////////////
@@ -189,8 +189,8 @@
 		geometry.verticesNeedUpdate = true
 
 		geometry.computeBoundingSphere();
-		geometry.computeLineDistances();
-		
+		lineMesh.computeLineDistances();
+
 		var length = markerRoot1.position.distanceTo(markerRoot2.position)
 		lineMesh.material.scale = length * 10
 		lineMesh.material.needsUpdate = true
@@ -210,8 +210,8 @@
 
 	// build sprite
 	var material = new THREE.SpriteMaterial({
-		map: texture, 
-		color: 0xffffff, 
+		map: texture,
+		color: 0xffffff,
 	});
 	var sprite = new THREE.Sprite( material );
 	sprite.scale.multiplyScalar(0.5)
@@ -225,7 +225,7 @@
 		// get the text to display
 		var length = markerRoot1.position.distanceTo(markerRoot2.position)
 		var text = length.toFixed(2)
-		
+
 		// put the text in the sprite
 		context.font = '40px monospace';
 		context.clearRect( 0, 0, canvas.width, canvas.height );
@@ -233,7 +233,7 @@
 		context.fillText(text, canvas.width/4, 3*canvas.height/4 )
 		sprite.material.map.needsUpdate = true
 	})
-	
+
 })()
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
@@ -287,7 +287,7 @@
 	height: 100%;
 	width: 6px;
 	display: inline-block;
-	
+
 	-webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
 	animation: sk-stretchdelay 1.2s infinite ease-in-out;
 }
@@ -303,16 +303,16 @@
 }
 
 @-webkit-keyframes sk-stretchdelay {
-	0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+	0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
 	20% { -webkit-transform: scaleY(1.0) }
 }
 
 @keyframes sk-stretchdelay {
-	0%, 40%, 100% { 
+	0%, 40%, 100% {
 		transform: scaleY(0.4);
 		-webkit-transform: scaleY(0.4);
 		}
-	20% { 
+	20% {
 		transform: scaleY(1.0);
 		-webkit-transform: scaleY(1.0);
 	}

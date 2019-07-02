@@ -77,7 +77,7 @@
 	var directionalLight = new THREE.DirectionalLight( 'white' );
 	directionalLight.position.set( -1, 1, 1 ).normalize();
 	scene.add( directionalLight );
-	
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
@@ -91,13 +91,13 @@
 	////////////////////////////////////////////////////////////////////////////////
 
 	var arToolkitSource = new THREEx.ArToolkitSource({
-		// to read from the webcam 
+		// to read from the webcam
 		sourceType : 'webcam',
-		
+
 		// to read from an image
 		// sourceType : 'image',
-		// sourceUrl : 'images/magic-book.jpg',	
-		// sourceUrl : 'images/magic-book2.png',	
+		// sourceUrl : 'images/magic-book.jpg',
+		// sourceUrl : 'images/magic-book2.png',
 
 		// to read from a video
 		// sourceType : 'video',
@@ -106,9 +106,9 @@
 
 	arToolkitSource.init(function onReady(){
 		// handle resize of renderer
-		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])		
+		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])
 	})
-	
+
 	// handle resize
 	window.addEventListener('resize', function(){
 		// handle arToolkitSource resize
@@ -117,7 +117,7 @@
 
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
-	////////////////////////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////////////////////////
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
@@ -138,12 +138,12 @@
 
 		arToolkitContext.update( arToolkitSource.domElement )
 	})
-	
-	
+
+
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
-	
+
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
 	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
@@ -157,9 +157,9 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 
-	var mesh = new THREE.AxisHelper()
+	var mesh = new THREE.AxesHelper()
 	markerRoot.add(mesh)
-	
+
 	// build a smoothedControls
 	var smoothedRoot = new THREE.Group()
 	scene.add(smoothedRoot)
@@ -169,34 +169,34 @@
 	})
 	onRenderFcts.push(function(delta){
 		smoothedControls.update(markerRoot)
-	})	
+	})
 
-	
+
 	var bookRoot = new THREE.Group
 	smoothedRoot.add(bookRoot)
-	
+
 	bookRoot.position.x = -1.15
 	bookRoot.position.y = 1.5
 	bookRoot.position.z = 1.5
 	bookRoot.rotation.x = -Math.PI/2
 
-	// // add a torus knot	
+	// // add a torus knot
 	// var geometry	= new THREE.CubeGeometry(1,1,1);
 	// var material	= new THREE.MeshNormalMaterial({
 	// 	transparent : true,
 	// 	opacity: 0.5,
 	// 	side: THREE.DoubleSide
-	// }); 
+	// });
 	// var mesh	= new THREE.Mesh( geometry, material );
 	// mesh.position.y	= geometry.parameters.height/2
 	// markerRoot.add( mesh );
-	// 
+	//
 	// var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	// var material	= new THREE.MeshNormalMaterial(); 
+	// var material	= new THREE.MeshNormalMaterial();
 	// var mesh	= new THREE.Mesh( geometry, material );
 	// mesh.position.y	= 0.5
 	// markerRoot.add( mesh );
-	// 
+	//
 	// onRenderFcts.push(function(delta){
 	// 	mesh.rotation.x += delta * Math.PI
 	// })
@@ -283,7 +283,7 @@
 	var parent	= new THREE.Object3D();
 	markerRoot.add(parent)
 	parent.scale.set(1,1,1).multiplyScalar(0.4)
-	
+
 	var COLOR1	= new THREE.Color('red')
 	var COLOR2	= new THREE.Color('pink')
 	var COLOR1 = new THREE.Color(0x77bbff);
@@ -318,15 +318,15 @@
 	var glyph2 = new THREE.Mesh( geometry, material )
 	glyph2.position.y = 0.5
 	parent.add( glyph2 );
-	
+
 
 	// GLYPHE2 WIREFRAME
 	var material = new THREE.MeshBasicMaterial({
 		color: COLOR2,
 		wireframe: true,
 		wireframeLinewidth: 4,
-		blending	: THREE.AdditiveBlending, 
-		// depthTest: false, 
+		blending	: THREE.AdditiveBlending,
+		// depthTest: false,
 		opacity: 1,
 		transparent : true,
 	})
@@ -335,10 +335,10 @@
 	glyph2wf.position.copy( glyph2.position )
 	glyph2wf.rotation.copy( glyph2.rotation )
 	glyph2wf.scale.copy(glyph2.scale).multiplyScalar(1.00)
-	parent.add( glyph2wf );	
-	
+	parent.add( glyph2wf );
+
 	// GLYPHE2 GLOW OCCLUDER
-	var glyph2oc = new THREE.Mesh( 
+	var glyph2oc = new THREE.Mesh(
 		glyph2.geometry.clone(),
 		new THREE.MeshPhongMaterial({
 			color: 0x000000,
@@ -357,15 +357,15 @@
 	onRenderFcts.push(function(delta, now){
 		glyph.rotation.x += 0.004;
 		glyph.rotation.z -= 0.003;
-		
+
 		glyph2.rotation.x -= 0.004;
-		glyph2.rotation.z += 0.003;	
-		
+		glyph2.rotation.z += 0.003;
+
 		glyph2wf.rotation.x -= 0.004;
-		glyph2wf.rotation.z += 0.003;	
+		glyph2wf.rotation.z += 0.003;
 
 		glyph2oc.rotation.x -= 0.004;
-		glyph2oc.rotation.z += 0.003;	
+		glyph2oc.rotation.z += 0.003;
 	})
 })()
 
@@ -374,18 +374,18 @@
 	var COLOR1 = new THREE.Color(0x77bbff);
 	var COLOR2 = new THREE.Color(0x8ec5e5);
 	var COLOR3 = new THREE.Color(0x97a8ba);
-	
+
 	// CUBE PARTICLES
 	var material = new THREE.PointsMaterial({
-		map : THREE.ImageUtils.loadTexture( "images/pixel.png" ), 
-		blending : THREE.AdditiveBlending, 
-		depthTest: false, 
+		map : THREE.ImageUtils.loadTexture( "images/pixel.png" ),
+		blending : THREE.AdditiveBlending,
+		depthTest: false,
 		transparent : true,
-		color: COLOR1, 
+		color: COLOR1,
 		size: 0.4,
 		opacity	: 1.4,
 	});
-	
+
 	var height = 1
 
 	var geometry	= new THREE.Geometry();
@@ -397,8 +397,8 @@
 
 		vector3.x	= Math.cos(angle)
 		vector3.z	= Math.sin(angle)
-		
-		var radius = 0.6 + 0.1*(Math.random()-0.5) 
+
+		var radius = 0.6 + 0.1*(Math.random()-0.5)
 		vector3.setLength( radius )
 		vector3.y	= (Math.random()-0.5) * height
 		vertices.push( vector3 )
@@ -407,9 +407,9 @@
 	var cube = new THREE.Points( geometry, material );
 	cube.position.y = height/2
 	smoothedRoot.add( cube );
-	
+
 	var speeds	= [];
-	for( i = 0; i < vertices.length; i++ ){		
+	for( i = 0; i < vertices.length; i++ ){
 		speeds[i]	= Math.random()*0.2+0.02;
 	}
 

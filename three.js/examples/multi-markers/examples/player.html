@@ -7,11 +7,11 @@
 <script src='../../../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
 <script src='../../../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
 <!-- aruco -->
-<script src='../../../vendor/js-aruco/src/svd.js'></script> 
-<script src='../../../vendor/js-aruco/src/posit1.js'></script> 
-<script src='../../../vendor/js-aruco/src/cv.js'></script> 
-<script src='../../../vendor/js-aruco/src/aruco.js'></script> 
-<script src='../../../src/threex/threex-aruco/threex-arucocontext.js'></script> 
+<script src='../../../vendor/js-aruco/src/svd.js'></script>
+<script src='../../../vendor/js-aruco/src/posit1.js'></script>
+<script src='../../../vendor/js-aruco/src/cv.js'></script>
+<script src='../../../vendor/js-aruco/src/aruco.js'></script>
+<script src='../../../src/threex/threex-aruco/threex-arucocontext.js'></script>
 <script src='../../../src/threex/threex-aruco/threex-arucodebug.js'></script>
 <!-- include threex.artoolkit -->
 <script src='../../../src/threex/threex-artoolkitsource.js'></script>
@@ -36,7 +36,7 @@
 </div>
 <!-- info at the top of page -->
 <div style='position: fixed; bottom: 10px; width:100%; text-align: center;z-index:1';>
-	tracking backend: 
+	tracking backend:
 		<a href='javascript:void(0)' onclick='trackingBackendSet("artoolkit")'>artoolkit</a>
 		/
 		<a href='javascript:void(0)' onclick='trackingBackendSet("aruco")'>aruco</a>
@@ -119,28 +119,28 @@
 	arToolkitSource.init(function onReady(){
 		onResize()
 	})
-	
+
 	// handle resize
 	window.addEventListener('resize', function(){
 		onResize()
 	})
 	function onResize(){
 		arToolkitSource.onResizeElement()
-		arToolkitSource.copyElementSizeTo(renderer.domElement)	
+		arToolkitSource.copyElementSizeTo(renderer.domElement)
 		if( urlOptions.trackingBackend === 'artoolkit' ){
 			if( arToolkitContext.arController !== null ){
-				arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)	
-			}	
+				arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
+			}
 		}else if( urlOptions.trackingBackend === 'aruco' ){
-			arToolkitSource.copyElementSizeTo(arToolkitContext.arucoContext.canvas)	
+			arToolkitSource.copyElementSizeTo(arToolkitContext.arucoContext.canvas)
 			camera.aspect = renderer.domElement.width / renderer.domElement.height;
-			camera.updateProjectionMatrix();			
+			camera.updateProjectionMatrix();
 		}else console.assert(false)
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
-	////////////////////////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////////////////////////
 
 	// create atToolkitContext
 	var arToolkitContext = new ARjs.Context(artoolkitProfile.contextParameters)
@@ -148,7 +148,7 @@
 	arToolkitContext.init(function onCompleted(){
 		// if artoolkit, copy projection matrix to camera
 		if( arToolkitContext.parameters.trackingBackend === 'artoolkit' ){
-			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
+			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
 		}
 	})
 
@@ -162,12 +162,12 @@
 	//////////////////////////////////////////////////////////////////////////////
 	//		get multiMarkerFile
 	//////////////////////////////////////////////////////////////////////////////
-	
+
 	// if no localStorage.ARjsMultiMarkerFile, then write one with default marker
 	if( localStorage.getItem('ARjsMultiMarkerFile') === null ){
 		THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(urlOptions.trackingBackend)
 	}
-	
+
 	// get multiMarkerFile from localStorage
 	console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
 	var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
@@ -178,7 +178,7 @@
 	// build a markerRoot
 	var markerRoot = new THREE.Group()
 	scene.add(markerRoot)
-	
+
 	// build a multiMarkerControls
 	var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arToolkitContext, scene, markerRoot, multiMarkerFile)
 
@@ -203,11 +203,11 @@
 		// add an helper to visuable each sub-marker
 		var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
 		markerHelpers.push(markerHelper)
-		subMarkerControls.object3d.add( markerHelper.object3d )		
+		subMarkerControls.object3d.add( markerHelper.object3d )
 	})
 
 	function markerHelpersToggleVisibility(){
-		var wasVisible = markerHelpers[0].object3d.visible 
+		var wasVisible = markerHelpers[0].object3d.visible
 		markerHelpers.forEach(function(markerHelper){
 			markerHelper.object3d.visible = wasVisible ? false : true
 		})
@@ -223,23 +223,23 @@
 
 		THREEx.ArMultiMarkerUtils.navigateToLearnerPage('learner.html', urlOptions.trackingBackend)
 	})
-	
+
 	window.resetMarkerFile = function(){
 		THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(urlOptions.trackingBackend)
 		location.reload()
 	}
 
-	
+
 	function trackingBackendSet(trackingBackend){
 		THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(trackingBackend)
-		
+
 		urlOptions.trackingBackend = trackingBackend
 		urlOptionsUpdate()
-		
+
 		location.reload()
 	}
 	window.trackingBackendSet = trackingBackendSet
-	
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Add simple object on smoothedRoot
 	//////////////////////////////////////////////////////////////////////////////////
@@ -247,7 +247,7 @@
 	;(function(){
 		var arWorldRoot = new THREE.Group()
 		var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
-		averageMatrix.decompose(arWorldRoot.position, arWorldRoot.quaternion, arWorldRoot.scale)		
+		averageMatrix.decompose(arWorldRoot.position, arWorldRoot.quaternion, arWorldRoot.scale)
 		smoothedRoot.add(arWorldRoot)
 		// markerRoot.add(arWorldRoot)
 
@@ -255,29 +255,29 @@
 		// var screenAsPortal = new THREEx.ScreenAsPortal(multiMarkerFile)
 		// arWorldRoot.add(screenAsPortal.object3d)
 
-		var mesh = new THREE.AxisHelper()
+		var mesh = new THREE.AxesHelper()
 		arWorldRoot.add(mesh)
-		
-		// add a torus knot	
+
+		// add a torus knot
 		var geometry	= new THREE.CubeGeometry(1,1,1);
 		var material	= new THREE.MeshNormalMaterial({
 			transparent : true,
 			opacity: 0.5,
 			side: THREE.DoubleSide
-		}); 
+		});
 		var mesh	= new THREE.Mesh( geometry, material );
 		mesh.position.y	= geometry.parameters.height/2
 		arWorldRoot.add(mesh)
-		
+
 		var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-		var material	= new THREE.MeshNormalMaterial(); 
+		var material	= new THREE.MeshNormalMaterial();
 		var mesh	= new THREE.Mesh( geometry, material );
 		mesh.position.y	= 0.5
 		arWorldRoot.add( mesh );
-		
+
 		onRenderFcts.push(function(delta){
 			mesh.rotation.x += delta * Math.PI
-		})		
+		})
 	})()
 
 	//////////////////////////////////////////////////////////////////////////////////
