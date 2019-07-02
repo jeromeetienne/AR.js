@@ -1,3 +1,9 @@
+# 1.7.2
+
+- updated `three.js` dependency to `r103` version
+- minor documentation fixes
+- replace all rawgit URLs (learn more at https://rawgit.com/)
+
 # 1.7.1
 
 - added possibility to change border marker color in marker generator
@@ -15,7 +21,7 @@
 
 # 1.6.2
 
-- Adds TravisCI config with NPM deployment configured - thanks @joestrong - 
+- Adds TravisCI config with NPM deployment configured - thanks @joestrong -
 [#344](https://github.com/jeromeetienne/AR.js/pull/344)
 
 # 1.6.1

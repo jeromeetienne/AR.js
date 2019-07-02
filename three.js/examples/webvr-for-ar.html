@@ -19,9 +19,9 @@
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center;z-index:1';>
-	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - WebVR for AR 
+	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - WebVR for AR
 	- <a href="https://medium.com/arjs/webvr-for-augmented-reality-f1e69a505902" target="_blank">Blog Post</a>
-	- by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a> 
+	- by <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
 	<br/>
 	Useful for phone-in-hmd usecase - work in progress
 	- Press p to toggle webvr present
@@ -55,7 +55,7 @@
 	var directionalLight = new THREE.DirectionalLight( 0x887766 );
 	directionalLight.position.set( -1, 1, 1 ).normalize();
 	scene.add( directionalLight );
-	
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
@@ -65,7 +65,7 @@
 	// scene.add(camera);
 
 	// Create a three.js camera.
-	var camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);	
+	var camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
 	scene.add(camera);
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -89,7 +89,7 @@
 	window.addEventListener('vrdisplaypresentchange', function onVRDisplayPresentChange() {
 		onResize();
 	});
-	
+
 	function togglePresent(){
 		if( vrDisplay.capabilities.canPresent === false ){
 			alert('You vr display can not present!')
@@ -113,19 +113,19 @@
 
 	function onResize() {
 		// handle arToolkitSource resize
-		arToolkitSource.onResize(renderer.domElement)		
-		
+		arToolkitSource.onResizeElement(renderer.domElement)		
+
 		// get width/height from arToolkitSource.domElement
 		var elementWidth = parseFloat( arToolkitSource.domElement.style.width.replace(/px$/,''), 10 )
 		var elementHeight = parseFloat( arToolkitSource.domElement.style.height.replace(/px$/,''), 10 )
-		
+
 		if( vrEffect !== null ){
 			vrEffect.setSize(elementWidth, elementHeight);
 		}
-		
+
 		if( camera instanceof THREE.PerspectiveCamera === true ){
 			camera.aspect = elementWidth / elementHeight;
-			camera.updateProjectionMatrix();			
+			camera.updateProjectionMatrix();
 		}
 	}
 	////////////////////////////////////////////////////////////////////////////////
@@ -133,25 +133,25 @@
 	////////////////////////////////////////////////////////////////////////////////
 
 	var arToolkitSource = new THREEx.ArToolkitSource({
-		// to read from the webcam 
+		// to read from the webcam
 		sourceType : 'webcam',
-		
+
 		// // to read from an image
 		// sourceType : 'image',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',
 
 		// // to read from a video
 		// sourceType : 'video',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',
 	})
 
 	arToolkitSource.init(function onReady(){
 		onResize()
 	})
-	
+
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
-	////////////////////////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////////////////////////
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
@@ -165,7 +165,7 @@
 	arToolkitContext.init(function onCompleted(){
 		if( camera instanceof THREE.PerspectiveCamera === false ){
 			// copy projection matrix to camera
-			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
+			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
 		}
 	})
 
@@ -175,12 +175,12 @@
 
 		arToolkitContext.update( arToolkitSource.domElement )
 	})
-	
-	
+
+
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
-	
+
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
@@ -192,14 +192,14 @@
 	//////////////////////////////////////////////////////////////////////////////////
 	//		build videoTexture
 	//////////////////////////////////////////////////////////////////////////////////
-	
+
 	// get videoTexture
 	if( arToolkitSource.domElement.nodeName === 'VIDEO' ){
 		var videoTexture = new THREE.VideoTexture(arToolkitSource.domElement)
 		// arToolkitSource.domElement.pause()
 	}else if( arToolkitSource.domElement.nodeName === 'IMG' ){
 		var videoTexture = new THREE.Texture(arToolkitSource.domElement)
-		videoTexture.needsUpdate = true		
+		videoTexture.needsUpdate = true
 	}else console.assert(false)
 	// TODO to remove if webgl2 - better visual ?
 	videoTexture.minFilter =  THREE.NearestFilter
@@ -209,7 +209,7 @@
 	//	plane always in front of the camera, exactly as big as the viewport
 	//////////////////////////////////////////////////////////////////////////////
 	var videoInWebgl = new THREEx.ArVideoInWebgl(videoTexture)
-	scene.add(videoInWebgl.object3d);	
+	scene.add(videoInWebgl.object3d);
 	arToolkitSource.domElement.style.visibility = 'hidden'
 
 	// TODO extract the fov from the projectionMatrix
@@ -223,22 +223,22 @@
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
 	// var video = arToolkitSource.domElement;
-	// 
+	//
 	// window.addEventListener('resize', function(){
-	// 	updateSeeThruAspectUv(seethruPlane)	
+	// 	updateSeeThruAspectUv(seethruPlane)
 	// })
 	// video.addEventListener('canplaythrough', function(){
 	// 	updateSeeThruAspectUv(seethruPlane)
 	// })
 	// function updateSeeThruAspectUv(plane){
-	// 
+	//
 	// 	// if video isnt yet ready to play
 	// 	if( video.videoWidth === 0 || video.videoHeight === 0 )	return
-	// 
+	//
 	// 	var faceVertexUvs = plane.geometry.faceVertexUvs[0]
 	// 	var screenAspect = window.innerWidth / window.innerHeight
 	// 	var videoAspect = video.videoWidth / video.videoHeight
-	// 	
+	//
 	// 	plane.geometry.uvsNeedUpdate = true
 	// 	if( screenAspect >= videoAspect ){
 	// 		var actualHeight = videoAspect / screenAspect;
@@ -256,7 +256,7 @@
 	// 		faceVertexUvs[0][0].x = 0.5 - actualWidth/2
 	// 		faceVertexUvs[0][1].x = 0.5 - actualWidth/2
 	// 		faceVertexUvs[1][0].x = 0.5 - actualWidth/2
-	// 		
+	//
 	// 		// faceVertexUvs x 1
 	// 		faceVertexUvs[0][2].x = 0.5 + actualWidth/2
 	// 		faceVertexUvs[1][1].x = 0.5 + actualWidth/2
@@ -269,23 +269,23 @@
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
-	// add a torus knot	
+	// add a torus knot
 	var geometry	= new THREE.CubeGeometry(1,1,1);
 	var material	= new THREE.MeshNormalMaterial({
 		transparent : true,
 		opacity: 0.5,
 		side: THREE.DoubleSide
-	}); 
+	});
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= geometry.parameters.height/2
 	markerRoot.add( mesh );
-	
+
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	var material	= new THREE.MeshNormalMaterial(); 
+	var material	= new THREE.MeshNormalMaterial();
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= 0.5
 	markerRoot.add( mesh );
-	
+
 	onRenderFcts.push(function(){
 		mesh.rotation.x += 0.1
 	})
