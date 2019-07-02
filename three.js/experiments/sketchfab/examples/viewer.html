@@ -61,9 +61,9 @@
 		var object3d	= new THREE.DirectionalLight('white', 0.5*1)
 		object3d.position.set(3, 3, 2)
 		object3d.name	= 'Fill light'
-		scene.add(object3d)		
+		scene.add(object3d)
 	})()
-	
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
@@ -77,23 +77,23 @@
 	////////////////////////////////////////////////////////////////////////////////
 
 	var arToolkitSource = new THREEx.ArToolkitSource({
-		// to read from the webcam 
+		// to read from the webcam
 		sourceType : 'webcam',
-		
+
 		// // to read from an image
 		// sourceType : 'image',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',
 
 		// to read from a video
 		// sourceType : 'video',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
+		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',
 	})
 
 	arToolkitSource.init(function onReady(){
 		// handle resize of renderer
-		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])		
+		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])
 	})
-	
+
 	// handle resize
 	window.addEventListener('resize', function(){
 		// handle arToolkitSource resize
@@ -102,7 +102,7 @@
 
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
-	////////////////////////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////////////////////////
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
@@ -125,12 +125,12 @@
 
 		arToolkitContext.update( arToolkitSource.domElement )
 	})
-	
-	
+
+
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
-	
+
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
 	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
@@ -149,8 +149,8 @@
 	})
 	onRenderFcts.push(function(delta){
 		smoothedControls.update(markerRoot)
-	})	
-	
+	})
+
 	// smoothedControls.addEventListener('becameVisible', function(){
 	// 	console.log('becameVisible event notified')
 	// })
@@ -163,29 +163,29 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 
-	// var mesh = new THREE.AxisHelper()
+	// var mesh = new THREE.AxesHelper()
 	// // markerRoot.add(mesh)
 	// smoothedRoot.add(mesh)
-	
-	// // add a torus knot	
+
+	// // add a torus knot
 	// var geometry	= new THREE.CubeGeometry(1,1,1);
 	// var material	= new THREE.MeshNormalMaterial({
 	// 	transparent : true,
 	// 	opacity: 0.5,
 	// 	side: THREE.DoubleSide
-	// }); 
+	// });
 	// var mesh	= new THREE.Mesh( geometry, material );
 	// mesh.position.y	= geometry.parameters.height/2
 	// // markerRoot.add( mesh );
 	// smoothedRoot.add(mesh)
-	// 
+	//
 	// var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	// var material	= new THREE.MeshNormalMaterial(); 
+	// var material	= new THREE.MeshNormalMaterial();
 	// var mesh	= new THREE.Mesh( geometry, material );
 	// mesh.position.y	= 0.5
 	// // markerRoot.add( mesh );
 	// smoothedRoot.add( mesh );
-	// 
+	//
 	// onRenderFcts.push(function(delta){
 	// 	mesh.rotation.x += delta * Math.PI
 	// })
