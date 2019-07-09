@@ -17,12 +17,16 @@ Stuff is still moving fast, we have reached a good status though.
 An article has been published on [uploadvr](https://uploadvr.com/ar-js-efficient-augmented-reality-for-the-web/).
 So I wanted to publish this so people can try it and have fun with it :)
 
+🚀For more updated stuff about AR.js, new versions and more, you can follow [@nicolocarp](https://twitter.com/nicolocarp) and Watch this repo!
+
+
+**Key points**:
+
 - **Very Fast** : it runs efficiently even on phones - [60 fps on my 2 year-old phone](https://twitter.com/jerome_etienne/status/831333879810236421)!
 - **Web-based** : It is a pure web solution, so no installation required. Full javascript based on three.js + jsartoolkit5
 - **Open Source** : It is completely open source and free of charge!
 - **Standards** : It works on any phone with [webgl](http://caniuse.com/#feat=webgl) and [webrtc](http://caniuse.com/#feat=stream)
 
-[![AR.js 1.0 Video](https://cloud.githubusercontent.com/assets/252962/23441016/ab6900ce-fe17-11e6-971b-24614fb8ac0e.png)](https://youtu.be/0MtvjFg7tik)
 
 # Try it on Mobile
 
