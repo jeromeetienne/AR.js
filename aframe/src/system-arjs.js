@@ -83,6 +83,10 @@ AFRAME.registerSystem('arjs', {
 			type: 'number',
 			default: -1
 		},
+		areaLearnerUrl : {
+			type: 'string',
+			default: ''
+		},
 	},
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -238,6 +242,9 @@ AFRAME.registerSystem('arjs', {
 				// create sessionDebugUI
 				var sessionDebugUI = new ARjs.SessionDebugUI(arSession)
 				containerElement.appendChild(sessionDebugUI.domElement)
+
+				// set the learner url if provided
+				if ( _this.data.areaLearnerUrl !== '' ) ARjs.AnchorDebugUI.MarkersAreaLearnerURL = _this.data.areaLearnerUrl
 			}
 		})
 
