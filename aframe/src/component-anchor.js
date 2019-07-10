@@ -22,6 +22,7 @@ AFRAME.registerComponent('arjs-anchor', {
 		},
 		patternUrl: {
 			type: 'string',
+			default: '',
 		},
 		barcodeValue: {
 			type: 'number'
@@ -99,8 +100,12 @@ AFRAME.registerComponent('arjs-anchor', {
 				markerParameters.patternUrl = THREEx.ArToolkitContext.baseURL+'examples/marker-training/examples/pattern-files/pattern-kanji.patt'
 				markerParameters.markersAreaEnabled = false
 			}else if( _this.data.preset === 'area' ){
-				markerParameters.type = 'barcode'
-				markerParameters.barcodeValue = 1001
+				if (_this.data.patternUrl !== '') {
+					markerParameters.patternUrl = _this.data.patternUrl
+				} else {
+					markerParameters.type = 'barcode'
+					markerParameters.barcodeValue = 1001
+				}
 				markerParameters.markersAreaEnabled = true
 			}else if( _this.data.type === 'barcode' ){
 				markerParameters = {
