@@ -3,7 +3,7 @@ var ARjs = ARjs || {}
 
 /**
  * Create an debug UI for an ARjs.Anchor
- * 
+ *
  * @param {ARjs.Anchor} arAnchor - the anchor to user
  */
 ARjs.SessionDebugUI = function(arSession, tangoPointCloud){
@@ -35,7 +35,7 @@ ARjs.SessionDebugUI = function(arSession, tangoPointCloud){
 	domElement.style.display = 'block'
 	this.domElement.appendChild(domElement)
 	domElement.innerHTML = '<b>trackingBackend</b> : ' +trackingBackend
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		augmented-websites
 	//////////////////////////////////////////////////////////////////////////////
@@ -43,10 +43,13 @@ ARjs.SessionDebugUI = function(arSession, tangoPointCloud){
 	if( ARjs.SessionDebugUI.AugmentedWebsiteURL ){
 		var domElement = document.createElement('a')
 		domElement.innerHTML = 'Share on augmented-websites'
-		domElement.style.display = 'block'
+        domElement.style.display = 'block'
+        domElement.style.position = 'fixed';
+        domElement.style.left = '5px';
+        domElement.style.bottom = '10px';
 		// domElement.setAttribute('target', '_blank')
 		domElement.href = ARjs.SessionDebugUI.AugmentedWebsiteURL + '?'+location.href
-		this.domElement.appendChild(domElement)						
+		this.domElement.appendChild(domElement)
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -68,7 +71,7 @@ ARjs.SessionDebugUI = function(arSession, tangoPointCloud){
 			if( tangoPointCloud.object3d.parent ){
 				scene.remove(tangoPointCloud.object3d)
 			}else{
-				scene.add(tangoPointCloud.object3d)			
+				scene.add(tangoPointCloud.object3d)
 			}
 		})
 	}
@@ -89,14 +92,14 @@ ARjs.SessionDebugUI.AugmentedWebsiteURL = 'https://webxr.io/augmented-website'
 
 /**
  * Create an debug UI for an ARjs.Anchor
- * 
+ *
  * @param {ARjs.Anchor} arAnchor - the anchor to user
  */
 ARjs.AnchorDebugUI = function(arAnchor){
-	var _this = this 
+	var _this = this
 	var arSession = arAnchor.arSession
 	var trackingBackend = arSession.arContext.parameters.trackingBackend
-	
+
 	this.domElement = document.createElement('div')
 	this.domElement.style.color = 'rgba(0,0,0,0.9)'
 	this.domElement.style.backgroundColor = 'rgba(127,127,127,0.5)'
@@ -141,10 +144,10 @@ ARjs.AnchorDebugUI = function(arAnchor){
 		var subMarkerHelpersVisible = false
 		domElement.addEventListener('click', function(){
 			subMarkerHelpersVisible = subMarkerHelpersVisible ? false : true
-			arAnchor.markersArea.setSubMarkersVisibility(subMarkerHelpersVisible)		
+			arAnchor.markersArea.setSubMarkersVisibility(subMarkerHelpersVisible)
 		})
 	}
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		Learn-new-marker-area
 	//////////////////////////////////////////////////////////////////////////////
@@ -165,7 +168,7 @@ ARjs.AnchorDebugUI = function(arAnchor){
 				var learnerURL = ARjs.Context.baseURL + 'examples/multi-markers/examples/learner.html'
 			}
 			ARjs.MarkersAreaUtils.navigateToLearnerPage(learnerURL, trackingBackend)
-		})	
+		})
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
