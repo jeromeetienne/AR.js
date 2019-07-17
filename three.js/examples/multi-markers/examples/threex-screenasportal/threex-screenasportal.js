@@ -11,7 +11,7 @@ THREEx.ScreenAsPortal = function(multiMarkerFile){
 			onRenderFct()
 		})
 	}
-	
+
 	// compute screenSize
 	var markerSize = 1
 	var whiteMargin = 0.125*2
@@ -32,21 +32,21 @@ THREEx.ScreenAsPortal = function(multiMarkerFile){
 
 
 	return
-	
+
 	function initLogo(){
 		// add the inner box
 		var geometry	= new THREE.PlaneGeometry(1,1).rotateX(-Math.PI/2)
 		var material	= new THREE.MeshBasicMaterial({
 			side: THREE.DoubleSide,
-			map: new THREE.TextureLoader().load(THREEx.ArToolkitContext.baseURL+'../data/logo/logo-black-transparent-512x204.png'),
+			map: new THREE.TextureLoader().load('../../data/logo/logo-black-transparent-512x204.png'),
 			alphaTest: 0.9,
-		}) 
+		})
 		var mesh	= new THREE.Mesh( geometry, material )
 		mesh.scale.set(screenSize.x, 1, screenSize.x*204/512)
 		mesh.position.y = -screenDepth + 0.3
-		_this.object3d.add(mesh)		
+		_this.object3d.add(mesh)
 	}
-	
+
 	function initCube(){
 		// add outter cube - invisibility cloak
 		var geometry = new THREE.BoxGeometry(screenSize.x, screenDepth, screenSize.z)
@@ -71,12 +71,12 @@ THREEx.ScreenAsPortal = function(multiMarkerFile){
 			side: THREE.BackSide,
 			map: textureBox,
 			color: 'white',
-		}) 
+		})
 		var innerBoxMesh	= new THREE.Mesh( geometry, material )
 		// innerBoxMesh.scale.set(0.96, 1, 0.96)
-		
+
 		innerBoxMesh.position.y = -geometry.parameters.height/2
-		_this.object3d.add( innerBoxMesh )		
+		_this.object3d.add( innerBoxMesh )
 	}
 
 	function addTargets(){
@@ -86,7 +86,7 @@ THREEx.ScreenAsPortal = function(multiMarkerFile){
 			side: THREE.DoubleSide,
 			map: new THREE.TextureLoader().load(THREEx.ScreenAsPortal.baseURL+'images/target.png'),
 			alphaTest: 0.9,
-		}) 
+		})
 		var targetModel	= new THREE.Mesh( geometry, material )
 
 		// create a blue LineBasicMaterial
@@ -101,8 +101,8 @@ THREEx.ScreenAsPortal = function(multiMarkerFile){
 			var height = screenDepth*0.25 + Math.random() * (screenDepth * 2)
 			addTarget( positionX, positionZ, height)
 		}
-		
-		
+
+
 		return
 		function addTarget(positionX, positionZ, height){
 			var geometry = new THREE.Geometry()
@@ -113,7 +113,7 @@ THREEx.ScreenAsPortal = function(multiMarkerFile){
 			line.position.y = -screenDepth
 			line.position.z = positionZ
 			_this.object3d.add(line)
-			
+
 			var target = targetModel.clone()
 			target.position.copy(line.position)
 			target.position.y += height
@@ -126,7 +126,7 @@ THREEx.ScreenAsPortal = function(multiMarkerFile){
 	//////////////////////////////////////////////////////////////////////////////
 	function addBorders(){
 		var thickNess = 0.15
-		
+
 		var material = new THREE.MeshNormalMaterial()
 		var material = new THREE.MeshBasicMaterial({
 			color: 'black',
@@ -137,26 +137,26 @@ THREEx.ScreenAsPortal = function(multiMarkerFile){
 		var mesh = new THREE.Mesh(geometry, material)
 		mesh.position.y = +thickNess/2
 		mesh.position.z = -screenSize.z/2
-		_this.object3d.add(mesh)		
+		_this.object3d.add(mesh)
 
 		// bottom border
 		var mesh = new THREE.Mesh(geometry, material)
 		mesh.position.y = +thickNess/2
 		mesh.position.z = +screenSize.z/2
-		_this.object3d.add(mesh)		
+		_this.object3d.add(mesh)
 
 		// left border
 		var geometry = new THREE.BoxGeometry(thickNess, thickNess, screenSize.z).rotateZ(Math.PI/4)
 		var mesh = new THREE.Mesh(geometry, material)
 		mesh.position.y = +thickNess/2
 		mesh.position.x = -screenSize.x/2
-		_this.object3d.add(mesh)		
+		_this.object3d.add(mesh)
 
 		// right border
 		var mesh = new THREE.Mesh(geometry, material)
 		mesh.position.y = +thickNess/2
 		mesh.position.x = +screenSize.x/2
-		_this.object3d.add(mesh)		
+		_this.object3d.add(mesh)
 	}
 }
 
