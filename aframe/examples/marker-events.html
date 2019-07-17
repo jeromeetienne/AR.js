@@ -4,6 +4,16 @@
 <script src="../build/aframe-ar.js"></script>
 <!-- Register an aframe component that allows reacting to marker events -->
 <script>
+    window.addEventListener('camera-init', (data) => {
+        console.log('camera-init', data);
+        // TODO: Add your own code
+    })
+
+    window.addEventListener('camera-error', (error) => {
+        console.log('camera-error', error);
+        // TODO: Add your own code e.g. splash screen, message to user, etc.
+    })
+
 	AFRAME.registerComponent('registerevents', {
 		init: function () {
 			var marker = this.el;
@@ -23,7 +33,7 @@
 	});
 </script>
 
-<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: fixed; top: 10px; width:100%; text-align: center; z-index: 1;'>
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: fixed; top: 10px; left: 5px; text-align: center; z-index: 1;'>
 	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - marker events example for a-frame - look at the js console
 	<br/>
 	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>

@@ -92,11 +92,11 @@ AFRAME.registerComponent('arjs-anchor', {
 
 			if( _this.data.preset === 'hiro' ){
 				markerParameters.type = 'pattern'
-				markerParameters.patternUrl = THREEx.ArToolkitContext.baseURL+'examples/marker-training/examples/pattern-files/pattern-hiro.patt'
+				markerParameters.patternUrl = '../../three.js/examples/marker-training/examples/pattern-files/pattern-hiro.patt'
 				markerParameters.markersAreaEnabled = false
 			}else if( _this.data.preset === 'kanji' ){
 				markerParameters.type = 'pattern'
-				markerParameters.patternUrl = THREEx.ArToolkitContext.baseURL+'examples/marker-training/examples/pattern-files/pattern-kanji.patt'
+				markerParameters.patternUrl = '../../three.js/examples/marker-training/examples/pattern-files/pattern-kanji.patt'
 				markerParameters.markersAreaEnabled = false
 			}else if( _this.data.preset === 'area' ){
 				markerParameters.type = 'barcode'
