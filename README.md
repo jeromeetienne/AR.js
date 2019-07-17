@@ -75,7 +75,7 @@ More details about markers:
 <!doctype HTML>
 <html>
 <script src="https://aframe.io/releases/0.9.1/aframe.min.js"></script>
-<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.1/aframe/build/aframe-ar.js"></script>
+<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.2/aframe/build/aframe-ar.js"></script>
   <body style='margin : 0px; overflow: hidden;'>
     <a-scene embedded arjs>
       <a-marker preset="hiro">
@@ -108,7 +108,7 @@ all the crazy ideas related to AR.js.
 - How to write a AR.js application ?
 Here is a [full tutorial](https://marmelab.com/blog/2017/06/19/augmented-reality-html5.html)
 by [marmelab](https://marmelab.com/) featuring [François Zaninotto](https://twitter.com/francoisz).
-It explain how to code a full application on phone! Step by Steps, with explaination and videos.
+It explain how to code a full application on phone! Step by Steps, with explanation and videos.
 Very great! the perfect step if you want to start writing AR application today.
 
 ## Advanced guides
