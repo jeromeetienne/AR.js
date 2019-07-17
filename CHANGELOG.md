@@ -1,3 +1,10 @@
+# 1.7.3
+
+- added events for camera initialization success/error
+- use relative paths instead of remotes (i.e. `camera_para.data` not found bug)
+- enhanced Debug UI style
+- minor documentation fixes
+
 # 1.7.2
 
 - updated `three.js` dependency to `r103` version
