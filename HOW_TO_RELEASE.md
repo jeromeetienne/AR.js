@@ -3,11 +3,11 @@
 This one is mainly for [me](@jerome_etienne) to remember :)
 
 ```bash
-# Update CHANGELOG.md - remove the -dev into version
-atom CHANGELOG.md
-
-# replace REVISION to the proper version, search/replace on the version string should do it
-atom three.js/src/threex/threex-artoolkitcontext.js package.json README.md
+# Update following files:
+CHANGELOG.md
+three.js/src/threex/threex-artoolkitcontext.js
+package.json
+README.md
 
 # Rebuild and minify everything - aka a-frame and three.js
 make minify
@@ -22,7 +22,7 @@ git checkout master
 git merge dev
 
 # tag the release
-git tag 1.5.5
+git tag <tag>
 
 # push the tag on github
 git push origin --tags
@@ -30,7 +30,7 @@ git push origin --tags
 # push commits tag on github
 git push
 
-# update npm package.json
+# publish on NPM (only if have proper credentials)
 npm publish
 
 # Come back to dev branch
