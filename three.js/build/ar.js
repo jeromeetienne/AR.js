@@ -5308,7 +5308,7 @@ Object.assign( ARjs.Context.prototype, THREE.EventDispatcher.prototype );
 // ARjs.Context.baseURL = '../'
 // default to github page
 ARjs.Context.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
-ARjs.Context.REVISION = '1.7.5';
+ARjs.Context.REVISION = '1.7.7';
 
 /**
  * Create a default camera for this trackingBackend
@@ -5914,7 +5914,6 @@ ARjs.Source.prototype.init = function(onReady, onError){
 	return this
         function onSourceReady(){
         document.body.appendChild(_this.domElement);
-        window.addEventListener('arjs-video-loaded', function(ev) {console.log('ss',ev)})
         window.dispatchEvent(new CustomEvent('arjs-video-loaded', {
             detail: {
                 component: document.querySelector('#arjs-video'),
