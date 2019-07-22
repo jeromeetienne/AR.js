@@ -68,7 +68,7 @@ More details about markers:
 * [Browser Support](#Browser-Support)
 * [Licenses](#Licenses)
 
-⚠️ *Be aware that most recent features are currently released on `dev` branch.*
+⚠️ *Please always give a look for new undocumented features on the [Changelog](https://github.com/jeromeetienne/AR.js/blob/master/CHANGELOG.md) until the documentation has been updated.*
 
 
 #  Get Started
@@ -79,7 +79,7 @@ More details about markers:
 <!doctype HTML>
 <html>
 <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
-<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.6/aframe/build/aframe-ar.js"></script>
+<script src="https://raw.githack.com/jeromeetienne/AR.js/1.7.6/aframe/build/aframe-ar.js"></script>
   <body style='margin : 0px; overflow: hidden;'>
     <a-scene embedded arjs>
       <a-marker preset="hiro">
