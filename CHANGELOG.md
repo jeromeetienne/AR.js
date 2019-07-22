@@ -1,7 +1,10 @@
 # 1.7.6
 
-- added events for camera initialization success/error
-- use relative paths instead of remotes (i.e. `camera_para.data` not found bug)
+- added event when camera video stream has been appended to the DOM tree (`arjs-video-loaded`)
+
+# 1.7.5
+
+- added events for camera initialization success/error (`camera-init`, `camera-error`)
 - enhanced Debug UI style
 - minor documentation fixes
 
