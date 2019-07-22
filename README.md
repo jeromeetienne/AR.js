@@ -79,11 +79,7 @@ More details about markers:
 <!doctype HTML>
 <html>
 <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
-<<<<<<< HEAD
 <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.7/aframe/build/aframe-ar.js"></script>
-=======
-<script src="https://raw.githack.com/jeromeetienne/AR.js/1.7.6/aframe/build/aframe-ar.js"></script>
->>>>>>> 665901ec0882894deff2700f166acc387a4a9ffc
   <body style='margin : 0px; overflow: hidden;'>
     <a-scene embedded arjs>
       <a-marker preset="hiro">
