@@ -72,11 +72,17 @@ ARjs.Source.prototype.init = function(onReady, onError){
         this.domElement.style.position = 'absolute'
         this.domElement.style.top = '0px'
         this.domElement.style.left = '0px'
-        this.domElement.style.zIndex = '-2'
+		this.domElement.style.zIndex = '-2'
+		this.domElement.setAttribute('id', 'arjs-video');
 
 	return this
         function onSourceReady(){
-		document.body.appendChild(_this.domElement);
+        document.body.appendChild(_this.domElement);
+        window.dispatchEvent(new CustomEvent('arjs-video-loaded', {
+            detail: {
+                component: document.querySelector('#arjs-video'),
+            },
+        }));
 
 		_this.ready = true
 

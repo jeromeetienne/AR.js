@@ -1,4 +1,4 @@
-# 1.7.3
+# 1.7.5
 
 - added events for camera initialization success/error
 - use relative paths instead of remotes (i.e. `camera_para.data` not found bug)
