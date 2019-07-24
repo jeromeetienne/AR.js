@@ -260,7 +260,7 @@ and [AR.js license](https://github.com/jeromeetienne/AR.js/blob/master/LICENSE.t
 
 * [AR.js changelog](https://github.com/jeromeetienne/AR.js/blob/master/CHANGELOG.md)
 
-* [About Future](https://jeromeetienne.github.io/AR.js-docs/misc/FUTURE.html)
+* [Future plans](https://trello.com/b/63F7JlvD/arjs)
 
 * [FAQ](https://jeromeetienne.github.io/AR.js-docs/misc/FAQ.html)
 
