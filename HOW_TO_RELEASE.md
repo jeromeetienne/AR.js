@@ -1,7 +1,5 @@
 # How To Release ?
 
-This one is mainly for [me](@jerome_etienne) to remember :)
-
 ```bash
 # Update following files:
 CHANGELOG.md
