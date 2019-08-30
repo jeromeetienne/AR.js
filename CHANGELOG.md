@@ -1,3 +1,5 @@
+# 1.7.8
+
 # 1.7.7
 
 - added event when camera video stream has been appended to the DOM tree (`arjs-video-loaded`)
