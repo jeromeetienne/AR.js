@@ -35,13 +35,9 @@ It works on all platforms. Android, IOS and window phone. It runs on **any brows
 To try it on your phone, it is only 2 easy steps, check it out!
 
 1. Open this [hiro marker image](https://jeromeetienne.github.io/AR.js/data/images/HIRO.jpg) in your desktop browser.
-1. Open this [augmented reality webapps](https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html) in your phone browser, and point it at your screen.
+1. Open this [augmented reality webapps](https://codepen.io/nicolocarpignoli/full/vMBgob) in your phone browser, and point it at your screen.
 
-![qrcode pointing to the webapp](https://raw.githubusercontent.com/aloisdg/Documents/master/Image/qrcode.png)
-
-**You are done!** It will open a webpage which read the phone webcam, localize a hiro marker and add 3d on top of it, as you can see below.
-
-![screenshot](https://cloud.githubusercontent.com/assets/252962/23072106/73a0656c-f528-11e6-9fcd-3c900d1d47d3.jpg)
+**You are done!** It will open a webpage which read the phone webcam, localize a hiro marker and add 3d on top of it!
 
 # What "Marker based" means
 AR.js uses `artoolkit`, and so it is marker based.
