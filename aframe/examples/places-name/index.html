@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>GeoAR.js demo</title>
+    <script src='https://aframe.io/releases/0.9.2/aframe.min.js'></script>
+    <script src='https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js'></script>
+    <script>
+        THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/'
+    </script>
+</head>
+
+<!-- include GeoAR.js -->
+<script src="../../src/location-based/gps-entity-place.js"></script>
+<script src="../../src/location-based/gps-camera-debug.js"></script>
+<script src="../../src/location-based/gps-camera.js"></script>
+<link rel="stylesheet" href="../../src/location-based/stylesheets/index.css">
+
+<!-- Dynamically add places from Javascript -->
+<script src="./places.js"></script>
+
+<body style='margin: 0; overflow: hidden;'>
+    <a-scene
+        cursor='rayOrigin: mouse; fuse: true; fuseTimeout: 0;'
+        raycaster="objects: [gps-entity-place];"
+        vr-mode-ui="enabled: false"
+		embedded
+		arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
+
+        <a-camera gps-camera="minDistance: 40;" rotation-reader>
+		</a-camera>
+	</a-scene>
+</body>
