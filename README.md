@@ -10,12 +10,9 @@
 <span class="badge-patreon"><a href="https://patreon.com/jerome_etienne" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/patreon-donate-yellow.svg" alt="Patreon donate button" /></a></span>
 [![Twitter Follow](https://img.shields.io/twitter/follow/jerome_etienne.svg?style=plastic&label=Twitter&style=plastic)](https://twitter.com/jerome_etienne)
 
-I am focusing hard on making AR for the web a reality.
-This repository is where I publish the code.
-Contact me anytime [@jerome_etienne](https://twitter.com/jerome_etienne).
-Stuff is still moving fast, we have reached a good status though.
-An article has been published on [uploadvr](https://uploadvr.com/ar-js-efficient-augmented-reality-for-the-web/).
-So I wanted to publish this so people can try it and have fun with it :)
+AR.js is a lightweight library for Augmented Reality on the Web, coming with features like Marker based and Location based AR.
+
+Welcome to the official repository!
 
 🚀For more updated stuff about AR.js, new versions and more, you can follow [@nicolocarp](https://twitter.com/nicolocarp) and Watch this repo!
 
@@ -27,6 +24,13 @@ So I wanted to publish this so people can try it and have fun with it :)
 - **Open Source** : It is completely open source and free of charge!
 - **Standards** : It works on any phone with [webgl](http://caniuse.com/#feat=webgl) and [webrtc](http://caniuse.com/#feat=stream)
 
+# AR.js v2.0.0 is out!🌍
+
+AR.js v2.0.0 introduce for the first time another type of Augmented Reality: **Location Based**.
+
+AR.js can now be used with its Marker Based feature, with Location Based or both combined.
+
+See the project that has been integrated into AR.js: [GeoAR.js](https://github.com/nicolocarpignoli/GeoAR.js).
 
 # Try it on Mobile
 
@@ -39,7 +43,7 @@ To try it on your phone, it is only 2 easy steps, check it out!
 
 **You are done!** It will open a webpage which read the phone webcam, localize a hiro marker and add 3d on top of it!
 
-# What "Marker based" means
+# What "Marker Based" means
 AR.js uses `artoolkit`, and so it is marker based.
 `artoolkit` is a software with years of experience doing augmented reality. It is able to do a lot!
 
@@ -50,6 +54,34 @@ More details about markers:
 
 * [Artoolkit Open Doc](https://github.com/artoolkit/artoolkit-docs/tree/master/3_Marker_Training)
 * [Detailed Article about markers](https://medium.com/@nicolcarpignoli/ar-js-the-simplest-way-to-get-cross-browser-augmented-reality-on-the-web-10cbc721debc) by [@nicolocarpignoli](https://twitter.com/nicolocarp)
+
+# What 'Location Based' means
+
+AR.js, on its `aframe` implementation, comes with custom components that make possible to integrate data from GPS sensors.
+
+asically, you can add `gps-entity-place` - custom `aframe` entities that have a specific longitude/latitude values. You can add them with a script, loading them from APIs (Foursquare, Google Maps, and so on) or just add them statically on your HTML. You can also load them dynamically as you move to a wider area using APIs. Choice is yours and possibilities are endless with Javascript.
+
+Once you have added one or more gps-entities, and added the `gps-camera` on the `camera` entity, the system calculates, at every frame, your position and the distance of places from you.
+
+Using your phone sensors for orientation/position, it is able to show on your camera a content for each place on its 'physical' place (so if you point the camera toward the place in real life, you will see the content near it).
+
+If you move the camera, it calculates again orientation and position. If places are far, it shows smaller content. If places are near you, it shows it bigger.
+
+🌍Click on the example name for the online version.
+📲Open from mobile phone.
+
+- [Click Places](https://nicolo-carpignoli.herokuapp.com/examples/basic.html)
+
+    Show place icon for every place. Clicking on the icon will show the place name.
+
+    <img height="569" width="320" src="https://github.com/nicolocarpignoli/GeoAR.js/blob/master/docs/click-places.gif?raw=true">
+
+- [Places Name](https://nicolo-carpignoli.herokuapp.com/examples/places-name)
+
+    Show icon and place name above. Clicking on places will redirect to a certain URL (now mocked up).
+
+  <img height="569" width="320" src="https://github.com/nicolocarpignoli/GeoAR.js/blob/master/docs/places-name.gif?raw=true">
+
 
 # Index
 * [Get Started](#Get-Started)
@@ -69,13 +101,13 @@ More details about markers:
 
 #  Get Started
 
-## Augmented reality for the web in less than 10 lines of html
+## Augmented Reality for the Web in less than 10 lines of HTML
 
 ```html
 <!doctype HTML>
 <html>
 <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
-<script src="https://raw.githack.com/jeromeetienne/AR.js/1.7.7/aframe/build/aframe-ar.js"></script>
+<script src="https://raw.githack.com/jeromeetienne/AR.js/2.0.0/aframe/build/aframe-ar.js"></script>
   <body style='margin : 0px; overflow: hidden;'>
     <a-scene embedded arjs>
       <a-marker preset="hiro">

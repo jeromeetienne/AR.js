@@ -1,3 +1,7 @@
+# 2.0.0
+
+- Introduced Location Based Augmented Reality: new `aframe` custom components. Added also documentation, examples and cleaned some code
+
 # 1.7.8
 
 # 1.7.7

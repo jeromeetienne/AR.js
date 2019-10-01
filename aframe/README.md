@@ -17,15 +17,15 @@ Augmented reality for a-frame.
 # Show, Don't Tell
 Here are the demos
 
-- [basic.html](https://jeromeetienne.github.io/AR.js/aframe/examples/basic.html) 
+- [basic.html](https://jeromeetienne.github.io/AR.js/aframe/examples/basic.html)
 basic minimal examples. Good to get started
-<!-- - [demo.html](https://jeromeetienne.github.io/AR.js/aframe/examples/demo.html) 
+<!-- - [demo.html](https://jeromeetienne.github.io/AR.js/aframe/examples/demo.html)
 shows you all the possibilities of aframe-ar. You can play around -->
 - [marker-camera.html](https://jeromeetienne.github.io/AR.js/aframe/examples/marker-camera.html):
 Move the camera instead of using the usual "camera looking toward negative-z and modelViewMatrix"
 - [multiple-independent-markers.html](https://jeromeetienne.github.io/AR.js/aframe/examples/multiple-independent-markers.html):
 Handle multiple indepant markers in a single scene.
-<!-- - [hatsune-minecraft.html](https://jeromeetienne.github.io/AR.js/aframe/examples/minecraft.html): 
+<!-- - [hatsune-minecraft.html](https://jeromeetienne.github.io/AR.js/aframe/examples/minecraft.html):
 include a hatsune miku or minecraft avatar on the marker -->
 - [marker-events.html](https://jeromeetienne.github.io/AR.js/aframe/examples/marker-events.html):
 Emit events when markers are found and lost, and register the respective event listeners.
@@ -67,7 +67,7 @@ Here are the attributes for this entity
 
 
 # \<a-marker-camera\>
-Usually the model used in augmented reality is about changing the modelViewMatrix 
+Usually the model used in augmented reality is about changing the modelViewMatrix
 based on the marker position. the camera being static in 0,0,0 looking toward negative z.
 
 We define as well a model where we move the camera, instead of the object.
@@ -78,13 +78,13 @@ cameraTransform would fit well a room-scale setup, with *multiple markers connec
 modelView is able to provide multiple *independent* markers.
 
 ```html
-<!-- add artoolkit into your scene -->
-<a-scene artoolkit>
+        <!-- add artoolkit into your scene -->
+        <a-scene artoolkit>
         <!-- define your scene as usual -->
         <a-box></a-box>
         <!-- define a camera inside the <a-marker-camera> -->
         <a-marker-camera preset='hiro'><a-marker-camera>
-</a-scene>
+        </a-scene>
 ```
 
 # Links
@@ -95,8 +95,8 @@ modelView is able to provide multiple *independent* markers.
 - [artoolkit5](https://github.com/artoolkit/artoolkit5/)
 - good collection of [marker patterns](https://github.com/artoolkit/artoolkit5/tree/master/doc/patterns)
 
-# Futures
-- DONE port that into a threex. it is more general. nothing is aframe specific 
+# Future
+- DONE port that into a threex. it is more general. nothing is aframe specific
 - webar-artoolkit: webvr api with artoolkit as positional tracking
   - demo with a simple scene at 0,0,0 and the camera handled as the phone
   - may be related to the threex thing
