@@ -26,11 +26,13 @@ Welcome to the official repository!
 
 # AR.js v2.0.0 is out!🌍
 
-AR.js v2.0.0 introduce for the first time another type of Augmented Reality: **Location Based**.
+AR.js v2.0.0 introduces, for the first time, another type of Augmented Reality: **Location Based**.
 
-AR.js can now be used with its Marker Based feature, with Location Based or both combined.
+AR.js can now be used with its default Marker Based feature, with Location Based or both combined.
 
 See the project that has been integrated into AR.js: [GeoAR.js](https://github.com/nicolocarpignoli/GeoAR.js).
+
+You can find additional details below.
 
 # Try it on Mobile
 
@@ -57,18 +59,20 @@ More details about markers:
 
 # What 'Location Based' means
 
-AR.js, on its `aframe` implementation, comes with custom components that make possible to integrate data from GPS sensors.
+AR.js, on its `aframe` implementation, comes with few custom components that make possible to integrate data from GPS sensors.
 
-asically, you can add `gps-entity-place` - custom `aframe` entities that have a specific longitude/latitude values. You can add them with a script, loading them from APIs (Foursquare, Google Maps, and so on) or just add them statically on your HTML. You can also load them dynamically as you move to a wider area using APIs. Choice is yours and possibilities are endless with Javascript.
+Basically, you can add `gps-entity-place` - custom `aframe` entities that have a specific longitude/latitude values.
+
+You can add them with a script, loading them from APIs (Foursquare, Google Maps, and so on) or just add them statically on your HTML.
 
 Once you have added one or more gps-entities, and added the `gps-camera` on the `camera` entity, the system calculates, at every frame, your position and the distance of places from you.
 
-Using your phone sensors for orientation/position, it is able to show on your camera a content for each place on its 'physical' place (so if you point the camera toward the place in real life, you will see the content near it).
+Using your phone sensors for orientation/position, AR.js is able to show on your camera a content for each place on its 'physical' place (so if you point the camera towards the place in real life, you will see the content near it).
 
 If you move the camera, it calculates again orientation and position. If places are far, it shows smaller content. If places are near you, it shows it bigger.
 
-🌍Click on the example name for the online version.
-📲Open from mobile phone.
+🌍Click on the examples below to try it out.
+📲Open from mobile phone with GPS data enabled.
 
 - [Click Places](https://nicolo-carpignoli.herokuapp.com/examples/basic.html)
 
