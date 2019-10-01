@@ -8,14 +8,16 @@
 <br class="badge-separator" />
 [![Gitter chat](https://badges.gitter.im/AR-js/Lobby.png)](https://gitter.im/AR-js/Lobby)
 <span class="badge-patreon"><a href="https://patreon.com/jerome_etienne" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/patreon-donate-yellow.svg" alt="Patreon donate button" /></a></span>
-[![Twitter Follow](https://img.shields.io/twitter/follow/nicolocarp.svg?style=plastic&label=Twitter&style=plastic)](https://twitter.com/nicolocarp)
+[![Twitter Follow](https://img.shields.io/twitter/follow/nicolocarp.svg?style=plastic&label=nicolocarpignoli-twitter&style=plastic)](https://twitter.com/nicolocarp)
+[![Twitter Follow](https://img.shields.io/twitter/follow/jerome_etienne.svg?style=plastic&label=jeromeetienne-twitter&style=plastic)](https://twitter.com/jerome_etienne)
 
 AR.js is a lightweight library for Augmented Reality on the Web, coming with features like Marker based and Location based AR.
 
 Welcome to the official repository!
 
-🚀For frequent updates on AR.js you can follow [@nicolocarp](https://twitter.com/nicolocarp) and Watch this repo!
+This project has been created by [@jeromeetienne](https://github.com/jeromeetienne) and it is now maintained by [@nicolocarpignoli](https://github.com/nicolocarpignoli).
 
+🚀For frequent updates on AR.js you can follow [@nicolocarp](https://twitter.com/nicolocarp) and Watch this repo!
 
 **Key points**:
 
