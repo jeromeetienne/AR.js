@@ -1,8 +1,13 @@
 # 2.0.0
 
-- Introduced Location Based Augmented Reality: new `aframe` custom components. Added also documentation, examples and cleaned some code
+- Introduced Location Based Augmented Reality adding new `aframe` custom components (`gps-entity-place`, `gps-camera`, `gps-camera-debug`)
+- Added new and updated documentation
+- Added examples for Location Based AR
+- Reduced repository size deleting unuseful code
 
 # 1.7.8
+
+(Release drafted for problems with the release flow. No change from previous version)
 
 # 1.7.7
 
