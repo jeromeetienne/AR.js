@@ -75,7 +75,7 @@ If you move the camera, it calculates again orientation and position. If places 
 
 Learn more with [this article](https://medium.com/@nicolcarpignoli/location-based-gps-augmented-reality-on-the-web-7a540c515b3c).
 
-🌍Click on the examples below to try it out.
+🌍Click on the examples below to try it out.  
 📲Open from mobile phone with GPS data enabled.
 
 - [Click Places](https://nicolo-carpignoli.herokuapp.com/examples/basic.html)
