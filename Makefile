@@ -3,12 +3,10 @@ watch: build
 	
 build:
 	cd three.js && make build
-	cd three.js/contribs/portableAR.js && make build
 	cd aframe && make build
 
 minify:
 	cd three.js && make minify
-	cd three.js/contribs/portableAR.js && make minify
 	cd aframe && make minify
 
 .PHONY: test
