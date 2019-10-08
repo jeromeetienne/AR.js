@@ -59,7 +59,9 @@ More details about markers:
 * [Artoolkit Open Doc](https://github.com/artoolkit/artoolkit-docs/tree/master/3_Marker_Training)
 * [Detailed Article about markers](https://medium.com/@nicolcarpignoli/ar-js-the-simplest-way-to-get-cross-browser-augmented-reality-on-the-web-10cbc721debc) by [@nicolocarpignoli](https://twitter.com/nicolocarp)
 
-# What 'Location Based' means
+# What "Location Based" means
+
+### Check out the Location Based documentation: [here](https://github.com/jeromeetienne/AR.js/blob/location-based/aframe/README.md).
 
 AR.js, on its `aframe` implementation, comes with few custom components that make possible to integrate data from GPS sensors.
 
@@ -74,8 +76,6 @@ Using your phone sensors for orientation/position, AR.js is able to show on your
 If you move the camera, it calculates again orientation and position. If places are far, it shows smaller content. If places are near you, it shows it bigger.
 
 Learn more with [this article](https://medium.com/@nicolcarpignoli/location-based-gps-augmented-reality-on-the-web-7a540c515b3c).
-
-For Location Based Documentation, refer [here](https://github.com/jeromeetienne/AR.js/blob/location-based/aframe/README.md).
 
 🌍Click on the examples below to try it out.  
 📲Open from mobile phone with GPS data enabled.
