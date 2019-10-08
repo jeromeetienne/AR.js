@@ -96,7 +96,7 @@ Every example uses the `places.js` script to load places. You set your places us
 
 Otherwise, as default, the script searches for places of interest near the user using Foursquare APIs. Please retrieve valid API credentials [here](https://developer.foursquare.com/) in order to use it. Place credentials (replace both Client Secret and Client Id) on `places.js`.
 
-You can also use GeoAR.js **without** the script, adding `gps-entity-place` entities them directly on the `index.html` file.as documentated [here](https://github.com/jeromeetienne/AR.js/blob/location-based/aframe/README.md).
+You can also use GeoAR.js **without** the script, adding `gps-entity-place` entities directly on the `index.html` file.as documentated [here](https://github.com/jeromeetienne/AR.js/blob/location-based/aframe/README.md).
 
 
 # Index
@@ -144,8 +144,6 @@ by
 
 
 ## Guides for beginners
-We started a [AR.js blog](https://medium.com/arjs), thus we can write about
-all the crazy ideas related to AR.js.
 
 ### Marker Based
 - [AR.js introduction and insight on markers](https://medium.com/@nicolcarpignoli/ar-js-the-simplest-way-to-get-cross-browser-augmented-reality-on-the-web-10cbc721debc)
