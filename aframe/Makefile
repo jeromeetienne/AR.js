@@ -6,6 +6,7 @@ build:
 	(cd ../three.js/ && make build)
 	cat 	../three.js/build/ar.js	\
 		src/component-*.js	\
+		src/location-based/*.js \
 		src/system-arjs*.js	\
 		> build/aframe-ar.js 
 
