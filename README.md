@@ -77,7 +77,7 @@ If you move the camera, it calculates again orientation and position. If places 
 
 Learn more with [this article](https://medium.com/@nicolcarpignoli/location-based-gps-augmented-reality-on-the-web-7a540c515b3c).
 
-🌍Click on the examples below to try it out.  
+🌍Click on the examples below to try it out.
 📲Open from mobile phone with GPS data enabled.
 
 - [Click Places](https://nicolo-carpignoli.herokuapp.com/examples/basic.html)
@@ -91,7 +91,7 @@ Learn more with [this article](https://medium.com/@nicolcarpignoli/location-base
     Show icon and place name above. Clicking on places will redirect to a certain URL (now mocked up).
 
   <img height="569" width="320" src="https://github.com/nicolocarpignoli/GeoAR.js/blob/master/docs/places-name.gif?raw=true">
-  
+
 Every example uses the `places.js` script to load places. You set your places using static data, with specific coordinates, adding these info in the first lines of code (there are comments to explain it better).
 
 Otherwise, as default, the script searches for places of interest near the user using Foursquare APIs. Please retrieve valid API credentials [here](https://developer.foursquare.com/) in order to use it. Place credentials (replace both Client Secret and Client Id) on `places.js`.
@@ -123,7 +123,7 @@ You can also use GeoAR.js **without** the script, adding `gps-entity-place` enti
 <!doctype HTML>
 <html>
 <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
-<script src="https://raw.githack.com/jeromeetienne/AR.js/2.0.0/aframe/build/aframe-ar.js"></script>
+<script src="https://raw.githack.com/jeromeetienne/AR.js/2.0.1/aframe/build/aframe-ar.js"></script>
   <body style='margin : 0px; overflow: hidden;'>
     <a-scene embedded arjs>
       <a-marker preset="hiro">
