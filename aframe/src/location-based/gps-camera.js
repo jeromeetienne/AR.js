@@ -34,8 +34,8 @@ AFRAME.registerComponent('gps-camera', {
         // From iOS 12.2 Safari has Motion & Orientation turned off by default.
         // This may change from iOS 13.*
         if (!!navigator.userAgent.match(/Version\/[\d.]+.*Safari/)) {
-            const timeout = setTimeout(() => alert('Please enable device orientation in Settings > Safari > Motion & Orientation Access.'), 750);
-            window.addEventListener(eventName, () => {
+            var timeout = setTimeout(function() { alert('Please enable device orientation in Settings > Safari > Motion & Orientation Access.')}, 750);
+            window.addEventListener(eventName, function() {
                 clearTimeout(timeout);
             });
         }
@@ -129,7 +129,7 @@ AFRAME.registerComponent('gps-camera', {
         // don't update if accuracy is not good enough
         if (this.currentCoords.accuracy > this.data.positionMinAccuracy) {
             if (this.data.alert && !document.getElementById('alert-popup')) {
-                const popup = document.createElement('div');
+                var popup = document.createElement('div');
                 popup.innerHTML = 'GPS signal is very poor. Try move outdoor or to an area with a better signal.'
                 popup.setAttribute('id', 'alert-popup');
                 document.body.appendChild(popup);
@@ -137,7 +137,7 @@ AFRAME.registerComponent('gps-camera', {
             return;
         }
 
-        const alertPopup = document.getElementById('alert-popup');
+        var alertPopup = document.getElementById('alert-popup');
         if (this.currentCoords.accuracy <= this.data.positionMinAccuracy && alertPopup) {
             document.body.removeChild(alertPopup);
         }
@@ -173,7 +173,7 @@ AFRAME.registerComponent('gps-camera', {
      *
      *  Calculate distance, bearing and more between Latitude/Longitude points
      *  Details: https://www.movable-type.co.uk/scripts/latlong.html
-     * 
+     *
      * @param {Position} src
      * @param {Position} dest
      * @param {Boolean} isPlace
@@ -186,7 +186,7 @@ AFRAME.registerComponent('gps-camera', {
 
         var a = (Math.sin(dlatitude / 2) * Math.sin(dlatitude / 2)) + Math.cos(THREE.Math.degToRad(src.latitude)) * Math.cos(THREE.Math.degToRad(dest.latitude)) * (Math.sin(dlongitude / 2) * Math.sin(dlongitude / 2));
         var angle = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        const distance = angle * 6378160;
+        var distance = angle * 6378160;
 
         // if function has been called for a place, and if it's too near and a min distance has been set,
         // set a very high distance to hide the object

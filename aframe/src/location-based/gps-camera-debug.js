@@ -21,7 +21,7 @@ AFRAME.registerComponent('gps-camera-debug', {
 
         this.placesLoadedEventHandler = function() {
             this.entities++;
-            const entities = document.querySelectorAll('[gps-entity-place]') && document.querySelectorAll('[gps-entity-place]').length || 0;
+            var entities = document.querySelectorAll('[gps-entity-place]') && document.querySelectorAll('[gps-entity-place]').length || 0;
 
             if (entities === this.entities) {
                 // all entities added, we can build debug UI
@@ -34,8 +34,8 @@ AFRAME.registerComponent('gps-camera-debug', {
         window.addEventListener('gps-entity-place-loaded', this.placesLoadedEventHandler.bind(this));
     },
     tick: function () {
-        const camera = document.querySelector('[gps-camera]');
-        const position = camera.getAttribute('position');
+        var camera = document.querySelector('[gps-camera]');
+        var position = camera.getAttribute('position');
 
         this.camera_p_x.innerText = position.x.toFixed(6);
         this.camera_p_z.innerText = position.z.toFixed(6);
@@ -59,36 +59,36 @@ AFRAME.registerComponent('gps-camera-debug', {
      * @param {HTMLElement} parent parent element where to attach debug UI elements
      */
     _buildCameraDebugUI: function(parent) {
-        const container = document.createElement('div');
+        var container = document.createElement('div');
         container.classList.add('debug');
 
-        const currentLatLng = document.createElement('div');
+        var currentLatLng = document.createElement('div');
         currentLatLng.innerText = 'current lng/lat coords: ';
-        const spanLng = document.createElement('span');
+        var spanLng = document.createElement('span');
         spanLng.id = 'current_coords_longitude';
-        const spanLat = document.createElement('span');
+        var spanLat = document.createElement('span');
         spanLat.id = 'current_coords_latitude';
         currentLatLng.appendChild(spanLng);
         currentLatLng.appendChild(spanLat);
 
         container.appendChild(currentLatLng);
 
-        const originLatLng = document.createElement('div');
+        var originLatLng = document.createElement('div');
         originLatLng.innerText = 'origin lng/lat coords: ';
-        const originSpanLng = document.createElement('span');
+        var originSpanLng = document.createElement('span');
         originSpanLng.id = 'origin_coords_longitude';
-        const originSpanLat = document.createElement('span');
+        var originSpanLat = document.createElement('span');
         originSpanLat.id = 'origin_coords_latitude';
         originLatLng.appendChild(originSpanLng);
         originLatLng.appendChild(originSpanLat);
 
         container.appendChild(originLatLng);
 
-        const cameraDiv = document.createElement('div');
+        var cameraDiv = document.createElement('div');
         cameraDiv.innerText = 'camera 3d position: ';
-        const cameraSpanX = document.createElement('span');
+        var cameraSpanX = document.createElement('span');
         cameraSpanX.id = 'camera_p_x';
-        const cameraSpanZ = document.createElement('span');
+        var cameraSpanZ = document.createElement('span');
         cameraSpanZ.id = 'camera_p_z';
 
         cameraDiv.appendChild(cameraSpanX);
@@ -102,9 +102,9 @@ AFRAME.registerComponent('gps-camera-debug', {
      * @returns {void}
      */
     _buildDistancesDebugUI: function() {
-        const div = document.querySelector('.debug');
-        document.querySelectorAll('[gps-entity-place]').forEach((element) => {
-            const debugDiv = document.createElement('div');
+        var div = document.querySelector('.debug');
+        document.querySelectorAll('[gps-entity-place]').forEach(function(element) {
+            var debugDiv = document.createElement('div');
             debugDiv.classList.add('debug-distance');
             debugDiv.innerHTML = element.getAttribute('value');
             debugDiv.setAttribute('value', element.getAttribute('value'));

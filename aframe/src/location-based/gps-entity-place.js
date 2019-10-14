@@ -71,9 +71,9 @@ AFRAME.registerComponent('gps-entity-place', {
      * @returns {void}
      */
     setDebugData: function (element) {
-        const elements = document.querySelectorAll('.debug-distance');
-        elements.forEach((el) => {
-            const distance = formatDistance(this._positionXDebug);
+        var elements = document.querySelectorAll('.debug-distance');
+        elements.forEach(function(el) {
+            var distance = formatDistance(this._positionXDebug);
             if (element.getAttribute('value') == el.getAttribute('value')) {
                 el.innerHTML = `${el.getAttribute('value')}: ${distance} far`;
             }
