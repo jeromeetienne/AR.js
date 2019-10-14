@@ -1,3 +1,8 @@
+# 2.0.1
+
+- Fixed build for location-based files
+- Location-based examples now do not import unuseful files
+
 # 2.0.0
 
 - Introduced Location Based Augmented Reality adding new `aframe` custom components (`gps-entity-place`, `gps-camera`, `gps-camera-debug`)
