@@ -1,3 +1,7 @@
+# 2.0.2
+
+- Fixed motion and orientation sensors permission for iOS 13+ devices
+
 # 2.0.1
 
 - Fixed location-based files build
