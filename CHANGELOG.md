@@ -1,4 +1,4 @@
-# 2.0.2
+# 2.0.3
 
 - Fixed motion and orientation sensors permission for iOS 13+ devices
 
