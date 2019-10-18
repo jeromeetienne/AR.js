@@ -16,7 +16,10 @@ const loadPlaces = function (coords) {
         return loadPlaceFromAPIs(coords);
     }
 
-    return Promise.resolve(PLACES);
+    // temporary fix
+    setTimeout(function() {
+        return Promise.resolve(PLACES);
+    }, 3000);
 };
 
 // getting places from REST APIs
