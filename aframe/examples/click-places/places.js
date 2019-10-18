@@ -1,4 +1,4 @@
-const loadPlaces = function(coords) {
+const loadPlaces = function (coords) {
     // COMMENT FOLLOWING LINE IF YOU WANT TO USE STATIC DATA AND ADD COORDINATES IN THE FOLLOWING 'PLACES' ARRAY
     const method = 'api';
 
@@ -17,7 +17,10 @@ const loadPlaces = function(coords) {
         return loadPlaceFromAPIs(coords);
     }
 
-    return Promise.resolve(PLACES);
+    // temporary fix
+    setTimeout(function() {
+        return Promise.resolve(PLACES);
+    }, 3000);
 };
 
 // getting places from REST APIs
@@ -77,7 +80,7 @@ window.onload = () => {
 
                     icon.addEventListener('loaded', () => window.dispatchEvent(new CustomEvent('gps-entity-place-loaded')));
 
-                    const clickListener = function(ev) {
+                    const clickListener = function (ev) {
                         ev.stopPropagation();
                         ev.preventDefault();
 
@@ -100,7 +103,7 @@ window.onload = () => {
                     };
 
                     icon.addEventListener('click', clickListener);
-                    
+
                     scene.appendChild(icon);
                 });
             })
