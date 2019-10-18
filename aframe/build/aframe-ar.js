@@ -6027,31 +6027,65 @@ ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
 
 	// get available devices
 	navigator.mediaDevices.enumerateDevices().then(function(devices) {
-                var userMediaConstraints = {
-			audio: false,
-			video: {
-				facingMode: 'environment',
-				width: {
-					ideal: _this.parameters.sourceWidth,
-					// min: 1024,
-					// max: 1920
-				},
-				height: {
-					ideal: _this.parameters.sourceHeight,
-					// min: 776,
-					// max: 1080
+
+		var deviceToUse = "";
+		var deviceLabel = ""; //Used to check if permissions have been accepted, enumerateDevices() runs without needing to accept permissions
+		var isAndroid = false;
+		//For android phones
+		for(var i = 0; i < devices.length; i++){
+			deviceLabel = devices[i].label;
+			if(devices[i].kind === "videoinput"){
+				if(devices[i].label.includes("0")){
+					deviceToUse = devices[i].deviceId;
+					isAndroid = true;
+					break;
 				}
-		  	}
+			}
+		}
+		//For Iphones
+		if(isAndroid === false){
+			for(var i = 0; i < devices.length; i++){
+				if(devices[i].kind === "videoinput"){
+					if(devices[i].label.includes("Back")){
+						deviceToUse = devices[i].deviceId;
+						break;
+					}
+				}
+			}
 		}
 
-		if (null !== _this.parameters.deviceId) {
-			userMediaConstraints.video.deviceId = {
-				exact: _this.parameters.deviceId
+		var userMediaConstraints;
+		if(deviceToUse !== ""){
+			userMediaConstraints = {
+			audio: false,
+				video: {
+					deviceId : deviceToUse
+				}
+			};
+		}else{
+			userMediaConstraints = {
+				audio: false,
+				video: {
+					facingMode: 'environment',
+					width: {
+						ideal: _this.parameters.sourceWidth,
+						// min: 1024,
+						// max: 1920
+					},
+					height: {
+						ideal: _this.parameters.sourceHeight,
+						// min: 776,
+						// max: 1080
+					}
+				}
 			};
 		}
-
 		// get a device which satisfy the constraints
 		navigator.mediaDevices.getUserMedia(userMediaConstraints).then(function success(stream) {
+			//If permissions have been accepted for the first time, device label will show as ""
+			if(deviceLabel === ""){
+				location.reload();
+			}
 			// set the .src of the domElement
             domElement.srcObject = stream;
 
