@@ -1,6 +1,6 @@
 # AR.js - Augmented Reality for the Web
 
-<img src="https://github.com/jeromeetienne/AR.js/blob/master/AR.js-1920-1080-HD.png?raw=true" width="531" height="300" />
+<img src="https://github.com/jeromeetienne/AR.js/blob/master/AR.js-1920-1080-HD.png?raw=true" height="200" />
 
 Logo by [Simon Poulter](https://twitter.com/viralinfo)
 
