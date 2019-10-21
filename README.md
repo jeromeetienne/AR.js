@@ -4,6 +4,7 @@
 
 Logo by [Simon Poulter](https://twitter.com/viralinfo)
 
+---
 
 [![npm](https://img.shields.io/npm/v/ar.js.svg)](https://www.npmjs.com/package/ar.js)
 [![npm](https://img.shields.io/npm/dt/ar.js.svg)](https://www.npmjs.com/package/ar.js)
