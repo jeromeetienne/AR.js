@@ -65,7 +65,7 @@ More details about markers:
 
 # What "Location Based" means
 
-### Check out the Location Based documentation: [here](https://github.com/jeromeetienne/AR.js/blob/location-based/aframe/README.md).
+### Check out the Location Based documentation: [here](https://github.com/jeromeetienne/AR.js/blob/location-based/aframe/README.md#location-based).
 
 AR.js, on its `aframe` implementation, comes with few custom components that make possible to integrate data from GPS sensors.
 
