@@ -21,7 +21,7 @@ AFRAME.registerComponent('gps-entity-place', {
         window.addEventListener('debug-ui-added', this.debugUIAddedHandler.bind(this));
 
         if (this._cameraGps === null) {
-            var camera = document.querySelector('a-camera, [camera]');
+            var camera = document.querySelector('[gps-camera]');
             if (camera.components['gps-camera'] === undefined) {
                 return;
             }
