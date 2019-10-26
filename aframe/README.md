@@ -1,54 +1,9 @@
 # aframe-ar
 Augmented reality for a-frame.
 
-```html
-<!-- add arjs into your scene -->
-<a-scene arjs>
-        <!-- define a marker -->
-        <a-anchor>
-                <!-- define the content to be displayed on top of the marker -->
-                <a-box color="#2EAFAC"></a-box>
-        </a-anchor>
-        <!-- define a simple camera -->
-        <a-camera-static/>
-</a-scene>
-```
+## Marker Based
 
-# Show, Don't Tell
-Here are the demos
-
-- [basic.html](https://jeromeetienne.github.io/AR.js/aframe/examples/basic.html) 
-basic minimal examples. Good to get started
-<!-- - [demo.html](https://jeromeetienne.github.io/AR.js/aframe/examples/demo.html) 
-shows you all the possibilities of aframe-ar. You can play around -->
-- [marker-camera.html](https://jeromeetienne.github.io/AR.js/aframe/examples/marker-camera.html):
-Move the camera instead of using the usual "camera looking toward negative-z and modelViewMatrix"
-- [multiple-independent-markers.html](https://jeromeetienne.github.io/AR.js/aframe/examples/multiple-independent-markers.html):
-Handle multiple indepant markers in a single scene.
-<!-- - [hatsune-minecraft.html](https://jeromeetienne.github.io/AR.js/aframe/examples/minecraft.html): 
-include a hatsune miku or minecraft avatar on the marker -->
-- [marker-events.html](https://jeromeetienne.github.io/AR.js/aframe/examples/marker-events.html):
-Emit events when markers are found and lost, and register the respective event listeners.
-
-# artoolkit system
-
-| Attribute | Description |
-| --- | --- |
-| `debugUIEnabled` | true if one should display artoolkit debug canvas, false otherwise |
-| `detectionMode` | the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix'] |
-| `matrixCodeType` | type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5] |
-| `cameraParametersUrl` | url of the camera parameters |
-| `maxDetectionRate` | tune the maximum rate of pose detection in the source image |
-| `sourceType` | type of source - ['webcam', 'image', 'video'] |
-| `sourceUrl` | url of the source - valid if sourceType = image|video |
-| `sourceWidth` | resolution of at which we initialize the source image |
-| `sourceHeight` | resolution of at which we initialize the source image |
-| `displayWidth` | resolution displayed for the source  |
-| `displayHeight` | resolution displayed for the source  |
-| `canvasWidth` | resolution of at which we detect pose in the source image |
-| `canvasHeight` | resolution of at which we detect pose in the source image |
-
-# \<a-marker\>
+### \<a-marker\>
 
 Here are the attributes for this entity
 
@@ -66,8 +21,8 @@ Here are the attributes for this entity
 | smoothThreshold | threshold for smoothing, will keep still unless enough matrices are over tolerance - default: 2 | - |
 
 
-# \<a-marker-camera\>
-Usually the model used in augmented reality is about changing the modelViewMatrix 
+### \<a-marker-camera\>
+Usually the model used in augmented reality is about changing the modelViewMatrix
 based on the marker position. the camera being static in 0,0,0 looking toward negative z.
 
 We define as well a model where we move the camera, instead of the object.
@@ -78,26 +33,85 @@ cameraTransform would fit well a room-scale setup, with *multiple markers connec
 modelView is able to provide multiple *independent* markers.
 
 ```html
-<!-- add artoolkit into your scene -->
-<a-scene artoolkit>
+        <!-- add artoolkit into your scene -->
+        <a-scene artoolkit>
         <!-- define your scene as usual -->
         <a-box></a-box>
         <!-- define a camera inside the <a-marker-camera> -->
         <a-marker-camera preset='hiro'><a-marker-camera>
-</a-scene>
+        </a-scene>
 ```
 
-# Links
+## Location Based
+
+
+### `gps-camera`
+
+**Required**: yes
+**Max allowed per scene**: 1
+
+This component enables the Location AR. It has to be added to the `camera` entity.
+It makes possible to handle both position and rotation of the camera and it's used to determine where the user is pointing their device.
+
+For example:
+
+```HTML
+<a-camera gps-camera rotation-reader></a-camera>
+```
+
+In addition to that, as you can see on the example above, we also have to add `rotation-reader` to handle rotation events. See [here](https://aframe.io/docs/0.9.0/components/camera.html#reading-position-or-rotation-of-the-camera) for more details.
+
+
+### Properties
+
+| Property   | Description | Default Value |
+|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
+| alert     | Whether to show a message when GPS signal is under the `positionMinAccuracy`                  | false |                                                                                                                                                                        | true          |
+| positionMinAccuracy        | Minimum accuracy allowed for position signal    | 100 |
+| minDistance        | If set, places with a distance from the user lower than this value, are not showed. Only a positive value is allowed. Value is in meters.    | 0 (disabled) |
+
+### `gps-entity-place`
+
+**Required**: yes
+**Max allowed per scene**: no limit
+
+This component makes every entity GPS-trackable. It assignes a specific world position to the entity, so the user can see it when their phone is pointing to its position in the real world. If user is far from the entity, their will see it smaller. If it is too far, their will not see it at all.
+
+It requires latitude and longitude as a single string parameter (example with `a-box` aframe primitive):
+
+```HTML
+<a-box color="yellow" gps-entity-place="latitude: <your-latitude>; longitude: <your-longitude>"/>
+```
+
+### `gps-camera-debug`
+
+**Required**: no
+**Max allowed per scene**: 1
+
+This component has to be added only in development environments, not production ones.
+It shows a debug UI with camera informations and a list of registered `gps-entity-place` entities, showing also distance from the user for each one.
+
+It has to be added to the `a-scene`:
+
+```HTML
+<a-scene gps-camera-debug embedded arjs='sourceType: webcam; debugUIEnabled: false;'></a-scene>
+```
+
+## Location Based Support
+
+Tried on Huawei P20, works like charm.
+
+Works good also on iPhone 6.
+
+On iOS, from 12.2, Motion sensors on Safari has be to activated from Settings. If not, GeoAR.js will prompt the user to do so.
+This [may change with final release of iOS 13](https://developer.apple.com/documentation/safari_release_notes/safari_13_beta_6_release_notes) but as September 2019 is not yet out.
+
+We need a lot of more tests, but the first impression is: the more advanced the phone (so newer) the better. This because of better quality sensors.
+
+## General useful links
 
 - [slides about aframe-ar](http://jeromeetienne.github.io/slides/artoolkit-aframe/)
 - Augmented reality is about [understand the view matrix](http://www.3dgep.com/understanding-the-view-matrix/)
 - [jsartoolkit5](https://github.com/artoolkit/jsartoolkit5)
 - [artoolkit5](https://github.com/artoolkit/artoolkit5/)
 - good collection of [marker patterns](https://github.com/artoolkit/artoolkit5/tree/master/doc/patterns)
-
-# Futures
-- DONE port that into a threex. it is more general. nothing is aframe specific 
-- webar-artoolkit: webvr api with artoolkit as positional tracking
-  - demo with a simple scene at 0,0,0 and the camera handled as the phone
-  - may be related to the threex thing
-- do a better codepen https://codepen.io/jeromeetienne/pen/mRqqzb?editors=1000#0

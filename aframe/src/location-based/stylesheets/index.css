@@ -1,0 +1,50 @@
+span {
+    margin-right: 0.5em;
+}
+
+div.debug {
+    position: fixed;
+    bottom: 20px;
+    left: 10px;
+    z-index: 1;
+    width: 100%;
+    background-color: rgba(1, 1, 1, 0.2);
+    color: #ff7500;
+    font-size: 0.75em;
+    padding: 0.5em;
+    width: initial;
+}
+
+#alert-popup {
+    border-radius: 5px;
+    position: absolute;
+    bottom: 10%;
+    left: 5%;
+    display: block;
+    width: 80%;
+    margin: 1em;
+    padding: 0.25em;
+    color: #ff7500;
+    font-size: 0.75em;
+    text-align: center;
+    background-color: white;
+}
+
+#place-label {
+    position: absolute;
+    top: 5%;
+    left: 0%;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#place-label > span {
+    z-index: 99999;
+    padding: 0.25em;
+    color: #ff7500;
+    text-align: center;
+    background-color: white;
+    font-size: 1.5em;
+    border-radius: 5px;
+}

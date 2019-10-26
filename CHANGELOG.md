@@ -1,7 +1,34 @@
+# 2.0.5
+
+- Fixed a bug on location-based statically add of places via
+
+# 2.0.4
+
+- Fixed motion and orientation sensors permission for iOS 13+ devices
+
+# 2.0.1
+
+- Fixed location-based files build
+- Removed unuseful imports on location-based examples
+
+# 2.0.0
+
+- Introduced Location Based Augmented Reality adding new `aframe` custom components (`gps-entity-place`, `gps-camera`, `gps-camera-debug`)
+- Added new and updated documentation
+- Added examples for Location Based AR
+- Reduced repository size deleting unuseful code
+
+# 1.7.8
+
+(Release drafted for problems with the release flow. No change from previous version)
+
+# 1.7.7
+
+- added event when camera video stream has been appended to the DOM tree (`arjs-video-loaded`)
+
 # 1.7.5
 
-- added events for camera initialization success/error
-- use relative paths instead of remotes (i.e. `camera_para.data` not found bug)
+- added events for camera initialization success/error (`camera-init`, `camera-error`)
 - enhanced Debug UI style
 - minor documentation fixes
 

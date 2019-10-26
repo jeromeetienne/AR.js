@@ -1,6 +1,10 @@
 # AR.js - Augmented Reality for the Web
 
-[![Augmented Website](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://github.com/jeromeetienne/AR.js)
+<img src="https://github.com/jeromeetienne/AR.js/blob/master/AR.js-1920-1080-HD.png?raw=true" height="200" />
+
+Logo by [Simon Poulter](https://twitter.com/viralinfo)
+
+---
 
 [![npm](https://img.shields.io/npm/v/ar.js.svg)](https://www.npmjs.com/package/ar.js)
 [![npm](https://img.shields.io/npm/dt/ar.js.svg)](https://www.npmjs.com/package/ar.js)
@@ -8,17 +12,16 @@
 <br class="badge-separator" />
 [![Gitter chat](https://badges.gitter.im/AR-js/Lobby.png)](https://gitter.im/AR-js/Lobby)
 <span class="badge-patreon"><a href="https://patreon.com/jerome_etienne" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/patreon-donate-yellow.svg" alt="Patreon donate button" /></a></span>
-[![Twitter Follow](https://img.shields.io/twitter/follow/jerome_etienne.svg?style=plastic&label=Twitter&style=plastic)](https://twitter.com/jerome_etienne)
+[![Twitter Follow](https://img.shields.io/twitter/follow/nicolocarp.svg?style=plastic&label=nicolocarpignoli-twitter&style=plastic)](https://twitter.com/nicolocarp)
+[![Twitter Follow](https://img.shields.io/twitter/follow/jerome_etienne.svg?style=plastic&label=jeromeetienne-twitter&style=plastic)](https://twitter.com/jerome_etienne)
 
-I am focusing hard on making AR for the web a reality.
-This repository is where I publish the code.
-Contact me anytime [@jerome_etienne](https://twitter.com/jerome_etienne).
-Stuff is still moving fast, we have reached a good status though.
-An article has been published on [uploadvr](https://uploadvr.com/ar-js-efficient-augmented-reality-for-the-web/).
-So I wanted to publish this so people can try it and have fun with it :)
+AR.js is a lightweight library for Augmented Reality on the Web, coming with features like Marker based and Location based AR.
 
-🚀For more updated stuff about AR.js, new versions and more, you can follow [@nicolocarp](https://twitter.com/nicolocarp) and Watch this repo!
+Welcome to the official repository!
 
+This project has been created by [@jeromeetienne](https://github.com/jeromeetienne) and it is now maintained by [@nicolocarpignoli](https://github.com/nicolocarpignoli).
+
+🚀For frequent updates on AR.js you can follow [@nicolocarp](https://twitter.com/nicolocarp) and Watch this repo!
 
 **Key points**:
 
@@ -27,6 +30,15 @@ So I wanted to publish this so people can try it and have fun with it :)
 - **Open Source** : It is completely open source and free of charge!
 - **Standards** : It works on any phone with [webgl](http://caniuse.com/#feat=webgl) and [webrtc](http://caniuse.com/#feat=stream)
 
+# AR.js v2.0.0 is out!🌍
+
+AR.js v2.0.0 introduces, for the first time, another type of Augmented Reality: **Location Based**.
+
+AR.js can now be used with its default Marker Based feature, with Location Based or both combined.
+
+See the project that has been integrated into AR.js: [GeoAR.js](https://github.com/nicolocarpignoli/GeoAR.js).
+
+You can find additional details below.
 
 # Try it on Mobile
 
@@ -35,15 +47,11 @@ It works on all platforms. Android, IOS and window phone. It runs on **any brows
 To try it on your phone, it is only 2 easy steps, check it out!
 
 1. Open this [hiro marker image](https://jeromeetienne.github.io/AR.js/data/images/HIRO.jpg) in your desktop browser.
-1. Open this [augmented reality webapps](https://jeromeetienne.github.io/AR.js/three.js/examples/mobile-performance.html) in your phone browser, and point it at your screen.
+1. Open this [augmented reality webapps](https://codepen.io/nicolocarpignoli/full/vMBgob) in your phone browser, and point it at your screen.
 
-![qrcode pointing to the webapp](https://raw.githubusercontent.com/aloisdg/Documents/master/Image/qrcode.png)
+**You are done!** It will open a webpage which read the phone webcam, localize a hiro marker and add a 3D model on top of it!
 
-**You are done!** It will open a webpage which read the phone webcam, localize a hiro marker and add 3d on top of it, as you can see below.
-
-![screenshot](https://cloud.githubusercontent.com/assets/252962/23072106/73a0656c-f528-11e6-9fcd-3c900d1d47d3.jpg)
-
-# What "Marker based" means
+# What "Marker Based" means
 AR.js uses `artoolkit`, and so it is marker based.
 `artoolkit` is a software with years of experience doing augmented reality. It is able to do a lot!
 
@@ -54,6 +62,46 @@ More details about markers:
 
 * [Artoolkit Open Doc](https://github.com/artoolkit/artoolkit-docs/tree/master/3_Marker_Training)
 * [Detailed Article about markers](https://medium.com/@nicolcarpignoli/ar-js-the-simplest-way-to-get-cross-browser-augmented-reality-on-the-web-10cbc721debc) by [@nicolocarpignoli](https://twitter.com/nicolocarp)
+
+# What "Location Based" means
+
+### Check out the Location Based documentation: [here](https://github.com/jeromeetienne/AR.js/blob/location-based/aframe/README.md#location-based).
+
+AR.js, on its `aframe` implementation, comes with few custom components that make possible to integrate data from GPS sensors.
+
+Basically, you can add `gps-entity-place` - custom `aframe` entities that have a specific longitude/latitude values.
+
+You can add them with a script, loading them from APIs (Foursquare, Google Maps, and so on) or just add them statically on your HTML.
+
+Once you have added one or more gps-entities, and added the `gps-camera` on the `camera` entity, the system calculates, at every frame, your position and the distance of places from you.
+
+Using your phone sensors for orientation/position, AR.js is able to show on your camera a content for each place on its 'physical' place (so if you point the camera towards the place in real life, you will see the content near it).
+
+If you move the camera, it calculates again orientation and position. If places are far, it shows smaller content. If places are near you, it shows it bigger.
+
+Learn more with [this article](https://medium.com/@nicolcarpignoli/location-based-gps-augmented-reality-on-the-web-7a540c515b3c).
+
+🌍Click on the examples below to try it out.  
+📲Open from mobile phone with GPS data enabled.
+
+- [Click Places](https://nicolo-carpignoli.herokuapp.com/examples/basic.html)
+
+    Show place icon for every place. Clicking on the icon will show the place name.
+
+    <img height="569" width="320" src="https://github.com/nicolocarpignoli/GeoAR.js/blob/master/docs/click-places.gif?raw=true">
+
+- [Places Name](https://nicolo-carpignoli.herokuapp.com/examples/places-name)
+
+    Show icon and place name above. Clicking on places will redirect to a certain URL (now mocked up).
+
+  <img height="569" width="320" src="https://github.com/nicolocarpignoli/GeoAR.js/blob/master/docs/places-name.gif?raw=true">
+
+Every example uses the `places.js` script to load places. You set your places using static data, with specific coordinates, adding these info in the first lines of code (there are comments to explain it better).
+
+Otherwise, as default, the script searches for places of interest near the user using Foursquare APIs. Please retrieve valid API credentials [here](https://developer.foursquare.com/) in order to use it. Place credentials (replace both Client Secret and Client Id) on `places.js`.
+
+You can also use GeoAR.js **without** the script, adding `gps-entity-place` entities directly on the `index.html` file.as documentated [here](https://github.com/jeromeetienne/AR.js/blob/location-based/aframe/README.md).
+
 
 # Index
 * [Get Started](#Get-Started)
@@ -68,18 +116,18 @@ More details about markers:
 * [Browser Support](#Browser-Support)
 * [Licenses](#Licenses)
 
-⚠️ *Be aware that most recent features are currently released on `dev` branch.*
+⚠️ *Please always give a look for new undocumented features on the [Changelog](https://github.com/jeromeetienne/AR.js/blob/master/CHANGELOG.md) until the documentation has been updated.*
 
 
 #  Get Started
 
-## Augmented reality for the web in less than 10 lines of html
+## Augmented Reality for the Web in less than 10 lines of HTML
 
 ```html
 <!doctype HTML>
 <html>
 <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
-<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.7.5/aframe/build/aframe-ar.js"></script>
+<script src="https://raw.githack.com/jeromeetienne/AR.js/2.0.5/aframe/build/aframe-ar.js"></script>
   <body style='margin : 0px; overflow: hidden;'>
     <a-scene embedded arjs>
       <a-marker preset="hiro">
@@ -100,23 +148,21 @@ by
 
 
 ## Guides for beginners
-We started a [AR.js blog](https://medium.com/arjs), thus we can write about
-all the crazy ideas related to AR.js.
 
+### Marker Based
 - [AR.js introduction and insight on markers](https://medium.com/@nicolcarpignoli/ar-js-the-simplest-way-to-get-cross-browser-augmented-reality-on-the-web-10cbc721debc)
 - [Details about 3D models that can be used with AR.js](https://medium.com/@akashkuttappa/using-3d-models-with-ar-js-and-a-frame-84d462efe498)
 - ["WebVR for Augmented Reality - Using WebVR to write cross-platform AR applications"](https://medium.com/arjs/webvr-for-augmented-reality-f1e69a505902)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)
 - ["AR-Code:a Fast Path to Augmented Reality - From QR Code to AR.js content"](https://medium.com/arjs/ar-code-a-fast-path-to-augmented-reality-60e51be3cbdf)
   by [@jerome_etienne](https://twitter.com/jerome_etienne)
-- How to write a AR.js application ?
-Here is a [full tutorial](https://marmelab.com/blog/2017/06/19/augmented-reality-html5.html)
-by [marmelab](https://marmelab.com/) featuring [François Zaninotto](https://twitter.com/francoisz).
-It explain how to code a full application on phone! Step by Steps, with explanation and videos.
-Very great! the perfect step if you want to start writing AR application today.
+
+### Location Based
+- [Location Based (GPS) Augmented Reality on the Web](https://medium.com/@nicolcarpignoli/location-based-gps-augmented-reality-on-the-web-7a540c515b3c)
 
 ## Advanced guides
 
+### Marker Based
 - [How to deliver AR.js only with a QR Code](https://medium.com/@nicolcarpignoli/how-to-deliver-ar-on-the-web-only-with-a-qr-code-139bb90e82f1)
 - [How to handle click with AR.js](https://medium.com/@nicolcarpignoli/how-to-handle-click-events-on-ar-js-f397ea5994d)
 - [10 tips to enhance your AR.js app performances](https://medium.com/@nicolcarpignoli/10-tips-to-enhance-your-ar-js-app-8b44c6faffca)
@@ -130,7 +176,13 @@ by [nexus interactive arts](http://www.nexusinteractivearts.com/)
 
 Try to get inspired by this great works:
 
+### Marker Based
 - [Examples from official AR.js doc](https://jeromeetienne.github.io/AR.js-docs/misc/EXAMPLES.html)
+
+### Location Based
+
+- [Click Places](./aframe/examples/click-places)
+- [Places Name](./aframe/examples/places-name)
 
 # Related Projects
 - [Examples inspired from AR.js - not AR.js based](https://github.com/stemkoski/AR-Examples) from [@stemkoski](https://github.com/stemkoski)
@@ -142,8 +194,6 @@ Try to get inspired by this great works:
 
 [Seminal post](https://medium.com/arjs/augmenting-the-web-page-e893f2d199b8) explaining the concept.
 The service is available [webxr.io/augmented-website](https://webxr.io/augmented-website/)
-
-[![Augmented Website](https://user-images.githubusercontent.com/252962/27472386-0d11e59a-57f3-11e7-9fa5-34332c5484f7.png)](https://webxr.io/augmented-website/)
 
 # Community
 - AR.js on gitter: https://gitter.im/AR-js/Lobby
@@ -260,7 +310,7 @@ and [AR.js license](https://github.com/jeromeetienne/AR.js/blob/master/LICENSE.t
 
 * [AR.js changelog](https://github.com/jeromeetienne/AR.js/blob/master/CHANGELOG.md)
 
-* [About Future](https://jeromeetienne.github.io/AR.js-docs/misc/FUTURE.html)
+* [Future plans](https://trello.com/b/63F7JlvD/arjs)
 
 * [FAQ](https://jeromeetienne.github.io/AR.js-docs/misc/FAQ.html)
 
