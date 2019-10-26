@@ -21,11 +21,10 @@ your pull request should be accepted quickly.
 
 Some things that will increase the chance that your pull request is accepted:
 
-<!--* [Write tests](./test/TODO.md) -->
 * Follow the existing coding style
 * Write a [good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
 
 ## Documentation
 
-The documentation is still WIP for this project all contributions are very welcomed, 
-you can contribute to documentation here [AR.js-docs](https://github.com/jeromeetienne/AR.js-docs)
+The documentation is still WIP for this project all contributions are very welcomed,
+you can contribute with a Pull Request to enhance the Readme or other Readme for specific parts (`aframe`, `threejs`, etc.)
