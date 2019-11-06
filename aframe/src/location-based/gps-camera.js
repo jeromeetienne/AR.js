@@ -17,7 +17,7 @@ AFRAME.registerComponent('gps-camera', {
         minDistance: {
             type: 'int',
             default: 0,
-        }
+        },
     },
 
     init: function () {
@@ -55,6 +55,9 @@ AFRAME.registerComponent('gps-camera', {
         }
 
         window.addEventListener(eventName, this._onDeviceOrientation, false);
+
+        window.dispatchEvent(new CustomEvent('gps-camera-ready'));
+        console.debug('gps-camera-ready');
 
         this._watchPositionId = this._initWatchGPS(function (position) {
             this.currentCoords = position.coords;
