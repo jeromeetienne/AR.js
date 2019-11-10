@@ -9024,9 +9024,11 @@ AFRAME.registerComponent('gps-entity-place', {
     },
     init: function () {
         window.addEventListener('gps-camera-ready', () => {
-            this._updatePosition();
+            this.initEntity();
         });
+    },
 
+    initEntity: function () {
         this._positionXDebug = 0;
 
         this.debugUIAddedHandler = function () {
@@ -9048,6 +9050,7 @@ AFRAME.registerComponent('gps-entity-place', {
             return;
         }
 
+        this._updatePosition();
     },
 
     /**
