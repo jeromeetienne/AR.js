@@ -81,7 +81,7 @@ If you move the camera, it calculates again orientation and position. If places 
 
 Learn more with [this article](https://medium.com/@nicolcarpignoli/location-based-gps-augmented-reality-on-the-web-7a540c515b3c).
 
-🌍Click on the examples below to try it out.  
+🌍Click on the examples below to try it out.
 📲Open from mobile phone with GPS data enabled.
 
 - [Click Places](https://nicolo-carpignoli.herokuapp.com/examples/basic.html)
@@ -181,8 +181,9 @@ Try to get inspired by this great works:
 
 ### Location Based
 
-- [Click Places](./aframe/examples/click-places)
-- [Places Name](./aframe/examples/places-name)
+- [Click Places](./aframe/examples/click-places) - set up remote credentials to fetch remote places (`places.js` file)
+- [Places Name](./aframe/examples/places-name) - add new places statically on javascript (`places.js` file)
+- [Only HTML](./aframe/examples/only-html) - add new places statically on html (`index.html` file)
 
 # Related Projects
 - [Examples inspired from AR.js - not AR.js based](https://github.com/stemkoski/AR-Examples) from [@stemkoski](https://github.com/stemkoski)

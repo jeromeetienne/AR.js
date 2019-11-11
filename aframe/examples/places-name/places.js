@@ -2,19 +2,14 @@
 window.onload = () => {
     let method = 'dynamic';
 
-    // if you want to statically add places, de-comment following line
-    // method = 'static';
-
+    // if you want to statically add places, de-comment following line:
+    method = 'static';
     if (method === 'static') {
-        // setTimeout is a temporary fix
-        setTimeout(() => {
-            let places = staticLoadPlaces();
-            renderPlaces(places);
-        }, 3000);
+        let places = staticLoadPlaces();
+        return renderPlaces(places);
     }
 
     if (method !== 'static') {
-
         // first get current user location
         return navigator.geolocation.getCurrentPosition(function (position) {
 
@@ -39,17 +34,10 @@ function staticLoadPlaces() {
         {
             name: "Your place name",
             location: {
-                lat: 0, // add here latitude if using static data
-                lng: 0, // add here longitude if using static data
+                lat: 44.493270, // change here latitude if using static data
+                lng: 11.326040, // change here longitude if using static data
             }
         },
-        {
-            name: 'Another place name',
-            location: {
-                lat: 0,
-                lng: 0,
-            }
-        }
     ];
 }
 

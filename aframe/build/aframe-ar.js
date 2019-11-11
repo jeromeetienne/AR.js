@@ -8733,13 +8733,25 @@ AFRAME.registerComponent('gps-camera', {
         minDistance: {
             type: 'int',
             default: 0,
-        }
+        },
     },
 
     init: function () {
         if (this.el.components['look-controls'] === undefined) {
             return;
         }
+
+        this._watchPositionId = this._initWatchGPS(function (position) {
+            if (!this.currentCoords) {
+                this.currentCoords = position.coords;
+                this._updatePosition();
+                window.dispatchEvent(new CustomEvent('gps-camera-ready'));
+                console.debug('gps-camera-ready');
+            } else {
+                this.currentCoords = position.coords;
+                this._updatePosition();
+            }
+        }.bind(this));
 
         this.lookControls = this.el.components['look-controls'];
 
@@ -8771,11 +8783,6 @@ AFRAME.registerComponent('gps-camera', {
         }
 
         window.addEventListener(eventName, this._onDeviceOrientation, false);
-
-        this._watchPositionId = this._initWatchGPS(function (position) {
-            this.currentCoords = position.coords;
-            this._updatePosition();
-        }.bind(this));
     },
 
     tick: function () {
@@ -9021,6 +9028,7 @@ AFRAME.registerComponent('gps-entity-place', {
     },
     init: function () {
         this._positionXDebug = 0;
+        console.debug('gps-camera-entity-added');
 
         this.debugUIAddedHandler = function () {
             this.setDebugData(this.el);
@@ -9029,20 +9037,17 @@ AFRAME.registerComponent('gps-entity-place', {
 
         window.addEventListener('debug-ui-added', this.debugUIAddedHandler.bind(this));
 
-        if (this._cameraGps === null) {
-            var camera = document.querySelector('a-camera, [camera]');
-            if (camera.components['gps-camera'] === undefined) {
-                return;
+        window.addEventListener('gps-camera-ready', function() {
+            if (this._cameraGps === null) {
+                var camera = document.querySelector('a-camera, [camera]');
+                if (camera.components['gps-camera'] === undefined) {
+                    return;
+                }
+                this._cameraGps = camera.components['gps-camera'];
             }
-            this._cameraGps = camera.components['gps-camera'];
-        }
 
-        if (this._cameraGps.originCoords === null) {
-            return;
-        }
-
-        this._updatePosition();
-        return true;
+            this._updatePosition();
+        }.bind(this));
     },
 
     /**
@@ -9051,6 +9056,10 @@ AFRAME.registerComponent('gps-entity-place', {
      */
     _updatePosition: function () {
         var position = { x: 0, y: 0, z: 0 }
+
+         if (this._cameraGps.originCoords === null) {
+            return;
+        }
 
         // update position.x
         var dstCoords = {
