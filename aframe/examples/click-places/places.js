@@ -5,11 +5,8 @@ window.onload = () => {
     // method = 'static';
 
     if (method === 'static') {
-        // setTimeout is a temporary fix
-        setTimeout(() => {
-            let places = staticLoadPlaces();
-            renderPlaces(places);
-        }, 3000);
+        let places = staticLoadPlaces();
+        renderPlaces(places);
     }
 
     if (method !== 'static') {
@@ -56,8 +53,8 @@ function staticLoadPlaces() {
 function dynamicLoadPlaces(position) {
     let params = {
         radius: 300,    // search places not farther than this value (in meters)
-        clientId: 'HZIJGI4COHQ4AI45QXKCDFJWFJ1SFHYDFCCWKPIJDWHLVQVZ',
-        clientSecret: '',
+        clientId: '',   // add your credentials here
+        clientSecret: '',   // add your credentials here
         version: '20300101',    // foursquare versioning, required but unuseful for this demo
     };
 
@@ -129,38 +126,3 @@ function renderPlaces(places) {
         scene.appendChild(icon);
     });
 }
-
-window.onload = () => {
-    let method = 'dynamic';
-
-    // if you want to statically add places, de-comment following line
-    method = 'static';
-
-    if (method === 'static') {
-        // setTimeout is a temporary fix
-        setTimeout(() => {
-            let places = staticLoadPlaces();
-            renderPlaces(places);
-        }, 3000);
-    }
-
-    if (method !== 'static') {
-
-        // first get current user location
-        return navigator.geolocation.getCurrentPosition(function (position) {
-
-            // than use it to load from remote APIs some places nearby
-            dynamicLoadPlaces(position.coords)
-                .then((places) => {
-                    renderPlaces(places);
-                })
-        },
-            (err) => console.error('Error in retrieving position', err),
-            {
-                enableHighAccuracy: true,
-                maximumAge: 0,
-                timeout: 27000,
-            }
-        );
-    }
-};
