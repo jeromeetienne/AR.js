@@ -1,3 +1,8 @@
+# 2.0.6
+
+- Fixed bug on location-based while added places via HTML
+- Added example of location-based using only HTML
+
 # 2.0.5
 
 - Fixed a bug on location-based statically add of places via script
