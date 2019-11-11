@@ -11,15 +11,8 @@ AFRAME.registerComponent('gps-entity-place', {
         },
     },
     init: function () {
-        if (!window.positionSet) {
-            window.addEventListener('gps-camera-ready', () => this.initEntity());
-        } else {
-            this.initEntity();
-        }
-    },
-
-    initEntity: function () {
         this._positionXDebug = 0;
+        console.debug('gps-camera-entity-added');
 
         this.debugUIAddedHandler = function () {
             this.setDebugData(this.el);
@@ -28,19 +21,17 @@ AFRAME.registerComponent('gps-entity-place', {
 
         window.addEventListener('debug-ui-added', this.debugUIAddedHandler.bind(this));
 
-        if (this._cameraGps === null) {
-            var camera = document.querySelector('a-camera, [camera]');
-            if (camera.components['gps-camera'] === undefined) {
-                return;
+        window.addEventListener('gps-camera-ready', function() {
+            if (this._cameraGps === null) {
+                var camera = document.querySelector('a-camera, [camera]');
+                if (camera.components['gps-camera'] === undefined) {
+                    return;
+                }
+                this._cameraGps = camera.components['gps-camera'];
             }
-            this._cameraGps = camera.components['gps-camera'];
-        }
 
-        if (this._cameraGps.originCoords === null) {
-            return;
-        }
-
-        this._updatePosition();
+            this._updatePosition();
+        }.bind(this));
     },
 
     /**
@@ -49,6 +40,10 @@ AFRAME.registerComponent('gps-entity-place', {
      */
     _updatePosition: function () {
         var position = { x: 0, y: 0, z: 0 }
+
+         if (this._cameraGps.originCoords === null) {
+            return;
+        }
 
         // update position.x
         var dstCoords = {
