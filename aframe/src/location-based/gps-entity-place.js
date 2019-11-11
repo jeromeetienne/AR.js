@@ -11,9 +11,11 @@ AFRAME.registerComponent('gps-entity-place', {
         },
     },
     init: function () {
-        window.addEventListener('gps-camera-ready', () => {
+        if (!window.positionSet) {
+            window.addEventListener('gps-camera-ready', () => this.initEntity());
+        } else {
             this.initEntity();
-        });
+        }
     },
 
     initEntity: function () {
