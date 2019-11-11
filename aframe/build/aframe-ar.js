@@ -8774,6 +8774,7 @@ AFRAME.registerComponent('gps-camera', {
 
         window.dispatchEvent(new CustomEvent('gps-camera-ready'));
         console.debug('gps-camera-ready');
+        window.positionSet = true;
 
         this._watchPositionId = this._initWatchGPS(function (position) {
             this.currentCoords = position.coords;
@@ -9023,12 +9024,16 @@ AFRAME.registerComponent('gps-entity-place', {
         },
     },
     init: function () {
-        window.addEventListener('gps-camera-ready', () => {
+        console.log('registro handler')
+        if (!window.positionSet) {
+            window.addEventListener('gps-camera-ready', () => this.initEntity());
+        } else {
             this.initEntity();
-        });
+        }
     },
 
     initEntity: function () {
+        console.log('DENTRO handler')
         this._positionXDebug = 0;
 
         this.debugUIAddedHandler = function () {

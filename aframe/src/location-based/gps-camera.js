@@ -58,6 +58,7 @@ AFRAME.registerComponent('gps-camera', {
 
         window.dispatchEvent(new CustomEvent('gps-camera-ready'));
         console.debug('gps-camera-ready');
+        window.positionSet = true;
 
         this._watchPositionId = this._initWatchGPS(function (position) {
             this.currentCoords = position.coords;
