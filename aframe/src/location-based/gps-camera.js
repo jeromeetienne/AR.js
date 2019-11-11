@@ -25,6 +25,18 @@ AFRAME.registerComponent('gps-camera', {
             return;
         }
 
+        this._watchPositionId = this._initWatchGPS(function (position) {
+            if (!this.currentCoords) {
+                this.currentCoords = position.coords;
+                this._updatePosition();
+                window.dispatchEvent(new CustomEvent('gps-camera-ready'));
+                console.debug('gps-camera-ready');
+            } else {
+                this.currentCoords = position.coords;
+                this._updatePosition();
+            }
+        }.bind(this));
+
         this.lookControls = this.el.components['look-controls'];
 
         // listen to deviceorientation event
@@ -55,15 +67,6 @@ AFRAME.registerComponent('gps-camera', {
         }
 
         window.addEventListener(eventName, this._onDeviceOrientation, false);
-
-        window.dispatchEvent(new CustomEvent('gps-camera-ready'));
-        console.debug('gps-camera-ready');
-        window.positionSet = true;
-
-        this._watchPositionId = this._initWatchGPS(function (position) {
-            this.currentCoords = position.coords;
-            this._updatePosition();
-        }.bind(this));
     },
 
     tick: function () {
