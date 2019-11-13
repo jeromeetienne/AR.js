@@ -11,27 +11,33 @@ AFRAME.registerComponent('gps-entity-place', {
         },
     },
     init: function () {
-        this._positionXDebug = 0;
-        console.debug('gps-camera-entity-added');
+        setTimeout(function() {
+            this._positionXDebug = 0;
 
-        this.debugUIAddedHandler = function () {
-            this.setDebugData(this.el);
-            window.removeEventListener('debug-ui-added', this.debugUIAddedHandler.bind(this));
-        };
+            this.debugUIAddedHandler = function () {
+                this.setDebugData(this.el);
+                window.removeEventListener('debug-ui-added', this.debugUIAddedHandler.bind(this));
+            };
 
-        window.addEventListener('debug-ui-added', this.debugUIAddedHandler.bind(this));
+            window.addEventListener('debug-ui-added', this.debugUIAddedHandler.bind(this));
 
-        window.addEventListener('gps-camera-ready', function() {
-            if (this._cameraGps === null) {
-                var camera = document.querySelector('a-camera, [camera]');
+            if (!this._cameraGps) {
+                var camera = document.querySelector('[gps-camera]');
                 if (camera.components['gps-camera'] === undefined) {
+                    console.error('gps-camera not found')
                     return;
                 }
                 this._cameraGps = camera.components['gps-camera'];
             }
 
+            if (!this._cameraGps.originCoords && !this._cameraGps.currentCoords) {
+                console.error('gps-camera not initialized')
+                return;
+            }
+
             this._updatePosition();
-        }.bind(this));
+
+        }.bind(this), 2000);
     },
 
     /**
@@ -41,28 +47,26 @@ AFRAME.registerComponent('gps-entity-place', {
     _updatePosition: function () {
         var position = { x: 0, y: 0, z: 0 }
 
-         if (this._cameraGps.originCoords === null) {
-            return;
-        }
+        var cameraCoords = this._cameraGps.originCoords || this._cameraGps.currentCoords;
 
         // update position.x
         var dstCoords = {
             longitude: this.data.longitude,
-            latitude: this._cameraGps.originCoords.latitude,
+            latitude: cameraCoords.latitude,
         };
 
-        position.x = this._cameraGps.computeDistanceMeters(this._cameraGps.originCoords, dstCoords, true);
+        position.x = this._cameraGps.computeDistanceMeters(cameraCoords, dstCoords, true);
         this._positionXDebug = position.x;
-        position.x *= this.data.longitude > this._cameraGps.originCoords.longitude ? 1 : -1;
+        position.x *= this.data.longitude > cameraCoords.longitude ? 1 : -1;
 
         // update position.z
         var dstCoords = {
-            longitude: this._cameraGps.originCoords.longitude,
+            longitude: cameraCoords.longitude,
             latitude: this.data.latitude,
         };
 
-        position.z = this._cameraGps.computeDistanceMeters(this._cameraGps.originCoords, dstCoords, true);
-		position.z *= this.data.latitude > this._cameraGps.originCoords.latitude ? -1 : 1;
+        position.z = this._cameraGps.computeDistanceMeters(cameraCoords, dstCoords, true);
+        position.z *= this.data.latitude > cameraCoords.latitude ? -1 : 1;
 
         // update element's position in 3D world
         this.el.setAttribute('position', position);
@@ -74,7 +78,7 @@ AFRAME.registerComponent('gps-entity-place', {
      */
     setDebugData: function (element) {
         var elements = document.querySelectorAll('.debug-distance');
-        elements.forEach(function(el) {
+        elements.forEach(function (el) {
             var distance = formatDistance(this._positionXDebug);
             if (element.getAttribute('value') == el.getAttribute('value')) {
                 el.innerHTML = el.getAttribute('value') + ': ' + distance + 'far';
