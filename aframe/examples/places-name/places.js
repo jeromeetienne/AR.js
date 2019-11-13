@@ -34,7 +34,7 @@ function staticLoadPlaces() {
         {
             name: "Your place name",
             location: {
-                lat: 44.493270, // change here latitude if using static data
+                lat: 44.493271, // change here latitude if using static data
                 lng: 11.326040, // change here longitude if using static data
             }
         },
@@ -85,7 +85,7 @@ function renderPlaces(places) {
         text.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude};`);
         text.setAttribute('title', place.name);
         text.setAttribute('href', 'http://www.example.com/');
-        text.setAttribute('scale', '20 20 20');
+        text.setAttribute('scale', '5 5 5');
 
         text.addEventListener('loaded', () => {
             window.dispatchEvent(new CustomEvent('gps-entity-place-loaded'))

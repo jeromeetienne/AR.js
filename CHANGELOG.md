@@ -1,4 +1,4 @@
-# 2.0.6
+# 2.0.7
 
 - Fixed bug on location-based while added places via HTML
 - Added example of location-based using only HTML

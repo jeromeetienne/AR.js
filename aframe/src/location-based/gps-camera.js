@@ -21,21 +21,9 @@ AFRAME.registerComponent('gps-camera', {
     },
 
     init: function () {
-        if (this.el.components['look-controls'] === undefined) {
+        if (!this.el.components['look-controls']) {
             return;
         }
-
-        this._watchPositionId = this._initWatchGPS(function (position) {
-            if (!this.currentCoords) {
-                this.currentCoords = position.coords;
-                this._updatePosition();
-                window.dispatchEvent(new CustomEvent('gps-camera-ready'));
-                console.debug('gps-camera-ready');
-            } else {
-                this.currentCoords = position.coords;
-                this._updatePosition();
-            }
-        }.bind(this));
 
         this.lookControls = this.el.components['look-controls'];
 
@@ -67,6 +55,11 @@ AFRAME.registerComponent('gps-camera', {
         }
 
         window.addEventListener(eventName, this._onDeviceOrientation, false);
+
+        this._watchPositionId = this._initWatchGPS(function (position) {
+            this.currentCoords = position.coords;
+            this._updatePosition();
+        }.bind(this));
     },
 
     tick: function () {
