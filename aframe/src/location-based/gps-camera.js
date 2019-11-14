@@ -25,6 +25,19 @@ AFRAME.registerComponent('gps-camera', {
             return;
         }
 
+        this.loader = document.createElement('DIV');
+        this.loader.classList.add('arjs-loader');
+        document.body.appendChild(this.loader);
+
+        window.addEventListener('gps-entity-place-added', function() {
+            // if places are added after camera initialization is finished
+            if (this.originCoords) {
+                window.dispatchEvent(new CustomEvent('gps-camera-origin-coord-set'));
+                console.debug('gps-camera-origin-coord-set');
+            }
+            document.body.removeChild(this.loader)
+        }.bind(this));
+
         this.lookControls = this.el.components['look-controls'];
 
         // listen to deviceorientation event
@@ -157,9 +170,21 @@ AFRAME.registerComponent('gps-camera', {
         }
 
         if (!this.originCoords) {
+            // first camera initialization
             this.originCoords = this.currentCoords;
-        }
+            this._setPosition();
 
+            var loader = document.querySelector('.arjs-loader');
+            if (loader) {
+                document.body.removeChild(loader)
+            }
+            window.dispatchEvent(new CustomEvent('gps-camera-origin-coord-set'));
+            console.debug('gps-camera-origin-coord-set');
+        } else {
+            this._setPosition();
+        }
+    },
+    _setPosition: function() {
         var position = this.el.getAttribute('position');
 
         // compute position.x
@@ -181,7 +206,6 @@ AFRAME.registerComponent('gps-camera', {
         // update position
         this.el.setAttribute('position', position);
     },
-
     /**
      * Returns distance in meters between source and destination inputs.
      *

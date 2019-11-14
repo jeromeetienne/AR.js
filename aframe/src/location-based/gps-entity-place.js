@@ -11,33 +11,30 @@ AFRAME.registerComponent('gps-entity-place', {
         },
     },
     init: function () {
-        setTimeout(function() {
-            this._positionXDebug = 0;
-
-            this.debugUIAddedHandler = function () {
-                this.setDebugData(this.el);
-                window.removeEventListener('debug-ui-added', this.debugUIAddedHandler.bind(this));
-            };
-
-            window.addEventListener('debug-ui-added', this.debugUIAddedHandler.bind(this));
-
+        window.addEventListener('gps-camera-origin-coord-set', function() {
             if (!this._cameraGps) {
                 var camera = document.querySelector('[gps-camera]');
-                if (camera.components['gps-camera'] === undefined) {
-                    console.error('gps-camera not found')
+                if (!camera.components['gps-camera']) {
+                    console.error('gps-camera not initialized')
                     return;
                 }
                 this._cameraGps = camera.components['gps-camera'];
             }
 
-            if (!this._cameraGps.originCoords && !this._cameraGps.currentCoords) {
-                console.error('gps-camera not initialized')
-                return;
-            }
-
             this._updatePosition();
+        }.bind(this));
 
-        }.bind(this), 2000);
+        this._positionXDebug = 0;
+
+        window.dispatchEvent(new CustomEvent('gps-entity-place-added'));
+        console.debug('gps-entity-place-added');
+
+        this.debugUIAddedHandler = function () {
+            this.setDebugData(this.el);
+            window.removeEventListener('debug-ui-added', this.debugUIAddedHandler.bind(this));
+        };
+
+        window.addEventListener('debug-ui-added', this.debugUIAddedHandler.bind(this));
     },
 
     /**
@@ -47,26 +44,24 @@ AFRAME.registerComponent('gps-entity-place', {
     _updatePosition: function () {
         var position = { x: 0, y: 0, z: 0 }
 
-        var cameraCoords = this._cameraGps.originCoords || this._cameraGps.currentCoords;
-
         // update position.x
         var dstCoords = {
             longitude: this.data.longitude,
-            latitude: cameraCoords.latitude,
+            latitude: this._cameraGps.originCoords.latitude,
         };
 
-        position.x = this._cameraGps.computeDistanceMeters(cameraCoords, dstCoords, true);
+        position.x = this._cameraGps.computeDistanceMeters(this._cameraGps.originCoords, dstCoords, true);
         this._positionXDebug = position.x;
-        position.x *= this.data.longitude > cameraCoords.longitude ? 1 : -1;
+        position.x *= this.data.longitude > this._cameraGps.originCoords.longitude ? 1 : -1;
 
         // update position.z
         var dstCoords = {
-            longitude: cameraCoords.longitude,
+            longitude: this._cameraGps.originCoords.longitude,
             latitude: this.data.latitude,
         };
 
-        position.z = this._cameraGps.computeDistanceMeters(cameraCoords, dstCoords, true);
-        position.z *= this.data.latitude > cameraCoords.latitude ? -1 : 1;
+        position.z = this._cameraGps.computeDistanceMeters(this._cameraGps.originCoords, dstCoords, true);
+        position.z *= this.data.latitude > this._cameraGps.originCoords.latitude ? -1 : 1;
 
         // update element's position in 3D world
         this.el.setAttribute('position', position);
