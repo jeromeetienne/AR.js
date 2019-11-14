@@ -1,7 +1,8 @@
-# 2.0.7
+# 2.0.8
 
 - Fixed bug on location-based while added places via HTML
 - Added example of location-based using only HTML
+- Added loader during the time between gps-camera initialization and gps-entity-place add
 
 # 2.0.5
 
