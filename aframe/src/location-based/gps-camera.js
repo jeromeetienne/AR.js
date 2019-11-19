@@ -35,7 +35,10 @@ AFRAME.registerComponent('gps-camera', {
                 window.dispatchEvent(new CustomEvent('gps-camera-origin-coord-set'));
                 console.debug('gps-camera-origin-coord-set');
             }
-            document.body.removeChild(this.loader)
+
+            if (this.loader && this.loader.parentElement) {
+                document.body.removeChild(this.loader)
+            }
         }.bind(this));
 
         this.lookControls = this.el.components['look-controls'];
