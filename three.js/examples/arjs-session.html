@@ -12,8 +12,6 @@
 <script src='../vendor/js-aruco/src/aruco.js'></script>
 <script src='../src/threex/threex-aruco/threex-arucocontext.js'></script>
 <script src='../src/threex/threex-aruco/threex-arucodebug.js'></script>
-<!-- include for tango trackingBackend -->
-<script src='../vendor/chromium-tango/THREE.WebAR.js'></script>
 <!-- include for signals.js -->
 <script src='../vendor/signals.min.js'></script>
 <!-- include ar.js -->
@@ -25,13 +23,10 @@
 <script src='../src/threex/threex-armarkerhelper.js'></script>
 <script src='../src/threex/threex-arsmoothedcontrols.js'></script>
 <script src='../src/threex/threex-hittesting-plane.js'></script>
-<script src='../src/threex/threex-hittesting-tango.js'></script>
 <script src='../src/new-api/arjs-utils.js'></script>
 <script src='../src/new-api/arjs-session.js'></script>
 <script src='../src/new-api/arjs-anchor.js'></script>
 <script src='../src/new-api/arjs-hittesting.js'></script>
-<script src='../src/new-api/arjs-tangovideomesh.js'></script>
-<script src='../src/new-api/arjs-tangopointcloud.js'></script>
 <script src='../src/new-api/arjs-debugui.js'></script>
 <script src='../src/markers-area/threex-armultimarkerutils.js'></script>
 <script src='../src/markers-area/threex-armultimarkercontrols.js'></script>
@@ -106,10 +101,6 @@
 		.checkIfValid()
 
 
-	if( arProfile.contextParameters.trackingBackend === 'tango' ){
-		arProfile.changeMatrixMode('cameraTransformMatrix')
-	}
-
 	//////////////////////////////////////////////////////////////////////////////
 	//		build ARjs.Session
 	//////////////////////////////////////////////////////////////////////////////
@@ -142,33 +133,6 @@
 	onRenderFcts.push(function(){
 		hitTesting.update(camera, arAnchor.object3d, arAnchor.parameters.changeMatrixMode)
 	})
-
-	// tango only - picking to set object position
-        renderer.domElement.addEventListener("click", function(domEvent){
-		var hitTestResults = hitTesting.testDomEvent(domEvent)
-		if( hitTestResults.length === 0 )	return
-
-		var hitTestResult = hitTestResults[0]
-		hitTestResult.apply(arAnchor.object3d)
-	})
-
-	//////////////////////////////////////////////////////////////////////////////
-	//		tango specifics
-	//////////////////////////////////////////////////////////////////////////////
-
-	if( arProfile.contextParameters.trackingBackend === 'tango' ){
-		// init tangoVideoMesh
-		var tangoVideoMesh = new ARjs.TangoVideoMesh(arSession)
-		onRenderFcts.push(function(){
-			tangoVideoMesh.update()
-		})
-	}
-
-	if( arProfile.contextParameters.trackingBackend === 'tango' ){
-		// init tangoPointCloud
-		var tangoPointCloud = new ARjs.TangoPointCloud(arSession)
-		scene.add(tangoPointCloud.object3d)
-	}
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object to the arAnchor
@@ -211,10 +175,6 @@
 		document.body.appendChild(domElement)
 	}
 
-
-	var sessionDebugUI = new ARjs.SessionDebugUI(arSession, tangoPointCloud)
-	document.querySelector('#arjsDebugUIContainer').appendChild(sessionDebugUI.domElement)
-
 	var anchorDebugUI = new ARjs.AnchorDebugUI(arAnchor)
 	document.querySelector('#arjsDebugUIContainer').appendChild(anchorDebugUI.domElement)
 
@@ -227,10 +187,6 @@
 		// Render the see through camera scene
 		renderer.clear()
 
-		// render tangoVideoMesh
-		if( arProfile.contextParameters.trackingBackend === 'tango' ){
-			tangoVideoMesh.render()
-		}
 
 		// render hitTesting pickingPlane - for debug
 		var renderHitTestingPickingPlane = true
