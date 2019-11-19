@@ -159,6 +159,7 @@ by
 
 ### Location Based
 - [Location Based (GPS) Augmented Reality on the Web](https://medium.com/@nicolcarpignoli/location-based-gps-augmented-reality-on-the-web-7a540c515b3c)
+- [Tutorial for Location Based Augmented Reality on the Web](https://medium.com/chialab-open-source/build-your-location-based-augmented-reality-web-app-c2442e716564)
 
 ## Advanced guides
 
