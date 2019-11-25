@@ -8,6 +8,10 @@ AFRAME.registerSystem('arjs', {
             type: 'boolean',
             default: true,
         },
+        selectCamera: {
+            type: 'boolean',
+            default: false,
+        },
         areaLearningButton: {
             type: 'boolean',
             default: true,

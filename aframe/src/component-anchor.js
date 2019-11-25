@@ -148,6 +148,64 @@ AFRAME.registerComponent('arjs-anchor', {
                 var anchorDebugUI = new ARjs.AnchorDebugUI(arAnchor)
                 containerElement.appendChild(anchorDebugUI.domElement)
             }
+
+            if (arjsSystem.data.selectCamera && window.availableCameras && window.availableCameras.length > 1) {
+                // get or create containerElement
+                var containerElement = document.querySelector('#arjsDebugUIContainer')
+                if (containerElement === null) {
+                    containerElement = document.createElement('div')
+                    containerElement.id = 'arjsDebugUIContainer'
+                    containerElement.setAttribute('style', 'position: fixed; bottom: 10px; width:100%; text-align: center; z-index: 1; color: grey;')
+                    document.body.appendChild(containerElement)
+                }
+                // create select camera UI
+                var selectCameraButton = document.createElement('button');
+                selectCameraButton.innerText = 'Switch camera';
+                selectCameraButton.setAttribute('style', 'background-color: grey; color: white');
+                selectCameraButton.classList.add('arjs-select-camera');
+                selectCameraButton.addEventListener('click', function () {
+                    window.selectedCamera++;
+
+                    var userMediaConstraints = {
+                        audio: false,
+                        video: {
+                            width: {
+                                ideal: _this.parameters.sourceWidth,
+                            },
+                            height: {
+                                ideal: _this.parameters.sourceHeight,
+                            }
+                        },
+                        deviceId: {
+                            exact: window.availableCameras(window.selectedCamera),
+                        },
+                    }
+
+                    navigator.mediaDevices.getUserMedia(userMediaConstraints).then(function success(stream) {
+                        domElement.srcObject = stream;
+
+                        var event = new CustomEvent('camera-init', { stream: stream });
+                        window.dispatchEvent(event);
+
+                        document.body.addEventListener('click', function () {
+                            domElement.play();
+                        });
+
+                        var interval = setInterval(function () {
+                            if (!domElement.videoWidth) return;
+                            onReady()
+                            clearInterval(interval)
+                        }, 1000 / 50);
+                    }).catch(function (error) {
+                        onError({
+                            name: error.name,
+                            message: error.message
+                        });
+                    });
+                });
+
+                containerElement.appendChild(selectCameraButton);
+            }
         }, 1000 / 60)
     },
     remove: function () {
