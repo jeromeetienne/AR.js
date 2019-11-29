@@ -149,72 +149,64 @@ AFRAME.registerComponent('arjs-anchor', {
                 containerElement.appendChild(anchorDebugUI.domElement)
             }
 
-            if (arjsSystem.data.selectCamera && window.availableCameras && window.availableCameras.length > 1) {
-                // get or create containerElement
-                var containerElement = document.querySelector('#arjsDebugUIContainer')
-                if (containerElement === null) {
-                    containerElement = document.createElement('div')
-                    containerElement.id = 'arjsDebugUIContainer'
-                    containerElement.setAttribute('style', 'position: fixed; bottom: 10px; width:100%; text-align: center; z-index: 1; color: grey;')
+        if (arjsSystem.data.selectCamera) {
+            setTimeout(function() {
+                // show only if there's one than more camera available
+                if (window.availableCameras && window.availableCameras.length) {
+                    // get or create containerElement
+
+                    var containerElement = document.createElement('DIV');
+                    containerElement.setAttribute('id', '#arjs-select-camera-container');
+                    containerElement.setAttribute('style', 'position: fixed; right: 10px; bottom: 10px; width:100%; text-align: center; z-index: 1; color: grey;')
                     document.body.appendChild(containerElement)
-                }
-                // create select camera UI
-                var selectCameraButton = document.createElement('button');
-                selectCameraButton.innerText = 'Switch camera';
-                selectCameraButton.setAttribute('style', 'background-color: grey; color: white');
-                selectCameraButton.classList.add('arjs-select-camera');
-                selectCameraButton.addEventListener('click', function () {
-                    // get next available camera
-                    var index = window.availableCameras.indexOf(window.selectedCamera);
-                    index = index === window.availableCameras.length ? 0 : index;
 
-                    window.selectedCamera = window.availableCameras[index];
+                    // create select camera UI
+                    var selectCameraButton = document.createElement('button');
+                    selectCameraButton.innerText = 'Switch camera';
+                    selectCameraButton.setAttribute('style', 'background-color: grey; color: white');
+                    selectCameraButton.classList.add('arjs-select-camera');
+                    selectCameraButton.addEventListener('click', function () {
+                        // get next available camera
+                        var index = window.availableCameras.indexOf(window.selectedCamera);
+                        index = index === window.availableCameras.length ? 0 : index;
 
-                    var userMediaConstraints = {
-                        audio: false,
-                        video: {
-                            width: {
-                                ideal: _this.parameters.sourceWidth,
+                        window.selectedCamera = window.availableCameras[index];
+
+                        console.debug('AR.js: switching to ' + window.selectedCamera + ' camera');
+
+                        var userMediaConstraints = {
+                            audio: false,
+                            video: {
+                                width: {
+                                    ideal: window.cameraWidth,
+                                },
+                                height: {
+                                    ideal: window.cameraHeight,
+                                }
                             },
-                            height: {
-                                ideal: _this.parameters.sourceHeight,
-                            }
-                        },
-                        deviceId: {
-                            exact: window.selectedCamera,
-                        },
-                    }
+                            deviceId: {
+                                exact: window.selectedCamera,
+                            },
+                        }
 
-                    navigator.mediaDevices.getUserMedia(userMediaConstraints).then(function success(stream) {
-                        domElement.srcObject = stream;
+                        navigator.mediaDevices.getUserMedia(userMediaConstraints).then(function success(stream) {
+                            var domElement = document.querySelector('#arjs-video');
+                            domElement.srcObject = stream;
 
-                        var event = new CustomEvent('camera-init', { stream: stream });
-                        window.dispatchEvent(event);
+                            var event = new CustomEvent('camera-init', { stream: stream });
+                            window.dispatchEvent(event);
 
-                        document.body.addEventListener('click', function () {
-                            domElement.play();
-                        });
-
-                        var interval = setInterval(function () {
-                            if (!domElement.videoWidth) return;
-                            onReady()
-                            clearInterval(interval)
-                        }, 1000 / 50);
-                    }).catch(function (error) {
-                        onError({
-                            name: error.name,
-                            message: error.message
+                            document.body.addEventListener('click', function () {
+                                domElement.play();
+                            });
                         });
                     });
-                });
 
-                containerElement.appendChild(selectCameraButton);
-            }
+                    containerElement.appendChild(selectCameraButton);
+                }
+            }, 1000);
+        }
         }, 1000 / 60)
-    },
-    remove: function () {
-    },
-    update: function () {
     },
     tick: function () {
         var _this = this
@@ -224,7 +216,6 @@ AFRAME.registerComponent('arjs-anchor', {
         //////////////////////////////////////////////////////////////////////////////
         //		update arAnchor
         //////////////////////////////////////////////////////////////////////////////
-        var arjsSystem = this.el.sceneEl.systems.arjs || this.el.sceneEl.systems.artoolkit
         this._arAnchor.update()
 
         //////////////////////////////////////////////////////////////////////////////
