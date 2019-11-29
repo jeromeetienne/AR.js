@@ -197,7 +197,8 @@ ARjs.Source.prototype._initSourceWebcam = function (onReady, onError) {
             }
         }).filter(function(device) { return device !== null && device !== undefined});
 
-        window.selectedCamera = 1;
+        // window.availableCameras now contains all cameras deviceId
+        window.selectedCamera = window.availableCameras[0];
 
         var userMediaConstraints = {
             audio: false,
@@ -209,13 +210,8 @@ ARjs.Source.prototype._initSourceWebcam = function (onReady, onError) {
                 height: {
                     ideal: _this.parameters.sourceHeight,
                 }
-            }
-        }
-
-        if (null !== _this.parameters.deviceId) {
-            userMediaConstraints.video.deviceId = {
-                exact: _this.parameters.deviceId
-            };
+            },
+            exact: window.selectedCamera,
         }
 
         // get a device which satisfy the constraints

@@ -164,7 +164,11 @@ AFRAME.registerComponent('arjs-anchor', {
                 selectCameraButton.setAttribute('style', 'background-color: grey; color: white');
                 selectCameraButton.classList.add('arjs-select-camera');
                 selectCameraButton.addEventListener('click', function () {
-                    window.selectedCamera++;
+                    // get next available camera
+                    var index = window.availableCameras.indexOf(window.selectedCamera);
+                    index = index === window.availableCameras.length ? 0 : index;
+
+                    window.selectedCamera = window.availableCameras[index];
 
                     var userMediaConstraints = {
                         audio: false,
@@ -177,7 +181,7 @@ AFRAME.registerComponent('arjs-anchor', {
                             }
                         },
                         deviceId: {
-                            exact: window.availableCameras(window.selectedCamera),
+                            exact: window.selectedCamera,
                         },
                     }
 
