@@ -168,7 +168,7 @@ AFRAME.registerComponent('arjs-anchor', {
                     selectCameraButton.addEventListener('click', function () {
                         // get next available camera
                         var index = window.availableCameras.indexOf(window.selectedCamera);
-                        index = index === window.availableCameras.length ? 0 : index;
+                        index = index === window.availableCameras.length ? 0 : ++index;
 
                         window.selectedCamera = window.availableCameras[index];
 
