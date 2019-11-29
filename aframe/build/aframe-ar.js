@@ -8397,12 +8397,14 @@ AFRAME.registerComponent('arjs-anchor', {
                 containerElement.appendChild(anchorDebugUI.domElement)
             }
 
-        if (arjsSystem.data.selectCamera) {
-            setTimeout(function() {
-                // show only if there's one than more camera available
-                if (window.availableCameras && window.availableCameras.length) {
-                    // get or create containerElement
+            if (arjsSystem.data.selectCamera) {
+                setTimeout(function () {
+                    // show only if there's one than more camera available
+                    if (!window.availableCameras || window.availableCameras.length < 2) {
+                        return;
+                    }
 
+                    // get or create containerElement
                     var containerElement = document.createElement('DIV');
                     containerElement.setAttribute('id', '#arjs-select-camera-container');
                     containerElement.setAttribute('style', 'position: fixed; right: 10px; bottom: 10px; width:100%; text-align: center; z-index: 1; color: grey;')
@@ -8415,8 +8417,13 @@ AFRAME.registerComponent('arjs-anchor', {
                     selectCameraButton.classList.add('arjs-select-camera');
                     selectCameraButton.addEventListener('click', function () {
                         // get next available camera
-                        var index = window.availableCameras.indexOf(window.selectedCamera);
-                        index = index === window.availableCameras.length ? 0 : ++index;
+                        var index = window.availableCameras.indexOf(window.selectedCamera) + 1;
+
+                        // for now, do not restart cycle // TODO in the future handle also this case
+                        if (index === window.availableCameras.length && selectCameraButton.parentElement) {
+                            selectCameraButton.parentElement.removeChild(selectCameraButton);
+                            return;
+                        }
 
                         window.selectedCamera = window.availableCameras[index];
 
@@ -8439,6 +8446,12 @@ AFRAME.registerComponent('arjs-anchor', {
 
                         navigator.mediaDevices.getUserMedia(userMediaConstraints).then(function success(stream) {
                             var domElement = document.querySelector('#arjs-video');
+
+                            var oldStream = domElement.srcObject;
+                            oldStream.getTracks().forEach(function (track) {
+                                track.stop();
+                            });
+
                             domElement.srcObject = stream;
 
                             var event = new CustomEvent('camera-init', { stream: stream });
@@ -8451,9 +8464,8 @@ AFRAME.registerComponent('arjs-anchor', {
                     });
 
                     containerElement.appendChild(selectCameraButton);
-                }
-            }, 1000);
-        }
+                }, 1000);
+            }
         }, 1000 / 60)
     },
     tick: function () {
