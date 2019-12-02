@@ -102,6 +102,15 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 			this[t] = null;
 		}
 	};
+	
+
+	/**
+		Returns the AR Controller Instance - allowing prototype commands to be called from outside of the aframe-ar.js class
+	*/
+
+	getARController = function(){
+	return myController;
+	}
 
 	/**
 		Detects markers in the given image. The process method dispatches marker detection events during its run.
