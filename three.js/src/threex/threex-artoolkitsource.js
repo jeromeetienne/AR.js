@@ -97,21 +97,15 @@ ARjs.Source.prototype.init = function(onReady, onError){
 
 ARjs.Source.prototype._initSourceImage = function(onReady) {
 	// TODO make it static
-        var domElement = document.createElement('img')
-	domElement.src = this.parameters.sourceUrl
+        var domElement = document.createElement('img');
+	domElement.src = this.parameters.sourceUrl;
 
-	domElement.width = this.parameters.sourceWidth
-	domElement.height = this.parameters.sourceHeight
-	domElement.style.width = this.parameters.displayWidth+'px'
-	domElement.style.height = this.parameters.displayHeight+'px'
+	domElement.width = this.parameters.sourceWidth;
+	domElement.height = this.parameters.sourceHeight;
+	domElement.style.width = this.parameters.displayWidth+'px';
+	domElement.style.height = this.parameters.displayHeight+'px';
 
-	// wait until the video stream is ready
-	var interval = setInterval(function() {
-		if (!domElement.naturalWidth)	return;
-		onReady()
-		clearInterval(interval)
-	}, 1000/50);
-
+	onReady();
 	return domElement
 }
 
@@ -123,33 +117,28 @@ ARjs.Source.prototype._initSourceImage = function(onReady) {
 ARjs.Source.prototype._initSourceVideo = function(onReady) {
 	// TODO make it static
 	var domElement = document.createElement('video');
-	domElement.src = this.parameters.sourceUrl
+	domElement.src = this.parameters.sourceUrl;
 
-	domElement.style.objectFit = 'initial'
+	domElement.style.objectFit = 'initial';
 
 	domElement.autoplay = true;
 	domElement.webkitPlaysinline = true;
 	domElement.controls = false;
 	domElement.loop = true;
-	domElement.muted = true
+	domElement.muted = true;
 
 	// trick to trigger the video on android
 	document.body.addEventListener('click', function onClick(){
 		document.body.removeEventListener('click', onClick);
 		domElement.play()
-	})
+	});
 
-	domElement.width = this.parameters.sourceWidth
-	domElement.height = this.parameters.sourceHeight
-	domElement.style.width = this.parameters.displayWidth+'px'
-	domElement.style.height = this.parameters.displayHeight+'px'
+	domElement.width = this.parameters.sourceWidth;
+	domElement.height = this.parameters.sourceHeight;
+	domElement.style.width = this.parameters.displayWidth+'px';
+	domElement.style.height = this.parameters.displayHeight+'px';
 
-	// wait until the video stream is ready
-	var interval = setInterval(function() {
-		if (!domElement.videoWidth)	return;
-		onReady()
-		clearInterval(interval)
-	}, 1000/50);
+	onReady();
 	return domElement
 }
 
@@ -185,7 +174,7 @@ ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
 		onError({
 			name: '',
 			message: 'WebRTC issue-! '+fctName+' not present in your browser'
-		})
+		});
 		return null
 	}
 
@@ -194,7 +183,7 @@ ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
                 var userMediaConstraints = {
 			audio: false,
 			video: {
-				facingMode: 'environment',
+				facingMode: {exact: 'environment'},
 				width: {
 					ideal: _this.parameters.sourceWidth,
 					// min: 1024,
@@ -206,7 +195,7 @@ ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
 					// max: 1080
 				}
 		  	}
-		}
+		};
 
 		if (null !== _this.parameters.deviceId) {
 			userMediaConstraints.video.deviceId = {
@@ -227,13 +216,7 @@ ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
 			});
 			// domElement.play();
 
-// TODO listen to loadedmetadata instead
-			// wait until the video stream is ready
-			var interval = setInterval(function() {
-				if (!domElement.videoWidth)	return;
-				onReady()
-				clearInterval(interval)
-			}, 1000/50);
+			onReady();
 		}).catch(function(error) {
 			onError({
 				name: error.name,
