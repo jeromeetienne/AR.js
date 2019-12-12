@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+<body style='margin : 0px; overflow: hidden; font-family: Monospace;'><div style='position: absolute; top: 10px; width:100%; text-align: center; z-index: 1;'>
+	<a href="https://github.com/jeromeetienne/AR.js/" target="_blank">AR.js</a> - three.js camera transform
+	<br/>
+	Contact me any time at <a href='https://twitter.com/jerome_etienne' target='_blank'>@jerome_etienne</a>
+</div>
+<!-- three.js library -->
+<script src='vendor/three.js/build/three.min.js'></script>
+<!-- ar.js -->
+<script src="../build/ar.js"></script>
+<!--<script>THREEx.ArToolkitContext.baseURL = '../'</script>-->
+<script>
+
+var renderer	= new THREE.WebGLRenderer({
+	// antialias	: true,
+	alpha: true
+});
+renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+// renderer.setPixelRatio( 2 );
+renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.domElement.style.position = 'absolute'
+renderer.domElement.style.top = '0px'
+renderer.domElement.style.left = '0px'
+document.body.appendChild( renderer.domElement );
+
+var arToolkitSource = new THREEx.ArToolkitSource({
+	// to read from the webcam
+	sourceType : 'webcam',
+
+	// // to read from an image
+	// sourceType : 'image',
+	// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',
+	// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/armchair.jpg',
+
+	// to read from a video
+	// sourceType : 'video',
+	// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',
+})
+
+arToolkitSource.init(function onReady(){
+	onResize()
+})
+
+// handle resize
+window.addEventListener('resize', function(){
+	onResize()
+})
+function onResize(){
+	arToolkitSource.onResizeElement()
+	arToolkitSource.copyElementSizeTo(renderer.domElement)
+	if( arToolkitContext.arController !== null ){
+		arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
+	}
+}
+
+
+</script>
+</body>
