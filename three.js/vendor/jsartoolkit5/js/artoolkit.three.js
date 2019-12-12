@@ -1,6 +1,6 @@
 /* THREE.js ARToolKit integration */
 
-(function() {
+;(function() {
 	var integrate = function() {
 		/**
 			Helper for setting up a Three.js AR scene using the device camera as input.
@@ -114,7 +114,7 @@
 			var scene = new THREE.Scene();
 			var camera = new THREE.Camera();
 			camera.matrixAutoUpdate = false;
-			camera.projectionMatrix.elements.set(this.getCameraMatrix());
+			setProjectionMatrix(camera.projectionMatrix, this.getCameraMatrix());
 
 			scene.add(camera);
 
@@ -134,6 +134,9 @@
 				process: function() {
 					for (var i in self.threePatternMarkers) {
 						self.threePatternMarkers[i].visible = false;
+					}
+					for (var i in self.threeNFTMarkers) {
+						self.threeNFTMarkers[i].visible = false;
 					}
 					for (var i in self.threeBarcodeMarkers) {
 						self.threeBarcodeMarkers[i].visible = false;
@@ -185,6 +188,31 @@
 			obj.markerTracker = this.trackPatternMarkerId(markerUID, markerWidth);
 			obj.matrixAutoUpdate = false;
 			this.threePatternMarkers[markerUID] = obj;
+			return obj;
+		};
+
+		/**
+			Creates a Three.js marker Object3D for the given NFT marker UID.
+			The marker Object3D tracks the NFT marker when it's detected in the video.
+
+			Use this after a successful artoolkit.loadNFTMarker call:
+
+			arController.loadNFTMarker('DataNFT/pinball', function(markerUID) {
+				var markerRoot = arController.createThreeNFTMarker(markerUID);
+				markerRoot.add(myFancyModel);
+				arScene.scene.add(markerRoot);
+			});
+
+			@param {number} markerUID The UID of the marker to track.
+			@param {number} markerWidth The width of the marker, defaults to 1.
+			@return {THREE.Object3D} Three.Object3D that tracks the given marker.
+		*/
+		ARController.prototype.createThreeNFTMarker = function(markerUID, markerWidth) {
+			this.setupThree();
+			var obj = new THREE.Object3D();
+			obj.markerTracker = this.trackNFTMarkerId(markerUID, markerWidth);
+			obj.matrixAutoUpdate = false;
+			this.threeNFTMarkers[markerUID] = obj;
 			return obj;
 		};
 
@@ -250,15 +278,52 @@
 				var marker = ev.data.marker;
 				var obj;
 				if (ev.data.type === artoolkit.PATTERN_MARKER) {
-					obj = this.threePatternMarkers[ev.data.marker.idPatt];
+					obj = this.threePatternMarkers[marker.idPatt];
 
 				} else if (ev.data.type === artoolkit.BARCODE_MARKER) {
-					obj = this.threeBarcodeMarkers[ev.data.marker.idMatrix];
+					obj = this.threeBarcodeMarkers[marker.idMatrix];
 
 				}
 				if (obj) {
-					obj.matrix.elements.set(ev.data.matrix);
+					setProjectionMatrix(obj.matrix, ev.data.matrixGL_RH);
 					obj.visible = true;
+				}
+			});
+
+			/*
+				Listen to getNFTMarker events to keep track of Three.js markers.
+			*/
+			this.addEventListener('getNFTMarker', function(ev) {
+                var marker = ev.data.marker;
+				var obj;
+
+                console.log('Found NFT marker', marker, obj);
+
+				obj = this.threeNFTMarkers[marker.id];
+
+				if (obj) {
+					obj.matrix.fromArray(ev.data.matrixGL_RH);
+					obj.visible = true;
+				}
+            });
+
+            /*
+				Listen to lostNFTMarker events to keep track of Three.js markers.
+			*/
+			this.addEventListener('lostNFTMarker', function(ev) {
+                var marker = ev.data.marker;
+				var obj;
+
+                console.log('Lost NFT marker', marker, obj);
+
+				obj = this.threeNFTMarkers[marker.id];
+
+				if (obj) {
+                    obj.matrix.fromArray(ev.data.matrixGL_RH);
+
+                    // TODO make it maybe more stable, making the object not visible
+                    // only after some ms of lost tracking?
+					obj.visible = false;
 				}
 			});
 
@@ -268,7 +333,7 @@
 			this.addEventListener('getMultiMarker', function(ev) {
 				var obj = this.threeMultiMarkers[ev.data.multiMarkerId];
 				if (obj) {
-					obj.matrix.elements.set(ev.data.matrix);
+					obj.matrix.fromArray(ev.data.matrixGL_RH);
 					obj.visible = true;
 				}
 			});
@@ -283,7 +348,7 @@
 				var obj = this.threeMultiMarkers[marker];
 				if (obj && obj.markers && obj.markers[subMarkerID]) {
 					var sub = obj.markers[subMarkerID];
-					sub.matrix.elements.set(ev.data.matrix);
+					sub.matrix.fromArray(ev.data.matrixGL_RH);
 					sub.visible = (subMarker.visible >= 0);
 				}
 			});
@@ -292,6 +357,11 @@
 				Index of Three.js pattern markers, maps markerID -> THREE.Object3D.
 			*/
 			this.threePatternMarkers = {};
+
+			/**
+				Index of Three.js NFT markers, maps markerID -> THREE.Object3D.
+			*/
+			this.threeNFTMarkers = {};
 
 			/**
 				Index of Three.js barcode markers, maps markerID -> THREE.Object3D.
@@ -305,7 +375,16 @@
 		};
 
 	};
-
+	/**
+	 * Helper Method for Three.js compatibility
+	 */
+	var setProjectionMatrix = function(projectionMatrix, value) {
+		if (typeof projectionMatrix.elements.set === "function") {
+			projectionMatrix.elements.set(value);
+		} else {
+			projectionMatrix.elements = [].slice.call(value);
+		}
+	};
 
 	var tick = function() {
 		if (window.ARController && window.THREE) {
