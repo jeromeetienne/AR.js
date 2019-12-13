@@ -7,7 +7,7 @@ let markers = {
         width: 1637,
         height: 2048,
         dpi: 215,
-        url: "resources/pinball",
+        url: "resources/pinball/pinball",
     },
 };
 
