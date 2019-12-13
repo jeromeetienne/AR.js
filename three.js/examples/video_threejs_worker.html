@@ -1,0 +1,53 @@
+<html>
+<head>
+    <title>NFT_video</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.5, maximum-scale=1">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div style="position:absolute; color:white; top:0;left:0" id="stats1"><div>Main</div></div>
+<div style="position:absolute; color:white; top:80px;left:0" id="stats2"><div>Worker</div></div>
+<div id="container">
+    <video id="video" playsinline src="resources/video.mp4" loop></video>
+    <canvas style="position: absolute; left:0; top:0" id="canvas_draw"></canvas>
+</div>
+<button id="startvideo">PLAY VIDEO</button>
+<button id="process">START PROCESSING</button>
+
+<script src='vendor/three.js/examples/js/libs/stats.min.js'></script>
+<script src='vendor/three.js/build/three.js'></script>
+<script src="threejs_worker.js"></script>
+
+<script>
+    let statsMain = new Stats();
+    statsMain.showPanel(1); // 0: fps, 1: ms, 2: mb, 3+: custom
+    statsMain.domElement.style.position = 'relative';
+    statsMain.domElement.style.left = '0px';
+    statsMain.domElement.style.top = '0px';
+    document.getElementById("stats1").appendChild(statsMain.dom);
+
+    let statsWorker = new Stats();
+    statsWorker.showPanel(1); // 0: fps, 1: ms, 2: mb, 3+: custom
+    statsWorker.domElement.style.position = 'relative';
+    statsWorker.domElement.style.left = '0px';
+    statsWorker.domElement.style.top = '0px';
+    document.getElementById("stats2").appendChild(statsWorker.dom);
+
+    let container = document.getElementById('container');
+    let video = document.getElementById('video');
+    let canvas_draw = document.getElementById('canvas_draw');
+
+    document.getElementById("startvideo").onclick = () => {
+        video.play();
+    };
+    document.getElementById("process").onclick = () => {
+        start(container, markers["pinball"], video, video.videoWidth, video.videoHeight, canvas_draw, () => statsMain.update(), () => statsWorker.update());
+    };
+</script>
+</body>
+</html>
