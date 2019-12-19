@@ -126,7 +126,7 @@ You can also use GeoAR.js **without** the script, adding `gps-entity-place` enti
 ```html
 <!doctype HTML>
 <html>
-<script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+<script src="https://aframe.io/releases/1.0.0/aframe.min.js"></script>
 <script src="https://raw.githack.com/jeromeetienne/AR.js/2.0.8/aframe/build/aframe-ar.js"></script>
   <body style='margin : 0px; overflow: hidden;'>
     <a-scene embedded arjs>
