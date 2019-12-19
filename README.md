@@ -65,7 +65,7 @@ More details about markers:
 
 # What "Location Based" means
 
-### Check out the Location Based documentation: [here](https://github.com/jeromeetienne/AR.js/blob/location-based/aframe/README.md#location-based).
+### Check out the Location Based documentation: [here](https://github.com/jeromeetienne/AR.js/blob/master/aframe/README.md#location-based).
 
 AR.js, on its `aframe` implementation, comes with few custom components that make possible to integrate data from GPS sensors.
 
@@ -100,7 +100,7 @@ Every example uses the `places.js` script to load places. You set your places us
 
 Otherwise, as default, the script searches for places of interest near the user using Foursquare APIs. Please retrieve valid API credentials [here](https://developer.foursquare.com/) in order to use it. Place credentials (replace both Client Secret and Client Id) on `places.js`.
 
-You can also use GeoAR.js **without** the script, adding `gps-entity-place` entities directly on the `index.html` file.as documentated [here](https://github.com/jeromeetienne/AR.js/blob/location-based/aframe/README.md).
+You can also use GeoAR.js **without** the script, adding `gps-entity-place` entities directly on the `index.html` file.as documentated [here](https://github.com/jeromeetienne/AR.js/blob/master/aframe/README.md).
 
 
 # Index
