@@ -6,7 +6,7 @@ var ARjs = ARjs || {}
 
 /**
  * Create an anchor in the real world
- * 
+ *
  * @param {ARjs.Session} arSession - the session on which we create the anchor
  * @param {Object} markerParameters - parameter of this anchor
  */
@@ -15,10 +15,10 @@ ARjs.Anchor = function(arSession, markerParameters){
 	var arContext = arSession.arContext
 	var scene = arSession.parameters.scene
 	var camera = arSession.parameters.camera
-	
+
 	this.arSession = arSession
 	this.parameters = markerParameters
-	
+
 	// log to debug
 	console.log('ARjs.Anchor -', 'changeMatrixMode:', this.parameters.changeMatrixMode, '/ markersAreaEnabled:', markerParameters.markersAreaEnabled)
 
@@ -33,7 +33,7 @@ ARjs.Anchor = function(arSession, markerParameters){
 	}else console.assert(false)
 
 	if( markerParameters.markersAreaEnabled === false ){
-		var markerControls = new THREEx.ArMarkerControls(arContext, controlledObject, markerParameters)	
+		var markerControls = new THREEx.ArMarkerControls(arContext, controlledObject, markerParameters)
 		this.controls = markerControls
 	}else{
 		// sanity check - MUST be a trackingBackend with markers
@@ -56,7 +56,7 @@ ARjs.Anchor = function(arSession, markerParameters){
 		if( localStorage.getItem('ARjsMultiMarkerFile') === null ){
 			ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile(arContext.parameters.trackingBackend)
 		}
-		
+
 		// get multiMarkerFile from localStorage
 		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
 		var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
@@ -67,7 +67,7 @@ ARjs.Anchor = function(arSession, markerParameters){
 		}else if( markerParameters.changeMatrixMode === 'cameraTransformMatrix' ){
 			var parent3D = camera
 		}else console.assert(false)
-	
+
 		// build a multiMarkerControls
 		var multiMarkerControls = ARjs.MarkersAreaControls.fromJSON(arContext, parent3D, controlledObject, multiMarkerFile)
 		this.controls = multiMarkerControls
@@ -82,8 +82,8 @@ ARjs.Anchor = function(arSession, markerParameters){
 			// add an helper to visuable each sub-marker
 			var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
 			markerHelper.object3d.visible = false
-			// subMarkerControls.object3d.add( markerHelper.object3d )		
-			subMarkerControls.object3d.add( markerHelper.object3d )		
+			// subMarkerControls.object3d.add( markerHelper.object3d )
+			subMarkerControls.object3d.add( markerHelper.object3d )
 			// add it to markerHelpers
 			markerHelpers.push(markerHelper)
 		})
@@ -95,22 +95,21 @@ ARjs.Anchor = function(arSession, markerParameters){
 			})
 		}
 	}
-	
+
 	this.object3d = new THREE.Group()
-		
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		THREEx.ArSmoothedControls
 	//////////////////////////////////////////////////////////////////////////////
-	
+
 	var shouldBeSmoothed = true
-	if( arContext.parameters.trackingBackend === 'tango' ) shouldBeSmoothed = false 
 
 	if( shouldBeSmoothed === true ){
 		// build a smoothedControls
 		var smoothedRoot = new THREE.Group()
 		scene.add(smoothedRoot)
 		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
-		smoothedRoot.add(this.object3d)	
+		smoothedRoot.add(this.object3d)
 	}else{
 		markerRoot.add(this.object3d)
 	}
@@ -119,7 +118,7 @@ ARjs.Anchor = function(arSession, markerParameters){
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
-	this.update = function(){	
+	this.update = function(){
 		// update _this.object3d.visible
 		_this.object3d.visible = _this.object3d.parent.visible
 
@@ -131,7 +130,7 @@ ARjs.Anchor = function(arSession, markerParameters){
 			}
 
 			// update smoothedControls
-			smoothedControls.update(markerRoot)			
+			smoothedControls.update(markerRoot)
 		}
 	}
 }

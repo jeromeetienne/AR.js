@@ -1,3 +1,0 @@
-- how come you init twice the artoolkitcontrollers
-  - waste memory
-- how come the worker is running detectNFT - see cpu profile
