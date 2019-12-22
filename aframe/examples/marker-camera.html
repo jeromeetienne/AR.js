@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<script src="vendor/aframe/build/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
 <!-- include aframe-ar.js -->
 <script src="../build/aframe-ar.js"></script>
 
@@ -11,10 +11,12 @@
 	<!-- <a-scene embedded arjs='sourceType: image; sourceUrl:../../data/images/armchair.jpg;'> -->
 	<a-scene embedded arjs='sourceType: webcam;'>
 
-		<a-sphere position="0 0.5 0" radius="0.5" color="#EF2D5E"></a-sphere>
-		<a-plane position="0 0 0" rotation="-90 0 0" width="1" height="1" color="#7BC8A4"></a-plane>
+        <a-marker preset="hiro">
+            <a-sphere position="0 0.5 0" radius="0.5" color="#EF2D5E"></a-sphere>
+            <a-plane position="0 0 0" rotation="-90 0 0" width="1" height="1" color="#7BC8A4"></a-plane>
+        </a-marker>
 
-		<a-marker-camera preset='hiro'></a-marker-camera>
+		<a-entity camera></a-entity>
 	</a-scene>
 </body>
 </html>
