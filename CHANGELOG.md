@@ -1,4 +1,4 @@
-# 2.1.1
+# 2.1.2
 
 - fixed a bug that causes Overconstrained Error on desktop
 - cleaned repo (removed data like videos and heavy files)
