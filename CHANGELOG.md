@@ -1,3 +1,8 @@
+# 2.1.1
+
+- fixed a bug that causes Overconstrained Error on desktop
+- cleaned repo (removed data like videos and heavy files)
+
 # 2.1.0
 
 - Removed support for Google Tango (obsolete and no more supported by Google)
