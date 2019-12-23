@@ -2506,7 +2506,7 @@ Object.assign(ARjs.Context.prototype, THREE.EventDispatcher.prototype);
 // ARjs.Context.baseURL = '../'
 // default to github page
 ARjs.Context.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
-ARjs.Context.REVISION = '2.1.0';
+ARjs.Context.REVISION = '2.1.1';
 
 /**
  * Create a default camera for this trackingBackend
@@ -3105,7 +3105,7 @@ ARjs.Source.prototype._initSourceWebcam = function (onReady, onError) {
         var userMediaConstraints = {
             audio: false,
             video: {
-                facingMode: { exact: 'environment' },
+                facingMode: 'environment',
                 width: {
                     ideal: _this.parameters.sourceWidth,
                     // min: 1024,
