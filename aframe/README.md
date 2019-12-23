@@ -33,13 +33,13 @@ cameraTransform would fit well a room-scale setup, with *multiple markers connec
 modelView is able to provide multiple *independent* markers.
 
 ```html
-        <!-- add artoolkit into your scene -->
-        <a-scene artoolkit>
-        <!-- define your scene as usual -->
-        <a-box></a-box>
-        <!-- define a camera inside the <a-marker-camera> -->
-        <a-marker-camera preset='hiro'><a-marker-camera>
-        </a-scene>
+<!-- add artoolkit into your scene -->
+<a-scene artoolkit>
+<!-- define your scene as usual -->
+<a-box></a-box>
+<!-- define a camera inside the <a-marker-camera> -->
+<a-marker-camera preset='hiro'><a-marker-camera>
+</a-scene>
 ```
 
 ## Location Based
@@ -75,7 +75,7 @@ In addition to that, as you can see on the example above, we also have to add `r
 **Required**: yes
 **Max allowed per scene**: no limit
 
-This component makes every entity GPS-trackable. It assignes a specific world position to the entity, so the user can see it when their phone is pointing to its position in the real world. If user is far from the entity, their will see it smaller. If it is too far, their will not see it at all.
+This component makes each entity GPS-trackable. This assigns a specific world position to an entity, so that the user can see it when their device is pointing to its position in the real world. If the user is far from the entity, it will seem smaller. If it's too far away, it won't be seen at all.
 
 It requires latitude and longitude as a single string parameter (example with `a-box` aframe primitive):
 
@@ -88,10 +88,10 @@ It requires latitude and longitude as a single string parameter (example with `a
 **Required**: no
 **Max allowed per scene**: 1
 
-This component has to be added only in development environments, not production ones.
+This component should only be added in development environments, not in production environments.
 It shows a debug UI with camera informations and a list of registered `gps-entity-place` entities, showing also distance from the user for each one.
 
-It has to be added to the `a-scene`:
+This replaces the `gps-camera`:
 
 ```HTML
 <a-scene gps-camera-debug embedded arjs='sourceType: webcam; debugUIEnabled: false;'></a-scene>

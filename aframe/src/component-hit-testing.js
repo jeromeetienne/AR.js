@@ -18,7 +18,7 @@ AFRAME.registerComponent('arjs-hit-testing', {
 		var arjsSystem = this.el.sceneEl.systems.arjs || this.el.sceneEl.systems.artoolkit
 
 // TODO make it work on cameraTransformMatrix too
-// 
+//
 		_this.isReady = false
 		_this._arAnchor = null
 		_this._arHitTesting = null
@@ -42,16 +42,7 @@ AFRAME.registerComponent('arjs-hit-testing', {
 
 			var hitTesting = _this._arHitTesting = new ARjs.HitTesting(arSession)
 			hitTesting.enabled = _this.data.enabled
-			
-			// tango only - picking to set object position
-			renderer.domElement.addEventListener("click", function(domEvent){
-				var hitTestResults = hitTesting.testDomEvent(domEvent)
-				if( hitTestResults.length === 0 )	return
 
-				var hitTestResult = hitTestResults[0]
-				hitTestResult.apply(arAnchor.object3d)
-			})
-			
 			_this.isReady = true
 		}, 1000/60)
 	},
@@ -70,7 +61,7 @@ AFRAME.registerComponent('arjs-hit-testing', {
 		var anchorEl = _this.el
 		var anchorComponent = anchorEl.components['arjs-anchor']
 		var arAnchor = anchorComponent._arAnchor
-		
+
 
 		var hitTesting = this._arHitTesting
 		var camera = arSession.parameters.camera

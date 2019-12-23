@@ -1,3 +1,12 @@
+# 2.1.0
+
+- Removed support for Google Tango (obsolete and no more supported by Google)
+- Removed support for Aruco markers
+- Fixed loader bug on location based examples
+- Merged PR https://github.com/jeromeetienne/AR.js/pull/673 and https://github.com/jeromeetienne/AR.js/pull/666
+- Fixed documentation
+- Cleaned repo, preparing for next release
+
 # 2.0.8
 
 - Fixed bug on location-based while added places via HTML
