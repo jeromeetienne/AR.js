@@ -52,7 +52,7 @@
 	var directionalLight = new THREE.DirectionalLight( 0x887766 );
 	directionalLight.position.set( -1, 1, 1 ).normalize();
 	scene.add( directionalLight );
-	
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Initialize a basic camera
 	//////////////////////////////////////////////////////////////////////////////////
@@ -60,16 +60,16 @@
 	// Create a camera
 	var camera = new THREE.Camera();
 	scene.add(camera);
-	
+
 	var debugEnabled = false
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
 
 	if( debugEnabled === true ){
 	        var orthoCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, -100, +100);
-	        var orthoScene = new THREE.Scene();		
+	        var orthoScene = new THREE.Scene();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -77,37 +77,30 @@
 	////////////////////////////////////////////////////////////////////////////////
 
 	var arToolkitSource = new THREEx.ArToolkitSource({
-		// to read from the webcam 
+		// to read from the webcam
 		sourceType : 'webcam',
-		
-		// to read from an image
-		// sourceType : 'image',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',		
 
-		// to read from a video
-		// sourceType : 'video',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',		
 	})
 
 	arToolkitSource.init(function onReady(){
 		onResize()
 	})
-	
+
 	// handle resize
 	window.addEventListener('resize', function(){
 		onResize()
 	})
 	function onResize(){
-		arToolkitSource.onResize()	
-		arToolkitSource.copySizeTo(renderer.domElement)	
+		arToolkitSource.onResize()
+		arToolkitSource.copySizeTo(renderer.domElement)
 		if( arToolkitContext.arController !== null ){
-			arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
-		}	
+			arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
-	////////////////////////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////////////////////////
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
@@ -130,12 +123,12 @@
 
 		arToolkitContext.update( arToolkitSource.domElement )
 	})
-	
-	
+
+
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
-	
+
 	var markerRoot = new THREE.Group
 	scene.add(markerRoot)
 	var artoolkitMarker = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
@@ -147,14 +140,14 @@
 	//////////////////////////////////////////////////////////////////////////////////
 	//		build videoTexture
 	//////////////////////////////////////////////////////////////////////////////////
-	
+
 	// get videoTexture
 	if( arToolkitSource.domElement.nodeName === 'VIDEO' ){
 		var videoTexture = new THREE.VideoTexture(arToolkitSource.domElement)
 		// arToolkitSource.domElement.pause()
 	}else if( arToolkitSource.domElement.nodeName === 'IMG' ){
 		var videoTexture = new THREE.Texture(arToolkitSource.domElement)
-		videoTexture.needsUpdate = true		
+		videoTexture.needsUpdate = true
 	}else console.assert(false)
 	// TODO to remove if webgl2 - better visual ?
 	videoTexture.minFilter =  THREE.NearestFilter
@@ -165,8 +158,8 @@
 	//////////////////////////////////////////////////////////////////////////////
 	var markerCloak =  new THREEx.ArMarkerCloak(videoTexture);
 	markerRoot.add(markerCloak.object3d)
-	
-	
+
+
 
 	onRenderFcts.push(function(){
 		markerCloak.update(markerRoot.matrix, camera.projectionMatrix)
@@ -178,11 +171,11 @@
 			markerCloak.orthoMesh.visible = markerRoot.visible
 		})
 	}
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		opacity animation
 	//////////////////////////////////////////////////////////////////////////////
-	
+
 	// animation opacity
 	var targetOpacity = 1.0
 	onRenderFcts.push(function(delta){
@@ -218,23 +211,23 @@
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
-	// add a torus knot	
+	// add a torus knot
 	var geometry	= new THREE.CubeGeometry(1,1,1);
 	var material	= new THREE.MeshNormalMaterial({
 		transparent : true,
 		opacity: 0.5,
 		side: THREE.DoubleSide
-	}); 
+	});
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= geometry.parameters.height/2
 	markerRoot.add( mesh );
-	
+
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	var material	= new THREE.MeshNormalMaterial(); 
+	var material	= new THREE.MeshNormalMaterial();
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= 0.5
 	markerRoot.add( mesh );
-	
+
 	onRenderFcts.push(function(delta){
 		mesh.rotation.x += Math.PI*delta
 	})
@@ -246,9 +239,9 @@
 	// document.body.appendChild( stats.dom );
 	// render the scene
 	onRenderFcts.push(function(){
-		
+
 		renderer.clear();
-		
+
 		renderer.render( scene, camera );
 
 		if( debugEnabled === true ){

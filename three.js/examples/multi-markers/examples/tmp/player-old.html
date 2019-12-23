@@ -35,11 +35,11 @@
 	<br/>
 	<a id='recordButton' href='learner.html?url=player.html'>Record new area</a>
 	<br/>
-	Markers Helper : 
+	Markers Helper :
 		<a href='javascript:void(0)' onclick='urlOptions.markersHelper = true; reload()'>enable</a>
 		/
 		<a href='javascript:void(0)' onclick='urlOptions.markersHelper = false; reload()'>disable</a>
-	appMode : 
+	appMode :
 		<a href='javascript:void(0)' onclick='urlOptions.appMode = "areaUsing"; reload()'>stored</a>
 		/
 		<a href='javascript:void(0)' onclick='urlOptions.appMode = "areaHardcoded"; reload()'>hardcoded</a>
@@ -55,7 +55,7 @@
 		alpha: true
 	});
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap
-	renderer.shadowMap.enabled = true;	
+	renderer.shadowMap.enabled = true;
 
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
 	// renderer.setPixelRatio( 2 );
@@ -88,24 +88,16 @@
 	////////////////////////////////////////////////////////////////////////////////
 
 	var arToolkitSource = new THREEx.ArToolkitSource({
-		// to read from the webcam 
+		// to read from the webcam
 		sourceType : 'webcam',
-		
-		// // to read from an image
-		// sourceType : 'image',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/multimarker.jpg'		
-
-		// to read from a video
-		// sourceType : 'video',
-		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',	
 	})
 
 
 	arToolkitSource.init(function onReady(){
 		// handle resize of renderer
-		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])		
+		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])
 	})
-	
+
 	// handle resize
 	window.addEventListener('resize', function(){
 		// handle arToolkitSource resize
@@ -114,7 +106,7 @@
 
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
-	////////////////////////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////////////////////////
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
@@ -158,13 +150,13 @@
 	}
 
 	if( location.hash.substring(1) === '' )	location.hash = '#'+JSON.stringify(urlOptions)
-	
+
 	if( urlOptions.appMode === 'areaUsing' && localStorage.getItem('ARjsMultiMarkerFile') === null ){
 		alert('cant find sample multimarker.')
 		urlOptions.appMode = 'areaHardcoded'
 	}
-	
-	
+
+
 	if( urlOptions.appMode === 'areaUsing' ){
 		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
 		multiMarkerPlay(localStorage.getItem('ARjsMultiMarkerFile'))
@@ -173,12 +165,12 @@
 	}else{
 		console.assert('unknown appMode', appMode)
 	}
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
 
-	
+
 	// var markersControlsParameters = [
 	// 	{
 	// 		type : 'pattern',
@@ -209,7 +201,7 @@
 			patternUrl : THREEx.ArToolkitContext.baseURL + '../data/multimarkers/multi-abcdef/patt.f',
 		},
 	]
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
@@ -226,7 +218,7 @@
 		// build a markerRoot
 		var markerRoot = new THREE.Group()
 		scene.add(markerRoot)
-		
+
 		// build a multiMarkerControls
 		var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arToolkitContext, scene, markerRoot, multiMarkerFile)
 
@@ -235,8 +227,8 @@
 			multiMarkerControls.subMarkersControls.forEach(function(subMarkerControls){
 				// add an helper to visuable each sub-marker
 				var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
-				subMarkerControls.object3d.add( markerHelper.object3d )		
-			})			
+				subMarkerControls.object3d.add( markerHelper.object3d )
+			})
 		}
 
 		// build a smoothedControls
@@ -245,9 +237,9 @@
 		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
 		onRenderFcts.push(function(delta){
 			smoothedControls.update(markerRoot)
-		})	
+		})
 
-		
+
 		var markerScene = new THREE.Scene
 		// markerRoot.add(markerScene)
 		smoothedRoot.add(markerScene)
@@ -260,21 +252,21 @@
 		//////////////////////////////////////////////////////////////////////////////////
 		//		add an object in the scene
 		//////////////////////////////////////////////////////////////////////////////////
-		
 
-		var geometry = new THREE.TorusGeometry(0.3,0.2,20,30);	
+
+		var geometry = new THREE.TorusGeometry(0.3,0.2,20,30);
 		// var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
 
 		var videoTexture = new THREE.VideoTexture(arToolkitSource.domElement)
 		videoTexture.minFilter = THREE.NearestFilter
 		videoTexture.wrapS = videoTexture.wrapT = THREE.ClampToEdgeWrapping;
 		var material = new THREEx.RefractionMaterial(videoTexture)
-	
-		// var material	= new THREE.MeshNormalMaterial(); 
+
+		// var material	= new THREE.MeshNormalMaterial();
 		var mesh	= new THREE.Mesh( geometry, material );
 		mesh.position.y	= 0.5
 		markerScene.add( mesh );
-		
+
 		onRenderFcts.push(function(delta){
 			// mesh.rotation.x += delta * Math.PI
 			mesh.rotation.y += delta * Math.PI
@@ -286,7 +278,7 @@
 	//////////////////////////////////////////////////////////////////////////////
 
 	function multiMarkerPlayHarcoded(){
-		
+
 		var interMarkerWidth = 2.61
 
 		var multiMarkerFile = {
