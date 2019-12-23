@@ -5,7 +5,6 @@ build-main:
 	echo	> build/ar.js
 	cat 	vendor/jsartoolkit5/build/artoolkit.min.js	\
 		vendor/jsartoolkit5/js/artoolkit.api.js		>> build/ar.js
-	cat	vendor/signals.min.js				>> build/ar.js
 	cat	src/threex/*.js					\
 		src/new-api/*.js 				\
 		src/markers-area/*.js 				>> build/ar.js
@@ -19,7 +18,6 @@ build-lean:
 	echo > build/ar.lean.js
 	cat vendor/jsartoolkit5/build/artoolkit.min.js \
 		vendor/jsartoolkit5/js/artoolkit.api.js >> build/ar.lean.js
-	cat vendor/signals.min.js >> build/ar.lean.js
 	cat src/threex/*.js \
 		src/new-api/*.js \
 		src/markers-area/*.js >> build/ar.lean.js

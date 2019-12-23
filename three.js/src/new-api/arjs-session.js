@@ -2,7 +2,7 @@ var ARjs = ARjs || {}
 
 /**
  * define a ARjs.Session
- * 
+ *
  * @param {Object} parameters - parameters for this session
  */
 ARjs.Session = function(parameters){
@@ -14,11 +14,6 @@ ARjs.Session = function(parameters){
 		scene: null,
 		sourceParameters: {},
 		contextParameters: {},
-	}
-	
-	this.signals = {
-		sourceReady : new signals.Signal(),
-		contextInitialized: new signals.Signal(),
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
@@ -49,7 +44,7 @@ ARjs.Session = function(parameters){
 	console.assert(this.parameters.renderer instanceof THREE.WebGLRenderer)
 	console.assert(this.parameters.camera instanceof THREE.Camera)
 	console.assert(this.parameters.scene instanceof THREE.Scene)
-	
+
 
 	// backward emulation
 	Object.defineProperty(this, 'renderer', {get: function(){
@@ -65,7 +60,7 @@ ARjs.Session = function(parameters){
 		return this.parameters.scene;
 	}});
 
-	
+
 	// log the version
 	console.log('AR.js', ARjs.Context.REVISION, '- trackingBackend:', parameters.contextParameters.trackingBackend)
 
@@ -76,42 +71,38 @@ ARjs.Session = function(parameters){
 
 	arSource.init(function onReady(){
 		arSource.onResize(arContext, _this.parameters.renderer, _this.parameters.camera)
-
-		_this.signals.sourceReady.dispatch()
 	})
-	
+
 	// handle resize
 	window.addEventListener('resize', function(){
 		arSource.onResize(arContext, _this.parameters.renderer, _this.parameters.camera)
-	})	
-	
+	})
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		init arContext
 	//////////////////////////////////////////////////////////////////////////////
 
 	// create atToolkitContext
 	var arContext = _this.arContext = new ARjs.Context(parameters.contextParameters)
-	
+
 	// initialize it
 	_this.arContext.init()
-	
+
 	arContext.addEventListener('initialized', function(event){
 		arSource.onResize(arContext, _this.parameters.renderer, _this.parameters.camera)
-		
-		_this.signals.contextInitialized.dispatch()
 	})
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		update function
 	//////////////////////////////////////////////////////////////////////////////
 	// update artoolkit on every frame
 	this.update = function(){
 		if( arSource.ready === false )	return
-		
+
 		arContext.update( arSource.domElement )
 	}
 }
 
 ARjs.Session.prototype.onResize = function () {
-	this.arSource.onResize(this.arContext, this.parameters.renderer, this.parameters.camera)	
+	this.arSource.onResize(this.arContext, this.parameters.renderer, this.parameters.camera)
 };
