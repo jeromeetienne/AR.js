@@ -1,6 +1,4 @@
 ; (function () {
-    'use strict';
-
     var scope;
     if (typeof window !== 'undefined') {
         scope = window;

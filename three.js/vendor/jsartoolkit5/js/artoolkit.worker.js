@@ -1,7 +1,7 @@
 importScripts('../../vendor/jsartoolkit5/build/artoolkit.min.js');
 
-self.onmessage = e => {
-    let msg = e.data;
+self.onmessage = function(e) {
+    var msg = e.data;
     switch (msg.type) {
         case "load": {
             load(msg);
@@ -15,16 +15,16 @@ self.onmessage = e => {
     }
 };
 
-let next = null;
+var next = null;
 
-let ar = null;
-let markerResult = null;
+var ar = null;
+var markerResult = null;
 
 function load(msg) {
-    let param = new ARCameraParam('../resources/camera_para-iPhone 5 rear 640x480 1.0m.dat');
+    var param = new ARCameraParam('../resources/camera_para-iPhone 5 rear 640x480 1.0m.dat');
     param.onload = function () {
         ar = new ARController(msg.pw, msg.ph, param);
-        let cameraMatrix = ar.getCameraMatrix();
+        var cameraMatrix = ar.getCameraMatrix();
 
         ar.addEventListener('getNFTMarker', function (ev) {
             markerResult = {type: "found", matrixGL_RH: JSON.stringify(ev.data.matrixGL_RH), proj: JSON.stringify(cameraMatrix)};

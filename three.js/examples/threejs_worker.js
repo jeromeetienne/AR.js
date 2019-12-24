@@ -95,7 +95,7 @@ function start(container, marker, video, input_width, input_height, canvas_draw,
 
         renderer.setSize(sw, sh);
 
-        worker = new Worker('nft/worker.js');
+        worker = new Worker('../src/vendor/jsartoolkit5/js/artoolkit.worker.js');
 
         worker.postMessage({ type: "load", pw: pw, ph: ph, marker: '../' + marker.url });
 
