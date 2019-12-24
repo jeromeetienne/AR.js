@@ -2487,77 +2487,77 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
-ARjs.Context = THREEx.ArToolkitContext = function(parameters){
-	var _this = this
+ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
+    var _this = this
 
-	_this._updatedAt = null
+    _this._updatedAt = null
 
-	// handle default parameters
-	this.parameters = {
-		// AR backend - ['artoolkit', 'aruco', 'tango']
-		trackingBackend: 'artoolkit',
-		// debug - true if one should display artoolkit debug canvas, false otherwise
-		debug: false,
-		// the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
-		detectionMode: 'mono',
-		// type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
-		matrixCodeType: '3x3',
+    // handle default parameters
+    this.parameters = {
+        // AR backend - ['artoolkit']
+        trackingBackend: 'artoolkit',
+        // debug - true if one should display artoolkit debug canvas, false otherwise
+        debug: false,
+        // the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
+        detectionMode: 'mono',
+        // type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
+        matrixCodeType: '3x3',
 
-		// url of the camera parameters
-		cameraParametersUrl: ARjs.Context.baseURL + 'parameters/camera_para.dat',
+        // url of the camera parameters
+        cameraParametersUrl: ARjs.Context.baseURL + 'parameters/camera_para.dat',
 
-		// tune the maximum rate of pose detection in the source image
-		maxDetectionRate: 60,
-		// resolution of at which we detect pose in the source image
-		canvasWidth: 640,
-		canvasHeight: 480,
+        // tune the maximum rate of pose detection in the source image
+        maxDetectionRate: 60,
+        // resolution of at which we detect pose in the source image
+        canvasWidth: 640,
+        canvasHeight: 480,
 
-		// the patternRatio inside the artoolkit marker - artoolkit only
-		patternRatio: 0.5,
+        // the patternRatio inside the artoolkit marker - artoolkit only
+        patternRatio: 0.5,
 
-		// enable image smoothing or not for canvas copy - default to true
-		// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
-		imageSmoothingEnabled : false,
-	}
-	// parameters sanity check
-	console.assert(['artoolkit', 'aruco', 'tango'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
-	console.assert(['color', 'color_and_matrix', 'mono', 'mono_and_matrix'].indexOf(this.parameters.detectionMode) !== -1, 'invalid parameter detectionMode', this.parameters.detectionMode)
+        // enable image smoothing or not for canvas copy - default to true
+        // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
+        imageSmoothingEnabled: false,
+    }
+    // parameters sanity check
+    console.assert(['artoolkit'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
+    console.assert(['color', 'color_and_matrix', 'mono', 'mono_and_matrix'].indexOf(this.parameters.detectionMode) !== -1, 'invalid parameter detectionMode', this.parameters.detectionMode)
 
-        this.arController = null;
-        this.arucoContext = null;
+    this.arController = null;
+    this.arucoContext = null;
 
-	_this.initialized = false
+    _this.initialized = false
 
 
-	this._arMarkersControls = []
+    this._arMarkersControls = []
 
-	//////////////////////////////////////////////////////////////////////////////
-	//		setParameters
-	//////////////////////////////////////////////////////////////////////////////
-	setParameters(parameters)
-	function setParameters(parameters){
-		if( parameters === undefined )	return
-		for( var key in parameters ){
-			var newValue = parameters[ key ]
+    //////////////////////////////////////////////////////////////////////////////
+    //		setParameters
+    //////////////////////////////////////////////////////////////////////////////
+    setParameters(parameters)
+    function setParameters(parameters) {
+        if (parameters === undefined) return
+        for (var key in parameters) {
+            var newValue = parameters[key]
 
-			if( newValue === undefined ){
-				console.warn( "THREEx.ArToolkitContext: '" + key + "' parameter is undefined." )
-				continue
-			}
+            if (newValue === undefined) {
+                console.warn("THREEx.ArToolkitContext: '" + key + "' parameter is undefined.")
+                continue
+            }
 
-			var currentValue = _this.parameters[ key ]
+            var currentValue = _this.parameters[key]
 
-			if( currentValue === undefined ){
-				console.warn( "THREEx.ArToolkitContext: '" + key + "' is not a property of this material." )
-				continue
-			}
+            if (currentValue === undefined) {
+                console.warn("THREEx.ArToolkitContext: '" + key + "' is not a property of this material.")
+                continue
+            }
 
-			_this.parameters[ key ] = newValue
-		}
-	}
+            _this.parameters[key] = newValue
+        }
+    }
 }
 
-Object.assign( ARjs.Context.prototype, THREE.EventDispatcher.prototype );
+Object.assign(ARjs.Context.prototype, THREE.EventDispatcher.prototype);
 
 // ARjs.Context.baseURL = '../'
 // default to github page
@@ -2569,348 +2569,188 @@ ARjs.Context.REVISION = '2.0.8';
  * @param {string} trackingBackend - the tracking to user
  * @return {THREE.Camera} the created camera
  */
-ARjs.Context.createDefaultCamera = function( trackingBackend ){
-	console.assert(false, 'use ARjs.Utils.createDefaultCamera instead')
-	// Create a camera
-	if( trackingBackend === 'artoolkit' ){
-		var camera = new THREE.Camera();
-	}else if( trackingBackend === 'aruco' ){
-		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
-	}else if( trackingBackend === 'tango' ){
-		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
-	}else console.assert(false)
-	return camera
+ARjs.Context.createDefaultCamera = function (trackingBackend) {
+    console.assert(false, 'use ARjs.Utils.createDefaultCamera instead')
+    // Create a camera
+    if (trackingBackend === 'artoolkit') {
+        var camera = new THREE.Camera();
+    } else console.assert(false)
+    return camera
 }
 
 
 //////////////////////////////////////////////////////////////////////////////
 //		init functions
 //////////////////////////////////////////////////////////////////////////////
-ARjs.Context.prototype.init = function(onCompleted){
-	var _this = this
-	if( this.parameters.trackingBackend === 'artoolkit' ){
-		this._initArtoolkit(done)
-	}else if( this.parameters.trackingBackend === 'aruco' ){
-		this._initAruco(done)
-	}else if( this.parameters.trackingBackend === 'tango' ){
-		this._initTango(done)
-	}else console.assert(false)
-	return
+ARjs.Context.prototype.init = function (onCompleted) {
+    var _this = this
+    if (this.parameters.trackingBackend === 'artoolkit') {
+        this._initArtoolkit(done)
+    } else console.assert(false)
+    return
 
-	function done(){
-		// dispatch event
-		_this.dispatchEvent({
-			type: 'initialized'
-		});
+    function done() {
+        // dispatch event
+        _this.dispatchEvent({
+            type: 'initialized'
+        });
 
-		_this.initialized = true
+        _this.initialized = true
 
-		onCompleted && onCompleted()
-	}
+        onCompleted && onCompleted()
+    }
 
 }
 ////////////////////////////////////////////////////////////////////////////////
 //          update function
 ////////////////////////////////////////////////////////////////////////////////
-ARjs.Context.prototype.update = function(srcElement){
+ARjs.Context.prototype.update = function (srcElement) {
 
-	// be sure arController is fully initialized
-        if(this.parameters.trackingBackend === 'artoolkit' && this.arController === null) return false;
+    // be sure arController is fully initialized
+    if (this.parameters.trackingBackend === 'artoolkit' && this.arController === null) return false;
 
-	// honor this.parameters.maxDetectionRate
-	var present = performance.now()
-	if( this._updatedAt !== null && present - this._updatedAt < 1000/this.parameters.maxDetectionRate ){
-		return false
-	}
-	this._updatedAt = present
+    // honor this.parameters.maxDetectionRate
+    var present = performance.now()
+    if (this._updatedAt !== null && present - this._updatedAt < 1000 / this.parameters.maxDetectionRate) {
+        return false
+    }
+    this._updatedAt = present
 
-	// mark all markers to invisible before processing this frame
-	this._arMarkersControls.forEach(function(markerControls){
-		markerControls.object3d.visible = false
-	})
+    // mark all markers to invisible before processing this frame
+    this._arMarkersControls.forEach(function (markerControls) {
+        markerControls.object3d.visible = false
+    })
 
-	// process this frame
-	if(this.parameters.trackingBackend === 'artoolkit'){
-		this._updateArtoolkit(srcElement)
-	}else if( this.parameters.trackingBackend === 'aruco' ){
-		this._updateAruco(srcElement)
-	}else if( this.parameters.trackingBackend === 'tango' ){
-		this._updateTango(srcElement)
-	}else{
-		console.assert(false)
-	}
+    // process this frame
+    if (this.parameters.trackingBackend === 'artoolkit') {
+        this._updateArtoolkit(srcElement)
+    } else {
+        console.assert(false)
+    }
 
-	// dispatch event
-	this.dispatchEvent({
-		type: 'sourceProcessed'
-	});
+    // dispatch event
+    this.dispatchEvent({
+        type: 'sourceProcessed'
+    });
 
 
-	// return true as we processed the frame
-	return true;
+    // return true as we processed the frame
+    return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //          Add/Remove markerControls
 ////////////////////////////////////////////////////////////////////////////////
-ARjs.Context.prototype.addMarker = function(arMarkerControls){
-	console.assert(arMarkerControls instanceof THREEx.ArMarkerControls)
-	this._arMarkersControls.push(arMarkerControls)
+ARjs.Context.prototype.addMarker = function (arMarkerControls) {
+    console.assert(arMarkerControls instanceof THREEx.ArMarkerControls)
+    this._arMarkersControls.push(arMarkerControls)
 }
 
-ARjs.Context.prototype.removeMarker = function(arMarkerControls){
-	console.assert(arMarkerControls instanceof THREEx.ArMarkerControls)
-	// console.log('remove marker for', arMarkerControls)
-	var index = this.arMarkerControlss.indexOf(artoolkitMarker);
-	console.assert(index !== index )
-	this._arMarkersControls.splice(index, 1)
+ARjs.Context.prototype.removeMarker = function (arMarkerControls) {
+    console.assert(arMarkerControls instanceof THREEx.ArMarkerControls)
+    // console.log('remove marker for', arMarkerControls)
+    var index = this.arMarkerControlss.indexOf(artoolkitMarker);
+    console.assert(index !== index)
+    this._arMarkersControls.splice(index, 1)
 }
 
 //////////////////////////////////////////////////////////////////////////////
 //		artoolkit specific
 //////////////////////////////////////////////////////////////////////////////
-ARjs.Context.prototype._initArtoolkit = function(onCompleted){
-        var _this = this
+ARjs.Context.prototype._initArtoolkit = function (onCompleted) {
+    var _this = this
 
-	// set this._artoolkitProjectionAxisTransformMatrix to change artoolkit projection matrix axis to match usual webgl one
-	this._artoolkitProjectionAxisTransformMatrix = new THREE.Matrix4()
-	this._artoolkitProjectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
-	this._artoolkitProjectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
+    // set this._artoolkitProjectionAxisTransformMatrix to change artoolkit projection matrix axis to match usual webgl one
+    this._artoolkitProjectionAxisTransformMatrix = new THREE.Matrix4()
+    this._artoolkitProjectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
+    this._artoolkitProjectionAxisTransformMatrix.multiply(new THREE.Matrix4().makeRotationZ(Math.PI))
 
-	// get cameraParameters
-        var cameraParameters = new ARCameraParam(_this.parameters.cameraParametersUrl, function(){
-        	// init controller
-                var arController = new ARController(_this.parameters.canvasWidth, _this.parameters.canvasHeight, cameraParameters);
-                _this.arController = arController
+    // get cameraParameters
+    var cameraParameters = new ARCameraParam(_this.parameters.cameraParametersUrl, function () {
+        // init controller
+        var arController = new ARController(_this.parameters.canvasWidth, _this.parameters.canvasHeight, cameraParameters);
+        _this.arController = arController
 
-		// honor this.parameters.imageSmoothingEnabled
-		arController.ctx.mozImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
-		arController.ctx.webkitImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
-		arController.ctx.msImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
-		arController.ctx.imageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+        // honor this.parameters.imageSmoothingEnabled
+        arController.ctx.mozImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+        arController.ctx.webkitImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+        arController.ctx.msImageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
+        arController.ctx.imageSmoothingEnabled = _this.parameters.imageSmoothingEnabled;
 
-		// honor this.parameters.debug
-                if( _this.parameters.debug === true ){
-			arController.debugSetup();
-			arController.canvas.style.position = 'absolute'
-			arController.canvas.style.top = '0px'
-			arController.canvas.style.opacity = '0.6'
-			arController.canvas.style.pointerEvents = 'none'
-			arController.canvas.style.zIndex = '-1'
-		}
+        // honor this.parameters.debug
+        if (_this.parameters.debug === true) {
+            arController.debugSetup();
+            arController.canvas.style.position = 'absolute'
+            arController.canvas.style.top = '0px'
+            arController.canvas.style.opacity = '0.6'
+            arController.canvas.style.pointerEvents = 'none'
+            arController.canvas.style.zIndex = '-1'
+        }
 
-		// setPatternDetectionMode
-		var detectionModes = {
-			'color'			: artoolkit.AR_TEMPLATE_MATCHING_COLOR,
-			'color_and_matrix'	: artoolkit.AR_TEMPLATE_MATCHING_COLOR_AND_MATRIX,
-			'mono'			: artoolkit.AR_TEMPLATE_MATCHING_MONO,
-			'mono_and_matrix'	: artoolkit.AR_TEMPLATE_MATCHING_MONO_AND_MATRIX,
-		}
-		var detectionMode = detectionModes[_this.parameters.detectionMode]
-		console.assert(detectionMode !== undefined)
-		arController.setPatternDetectionMode(detectionMode);
+        // setPatternDetectionMode
+        var detectionModes = {
+            'color': artoolkit.AR_TEMPLATE_MATCHING_COLOR,
+            'color_and_matrix': artoolkit.AR_TEMPLATE_MATCHING_COLOR_AND_MATRIX,
+            'mono': artoolkit.AR_TEMPLATE_MATCHING_MONO,
+            'mono_and_matrix': artoolkit.AR_TEMPLATE_MATCHING_MONO_AND_MATRIX,
+        }
+        var detectionMode = detectionModes[_this.parameters.detectionMode]
+        console.assert(detectionMode !== undefined)
+        arController.setPatternDetectionMode(detectionMode);
 
-		// setMatrixCodeType
-		var matrixCodeTypes = {
-			'3x3'		: artoolkit.AR_MATRIX_CODE_3x3,
-			'3x3_HAMMING63'	: artoolkit.AR_MATRIX_CODE_3x3_HAMMING63,
-			'3x3_PARITY65'	: artoolkit.AR_MATRIX_CODE_3x3_PARITY65,
-			'4x4'		: artoolkit.AR_MATRIX_CODE_4x4,
-			'4x4_BCH_13_9_3': artoolkit.AR_MATRIX_CODE_4x4_BCH_13_9_3,
-			'4x4_BCH_13_5_5': artoolkit.AR_MATRIX_CODE_4x4_BCH_13_5_5,
-		}
-		var matrixCodeType = matrixCodeTypes[_this.parameters.matrixCodeType]
-		console.assert(matrixCodeType !== undefined)
-		arController.setMatrixCodeType(matrixCodeType);
+        // setMatrixCodeType
+        var matrixCodeTypes = {
+            '3x3': artoolkit.AR_MATRIX_CODE_3x3,
+            '3x3_HAMMING63': artoolkit.AR_MATRIX_CODE_3x3_HAMMING63,
+            '3x3_PARITY65': artoolkit.AR_MATRIX_CODE_3x3_PARITY65,
+            '4x4': artoolkit.AR_MATRIX_CODE_4x4,
+            '4x4_BCH_13_9_3': artoolkit.AR_MATRIX_CODE_4x4_BCH_13_9_3,
+            '4x4_BCH_13_5_5': artoolkit.AR_MATRIX_CODE_4x4_BCH_13_5_5,
+        }
+        var matrixCodeType = matrixCodeTypes[_this.parameters.matrixCodeType]
+        console.assert(matrixCodeType !== undefined)
+        arController.setMatrixCodeType(matrixCodeType);
 
-		// set the patternRatio for artoolkit
-		arController.setPattRatio(_this.parameters.patternRatio);
+        // set the patternRatio for artoolkit
+        arController.setPattRatio(_this.parameters.patternRatio);
 
-		// set thresholding in artoolkit
-		// this seems to be the default
-		// arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_MANUAL)
-		// adatative consume a LOT of cpu...
-		// arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_AUTO_ADAPTIVE)
-		// arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_AUTO_OTSU)
+        // set thresholding in artoolkit
+        // this seems to be the default
+        // arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_MANUAL)
+        // adatative consume a LOT of cpu...
+        // arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_AUTO_ADAPTIVE)
+        // arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_AUTO_OTSU)
 
-		// notify
-                onCompleted()
-        })
-	return this
+        // notify
+        onCompleted()
+    })
+    return this
 }
 
 /**
  * return the projection matrix
  */
-ARjs.Context.prototype.getProjectionMatrix = function(srcElement){
+ARjs.Context.prototype.getProjectionMatrix = function (srcElement) {
 
 
-// FIXME rename this function to say it is artoolkit specific - getArtoolkitProjectMatrix
-// keep a backward compatibility with a console.warn
+    // FIXME rename this function to say it is artoolkit specific - getArtoolkitProjectMatrix
+    // keep a backward compatibility with a console.warn
 
-	console.assert( this.parameters.trackingBackend === 'artoolkit' )
-	console.assert(this.arController, 'arController MUST be initialized to call this function')
-	// get projectionMatrixArr from artoolkit
-	var projectionMatrixArr = this.arController.getCameraMatrix();
-	var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)
+    console.assert(this.parameters.trackingBackend === 'artoolkit')
+    console.assert(this.arController, 'arController MUST be initialized to call this function')
+    // get projectionMatrixArr from artoolkit
+    var projectionMatrixArr = this.arController.getCameraMatrix();
+    var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)
 
-	// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-	projectionMatrix.multiply(this._artoolkitProjectionAxisTransformMatrix)
+    // apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
+    projectionMatrix.multiply(this._artoolkitProjectionAxisTransformMatrix)
 
-	// return the result
-	return projectionMatrix
+    // return the result
+    return projectionMatrix
 }
 
-ARjs.Context.prototype._updateArtoolkit = function(srcElement){
-	this.arController.process(srcElement)
-}
-
-//////////////////////////////////////////////////////////////////////////////
-//		aruco specific
-//////////////////////////////////////////////////////////////////////////////
-ARjs.Context.prototype._initAruco = function(onCompleted){
-	this.arucoContext = new THREEx.ArucoContext()
-
-	// honor this.parameters.canvasWidth/.canvasHeight
-	this.arucoContext.canvas.width = this.parameters.canvasWidth
-	this.arucoContext.canvas.height = this.parameters.canvasHeight
-
-	// honor this.parameters.imageSmoothingEnabled
-	var context = this.arucoContext.canvas.getContext('2d')
-	// context.mozImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
-	context.webkitImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
-	context.msImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
-	context.imageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
-
-
-	setTimeout(function(){
-		onCompleted()
-	}, 0)
-}
-
-
-ARjs.Context.prototype._updateAruco = function(srcElement){
-	// console.log('update aruco here')
-	var _this = this
-	var arMarkersControls = this._arMarkersControls
-        var detectedMarkers = this.arucoContext.detect(srcElement)
-
-	detectedMarkers.forEach(function(detectedMarker){
-		var foundControls = null
-		for(var i = 0; i < arMarkersControls.length; i++){
-			console.assert( arMarkersControls[i].parameters.type === 'barcode' )
-			if( arMarkersControls[i].parameters.barcodeValue === detectedMarker.id ){
-				foundControls = arMarkersControls[i]
-				break;
-			}
-		}
-		if( foundControls === null )	return
-
-		var tmpObject3d = new THREE.Object3D
-                _this.arucoContext.updateObject3D(tmpObject3d, foundControls._arucoPosit, foundControls.parameters.size, detectedMarker);
-		tmpObject3d.updateMatrix()
-
-		foundControls.updateWithModelViewMatrix(tmpObject3d.matrix)
-	})
-}
-
-//////////////////////////////////////////////////////////////////////////////
-//		tango specific
-//////////////////////////////////////////////////////////////////////////////
-ARjs.Context.prototype._initTango = function(onCompleted){
-	var _this = this
-	// check webvr is available
-	if (navigator.getVRDisplays){
-		// do nothing
-	} else if (navigator.getVRDevices){
-		alert("Your browser supports WebVR but not the latest version. See <a href='http://webvr.info'>webvr.info</a> for more info.");
-	} else {
-		alert("Your browser does not support WebVR. See <a href='http://webvr.info'>webvr.info</a> for assistance.");
-	}
-
-
-	this._tangoContext = {
-		vrDisplay: null,
-		vrPointCloud: null,
-		frameData: new VRFrameData(),
-	}
-
-
-	// get vrDisplay
-	navigator.getVRDisplays().then(function (vrDisplays){
-		if( vrDisplays.length === 0 )	alert('no vrDisplays available')
-		var vrDisplay = _this._tangoContext.vrDisplay = vrDisplays[0]
-
-		console.log('vrDisplays.displayName :', vrDisplay.displayName)
-
-		// init vrPointCloud
-		if( vrDisplay.displayName === "Tango VR Device" ){
-                	_this._tangoContext.vrPointCloud = new THREE.WebAR.VRPointCloud(vrDisplay, true)
-		}
-
-		// NOTE it doesnt seem necessary and it fails on tango
-		// var canvasElement = document.createElement('canvas')
-		// document.body.appendChild(canvasElement)
-		// _this._tangoContext.requestPresent([{ source: canvasElement }]).then(function(){
-		// 	console.log('vrdisplay request accepted')
-		// });
-
-		onCompleted()
-	});
-}
-
-
-ARjs.Context.prototype._updateTango = function(srcElement){
-	// console.log('update aruco here')
-	var _this = this
-	var arMarkersControls = this._arMarkersControls
-	var tangoContext= this._tangoContext
-	var vrDisplay = this._tangoContext.vrDisplay
-
-	// check vrDisplay is already initialized
-	if( vrDisplay === null )	return
-
-
-        // Update the point cloud. Only if the point cloud will be shown the geometry is also updated.
-	if( vrDisplay.displayName === "Tango VR Device" ){
-	        var showPointCloud = true
-		var pointsToSkip = 0
-	        _this._tangoContext.vrPointCloud.update(showPointCloud, pointsToSkip, true)
-	}
-
-
-	if( this._arMarkersControls.length === 0 )	return
-
-	// TODO here do a fake search on barcode/1001 ?
-
-	var foundControls = this._arMarkersControls[0]
-
-	var frameData = this._tangoContext.frameData
-
-	// read frameData
-	vrDisplay.getFrameData(frameData);
-
-	if( frameData.pose.position === null )		return
-	if( frameData.pose.orientation === null )	return
-
-	// create cameraTransformMatrix
-	var position = new THREE.Vector3().fromArray(frameData.pose.position)
-	var quaternion = new THREE.Quaternion().fromArray(frameData.pose.orientation)
-	var scale = new THREE.Vector3(1,1,1)
-	var cameraTransformMatrix = new THREE.Matrix4().compose(position, quaternion, scale)
-	// compute modelViewMatrix from cameraTransformMatrix
-	var modelViewMatrix = new THREE.Matrix4()
-	modelViewMatrix.getInverse( cameraTransformMatrix )
-
-	foundControls.updateWithModelViewMatrix(modelViewMatrix)
-
-	// console.log('position', position)
-	// if( position.x !== 0 ||  position.y !== 0 ||  position.z !== 0 ){
-	// 	console.log('vrDisplay tracking')
-	// }else{
-	// 	console.log('vrDisplay NOT tracking')
-	// }
-
+ARjs.Context.prototype._updateArtoolkit = function (srcElement) {
+    this.arController.process(srcElement)
 }
 var ARjs = ARjs || {}
 var THREEx = THREEx || {}
@@ -3019,14 +2859,6 @@ ARjs.Profile.prototype.defaultMarker = function (trackingBackend) {
         this.contextParameters.detectionMode = 'mono'
         this.defaultMarkerParameters.type = 'pattern'
         this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
-    } else if (trackingBackend === 'aruco') {
-        this.contextParameters.detectionMode = 'mono'
-        this.defaultMarkerParameters.type = 'barcode'
-        this.defaultMarkerParameters.barcodeValue = 1001
-    } else if (trackingBackend === 'tango') {
-        // FIXME temporary placeholder - to reevaluate later
-        this.defaultMarkerParameters.type = 'barcode'
-        this.defaultMarkerParameters.barcodeValue = 1001
     } else console.assert(false)
 
     return this
@@ -3083,90 +2915,87 @@ ARjs.Profile.prototype.trackingMethod = function (trackingMethod) {
  * check if the profile is valid. Throw an exception is not valid
  */
 ARjs.Profile.prototype.checkIfValid = function () {
-    if (this.contextParameters.trackingBackend === 'tango') {
-        this.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg')
-    }
     return this
 }
 var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
-ARjs.Source = THREEx.ArToolkitSource = function(parameters){
-	var _this = this
+ARjs.Source = THREEx.ArToolkitSource = function (parameters) {
+    var _this = this
 
-	this.ready = false
-        this.domElement = null
+    this.ready = false
+    this.domElement = null
 
-	// handle default parameters
-	this.parameters = {
-		// type of source - ['webcam', 'image', 'video']
-		sourceType : 'webcam',
-		// url of the source - valid if sourceType = image|video
-		sourceUrl : null,
+    // handle default parameters
+    this.parameters = {
+        // type of source - ['webcam', 'image', 'video']
+        sourceType: 'webcam',
+        // url of the source - valid if sourceType = image|video
+        sourceUrl: null,
 
-		// Device id of the camera to use (optional)
-		deviceId : null,
+        // Device id of the camera to use (optional)
+        deviceId: null,
 
-		// resolution of at which we initialize in the source image
-		sourceWidth: 640,
-		sourceHeight: 480,
-		// resolution displayed for the source
-		displayWidth: 640,
-		displayHeight: 480,
-	}
-	//////////////////////////////////////////////////////////////////////////////
-	//		setParameters
-	//////////////////////////////////////////////////////////////////////////////
-	setParameters(parameters)
-	function setParameters(parameters){
-		if( parameters === undefined )	return
-		for( var key in parameters ){
-			var newValue = parameters[ key ]
+        // resolution of at which we initialize in the source image
+        sourceWidth: 640,
+        sourceHeight: 480,
+        // resolution displayed for the source
+        displayWidth: 640,
+        displayHeight: 480,
+    }
+    //////////////////////////////////////////////////////////////////////////////
+    //		setParameters
+    //////////////////////////////////////////////////////////////////////////////
+    setParameters(parameters)
+    function setParameters(parameters) {
+        if (parameters === undefined) return
+        for (var key in parameters) {
+            var newValue = parameters[key]
 
-			if( newValue === undefined ){
-				console.warn( "THREEx.ArToolkitSource: '" + key + "' parameter is undefined." )
-				continue
-			}
+            if (newValue === undefined) {
+                console.warn("THREEx.ArToolkitSource: '" + key + "' parameter is undefined.")
+                continue
+            }
 
-			var currentValue = _this.parameters[ key ]
+            var currentValue = _this.parameters[key]
 
-			if( currentValue === undefined ){
-				console.warn( "THREEx.ArToolkitSource: '" + key + "' is not a property of this material." )
-				continue
-			}
+            if (currentValue === undefined) {
+                console.warn("THREEx.ArToolkitSource: '" + key + "' is not a property of this material.")
+                continue
+            }
 
-			_this.parameters[ key ] = newValue
-		}
-	}
+            _this.parameters[key] = newValue
+        }
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-ARjs.Source.prototype.init = function(onReady, onError){
-	var _this = this
+ARjs.Source.prototype.init = function (onReady, onError) {
+    var _this = this
 
-        if( this.parameters.sourceType === 'image' ){
-                var domElement = this._initSourceImage(onSourceReady, onError)
-        }else if( this.parameters.sourceType === 'video' ){
-                var domElement = this._initSourceVideo(onSourceReady, onError)
-        }else if( this.parameters.sourceType === 'webcam' ){
-                // var domElement = this._initSourceWebcamOld(onSourceReady)
-                var domElement = this._initSourceWebcam(onSourceReady, onError)
-        }else{
-                console.assert(false)
-        }
+    if (this.parameters.sourceType === 'image') {
+        var domElement = this._initSourceImage(onSourceReady, onError)
+    } else if (this.parameters.sourceType === 'video') {
+        var domElement = this._initSourceVideo(onSourceReady, onError)
+    } else if (this.parameters.sourceType === 'webcam') {
+        // var domElement = this._initSourceWebcamOld(onSourceReady)
+        var domElement = this._initSourceWebcam(onSourceReady, onError)
+    } else {
+        console.assert(false)
+    }
 
-	// attach
-        this.domElement = domElement
-        this.domElement.style.position = 'absolute'
-        this.domElement.style.top = '0px'
-        this.domElement.style.left = '0px'
-		this.domElement.style.zIndex = '-2'
-		this.domElement.setAttribute('id', 'arjs-video');
+    // attach
+    this.domElement = domElement
+    this.domElement.style.position = 'absolute'
+    this.domElement.style.top = '0px'
+    this.domElement.style.left = '0px'
+    this.domElement.style.zIndex = '-2'
+    this.domElement.setAttribute('id', 'arjs-video');
 
-	return this
-        function onSourceReady(){
+    return this
+    function onSourceReady() {
         document.body.appendChild(_this.domElement);
         window.dispatchEvent(new CustomEvent('arjs-video-loaded', {
             detail: {
@@ -3174,10 +3003,10 @@ ARjs.Source.prototype.init = function(onReady, onError){
             },
         }));
 
-		_this.ready = true
+        _this.ready = true
 
-		onReady && onReady()
-        }
+        onReady && onReady()
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3185,18 +3014,18 @@ ARjs.Source.prototype.init = function(onReady, onError){
 ////////////////////////////////////////////////////////////////////////////////
 
 
-ARjs.Source.prototype._initSourceImage = function(onReady) {
-	// TODO make it static
-        var domElement = document.createElement('img');
-	domElement.src = this.parameters.sourceUrl;
+ARjs.Source.prototype._initSourceImage = function (onReady) {
+    // TODO make it static
+    var domElement = document.createElement('img');
+    domElement.src = this.parameters.sourceUrl;
 
-	domElement.width = this.parameters.sourceWidth;
-	domElement.height = this.parameters.sourceHeight;
-	domElement.style.width = this.parameters.displayWidth+'px';
-	domElement.style.height = this.parameters.displayHeight+'px';
+    domElement.width = this.parameters.sourceWidth;
+    domElement.height = this.parameters.sourceHeight;
+    domElement.style.width = this.parameters.displayWidth + 'px';
+    domElement.style.height = this.parameters.displayHeight + 'px';
 
-	onReady();
-	return domElement
+    onReady();
+    return domElement
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -3204,236 +3033,236 @@ ARjs.Source.prototype._initSourceImage = function(onReady) {
 ////////////////////////////////////////////////////////////////////////////////
 
 
-ARjs.Source.prototype._initSourceVideo = function(onReady) {
-	// TODO make it static
-	var domElement = document.createElement('video');
-	domElement.src = this.parameters.sourceUrl;
+ARjs.Source.prototype._initSourceVideo = function (onReady) {
+    // TODO make it static
+    var domElement = document.createElement('video');
+    domElement.src = this.parameters.sourceUrl;
 
-	domElement.style.objectFit = 'initial';
+    domElement.style.objectFit = 'initial';
 
-	domElement.autoplay = true;
-	domElement.webkitPlaysinline = true;
-	domElement.controls = false;
-	domElement.loop = true;
-	domElement.muted = true;
+    domElement.autoplay = true;
+    domElement.webkitPlaysinline = true;
+    domElement.controls = false;
+    domElement.loop = true;
+    domElement.muted = true;
 
-	// trick to trigger the video on android
-	document.body.addEventListener('click', function onClick(){
-		document.body.removeEventListener('click', onClick);
-		domElement.play()
-	});
+    // trick to trigger the video on android
+    document.body.addEventListener('click', function onClick() {
+        document.body.removeEventListener('click', onClick);
+        domElement.play()
+    });
 
-	domElement.width = this.parameters.sourceWidth;
-	domElement.height = this.parameters.sourceHeight;
-	domElement.style.width = this.parameters.displayWidth+'px';
-	domElement.style.height = this.parameters.displayHeight+'px';
+    domElement.width = this.parameters.sourceWidth;
+    domElement.height = this.parameters.sourceHeight;
+    domElement.style.width = this.parameters.displayWidth + 'px';
+    domElement.style.height = this.parameters.displayHeight + 'px';
 
-	onReady();
-	return domElement
+    onReady();
+    return domElement
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //          handle webcam source
 ////////////////////////////////////////////////////////////////////////////////
 
-ARjs.Source.prototype._initSourceWebcam = function(onReady, onError) {
-	var _this = this
+ARjs.Source.prototype._initSourceWebcam = function (onReady, onError) {
+    var _this = this
 
-	// init default value
-	onError = onError || function(error){
-		alert('Webcam Error\nName: '+error.name + '\nMessage: '+error.message)
-		var event = new CustomEvent('camera-error', {error: error});
-		window.dispatchEvent(event);
-	}
+    // init default value
+    onError = onError || function (error) {
+        alert('Webcam Error\nName: ' + error.name + '\nMessage: ' + error.message)
+        var event = new CustomEvent('camera-error', { error: error });
+        window.dispatchEvent(event);
+    }
 
-	var domElement = document.createElement('video');
-	domElement.setAttribute('autoplay', '');
-	domElement.setAttribute('muted', '');
-	domElement.setAttribute('playsinline', '');
-	domElement.style.width = this.parameters.displayWidth+'px'
-	domElement.style.height = this.parameters.displayHeight+'px'
+    var domElement = document.createElement('video');
+    domElement.setAttribute('autoplay', '');
+    domElement.setAttribute('muted', '');
+    domElement.setAttribute('playsinline', '');
+    domElement.style.width = this.parameters.displayWidth + 'px'
+    domElement.style.height = this.parameters.displayHeight + 'px'
 
-	// check API is available
-	if (navigator.mediaDevices === undefined
-			|| navigator.mediaDevices.enumerateDevices === undefined
-			|| navigator.mediaDevices.getUserMedia === undefined  ){
-		if( navigator.mediaDevices === undefined )				var fctName = 'navigator.mediaDevices'
-		else if( navigator.mediaDevices.enumerateDevices === undefined )	var fctName = 'navigator.mediaDevices.enumerateDevices'
-		else if( navigator.mediaDevices.getUserMedia === undefined )		var fctName = 'navigator.mediaDevices.getUserMedia'
-		else console.assert(false)
-		onError({
-			name: '',
-			message: 'WebRTC issue-! '+fctName+' not present in your browser'
-		});
-		return null
-	}
+    // check API is available
+    if (navigator.mediaDevices === undefined
+        || navigator.mediaDevices.enumerateDevices === undefined
+        || navigator.mediaDevices.getUserMedia === undefined) {
+        if (navigator.mediaDevices === undefined) var fctName = 'navigator.mediaDevices'
+        else if (navigator.mediaDevices.enumerateDevices === undefined) var fctName = 'navigator.mediaDevices.enumerateDevices'
+        else if (navigator.mediaDevices.getUserMedia === undefined) var fctName = 'navigator.mediaDevices.getUserMedia'
+        else console.assert(false)
+        onError({
+            name: '',
+            message: 'WebRTC issue-! ' + fctName + ' not present in your browser'
+        });
+        return null
+    }
 
-	// get available devices
-	navigator.mediaDevices.enumerateDevices().then(function(devices) {
-                var userMediaConstraints = {
-			audio: false,
-			video: {
-				facingMode: 'environment',
-				width: {
-					ideal: _this.parameters.sourceWidth,
-					// min: 1024,
-					// max: 1920
-				},
-				height: {
-					ideal: _this.parameters.sourceHeight,
-					// min: 776,
-					// max: 1080
-				}
-		  	}
-		};
+    // get available devices
+    navigator.mediaDevices.enumerateDevices().then(function (devices) {
+        var userMediaConstraints = {
+            audio: false,
+            video: {
+                facingMode: 'environment',
+                width: {
+                    ideal: _this.parameters.sourceWidth,
+                    // min: 1024,
+                    // max: 1920
+                },
+                height: {
+                    ideal: _this.parameters.sourceHeight,
+                    // min: 776,
+                    // max: 1080
+                }
+            }
+        };
 
-		if (null !== _this.parameters.deviceId) {
-			userMediaConstraints.video.deviceId = {
-				exact: _this.parameters.deviceId
-			};
-		}
+        if (null !== _this.parameters.deviceId) {
+            userMediaConstraints.video.deviceId = {
+                exact: _this.parameters.deviceId
+            };
+        }
 
-		// get a device which satisfy the constraints
-		navigator.mediaDevices.getUserMedia(userMediaConstraints).then(function success(stream) {
-			// set the .src of the domElement
+        // get a device which satisfy the constraints
+        navigator.mediaDevices.getUserMedia(userMediaConstraints).then(function success(stream) {
+            // set the .src of the domElement
             domElement.srcObject = stream;
 
-			var event = new CustomEvent('camera-init', {stream: stream});
-			window.dispatchEvent(event);
-			// to start the video, when it is possible to start it only on userevent. like in android
-			document.body.addEventListener('click', function(){
-				domElement.play();
-			});
-			// domElement.play();
+            var event = new CustomEvent('camera-init', { stream: stream });
+            window.dispatchEvent(event);
+            // to start the video, when it is possible to start it only on userevent. like in android
+            document.body.addEventListener('click', function () {
+                domElement.play();
+            });
+            // domElement.play();
 
-			onReady();
-		}).catch(function(error) {
-			onError({
-				name: error.name,
-				message: error.message
-			});
-		});
-	}).catch(function(error) {
-		onError({
-			message: error.message
-		});
-	});
+            onReady();
+        }).catch(function (error) {
+            onError({
+                name: error.name,
+                message: error.message
+            });
+        });
+    }).catch(function (error) {
+        onError({
+            message: error.message
+        });
+    });
 
-	return domElement
+    return domElement
 }
 
 //////////////////////////////////////////////////////////////////////////////
 //		Handle Mobile Torch
 //////////////////////////////////////////////////////////////////////////////
-ARjs.Source.prototype.hasMobileTorch = function(){
-	var stream = arToolkitSource.domElement.srcObject
-	if( stream instanceof MediaStream === false )	return false
+ARjs.Source.prototype.hasMobileTorch = function () {
+    var stream = arToolkitSource.domElement.srcObject
+    if (stream instanceof MediaStream === false) return false
 
-	if( this._currentTorchStatus === undefined ){
-		this._currentTorchStatus = false
-	}
+    if (this._currentTorchStatus === undefined) {
+        this._currentTorchStatus = false
+    }
 
-	var videoTrack = stream.getVideoTracks()[0];
+    var videoTrack = stream.getVideoTracks()[0];
 
-	// if videoTrack.getCapabilities() doesnt exist, return false now
-	if( videoTrack.getCapabilities === undefined )	return false
+    // if videoTrack.getCapabilities() doesnt exist, return false now
+    if (videoTrack.getCapabilities === undefined) return false
 
-	var capabilities = videoTrack.getCapabilities()
+    var capabilities = videoTrack.getCapabilities()
 
-	return capabilities.torch ? true : false
+    return capabilities.torch ? true : false
 }
 
 /**
  * toggle the flash/torch of the mobile fun if applicable.
  * Great post about it https://www.oberhofer.co/mediastreamtrack-and-its-capabilities/
  */
-ARjs.Source.prototype.toggleMobileTorch = function(){
-	// sanity check
-	console.assert(this.hasMobileTorch() === true)
+ARjs.Source.prototype.toggleMobileTorch = function () {
+    // sanity check
+    console.assert(this.hasMobileTorch() === true)
 
-	var stream = arToolkitSource.domElement.srcObject
-	if( stream instanceof MediaStream === false ){
-		alert('enabling mobile torch is available only on webcam')
-		return
-	}
+    var stream = arToolkitSource.domElement.srcObject
+    if (stream instanceof MediaStream === false) {
+        alert('enabling mobile torch is available only on webcam')
+        return
+    }
 
-	if( this._currentTorchStatus === undefined ){
-		this._currentTorchStatus = false
-	}
+    if (this._currentTorchStatus === undefined) {
+        this._currentTorchStatus = false
+    }
 
-	var videoTrack = stream.getVideoTracks()[0];
-	var capabilities = videoTrack.getCapabilities()
+    var videoTrack = stream.getVideoTracks()[0];
+    var capabilities = videoTrack.getCapabilities()
 
-	if( !capabilities.torch ){
-		alert('no mobile torch is available on your camera')
-		return
-	}
+    if (!capabilities.torch) {
+        alert('no mobile torch is available on your camera')
+        return
+    }
 
-	this._currentTorchStatus = this._currentTorchStatus === false ? true : false
-	videoTrack.applyConstraints({
-		advanced: [{
-			torch: this._currentTorchStatus
-		}]
-	}).catch(function(error){
-		console.log(error)
-	});
+    this._currentTorchStatus = this._currentTorchStatus === false ? true : false
+    videoTrack.applyConstraints({
+        advanced: [{
+            torch: this._currentTorchStatus
+        }]
+    }).catch(function (error) {
+        console.log(error)
+    });
 }
 
-ARjs.Source.prototype.domElementWidth = function(){
-	return parseInt(this.domElement.style.width)
+ARjs.Source.prototype.domElementWidth = function () {
+    return parseInt(this.domElement.style.width)
 }
-ARjs.Source.prototype.domElementHeight = function(){
-	return parseInt(this.domElement.style.height)
+ARjs.Source.prototype.domElementHeight = function () {
+    return parseInt(this.domElement.style.height)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //          handle resize
 ////////////////////////////////////////////////////////////////////////////////
 
-ARjs.Source.prototype.onResizeElement = function(){
-	var _this = this
-	var screenWidth = window.innerWidth
-	var screenHeight = window.innerHeight
+ARjs.Source.prototype.onResizeElement = function () {
+    var _this = this
+    var screenWidth = window.innerWidth
+    var screenHeight = window.innerHeight
 
-	// sanity check
-	console.assert( arguments.length === 0 )
+    // sanity check
+    console.assert(arguments.length === 0)
 
-	// compute sourceWidth, sourceHeight
-	if( this.domElement.nodeName === "IMG" ){
-		var sourceWidth = this.domElement.naturalWidth
-		var sourceHeight = this.domElement.naturalHeight
-	}else if( this.domElement.nodeName === "VIDEO" ){
-		var sourceWidth = this.domElement.videoWidth
-		var sourceHeight = this.domElement.videoHeight
-	}else{
-		console.assert(false)
-	}
+    // compute sourceWidth, sourceHeight
+    if (this.domElement.nodeName === "IMG") {
+        var sourceWidth = this.domElement.naturalWidth
+        var sourceHeight = this.domElement.naturalHeight
+    } else if (this.domElement.nodeName === "VIDEO") {
+        var sourceWidth = this.domElement.videoWidth
+        var sourceHeight = this.domElement.videoHeight
+    } else {
+        console.assert(false)
+    }
 
-	// compute sourceAspect
-	var sourceAspect = sourceWidth / sourceHeight
-	// compute screenAspect
-	var screenAspect = screenWidth / screenHeight
+    // compute sourceAspect
+    var sourceAspect = sourceWidth / sourceHeight
+    // compute screenAspect
+    var screenAspect = screenWidth / screenHeight
 
-	// if screenAspect < sourceAspect, then change the width, else change the height
-	if( screenAspect < sourceAspect ){
-		// compute newWidth and set .width/.marginLeft
-		var newWidth = sourceAspect * screenHeight
-		this.domElement.style.width = newWidth+'px'
-		this.domElement.style.marginLeft = -(newWidth-screenWidth)/2+'px'
+    // if screenAspect < sourceAspect, then change the width, else change the height
+    if (screenAspect < sourceAspect) {
+        // compute newWidth and set .width/.marginLeft
+        var newWidth = sourceAspect * screenHeight
+        this.domElement.style.width = newWidth + 'px'
+        this.domElement.style.marginLeft = -(newWidth - screenWidth) / 2 + 'px'
 
-		// init style.height/.marginTop to normal value
-		this.domElement.style.height = screenHeight+'px'
-		this.domElement.style.marginTop = '0px'
-	}else{
-		// compute newHeight and set .height/.marginTop
-		var newHeight = 1 / (sourceAspect / screenWidth)
-		this.domElement.style.height = newHeight+'px'
-		this.domElement.style.marginTop = -(newHeight-screenHeight)/2+'px'
+        // init style.height/.marginTop to normal value
+        this.domElement.style.height = screenHeight + 'px'
+        this.domElement.style.marginTop = '0px'
+    } else {
+        // compute newHeight and set .height/.marginTop
+        var newHeight = 1 / (sourceAspect / screenWidth)
+        this.domElement.style.height = newHeight + 'px'
+        this.domElement.style.marginTop = -(newHeight - screenHeight) / 2 + 'px'
 
-		// init style.width/.marginLeft to normal value
-		this.domElement.style.width = screenWidth+'px'
-		this.domElement.style.marginLeft = '0px'
-	}
+        // init style.width/.marginLeft to normal value
+        this.domElement.style.width = screenWidth + 'px'
+        this.domElement.style.marginLeft = '0px'
+    }
 }
 /*
 ARjs.Source.prototype.copyElementSizeTo = function(otherElement){
@@ -3444,23 +3273,22 @@ ARjs.Source.prototype.copyElementSizeTo = function(otherElement){
 }
 */
 
-ARjs.Source.prototype.copyElementSizeTo = function(otherElement){
+ARjs.Source.prototype.copyElementSizeTo = function (otherElement) {
 
-	if (window.innerWidth > window.innerHeight)
-	{
-		//landscape
-		otherElement.style.width = this.domElement.style.width
-		otherElement.style.height = this.domElement.style.height
-		otherElement.style.marginLeft = this.domElement.style.marginLeft
-		otherElement.style.marginTop = this.domElement.style.marginTop
-	}
-	else {
-		//portrait
-		otherElement.style.height = this.domElement.style.height
-		otherElement.style.width = (parseInt(otherElement.style.height) * 4/3)+"px";
-		otherElement.style.marginLeft = ((window.innerWidth- parseInt(otherElement.style.width))/2)+"px";
-		otherElement.style.marginTop = 0;
-	}
+    if (window.innerWidth > window.innerHeight) {
+        //landscape
+        otherElement.style.width = this.domElement.style.width
+        otherElement.style.height = this.domElement.style.height
+        otherElement.style.marginLeft = this.domElement.style.marginLeft
+        otherElement.style.marginTop = this.domElement.style.marginTop
+    }
+    else {
+        //portrait
+        otherElement.style.height = this.domElement.style.height
+        otherElement.style.width = (parseInt(otherElement.style.height) * 4 / 3) + "px";
+        otherElement.style.marginLeft = ((window.innerWidth - parseInt(otherElement.style.width)) / 2) + "px";
+        otherElement.style.marginTop = 0;
+    }
 
 }
 
@@ -3468,62 +3296,48 @@ ARjs.Source.prototype.copyElementSizeTo = function(otherElement){
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 
-ARjs.Source.prototype.copySizeTo = function(){
-	console.warn('obsolete function arToolkitSource.copySizeTo. Use arToolkitSource.copyElementSizeTo' )
-	this.copyElementSizeTo.apply(this, arguments)
+ARjs.Source.prototype.copySizeTo = function () {
+    console.warn('obsolete function arToolkitSource.copySizeTo. Use arToolkitSource.copyElementSizeTo')
+    this.copyElementSizeTo.apply(this, arguments)
 }
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 
-ARjs.Source.prototype.onResize	= function(arToolkitContext, renderer, camera){
-	if( arguments.length !== 3 ){
-		console.warn('obsolete function arToolkitSource.onResize. Use arToolkitSource.onResizeElement' )
-		return this.onResizeElement.apply(this, arguments)
-	}
+ARjs.Source.prototype.onResize = function (arToolkitContext, renderer, camera) {
+    if (arguments.length !== 3) {
+        console.warn('obsolete function arToolkitSource.onResize. Use arToolkitSource.onResizeElement')
+        return this.onResizeElement.apply(this, arguments)
+    }
 
-	var trackingBackend = arToolkitContext.parameters.trackingBackend
-
-
-	// RESIZE DOMELEMENT
-	if( trackingBackend === 'artoolkit' ){
-
-		this.onResizeElement()
-
-		var isAframe = renderer.domElement.dataset.aframeCanvas ? true : false
-		if( isAframe === false ){
-			this.copyElementSizeTo(renderer.domElement)
-		}else{
-
-		}
-
-		if( arToolkitContext.arController !== null ){
-			this.copyElementSizeTo(arToolkitContext.arController.canvas)
-		}
-	}else if( trackingBackend === 'aruco' ){
-		this.onResizeElement()
-		this.copyElementSizeTo(renderer.domElement)
-
-		this.copyElementSizeTo(arToolkitContext.arucoContext.canvas)
-	}else if( trackingBackend === 'tango' ){
-		renderer.setSize( window.innerWidth, window.innerHeight )
-	}else console.assert(false, 'unhandled trackingBackend '+trackingBackend)
+    var trackingBackend = arToolkitContext.parameters.trackingBackend
 
 
-	// UPDATE CAMERA
-	if( trackingBackend === 'artoolkit' ){
-		if( arToolkitContext.arController !== null ){
-			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
-		}
-	}else if( trackingBackend === 'aruco' ){
-		camera.aspect = renderer.domElement.width / renderer.domElement.height;
-		camera.updateProjectionMatrix();
-	}else if( trackingBackend === 'tango' ){
-		var vrDisplay = arToolkitContext._tangoContext.vrDisplay
-		// make camera fit vrDisplay
-		if( vrDisplay && vrDisplay.displayName === "Tango VR Device" ) THREE.WebAR.resizeVRSeeThroughCamera(vrDisplay, camera)
-	}else console.assert(false, 'unhandled trackingBackend '+trackingBackend)
+    // RESIZE DOMELEMENT
+    if (trackingBackend === 'artoolkit') {
+
+        this.onResizeElement()
+
+        var isAframe = renderer.domElement.dataset.aframeCanvas ? true : false
+        if (isAframe === false) {
+            this.copyElementSizeTo(renderer.domElement)
+        } else {
+
+        }
+
+        if (arToolkitContext.arController !== null) {
+            this.copyElementSizeTo(arToolkitContext.arController.canvas)
+        }
+    } else console.assert(false, 'unhandled trackingBackend ' + trackingBackend)
+
+
+    // UPDATE CAMERA
+    if (trackingBackend === 'artoolkit') {
+        if (arToolkitContext.arController !== null) {
+            camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
+        }
+    } else console.assert(false, 'unhandled trackingBackend ' + trackingBackend)
 }
 var THREEx = THREEx || {}
 

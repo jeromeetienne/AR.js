@@ -105,14 +105,6 @@ ARjs.Profile.prototype.defaultMarker = function (trackingBackend) {
         this.contextParameters.detectionMode = 'mono'
         this.defaultMarkerParameters.type = 'pattern'
         this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
-    } else if (trackingBackend === 'aruco') {
-        this.contextParameters.detectionMode = 'mono'
-        this.defaultMarkerParameters.type = 'barcode'
-        this.defaultMarkerParameters.barcodeValue = 1001
-    } else if (trackingBackend === 'tango') {
-        // FIXME temporary placeholder - to reevaluate later
-        this.defaultMarkerParameters.type = 'barcode'
-        this.defaultMarkerParameters.barcodeValue = 1001
     } else console.assert(false)
 
     return this
@@ -169,8 +161,5 @@ ARjs.Profile.prototype.trackingMethod = function (trackingMethod) {
  * check if the profile is valid. Throw an exception is not valid
  */
 ARjs.Profile.prototype.checkIfValid = function () {
-    if (this.contextParameters.trackingBackend === 'tango') {
-        this.sourceImage(THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg')
-    }
     return this
 }
