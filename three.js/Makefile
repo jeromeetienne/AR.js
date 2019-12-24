@@ -15,21 +15,9 @@ build-main:
 minify-main: build-main
 	uglifyjs build/ar.js > build/ar.min.js
 
-build-lean:
-	echo > build/ar.lean.js
-	cat vendor/jsartoolkit5/build/artoolkit.min.js \
-		vendor/jsartoolkit5/js/artoolkit.api.js \
-		vendor/jsartoolkit5/js/artoolkit.worker.js 	>> build/ar.lean.js
-	cat src/threex/*.js \
-		src/new-api/*.js \
-		src/markers-area/*.js >> build/ar.lean.js
+build: build-main
 
-minify-lean: build-lean
-	uglifyjs build/ar.lean.js > build/ar.lean.min.js
-
-build: build-main build-lean
-
-minify: minify-main minify-lean
+minify: minify-main
 
 watchMinify: minify
 	fswatch -0 three.js/*.js | xargs -0 -n 1 -I {} make minify
