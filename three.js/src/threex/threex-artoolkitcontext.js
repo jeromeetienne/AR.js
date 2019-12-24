@@ -142,9 +142,7 @@ ARjs.Context.prototype.update = function (srcElement) {
     // process this frame
     if (this.parameters.trackingBackend === 'artoolkit') {
         this._updateArtoolkit(srcElement)
-    } else if (this.parameters.trackingBackend === 'aruco') {
-        this._updateAruco(srcElement)
-    }  else {
+    } else {
         console.assert(false)
     }
 
@@ -271,53 +269,4 @@ ARjs.Context.prototype.getProjectionMatrix = function (srcElement) {
 
 ARjs.Context.prototype._updateArtoolkit = function (srcElement) {
     this.arController.process(srcElement)
-}
-
-//////////////////////////////////////////////////////////////////////////////
-//		aruco specific
-//////////////////////////////////////////////////////////////////////////////
-ARjs.Context.prototype._initAruco = function (onCompleted) {
-    this.arucoContext = new THREEx.ArucoContext()
-
-    // honor this.parameters.canvasWidth/.canvasHeight
-    this.arucoContext.canvas.width = this.parameters.canvasWidth
-    this.arucoContext.canvas.height = this.parameters.canvasHeight
-
-    // honor this.parameters.imageSmoothingEnabled
-    var context = this.arucoContext.canvas.getContext('2d')
-    // context.mozImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
-    context.webkitImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
-    context.msImageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
-    context.imageSmoothingEnabled = this.parameters.imageSmoothingEnabled;
-
-
-    setTimeout(function () {
-        onCompleted()
-    }, 0)
-}
-
-
-ARjs.Context.prototype._updateAruco = function (srcElement) {
-    // console.log('update aruco here')
-    var _this = this
-    var arMarkersControls = this._arMarkersControls
-    var detectedMarkers = this.arucoContext.detect(srcElement)
-
-    detectedMarkers.forEach(function (detectedMarker) {
-        var foundControls = null
-        for (var i = 0; i < arMarkersControls.length; i++) {
-            console.assert(arMarkersControls[i].parameters.type === 'barcode')
-            if (arMarkersControls[i].parameters.barcodeValue === detectedMarker.id) {
-                foundControls = arMarkersControls[i]
-                break;
-            }
-        }
-        if (foundControls === null) return
-
-        var tmpObject3d = new THREE.Object3D
-        _this.arucoContext.updateObject3D(tmpObject3d, foundControls._arucoPosit, foundControls.parameters.size, detectedMarker);
-        tmpObject3d.updateMatrix()
-
-        foundControls.updateWithModelViewMatrix(tmpObject3d.matrix)
-    })
 }
