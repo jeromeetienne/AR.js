@@ -1,4 +1,5 @@
-importScripts('../../vendor/jsartoolkit5/build/artoolkit.min.js');
+if( 'function' === typeof importScripts) {
+importScripts('artoolkit.min.js');
 
 self.onmessage = function(e) {
     var msg = e.data;
@@ -54,4 +55,5 @@ function process() {
     }
 
     next = null;
+}
 }

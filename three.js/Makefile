@@ -4,7 +4,6 @@ watch: build
 build-main:
 	echo	> build/ar.js
 	cat 	vendor/jsartoolkit5/build/artoolkit.min.js	\
-		vendor/jsartoolkit5/js/artoolkit.api.js		\
 		vendor/jsartoolkit5/js/artoolkit.worker.js		>> build/ar.js
 	cat	src/threex/*.js					\
 		src/new-api/*.js 				\
