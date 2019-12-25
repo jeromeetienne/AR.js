@@ -1,3 +1,7 @@
+# 2.1.4
+
+- fixed wrong positioning of content on markers
+
 # 2.1.3
 
 - fixed a bug that causes Overconstrained Error on desktop
