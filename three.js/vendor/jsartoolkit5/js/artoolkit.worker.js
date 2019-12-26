@@ -1,5 +1,6 @@
 if( 'function' === typeof importScripts) {
-importScripts('artoolkit.min.js');
+//importScripts('artoolkit.min.js');
+importScripts('../build/artoolkit.min.js');
 
 self.onmessage = function(e) {
     var msg = e.data;

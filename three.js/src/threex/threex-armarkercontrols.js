@@ -11,7 +11,7 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, para
 	this.parameters = {
 		// size of the marker in meter
 		size : 1,
-		// type of marker - ['pattern', 'barcode', 'unknown' ]
+		// type of marker - ['pattern', 'barcode', 'nft', 'unknown' ]
 		type : 'unknown',
 		// url of the pattern - IIF type='pattern'
 		patternUrl : null,
@@ -32,7 +32,7 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, para
 	}
 
 	// sanity check
-	var possibleValues = ['pattern', 'barcode', 'unknown']
+	var possibleValues = ['pattern', 'barcode', 'nft', 'unknown']
 	console.assert(possibleValues.indexOf(this.parameters.type) !== -1, 'illegal value', this.parameters.type)
 	var possibleValues = ['modelViewMatrix', 'cameraTransformMatrix' ]
 	console.assert(possibleValues.indexOf(this.parameters.changeMatrixMode) !== -1, 'illegal value', this.parameters.changeMatrixMode)
@@ -210,6 +210,10 @@ ARjs.MarkerControls.prototype.name = function(){
 		name += ' - ' + basename
 	}else if( this.parameters.type === 'barcode' ){
 		name += ' - ' + this.parameters.barcodeValue
+	}else if( this.parameters.type === 'nft' ){
+		var url = this.parameters.patternUrl
+		var basename = url.replace(/^.*\//g, '')
+		name += ' - ' + basename
 	}else{
 		console.assert(false, 'no .name() implemented for this marker controls')
 	}
@@ -251,6 +255,8 @@ ARjs.MarkerControls.prototype._initArtoolkit = function(){
 		}else if( _this.parameters.type === 'barcode' ){
 			artoolkitMarkerId = _this.parameters.barcodeValue
 			arController.trackBarcodeMarkerId(artoolkitMarkerId, _this.parameters.size);
+		}else if( _this.parameters.type === 'nft' ){
+			console.log('nft test');
 		}else if( _this.parameters.type === 'unknown' ){
 			artoolkitMarkerId = null
 		}else{
