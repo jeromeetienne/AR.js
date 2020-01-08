@@ -250,7 +250,9 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
                 if (artoolkitMarkerId === null) return
                 if (event.data.marker.idPatt === artoolkitMarkerId) onMarkerFound(event)
             } else if (event.data.type === artoolkit.BARCODE_MARKER && _this.parameters.type === 'barcode') {
-                // console.log('BARCODE_MARKER idMatrix', event.data.marker.idMatrix, artoolkitMarkerId )
+                if (artoolkitMarkerId === null) return
+                if (event.data.marker.idMatrix === artoolkitMarkerId) onMarkerFound(event)
+            } else if (_this.parameters.type === 'nft') {
                 if (artoolkitMarkerId === null) return
                 if (event.data.marker.idMatrix === artoolkitMarkerId) onMarkerFound(event)
             } else if (event.data.type === artoolkit.UNKNOWN_MARKER && _this.parameters.type === 'unknown') {
@@ -264,6 +266,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         // honor his.parameters.minConfidence
         if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return
+        // ~nicolocarpignoli to handle also min confidence for NFT?
 
         var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
         _this.updateWithModelViewMatrix(modelViewMatrix)
