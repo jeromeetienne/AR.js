@@ -410,11 +410,6 @@ ARjs.Source.prototype.onResize = function (arToolkitContext, renderer, camera) {
         if (arToolkitContext.arController !== null) {
             this.copyElementSizeTo(arToolkitContext.arController.canvas)
         }
-    } else if (trackingBackend === 'aruco') {
-        this.onResizeElement()
-        this.copyElementSizeTo(renderer.domElement)
-
-        this.copyElementSizeTo(arToolkitContext.arucoContext.canvas)
     } else console.assert(false, 'unhandled trackingBackend ' + trackingBackend)
 
 
@@ -423,8 +418,5 @@ ARjs.Source.prototype.onResize = function (arToolkitContext, renderer, camera) {
         if (arToolkitContext.arController !== null) {
             camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
         }
-    } else if (trackingBackend === 'aruco') {
-        camera.aspect = renderer.domElement.width / renderer.domElement.height;
-        camera.updateProjectionMatrix();
     } else console.assert(false, 'unhandled trackingBackend ' + trackingBackend)
 }

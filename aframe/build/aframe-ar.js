@@ -395,103 +395,97 @@ THREEx.ArMarkerCloak.fragmentShader = '\n'+
 var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
-ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, parameters){
-	var _this = this
+ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, parameters) {
+    var _this = this
 
-	THREEx.ArBaseControls.call(this, object3d)
+    THREEx.ArBaseControls.call(this, object3d)
 
-	this.context = context
-	// handle default parameters
-	this.parameters = {
-		// size of the marker in meter
-		size : 1,
-		// type of marker - ['pattern', 'barcode', 'nft', 'unknown' ]
-		type : 'unknown',
-		// url of the pattern - IIF type='pattern'
-		patternUrl : null,
-		// value of the barcode - IIF type='barcode'
-		barcodeValue : null,
-		// change matrix mode - [modelViewMatrix, cameraTransformMatrix]
-		changeMatrixMode : 'modelViewMatrix',
-		// minimal confidence in the marke recognition - between [0, 1] - default to 1
-		minConfidence: 0.6,
-		// turn on/off camera smoothing
-		smooth: false,
-		// number of matrices to smooth tracking over, more = smoother but slower follow
-		smoothCount: 5,
-		// distance tolerance for smoothing, if smoothThreshold # of matrices are under tolerance, tracking will stay still
-		smoothTolerance: 0.01,
-		// threshold for smoothing, will keep still unless enough matrices are over tolerance
-		smoothThreshold: 2,
-	}
+    this.context = context
+    // handle default parameters
+    this.parameters = {
+        // size of the marker in meter
+        size: 1,
+        // type of marker - ['pattern', 'barcode', 'nft', 'unknown' ]
+        type: 'unknown',
+        // url of the pattern - IIF type='pattern'
+        patternUrl: null,
+        // value of the barcode - IIF type='barcode'
+        barcodeValue: null,
+        // change matrix mode - [modelViewMatrix, cameraTransformMatrix]
+        changeMatrixMode: 'modelViewMatrix',
+        // minimal confidence in the marke recognition - between [0, 1] - default to 1
+        minConfidence: 0.6,
+        // turn on/off camera smoothing
+        smooth: false,
+        // number of matrices to smooth tracking over, more = smoother but slower follow
+        smoothCount: 5,
+        // distance tolerance for smoothing, if smoothThreshold # of matrices are under tolerance, tracking will stay still
+        smoothTolerance: 0.01,
+        // threshold for smoothing, will keep still unless enough matrices are over tolerance
+        smoothThreshold: 2,
+    }
 
-	// sanity check
-	var possibleValues = ['pattern', 'barcode', 'nft', 'unknown']
-	console.assert(possibleValues.indexOf(this.parameters.type) !== -1, 'illegal value', this.parameters.type)
-	var possibleValues = ['modelViewMatrix', 'cameraTransformMatrix' ]
-	console.assert(possibleValues.indexOf(this.parameters.changeMatrixMode) !== -1, 'illegal value', this.parameters.changeMatrixMode)
+    // sanity check
+    var possibleValues = ['pattern', 'barcode', 'nft', 'unknown']
+    console.assert(possibleValues.indexOf(this.parameters.type) !== -1, 'illegal value', this.parameters.type)
+    var possibleValues = ['modelViewMatrix', 'cameraTransformMatrix']
+    console.assert(possibleValues.indexOf(this.parameters.changeMatrixMode) !== -1, 'illegal value', this.parameters.changeMatrixMode)
 
 
-        // create the marker Root
-	this.object3d = object3d
-	this.object3d.matrixAutoUpdate = false;
-	this.object3d.visible = false
+    // create the marker Root
+    this.object3d = object3d
+    this.object3d.matrixAutoUpdate = false;
+    this.object3d.visible = false
 
-	//////////////////////////////////////////////////////////////////////////////
-	//		setParameters
-	//////////////////////////////////////////////////////////////////////////////
-	setParameters(parameters)
-	function setParameters(parameters){
-		if( parameters === undefined )	return
-		for( var key in parameters ){
-			var newValue = parameters[ key ]
+    //////////////////////////////////////////////////////////////////////////////
+    //		setParameters
+    //////////////////////////////////////////////////////////////////////////////
+    setParameters(parameters)
+    function setParameters(parameters) {
+        if (parameters === undefined) return
+        for (var key in parameters) {
+            var newValue = parameters[key]
 
-			if( newValue === undefined ){
-				console.warn( "THREEx.ArMarkerControls: '" + key + "' parameter is undefined." )
-				continue
-			}
+            if (newValue === undefined) {
+                console.warn("THREEx.ArMarkerControls: '" + key + "' parameter is undefined.")
+                continue
+            }
 
-			var currentValue = _this.parameters[ key ]
+            var currentValue = _this.parameters[key]
 
-			if( currentValue === undefined ){
-				console.warn( "THREEx.ArMarkerControls: '" + key + "' is not a property of this material." )
-				continue
-			}
+            if (currentValue === undefined) {
+                console.warn("THREEx.ArMarkerControls: '" + key + "' is not a property of this material.")
+                continue
+            }
 
-			_this.parameters[ key ] = newValue
-		}
-	}
+            _this.parameters[key] = newValue
+        }
+    }
 
-	if (this.parameters.smooth) {
-		this.smoothMatrices = []; // last DEBOUNCE_COUNT modelViewMatrix
-	}
+    if (this.parameters.smooth) {
+        this.smoothMatrices = []; // last DEBOUNCE_COUNT modelViewMatrix
+    }
 
-	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
-	//////////////////////////////////////////////////////////////////////////////
-	// add this marker to artoolkitsystem
-	// TODO rename that .addMarkerControls
-	context.addMarker(this)
+    //////////////////////////////////////////////////////////////////////////////
+    //		Code Separator
+    //////////////////////////////////////////////////////////////////////////////
+    // add this marker to artoolkitsystem
+    // TODO rename that .addMarkerControls
+    context.addMarker(this)
 
-	if( _this.context.parameters.trackingBackend === 'artoolkit' ){
-		this._initArtoolkit()
-	}else if( _this.context.parameters.trackingBackend === 'aruco' ){
-		// TODO create a ._initAruco
-		// put aruco second
-		this._arucoPosit = new POS.Posit(this.parameters.size, _this.context.arucoContext.canvas.width)
-	}else if( _this.context.parameters.trackingBackend === 'tango' ){
-		this._initTango()
-	}else console.assert(false)
+    if (_this.context.parameters.trackingBackend === 'artoolkit') {
+        this._initArtoolkit()
+    } else console.assert(false)
 }
 
-ARjs.MarkerControls.prototype = Object.create( THREEx.ArBaseControls.prototype );
+ARjs.MarkerControls.prototype = Object.create(THREEx.ArBaseControls.prototype);
 ARjs.MarkerControls.prototype.constructor = THREEx.ArMarkerControls;
 
-ARjs.MarkerControls.prototype.dispose = function(){
-	this.context.removeMarker(this)
+ARjs.MarkerControls.prototype.dispose = function () {
+    this.context.removeMarker(this)
 
-	// TODO remove the event listener if needed
-	// unloadMaker ???
+    // TODO remove the event listener if needed
+    // unloadMaker ???
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -502,88 +496,76 @@ ARjs.MarkerControls.prototype.dispose = function(){
  * When you actually got a new modelViewMatrix, you need to perfom a whole bunch
  * of things. it is done here.
  */
-ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatrix){
-	var markerObject3D = this.object3d;
+ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function (modelViewMatrix) {
+    var markerObject3D = this.object3d;
 
-	// mark object as visible
-	markerObject3D.visible = true
+    // mark object as visible
+    markerObject3D.visible = true
 
-	if( this.context.parameters.trackingBackend === 'artoolkit' ){
-		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-		var tmpMatrix = new THREE.Matrix4().copy(this.context._artoolkitProjectionAxisTransformMatrix)
-		tmpMatrix.multiply(modelViewMatrix)
+    if (this.context.parameters.trackingBackend === 'artoolkit') {
+        // apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
+        var tmpMatrix = new THREE.Matrix4().copy(this.context._artoolkitProjectionAxisTransformMatrix)
+        tmpMatrix.multiply(modelViewMatrix)
 
-		modelViewMatrix.copy(tmpMatrix)
-	}else if( this.context.parameters.trackingBackend === 'aruco' ){
-		// ...
-	}else if( this.context.parameters.trackingBackend === 'tango' ){
-		// ...
-	}else console.assert(false)
+        modelViewMatrix.copy(tmpMatrix)
+    } else console.assert(false)
 
+    var renderReqd = false;
 
-	if( this.context.parameters.trackingBackend !== 'tango' ){
+    // change markerObject3D.matrix based on parameters.changeMatrixMode
+    if (this.parameters.changeMatrixMode === 'modelViewMatrix') {
+        if (this.parameters.smooth) {
+            var sum,
+                i, j,
+                averages, // average values for matrix over last smoothCount
+                exceedsAverageTolerance = 0;
 
-		// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
-		var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
-		modelViewMatrix.multiply(markerAxisTransformMatrix)
-	}
+            this.smoothMatrices.push(modelViewMatrix.elements.slice()); // add latest
 
-	var renderReqd = false;
+            if (this.smoothMatrices.length < (this.parameters.smoothCount + 1)) {
+                markerObject3D.matrix.copy(modelViewMatrix); // not enough for average
+            } else {
+                this.smoothMatrices.shift(); // remove oldest entry
+                averages = [];
 
-	// change markerObject3D.matrix based on parameters.changeMatrixMode
-	if( this.parameters.changeMatrixMode === 'modelViewMatrix' ){
-		if (this.parameters.smooth) {
-			var sum,
-					i, j,
-					averages, // average values for matrix over last smoothCount
-					exceedsAverageTolerance = 0;
+                for (i in modelViewMatrix.elements) { // loop over entries in matrix
+                    sum = 0;
+                    for (j in this.smoothMatrices) { // calculate average for this entry
+                        sum += this.smoothMatrices[j][i];
+                    }
+                    averages[i] = sum / this.parameters.smoothCount;
+                    // check how many elements vary from the average by at least AVERAGE_MATRIX_TOLERANCE
+                    if (Math.abs(averages[i] - modelViewMatrix.elements[i]) >= this.parameters.smoothTolerance) {
+                        exceedsAverageTolerance++;
+                    }
+                }
 
-			this.smoothMatrices.push(modelViewMatrix.elements.slice()); // add latest
+                // if moving (i.e. at least AVERAGE_MATRIX_THRESHOLD entries are over AVERAGE_MATRIX_TOLERANCE)
+                if (exceedsAverageTolerance >= this.parameters.smoothThreshold) {
+                    // then update matrix values to average, otherwise, don't render to minimize jitter
+                    for (i in modelViewMatrix.elements) {
+                        modelViewMatrix.elements[i] = averages[i];
+                    }
+                    markerObject3D.matrix.copy(modelViewMatrix);
+                    renderReqd = true; // render required in animation loop
+                }
+            }
+        } else {
+            markerObject3D.matrix.copy(modelViewMatrix)
+        }
+    } else if (this.parameters.changeMatrixMode === 'cameraTransformMatrix') {
+        markerObject3D.matrix.getInverse(modelViewMatrix)
+    } else {
+        console.assert(false)
+    }
 
-			if (this.smoothMatrices.length < (this.parameters.smoothCount + 1)) {
-				markerObject3D.matrix.copy(modelViewMatrix); // not enough for average
-			} else {
-				this.smoothMatrices.shift(); // remove oldest entry
-				averages = [];
+    // decompose - the matrix into .position, .quaternion, .scale
+    markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
 
-				for (i in modelViewMatrix.elements) { // loop over entries in matrix
-					sum = 0;
-					for (j in this.smoothMatrices) { // calculate average for this entry
-						sum += this.smoothMatrices[j][i];
-					}
-					averages[i] = sum / this.parameters.smoothCount;
-					// check how many elements vary from the average by at least AVERAGE_MATRIX_TOLERANCE
-					if (Math.abs(averages[i] - modelViewMatrix.elements[i]) >= this.parameters.smoothTolerance) {
-						exceedsAverageTolerance++;
-					}
-				}
+    // dispatchEvent
+    this.dispatchEvent({ type: 'markerFound' });
 
-				// if moving (i.e. at least AVERAGE_MATRIX_THRESHOLD entries are over AVERAGE_MATRIX_TOLERANCE)
-				if (exceedsAverageTolerance >= this.parameters.smoothThreshold) {
-					// then update matrix values to average, otherwise, don't render to minimize jitter
-					for (i in modelViewMatrix.elements) {
-						modelViewMatrix.elements[i] = averages[i];
-					}
-					markerObject3D.matrix.copy(modelViewMatrix);
-					renderReqd = true; // render required in animation loop
-				}
-			}
-		} else {
-			markerObject3D.matrix.copy(modelViewMatrix)
-		}
-	}else if( this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
-		markerObject3D.matrix.getInverse( modelViewMatrix )
-	}else {
-		console.assert(false)
-	}
-
-	// decompose - the matrix into .position, .quaternion, .scale
-	markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
-
-	// dispatchEvent
-	this.dispatchEvent( { type: 'markerFound' } );
-
-	return renderReqd;
+    return renderReqd;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -595,107 +577,92 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatr
  * - silly heuristic for now
  * - should be improved
  */
-ARjs.MarkerControls.prototype.name = function(){
-	var name = ''
-	name += this.parameters.type;
-	if( this.parameters.type === 'pattern' ){
-		var url = this.parameters.patternUrl
-		var basename = url.replace(/^.*\//g, '')
-		name += ' - ' + basename
-	}else if( this.parameters.type === 'barcode' ){
-		name += ' - ' + this.parameters.barcodeValue
-	}else if( this.parameters.type === 'nft' ){
-		var url = this.parameters.patternUrl
-		var basename = url.replace(/^.*\//g, '')
-		name += ' - ' + basename
-	}else{
-		console.assert(false, 'no .name() implemented for this marker controls')
-	}
-	return name
+ARjs.MarkerControls.prototype.name = function () {
+    var name = ''
+    name += this.parameters.type;
+    if (this.parameters.type === 'pattern') {
+        var url = this.parameters.patternUrl
+        var basename = url.replace(/^.*\//g, '')
+        name += ' - ' + basename
+    } else if (this.parameters.type === 'barcode') {
+        name += ' - ' + this.parameters.barcodeValue
+    } else if (this.parameters.type === 'nft') {
+        var url = this.parameters.patternUrl
+        var basename = url.replace(/^.*\//g, '')
+        name += ' - ' + basename
+    } else {
+        console.assert(false, 'no .name() implemented for this marker controls')
+    }
+    return name
 }
 
 //////////////////////////////////////////////////////////////////////////////
 //		init for Artoolkit
 //////////////////////////////////////////////////////////////////////////////
-ARjs.MarkerControls.prototype._initArtoolkit = function(){
-	var _this = this
+ARjs.MarkerControls.prototype._initArtoolkit = function () {
+    var _this = this
 
-	var artoolkitMarkerId = null
+    var artoolkitMarkerId = null
 
-	var delayedInitTimerId = setInterval(function(){
-		// check if arController is init
-		var arController = _this.context.arController
-		if( arController === null )	return
-		// stop looping if it is init
-		clearInterval(delayedInitTimerId)
-		delayedInitTimerId = null
-		// launch the _postInitArtoolkit
-		postInit()
-	}, 1000/50)
+    var delayedInitTimerId = setInterval(function () {
+        // check if arController is init
+        var arController = _this.context.arController
+        if (arController === null) return
+        // stop looping if it is init
+        clearInterval(delayedInitTimerId)
+        delayedInitTimerId = null
+        // launch the _postInitArtoolkit
+        postInit()
+    }, 1000 / 50)
 
-	return
+    return
 
-	function postInit(){
-		// check if arController is init
-		var arController = _this.context.arController
-		console.assert(arController !== null )
+    function postInit() {
+        // check if arController is init
+        var arController = _this.context.arController
+        console.assert(arController !== null)
 
-		// start tracking this pattern
-		if( _this.parameters.type === 'pattern' ){
-	                arController.loadMarker(_this.parameters.patternUrl, function(markerId) {
-				artoolkitMarkerId = markerId
-	                        arController.trackPatternMarkerId(artoolkitMarkerId, _this.parameters.size);
-	                });
-		}else if( _this.parameters.type === 'barcode' ){
-			artoolkitMarkerId = _this.parameters.barcodeValue
-			arController.trackBarcodeMarkerId(artoolkitMarkerId, _this.parameters.size);
-		}else if( _this.parameters.type === 'nft' ){
-			console.log('nft test');
-		}else if( _this.parameters.type === 'unknown' ){
-			artoolkitMarkerId = null
-		}else{
-			console.log(false, 'invalid marker type', _this.parameters.type)
-		}
+        // start tracking this pattern
+        if (_this.parameters.type === 'pattern') {
+            arController.loadMarker(_this.parameters.patternUrl, function (markerId) {
+                artoolkitMarkerId = markerId
+                arController.trackPatternMarkerId(artoolkitMarkerId, _this.parameters.size);
+            });
+        } else if (_this.parameters.type === 'barcode') {
+            artoolkitMarkerId = _this.parameters.barcodeValue
+            arController.trackBarcodeMarkerId(artoolkitMarkerId, _this.parameters.size);
+        } else if (_this.parameters.type === 'nft') {
+            console.log('nft test');
+        } else if (_this.parameters.type === 'unknown') {
+            artoolkitMarkerId = null
+        } else {
+            console.log(false, 'invalid marker type', _this.parameters.type)
+        }
 
-		// listen to the event
-		arController.addEventListener('getMarker', function(event){
-			if( event.data.type === artoolkit.PATTERN_MARKER && _this.parameters.type === 'pattern' ){
-				if( artoolkitMarkerId === null )	return
-				if( event.data.marker.idPatt === artoolkitMarkerId ) onMarkerFound(event)
-			}else if( event.data.type === artoolkit.BARCODE_MARKER && _this.parameters.type === 'barcode' ){
-				// console.log('BARCODE_MARKER idMatrix', event.data.marker.idMatrix, artoolkitMarkerId )
-				if( artoolkitMarkerId === null )	return
-				if( event.data.marker.idMatrix === artoolkitMarkerId )  onMarkerFound(event)
-			}else if( event.data.type === artoolkit.UNKNOWN_MARKER && _this.parameters.type === 'unknown'){
-				onMarkerFound(event)
-			}
-		})
+        // listen to the event
+        arController.addEventListener('getMarker', function (event) {
+            if (event.data.type === artoolkit.PATTERN_MARKER && _this.parameters.type === 'pattern') {
+                if (artoolkitMarkerId === null) return
+                if (event.data.marker.idPatt === artoolkitMarkerId) onMarkerFound(event)
+            } else if (event.data.type === artoolkit.BARCODE_MARKER && _this.parameters.type === 'barcode') {
+                // console.log('BARCODE_MARKER idMatrix', event.data.marker.idMatrix, artoolkitMarkerId )
+                if (artoolkitMarkerId === null) return
+                if (event.data.marker.idMatrix === artoolkitMarkerId) onMarkerFound(event)
+            } else if (event.data.type === artoolkit.UNKNOWN_MARKER && _this.parameters.type === 'unknown') {
+                onMarkerFound(event)
+            }
+        })
 
-	}
+    }
 
-	function onMarkerFound(event){
-		// honor his.parameters.minConfidence
-		if( event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence )	return
-		if( event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence )	return
+    function onMarkerFound(event) {
+        // honor his.parameters.minConfidence
+        if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
+        if (event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return
 
-		var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
-		_this.updateWithModelViewMatrix(modelViewMatrix)
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////////
-//		aruco specific
-//////////////////////////////////////////////////////////////////////////////
-ARjs.MarkerControls.prototype._initAruco = function(){
-	this._arucoPosit = new POS.Posit(this.parameters.size, _this.context.arucoContext.canvas.width)
-}
-
-//////////////////////////////////////////////////////////////////////////////
-//		init for Artoolkit
-//////////////////////////////////////////////////////////////////////////////
-ARjs.MarkerControls.prototype._initTango = function(){
-	var _this = this
-	console.log('init tango ArMarkerControls')
+        var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
+        _this.updateWithModelViewMatrix(modelViewMatrix)
+    }
 }
 var THREEx = THREEx || {}
 
@@ -924,11 +891,10 @@ ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
         imageSmoothingEnabled: false,
     }
     // parameters sanity check
-    console.assert(['artoolkit', 'aruco'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
+    console.assert(['artoolkit'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
     console.assert(['color', 'color_and_matrix', 'mono', 'mono_and_matrix'].indexOf(this.parameters.detectionMode) !== -1, 'invalid parameter detectionMode', this.parameters.detectionMode)
 
     this.arController = null;
-    this.arucoContext = null;
 
     _this.initialized = false
 
@@ -978,8 +944,6 @@ ARjs.Context.createDefaultCamera = function (trackingBackend) {
     // Create a camera
     if (trackingBackend === 'artoolkit') {
         var camera = new THREE.Camera();
-    } else if (trackingBackend === 'aruco') {
-        var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
     } else console.assert(false)
     return camera
 }
@@ -992,8 +956,6 @@ ARjs.Context.prototype.init = function (onCompleted) {
     var _this = this
     if (this.parameters.trackingBackend === 'artoolkit') {
         this._initArtoolkit(done)
-    } else if (this.parameters.trackingBackend === 'aruco') {
-        this._initAruco(done)
     } else console.assert(false)
     return
 
@@ -1268,10 +1230,6 @@ ARjs.Profile.prototype.defaultMarker = function (trackingBackend) {
         this.contextParameters.detectionMode = 'mono'
         this.defaultMarkerParameters.type = 'pattern'
         this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
-    } else if (trackingBackend === 'aruco') {
-        this.contextParameters.detectionMode = 'mono'
-        this.defaultMarkerParameters.type = 'barcode'
-        this.defaultMarkerParameters.barcodeValue = 1001
     } else console.assert(false)
 
     return this
@@ -1742,11 +1700,6 @@ ARjs.Source.prototype.onResize = function (arToolkitContext, renderer, camera) {
         if (arToolkitContext.arController !== null) {
             this.copyElementSizeTo(arToolkitContext.arController.canvas)
         }
-    } else if (trackingBackend === 'aruco') {
-        this.onResizeElement()
-        this.copyElementSizeTo(renderer.domElement)
-
-        this.copyElementSizeTo(arToolkitContext.arucoContext.canvas)
     } else console.assert(false, 'unhandled trackingBackend ' + trackingBackend)
 
 
@@ -1755,9 +1708,6 @@ ARjs.Source.prototype.onResize = function (arToolkitContext, renderer, camera) {
         if (arToolkitContext.arController !== null) {
             camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
         }
-    } else if (trackingBackend === 'aruco') {
-        camera.aspect = renderer.domElement.width / renderer.domElement.height;
-        camera.updateProjectionMatrix();
     } else console.assert(false, 'unhandled trackingBackend ' + trackingBackend)
 }
 var THREEx = THREEx || {}
@@ -3228,17 +3178,17 @@ ARjs.MarkersAreaUtils = THREEx.ArMultiMarkerUtils = {}
 
 /**
  * Navigate to the multi-marker learner page
- * 
+ *
  * @param {String} learnerBaseURL  - the base url for the learner
  * @param {String} trackingBackend - the tracking backend to use
  */
-ARjs.MarkersAreaUtils.navigateToLearnerPage = function(learnerBaseURL, trackingBackend){
-	var learnerParameters = {
-		backURL : location.href,
-		trackingBackend: trackingBackend,
-		markersControlsParameters: ARjs.MarkersAreaUtils.createDefaultMarkersControlsParameters(trackingBackend),
-	}
-	location.href = learnerBaseURL + '?' + encodeURIComponent(JSON.stringify(learnerParameters))
+ARjs.MarkersAreaUtils.navigateToLearnerPage = function (learnerBaseURL, trackingBackend) {
+    var learnerParameters = {
+        backURL: location.href,
+        trackingBackend: trackingBackend,
+        markersControlsParameters: ARjs.MarkersAreaUtils.createDefaultMarkersControlsParameters(trackingBackend),
+    }
+    location.href = learnerBaseURL + '?' + encodeURIComponent(JSON.stringify(learnerParameters))
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -3247,13 +3197,13 @@ ARjs.MarkersAreaUtils.navigateToLearnerPage = function(learnerBaseURL, trackingB
 
 /**
  * Create and store a default multi-marker file
- * 
+ *
  * @param {String} trackingBackend - the tracking backend to use
  */
-ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile = function(trackingBackend){
-	var file = ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile(trackingBackend)
-	// json.strinfy the value and store it in localStorage
-	localStorage.setItem('ARjsMultiMarkerFile', JSON.stringify(file))
+ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile = function (trackingBackend) {
+    var file = ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile(trackingBackend)
+    // json.strinfy the value and store it in localStorage
+    localStorage.setItem('ARjsMultiMarkerFile', JSON.stringify(file))
 }
 
 
@@ -3263,41 +3213,38 @@ ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile = function(trackingBackend){
  * @param {String} trackingBackend - the tracking backend to use
  * @return {Object} - json object of the multi-marker file
  */
-ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile = function(trackingBackend){
-	console.assert(trackingBackend)
-	if( trackingBackend === undefined )	debugger
-	
-	// create absoluteBaseURL
-	var link = document.createElement('a')
-	link.href = ARjs.Context.baseURL
-	var absoluteBaseURL = link.href
+ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile = function (trackingBackend) {
+    console.assert(trackingBackend)
+    if (trackingBackend === undefined) debugger
 
-	// create the base file
-	var file = {
-		meta : {
-			createdBy : 'AR.js ' + ARjs.Context.REVISION + ' - Default Marker',
-			createdAt : new Date().toJSON(),
-		},
-		trackingBackend : trackingBackend,
-		subMarkersControls : [
-			// empty for now... being filled 
-		]
-	}
-	// add a subMarkersControls
-	file.subMarkersControls[0] = {
-		parameters: {},
-		poseMatrix: new THREE.Matrix4().makeTranslation(0,0, 0).toArray(),
-	}
-	if( trackingBackend === 'artoolkit' ){
-		file.subMarkersControls[0].parameters.type = 'pattern'
-		file.subMarkersControls[0].parameters.patternUrl = absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt'
-	}else if( trackingBackend === 'aruco' ){
-		file.subMarkersControls[0].parameters.type = 'barcode'
-		file.subMarkersControls[0].parameters.barcodeValue = 1001
-	}else console.assert(false)
-	
-	// json.strinfy the value and store it in localStorage
-	return file
+    // create absoluteBaseURL
+    var link = document.createElement('a')
+    link.href = ARjs.Context.baseURL
+    var absoluteBaseURL = link.href
+
+    // create the base file
+    var file = {
+        meta: {
+            createdBy: 'AR.js ' + ARjs.Context.REVISION + ' - Default Marker',
+            createdAt: new Date().toJSON(),
+        },
+        trackingBackend: trackingBackend,
+        subMarkersControls: [
+            // empty for now... being filled
+        ]
+    }
+    // add a subMarkersControls
+    file.subMarkersControls[0] = {
+        parameters: {},
+        poseMatrix: new THREE.Matrix4().makeTranslation(0, 0, 0).toArray(),
+    }
+    if (trackingBackend === 'artoolkit') {
+        file.subMarkersControls[0].parameters.type = 'pattern'
+        file.subMarkersControls[0].parameters.patternUrl = absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt'
+    } else console.assert(false)
+
+    // json.strinfy the value and store it in localStorage
+    return file
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -3306,74 +3253,47 @@ ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile = function(trackingBackend){
 
 /**
  * Create a default controls parameters for the multi-marker learner
- * 
+ *
  * @param {String} trackingBackend - the tracking backend to use
  * @return {Object} - json object containing the controls parameters
  */
-ARjs.MarkersAreaUtils.createDefaultMarkersControlsParameters = function(trackingBackend){
-	// create absoluteBaseURL
-	var link = document.createElement('a')
-	link.href = ARjs.Context.baseURL
-	var absoluteBaseURL = link.href
+ARjs.MarkersAreaUtils.createDefaultMarkersControlsParameters = function (trackingBackend) {
+    // create absoluteBaseURL
+    var link = document.createElement('a')
+    link.href = ARjs.Context.baseURL
+    var absoluteBaseURL = link.href
 
 
-	if( trackingBackend === 'artoolkit' ){
-		// pattern hiro/kanji/a/b/c/f
-		var markersControlsParameters = [
-			{
-				type : 'pattern',
-				patternUrl : absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt',
-			},
-			{
-				type : 'pattern',
-				patternUrl : absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-kanji.patt',
-			},
-			{
-				type : 'pattern',
-				patternUrl : absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterA.patt',
-			},
-			{
-				type : 'pattern',
-				patternUrl : absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterB.patt',
-			},
-			{
-				type : 'pattern',
-				patternUrl : absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterC.patt',
-			},
-			{
-				type : 'pattern',
-				patternUrl : absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterF.patt',
-			},
-		]		
-	}else if( trackingBackend === 'aruco' ){
-		var markersControlsParameters = [
-			{
-				type : 'barcode',
-				barcodeValue: 1001,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1002,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1003,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1004,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1005,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1006,
-			},
-		]
-	}else console.assert(false)
-	return markersControlsParameters
+    if (trackingBackend === 'artoolkit') {
+        // pattern hiro/kanji/a/b/c/f
+        var markersControlsParameters = [
+            {
+                type: 'pattern',
+                patternUrl: absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt',
+            },
+            {
+                type: 'pattern',
+                patternUrl: absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-kanji.patt',
+            },
+            {
+                type: 'pattern',
+                patternUrl: absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterA.patt',
+            },
+            {
+                type: 'pattern',
+                patternUrl: absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterB.patt',
+            },
+            {
+                type: 'pattern',
+                patternUrl: absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterC.patt',
+            },
+            {
+                type: 'pattern',
+                patternUrl: absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterF.patt',
+            },
+        ]
+    } else console.assert(false)
+    return markersControlsParameters
 }
 
 
@@ -3384,120 +3304,105 @@ ARjs.MarkersAreaUtils.createDefaultMarkersControlsParameters = function(tracking
  * generate areaFile
  */
 ARjs.MarkersAreaUtils.storeMarkersAreaFileFromResolution = function (trackingBackend, resolutionW, resolutionH) {
-	// generate areaFile
-	var areaFile = this.buildMarkersAreaFileFromResolution(trackingBackend, resolutionW, resolutionH)
-	// store areaFile in localStorage
-	localStorage.setItem('ARjsMultiMarkerFile', JSON.stringify(areaFile))
+    // generate areaFile
+    var areaFile = this.buildMarkersAreaFileFromResolution(trackingBackend, resolutionW, resolutionH)
+    // store areaFile in localStorage
+    localStorage.setItem('ARjsMultiMarkerFile', JSON.stringify(areaFile))
 }
 
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-	
-ARjs.MarkersAreaUtils.buildMarkersAreaFileFromResolution = function(trackingBackend, resolutionW, resolutionH){
-	// create the base file
-	var file = {
-		meta : {
-			createdBy : 'AR.js - Augmented Website',
-			createdAt : new Date().toJSON(),
-		},
-		trackingBackend : trackingBackend,
-		subMarkersControls : [
-			// empty for now...
-		]
-	}
-	
-	var whiteMargin = 0.1
-	if( resolutionW > resolutionH ){
-		var markerImageSize = 0.4 * resolutionH
-	}else if( resolutionW < resolutionH ){
-		var markerImageSize = 0.4 * resolutionW
-	}else if( resolutionW === resolutionH ){
-		// specific for twitter player - https://dev.twitter.com/cards/types/player
-		var markerImageSize = 0.33 * resolutionW
-	}else console.assert(false)
 
-	// console.warn('using new markerImageSize computation')
-	var actualMarkerSize = markerImageSize * (1 - 2*whiteMargin)
-	
-	var deltaX = (resolutionW - markerImageSize)/2 / actualMarkerSize
-	var deltaZ = (resolutionH - markerImageSize)/2 / actualMarkerSize
+ARjs.MarkersAreaUtils.buildMarkersAreaFileFromResolution = function (trackingBackend, resolutionW, resolutionH) {
+    // create the base file
+    var file = {
+        meta: {
+            createdBy: 'AR.js - Augmented Website',
+            createdAt: new Date().toJSON(),
+        },
+        trackingBackend: trackingBackend,
+        subMarkersControls: [
+            // empty for now...
+        ]
+    }
 
-	var subMarkerControls = buildSubMarkerControls('center', 0, 0)
-	file.subMarkersControls.push(subMarkerControls)
+    var whiteMargin = 0.1
+    if (resolutionW > resolutionH) {
+        var markerImageSize = 0.4 * resolutionH
+    } else if (resolutionW < resolutionH) {
+        var markerImageSize = 0.4 * resolutionW
+    } else if (resolutionW === resolutionH) {
+        // specific for twitter player - https://dev.twitter.com/cards/types/player
+        var markerImageSize = 0.33 * resolutionW
+    } else console.assert(false)
 
-	var subMarkerControls = buildSubMarkerControls('topleft', -deltaX, -deltaZ)
-	file.subMarkersControls.push(subMarkerControls)
-	
-	var subMarkerControls = buildSubMarkerControls('topright', +deltaX, -deltaZ)
-	file.subMarkersControls.push(subMarkerControls)
+    // console.warn('using new markerImageSize computation')
+    var actualMarkerSize = markerImageSize * (1 - 2 * whiteMargin)
 
-	var subMarkerControls = buildSubMarkerControls('bottomleft', -deltaX, +deltaZ)
-	file.subMarkersControls.push(subMarkerControls)
-	
-	var subMarkerControls = buildSubMarkerControls('bottomright', +deltaX, +deltaZ)
-	file.subMarkersControls.push(subMarkerControls)
+    var deltaX = (resolutionW - markerImageSize) / 2 / actualMarkerSize
+    var deltaZ = (resolutionH - markerImageSize) / 2 / actualMarkerSize
 
-	return file
-	
-	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
-	//////////////////////////////////////////////////////////////////////////////
+    var subMarkerControls = buildSubMarkerControls('center', 0, 0)
+    file.subMarkersControls.push(subMarkerControls)
 
-	function buildSubMarkerControls(layout, positionX, positionZ){
-		console.log('buildSubMarkerControls', layout, positionX, positionZ)
-		// create subMarkersControls
-		var subMarkersControls = {
-			parameters: {},
-			poseMatrix: new THREE.Matrix4().makeTranslation(positionX,0, positionZ).toArray(),
-		}
-		// fill the parameters
-		if( trackingBackend === 'artoolkit' ){
-			layout2MarkerParametersArtoolkit(subMarkersControls.parameters, layout)
-		}else if( trackingBackend === 'aruco' ){
-			layout2MarkerParametersAruco(subMarkersControls.parameters, layout)
-		}else console.assert(false)
-		// return subMarkersControls
-		return subMarkersControls
-	}
+    var subMarkerControls = buildSubMarkerControls('topleft', -deltaX, -deltaZ)
+    file.subMarkersControls.push(subMarkerControls)
 
-	function layout2MarkerParametersArtoolkit(parameters, layout){
-		// create absoluteBaseURL
-		var link = document.createElement('a')
-		link.href = ARjs.Context.baseURL
-		var absoluteBaseURL = link.href
-			
-		var layout2PatternUrl = {
-			'center' : convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt'),
-			'topleft' : convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterA.patt'),
-			'topright' : convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterB.patt'),
-			'bottomleft' : convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterC.patt'),
-			'bottomright' : convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterF.patt'),
-		}
-		console.assert(layout2PatternUrl[layout] !== undefined )
-		parameters.type = 'pattern'
-		parameters.patternUrl = layout2PatternUrl[layout]
-		return
-		function convertRelativeUrlToAbsolute(relativeUrl){
-			var tmpLink = document.createElement('a');
-			tmpLink.href = relativeUrl
-			return tmpLink.href
-		}
-	}
+    var subMarkerControls = buildSubMarkerControls('topright', +deltaX, -deltaZ)
+    file.subMarkersControls.push(subMarkerControls)
 
-	function layout2MarkerParametersAruco(parameters, layout){
-		var layout2Barcode = {
-			'center' : 1001,
-			'topleft' : 1002,
-			'topright' : 1003,
-			'bottomleft' : 1004,
-			'bottomright' : 1005,
-		}
-		console.assert(layout2Barcode[layout])
-		parameters.type = 'barcode'
-		parameters.barcodeValue = layout2Barcode[layout]
-	}
+    var subMarkerControls = buildSubMarkerControls('bottomleft', -deltaX, +deltaZ)
+    file.subMarkersControls.push(subMarkerControls)
+
+    var subMarkerControls = buildSubMarkerControls('bottomright', +deltaX, +deltaZ)
+    file.subMarkersControls.push(subMarkerControls)
+
+    return file
+
+    //////////////////////////////////////////////////////////////////////////////
+    //		Code Separator
+    //////////////////////////////////////////////////////////////////////////////
+
+    function buildSubMarkerControls(layout, positionX, positionZ) {
+        console.log('buildSubMarkerControls', layout, positionX, positionZ)
+        // create subMarkersControls
+        var subMarkersControls = {
+            parameters: {},
+            poseMatrix: new THREE.Matrix4().makeTranslation(positionX, 0, positionZ).toArray(),
+        }
+
+        // fill the parameters
+        if (trackingBackend === 'artoolkit') {
+            layout2MarkerParametersArtoolkit(subMarkersControls.parameters, layout)
+        } else console.assert(false)
+        return subMarkersControls
+    }
+
+    function layout2MarkerParametersArtoolkit(parameters, layout) {
+        // create absoluteBaseURL
+        var link = document.createElement('a')
+        link.href = ARjs.Context.baseURL
+        var absoluteBaseURL = link.href
+
+        var layout2PatternUrl = {
+            'center': convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt'),
+            'topleft': convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterA.patt'),
+            'topright': convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterB.patt'),
+            'bottomleft': convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterC.patt'),
+            'bottomright': convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterF.patt'),
+        }
+        console.assert(layout2PatternUrl[layout] !== undefined)
+        parameters.type = 'pattern'
+        parameters.patternUrl = layout2PatternUrl[layout]
+        return
+        function convertRelativeUrlToAbsolute(relativeUrl) {
+            var tmpLink = document.createElement('a');
+            tmpLink.href = relativeUrl
+            return tmpLink.href
+        }
+    }
 }
 //////////////////////////////////////////////////////////////////////////////
 //		arjs-anchor

@@ -34,11 +34,10 @@ ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
         imageSmoothingEnabled: false,
     }
     // parameters sanity check
-    console.assert(['artoolkit', 'aruco'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
+    console.assert(['artoolkit'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
     console.assert(['color', 'color_and_matrix', 'mono', 'mono_and_matrix'].indexOf(this.parameters.detectionMode) !== -1, 'invalid parameter detectionMode', this.parameters.detectionMode)
 
     this.arController = null;
-    this.arucoContext = null;
 
     _this.initialized = false
 
@@ -88,8 +87,6 @@ ARjs.Context.createDefaultCamera = function (trackingBackend) {
     // Create a camera
     if (trackingBackend === 'artoolkit') {
         var camera = new THREE.Camera();
-    } else if (trackingBackend === 'aruco') {
-        var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
     } else console.assert(false)
     return camera
 }
@@ -102,8 +99,6 @@ ARjs.Context.prototype.init = function (onCompleted) {
     var _this = this
     if (this.parameters.trackingBackend === 'artoolkit') {
         this._initArtoolkit(done)
-    } else if (this.parameters.trackingBackend === 'aruco') {
-        this._initAruco(done)
     } else console.assert(false)
     return
 
