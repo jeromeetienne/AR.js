@@ -411,6 +411,8 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, par
         patternUrl: null,
         // value of the barcode - IIF type='barcode'
         barcodeValue: null,
+        // url of the descriptors of image - IIF type='nft'
+        descriptorsUrl: null,
         // change matrix mode - [modelViewMatrix, cameraTransformMatrix]
         changeMatrixMode: 'modelViewMatrix',
         // minimal confidence in the marke recognition - between [0, 1] - default to 1
@@ -483,9 +485,6 @@ ARjs.MarkerControls.prototype.constructor = THREEx.ArMarkerControls;
 
 ARjs.MarkerControls.prototype.dispose = function () {
     this.context.removeMarker(this)
-
-    // TODO remove the event listener if needed
-    // unloadMaker ???
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -572,28 +571,25 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function (modelViewMat
 //		utility functions
 //////////////////////////////////////////////////////////////////////////////
 
-/**
- * provide a name for a marker
- * - silly heuristic for now
- * - should be improved
- */
 ARjs.MarkerControls.prototype.name = function () {
-    var name = ''
+    var name = '';
     name += this.parameters.type;
+
     if (this.parameters.type === 'pattern') {
-        var url = this.parameters.patternUrl
-        var basename = url.replace(/^.*\//g, '')
-        name += ' - ' + basename
+        var url = this.parameters.patternUrl;
+        var basename = url.replace(/^.*\//g, '');
+        name += ' - ' + basename;
     } else if (this.parameters.type === 'barcode') {
-        name += ' - ' + this.parameters.barcodeValue
+        name += ' - ' + this.parameters.barcodeValue;
     } else if (this.parameters.type === 'nft') {
-        var url = this.parameters.patternUrl
-        var basename = url.replace(/^.*\//g, '')
-        name += ' - ' + basename
+        var url = this.parameters.descriptorsUrl;
+        var basename = url.replace(/^.*\//g, '');
+        name += ' - ' + basename;
     } else {
-        console.assert(false, 'no .name() implemented for this marker controls')
+        console.assert(false, 'no .name() implemented for this marker controls');
     }
-    return name
+
+    return name;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -632,7 +628,10 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             artoolkitMarkerId = _this.parameters.barcodeValue
             arController.trackBarcodeMarkerId(artoolkitMarkerId, _this.parameters.size);
         } else if (_this.parameters.type === 'nft') {
-            console.log('nft test');
+            arController.loadNFTMarker(_this.parameters.descriptorsUrl, function (markerId) {
+                artoolkitMarkerId = markerId
+                arController.trackNFTMarkerId(artoolkitMarkerId, _this.parameters.size);
+            });
         } else if (_this.parameters.type === 'unknown') {
             artoolkitMarkerId = null
         } else {
@@ -645,7 +644,9 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
                 if (artoolkitMarkerId === null) return
                 if (event.data.marker.idPatt === artoolkitMarkerId) onMarkerFound(event)
             } else if (event.data.type === artoolkit.BARCODE_MARKER && _this.parameters.type === 'barcode') {
-                // console.log('BARCODE_MARKER idMatrix', event.data.marker.idMatrix, artoolkitMarkerId )
+                if (artoolkitMarkerId === null) return
+                if (event.data.marker.idMatrix === artoolkitMarkerId) onMarkerFound(event)
+            } else if (_this.parameters.type === 'nft') {
                 if (artoolkitMarkerId === null) return
                 if (event.data.marker.idMatrix === artoolkitMarkerId) onMarkerFound(event)
             } else if (event.data.type === artoolkit.UNKNOWN_MARKER && _this.parameters.type === 'unknown') {
@@ -659,6 +660,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         // honor his.parameters.minConfidence
         if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return
+        // ~nicolocarpignoli to handle also min confidence for NFT?
 
         var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
         _this.updateWithModelViewMatrix(modelViewMatrix)
@@ -865,7 +867,7 @@ ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
 
     // handle default parameters
     this.parameters = {
-        // AR backend - ['artoolkit', 'aruco']
+        // AR backend - ['artoolkit']
         trackingBackend: 'artoolkit',
         // debug - true if one should display artoolkit debug canvas, false otherwise
         debug: false,
