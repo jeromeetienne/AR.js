@@ -256,15 +256,14 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
                 onMarkerFound(event)
             }
         })
-}
+
         arController.addEventListener('getNFTMarker', function (event) {
           if (_this.parameters.type === 'nft') {
               if (artoolkitMarkerId === null) return
-
-              if (event.data.marker.idMatrix === artoolkitMarkerId) onMarkerFound(event)
+              if (event.data.marker.id === artoolkitMarkerId) onMarkerFound(event)
             }
     })
-
+}
     function onMarkerFound(event) {
         // honor his.parameters.minConfidence
         if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
