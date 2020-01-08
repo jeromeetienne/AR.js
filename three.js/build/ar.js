@@ -24,7 +24,8 @@ var Ib=[n$,Zu,av,kv];var Jb=[o$,aw];var Kb=[p$,Vu];var Lb=[q$,uj,ux,Bx,UC,VC,XC,
 (asmGlobalArg,asmLibraryArg,buffer);var __GLOBAL__I_000101=Module["__GLOBAL__I_000101"]=asm["__GLOBAL__I_000101"];var __GLOBAL__sub_I_ARToolKitJS_cpp=Module["__GLOBAL__sub_I_ARToolKitJS_cpp"]=asm["__GLOBAL__sub_I_ARToolKitJS_cpp"];var __GLOBAL__sub_I_bind_cpp=Module["__GLOBAL__sub_I_bind_cpp"]=asm["__GLOBAL__sub_I_bind_cpp"];var __GLOBAL__sub_I_iostream_cpp=Module["__GLOBAL__sub_I_iostream_cpp"]=asm["__GLOBAL__sub_I_iostream_cpp"];var __ZSt18uncaught_exceptionv=Module["__ZSt18uncaught_exceptionv"]=asm["__ZSt18uncaught_exceptionv"];var ___cxa_can_catch=Module["___cxa_can_catch"]=asm["___cxa_can_catch"];var ___cxa_is_pointer_type=Module["___cxa_is_pointer_type"]=asm["___cxa_is_pointer_type"];var ___embind_register_native_and_builtin_types=Module["___embind_register_native_and_builtin_types"]=asm["___embind_register_native_and_builtin_types"];var ___emscripten_environ_constructor=Module["___emscripten_environ_constructor"]=asm["___emscripten_environ_constructor"];var ___errno_location=Module["___errno_location"]=asm["___errno_location"];var ___getTypeName=Module["___getTypeName"]=asm["___getTypeName"];var ___muldi3=Module["___muldi3"]=asm["___muldi3"];var ___udivdi3=Module["___udivdi3"]=asm["___udivdi3"];var __get_daylight=Module["__get_daylight"]=asm["__get_daylight"];var __get_environ=Module["__get_environ"]=asm["__get_environ"];var __get_timezone=Module["__get_timezone"]=asm["__get_timezone"];var __get_tzname=Module["__get_tzname"]=asm["__get_tzname"];var _bitshift64Lshr=Module["_bitshift64Lshr"]=asm["_bitshift64Lshr"];var _bitshift64Shl=Module["_bitshift64Shl"]=asm["_bitshift64Shl"];var _free=Module["_free"]=asm["_free"];var _i64Add=Module["_i64Add"]=asm["_i64Add"];var _i64Subtract=Module["_i64Subtract"]=asm["_i64Subtract"];var _llvm_bswap_i32=Module["_llvm_bswap_i32"]=asm["_llvm_bswap_i32"];var _malloc=Module["_malloc"]=asm["_malloc"];var _memcpy=Module["_memcpy"]=asm["_memcpy"];var _memmove=Module["_memmove"]=asm["_memmove"];var _memset=Module["_memset"]=asm["_memset"];var _pthread_cond_broadcast=Module["_pthread_cond_broadcast"]=asm["_pthread_cond_broadcast"];var _realloc=Module["_realloc"]=asm["_realloc"];var _roundf=Module["_roundf"]=asm["_roundf"];var _saveSetjmp=Module["_saveSetjmp"]=asm["_saveSetjmp"];var _sbrk=Module["_sbrk"]=asm["_sbrk"];var _setThrew=Module["_setThrew"]=asm["_setThrew"];var _testSetjmp=Module["_testSetjmp"]=asm["_testSetjmp"];var establishStackSpace=Module["establishStackSpace"]=asm["establishStackSpace"];var stackAlloc=Module["stackAlloc"]=asm["stackAlloc"];var stackRestore=Module["stackRestore"]=asm["stackRestore"];var stackSave=Module["stackSave"]=asm["stackSave"];var dynCall_di=Module["dynCall_di"]=asm["dynCall_di"];var dynCall_dii=Module["dynCall_dii"]=asm["dynCall_dii"];var dynCall_i=Module["dynCall_i"]=asm["dynCall_i"];var dynCall_ii=Module["dynCall_ii"]=asm["dynCall_ii"];var dynCall_iidiiii=Module["dynCall_iidiiii"]=asm["dynCall_iidiiii"];var dynCall_iii=Module["dynCall_iii"]=asm["dynCall_iii"];var dynCall_iiii=Module["dynCall_iiii"]=asm["dynCall_iiii"];var dynCall_iiiii=Module["dynCall_iiiii"]=asm["dynCall_iiiii"];var dynCall_iiiiid=Module["dynCall_iiiiid"]=asm["dynCall_iiiiid"];var dynCall_iiiiii=Module["dynCall_iiiiii"]=asm["dynCall_iiiiii"];var dynCall_iiiiiid=Module["dynCall_iiiiiid"]=asm["dynCall_iiiiiid"];var dynCall_iiiiiii=Module["dynCall_iiiiiii"]=asm["dynCall_iiiiiii"];var dynCall_iiiiiiii=Module["dynCall_iiiiiiii"]=asm["dynCall_iiiiiiii"];var dynCall_iiiiiiiii=Module["dynCall_iiiiiiiii"]=asm["dynCall_iiiiiiiii"];var dynCall_v=Module["dynCall_v"]=asm["dynCall_v"];var dynCall_vi=Module["dynCall_vi"]=asm["dynCall_vi"];var dynCall_vid=Module["dynCall_vid"]=asm["dynCall_vid"];var dynCall_vii=Module["dynCall_vii"]=asm["dynCall_vii"];var dynCall_viid=Module["dynCall_viid"]=asm["dynCall_viid"];var dynCall_viii=Module["dynCall_viii"]=asm["dynCall_viii"];var dynCall_viiii=Module["dynCall_viiii"]=asm["dynCall_viiii"];var dynCall_viiiii=Module["dynCall_viiiii"]=asm["dynCall_viiiii"];var dynCall_viiiiii=Module["dynCall_viiiiii"]=asm["dynCall_viiiiii"];var dynCall_viiiiiii=Module["dynCall_viiiiiii"]=asm["dynCall_viiiiiii"];Module["asm"]=asm;if(memoryInitializer){if(!isDataURI(memoryInitializer)){memoryInitializer=locateFile(memoryInitializer)}if(ENVIRONMENT_IS_NODE||ENVIRONMENT_IS_SHELL){var data=readBinary(memoryInitializer);HEAPU8.set(data,GLOBAL_BASE)}else{addRunDependency("memory initializer");var applyMemoryInitializer=function(data){if(data.byteLength)data=new Uint8Array(data);HEAPU8.set(data,GLOBAL_BASE);if(Module["memoryInitializerRequest"])delete Module["memoryInitializerRequest"].response;removeRunDependency("memory initializer")};var doBrowserLoad=function(){readAsync(memoryInitializer,applyMemoryInitializer,function(){throw"could not load memory initializer "+memoryInitializer})};var memoryInitializerBytes=tryParseAsDataURI(memoryInitializer);if(memoryInitializerBytes){applyMemoryInitializer(memoryInitializerBytes.buffer)}else if(Module["memoryInitializerRequest"]){var useRequest=function(){var request=Module["memoryInitializerRequest"];var response=request.response;if(request.status!==200&&request.status!==0){var data=tryParseAsDataURI(Module["memoryInitializerRequestURL"]);if(data){response=data.buffer}else{console.warn("a problem seems to have happened with Module.memoryInitializerRequest, status: "+request.status+", retrying "+memoryInitializer);doBrowserLoad();return}}applyMemoryInitializer(response)};if(Module["memoryInitializerRequest"].response){setTimeout(useRequest,0)}else{Module["memoryInitializerRequest"].addEventListener("load",useRequest)}}else{doBrowserLoad()}}}var calledRun;function ExitStatus(status){this.name="ExitStatus";this.message="Program terminated with exit("+status+")";this.status=status}dependenciesFulfilled=function runCaller(){if(!calledRun)run();if(!calledRun)dependenciesFulfilled=runCaller};function run(args){args=args||arguments_;if(runDependencies>0){return}preRun();if(runDependencies>0)return;function doRun(){if(calledRun)return;calledRun=true;if(ABORT)return;initRuntime();preMain();if(Module["onRuntimeInitialized"])Module["onRuntimeInitialized"]();postRun()}if(Module["setStatus"]){Module["setStatus"]("Running...");setTimeout(function(){setTimeout(function(){Module["setStatus"]("")},1);doRun()},1)}else{doRun()}}Module["run"]=run;function exit(status,implicit){if(implicit&&noExitRuntime&&status===0){return}if(noExitRuntime){}else{ABORT=true;EXITSTATUS=status;exitRuntime();if(Module["onExit"])Module["onExit"](status)}quit_(status,new ExitStatus(status))}function abort(what){if(Module["onAbort"]){Module["onAbort"](what)}what+="";out(what);err(what);ABORT=true;EXITSTATUS=1;throw"abort("+what+"). Build with -s ASSERTIONS=1 for more info."}Module["abort"]=abort;if(Module["preInit"]){if(typeof Module["preInit"]=="function")Module["preInit"]=[Module["preInit"]];while(Module["preInit"].length>0){Module["preInit"].pop()()}}noExitRuntime=true;run();
 
 if( 'function' === typeof importScripts) {
-importScripts('artoolkit.min.js');
+//importScripts('artoolkit.min.js');
+importScripts('../build/artoolkit.min.js');
 
 self.onmessage = function(e) {
     var msg = e.data;
@@ -404,7 +405,7 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, para
 	this.parameters = {
 		// size of the marker in meter
 		size : 1,
-		// type of marker - ['pattern', 'barcode', 'unknown' ]
+		// type of marker - ['pattern', 'barcode', 'nft', 'unknown' ]
 		type : 'unknown',
 		// url of the pattern - IIF type='pattern'
 		patternUrl : null,
@@ -425,7 +426,7 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, para
 	}
 
 	// sanity check
-	var possibleValues = ['pattern', 'barcode', 'unknown']
+	var possibleValues = ['pattern', 'barcode', 'nft', 'unknown']
 	console.assert(possibleValues.indexOf(this.parameters.type) !== -1, 'illegal value', this.parameters.type)
 	var possibleValues = ['modelViewMatrix', 'cameraTransformMatrix' ]
 	console.assert(possibleValues.indexOf(this.parameters.changeMatrixMode) !== -1, 'illegal value', this.parameters.changeMatrixMode)
@@ -603,6 +604,10 @@ ARjs.MarkerControls.prototype.name = function(){
 		name += ' - ' + basename
 	}else if( this.parameters.type === 'barcode' ){
 		name += ' - ' + this.parameters.barcodeValue
+	}else if( this.parameters.type === 'nft' ){
+		var url = this.parameters.patternUrl
+		var basename = url.replace(/^.*\//g, '')
+		name += ' - ' + basename
 	}else{
 		console.assert(false, 'no .name() implemented for this marker controls')
 	}
@@ -644,6 +649,8 @@ ARjs.MarkerControls.prototype._initArtoolkit = function(){
 		}else if( _this.parameters.type === 'barcode' ){
 			artoolkitMarkerId = _this.parameters.barcodeValue
 			arController.trackBarcodeMarkerId(artoolkitMarkerId, _this.parameters.size);
+		}else if( _this.parameters.type === 'nft' ){
+			console.log('nft test');
 		}else if( _this.parameters.type === 'unknown' ){
 			artoolkitMarkerId = null
 		}else{
@@ -1993,129 +2000,129 @@ var ARjs = ARjs || {}
  * @param {ARjs.Session} arSession - the session on which we create the anchor
  * @param {Object} markerParameters - parameter of this anchor
  */
-ARjs.Anchor = function(arSession, markerParameters){
-	var _this = this
-	var arContext = arSession.arContext
-	var scene = arSession.parameters.scene
-	var camera = arSession.parameters.camera
+ARjs.Anchor = function (arSession, markerParameters) {
+    var _this = this
+    var arContext = arSession.arContext
+    var scene = arSession.parameters.scene
+    var camera = arSession.parameters.camera
 
-	this.arSession = arSession
-	this.parameters = markerParameters
+    this.arSession = arSession
+    this.parameters = markerParameters
 
-	// log to debug
-	console.log('ARjs.Anchor -', 'changeMatrixMode:', this.parameters.changeMatrixMode, '/ markersAreaEnabled:', markerParameters.markersAreaEnabled)
+    // log to debug
+    console.log('ARjs.Anchor -', 'changeMatrixMode:', this.parameters.changeMatrixMode, '/ markersAreaEnabled:', markerParameters.markersAreaEnabled)
 
-	var markerRoot = new THREE.Group
-	scene.add(markerRoot)
+    var markerRoot = new THREE.Group
+    scene.add(markerRoot)
 
-	// set controlledObject depending on changeMatrixMode
-	if( markerParameters.changeMatrixMode === 'modelViewMatrix' ){
-		var controlledObject = markerRoot
-	}else if( markerParameters.changeMatrixMode === 'cameraTransformMatrix' ){
-		var controlledObject = camera
-	}else console.assert(false)
+    // set controlledObject depending on changeMatrixMode
+    if (markerParameters.changeMatrixMode === 'modelViewMatrix') {
+        var controlledObject = markerRoot
+    } else if (markerParameters.changeMatrixMode === 'cameraTransformMatrix') {
+        var controlledObject = camera
+    } else console.assert(false)
 
-	if( markerParameters.markersAreaEnabled === false ){
-		var markerControls = new THREEx.ArMarkerControls(arContext, controlledObject, markerParameters)
-		this.controls = markerControls
-	}else{
-		// sanity check - MUST be a trackingBackend with markers
-		console.assert( arContext.parameters.trackingBackend === 'artoolkit' || arContext.parameters.trackingBackend === 'aruco' )
+    if (markerParameters.markersAreaEnabled === false) {
+        var markerControls = new THREEx.ArMarkerControls(arContext, controlledObject, markerParameters)
+        this.controls = markerControls
+    } else {
+        // sanity check - MUST be a trackingBackend with markers
+        console.assert(arContext.parameters.trackingBackend === 'artoolkit')
 
-		// honor markers-page-resolution for https://webxr.io/augmented-website
-		if( location.hash.substring(1).startsWith('markers-page-resolution=') === true ){
-			// get resolutionW/resolutionH from url
-			var markerPageResolution = location.hash.substring(1)
-			var matches = markerPageResolution.match(/markers-page-resolution=(\d+)x(\d+)/)
-			console.assert(matches.length === 3)
-			var resolutionW = parseInt(matches[1])
-			var resolutionH = parseInt(matches[2])
-			var arContext = arSession.arContext
-			// generate and store the ARjsMultiMarkerFile
-			ARjs.MarkersAreaUtils.storeMarkersAreaFileFromResolution(arContext.parameters.trackingBackend, resolutionW, resolutionH)
-		}
+        // honor markers-page-resolution for https://webxr.io/augmented-website
+        if (location.hash.substring(1).startsWith('markers-page-resolution=') === true) {
+            // get resolutionW/resolutionH from url
+            var markerPageResolution = location.hash.substring(1)
+            var matches = markerPageResolution.match(/markers-page-resolution=(\d+)x(\d+)/)
+            console.assert(matches.length === 3)
+            var resolutionW = parseInt(matches[1])
+            var resolutionH = parseInt(matches[2])
+            var arContext = arSession.arContext
+            // generate and store the ARjsMultiMarkerFile
+            ARjs.MarkersAreaUtils.storeMarkersAreaFileFromResolution(arContext.parameters.trackingBackend, resolutionW, resolutionH)
+        }
 
-		// if there is no ARjsMultiMarkerFile, build a default one
-		if( localStorage.getItem('ARjsMultiMarkerFile') === null ){
-			ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile(arContext.parameters.trackingBackend)
-		}
+        // if there is no ARjsMultiMarkerFile, build a default one
+        if (localStorage.getItem('ARjsMultiMarkerFile') === null) {
+            ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile(arContext.parameters.trackingBackend)
+        }
 
-		// get multiMarkerFile from localStorage
-		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
-		var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
+        // get multiMarkerFile from localStorage
+        console.assert(localStorage.getItem('ARjsMultiMarkerFile') !== null)
+        var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
 
-		// set controlledObject depending on changeMatrixMode
-		if( markerParameters.changeMatrixMode === 'modelViewMatrix' ){
-			var parent3D = scene
-		}else if( markerParameters.changeMatrixMode === 'cameraTransformMatrix' ){
-			var parent3D = camera
-		}else console.assert(false)
+        // set controlledObject depending on changeMatrixMode
+        if (markerParameters.changeMatrixMode === 'modelViewMatrix') {
+            var parent3D = scene
+        } else if (markerParameters.changeMatrixMode === 'cameraTransformMatrix') {
+            var parent3D = camera
+        } else console.assert(false)
 
-		// build a multiMarkerControls
-		var multiMarkerControls = ARjs.MarkersAreaControls.fromJSON(arContext, parent3D, controlledObject, multiMarkerFile)
-		this.controls = multiMarkerControls
+        // build a multiMarkerControls
+        var multiMarkerControls = ARjs.MarkersAreaControls.fromJSON(arContext, parent3D, controlledObject, multiMarkerFile)
+        this.controls = multiMarkerControls
 
-		// honor markerParameters.changeMatrixMode
-		multiMarkerControls.parameters.changeMatrixMode = markerParameters.changeMatrixMode
+        // honor markerParameters.changeMatrixMode
+        multiMarkerControls.parameters.changeMatrixMode = markerParameters.changeMatrixMode
 
-// TODO put subMarkerControls visibility into an external file. with 2 handling for three.js and babylon.js
-		// create ArMarkerHelper - useful to debug - super three.js specific
-		var markerHelpers = []
-		multiMarkerControls.subMarkersControls.forEach(function(subMarkerControls){
-			// add an helper to visuable each sub-marker
-			var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
-			markerHelper.object3d.visible = false
-			// subMarkerControls.object3d.add( markerHelper.object3d )
-			subMarkerControls.object3d.add( markerHelper.object3d )
-			// add it to markerHelpers
-			markerHelpers.push(markerHelper)
-		})
-		// define API specific to markersArea
-		this.markersArea = {}
-		this.markersArea.setSubMarkersVisibility = function(visible){
-			markerHelpers.forEach(function(markerHelper){
-				markerHelper.object3d.visible = visible
-			})
-		}
-	}
+        // TODO put subMarkerControls visibility into an external file. with 2 handling for three.js and babylon.js
+        // create ArMarkerHelper - useful to debug - super three.js specific
+        var markerHelpers = []
+        multiMarkerControls.subMarkersControls.forEach(function (subMarkerControls) {
+            // add an helper to visuable each sub-marker
+            var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
+            markerHelper.object3d.visible = false
+            // subMarkerControls.object3d.add( markerHelper.object3d )
+            subMarkerControls.object3d.add(markerHelper.object3d)
+            // add it to markerHelpers
+            markerHelpers.push(markerHelper)
+        })
+        // define API specific to markersArea
+        this.markersArea = {}
+        this.markersArea.setSubMarkersVisibility = function (visible) {
+            markerHelpers.forEach(function (markerHelper) {
+                markerHelper.object3d.visible = visible
+            })
+        }
+    }
 
-	this.object3d = new THREE.Group()
+    this.object3d = new THREE.Group()
 
-	//////////////////////////////////////////////////////////////////////////////
-	//		THREEx.ArSmoothedControls
-	//////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //		THREEx.ArSmoothedControls
+    //////////////////////////////////////////////////////////////////////////////
 
-	var shouldBeSmoothed = true
+    var shouldBeSmoothed = true
 
-	if( shouldBeSmoothed === true ){
-		// build a smoothedControls
-		var smoothedRoot = new THREE.Group()
-		scene.add(smoothedRoot)
-		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
-		smoothedRoot.add(this.object3d)
-	}else{
-		markerRoot.add(this.object3d)
-	}
+    if (shouldBeSmoothed === true) {
+        // build a smoothedControls
+        var smoothedRoot = new THREE.Group()
+        scene.add(smoothedRoot)
+        var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
+        smoothedRoot.add(this.object3d)
+    } else {
+        markerRoot.add(this.object3d)
+    }
 
 
-	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
-	//////////////////////////////////////////////////////////////////////////////
-	this.update = function(){
-		// update _this.object3d.visible
-		_this.object3d.visible = _this.object3d.parent.visible
+    //////////////////////////////////////////////////////////////////////////////
+    //		Code Separator
+    //////////////////////////////////////////////////////////////////////////////
+    this.update = function () {
+        // update _this.object3d.visible
+        _this.object3d.visible = _this.object3d.parent.visible
 
-		// console.log('controlledObject.visible', _this.object3d.parent.visible)
-		if( smoothedControls !== undefined ){
-			// update smoothedControls parameters depending on how many markers are visible in multiMarkerControls
-			if( multiMarkerControls !== undefined ){
-				multiMarkerControls.updateSmoothedControls(smoothedControls)
-			}
+        // console.log('controlledObject.visible', _this.object3d.parent.visible)
+        if (smoothedControls !== undefined) {
+            // update smoothedControls parameters depending on how many markers are visible in multiMarkerControls
+            if (multiMarkerControls !== undefined) {
+                multiMarkerControls.updateSmoothedControls(smoothedControls)
+            }
 
-			// update smoothedControls
-			smoothedControls.update(markerRoot)
-		}
-	}
+            // update smoothedControls
+            smoothedControls.update(markerRoot)
+        }
+    }
 }
 // @namespace
 var ARjs = ARjs || {}
@@ -2527,8 +2534,6 @@ ARjs.Utils.createDefaultCamera = function (trackingMethod) {
     // Create a camera
     if (trackingBackend === 'artoolkit') {
         var camera = new THREE.Camera();
-    } else if (trackingBackend === 'aruco') {
-        var camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.01, 100);
     } else console.assert(false, 'unknown trackingBackend: ' + trackingBackend)
 
     return camera
