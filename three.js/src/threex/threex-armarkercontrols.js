@@ -234,7 +234,10 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             artoolkitMarkerId = _this.parameters.barcodeValue
             arController.trackBarcodeMarkerId(artoolkitMarkerId, _this.parameters.size);
         } else if (_this.parameters.type === 'nft') {
-            console.log('nft test');
+            arController.loadNFTMarker(_this.parameters.descriptorsUrl, function (markerId) {
+                artoolkitMarkerId = markerId
+                arController.trackNFTMarkerId(artoolkitMarkerId, _this.parameters.size);
+            });
         } else if (_this.parameters.type === 'unknown') {
             artoolkitMarkerId = null
         } else {
