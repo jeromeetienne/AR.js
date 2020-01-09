@@ -235,7 +235,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             arController.trackBarcodeMarkerId(artoolkitMarkerId, _this.parameters.size);
         } else if (_this.parameters.type === 'nft') {
             // use workers as default
-            handleNFT(_this.parameters.descriptorsUrl);
+            handleNFT(_this.parameters.descriptorsUrl, arController);
         } else if (_this.parameters.type === 'unknown') {
             artoolkitMarkerId = null
         } else {
@@ -256,13 +256,13 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         })
 
         arController.addEventListener('getNFTMarker', function (event) {
-          if (_this.parameters.type === 'nft') {
+          if (event.data.type === artoolkit.NFT_MARKER &&_this.parameters.type === 'nft') {
               if (artoolkitMarkerId === null) return
               if (event.data.marker.id === artoolkitMarkerId) onMarkerFound(event)
             }
     })
 }
-    function handleNFT(descriptorsUrl) {
+    function handleNFT(descriptorsUrl, arController) {
         // ~nicolocarpignoli check if camera data are available to initialize worker
         console.log(ARjs.Source)
         arController.loadNFTMarker(descriptorsUrl, function (markerId) {
@@ -274,7 +274,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
     function onMarkerFound(event) {
         if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return
-        if (event.data.type === 'nft' < _this.parameters.minConfidence) return
+        if (event.data.type === artoolkit.NFT_MARKER < _this.parameters.minConfidence) return
 
         var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
         _this.updateWithModelViewMatrix(modelViewMatrix)

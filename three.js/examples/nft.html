@@ -107,27 +107,20 @@
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
-	// add a torus knot
-	var geometry	= new THREE.CubeGeometry(1,1,1);
-	var material	= new THREE.MeshNormalMaterial({
-		transparent : true,
-		opacity: 0.5,
-		side: THREE.DoubleSide
-	});
-	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= geometry.parameters.height/2
-    mesh.scale.set(100, 100, 100);
-	scene.add( mesh );
+  let sphere = new THREE.Mesh(
+      new THREE.SphereGeometry(0.5, 8, 8),
+      new THREE.MeshNormalMaterial()
+  );
 
-	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	var material	= new THREE.MeshNormalMaterial();
-	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= 0.5;
-    mesh.scale.set(100, 100, 100);
-	scene.add( mesh );
+
+  sphere.material.shading = THREE.FlatShading;
+  sphere.position.z = 0;
+  sphere.position.x = 40;
+  sphere.position.y = 40;
+  sphere.scale.set(80, 80, 80);
+  scene.add(sphere);
 
 	onRenderFcts.push(function(delta){
-		mesh.rotation.x += Math.PI*delta
 	})
 
 	//////////////////////////////////////////////////////////////////////////////////
