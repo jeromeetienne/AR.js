@@ -244,8 +244,6 @@ ARjs.Context.prototype._initArtoolkit = function (onCompleted) {
  * return the projection matrix
  */
 ARjs.Context.prototype.getProjectionMatrix = function (srcElement) {
-
-
     // FIXME rename this function to say it is artoolkit specific - getArtoolkitProjectMatrix
     // keep a backward compatibility with a console.warn
 
