@@ -1,4 +1,12 @@
-function isMobile() {
+var THREEx = THREEx || {}
+
+THREEx.ArNFTWorker = function(object3d){
+  this.id = id;
+  this.object3d = object3d;
+}
+
+
+THREEx.ArNFTWorker.prototype.isMobile = function()  {
     return /Android|mobile|iPad|iPhone/i.test(navigator.userAgent);
 }
 
@@ -14,7 +22,7 @@ var setMatrix = function (matrix, value) {
     }
 };
 
-function start(container, marker, video, input_width, input_height, canvas_draw, render_update, track_update) {
+THREEx.ArNFTWorker.prototype.start = function(container, marker, video, input_width, input_height, canvas_draw) {
     var vw, vh;
     var sw, sh;
     var pscale, sscale;
@@ -34,28 +42,14 @@ function start(container, marker, video, input_width, input_height, canvas_draw,
 
     var camera = new THREE.Camera();
     camera.matrixAutoUpdate = false;
-    // var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
-    // camera.position.z = 400;
 
     scene.add(camera);
-
-    // ~nicolocarpignoli Make this more general, not showing a specific object like the sphere
-    var sphere = new THREE.Mesh(
-        new THREE.SphereGeometry(0.5, 8, 8),
-        new THREE.MeshNormalMaterial()
-    );
 
     var root = new THREE.Object3D();
     scene.add(root);
 
-    sphere.material.shading = THREE.FlatShading;
-    sphere.position.z = 0;
-    sphere.position.x = 100;
-    sphere.position.y = 100;
-    sphere.scale.set(200, 200, 200);
-
     root.matrixAutoUpdate = false;
-    root.add(sphere);
+    root.add(this.object3d);
 
     var load = function() {
         vw = input_width;
@@ -89,7 +83,7 @@ function start(container, marker, video, input_width, input_height, canvas_draw,
 
         worker = new Worker('../vendor/jsartoolkit5/js/artoolkit.worker.js');
 
-        worker.postMessage({ type: "load", pw: pw, ph: ph, marker: '../' + marker.url });
+        worker.postMessage({ type: "load", pw: pw, ph: ph, marker: marker });
 
         worker.onmessage = function(ev) {
             var msg = ev.data;
@@ -130,7 +124,7 @@ function start(container, marker, video, input_width, input_height, canvas_draw,
                     break;
                 }
             }
-            track_update();
+            //track_update();
             process();
         };
     };
@@ -144,14 +138,14 @@ function start(container, marker, video, input_width, input_height, canvas_draw,
     var time = 0;
 
     var draw = function() {
-        render_update();
+        //render_update();
         var now = Date.now();
         var dt = now - lasttime;
         time += dt;
         lasttime = now;
 
         if (!lastmsg) {
-            sphere.visible = false;
+            this.object3d.visible = false;
         } else {
             var proj = JSON.parse(lastmsg.proj);
             var world = JSON.parse(lastmsg.matrixGL_RH);
@@ -163,7 +157,7 @@ function start(container, marker, video, input_width, input_height, canvas_draw,
             var w = width / dpi * 2.54 * 10;
             var h = height / dpi * 2.54 * 10;
 
-            sphere.visible = true;
+            this.object3d.visible = true;
             setMatrix(root.matrix, world);
         }
         renderer.render(scene, camera);

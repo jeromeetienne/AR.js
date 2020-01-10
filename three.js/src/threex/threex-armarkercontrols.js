@@ -19,6 +19,8 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, par
         barcodeValue: null,
         // url of the descriptors of image - IIF type='nft'
         descriptorsUrl: null,
+        // {object} width, height and dpi of the nft image
+        markerNFT: {},
         // change matrix mode - [modelViewMatrix, cameraTransformMatrix]
         changeMatrixMode: 'modelViewMatrix',
         // minimal confidence in the marke recognition - between [0, 1] - default to 1
@@ -235,7 +237,16 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             arController.trackBarcodeMarkerId(artoolkitMarkerId, _this.parameters.size);
         } else if (_this.parameters.type === 'nft') {
             // use workers as default
-            handleNFT(_this.parameters.descriptorsUrl, arController);
+            //handleNFT(_this.parameters.descriptorsUrl, arController);
+            var markers = {
+                    width: _this.parameters.markerNFT.width,
+                    height: _this.parameters.markerNFT.height,
+                    dpi: _this.parameters.markerNFT.dpi,
+                    url: _this.parameters.descriptorsUrl,
+            };
+            var container = document.querySelector('#container');
+            var canvas_draw = document.getElementById('canvas_draw');
+            THREEx.ArNFTWorker.start(container, markers, video, video.videoWidth, video.videoHeight, canvas_draw);
         } else if (_this.parameters.type === 'unknown') {
             artoolkitMarkerId = null
         } else {
