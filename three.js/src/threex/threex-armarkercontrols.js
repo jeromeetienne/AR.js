@@ -246,7 +246,10 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             };
             var container = document.querySelector('#container');
             var canvas_draw = document.getElementById('canvas_draw');
-            THREEx.ArNFTWorker.start(container, markers, video, video.videoWidth, video.videoHeight, canvas_draw);
+            var video = document.getElementById('arjs-video');
+            console.log(video);
+            var nftWorker = new THREEx.ArNFTWorker(this.object3d);
+            nftWorker.start(container, markers, video, video.width, video.height, canvas_draw);
         } else if (_this.parameters.type === 'unknown') {
             artoolkitMarkerId = null
         } else {

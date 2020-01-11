@@ -1,10 +1,11 @@
 var THREEx = THREEx || {}
 
 THREEx.ArNFTWorker = function(object3d){
-  this.id = id;
+  //this.id = id;
   this.object3d = object3d;
 }
 
+Object.assign( THREEx.ArNFTWorker.prototype, THREE.EventDispatcher.prototype );
 
 THREEx.ArNFTWorker.prototype.isMobile = function()  {
     return /Android|mobile|iPad|iPhone/i.test(navigator.userAgent);

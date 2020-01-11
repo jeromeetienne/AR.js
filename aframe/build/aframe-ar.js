@@ -397,6 +397,7 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, par
     var _this = this
 
     THREEx.ArBaseControls.call(this, object3d)
+    //THREEx.ArNFTWorker.call(this, object3d);
 
     this.context = context
     // handle default parameters
@@ -636,13 +637,12 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
                     dpi: _this.parameters.markerNFT.dpi,
                     url: _this.parameters.descriptorsUrl,
             };
-
             var container = document.querySelector('#container');
-            //var video = ARjs.Source.init.domElement;
-            console.log(ARjs.Source.init);
-            video.play();
             var canvas_draw = document.getElementById('canvas_draw');
-            THREEx.ArNFTWorker.start(container, markers, video, video.videoWidth, video.videoHeight, canvas_draw, function() {statsMain.update()}, function(){statsWorker.update()}, greyCover);
+            var video = document.getElementById('arjs-video');
+            console.log(video);
+            var nftWorker = new THREEx.ArNFTWorker(this.object3d);
+            nftWorker.start(container, markers, video, video.width, video.height, canvas_draw);
         } else if (_this.parameters.type === 'unknown') {
             artoolkitMarkerId = null
         } else {
@@ -729,10 +729,11 @@ THREEx.ArMarkerHelper = function(markerControls){
 var THREEx = THREEx || {}
 
 THREEx.ArNFTWorker = function(object3d){
-  this.id = id;
+  //this.id = id;
   this.object3d = object3d;
 }
 
+Object.assign( THREEx.ArNFTWorker.prototype, THREE.EventDispatcher.prototype );
 
 THREEx.ArNFTWorker.prototype.isMobile = function()  {
     return /Android|mobile|iPad|iPhone/i.test(navigator.userAgent);
@@ -750,7 +751,7 @@ var setMatrix = function (matrix, value) {
     }
 };
 
-THREEx.ArNFTWorker.prototype.start = function(container, marker, video, input_width, input_height, canvas_draw, render_update, track_update) {
+THREEx.ArNFTWorker.prototype.start = function(container, marker, video, input_width, input_height, canvas_draw) {
     var vw, vh;
     var sw, sh;
     var pscale, sscale;
@@ -852,7 +853,7 @@ THREEx.ArNFTWorker.prototype.start = function(container, marker, video, input_wi
                     break;
                 }
             }
-            track_update();
+            //track_update();
             process();
         };
     };
@@ -866,7 +867,7 @@ THREEx.ArNFTWorker.prototype.start = function(container, marker, video, input_wi
     var time = 0;
 
     var draw = function() {
-        render_update();
+        //render_update();
         var now = Date.now();
         var dt = now - lasttime;
         time += dt;
