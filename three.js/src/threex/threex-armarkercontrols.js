@@ -277,15 +277,13 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             var canvas_draw = arController.canvas;
             var container = canvas_draw.parentElement || document.body;
 
-            console.log('videossss', video, container, canvas_draw)
+            var nftWorker = new THREEx.ArNFTWorker(this.object3d);
+            nftWorker.start(container, markers, video, video.videoWidth, video.videoHeight, canvas_draw);
 
-            // var nftWorker = new THREEx.ArNFTWorker(this.object3d);
-            // nftWorker.start(container, markers, video, video.videoWidth, video.videoHeight, canvas_draw);
-            console.log(ARjs.Source)
-            arController.loadNFTMarker(markers.url, function (markerId) {
-                artoolkitMarkerId = markerId
-                arController.trackNFTMarkerId(artoolkitMarkerId, markers.width);
-            });
+            // arController.loadNFTMarker(markers.url, function (markerId) {
+            //     artoolkitMarkerId = markerId
+            //     arController.trackNFTMarkerId(artoolkitMarkerId, markers.width);
+            // });
         });
     }
 
