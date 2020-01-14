@@ -628,7 +628,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             artoolkitMarkerId = _this.parameters.barcodeValue
             arController.trackBarcodeMarkerId(artoolkitMarkerId, _this.parameters.size);
         } else if (_this.parameters.type === 'nft') {
-            // use workers as default
             handleNFT(_this.parameters, arController);
         } else if (_this.parameters.type === 'unknown') {
             artoolkitMarkerId = null
@@ -667,20 +666,18 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
 
         window.addEventListener('arjs-video-loaded', function(ev) {
             var video = ev.detail.component;
-            var container = document.querySelector('#container');
-            var canvas_draw = document.getElementById('canvas_draw');
+            var canvas_draw = arController.canvas;
+            var container = canvas_draw.parentElement || document.body;
 
-            console.log('videossss', video)
+            console.log('videossss', video, container, canvas_draw)
 
-            var nftWorker = new THREEx.ArNFTWorker(this.object3d);
-            nftWorker.start(container, markers, video, video.width, video.height, canvas_draw);
+            // var nftWorker = new THREEx.ArNFTWorker(this.object3d);
+            // nftWorker.start(container, markers, video, video.videoWidth, video.videoHeight, canvas_draw);
             console.log(ARjs.Source)
-            arController.loadNFTMarker(descriptorsUrl, function (markerId) {
+            arController.loadNFTMarker(markers.url, function (markerId) {
                 artoolkitMarkerId = markerId
-                arController.trackNF
-        });
-
-     TMarkerId(artoolkitMarkerId, parameters.size);
+                arController.trackNFTMarkerId(artoolkitMarkerId, markers.width);
+            });
         });
     }
 
@@ -1903,8 +1900,6 @@ ARjs.Source.prototype.onResize = function (arToolkitContext, renderer, camera) {
         var isAframe = renderer.domElement.dataset.aframeCanvas ? true : false
         if (isAframe === false) {
             this.copyElementSizeTo(renderer.domElement)
-        } else {
-
         }
 
         if (arToolkitContext.arController !== null) {

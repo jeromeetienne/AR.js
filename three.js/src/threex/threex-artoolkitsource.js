@@ -403,8 +403,6 @@ ARjs.Source.prototype.onResize = function (arToolkitContext, renderer, camera) {
         var isAframe = renderer.domElement.dataset.aframeCanvas ? true : false
         if (isAframe === false) {
             this.copyElementSizeTo(renderer.domElement)
-        } else {
-
         }
 
         if (arToolkitContext.arController !== null) {
