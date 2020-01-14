@@ -23,7 +23,7 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, par
         markerNFT: {},
         // change matrix mode - [modelViewMatrix, cameraTransformMatrix]
         changeMatrixMode: 'modelViewMatrix',
-        // minimal confidence in the marke recognition - between [0, 1] - default to 1
+        // minimal confidence in the marker recognition - between [0, 1] - default to 1
         minConfidence: 0.6,
         // turn on/off camera smoothing
         smooth: false,
@@ -237,19 +237,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             arController.trackBarcodeMarkerId(artoolkitMarkerId, _this.parameters.size);
         } else if (_this.parameters.type === 'nft') {
             // use workers as default
-            //handleNFT(_this.parameters.descriptorsUrl, arController);
-            var markers = {
-                    width: _this.parameters.markerNFT.width,
-                    height: _this.parameters.markerNFT.height,
-                    dpi: _this.parameters.markerNFT.dpi,
-                    url: _this.parameters.descriptorsUrl,
-            };
-            var container = document.querySelector('#container');
-            var canvas_draw = document.getElementById('canvas_draw');
-            var video = document.getElementById('arjs-video');
-            console.log(video);
-            var nftWorker = new THREEx.ArNFTWorker(this.object3d);
-            nftWorker.start(container, markers, video, video.width, video.height, canvas_draw);
+            handleNFT(_this.parameters, arController);
         } else if (_this.parameters.type === 'unknown') {
             artoolkitMarkerId = null
         } else {
@@ -270,18 +258,37 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         })
 
         arController.addEventListener('getNFTMarker', function (event) {
-          if (event.data.type === artoolkit.NFT_MARKER &&_this.parameters.type === 'nft') {
-              if (artoolkitMarkerId === null) return
-              if (event.data.marker.id === artoolkitMarkerId) onMarkerFound(event)
+            if (event.data.type === artoolkit.NFT_MARKER && _this.parameters.type === 'nft') {
+                if (artoolkitMarkerId === null) return
+                if (event.data.marker.id === artoolkitMarkerId) onMarkerFound(event)
             }
-    })
-}
-    function handleNFT(descriptorsUrl, arController) {
-        // ~nicolocarpignoli check if camera data are available to initialize worker
-        console.log(ARjs.Source)
-        arController.loadNFTMarker(descriptorsUrl, function (markerId) {
-            artoolkitMarkerId = markerId
-            arController.trackNFTMarkerId(artoolkitMarkerId, _this.parameters.size);
+        })
+    }
+
+    function handleNFT(parameters, arController) {
+        var markers = {
+            width: parameters.markerNFT.width || 1637,
+            height: parameters.markerNFT.height || 2048,
+            dpi: parameters.markerNFT.dpi || 72,
+            url: parameters.descriptorsUrl,
+        };
+
+        window.addEventListener('arjs-video-loaded', function(ev) {
+            var video = ev.detail.component;
+            var container = document.querySelector('#container');
+            var canvas_draw = document.getElementById('canvas_draw');
+
+            console.log('videossss', video)
+
+            var nftWorker = new THREEx.ArNFTWorker(this.object3d);
+            nftWorker.start(container, markers, video, video.width, video.height, canvas_draw);
+            console.log(ARjs.Source)
+            arController.loadNFTMarker(descriptorsUrl, function (markerId) {
+                artoolkitMarkerId = markerId
+                arController.trackNF
+        });
+
+     TMarkerId(artoolkitMarkerId, parameters.size);
         });
     }
 
