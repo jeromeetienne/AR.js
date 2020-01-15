@@ -7,7 +7,7 @@ THREEx.ArNFTWorker = function(object3d){
 
 Object.assign( THREEx.ArNFTWorker.prototype, THREE.EventDispatcher.prototype );
 
-THREEx.ArNFTWorker.prototype.isMobile = function()  {
+var isMobile = function()  {
     return /Android|mobile|iPad|iPhone/i.test(navigator.userAgent);
 }
 
