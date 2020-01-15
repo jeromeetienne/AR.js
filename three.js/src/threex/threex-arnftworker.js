@@ -23,7 +23,7 @@ var setMatrix = function (matrix, value) {
     }
 };
 
-THREEx.ArNFTWorker.prototype.start = function(container, marker, video, input_width, input_height, canvas_draw) {
+THREEx.ArNFTWorker.prototype.start = function(container, renderer, marker, video, input_width, input_height, canvas_draw) {
     var vw, vh;
     var sw, sh;
     var pscale, sscale;
@@ -36,8 +36,8 @@ THREEx.ArNFTWorker.prototype.start = function(container, marker, video, input_wi
     var context_process = canvas_process.getContext('2d');
 
     // var context_draw = canvas_draw.getContext('2d');
-    var renderer = new THREE.WebGLRenderer({ canvas: canvas_draw, alpha: true, antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
+    /*var renderer = new THREE.WebGLRenderer({ canvas: canvas_draw, alpha: true, antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);*/
 
     var scene = new THREE.Scene();
 
@@ -106,7 +106,7 @@ THREEx.ArNFTWorker.prototype.start = function(container, marker, video, input_wi
                 }
 
                 case "endLoading": {
-                    if (msg.end) {
+                    if (msg.end==true) {
                         // removing loader if present
                         var loader = document.getElementById('arjs-nft-loading');
                         if (loader) {

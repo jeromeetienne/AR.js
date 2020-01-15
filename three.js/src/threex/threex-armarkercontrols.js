@@ -1,7 +1,7 @@
 var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
-ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, parameters) {
+ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, renderer, parameters) {
     var _this = this
 
     THREEx.ArBaseControls.call(this, object3d)
@@ -264,7 +264,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         })
     }
 
-    function handleNFT(parameters, arController) {
+    function handleNFT(parameters, arController, renderer) {
         var markers = {
             width: parameters.markerNFT.width || 1637,
             height: parameters.markerNFT.height || 2048,
@@ -278,7 +278,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             var container = canvas_draw.parentElement || document.body;
 
             var nftWorker = new THREEx.ArNFTWorker(this.object3d);
-            nftWorker.start(container, markers, video, video.videoWidth, video.videoHeight, canvas_draw);
+            nftWorker.start(container, markers, renderer, video, video.videoWidth, video.videoHeight, canvas_draw);
 
             // arController.loadNFTMarker(markers.url, function (markerId) {
             //     artoolkitMarkerId = markerId

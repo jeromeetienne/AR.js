@@ -8,7 +8,12 @@
 
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
-<body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
+<body class="loading" style='margin : 0px; overflow: hidden; font-family: Monospace;'>
+  <div id="arjs-nft-loading" >
+			<img alt="ar.js logo" src="./resources/logo.gif" />
+			<span class="loading-text">Loading, please wait</span>
+	</div>
+
     <script>
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
@@ -95,7 +100,7 @@
 	////////////////////////////////////////////////////////////////////////////////
 
 	// init controls for camera
-	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
+	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, renderer, {
 		type : 'nft',
 		descriptorsUrl : THREEx.ArToolkitContext.baseURL + '../data/dataNFT/pinball',
         changeMatrixMode: 'cameraTransformMatrix',
