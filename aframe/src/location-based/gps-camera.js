@@ -4,8 +4,19 @@ AFRAME.registerComponent('gps-camera', {
     currentCoords: null,
     lookControls: null,
     heading: null,
-
     schema: {
+        simulateLatitude: {
+            type: 'number',
+            default: 0,
+        },
+        simulateLongitude: {
+            type: 'number',
+            default: 0,
+        },
+        simulateAltitude: {
+            type: 'number',
+            default: 0,
+        },
         positionMinAccuracy: {
             type: 'int',
             default: 100,
@@ -17,7 +28,7 @@ AFRAME.registerComponent('gps-camera', {
         minDistance: {
             type: 'int',
             default: 0,
-        },
+        }
     },
 
     init: function () {
@@ -28,7 +39,7 @@ AFRAME.registerComponent('gps-camera', {
         this.loader = document.createElement('DIV');
         this.loader.classList.add('arjs-loader');
         document.body.appendChild(this.loader);
-
+        console.log(this.data);
         window.addEventListener('gps-entity-place-added', function() {
             // if places are added after camera initialization is finished
             if (this.originCoords) {
@@ -72,7 +83,18 @@ AFRAME.registerComponent('gps-camera', {
         window.addEventListener(eventName, this._onDeviceOrientation, false);
 
         this._watchPositionId = this._initWatchGPS(function (position) {
-            this.currentCoords = position.coords;
+            if(this.data.simulateLatitude !== 0 && this.data.simulateLongitude !== 0) {
+                localPosition = Object.assign({}, position.coords);
+                localPosition.longitude = this.data.simulateLongitude;
+                localPosition.latitude = this.data.simulateLatitude;
+                localPosition.altitude = this.data.simulateAltitude;
+                this.currentCoords = localPosition;
+            }
+            else {
+                this.currentCoords = position.coords;
+            }
+            
+            
             this._updatePosition();
         }.bind(this));
     },
