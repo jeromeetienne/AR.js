@@ -1,14 +1,14 @@
 var THREEx = THREEx || {}
 
-THREEx.ArNFTWorker = function(object3d, renderer){
-  //this.id = id;
-  this.object3d = object3d;
-  this.renderer = renderer;
+THREEx.ArNFTWorker = function (object3d, renderer) {
+    //this.id = id;
+    this.object3d = object3d;
+    this.renderer = renderer;
 }
 
-Object.assign( THREEx.ArNFTWorker.prototype, THREE.EventDispatcher.prototype );
+Object.assign(THREEx.ArNFTWorker.prototype, THREE.EventDispatcher.prototype);
 
-var isMobile = function()  {
+var isMobile = function () {
     return /Android|mobile|iPad|iPhone/i.test(navigator.userAgent);
 }
 
@@ -24,7 +24,7 @@ var setMatrix = function (matrix, value) {
     }
 };
 
-THREEx.ArNFTWorker.prototype.start = function(container, marker, video, input_width, input_height, canvas_draw) {
+THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_width, input_height, canvas_draw) {
     var vw, vh;
     var sw, sh;
     var pscale, sscale;
@@ -50,7 +50,7 @@ THREEx.ArNFTWorker.prototype.start = function(container, marker, video, input_wi
     var obj3D = this.object3d;
     root.add(obj3D);
 
-    var load = function() {
+    var load = function () {
         vw = input_width;
         vh = input_height;
 
@@ -84,7 +84,7 @@ THREEx.ArNFTWorker.prototype.start = function(container, marker, video, input_wi
 
         worker.postMessage({ type: "load", pw: pw, ph: ph, marker: marker });
 
-        worker.onmessage = function(ev) {
+        worker.onmessage = function (ev) {
             var msg = ev.data;
             switch (msg.type) {
                 case "loaded": {
@@ -104,7 +104,7 @@ THREEx.ArNFTWorker.prototype.start = function(container, marker, video, input_wi
                 }
 
                 case "endLoading": {
-                    if (msg.end==true) {
+                    if (msg.end == true) {
                         // removing loader if present
                         var loader = document.getElementById('arjs-nft-loading');
                         if (loader) {
@@ -129,14 +129,14 @@ THREEx.ArNFTWorker.prototype.start = function(container, marker, video, input_wi
     };
 
     var lastmsg = null;
-    var found = function(msg) {
+    var found = function (msg) {
         lastmsg = msg;
     };
 
     var lasttime = Date.now();
     var time = 0;
 
-    var draw = function() {
+    var draw = function () {
         //render_update();
         var now = Date.now();
         var dt = now - lasttime;
@@ -170,7 +170,8 @@ THREEx.ArNFTWorker.prototype.start = function(container, marker, video, input_wi
         var imageData = context_process.getImageData(0, 0, pw, ph);
         worker.postMessage({ type: "process", imagedata: imageData }, [imageData.data.buffer]);
     }
-    var tick = function() {
+
+    var tick = function () {
         draw();
         requestAnimationFrame(tick);
     };

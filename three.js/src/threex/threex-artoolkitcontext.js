@@ -236,6 +236,9 @@ ARjs.Context.prototype._initArtoolkit = function (onCompleted) {
 
         // notify
         onCompleted()
+    },
+    function(error) {
+        console.log('Error in retrieving camera dat', error)
     })
     return this
 }
