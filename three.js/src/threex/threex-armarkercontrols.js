@@ -272,14 +272,13 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             var container = canvas_draw.parentElement || document.body;
             var nftWorker = new THREEx.ArNFTWorker(_this.object3d, _this.renderer);
 
-            nftWorker.start(container, markers, video, video.clientWidth, video.clientHeight, canvas_draw);
+            nftWorker.start(container, markers, video, video.clientWidth, video.clientHeight, canvas_draw, onMarkerFound);
         });
     }
 
     function onMarkerFound(event) {
         if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return
-        if (event.data.type === artoolkit.NFT_MARKER < _this.parameters.minConfidence) return
 
         var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
         _this.updateWithModelViewMatrix(modelViewMatrix)

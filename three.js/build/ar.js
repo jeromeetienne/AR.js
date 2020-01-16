@@ -51,13 +51,14 @@ if ('function' === typeof importScripts) {
             var cameraMatrix = ar.getCameraMatrix();
 
             ar.addEventListener('getNFTMarker', function (ev) {
-                markerResult = { type: "found", matrixGL_RH: JSON.stringify(ev.data.matrixGL_RH), proj: JSON.stringify(cameraMatrix) };
+                // old code to remove:
+                // markerResult = { type: "found", matrixGL_RH: JSON.stringify(ev.data.matrixGL_RH), proj: JSON.stringify(cameraMatrix) };
+                markerResult = { type: "found", matrix: JSON.stringify(ev.data.matrix) };
             });
 
             ar.loadNFTMarker(msg.marker.url, function (markerId) {
                 ar.trackNFTMarkerId(markerId, 2);
-                console.log("loadNFTMarker -> ", markerId);
-                postMessage({type: "endLoading", end: true})
+                postMessage({ type: "endLoading", end: true })
             });
 
             postMessage({ type: "loaded", proj: JSON.stringify(cameraMatrix) });
@@ -71,7 +72,6 @@ if ('function' === typeof importScripts) {
     }
 
     function process() {
-
         markerResult = null;
 
         if (ar) {
@@ -670,14 +670,13 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             var container = canvas_draw.parentElement || document.body;
             var nftWorker = new THREEx.ArNFTWorker(_this.object3d, _this.renderer);
 
-            nftWorker.start(container, markers, video, video.clientWidth, video.clientHeight, canvas_draw);
+            nftWorker.start(container, markers, video, video.clientWidth, video.clientHeight, canvas_draw, onMarkerFound);
         });
     }
 
     function onMarkerFound(event) {
         if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return
-        if (event.data.type === artoolkit.NFT_MARKER < _this.parameters.minConfidence) return
 
         var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
         _this.updateWithModelViewMatrix(modelViewMatrix)
@@ -766,7 +765,7 @@ var setMatrix = function (matrix, value) {
     }
 };
 
-THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_width, input_height, canvas_draw) {
+THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_width, input_height, canvas_draw, onMarkerFound) {
     var vw, vh;
     var sw, sh;
     var pscale, sscale;
@@ -796,19 +795,19 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
         vw = input_width;
         vh = input_height;
 
-        pscale = 1
-        sscale =  1;
+        pscale = 320 / Math.max(vw, vh / 3 * 4);
+        sscale = isMobile() ? window.outerWidth / input_width : 1;
 
-        // sw = vw * sscale;
-        // sh = vh * sscale;
-        // video.style.width = sw + "px";
-        // video.style.height = sh + "px";
-        // container.style.width = sw + "px";
-        // container.style.height = sh + "px";
-        // canvas_draw.style.clientWidth = sw + "px";
-        // canvas_draw.style.clientHeight = sh + "px";
-        // canvas_draw.width = sw;
-        // canvas_draw.height = sh;
+        sw = vw * sscale;
+        sh = vh * sscale;
+        video.style.width = sw + "px";
+        video.style.height = sh + "px";
+        container.style.width = sw + "px";
+        container.style.height = sh + "px";
+        canvas_draw.style.clientWidth = sw + "px";
+        canvas_draw.style.clientHeight = sh + "px";
+        canvas_draw.width = sw;
+        canvas_draw.height = sh;
         w = vw * pscale;
         h = vh * pscale;
         pw = Math.max(w, h / 3 * 4);
@@ -824,7 +823,12 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
 
         worker = new Worker('../vendor/jsartoolkit5/js/artoolkit.worker.js');
 
-        worker.postMessage({ type: "load", pw: pw, ph: ph, marker: marker });
+        worker.postMessage({
+            type: "load",
+            pw: pw,
+            ph: ph,
+            marker: marker
+        });
 
         worker.onmessage = function (ev) {
             var msg = ev.data;
@@ -857,6 +861,7 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
                 }
 
                 case "found": {
+                    onMarkerFound(ev);
                     found(msg);
                     break;
                 }
@@ -887,42 +892,42 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
         ]);
     }
 
-    var tick = function () {
-        draw();
-        requestAnimationFrame(tick);
-    };
+    // var tick = function () {
+    //     draw();
+    //     requestAnimationFrame(tick);
+    // };
 
-    var time = 0;
+    // var time = 0;
 
-    var draw = function () {
-        var now = Date.now();
-        var dt = now - lasttime;
-        time += dt;
-        lasttime = now;
+    // var draw = function () {
+    //     var now = Date.now();
+    //     var dt = now - lasttime;
+    //     time += dt;
+    //     lasttime = now;
 
-        if (!lastmsg) {
-            obj3D.visible = false;
-        } else {
-            obj3D.visible = true;
+    //     if (!lastmsg) {
+    //         obj3D.visible = false;
+    //     } else {
+    //         obj3D.visible = true;
 
-            var world = JSON.parse(lastmsg.matrixGL_RH);
+    //         var world = JSON.parse(lastmsg.matrixGL_RH);
 
-            // interpolate matrix
-            for (var i = 0; i < 16; i++) {
-                trackedMatrix.delta[i] = world[i] - trackedMatrix.interpolated[i];
-                trackedMatrix.interpolated[i] =
-                    trackedMatrix.interpolated[i] +
-                    trackedMatrix.delta[i] / interpolationFactor;
-            }
+    //         // interpolate matrix
+    //         for (var i = 0; i < 16; i++) {
+    //             trackedMatrix.delta[i] = world[i] - trackedMatrix.interpolated[i];
+    //             trackedMatrix.interpolated[i] =
+    //                 trackedMatrix.interpolated[i] +
+    //                 trackedMatrix.delta[i] / interpolationFactor;
+    //         }
 
-            // set matrix of 'root' by detected 'world' matrix
-            setMatrix(root.matrix, trackedMatrix.interpolated);
-        }
-        this.renderer.render(scene, camera);
-    };
+    //         // set matrix of 'root' by detected 'world' matrix
+    //         setMatrix(root.matrix, trackedMatrix.interpolated);
+    //     }
+    //     this.renderer.render(scene, camera);
+    // };
 
     load();
-    tick();
+    // tick();
     process();
 }
 var THREEx = THREEx || {}

@@ -28,13 +28,14 @@ if ('function' === typeof importScripts) {
             var cameraMatrix = ar.getCameraMatrix();
 
             ar.addEventListener('getNFTMarker', function (ev) {
-                markerResult = { type: "found", matrixGL_RH: JSON.stringify(ev.data.matrixGL_RH), proj: JSON.stringify(cameraMatrix) };
+                // old code to remove:
+                // markerResult = { type: "found", matrixGL_RH: JSON.stringify(ev.data.matrixGL_RH), proj: JSON.stringify(cameraMatrix) };
+                markerResult = { type: "found", matrix: JSON.stringify(ev.data.matrix) };
             });
 
             ar.loadNFTMarker(msg.marker.url, function (markerId) {
                 ar.trackNFTMarkerId(markerId, 2);
-                console.log("loadNFTMarker -> ", markerId);
-                postMessage({type: "endLoading", end: true})
+                postMessage({ type: "endLoading", end: true })
             });
 
             postMessage({ type: "loaded", proj: JSON.stringify(cameraMatrix) });
@@ -48,7 +49,6 @@ if ('function' === typeof importScripts) {
     }
 
     function process() {
-
         markerResult = null;
 
         if (ar) {

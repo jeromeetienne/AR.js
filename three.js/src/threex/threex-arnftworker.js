@@ -42,7 +42,7 @@ var setMatrix = function (matrix, value) {
     }
 };
 
-THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_width, input_height, canvas_draw) {
+THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_width, input_height, canvas_draw, onMarkerFound) {
     var vw, vh;
     var sw, sh;
     var pscale, sscale;
@@ -138,6 +138,7 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
                 }
 
                 case "found": {
+                    onMarkerFound(ev);
                     found(msg);
                     break;
                 }
@@ -168,41 +169,41 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
         ]);
     }
 
-    var tick = function () {
-        draw();
-        requestAnimationFrame(tick);
-    };
+    // var tick = function () {
+    //     draw();
+    //     requestAnimationFrame(tick);
+    // };
 
-    var time = 0;
+    // var time = 0;
 
-    var draw = function () {
-        var now = Date.now();
-        var dt = now - lasttime;
-        time += dt;
-        lasttime = now;
+    // var draw = function () {
+    //     var now = Date.now();
+    //     var dt = now - lasttime;
+    //     time += dt;
+    //     lasttime = now;
 
-        if (!lastmsg) {
-            obj3D.visible = false;
-        } else {
-            obj3D.visible = true;
+    //     if (!lastmsg) {
+    //         obj3D.visible = false;
+    //     } else {
+    //         obj3D.visible = true;
 
-            var world = JSON.parse(lastmsg.matrixGL_RH);
+    //         var world = JSON.parse(lastmsg.matrixGL_RH);
 
-            // interpolate matrix
-            for (var i = 0; i < 16; i++) {
-                trackedMatrix.delta[i] = world[i] - trackedMatrix.interpolated[i];
-                trackedMatrix.interpolated[i] =
-                    trackedMatrix.interpolated[i] +
-                    trackedMatrix.delta[i] / interpolationFactor;
-            }
+    //         // interpolate matrix
+    //         for (var i = 0; i < 16; i++) {
+    //             trackedMatrix.delta[i] = world[i] - trackedMatrix.interpolated[i];
+    //             trackedMatrix.interpolated[i] =
+    //                 trackedMatrix.interpolated[i] +
+    //                 trackedMatrix.delta[i] / interpolationFactor;
+    //         }
 
-            // set matrix of 'root' by detected 'world' matrix
-            setMatrix(root.matrix, trackedMatrix.interpolated);
-        }
-        this.renderer.render(scene, camera);
-    };
+    //         // set matrix of 'root' by detected 'world' matrix
+    //         setMatrix(root.matrix, trackedMatrix.interpolated);
+    //     }
+    //     this.renderer.render(scene, camera);
+    // };
 
     load();
-    tick();
+    // tick();
     process();
 }
