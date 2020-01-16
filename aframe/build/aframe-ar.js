@@ -49,12 +49,13 @@ if ('function' === typeof importScripts) {
         var onLoad = function () {
             ar = new ARController(msg.pw, msg.ph, param);
             var cameraMatrix = ar.getCameraMatrix();
+            console.log(cameraMatrix);
 
             ar.addEventListener('getNFTMarker', function (ev) {
                 markerResult = { type: "found", matrixGL_RH: JSON.stringify(ev.data.matrixGL_RH), proj: JSON.stringify(cameraMatrix) };
             });
 
-            ar.loadNFTMarker(msg.marker, function (markerId) {
+            ar.loadNFTMarker(msg.marker.url, function (markerId) {
                 ar.trackNFTMarkerId(markerId, 2);
                 console.log("loadNFTMarker -> ", markerId);
             });
