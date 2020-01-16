@@ -30,6 +30,8 @@ if ('function' === typeof importScripts) {
             ar.addEventListener('getNFTMarker', function (ev) {
                 // old code to remove:
                 // markerResult = { type: "found", matrixGL_RH: JSON.stringify(ev.data.matrixGL_RH), proj: JSON.stringify(cameraMatrix) };
+
+                // i'm sending only .matrix as AR.js uses only that for pattern markers and barcode markers
                 markerResult = { type: "found", matrix: JSON.stringify(ev.data.matrix) };
             });
 

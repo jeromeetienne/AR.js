@@ -53,6 +53,8 @@ if ('function' === typeof importScripts) {
             ar.addEventListener('getNFTMarker', function (ev) {
                 // old code to remove:
                 // markerResult = { type: "found", matrixGL_RH: JSON.stringify(ev.data.matrixGL_RH), proj: JSON.stringify(cameraMatrix) };
+
+                // i'm sending only .matrix as AR.js uses only that for pattern markers and barcode markers
                 markerResult = { type: "found", matrix: JSON.stringify(ev.data.matrix) };
             });
 
@@ -862,7 +864,9 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
 
                 case "found": {
                     onMarkerFound(ev);
-                    found(msg);
+
+                    // old code, now let AR.js handle the rendering
+                    // found(msg);
                     break;
                 }
                 case "not found": {

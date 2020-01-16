@@ -139,7 +139,9 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
 
                 case "found": {
                     onMarkerFound(ev);
-                    found(msg);
+
+                    // old code, now let AR.js handle the rendering
+                    // found(msg);
                     break;
                 }
                 case "not found": {
