@@ -654,13 +654,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
                 onMarkerFound(event)
             }
         })
-
-        arController.addEventListener('getNFTMarker', function (event) {
-            if (event.data.type === artoolkit.NFT_MARKER && _this.parameters.type === 'nft') {
-                if (artoolkitMarkerId === null) return
-                if (event.data.marker.id === artoolkitMarkerId) onMarkerFound(event)
-            }
-        })
     }
 
     function handleNFT(parameters, arController) {
@@ -737,6 +730,24 @@ THREEx.ArNFTWorker = function (object3d, renderer) {
     this.renderer = renderer;
 }
 
+var interpolationFactor = 24;
+
+var trackedMatrix = {
+    // for interpolation
+    delta: [
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0
+    ],
+    interpolated: [
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0
+    ]
+}
+
 Object.assign(THREEx.ArNFTWorker.prototype, THREE.EventDispatcher.prototype);
 
 var isMobile = function () {
@@ -785,19 +796,19 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
         vw = input_width;
         vh = input_height;
 
-        pscale = 320 / Math.max(vw, vh / 3 * 4);
-        sscale = isMobile() ? window.outerWidth / input_width : 1;
+        pscale = 1
+        sscale =  1;
 
-        sw = vw * sscale;
-        sh = vh * sscale;
-        video.style.width = sw + "px";
-        video.style.height = sh + "px";
-        container.style.width = sw + "px";
-        container.style.height = sh + "px";
-        canvas_draw.style.clientWidth = sw + "px";
-        canvas_draw.style.clientHeight = sh + "px";
-        canvas_draw.width = sw;
-        canvas_draw.height = sh;
+        // sw = vw * sscale;
+        // sh = vh * sscale;
+        // video.style.width = sw + "px";
+        // video.style.height = sh + "px";
+        // container.style.width = sw + "px";
+        // container.style.height = sh + "px";
+        // canvas_draw.style.clientWidth = sw + "px";
+        // canvas_draw.style.clientHeight = sh + "px";
+        // canvas_draw.width = sw;
+        // canvas_draw.height = sh;
         w = vw * pscale;
         h = vh * pscale;
         pw = Math.max(w, h / 3 * 4);
@@ -854,7 +865,6 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
                     break;
                 }
             }
-            //track_update();
             process();
         };
     };
@@ -865,10 +875,26 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
     };
 
     var lasttime = Date.now();
+
+    function process() {
+        context_process.fillStyle = "black";
+        context_process.fillRect(0, 0, pw, ph);
+        context_process.drawImage(video, 0, 0, vw, vh, ox, oy, w, h);
+
+        var imageData = context_process.getImageData(0, 0, pw, ph);
+        worker.postMessage({ type: "process", imagedata: imageData }, [
+            imageData.data.buffer
+        ]);
+    }
+
+    var tick = function () {
+        draw();
+        requestAnimationFrame(tick);
+    };
+
     var time = 0;
 
     var draw = function () {
-        //render_update();
         var now = Date.now();
         var dt = now - lasttime;
         time += dt;
@@ -877,34 +903,22 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
         if (!lastmsg) {
             obj3D.visible = false;
         } else {
-            var proj = JSON.parse(lastmsg.proj);
+            obj3D.visible = true;
+
             var world = JSON.parse(lastmsg.matrixGL_RH);
 
-            var width = marker.width;
-            var height = marker.height;
-            var dpi = marker.dpi;
+            // interpolate matrix
+            for (var i = 0; i < 16; i++) {
+                trackedMatrix.delta[i] = world[i] - trackedMatrix.interpolated[i];
+                trackedMatrix.interpolated[i] =
+                    trackedMatrix.interpolated[i] +
+                    trackedMatrix.delta[i] / interpolationFactor;
+            }
 
-            var w = width / dpi * 2.54 * 10;
-            var h = height / dpi * 2.54 * 10;
-
-            obj3D.visible = true;
-            setMatrix(root.matrix, world);
+            // set matrix of 'root' by detected 'world' matrix
+            setMatrix(root.matrix, trackedMatrix.interpolated);
         }
         this.renderer.render(scene, camera);
-    };
-
-    function process() {
-        context_process.fillStyle = "black";
-        context_process.fillRect(0, 0, pw, ph);
-        context_process.drawImage(video, 0, 0, vw, vh, ox, oy, w, h);
-
-        var imageData = context_process.getImageData(0, 0, pw, ph);
-        worker.postMessage({ type: "process", imagedata: imageData }, [imageData.data.buffer]);
-    }
-
-    var tick = function () {
-        draw();
-        requestAnimationFrame(tick);
     };
 
     load();

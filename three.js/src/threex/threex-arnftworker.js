@@ -6,6 +6,24 @@ THREEx.ArNFTWorker = function (object3d, renderer) {
     this.renderer = renderer;
 }
 
+var interpolationFactor = 24;
+
+var trackedMatrix = {
+    // for interpolation
+    delta: [
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0
+    ],
+    interpolated: [
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0
+    ]
+}
+
 Object.assign(THREEx.ArNFTWorker.prototype, THREE.EventDispatcher.prototype);
 
 var isMobile = function () {
@@ -82,7 +100,12 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
 
         worker = new Worker('../vendor/jsartoolkit5/js/artoolkit.worker.js');
 
-        worker.postMessage({ type: "load", pw: pw, ph: ph, marker: marker });
+        worker.postMessage({
+            type: "load",
+            pw: pw,
+            ph: ph,
+            marker: marker
+        });
 
         worker.onmessage = function (ev) {
             var msg = ev.data;
@@ -123,7 +146,6 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
                     break;
                 }
             }
-            //track_update();
             process();
         };
     };
@@ -134,10 +156,26 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
     };
 
     var lasttime = Date.now();
+
+    function process() {
+        context_process.fillStyle = "black";
+        context_process.fillRect(0, 0, pw, ph);
+        context_process.drawImage(video, 0, 0, vw, vh, ox, oy, w, h);
+
+        var imageData = context_process.getImageData(0, 0, pw, ph);
+        worker.postMessage({ type: "process", imagedata: imageData }, [
+            imageData.data.buffer
+        ]);
+    }
+
+    var tick = function () {
+        draw();
+        requestAnimationFrame(tick);
+    };
+
     var time = 0;
 
     var draw = function () {
-        //render_update();
         var now = Date.now();
         var dt = now - lasttime;
         time += dt;
@@ -146,34 +184,22 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
         if (!lastmsg) {
             obj3D.visible = false;
         } else {
-            var proj = JSON.parse(lastmsg.proj);
+            obj3D.visible = true;
+
             var world = JSON.parse(lastmsg.matrixGL_RH);
 
-            var width = marker.width;
-            var height = marker.height;
-            var dpi = marker.dpi;
+            // interpolate matrix
+            for (var i = 0; i < 16; i++) {
+                trackedMatrix.delta[i] = world[i] - trackedMatrix.interpolated[i];
+                trackedMatrix.interpolated[i] =
+                    trackedMatrix.interpolated[i] +
+                    trackedMatrix.delta[i] / interpolationFactor;
+            }
 
-            var w = width / dpi * 2.54 * 10;
-            var h = height / dpi * 2.54 * 10;
-
-            obj3D.visible = true;
-            setMatrix(root.matrix, world);
+            // set matrix of 'root' by detected 'world' matrix
+            setMatrix(root.matrix, trackedMatrix.interpolated);
         }
         this.renderer.render(scene, camera);
-    };
-
-    function process() {
-        context_process.fillStyle = "black";
-        context_process.fillRect(0, 0, pw, ph);
-        context_process.drawImage(video, 0, 0, vw, vh, ox, oy, w, h);
-
-        var imageData = context_process.getImageData(0, 0, pw, ph);
-        worker.postMessage({ type: "process", imagedata: imageData }, [imageData.data.buffer]);
-    }
-
-    var tick = function () {
-        draw();
-        requestAnimationFrame(tick);
     };
 
     load();

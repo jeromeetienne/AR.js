@@ -256,13 +256,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
                 onMarkerFound(event)
             }
         })
-
-        arController.addEventListener('getNFTMarker', function (event) {
-            if (event.data.type === artoolkit.NFT_MARKER && _this.parameters.type === 'nft') {
-                if (artoolkitMarkerId === null) return
-                if (event.data.marker.id === artoolkitMarkerId) onMarkerFound(event)
-            }
-        })
     }
 
     function handleNFT(parameters, arController) {
