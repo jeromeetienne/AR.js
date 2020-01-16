@@ -670,12 +670,8 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             var canvas_draw = arController.canvas;
             var container = canvas_draw.parentElement || document.body;
             var nftWorker = new THREEx.ArNFTWorker(_this.object3d, _this.renderer);
-            nftWorker.start(container, markers, video, video.videoWidth, video.videoHeight, canvas_draw);
 
-            // arController.loadNFTMarker(markers.url, function (markerId) {
-            //     artoolkitMarkerId = markerId
-            //     arController.trackNFTMarkerId(artoolkitMarkerId, markers.width);
-            // });
+            nftWorker.start(container, markers, video, video.clientWidth, video.clientHeight, canvas_draw);
         });
     }
 
@@ -764,10 +760,6 @@ THREEx.ArNFTWorker.prototype.start = function(container, marker, video, input_wi
 
     var canvas_process = document.createElement('canvas');
     var context_process = canvas_process.getContext('2d');
-
-    // var context_draw = canvas_draw.getContext('2d');
-    /*var renderer = new THREE.WebGLRenderer({ canvas: canvas_draw, alpha: true, antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);*/
 
     var scene = new THREE.Scene();
 

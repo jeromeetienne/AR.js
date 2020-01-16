@@ -278,7 +278,8 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             var canvas_draw = arController.canvas;
             var container = canvas_draw.parentElement || document.body;
             var nftWorker = new THREEx.ArNFTWorker(_this.object3d, _this.renderer);
-            nftWorker.start(container, markers, video, video.videoWidth, video.videoHeight, canvas_draw);
+
+            nftWorker.start(container, markers, video, video.clientWidth, video.clientHeight, canvas_draw);
         });
     }
 
