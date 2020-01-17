@@ -19,10 +19,11 @@
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////
 
-    var renderer	= new THREE.WebGLRenderer({
+    var renderer = new THREE.WebGLRenderer({
 		antialias: true,
 		alpha: true
-	});
+    });
+
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
 	renderer.setSize( 640, 480 );
 	renderer.domElement.style.position = 'absolute'
@@ -87,7 +88,9 @@
 
 	// update artoolkit on every frame
 	onRenderFcts.push(function(){
-		if( arToolkitSource.ready === false )	return
+		if (arToolkitSource.ready === false) {
+            returnL;
+        }
 
 		arToolkitContext.update( arToolkitSource.domElement )
 
@@ -98,8 +101,8 @@
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
-  var  markerRoot = new THREE.Object3D();
-  markerRoot.add(scene);
+    var  markerRoot = new THREE.Object3D();
+    markerRoot.add(scene);
 
 	// init controls for camera
 	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, renderer, {
@@ -119,21 +122,19 @@
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
-  let sphere = new THREE.Mesh(
-      new THREE.SphereGeometry(0.5, 8, 8),
-      new THREE.MeshNormalMaterial()
-  );
+    let sphere = new THREE.Mesh(
+        new THREE.SphereGeometry(0.5, 8, 8),
+        new THREE.MeshNormalMaterial()
+    );
 
 
-  sphere.material.shading = THREE.FlatShading;
-  sphere.position.z = 0;
-  sphere.position.x = 40;
-  sphere.position.y = 40;
-  sphere.scale.set(80, 80, 80);
-  scene.add(sphere);
+    sphere.material.shading = THREE.FlatShading;
+    sphere.position.z = 0;
+    sphere.position.x = 40;
+    sphere.position.y = 40;
+    sphere.scale.set(80, 80, 80);
+    scene.add(sphere);
 
-	onRenderFcts.push(function(delta){
-	})
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page

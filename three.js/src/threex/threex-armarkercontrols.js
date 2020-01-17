@@ -301,37 +301,8 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
     }
 
     function onNFTFound(ev) {
-        var camera = new THREE.Camera();
-        camera.matrixAutoUpdate = false;
-        var scene = new THREE.Scene();
-        scene.add(camera);
-        var obj3D = _this.object3d;
-
-        if (ev.type !== 'found') {
-            obj3D.visible = false;
-        } else {
-            obj3D.visible = true;
-
-            var world = JSON.parse(ev.data.matrix);
-
-            // interpolate matrix
-            for (var i = 0; i < 16; i++) {
-                trackedMatrix.delta[i] = world[i] - trackedMatrix.interpolated[i];
-                trackedMatrix.interpolated[i] =
-                    trackedMatrix.interpolated[i] +
-                    trackedMatrix.delta[i] / interpolationFactor;
-            }
-
-            // set matrix of 'root' by detected 'world' matrix
-            setMatrix(obj3D.matrix, trackedMatrix.interpolated);
-        }
-
-        console.log(_this.renderer);
-        
-        function render(){
-        requestAnimationFrame( render );
-        _this.renderer.render(scene, camera);
-        };
-        render();
+        // here we should only call onMarkerFound(ev), that updates the modelViewMatrix
+        // all the rendering of content is already done by AR.js (see nft.html)
+        onMarkerFound(ev);
     }
 }
