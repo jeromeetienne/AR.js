@@ -6,24 +6,6 @@ THREEx.ArNFTWorker = function (object3d, renderer) {
     this.renderer = renderer;
 }
 
-var interpolationFactor = 24;
-
-var trackedMatrix = {
-    // for interpolation
-    delta: [
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0
-    ],
-    interpolated: [
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0
-    ]
-}
-
 Object.assign(THREEx.ArNFTWorker.prototype, THREE.EventDispatcher.prototype);
 
 var isMobile = function () {
@@ -42,7 +24,7 @@ var setMatrix = function (matrix, value) {
     }
 };
 
-THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_width, input_height, canvas_draw, onMarkerFound) {
+THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_width, input_height, canvas_draw, onNFTFound) {
     var vw, vh;
     var sw, sh;
     var pscale, sscale;
@@ -140,13 +122,7 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
                 }
 
                 case "found": {
-                    onMarkerFound(ev);
-
-                    if (!msg) {
-                      obj3D.visible = false;
-                    } else {
-                      obj3D.visible = true;
-                    }
+                    onNFTFound(ev);
                     // old code, now let AR.js handle the rendering
                     // found(msg);
                     break;

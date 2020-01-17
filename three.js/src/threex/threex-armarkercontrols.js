@@ -1,6 +1,22 @@
 var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
+var interpolationFactor = 24;
+var trackedMatrix = {
+    delta: [
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0
+    ],
+    interpolated: [
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0
+    ]
+};
+
 ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, renderer, parameters) {
     var _this = this
 
@@ -266,13 +282,13 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             url: parameters.descriptorsUrl,
         };
 
-        window.addEventListener('arjs-video-loaded', function(ev) {
+        window.addEventListener('arjs-video-loaded', function (ev) {
             var video = ev.detail.component;
             var canvas_draw = arController.canvas;
             var container = canvas_draw.parentElement || document.body;
             var nftWorker = new THREEx.ArNFTWorker(_this.object3d, _this.renderer);
 
-            nftWorker.start(container, markers, video, video.clientWidth, video.clientHeight, canvas_draw, onMarkerFound);
+            nftWorker.start(container, markers, video, video.clientWidth, video.clientHeight, canvas_draw, onNFTFound);
         });
     }
 
@@ -282,5 +298,30 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
 
         var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
         _this.updateWithModelViewMatrix(modelViewMatrix)
+    }
+
+    function onNFTFound(ev) {
+        if (ev.type !== 'found') {
+            obj3D.visible = false;
+        } else {
+            obj3D.visible = true;
+
+            var world = JSON.parse(ev.data.matrix);
+
+            // interpolate matrix
+            for (var i = 0; i < 16; i++) {
+                trackedMatrix.delta[i] = world[i] - trackedMatrix.interpolated[i];
+                trackedMatrix.interpolated[i] =
+                    trackedMatrix.interpolated[i] +
+                    trackedMatrix.delta[i] / interpolationFactor;
+            }
+
+            // set matrix of 'root' by detected 'world' matrix
+            setMatrix(obj3D.matrix, trackedMatrix.interpolated);
+        }
+
+        console.log(this.renderer)
+
+        this.renderer.render(scene, camera);
     }
 }
