@@ -844,7 +844,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
 }
     function handleNFT(descriptorsUrl, arController) {
         // ~nicolocarpignoli check if camera data are available to initialize worker
-        console.log(ARjs.Source)
         arController.loadNFTMarker(descriptorsUrl, function (markerId) {
             artoolkitMarkerId = markerId
             arController.trackNFTMarkerId(artoolkitMarkerId, _this.parameters.size);
@@ -854,7 +853,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
     function onMarkerFound(event) {
         if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return
-        if (event.data.type === artoolkit.NFT_MARKER < _this.parameters.minConfidence) return
 
         var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
         _this.updateWithModelViewMatrix(modelViewMatrix)
