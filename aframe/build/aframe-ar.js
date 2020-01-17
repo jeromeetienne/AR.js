@@ -401,6 +401,22 @@ THREEx.ArMarkerCloak.fragmentShader = '\n'+
 var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
+var interpolationFactor = 24;
+var trackedMatrix = {
+    delta: [
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0
+    ],
+    interpolated: [
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0
+    ]
+};
+
 ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, renderer, parameters) {
     var _this = this
 
@@ -666,13 +682,13 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             url: parameters.descriptorsUrl,
         };
 
-        window.addEventListener('arjs-video-loaded', function(ev) {
+        window.addEventListener('arjs-video-loaded', function (ev) {
             var video = ev.detail.component;
             var canvas_draw = arController.canvas;
             var container = canvas_draw.parentElement || document.body;
             var nftWorker = new THREEx.ArNFTWorker(_this.object3d, _this.renderer);
 
-            nftWorker.start(container, markers, video, video.clientWidth, video.clientHeight, canvas_draw, onMarkerFound);
+            nftWorker.start(container, markers, video, video.clientWidth, video.clientHeight, canvas_draw, onNFTFound);
         });
     }
 
@@ -682,6 +698,41 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
 
         var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
         _this.updateWithModelViewMatrix(modelViewMatrix)
+    }
+
+    function onNFTFound(ev) {
+        var camera = new THREE.Camera();
+        camera.matrixAutoUpdate = false;
+        var scene = new THREE.Scene();
+        scene.add(camera);
+        var obj3D = _this.object3d;
+
+        if (ev.type !== 'found') {
+            obj3D.visible = false;
+        } else {
+            obj3D.visible = true;
+
+            var world = JSON.parse(ev.data.matrix);
+
+            // interpolate matrix
+            for (var i = 0; i < 16; i++) {
+                trackedMatrix.delta[i] = world[i] - trackedMatrix.interpolated[i];
+                trackedMatrix.interpolated[i] =
+                    trackedMatrix.interpolated[i] +
+                    trackedMatrix.delta[i] / interpolationFactor;
+            }
+
+            // set matrix of 'root' by detected 'world' matrix
+            setMatrix(obj3D.matrix, trackedMatrix.interpolated);
+        }
+
+        console.log(_this.renderer);
+        
+        function render(){
+        requestAnimationFrame( render );
+        _this.renderer.render(scene, camera);
+        };
+        render();
     }
 }
 var THREEx = THREEx || {}
@@ -731,24 +782,6 @@ THREEx.ArNFTWorker = function (object3d, renderer) {
     this.renderer = renderer;
 }
 
-var interpolationFactor = 24;
-
-var trackedMatrix = {
-    // for interpolation
-    delta: [
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0
-    ],
-    interpolated: [
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0
-    ]
-}
-
 Object.assign(THREEx.ArNFTWorker.prototype, THREE.EventDispatcher.prototype);
 
 var isMobile = function () {
@@ -767,7 +800,7 @@ var setMatrix = function (matrix, value) {
     }
 };
 
-THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_width, input_height, canvas_draw, onMarkerFound) {
+THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_width, input_height, canvas_draw, onNFTFound) {
     var vw, vh;
     var sw, sh;
     var pscale, sscale;
@@ -787,7 +820,6 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
     scene.add(camera);
 
     var root = new THREE.Object3D();
-    root.name = 'obj_root';
 
     scene.add(root);
 
@@ -866,14 +898,7 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
                 }
 
                 case "found": {
-                    onMarkerFound(ev);
-                    if (!msg) {
-                      obj3D.visible = false;
-                      root.visible=false;
-                    } else {
-                      obj3D.visible = true;
-                      root.visible=true;
-                    }
+                    onNFTFound(ev);
                     // old code, now let AR.js handle the rendering
                     // found(msg);
                     break;

@@ -301,6 +301,12 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
     }
 
     function onNFTFound(ev) {
+        var camera = new THREE.Camera();
+        camera.matrixAutoUpdate = false;
+        var scene = new THREE.Scene();
+        scene.add(camera);
+        var obj3D = _this.object3d;
+
         if (ev.type !== 'found') {
             obj3D.visible = false;
         } else {
@@ -320,8 +326,12 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             setMatrix(obj3D.matrix, trackedMatrix.interpolated);
         }
 
-        console.log(this.renderer)
-
-        this.renderer.render(scene, camera);
+        console.log(_this.renderer);
+        
+        function render(){
+        requestAnimationFrame( render );
+        _this.renderer.render(scene, camera);
+        };
+        render();
     }
 }
