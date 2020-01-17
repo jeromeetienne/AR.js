@@ -787,10 +787,13 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
     scene.add(camera);
 
     var root = new THREE.Object3D();
+    root.name = 'obj_root';
+
     scene.add(root);
 
     root.matrixAutoUpdate = false;
     var obj3D = this.object3d;
+    obj3D.name = 'obj_3d';
     root.add(obj3D);
 
     var load = function () {
@@ -864,7 +867,13 @@ THREEx.ArNFTWorker.prototype.start = function (container, marker, video, input_w
 
                 case "found": {
                     onMarkerFound(ev);
-
+                    if (!msg) {
+                      obj3D.visible = false;
+                      root.visible=false;
+                    } else {
+                      obj3D.visible = true;
+                      root.visible=true;
+                    }
                     // old code, now let AR.js handle the rendering
                     // found(msg);
                     break;

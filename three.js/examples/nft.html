@@ -147,6 +147,7 @@
 	// run the rendering loop
 	var lastTimeMsec= null
 	requestAnimationFrame(function animate(nowMsec){
+    console.log(scene.getObjectByName('obj_3d'));
 		// keep looping
 		requestAnimationFrame( animate );
 		// measure time
