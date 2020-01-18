@@ -21,65 +21,71 @@ var Bb=[yP,nr,qr,Ar];var Cb=[zP,qs];var Db=[AP,jr];var Eb=[BP,nj,ix,px,YA,LD,MD,
 // EMSCRIPTEN_END_ASM
 (asmGlobalArg,asmLibraryArg,buffer);var __GLOBAL__I_000101=Module["__GLOBAL__I_000101"]=asm["__GLOBAL__I_000101"];var __GLOBAL__sub_I_ARToolKitJS_cpp=Module["__GLOBAL__sub_I_ARToolKitJS_cpp"]=asm["__GLOBAL__sub_I_ARToolKitJS_cpp"];var __GLOBAL__sub_I_bind_cpp=Module["__GLOBAL__sub_I_bind_cpp"]=asm["__GLOBAL__sub_I_bind_cpp"];var __GLOBAL__sub_I_iostream_cpp=Module["__GLOBAL__sub_I_iostream_cpp"]=asm["__GLOBAL__sub_I_iostream_cpp"];var __ZSt18uncaught_exceptionv=Module["__ZSt18uncaught_exceptionv"]=asm["__ZSt18uncaught_exceptionv"];var ___cxa_can_catch=Module["___cxa_can_catch"]=asm["___cxa_can_catch"];var ___cxa_is_pointer_type=Module["___cxa_is_pointer_type"]=asm["___cxa_is_pointer_type"];var ___embind_register_native_and_builtin_types=Module["___embind_register_native_and_builtin_types"]=asm["___embind_register_native_and_builtin_types"];var ___emscripten_environ_constructor=Module["___emscripten_environ_constructor"]=asm["___emscripten_environ_constructor"];var ___errno_location=Module["___errno_location"]=asm["___errno_location"];var ___getTypeName=Module["___getTypeName"]=asm["___getTypeName"];var ___muldi3=Module["___muldi3"]=asm["___muldi3"];var ___udivdi3=Module["___udivdi3"]=asm["___udivdi3"];var __get_daylight=Module["__get_daylight"]=asm["__get_daylight"];var __get_environ=Module["__get_environ"]=asm["__get_environ"];var __get_timezone=Module["__get_timezone"]=asm["__get_timezone"];var __get_tzname=Module["__get_tzname"]=asm["__get_tzname"];var _bitshift64Lshr=Module["_bitshift64Lshr"]=asm["_bitshift64Lshr"];var _bitshift64Shl=Module["_bitshift64Shl"]=asm["_bitshift64Shl"];var _emscripten_get_sbrk_ptr=Module["_emscripten_get_sbrk_ptr"]=asm["_emscripten_get_sbrk_ptr"];var _free=Module["_free"]=asm["_free"];var _i64Add=Module["_i64Add"]=asm["_i64Add"];var _i64Subtract=Module["_i64Subtract"]=asm["_i64Subtract"];var _llvm_bswap_i32=Module["_llvm_bswap_i32"]=asm["_llvm_bswap_i32"];var _malloc=Module["_malloc"]=asm["_malloc"];var _memcpy=Module["_memcpy"]=asm["_memcpy"];var _memmove=Module["_memmove"]=asm["_memmove"];var _memset=Module["_memset"]=asm["_memset"];var _realloc=Module["_realloc"]=asm["_realloc"];var _roundf=Module["_roundf"]=asm["_roundf"];var _saveSetjmp=Module["_saveSetjmp"]=asm["_saveSetjmp"];var _setThrew=Module["_setThrew"]=asm["_setThrew"];var _testSetjmp=Module["_testSetjmp"]=asm["_testSetjmp"];var establishStackSpace=Module["establishStackSpace"]=asm["establishStackSpace"];var stackAlloc=Module["stackAlloc"]=asm["stackAlloc"];var stackRestore=Module["stackRestore"]=asm["stackRestore"];var stackSave=Module["stackSave"]=asm["stackSave"];var dynCall_di=Module["dynCall_di"]=asm["dynCall_di"];var dynCall_dii=Module["dynCall_dii"]=asm["dynCall_dii"];var dynCall_i=Module["dynCall_i"]=asm["dynCall_i"];var dynCall_ii=Module["dynCall_ii"]=asm["dynCall_ii"];var dynCall_iidiiii=Module["dynCall_iidiiii"]=asm["dynCall_iidiiii"];var dynCall_iii=Module["dynCall_iii"]=asm["dynCall_iii"];var dynCall_iiii=Module["dynCall_iiii"]=asm["dynCall_iiii"];var dynCall_iiiii=Module["dynCall_iiiii"]=asm["dynCall_iiiii"];var dynCall_iiiiid=Module["dynCall_iiiiid"]=asm["dynCall_iiiiid"];var dynCall_iiiiii=Module["dynCall_iiiiii"]=asm["dynCall_iiiiii"];var dynCall_iiiiiid=Module["dynCall_iiiiiid"]=asm["dynCall_iiiiiid"];var dynCall_iiiiiii=Module["dynCall_iiiiiii"]=asm["dynCall_iiiiiii"];var dynCall_iiiiiiii=Module["dynCall_iiiiiiii"]=asm["dynCall_iiiiiiii"];var dynCall_iiiiiiiii=Module["dynCall_iiiiiiiii"]=asm["dynCall_iiiiiiiii"];var dynCall_v=Module["dynCall_v"]=asm["dynCall_v"];var dynCall_vi=Module["dynCall_vi"]=asm["dynCall_vi"];var dynCall_vid=Module["dynCall_vid"]=asm["dynCall_vid"];var dynCall_vii=Module["dynCall_vii"]=asm["dynCall_vii"];var dynCall_viid=Module["dynCall_viid"]=asm["dynCall_viid"];var dynCall_viii=Module["dynCall_viii"]=asm["dynCall_viii"];var dynCall_viiii=Module["dynCall_viiii"]=asm["dynCall_viiii"];var dynCall_viiiii=Module["dynCall_viiiii"]=asm["dynCall_viiiii"];var dynCall_viiiiii=Module["dynCall_viiiiii"]=asm["dynCall_viiiiii"];var dynCall_viiiiiii=Module["dynCall_viiiiiii"]=asm["dynCall_viiiiiii"];Module["asm"]=asm;if(memoryInitializer){if(!isDataURI(memoryInitializer)){memoryInitializer=locateFile(memoryInitializer)}if(ENVIRONMENT_IS_NODE||ENVIRONMENT_IS_SHELL){var data=readBinary(memoryInitializer);HEAPU8.set(data,GLOBAL_BASE)}else{addRunDependency("memory initializer");var applyMemoryInitializer=function(data){if(data.byteLength)data=new Uint8Array(data);HEAPU8.set(data,GLOBAL_BASE);if(Module["memoryInitializerRequest"])delete Module["memoryInitializerRequest"].response;removeRunDependency("memory initializer")};var doBrowserLoad=function(){readAsync(memoryInitializer,applyMemoryInitializer,function(){throw"could not load memory initializer "+memoryInitializer})};var memoryInitializerBytes=tryParseAsDataURI(memoryInitializer);if(memoryInitializerBytes){applyMemoryInitializer(memoryInitializerBytes.buffer)}else if(Module["memoryInitializerRequest"]){var useRequest=function(){var request=Module["memoryInitializerRequest"];var response=request.response;if(request.status!==200&&request.status!==0){var data=tryParseAsDataURI(Module["memoryInitializerRequestURL"]);if(data){response=data.buffer}else{console.warn("a problem seems to have happened with Module.memoryInitializerRequest, status: "+request.status+", retrying "+memoryInitializer);doBrowserLoad();return}}applyMemoryInitializer(response)};if(Module["memoryInitializerRequest"].response){setTimeout(useRequest,0)}else{Module["memoryInitializerRequest"].addEventListener("load",useRequest)}}else{doBrowserLoad()}}}var calledRun;function ExitStatus(status){this.name="ExitStatus";this.message="Program terminated with exit("+status+")";this.status=status}dependenciesFulfilled=function runCaller(){if(!calledRun)run();if(!calledRun)dependenciesFulfilled=runCaller};function run(args){args=args||arguments_;if(runDependencies>0){return}preRun();if(runDependencies>0)return;function doRun(){if(calledRun)return;calledRun=true;if(ABORT)return;initRuntime();preMain();if(Module["onRuntimeInitialized"])Module["onRuntimeInitialized"]();postRun()}if(Module["setStatus"]){Module["setStatus"]("Running...");setTimeout(function(){setTimeout(function(){Module["setStatus"]("")},1);doRun()},1)}else{doRun()}}Module["run"]=run;function exit(status,implicit){if(implicit&&noExitRuntime&&status===0){return}if(noExitRuntime){}else{ABORT=true;EXITSTATUS=status;exitRuntime();if(Module["onExit"])Module["onExit"](status)}quit_(status,new ExitStatus(status))}if(Module["preInit"]){if(typeof Module["preInit"]=="function")Module["preInit"]=[Module["preInit"]];while(Module["preInit"].length>0){Module["preInit"].pop()()}}noExitRuntime=true;run();
 
-if( 'function' === typeof importScripts) {
-//importScripts('artoolkit.min.js');
-importScripts('../build/artoolkit.min.js');
+if ('function' === typeof importScripts) {
+    importScripts('../build/artoolkit.min.js');
 
-self.onmessage = function(e) {
-    var msg = e.data;
-    switch (msg.type) {
-        case "load": {
-            load(msg);
-            return;
+    self.onmessage = function (e) {
+        var msg = e.data;
+        switch (msg.type) {
+            case "load": {
+                load(msg);
+                return;
+            }
+            case "process": {
+                next = msg.imagedata;
+                process();
+                return;
+            }
         }
-        case "process": {
-            next = msg.imagedata;
-            process();
-            return;
-        }
-    }
-};
-
-var next = null;
-
-var ar = null;
-var markerResult = null;
-
-function load(msg) {
-    var param = new ARCameraParam('../resources/camera_para-iPhone 5 rear 640x480 1.0m.dat');
-    param.onload = function () {
-        ar = new ARController(msg.pw, msg.ph, param);
-        var cameraMatrix = ar.getCameraMatrix();
-
-        ar.addEventListener('getNFTMarker', function (ev) {
-            markerResult = {type: "found", matrixGL_RH: JSON.stringify(ev.data.matrixGL_RH), proj: JSON.stringify(cameraMatrix)};
-        });
-
-        ar.loadNFTMarker(msg.marker, function (markerId) {
-            ar.trackNFTMarkerId(markerId, 2);
-            console.log("loadNFTMarker -> ", markerId);
-        });
-
-        postMessage({type: "loaded", proj: JSON.stringify(cameraMatrix)});
     };
-}
 
-function process() {
+    var next = null;
 
-    markerResult = null;
+    var ar = null;
+    var markerResult = null;
 
-    if (ar) {
-        ar.process(next);
+    function load(msg) {
+        var path = '../../';
+        var onLoad = function () {
+            var ar = new ARController(msg.pw, msg.ph, param);
+
+            ar.addEventListener('getNFTMarker', function (ev) {
+                postMessage({
+                    type: "found",
+                    matrix: JSON.stringify(ev.data.matrix),
+                });
+            });
+
+            ar.loadNFTMarker(path + msg.marker, function (markerId) {
+                ar.trackNFTMarkerId(markerId);
+            }, function(err) {
+                console.log('Error in loading marker on Worker', err)
+            });
+        };
+
+        var onError = function (error) {
+            console.error(error);
+        };
+
+        var param = new ARCameraParam(path + msg.param, onLoad, onError);
     }
 
-    if (markerResult) {
-        postMessage(markerResult);
-    } else {
-        postMessage({type: "not found"});
-    }
 
-    next = null;
-}
+    function process() {
+        markerResult = null;
+
+        if (ar) {
+            ar.process(next);
+        }
+
+        if (markerResult) {
+            postMessage(markerResult);
+        } else {
+            postMessage({ type: "not found" });
+        }
+
+        next = null;
+    }
 }
 function isMobile() {
     return /Android|mobile|iPad|iPhone/i.test(navigator.userAgent);
@@ -834,20 +840,37 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
                 onMarkerFound(event)
             }
         })
+    }
 
-        arController.addEventListener('getNFTMarker', function (event) {
-          if (event.data.type === artoolkit.NFT_MARKER &&_this.parameters.type === 'nft') {
-              if (artoolkitMarkerId === null) return
-              if (event.data.marker.id === artoolkitMarkerId) onMarkerFound(event)
-            }
-    })
-}
     function handleNFT(descriptorsUrl, arController) {
-        // ~nicolocarpignoli check if camera data are available to initialize worker
-        arController.loadNFTMarker(descriptorsUrl, function (markerId) {
-            artoolkitMarkerId = markerId
-            arController.trackNFTMarkerId(artoolkitMarkerId, _this.parameters.size);
+        var worker = new Worker('../vendor/jsartoolkit5/js/artoolkit.worker.js');
+
+        var pw = arController.canvas.width;
+        var ph = arController.canvas.height;
+
+        worker.postMessage({
+            type: 'load',
+            pw: pw,
+            ph: ph,
+            marker: descriptorsUrl,
+            param: arController.cameraParam.src,
         });
+
+
+        function process() {
+            var imageData = arController.canvas.getContext("2d").getImageData(0, 0, pw, ph);
+            worker.postMessage({ type: "process", imagedata: imageData }, [
+                imageData.data.buffer
+            ]);
+        }
+
+        worker.onmessage = function (ev) {
+            if (ev.data.type === 'found') {
+                onMarkerFound(ev);
+            }
+        };
+
+        process();
     }
 
     function onMarkerFound(event) {

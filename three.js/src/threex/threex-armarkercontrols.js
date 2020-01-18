@@ -254,20 +254,27 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
                 onMarkerFound(event)
             }
         })
+    }
 
-        arController.addEventListener('getNFTMarker', function (event) {
-          if (event.data.type === artoolkit.NFT_MARKER &&_this.parameters.type === 'nft') {
-              if (artoolkitMarkerId === null) return
-              if (event.data.marker.id === artoolkitMarkerId) onMarkerFound(event)
-            }
-    })
-}
     function handleNFT(descriptorsUrl, arController) {
-        // ~nicolocarpignoli check if camera data are available to initialize worker
-        arController.loadNFTMarker(descriptorsUrl, function (markerId) {
-            artoolkitMarkerId = markerId
-            arController.trackNFTMarkerId(artoolkitMarkerId, _this.parameters.size);
+        var worker = new Worker('../vendor/jsartoolkit5/js/artoolkit.worker.js');
+
+        var pw = arController.canvas.width;
+        var ph = arController.canvas.height;
+
+        worker.postMessage({
+            type: 'load',
+            pw: pw,
+            ph: ph,
+            marker: descriptorsUrl,
+            param: arController.cameraParam.src,
         });
+
+        worker.onmessage = function (ev) {
+            if (ev.data.type === 'found') {
+                onMarkerFound(ev);
+            }
+        };
     }
 
     function onMarkerFound(event) {
