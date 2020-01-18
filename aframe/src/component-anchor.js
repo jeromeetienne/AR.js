@@ -23,6 +23,9 @@ AFRAME.registerComponent('arjs-anchor', {
         patternUrl: {
             type: 'string',
         },
+        descriptorsUrl: {
+            type: 'string',
+        },
         barcodeValue: {
             type: 'number'
         },
@@ -113,6 +116,10 @@ AFRAME.registerComponent('arjs-anchor', {
                 markerParameters.type = _this.data.type
                 markerParameters.patternUrl = _this.data.patternUrl;
                 markerParameters.markersAreaEnabled = false
+            } else if (_this.data.type === 'nft') {
+                markerParameters.type = _this.data.type
+                markerParameters.descriptorsUrl = _this.data.descriptorsUrl;
+                markerParameters.markersAreaEnabled = false
             } else {
                 // console.assert( this.data.preset === '', 'illegal preset value '+this.data.preset)
             }
@@ -189,8 +196,6 @@ AFRAME.registerComponent('arjs-anchor', {
         } else if (_this._arAnchor.object3d.visible === false && wasVisible === true) {
             _this.el.emit('markerLost')
         }
-
-
     }
 })
 
@@ -207,6 +212,7 @@ AFRAME.registerPrimitive('a-anchor', AFRAME.utils.extendDeep({}, AFRAME.primitiv
         'type': 'arjs-anchor.type',
         'size': 'arjs-anchor.size',
         'url': 'arjs-anchor.patternUrl',
+        'descriptorsUrl': 'arjs-anchor.descriptorsUrl',
         'value': 'arjs-anchor.barcodeValue',
         'preset': 'arjs-anchor.preset',
         'min-confidence': 'arjs-anchor.minConfidence',
@@ -222,7 +228,6 @@ AFRAME.registerPrimitive('a-anchor', AFRAME.utils.extendDeep({}, AFRAME.primitiv
 }))
 
 
-
 AFRAME.registerPrimitive('a-camera-static', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
     defaultComponents: {
         'camera': {},
@@ -231,10 +236,21 @@ AFRAME.registerPrimitive('a-camera-static', AFRAME.utils.extendDeep({}, AFRAME.p
     }
 }))
 
+
+AFRAME.registerPrimitive('a-nft', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
+    defaultComponents: {
+        'arjs-anchor': {},
+        'arjs-hit-testing': {},
+    },
+    mappings: {
+        'url': 'arjs-anchor.descriptorsUrl',
+    }
+}))
+
+
 //////////////////////////////////////////////////////////////////////////////
 //		backward compatibility
 //////////////////////////////////////////////////////////////////////////////
-// FIXME
 AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
     defaultComponents: {
         'arjs-anchor': {},
@@ -269,6 +285,7 @@ AFRAME.registerPrimitive('a-marker-camera', AFRAME.utils.extendDeep({}, AFRAME.p
         'type': 'arjs-anchor.type',
         'size': 'arjs-anchor.size',
         'url': 'arjs-anchor.patternUrl',
+        'descriptorsUrl': 'arjs-anchor.descriptorsUrl',
         'value': 'arjs-anchor.barcodeValue',
         'preset': 'arjs-anchor.preset',
         'min-confidence': 'arjs-anchor.minConfidence',
