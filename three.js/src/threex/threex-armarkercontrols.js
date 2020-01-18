@@ -257,13 +257,15 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
     }
 
     function handleNFT(descriptorsUrl, arController) {
+        // create a Worker to handle loading of NFT marker and tracking of it
         var worker = new Worker('../vendor/jsartoolkit5/js/artoolkit.worker.js');
 
         var pw = arController.canvas.width;
         var ph = arController.canvas.height;
 
+        // initialize the worker
         worker.postMessage({
-            type: 'load',
+            type: 'init',
             pw: pw,
             ph: ph,
             marker: descriptorsUrl,
@@ -272,6 +274,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
 
         worker.onmessage = function (ev) {
             if (ev.data.type === 'found') {
+                // an NFT marker has been found, update its matrix using event data
                 onMarkerFound(ev);
             }
         };
