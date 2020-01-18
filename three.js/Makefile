@@ -1,3 +1,4 @@
+UGLIFY=../node_modules/.bin/uglifyjs
 watch: build
 	fswatch -0 src/*/*.js | xargs -0 -n 1 -I {} make build
 
@@ -12,7 +13,7 @@ build-main:
 .PHONY: build
 
 minify-main: build-main
-	uglifyjs build/ar.js > build/ar.min.js
+	$(UGLIFY) build/ar.js > build/ar.min.js
 
 build-lean:
 	echo > build/ar.lean.js
@@ -23,7 +24,7 @@ build-lean:
 		src/markers-area/*.js >> build/ar.lean.js
 
 minify-lean: build-lean
-	uglifyjs build/ar.lean.js > build/ar.lean.min.js
+	$(UGLIFY) build/ar.lean.js > build/ar.lean.min.js
 
 build: build-main build-lean
 
