@@ -27,39 +27,33 @@ if ('function' === typeof importScripts) {
     self.onmessage = function (e) {
         var msg = e.data;
         switch (msg.type) {
-            case "load": {
+            case "init": {
                 load(msg);
-                return;
-            }
-            case "process": {
-                next = msg.imagedata;
-                process();
                 return;
             }
         }
     };
 
-    var next = null;
-
-    var ar = null;
-    var markerResult = null;
-
     function load(msg) {
         var path = '../../';
+
         var onLoad = function () {
             var ar = new ARController(msg.pw, msg.ph, param);
 
-            ar.addEventListener('getNFTMarker', function (ev) {
-                postMessage({
-                    type: "found",
-                    matrix: JSON.stringify(ev.data.matrix),
-                });
-            });
-
+            // after the ARController is set up, we load the NFT Marker
             ar.loadNFTMarker(path + msg.marker, function (markerId) {
                 ar.trackNFTMarkerId(markerId);
             }, function(err) {
                 console.log('Error in loading marker on Worker', err)
+            });
+
+            // ...and we listen for event when marker has been found from camera
+            ar.addEventListener('getNFTMarker', function (ev) {
+                // let AR.js know that a NFT marker has been found, with its matrix for positioning
+                postMessage({
+                    type: "found",
+                    matrix: JSON.stringify(ev.data.matrix),
+                });
             });
         };
 
@@ -67,24 +61,8 @@ if ('function' === typeof importScripts) {
             console.error(error);
         };
 
+        // we cannot pass the entire ARController, so we re-create one inside the Worker, starting from camera_param
         var param = new ARCameraParam(path + msg.param, onLoad, onError);
-    }
-
-
-    function process() {
-        markerResult = null;
-
-        if (ar) {
-            ar.process(next);
-        }
-
-        if (markerResult) {
-            postMessage(markerResult);
-        } else {
-            postMessage({ type: "not found" });
-        }
-
-        next = null;
     }
 }
 function isMobile() {
@@ -843,34 +821,27 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
     }
 
     function handleNFT(descriptorsUrl, arController) {
+        // create a Worker to handle loading of NFT marker and tracking of it
         var worker = new Worker('../vendor/jsartoolkit5/js/artoolkit.worker.js');
 
         var pw = arController.canvas.width;
         var ph = arController.canvas.height;
 
+        // initialize the worker
         worker.postMessage({
-            type: 'load',
+            type: 'init',
             pw: pw,
             ph: ph,
             marker: descriptorsUrl,
             param: arController.cameraParam.src,
         });
 
-
-        function process() {
-            var imageData = arController.canvas.getContext("2d").getImageData(0, 0, pw, ph);
-            worker.postMessage({ type: "process", imagedata: imageData }, [
-                imageData.data.buffer
-            ]);
-        }
-
         worker.onmessage = function (ev) {
             if (ev.data.type === 'found') {
+                // an NFT marker has been found, update its matrix using event data
                 onMarkerFound(ev);
             }
         };
-
-        process();
     }
 
     function onMarkerFound(event) {
