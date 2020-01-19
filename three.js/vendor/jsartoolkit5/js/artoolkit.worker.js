@@ -28,7 +28,6 @@ if ('function' === typeof importScripts) {
             ar = new ARController(msg.pw, msg.ph, param);
             var cameraMatrix = ar.getCameraMatrix();
 
-
             // after the ARController is set up, we load the NFT Marker
             ar.loadNFTMarker(path + msg.marker, function (markerId) {
                 ar.trackNFTMarkerId(markerId);
@@ -39,9 +38,10 @@ if ('function' === typeof importScripts) {
             // ...and we listen for event when marker has been found from camera
             ar.addEventListener('getNFTMarker', function (ev) {
                 // let AR.js know that a NFT marker has been found, with its matrix for positioning
-                // markerResult = { type: "found", matrix: JSON.stringify(ev.data.matrix) };
-                markerResult = {type: "found", matrixGL_RH: JSON.stringify(ev.data.matrixGL_RH), proj: JSON.stringify(cameraMatrix)};
-
+                markerResult = {
+                    type: "found",
+                    matrix: JSON.stringify(ev.data.matrix),
+                };
             });
         };
 
