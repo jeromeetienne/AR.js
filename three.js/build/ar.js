@@ -43,12 +43,14 @@ if ('function' === typeof importScripts) {
 
     var ar = null;
     var markerResult = null;
+    var processFunc;
 
     function load(msg) {
         var path = '../../';
 
         var onLoad = function () {
             ar = new ARController(msg.pw, msg.ph, param);
+            processFunc = ar.process;
 
             // after the ARController is set up, we load the NFT Marker
             ar.loadNFTMarker(path + msg.marker, function (markerId) {
@@ -64,6 +66,7 @@ if ('function' === typeof importScripts) {
                     type: "found",
                     matrix: JSON.stringify(ev.data.matrix),
                 };
+
             });
         };
 
@@ -78,7 +81,7 @@ if ('function' === typeof importScripts) {
     function process() {
         markerResult = null;
 
-        if (ar) {
+        if (ar && ar.process) {
             ar.process(next);
         }
 
@@ -692,8 +695,13 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
                     data: {
                         type: artoolkit.NFT_MARKER,
                         matrix: matrix,
+                        msg: ev.data.type,
                     }
                 });
+
+                _this.context.arController.showObject = true;
+            } else {
+                _this.context.arController.showObject = false;
             }
 
             // ~nicolocarpignoli this means that this run as a loop. Maybe we can add a minimal setTimeout
@@ -708,6 +716,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
     function onMarkerFound(event) {
         if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return
+        if (event.data.type === artoolkit.NFT_MARKER && event.data.msg !== 'found') return
 
         var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
         _this.updateWithModelViewMatrix(modelViewMatrix)
@@ -1037,8 +1046,10 @@ ARjs.Context.prototype.update = function (srcElement) {
 
     // mark all markers to invisible before processing this frame
     this._arMarkersControls.forEach(function (markerControls) {
-        console.log('e')
-        markerControls.object3d.visible = false
+        console.log(markerControls.context.arController.showObject)
+        if (!markerControls.context.arController.showObject) {
+            markerControls.object3d.visible = false
+        }
     })
 
     // process this frame

@@ -287,12 +287,15 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
                     data: {
                         type: artoolkit.NFT_MARKER,
                         matrix: matrix,
+                        msg: ev.data.type,
                     }
                 });
+
+                _this.context.arController.showObject = true;
+            } else {
+                _this.context.arController.showObject = false;
             }
 
-            // ~nicolocarpignoli this means that this run as a loop. Maybe we can add a minimal setTimeout
-            // otherwise it stresses the CPU and battery of device
             process();
         };
 
@@ -303,6 +306,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
     function onMarkerFound(event) {
         if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return
+        if (event.data.type === artoolkit.NFT_MARKER && event.data.msg !== 'found') return
 
         var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
         _this.updateWithModelViewMatrix(modelViewMatrix)
