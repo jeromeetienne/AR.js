@@ -26,7 +26,6 @@ if ('function' === typeof importScripts) {
 
         var onLoad = function () {
             ar = new ARController(msg.pw, msg.ph, param);
-            var cameraMatrix = ar.getCameraMatrix();
 
             // after the ARController is set up, we load the NFT Marker
             ar.loadNFTMarker(path + msg.marker, function (markerId) {

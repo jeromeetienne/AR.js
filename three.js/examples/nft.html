@@ -114,8 +114,8 @@
 
     sphere.material.shading = THREE.FlatShading;
     sphere.position.z = 0;
-    sphere.position.x = 40;
-    sphere.position.y = 40;
+    sphere.position.x = 100;
+    sphere.position.y = 100;
     sphere.scale.set(80, 80, 80);
     scene.add(sphere);
 
@@ -123,24 +123,26 @@
 	//		render the whole thing on the page
 	//////////////////////////////////////////////////////////////////////////////////
 
-	// render the scene
-	onRenderFcts.push(function(){
-		renderer.render( scene, camera );
-	})
+    // render the scene
+    onRenderFcts.push(function () {
+        renderer.render(scene, camera);
+    });
 
-	// run the rendering loop
-	var lastTimeMsec= null
-	requestAnimationFrame(function animate(nowMsec){
-		// keep looping
-		requestAnimationFrame( animate );
-		// measure time
-		lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
-		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
-		lastTimeMsec	= nowMsec
-		// call each update function
-		onRenderFcts.forEach(function(onRenderFct){
-			onRenderFct(deltaMsec/1000, nowMsec/1000)
-		})
-	})
+    // run the rendering loop
+    var lastTimeMsec = null
+    requestAnimationFrame(function animate(nowMsec) {
+        // keep looping
+        requestAnimationFrame(animate);
+
+        // measure time
+        lastTimeMsec = lastTimeMsec || nowMsec - 1000 / 60
+        var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
+        lastTimeMsec = nowMsec
+
+        // call each update function
+        onRenderFcts.forEach(function (onRenderFct) {
+            onRenderFct(deltaMsec / 1000, nowMsec / 1000)
+        })
+    })
     </script>
 </body>
