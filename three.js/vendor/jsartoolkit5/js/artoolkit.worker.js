@@ -20,14 +20,12 @@ if ('function' === typeof importScripts) {
 
     var ar = null;
     var markerResult = null;
-    var processFunc;
 
     function load(msg) {
         var path = '../../';
 
         var onLoad = function () {
             ar = new ARController(msg.pw, msg.ph, param);
-            processFunc = ar.process;
 
             // after the ARController is set up, we load the NFT Marker
             ar.loadNFTMarker(path + msg.marker, function (markerId) {
