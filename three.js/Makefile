@@ -15,6 +15,14 @@ build-main:
 minify-main: build-main
 	$(UGLIFY) build/ar.js > build/ar.min.js
 
+build-lean:
+	echo > build/ar.lean.js
+	cat vendor/jsartoolkit5/build/artoolkit.min.js \
+		vendor/jsartoolkit5/js/artoolkit.api.js >> build/ar.lean.js
+	cat src/threex/*.js \
+		src/new-api/*.js \
+		src/markers-area/*.js >> build/ar.lean.js
+
 build: build-main
 
 minify-lean: build-lean

@@ -43,14 +43,12 @@ if ('function' === typeof importScripts) {
 
     var ar = null;
     var markerResult = null;
-    var processFunc;
 
     function load(msg) {
         var path = '../../';
 
         var onLoad = function () {
             ar = new ARController(msg.pw, msg.ph, param);
-            processFunc = ar.process;
 
             // after the ARController is set up, we load the NFT Marker
             ar.loadNFTMarker(path + msg.marker, function (markerId) {
@@ -704,8 +702,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
                 _this.context.arController.showObject = false;
             }
 
-            // ~nicolocarpignoli this means that this run as a loop. Maybe we can add a minimal setTimeout
-            // otherwise it stresses the CPU and battery of device
             process();
         };
 
@@ -1046,7 +1042,6 @@ ARjs.Context.prototype.update = function (srcElement) {
 
     // mark all markers to invisible before processing this frame
     this._arMarkersControls.forEach(function (markerControls) {
-        console.log(markerControls.context.arController.showObject)
         if (!markerControls.context.arController.showObject) {
             markerControls.object3d.visible = false
         }
