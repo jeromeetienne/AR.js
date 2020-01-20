@@ -96,7 +96,7 @@
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
   var root = new THREE.Object3D()
-  root.add(scene);
+  scene.add(root);
 	// init controls for camera
 	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, root, camera, {
 		type : 'nft',
