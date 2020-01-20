@@ -262,8 +262,44 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
 
         var pw = arController.canvas.width;
         var ph = arController.canvas.height;
+        var vw, vh;
+        var sw, sh;
+        var pscale, sscale;
+        var w, h;
+        var pw, ph;
+        var ox, oy;
+        vw = input_width; // need to setup input video width and height
+        vh = input_height;
+        pscale = 320 / Math.max(vw, vh / 3 * 4);
+        sscale = isMobile() ? window.outerWidth / input_width : 1;
+
+        sw = vw * sscale;
+        sh = vh * sscale;
+
+        w = vw * pscale;
+        h = vh * pscale;
+        pw = Math.max(w, h / 3 * 4);
+        ph = Math.max(h, w / 4 * 3);
+        ox = (pw - w) / 2;
+        oy = (ph - h) / 2;
 
         var context_process = arController.canvas.getContext('2d');
+
+        function isMobile() {
+            return /Android|mobile|iPad|iPhone/i.test(navigator.userAgent);
+        }
+
+        function setMatrix (matrix, value) {
+            var array = [];
+            for (var key in value) {
+                array[key] = value[key];
+            }
+            if (typeof matrix.elements.set === "function") {
+                matrix.elements.set(array);
+            } else {
+                matrix.elements = [].slice.call(array);
+            }
+        };
 
         function process() {
             var imageData = context_process.getImageData(0, 0, pw, ph);
@@ -282,6 +318,18 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         worker.onmessage = function (ev) {
             if (ev && ev.data && ev.data.type === 'found') {
                 var matrix = JSON.parse(ev.data.matrix);
+                var proj = JSON.parse(msg.proj);
+                var ratioW = pw / w;
+                var ratioH = ph / h;
+                proj[0] *= ratioW;
+                proj[4] *= ratioW;
+                proj[8] *= ratioW;
+                proj[12] *= ratioW;
+                proj[1] *= ratioH;
+                proj[5] *= ratioH;
+                proj[9] *= ratioH;
+                proj[13] *= ratioH;
+                //setMatrix(camera.projectionMatrix, proj); // need to pass to the camera
 
                 onMarkerFound({
                     data: {
