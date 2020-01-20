@@ -37,6 +37,8 @@
 
 	// Create a camera
 	var camera = new THREE.Camera();
+  //console.log(camera.projectionMatrix);
+  camera.matrixAutoUpdate = false;
 	scene.add(camera);
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -93,9 +95,10 @@
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
 	////////////////////////////////////////////////////////////////////////////////
-
+  var root = new THREE.Object3D()
+  root.add(scene);
 	// init controls for camera
-	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
+	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, root, camera, {
 		type : 'nft',
 		descriptorsUrl : THREEx.ArToolkitContext.baseURL + '../data/dataNFT/pinball',
 		changeMatrixMode: 'cameraTransformMatrix'
@@ -107,7 +110,7 @@
 	//		add an object in the scene
 	//////////////////////////////////////////////////////////////////////////////////
 
-    let sphere = new THREE.Mesh(
+    var sphere = new THREE.Mesh(
         new THREE.SphereGeometry(0.5, 8, 8),
         new THREE.MeshNormalMaterial()
     );
@@ -117,7 +120,9 @@
     sphere.position.x = 100;
     sphere.position.y = 100;
     sphere.scale.set(80, 80, 80);
-    scene.add(sphere);
+    //scene.add(sphere);
+    root.matrixAutoUpdate = false;
+    root.add(sphere);
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page

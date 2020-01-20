@@ -26,6 +26,7 @@ if ('function' === typeof importScripts) {
 
         var onLoad = function () {
             ar = new ARController(msg.pw, msg.ph, param);
+            var cameraMatrix = ar.getCameraMatrix();
 
             // after the ARController is set up, we load the NFT Marker
             ar.loadNFTMarker(path + msg.marker, function (markerId) {
@@ -40,6 +41,7 @@ if ('function' === typeof importScripts) {
                 markerResult = {
                     type: "found",
                     matrix: JSON.stringify(ev.data.matrix),
+                    proj: JSON.stringify(cameraMatrix)
                 };
 
             });
@@ -71,4 +73,3 @@ if ('function' === typeof importScripts) {
     }
 
 }
-

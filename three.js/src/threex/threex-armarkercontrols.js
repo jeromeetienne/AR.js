@@ -1,7 +1,7 @@
 var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
-ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, parameters) {
+ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, camera, parameters) {
     var _this = this
 
     THREEx.ArBaseControls.call(this, object3d)
@@ -44,6 +44,7 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, par
     this.object3d = object3d
     this.object3d.matrixAutoUpdate = false;
     this.object3d.visible = false
+    this.camera = camera;
 
     //////////////////////////////////////////////////////////////////////////////
     //		setParameters
@@ -266,10 +267,10 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         var sw, sh;
         var pscale, sscale;
         var w, h;
-        var pw, ph;
         var ox, oy;
-        vw = input_width; // need to setup input video width and height
-        vh = input_height;
+
+        vw = input_width = 640; // need to setup input video width and height
+        vh = input_height = 480;
         pscale = 320 / Math.max(vw, vh / 3 * 4);
         sscale = isMobile() ? window.outerWidth / input_width : 1;
 
@@ -318,7 +319,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         worker.onmessage = function (ev) {
             if (ev && ev.data && ev.data.type === 'found') {
                 var matrix = JSON.parse(ev.data.matrix);
-                var proj = JSON.parse(msg.proj);
+                var proj = JSON.parse(ev.data.proj);
                 var ratioW = pw / w;
                 var ratioH = ph / h;
                 proj[0] *= ratioW;
@@ -329,7 +330,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
                 proj[5] *= ratioH;
                 proj[9] *= ratioH;
                 proj[13] *= ratioH;
-                //setMatrix(camera.projectionMatrix, proj); // need to pass to the camera
+                setMatrix(_this.camera.projectionMatrix, proj); // need to pass to the camera
 
                 onMarkerFound({
                     data: {
