@@ -268,11 +268,18 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         var pscale, sscale;
         var w, h;
         var ox, oy;
-
-        vw = input_width = 640; // need to setup input video width and height
-        vh = input_height = 480;
+        // this need to be fixed
+        /*window.addEventListener('arjs-video-loaded', function(ev) {
+        //var video = document.getElementById('arjs-video');
+        var video = ev.detail.component;
+        vw = video.clientWidth;
+        console.log(vw);
+        vh = video.clientHeight;
+      });*/
+        vw = 640;
+        vh = 480;
         pscale = 320 / Math.max(vw, vh / 3 * 4);
-        sscale = isMobile() ? window.outerWidth / input_width : 1;
+        sscale = isMobile() ? window.outerWidth / vw : 1;
 
         sw = vw * sscale;
         sh = vh * sscale;

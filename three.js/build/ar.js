@@ -50,10 +50,6 @@ if ('function' === typeof importScripts) {
         var onLoad = function () {
             ar = new ARController(msg.pw, msg.ph, param);
             var cameraMatrix = ar.getCameraMatrix();
-            /*var cameraMatrix;
-            setTimeout(function(){
-              cameraMatrix = ar.getCameraMatrix();
-            }, 300);*/
 
             // after the ARController is set up, we load the NFT Marker
             ar.loadNFTMarker(path + msg.marker, function (markerId) {
@@ -678,12 +674,19 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         var sw, sh;
         var pscale, sscale;
         var w, h;
-        var pw, ph;
         var ox, oy;
-        vw = input_width = 640; // need to setup input video width and height
-        vh = input_height = 480;
+        // this need to be fixed
+        /*window.addEventListener('arjs-video-loaded', function(ev) {
+        //var video = document.getElementById('arjs-video');
+        var video = ev.detail.component;
+        vw = video.clientWidth;
+        console.log(vw);
+        vh = video.clientHeight;
+      });*/
+        vw = 640;
+        vh = 480;
         pscale = 320 / Math.max(vw, vh / 3 * 4);
-        sscale = isMobile() ? window.outerWidth / input_width : 1;
+        sscale = isMobile() ? window.outerWidth / vw : 1;
 
         sw = vw * sscale;
         sh = vh * sscale;
