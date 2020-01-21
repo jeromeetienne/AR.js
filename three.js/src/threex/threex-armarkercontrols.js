@@ -39,7 +39,6 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, par
     var possibleValues = ['modelViewMatrix', 'cameraTransformMatrix']
     console.assert(possibleValues.indexOf(this.parameters.changeMatrixMode) !== -1, 'illegal value', this.parameters.changeMatrixMode)
 
-
     // create the marker Root
     this.object3d = object3d
     this.object3d.matrixAutoUpdate = false;
@@ -270,6 +269,34 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             worker.postMessage({ type: "process", imagedata: imageData }, [imageData.data.buffer]);
         }
 
+        var setMatrix = function (matrix, value) {
+            var array = [];
+            for (var key in value) {
+                array[key] = value[key];
+            }
+            if (typeof matrix.elements.set === "function") {
+                matrix.elements.set(array);
+            } else {
+                matrix.elements = [].slice.call(array);
+            }
+        };
+
+        vw = input_width =arController.videoWidth;
+        vh = input_height = arController.videoHeight;
+
+        function isMobile() {
+            return /Android|mobile|iPad|iPhone/i.test(navigator.userAgent);
+        }
+
+        pscale = 320 / Math.max(vw, vh / 3 * 4);
+        sscale = isMobile() ? window.outerWidth / input_width : 1;
+
+        sw = vw * sscale;
+        sh = vh * sscale;
+
+        w = vw * pscale;
+        h = vh * pscale;
+
         // initialize the worker
         worker.postMessage({
             type: 'init',
@@ -280,6 +307,23 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         });
 
         worker.onmessage = function (ev) {
+            if (ev && ev.data && ev.data.type === 'loaded') {
+                var proj = JSON.parse(ev.data.proj);
+
+                var ratioW = pw / w;
+                var ratioH = ph / h;
+                proj[0] *= ratioW;
+                proj[4] *= ratioW;
+                proj[8] *= ratioW;
+                proj[12] *= ratioW;
+                proj[1] *= ratioH;
+                proj[5] *= ratioH;
+                proj[9] *= ratioH;
+                proj[13] *= ratioH;
+
+                setMatrix(_this.object3d.projectionMatrix, proj);
+            }
+
             if (ev && ev.data && ev.data.type === 'found') {
                 var matrix = JSON.parse(ev.data.matrix);
 
