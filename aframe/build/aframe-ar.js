@@ -5903,6 +5903,10 @@ AFRAME.registerComponent('gps-entity-place', {
             type: 'number',
             default: 0,
         },
+        yPosition: {
+            type: 'number',
+            default: 0,
+        }
     },
     init: function () {
         window.addEventListener('gps-camera-origin-coord-set', function() {
@@ -5936,7 +5940,7 @@ AFRAME.registerComponent('gps-entity-place', {
      * @returns {void}
      */
     _updatePosition: function () {
-        var position = { x: 0, y: 0, z: 0 }
+        var position = { x: 0, y: this.data.yPosition, z: 0 }
 
         // update position.x
         var dstCoords = {

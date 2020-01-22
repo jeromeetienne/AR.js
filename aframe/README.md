@@ -83,6 +83,12 @@ It requires latitude and longitude as a single string parameter (example with `a
 <a-box color="yellow" gps-entity-place="latitude: <your-latitude>; longitude: <your-longitude>"/>
 ```
 
+If you need to modify position of object on y axis you can pass additional yPosition parameter:
+
+```HTML
+<a-box color="yellow" gps-entity-place="latitude: <your-latitude>; longitude: <your-longitude>; yPosition: <your-position-on-y-axis>"/>
+```
+
 ### `gps-camera-debug`
 
 **Required**: no

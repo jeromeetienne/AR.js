@@ -1,2 +1,3 @@
 .DS_Store
 .atom-live-server.json
+node_modules
