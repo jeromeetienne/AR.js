@@ -9,6 +9,49 @@
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
 <body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
+    <style>
+        .arjs-nft-loader {
+            margin: 0 auto;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .arjs-nft-loader-spinner {
+            z-index: 10;
+            -webkit-transform: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
+            border: 3px solid #ddd;
+            border-top: 3px solid #42a5f5;
+            border-radius: 50%;
+            height: 75px;
+            width: 75px;
+        }
+
+        @-webkit-keyframes spin {
+            to {
+                border-top-color: #42a5f5;
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                border-top-color: #42a5f5;
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <div class="arjs-nft-loader">
+        <div class="arjs-nft-loader-spinner"></div>
+    </div>
     <script>
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
@@ -17,9 +60,10 @@
     var renderer	= new THREE.WebGLRenderer({
 		antialias: true,
 		alpha: true
-	});
+    });
+
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-	renderer.setSize( 640, 480 );
+	renderer.setSize( window.innerWidth, window.innerHeight );
 	renderer.domElement.style.position = 'absolute'
 	renderer.domElement.style.top = '0px'
 	renderer.domElement.style.left = '0px'
@@ -62,7 +106,7 @@
 		if( arToolkitContext.arController !== null ){
 			arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
 		}
-    }
+	}
 
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext

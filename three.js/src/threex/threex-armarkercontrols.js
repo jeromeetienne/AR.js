@@ -281,7 +281,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             }
         };
 
-        vw = input_width =arController.videoWidth;
+        vw = input_width = arController.videoWidth;
         vh = input_height = arController.videoHeight;
 
         function isMobile() {
@@ -307,6 +307,13 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         });
 
         worker.onmessage = function (ev) {
+            if (ev && ev.data && ev.data.type === 'endLoading') {
+                var loader = document.querySelector('.arjs-nft-loader');
+                if (loader) {
+                    loader.remove();
+                }
+            }
+
             if (ev && ev.data && ev.data.type === 'loaded') {
                 var proj = JSON.parse(ev.data.proj);
 

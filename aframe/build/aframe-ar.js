@@ -54,6 +54,7 @@ if ('function' === typeof importScripts) {
             // after the ARController is set up, we load the NFT Marker
             ar.loadNFTMarker(path + msg.marker, function (markerId) {
                 ar.trackNFTMarkerId(markerId);
+                postMessage({ type: 'endLoading' })
             }, function (err) {
                 console.log('Error in loading marker on Worker', err)
             });
@@ -62,12 +63,12 @@ if ('function' === typeof importScripts) {
             ar.addEventListener('getNFTMarker', function (ev) {
                 // let AR.js know that a NFT marker has been found, with its matrix for positioning
                 markerResult = {
-                    type: "found",
+                    type: 'found',
                     matrix: JSON.stringify(ev.data.matrix),
                 };
             });
 
-            postMessage({type: "loaded", proj: JSON.stringify(cameraMatrix)});
+            postMessage({ type: 'loaded', proj: JSON.stringify(cameraMatrix) });
         };
 
         var onError = function (error) {
@@ -689,7 +690,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             }
         };
 
-        vw = input_width =arController.videoWidth;
+        vw = input_width = arController.videoWidth;
         vh = input_height = arController.videoHeight;
 
         function isMobile() {
@@ -715,6 +716,13 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         });
 
         worker.onmessage = function (ev) {
+            if (ev && ev.data && ev.data.type === 'endLoading') {
+                var loader = document.querySelector('.arjs-nft-loader');
+                if (loader) {
+                    loader.remove();
+                }
+            }
+
             if (ev && ev.data && ev.data.type === 'loaded') {
                 var proj = JSON.parse(ev.data.proj);
 
