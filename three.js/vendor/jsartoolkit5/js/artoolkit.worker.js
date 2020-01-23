@@ -30,7 +30,7 @@ if ('function' === typeof importScripts) {
 
             // after the ARController is set up, we load the NFT Marker
             ar.loadNFTMarker(path + msg.marker, function (markerId) {
-                ar.trackNFTMarkerId(markerId);
+                ar.trackNFTMarkerId(markerId, 2);
             }, function (err) {
                 console.log('Error in loading marker on Worker', err)
             });
@@ -45,6 +45,7 @@ if ('function' === typeof importScripts) {
                 };
 
             });
+            postMessage({type: "loaded", proj: JSON.stringify(cameraMatrix)});
         };
 
         var onError = function (error) {

@@ -261,13 +261,16 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         // create a Worker to handle loading of NFT marker and tracking of it
         var worker = new Worker('../vendor/jsartoolkit5/js/artoolkit.worker.js');
 
+        function isMobile() {
+            return /Android|mobile|iPad|iPhone/i.test(navigator.userAgent);
+        }
+
         var pw = arController.canvas.width;
         var ph = arController.canvas.height;
         var vw, vh;
         var sw, sh;
         var pscale, sscale;
         var w, h;
-        var ox, oy;
         // this need to be fixed
         /*window.addEventListener('arjs-video-loaded', function(ev) {
         //var video = document.getElementById('arjs-video');
@@ -284,6 +287,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
 
         sw = vw * sscale;
         sh = vh * sscale;
+        console.log(sw)
         var canvas_draw = arController.canvas;
         //var container = canvas_draw.parentElement || document.body;
 
@@ -291,25 +295,21 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         //video.style.height = sh + "px";
         //container.style.width = sw + "px";
         //container.style.height = sh + "px";
-        //canvas_draw.style.clientWidth = sw + "px";
-        //canvas_draw.style.clientHeight = sh + "px";
+        canvas_draw.style.clientWidth = sw + "px";
+        canvas_draw.style.clientHeight = sh + "px";
         //canvas_draw.style.clientWidth = "640px";
         //canvas_draw.style.clientHeight = "480px";
-        //canvas_draw.width = sw;
-        //canvas_draw.height = sh;
+        canvas_draw.width = sw;
+        canvas_draw.height = sh;
         //console.log(canvas_draw)
 
         w = vw * pscale;
         h = vh * pscale;
-        //pw = Math.max(w, h / 3 * 4);
-        //ph = Math.max(h, w / 4 * 3);
+        pw = Math.max(w, h / 3 * 4);
+        ph = Math.max(h, w / 4 * 3);
         //console.log(pw)
 
         var context_process = arController.canvas.getContext('2d');
-
-        function isMobile() {
-            return /Android|mobile|iPad|iPhone/i.test(navigator.userAgent);
-        }
 
         function setMatrix (matrix, value) {
             var array = [];
@@ -338,20 +338,22 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         });
 
         worker.onmessage = function (ev) {
-            if (ev && ev.data && ev.data.type === 'found') {
+            if (ev && ev.data && ev.data.type === 'loaded') {
+              var proj = JSON.parse(ev.data.proj);
+              var ratioW = pw / w;
+              var ratioH = ph / h;
+              proj[0] *= ratioW;
+              proj[4] *= ratioW;
+              proj[8] *= ratioW;
+              proj[12] *= ratioW;
+              proj[1] *= ratioH;
+              proj[5] *= ratioH;
+              proj[9] *= ratioH;
+              proj[13] *= ratioH;
+              setMatrix(_this.camera.projectionMatrix, proj); // need to pass to the camera
+
+            } else if (ev && ev.data && ev.data.type === 'found') {
                 var matrix = JSON.parse(ev.data.matrix);
-                var proj = JSON.parse(ev.data.proj);
-                var ratioW = pw / w;
-                var ratioH = ph / h;
-                proj[0] *= ratioW;
-                proj[4] *= ratioW;
-                proj[8] *= ratioW;
-                proj[12] *= ratioW;
-                proj[1] *= ratioH;
-                proj[5] *= ratioH;
-                proj[9] *= ratioH;
-                proj[13] *= ratioH;
-                setMatrix(_this.camera.projectionMatrix, proj); // need to pass to the camera
 
                 onMarkerFound({
                     data: {
