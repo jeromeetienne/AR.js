@@ -679,10 +679,15 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         /*window.addEventListener('arjs-video-loaded', function(ev) {
         //var video = document.getElementById('arjs-video');
         var video = ev.detail.component;
+        console.log(video)
         vw = video.clientWidth;
         console.log(vw);
         vh = video.clientHeight;
       });*/
+        var video = document.getElementById('arjs-video');
+
+        //console.log(video)
+        //console.log(document.body.video);
         vw = 640;
         vh = 480;
         pscale = 320 / Math.max(vw, vh / 3 * 4);
@@ -690,11 +695,26 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
 
         sw = vw * sscale;
         sh = vh * sscale;
+        var canvas_draw = arController.canvas;
+        //var container = canvas_draw.parentElement || document.body;
+
+        //video.style.width = sw + "px";
+        //video.style.height = sh + "px";
+        //container.style.width = sw + "px";
+        //container.style.height = sh + "px";
+        //canvas_draw.style.clientWidth = sw + "px";
+        //canvas_draw.style.clientHeight = sh + "px";
+        //canvas_draw.style.clientWidth = "640px";
+        //canvas_draw.style.clientHeight = "480px";
+        //canvas_draw.width = sw;
+        //canvas_draw.height = sh;
+        //console.log(canvas_draw)
 
         w = vw * pscale;
         h = vh * pscale;
-        pw = Math.max(w, h / 3 * 4);
-        ph = Math.max(h, w / 4 * 3);
+        //pw = Math.max(w, h / 3 * 4);
+        console.log(pw)
+        //ph = Math.max(h, w / 4 * 3);
         ox = (pw - w) / 2;
         oy = (ph - h) / 2;
 
