@@ -678,33 +678,33 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             worker.postMessage({ type: "process", imagedata: imageData }, [imageData.data.buffer]);
         }
 
+        var interpolationFactor = 24;
+        var trackedMatrix = {
+            delta: [
+                0, 0, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 0, 0
+            ],
+            interpolated: [
+                0, 0, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 0, 0
+            ]
+        }
+
         var setMatrix = function (matrix, value) {
             var array = [];
             for (var key in value) {
                 array[key] = value[key];
             }
-            if (typeof matrix.elements.set === "function") {
+            if (matrix.elements && typeof matrix.elements.set === "function") {
                 matrix.elements.set(array);
             } else {
                 matrix.elements = [].slice.call(array);
             }
         };
-
-        vw = input_width = arController.videoWidth;
-        vh = input_height = arController.videoHeight;
-
-        function isMobile() {
-            return /Android|mobile|iPad|iPhone/i.test(navigator.userAgent);
-        }
-
-        pscale = 320 / Math.max(vw, vh / 3 * 4);
-        sscale = isMobile() ? window.outerWidth / input_width : 1;
-
-        sw = vw * sscale;
-        sh = vh * sscale;
-
-        w = vw * pscale;
-        h = vh * pscale;
 
         // initialize the worker
         worker.postMessage({
@@ -723,25 +723,19 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
                 }
             }
 
-            if (ev && ev.data && ev.data.type === 'loaded') {
-                var proj = JSON.parse(ev.data.proj);
-
-                var ratioW = pw / w;
-                var ratioH = ph / h;
-                proj[0] *= ratioW;
-                proj[4] *= ratioW;
-                proj[8] *= ratioW;
-                proj[12] *= ratioW;
-                proj[1] *= ratioH;
-                proj[5] *= ratioH;
-                proj[9] *= ratioH;
-                proj[13] *= ratioH;
-
-                setMatrix(_this.object3d.projectionMatrix, proj);
-            }
-
             if (ev && ev.data && ev.data.type === 'found') {
                 var matrix = JSON.parse(ev.data.matrix);
+
+                // interpolate matrix
+                for (var i = 0; i < 16; i++) {
+                    trackedMatrix.delta[i] = matrix[i] - trackedMatrix.interpolated[i];
+                    trackedMatrix.interpolated[i] =
+                        trackedMatrix.interpolated[i] +
+                        trackedMatrix.delta[i] / interpolationFactor;
+                }
+
+                // set matrix of 'root' by detected 'world' matrix
+                setMatrix(_this.object3d.matrix, trackedMatrix.interpolated);
 
                 onMarkerFound({
                     data: {
