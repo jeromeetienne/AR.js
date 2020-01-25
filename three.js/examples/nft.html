@@ -8,7 +8,7 @@
 
 <script>THREEx.ArToolkitContext.baseURL = '../'</script>
 
-<body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
+<body style='position: absolute; top: 0; left: 0; width: 100%; height: 100%; margin : 0px; overflow: hidden;'>
     <style>
         .arjs-nft-loader {
             margin: 0 auto;
@@ -92,7 +92,14 @@
 	})
 
 	arToolkitSource.init(function onReady(){
-		onResize()
+        // use a resize to fullscreen mobile devices
+		setTimeout(function() {
+            onResize()
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            renderer.domElement.style.position = 'absolute'
+            renderer.domElement.style.top = '0px'
+            renderer.domElement.style.left = '0px'
+        }, 2000);
 	})
 
 	// handle resize
@@ -114,7 +121,7 @@
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext({
-		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para-iPhone 5 rear 640x480 1.0m.dat',
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
 		detectionMode: 'mono',
     })
 

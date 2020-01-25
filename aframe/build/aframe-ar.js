@@ -665,7 +665,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
 
     function handleNFT(descriptorsUrl, arController) {
         // create a Worker to handle loading of NFT marker and tracking of it
-        var worker = new Worker('../vendor/jsartoolkit5/js/artoolkit.worker.js');
+        var worker = new Worker(THREEx.ArToolkitContext.baseURL + 'vendor/jsartoolkit5/js/artoolkit.worker.js');
 
         var pw = vw = arController.canvas.width;
         var ph = vh = arController.canvas.height;
@@ -3584,6 +3584,7 @@ AFRAME.registerComponent('arjs-anchor', {
                 markerParameters.patternUrl = _this.data.patternUrl;
                 markerParameters.markersAreaEnabled = false
             } else if (_this.data.type === 'nft') {
+                alert('hey')
                 markerParameters.type = _this.data.type
                 markerParameters.descriptorsUrl = _this.data.descriptorsUrl;
                 markerParameters.markersAreaEnabled = false
@@ -3710,7 +3711,7 @@ AFRAME.registerPrimitive('a-nft', AFRAME.utils.extendDeep({}, AFRAME.primitives.
         'arjs-hit-testing': {},
     },
     mappings: {
-        'type': 'nft',
+        'type': 'arjs-anchor.type',
         'url': 'arjs-anchor.descriptorsUrl',
         'size': 'arjs-anchor.size',
         'smooth': 'arjs-anchor.smooth',

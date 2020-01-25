@@ -665,7 +665,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
 
     function handleNFT(descriptorsUrl, arController) {
         // create a Worker to handle loading of NFT marker and tracking of it
-        var worker = new Worker('../vendor/jsartoolkit5/js/artoolkit.worker.js');
+        var worker = new Worker(THREEx.ArToolkitContext.baseURL + 'vendor/jsartoolkit5/js/artoolkit.worker.js');
 
         var pw = vw = arController.canvas.width;
         var ph = vh = arController.canvas.height;
