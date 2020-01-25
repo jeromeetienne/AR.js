@@ -45,13 +45,11 @@ if ('function' === typeof importScripts) {
     var markerResult = null;
 
     function load(msg) {
-        var path = '../../';
-
         var onLoad = function () {
             ar = new ARController(msg.pw, msg.ph, param);
 
             // after the ARController is set up, we load the NFT Marker
-            ar.loadNFTMarker(path + msg.marker, function (markerId) {
+            ar.loadNFTMarker(msg.marker, function (markerId) {
                 ar.trackNFTMarkerId(markerId);
                 postMessage({ type: 'endLoading' })
             }, function (err) {
@@ -73,7 +71,7 @@ if ('function' === typeof importScripts) {
         };
 
         // we cannot pass the entire ARController, so we re-create one inside the Worker, starting from camera_param
-        var param = new ARCameraParam(path + msg.param, onLoad, onError);
+        var param = new ARCameraParam(msg.param, onLoad, onError);
     }
 
     function process() {
@@ -3584,7 +3582,6 @@ AFRAME.registerComponent('arjs-anchor', {
                 markerParameters.patternUrl = _this.data.patternUrl;
                 markerParameters.markersAreaEnabled = false
             } else if (_this.data.type === 'nft') {
-                alert('hey')
                 markerParameters.type = _this.data.type
                 markerParameters.descriptorsUrl = _this.data.descriptorsUrl;
                 markerParameters.markersAreaEnabled = false
@@ -3680,7 +3677,6 @@ AFRAME.registerPrimitive('a-anchor', AFRAME.utils.extendDeep({}, AFRAME.primitiv
         'type': 'arjs-anchor.type',
         'size': 'arjs-anchor.size',
         'url': 'arjs-anchor.patternUrl',
-        'descriptorsUrl': 'arjs-anchor.descriptorsUrl',
         'value': 'arjs-anchor.barcodeValue',
         'preset': 'arjs-anchor.preset',
         'min-confidence': 'arjs-anchor.minConfidence',
