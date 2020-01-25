@@ -261,8 +261,8 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         // create a Worker to handle loading of NFT marker and tracking of it
         var worker = new Worker('../vendor/jsartoolkit5/js/artoolkit.worker.js');
 
-        var pw = arController.canvas.width;
-        var ph = arController.canvas.height;
+        var pw = vw = arController.canvas.width;
+        var ph = vh = arController.canvas.height;
 
         var context_process = arController.canvas.getContext('2d');
 
@@ -315,7 +315,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.NFT_MARKER && event.data.msg !== 'found') return
-
         var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
         _this.updateWithModelViewMatrix(modelViewMatrix)
     }

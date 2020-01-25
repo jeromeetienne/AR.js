@@ -243,8 +243,17 @@ AFRAME.registerPrimitive('a-nft', AFRAME.utils.extendDeep({}, AFRAME.primitives.
         'arjs-hit-testing': {},
     },
     mappings: {
+        'type': 'nft',
         'url': 'arjs-anchor.descriptorsUrl',
-    }
+        'size': 'arjs-anchor.size',
+        'smooth': 'arjs-anchor.smooth',
+        'smooth-count': 'arjs-anchor.smoothCount',
+        'smooth-tolerance': 'arjs-anchor.smoothTolerance',
+        'smooth-threshold': 'arjs-anchor.smoothThreshold',
+
+        'hit-testing-render-debug': 'arjs-hit-testing.renderDebug',
+        'hit-testing-enabled': 'arjs-hit-testing.enabled',
+    },
 }))
 
 

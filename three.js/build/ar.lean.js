@@ -2437,7 +2437,9 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function (modelViewMat
         tmpMatrix.multiply(modelViewMatrix)
 
         modelViewMatrix.copy(tmpMatrix)
-    } else console.assert(false)
+    } else {
+        console.assert(false)
+    }
 
     var renderReqd = false;
 
@@ -2584,8 +2586,8 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         // create a Worker to handle loading of NFT marker and tracking of it
         var worker = new Worker('../vendor/jsartoolkit5/js/artoolkit.worker.js');
 
-        var pw = arController.canvas.width;
-        var ph = arController.canvas.height;
+        var pw = vw = arController.canvas.width;
+        var ph = vh = arController.canvas.height;
 
         var context_process = arController.canvas.getContext('2d');
 
@@ -2593,34 +2595,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             var imageData = context_process.getImageData(0, 0, pw, ph);
             worker.postMessage({ type: "process", imagedata: imageData }, [imageData.data.buffer]);
         }
-
-        var interpolationFactor = 24;
-        var trackedMatrix = {
-            delta: [
-                0, 0, 0, 0,
-                0, 0, 0, 0,
-                0, 0, 0, 0,
-                0, 0, 0, 0
-            ],
-            interpolated: [
-                0, 0, 0, 0,
-                0, 0, 0, 0,
-                0, 0, 0, 0,
-                0, 0, 0, 0
-            ]
-        }
-
-        var setMatrix = function (matrix, value) {
-            var array = [];
-            for (var key in value) {
-                array[key] = value[key];
-            }
-            if (matrix.elements && typeof matrix.elements.set === "function") {
-                matrix.elements.set(array);
-            } else {
-                matrix.elements = [].slice.call(array);
-            }
-        };
 
         // initialize the worker
         worker.postMessage({
@@ -2641,17 +2615,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
 
             if (ev && ev.data && ev.data.type === 'found') {
                 var matrix = JSON.parse(ev.data.matrix);
-
-                // interpolate matrix
-                for (var i = 0; i < 16; i++) {
-                    trackedMatrix.delta[i] = matrix[i] - trackedMatrix.interpolated[i];
-                    trackedMatrix.interpolated[i] =
-                        trackedMatrix.interpolated[i] +
-                        trackedMatrix.delta[i] / interpolationFactor;
-                }
-
-                // set matrix of 'root' by detected 'world' matrix
-                setMatrix(_this.object3d.matrix, trackedMatrix.interpolated);
 
                 onMarkerFound({
                     data: {
@@ -2677,7 +2640,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.NFT_MARKER && event.data.msg !== 'found') return
-
         var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
         _this.updateWithModelViewMatrix(modelViewMatrix)
     }
