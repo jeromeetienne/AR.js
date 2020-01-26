@@ -371,8 +371,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             process();
         };
 
-        // start the loop
-        process();
     }
 
     function onMarkerFound(event) {
