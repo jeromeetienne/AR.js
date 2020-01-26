@@ -2597,7 +2597,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         }
 
         var cameraSrc = arController.cameraParam.src.replace('three.js/', '../');
-        console.log(THREEx.ArToolkitContext.baseURL)
 
         // initialize the worker
         worker.postMessage({
@@ -2618,6 +2617,8 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
 
             if (ev && ev.data && ev.data.type === 'found') {
                 var matrix = JSON.parse(ev.data.matrix);
+
+                console.log('marker found, tracked')
 
                 onMarkerFound({
                     data: {

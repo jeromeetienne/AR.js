@@ -293,6 +293,8 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             if (ev && ev.data && ev.data.type === 'found') {
                 var matrix = JSON.parse(ev.data.matrix);
 
+                console.log('marker found, tracked')
+
                 onMarkerFound({
                     data: {
                         type: artoolkit.NFT_MARKER,
