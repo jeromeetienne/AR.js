@@ -679,7 +679,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         var sw, sh;
         var pscale, sscale;
         var w, h;
-        //var ox, oy;
         // this need to be fixed
         /*window.addEventListener('arjs-video-loaded', function(ev) {
         //var video = document.getElementById('arjs-video');
@@ -780,8 +779,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             process();
         };
 
-        // start the loop
-        process();
     }
 
     function onMarkerFound(event) {
@@ -1579,8 +1576,8 @@ ARjs.Source.prototype._initSourceWebcam = function (onReady, onError) {
     domElement.setAttribute('autoplay', '');
     domElement.setAttribute('muted', '');
     domElement.setAttribute('playsinline', '');
-    //domElement.style.width = this.parameters.displayWidth + 'px'
-    //domElement.style.height = this.parameters.displayHeight + 'px'
+    domElement.style.width = this.parameters.displayWidth + 'px'
+    domElement.style.height = this.parameters.displayHeight + 'px'
 
     // check API is available
     if (navigator.mediaDevices === undefined
