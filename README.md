@@ -185,6 +185,7 @@ Try to get inspired by this great works:
 - [Click Places](./aframe/examples/click-places) - set up remote credentials to fetch remote places (`places.js` file)
 - [Places Name](./aframe/examples/places-name) - add new places statically on javascript (`places.js` file)
 - [Only HTML](./aframe/examples/only-html) - add new places statically on html (`index.html` file)
+- [Only HTML](./aframe/examples/always-face-user) - like only-html but here content always face the user (`index.html` file)
 
 # Related Projects
 - [Examples inspired from AR.js - not AR.js based](https://github.com/stemkoski/AR-Examples) from [@stemkoski](https://github.com/stemkoski)
