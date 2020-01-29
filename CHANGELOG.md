@@ -1,6 +1,6 @@
 # 2.1.5
 
-- added `distance` and `distance` properties to `gps-entity-place` (location based)
+- added `distance` and `distanceMsg` properties to `gps-entity-place` (location based)
 - added new example for distance property
 - added new example for a `gps-entity-place` that is always facing the user (location based)
 - fixed error when source is image or video and not camera
