@@ -101,6 +101,12 @@ It shows a debug UI with camera informations and a list of registered `gps-entit
 <a-scene gps-camera-debug embedded arjs='sourceType: webcam; debugUIEnabled: false;'></a-scene>
 ```
 
+## Tips
+
+### **Content that will always face the user**
+
+Look at [this example](./examples/always-face-user/index.html) in order to create `gps-entity-place` entities that will always face the user (so the user camera).
+
 ## Location Based Support
 
 Tried on Huawei P20, works like charm.
