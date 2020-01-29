@@ -11,7 +11,7 @@ AFRAME.registerComponent('gps-entity-place', {
         },
     },
     init: function () {
-        window.addEventListener('gps-camera-origin-coord-set', function() {
+        window.addEventListener('gps-camera-origin-coord-set', function () {
             if (!this._cameraGps) {
                 var camera = document.querySelector('[gps-camera]');
                 if (!camera.components['gps-camera']) {
@@ -22,6 +22,23 @@ AFRAME.registerComponent('gps-entity-place', {
             }
 
             this._updatePosition();
+        }.bind(this));
+
+        window.addEventListener('gps-camera-update-position', function(ev) {
+            if (!this.data) {
+                return;
+            }
+
+            var dstCoords = {
+                longitude: this.data.longitude,
+                latitude: ev.detail.origin.latitude,
+            };
+
+            var distance = this._cameraGps.computeDistanceMeters(ev.detail.position, dstCoords, true);
+
+            this.el.setAttribute('distance', distance);
+            this.el.setAttribute('distanceMsg', formatDistance(distance));
+            this.el.dispatchEvent(new CustomEvent('gps-entity-place-update-positon', { detail: { distance: distance } }));
         }.bind(this));
 
         this._positionXDebug = 0;
@@ -52,6 +69,7 @@ AFRAME.registerComponent('gps-entity-place', {
 
         position.x = this._cameraGps.computeDistanceMeters(this._cameraGps.originCoords, dstCoords, true);
         this._positionXDebug = position.x;
+
         position.x *= this.data.longitude > this._cameraGps.originCoords.longitude ? 1 : -1;
 
         // update position.z

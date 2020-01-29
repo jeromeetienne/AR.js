@@ -70,6 +70,7 @@ In addition to that, as you can see on the example above, we also have to add `r
 | positionMinAccuracy        | Minimum accuracy allowed for position signal    | 100 |
 | minDistance        | If set, places with a distance from the user lower than this value, are not showed. Only a positive value is allowed. Value is in meters.    | 0 (disabled) |
 
+
 ### `gps-entity-place`
 
 **Required**: yes
@@ -83,6 +84,11 @@ It requires latitude and longitude as a single string parameter (example with `a
 <a-box color="yellow" gps-entity-place="latitude: <your-latitude>; longitude: <your-longitude>"/>
 ```
 
+| Custom Attribute   | Description | Default Value |
+|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
+| distance        | Distance from user, updated at every user position update. Value in meters.   | 0 |
+| distanceMsg        | Distance from user, updated at every user position update. Value as `<distance> meters/kilometers`.   | '' |
+
 ### `gps-camera-debug`
 
 **Required**: no
@@ -90,8 +96,6 @@ It requires latitude and longitude as a single string parameter (example with `a
 
 This component should only be added in development environments, not in production environments.
 It shows a debug UI with camera informations and a list of registered `gps-entity-place` entities, showing also distance from the user for each one.
-
-This replaces the `gps-camera`:
 
 ```HTML
 <a-scene gps-camera-debug embedded arjs='sourceType: webcam; debugUIEnabled: false;'></a-scene>
