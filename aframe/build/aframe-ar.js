@@ -5933,8 +5933,6 @@ AFRAME.registerComponent('gps-entity-place', {
 
             var distance = this._cameraGps.computeDistanceMeters(ev.detail.position, dstCoords, true);
 
-            console.log(distance)
-
             this.el.setAttribute('distance', distance);
             this.el.setAttribute('distanceMsg', formatDistance(distance));
             this.el.dispatchEvent(new CustomEvent('gps-entity-place-update-positon', { detail: { distance: distance } }));
