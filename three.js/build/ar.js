@@ -3047,7 +3047,7 @@ ARjs.Source.prototype._initSourceImage = function (onReady) {
     domElement.style.width = this.parameters.displayWidth + 'px';
     domElement.style.height = this.parameters.displayHeight + 'px';
 
-    onReady();
+    domElement.onload = onReady;
     return domElement
 }
 
@@ -3080,7 +3080,7 @@ ARjs.Source.prototype._initSourceVideo = function (onReady) {
     domElement.style.width = this.parameters.displayWidth + 'px';
     domElement.style.height = this.parameters.displayHeight + 'px';
 
-    onReady();
+    domElement.onloadeddata = onReady;
     return domElement
 }
 
