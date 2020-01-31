@@ -24,14 +24,15 @@ AFRAME.registerComponent('gps-entity-place', {
             this._updatePosition();
         }.bind(this));
 
-        window.addEventListener('gps-camera-update-position', function(ev) {
+        window.addEventListener('gps-camera-update-position', function (ev) {
             if (!this.data) {
                 return;
             }
 
+            // update position.z
             var dstCoords = {
-                longitude: this.data.longitude,
-                latitude: ev.detail.origin.latitude,
+                longitude: ev.detail.origin.longitude,
+                latitude: this.data.latitude,
             };
 
             var distance = this._cameraGps.computeDistanceMeters(ev.detail.position, dstCoords, true);

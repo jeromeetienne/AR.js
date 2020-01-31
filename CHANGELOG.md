@@ -1,3 +1,7 @@
+# 2.1.6
+
+- set distance in `distance` property of `gps-entity-place` (location based) as z axis (previously was x axis)
+
 # 2.1.5
 
 - added `distance` and `distance` properties to `gps-entity-place` (location based)
