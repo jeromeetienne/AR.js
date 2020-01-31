@@ -2526,7 +2526,7 @@ Object.assign(ARjs.Context.prototype, THREE.EventDispatcher.prototype);
 // ARjs.Context.baseURL = '../'
 // default to github page
 ARjs.Context.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
-ARjs.Context.REVISION = '2.1.5';
+ARjs.Context.REVISION = '2.1.6';
 
 /**
  * Create a default camera for this trackingBackend
@@ -5921,14 +5921,15 @@ AFRAME.registerComponent('gps-entity-place', {
             this._updatePosition();
         }.bind(this));
 
-        window.addEventListener('gps-camera-update-position', function(ev) {
+        window.addEventListener('gps-camera-update-position', function (ev) {
             if (!this.data) {
                 return;
             }
 
+            // update position.z
             var dstCoords = {
-                longitude: this.data.longitude,
-                latitude: ev.detail.origin.latitude,
+                longitude: ev.detail.origin.longitude,
+                latitude: this.data.latitude,
             };
 
             var distance = this._cameraGps.computeDistanceMeters(ev.detail.position, dstCoords, true);
