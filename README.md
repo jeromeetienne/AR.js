@@ -300,6 +300,9 @@ Demo tested on the following browser setups:
 - **Safari and Chrome on iOS < 11** (doesn't work, doesn't ask for permission, I see white background and text)
 - **Microsoft Edge on Windows 10** (Chrome on Google Pixel phone to view hologram)
 
+To see the full compatibility list and contribute to it yourself go to this google spreadsheet:
+[AR.js platform and browser compatibility](https://docs.google.com/spreadsheets/d/1e5YimbF_D1Sou2bx2vdBH58s1WdB_LgzBVYYD_uQLJk/edit#gid=318398375)
+
 Credits: @HelloDeadline, @sorianog
 
 # Licenses
