@@ -2596,15 +2596,13 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             worker.postMessage({ type: "process", imagedata: imageData }, [imageData.data.buffer]);
         }
 
-        var cameraSrc = arController.cameraParam.src.replace('three.js/', '../');
-
         // initialize the worker
         worker.postMessage({
             type: 'init',
             pw: pw,
             ph: ph,
             marker: descriptorsUrl,
-            param: cameraSrc,
+            param: arController.cameraParam.src,
         });
 
         worker.onmessage = function (ev) {
