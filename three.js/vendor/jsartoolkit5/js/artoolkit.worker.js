@@ -38,6 +38,7 @@ if ('function' === typeof importScripts) {
             // ...and we listen for event when marker has been found from camera
             ar.addEventListener('getNFTMarker', function (ev) {
                 // let AR.js know that a NFT marker has been found, with its matrix for positioning
+                console.log('TROVATO SUL WORKERRRRRR', ev)
                 markerResult = {
                     type: 'found',
                     matrix: JSON.stringify(ev.data.matrix),
