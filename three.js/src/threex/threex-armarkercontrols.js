@@ -291,7 +291,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             if (ev && ev.data && ev.data.type === 'found') {
                 var matrix = JSON.parse(ev.data.matrix);
 
-                console.log('marker found, tracked')
+                alert('marker found, tracked')
 
                 onMarkerFound({
                     data: {
@@ -315,6 +315,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.NFT_MARKER && event.data.msg !== 'found') return
+
         var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
         _this.updateWithModelViewMatrix(modelViewMatrix)
     }

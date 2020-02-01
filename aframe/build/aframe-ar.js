@@ -45,11 +45,13 @@ if ('function' === typeof importScripts) {
     var markerResult = null;
 
     function load(msg) {
+        var path = '../../';
+
         var onLoad = function () {
             ar = new ARController(msg.pw, msg.ph, param);
 
             // after the ARController is set up, we load the NFT Marker
-            ar.loadNFTMarker(msg.marker, function (markerId) {
+            ar.loadNFTMarker(path + msg.marker, function (markerId) {
                 ar.trackNFTMarkerId(markerId);
                 postMessage({ type: 'endLoading' })
             }, function (err) {
@@ -71,7 +73,7 @@ if ('function' === typeof importScripts) {
         };
 
         // we cannot pass the entire ARController, so we re-create one inside the Worker, starting from camera_param
-        var param = new ARCameraParam(msg.param, onLoad, onError);
+        var param = new ARCameraParam(path + msg.param, onLoad, onError);
     }
 
     function process() {
@@ -695,7 +697,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             if (ev && ev.data && ev.data.type === 'found') {
                 var matrix = JSON.parse(ev.data.matrix);
 
-                console.log('marker found, tracked')
+                alert('marker found, tracked')
 
                 onMarkerFound({
                     data: {
@@ -719,6 +721,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.NFT_MARKER && event.data.msg !== 'found') return
+
         var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
         _this.updateWithModelViewMatrix(modelViewMatrix)
     }
