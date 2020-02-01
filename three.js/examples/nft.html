@@ -71,9 +71,6 @@
 	renderer.domElement.style.left = '0px'
 	document.body.appendChild( renderer.domElement );
 
-	// array of functions for the rendering loop
-	var onRenderFcts= [];
-
 	// init scene and camera
 	var scene	= new THREE.Scene();
 
@@ -131,14 +128,18 @@
 	})
 
 	// update artoolkit on every frame
-	onRenderFcts.push(function(){
-		if( arToolkitSource.ready === false )	return
+	var renderingFunc = function() {
+		if (!arToolkitSource.ready) {
+            return;
+        }
 
 		arToolkitContext.update( arToolkitSource.domElement )
 
 		// update scene.visible if the marker is seen
-		scene.visible = camera.visible
-	})
+        scene.visible = camera.visible
+
+        renderer.render(scene, camera);
+	};
 
 	////////////////////////////////////////////////////////////////////////////////
 	//          Create a ArMarkerControls
@@ -172,26 +173,11 @@
 	//		render the whole thing on the page
 	//////////////////////////////////////////////////////////////////////////////////
 
-    // render the scene
-    onRenderFcts.push(function () {
-        renderer.render(scene, camera);
-    });
-
     // run the rendering loop
     var lastTimeMsec = null
     requestAnimationFrame(function animate(nowMsec) {
-        // keep looping
+        renderingFunc();
         requestAnimationFrame(animate);
-
-        // measure time
-        lastTimeMsec = lastTimeMsec || nowMsec - 1000 / 60
-        var deltaMsec = Math.min(200, nowMsec - lastTimeMsec)
-        lastTimeMsec = nowMsec
-
-        // call each update function
-        onRenderFcts.forEach(function (onRenderFct) {
-            onRenderFct(deltaMsec / 1000, nowMsec / 1000)
-        })
     })
     </script>
 </body>

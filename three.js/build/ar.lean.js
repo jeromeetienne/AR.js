@@ -2616,7 +2616,7 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             if (ev && ev.data && ev.data.type === 'found') {
                 var matrix = JSON.parse(ev.data.matrix);
 
-                alert('marker found, tracked')
+                console.log('TROVATOOOOOOOOO')
 
                 onMarkerFound({
                     data: {
