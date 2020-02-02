@@ -1,7 +1,7 @@
 var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
-ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
+ARjs.Context = THREEx.ArToolkitContext = function (parameters, sourceParameters) {
     var _this = this
 
     _this._updatedAt = null
@@ -25,6 +25,10 @@ ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
         // resolution of at which we detect pose in the source image
         canvasWidth: 640,
         canvasHeight: 480,
+
+        // to use sourceWidth and sourceHeight if passed as input
+        sourceWidth: sourceParameters.sourceWidth || 640,
+        sourceHeight: sourceParameters.sourceHeight || 480,
 
         // the patternRatio inside the artoolkit marker - artoolkit only
         patternRatio: 0.5,

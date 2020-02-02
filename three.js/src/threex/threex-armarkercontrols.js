@@ -263,8 +263,9 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
 
         var worker = new Worker(THREEx.ArToolkitContext.baseURL + 'vendor/jsartoolkit5/js/artoolkit.worker.js');
 
-        var pw = window.arToolkitSource.parameters.sourceWidth;
-        var ph = window.arToolkitSource.parameters.sourceHeight;
+
+        var pw = _this.context.parameters.sourceWidth;
+        var ph = _this.context.parameters.sourceHeight;
 
         var context_process = arController.canvas.getContext('2d');
 

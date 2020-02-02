@@ -90,11 +90,7 @@
             sourceType : 'webcam',
             sourceWidth: 480,
             sourceHeight: 640,
-            displaWidth: 480,
-            displayHeight: 640,
         })
-
-        window.arToolkitSource = arToolkitSource;
 
         arToolkitSource.init(function onReady(){
             // use a resize to fullscreen mobile devices
@@ -126,6 +122,9 @@
             detectionMode: 'mono',
             canvasWidth: 480,
             canvasHeight: 640,
+        }, {
+            sourceWidth: 480,
+            sourceHeight: 640,
         })
 
         // initialize it

@@ -2588,8 +2588,9 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
 
         var worker = new Worker(THREEx.ArToolkitContext.baseURL + 'vendor/jsartoolkit5/js/artoolkit.worker.js');
 
-        var pw = window.arToolkitSource.parameters.sourceWidth;
-        var ph = window.arToolkitSource.parameters.sourceHeight;
+
+        var pw = _this.context.parameters.sourceWidth;
+        var ph = _this.context.parameters.sourceHeight;
 
         var context_process = arController.canvas.getContext('2d');
 
@@ -2838,7 +2839,7 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
-ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
+ARjs.Context = THREEx.ArToolkitContext = function (parameters, sourceParameters) {
     var _this = this
 
     _this._updatedAt = null
@@ -2862,6 +2863,10 @@ ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
         // resolution of at which we detect pose in the source image
         canvasWidth: 640,
         canvasHeight: 480,
+
+        // to use sourceWidth and sourceHeight if passed as input
+        sourceWidth: sourceParameters.sourceWidth || 640,
+        sourceHeight: sourceParameters.sourceHeight || 480,
 
         // the patternRatio inside the artoolkit marker - artoolkit only
         patternRatio: 0.5,
@@ -4418,7 +4423,7 @@ ARjs.Session = function(parameters){
 	//////////////////////////////////////////////////////////////////////////////
 
 	// create atToolkitContext
-	var arContext = _this.arContext = new ARjs.Context(parameters.contextParameters)
+	var arContext = _this.arContext = new ARjs.Context(parameters.contextParameters, parameters.sourceParameters)
 
 	// initialize it
 	_this.arContext.init()

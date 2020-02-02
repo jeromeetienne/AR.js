@@ -83,7 +83,7 @@ ARjs.Session = function(parameters){
 	//////////////////////////////////////////////////////////////////////////////
 
 	// create atToolkitContext
-	var arContext = _this.arContext = new ARjs.Context(parameters.contextParameters)
+	var arContext = _this.arContext = new ARjs.Context(parameters.contextParameters, parameters.sourceParameters)
 
 	// initialize it
 	_this.arContext.init()
