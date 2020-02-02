@@ -49,11 +49,11 @@ if ('function' === typeof importScripts) {
 
         var onLoad = function () {
             ar = new ARController(msg.pw, msg.ph, param);
-            var cameraMatrix = ar.getCameraMatrix();
 
             // after the ARController is set up, we load the NFT Marker
             ar.loadNFTMarker(path + msg.marker, function (markerId) {
-                ar.trackNFTMarkerId(markerId, 2);
+                ar.trackNFTMarkerId(markerId);
+                postMessage({ type: 'endLoading' })
             }, function (err) {
                 console.log('Error in loading marker on Worker', err)
             });
@@ -62,13 +62,10 @@ if ('function' === typeof importScripts) {
             ar.addEventListener('getNFTMarker', function (ev) {
                 // let AR.js know that a NFT marker has been found, with its matrix for positioning
                 markerResult = {
-                    type: "found",
+                    type: 'found',
                     matrix: JSON.stringify(ev.data.matrix),
-                    proj: JSON.stringify(cameraMatrix)
                 };
-
             });
-            postMessage({type: "loaded", proj: JSON.stringify(cameraMatrix)});
         };
 
         var onError = function (error) {
@@ -97,6 +94,7 @@ if ('function' === typeof importScripts) {
     }
 
 }
+
 var THREEx = THREEx || {}
 
 THREEx.ArBaseControls = function(object3d){
@@ -409,7 +407,7 @@ THREEx.ArMarkerCloak.fragmentShader = '\n'+
 var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
-ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, camera, parameters) {
+ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, parameters) {
     var _this = this
 
     THREEx.ArBaseControls.call(this, object3d)
@@ -447,12 +445,10 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, cam
     var possibleValues = ['modelViewMatrix', 'cameraTransformMatrix']
     console.assert(possibleValues.indexOf(this.parameters.changeMatrixMode) !== -1, 'illegal value', this.parameters.changeMatrixMode)
 
-
     // create the marker Root
     this.object3d = object3d
     this.object3d.matrixAutoUpdate = false;
     this.object3d.visible = false
-    this.camera = camera;
 
     //////////////////////////////////////////////////////////////////////////////
     //		setParameters
@@ -522,7 +518,9 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function (modelViewMat
         tmpMatrix.multiply(modelViewMatrix)
 
         modelViewMatrix.copy(tmpMatrix)
-    } else console.assert(false)
+    } else {
+        console.assert(false)
+    }
 
     var renderReqd = false;
 
@@ -574,6 +572,7 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function (modelViewMat
     }
 
     // decompose - the matrix into .position, .quaternion, .scale
+
     markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
 
     // dispatchEvent
@@ -667,69 +666,14 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
 
     function handleNFT(descriptorsUrl, arController) {
         // create a Worker to handle loading of NFT marker and tracking of it
-        var worker = new Worker('../vendor/jsartoolkit5/js/artoolkit.worker.js');
 
-        function isMobile() {
-            return /Android|mobile|iPad|iPhone/i.test(navigator.userAgent);
-        }
+        var worker = new Worker(THREEx.ArToolkitContext.baseURL + 'vendor/jsartoolkit5/js/artoolkit.worker.js');
 
-        var pw = arController.canvas.width;
-        var ph = arController.canvas.height;
-        var vw, vh;
-        var sw, sh;
-        var pscale, sscale;
-        var w, h;
-        // this need to be fixed
-        /*window.addEventListener('arjs-video-loaded', function(ev) {
-        //var video = document.getElementById('arjs-video');
-        var video = ev.detail.component;
-        vw = video.clientWidth;
-        console.log(vw);
-        vh = video.clientHeight;
-      });*/
-        // we force video width and height ( because we know that is 640 x 480 )
-        vw = 640;
-        vh = 480;
-        pscale = 320 / Math.max(vw, vh / 3 * 4);
-        sscale = isMobile() ? window.outerWidth / vw : 1;
 
-        sw = vw * sscale;
-        sh = vh * sscale;
-        console.log(sw)
-        var canvas_draw = arController.canvas;
-        //var container = canvas_draw.parentElement || document.body;
-
-        //video.style.width = sw + "px";
-        //video.style.height = sh + "px";
-        //container.style.width = sw + "px";
-        //container.style.height = sh + "px";
-        canvas_draw.style.clientWidth = sw + "px";
-        canvas_draw.style.clientHeight = sh + "px";
-        //canvas_draw.style.clientWidth = "640px";
-        //canvas_draw.style.clientHeight = "480px";
-        canvas_draw.width = sw;
-        canvas_draw.height = sh;
-        //console.log(canvas_draw)
-
-        w = vw * pscale;
-        h = vh * pscale;
-        pw = Math.max(w, h / 3 * 4);
-        ph = Math.max(h, w / 4 * 3);
-        //console.log(pw)
+        var pw = _this.context.parameters.sourceWidth;
+        var ph = _this.context.parameters.sourceHeight;
 
         var context_process = arController.canvas.getContext('2d');
-
-        function setMatrix (matrix, value) {
-            var array = [];
-            for (var key in value) {
-                array[key] = value[key];
-            }
-            if (typeof matrix.elements.set === "function") {
-                matrix.elements.set(array);
-            } else {
-                matrix.elements = [].slice.call(array);
-            }
-        };
 
         function process() {
             var imageData = context_process.getImageData(0, 0, pw, ph);
@@ -746,21 +690,14 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         });
 
         worker.onmessage = function (ev) {
-            if (ev && ev.data && ev.data.type === 'loaded') {
-              var proj = JSON.parse(ev.data.proj);
-              var ratioW = pw / w;
-              var ratioH = ph / h;
-              proj[0] *= ratioW;
-              proj[4] *= ratioW;
-              proj[8] *= ratioW;
-              proj[12] *= ratioW;
-              proj[1] *= ratioH;
-              proj[5] *= ratioH;
-              proj[9] *= ratioH;
-              proj[13] *= ratioH;
-              setMatrix(_this.camera.projectionMatrix, proj); // need to pass to the camera
+            if (ev && ev.data && ev.data.type === 'endLoading') {
+                var loader = document.querySelector('.arjs-nft-loader');
+                if (loader) {
+                    loader.remove();
+                }
+            }
 
-            } else if (ev && ev.data && ev.data.type === 'found') {
+            if (ev && ev.data && ev.data.type === 'found') {
                 var matrix = JSON.parse(ev.data.matrix);
 
                 onMarkerFound({
@@ -784,7 +721,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
     function onMarkerFound(event) {
         if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return
-        if (event.data.type === artoolkit.NFT_MARKER && event.data.msg !== 'found') return
 
         var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
         _this.updateWithModelViewMatrix(modelViewMatrix)
@@ -984,7 +920,7 @@ THREEx.ArSmoothedControls.prototype.update = function(targetObject3d){
 var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
-ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
+ARjs.Context = THREEx.ArToolkitContext = function (parameters, sourceParameters) {
     var _this = this
 
     _this._updatedAt = null
@@ -1008,6 +944,10 @@ ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
         // resolution of at which we detect pose in the source image
         canvasWidth: 640,
         canvasHeight: 480,
+
+        // to use sourceWidth and sourceHeight if passed as input
+        sourceWidth: sourceParameters.sourceWidth || 640,
+        sourceHeight: sourceParameters.sourceHeight || 480,
 
         // the patternRatio inside the artoolkit marker - artoolkit only
         patternRatio: 0.5,
@@ -1228,21 +1168,17 @@ ARjs.Context.prototype._initArtoolkit = function (onCompleted) {
 /**
  * return the projection matrix
  */
-ARjs.Context.prototype.getProjectionMatrix = function (srcElement) {
+ARjs.Context.prototype.getProjectionMatrix = function () {
     // FIXME rename this function to say it is artoolkit specific - getArtoolkitProjectMatrix
     // keep a backward compatibility with a console.warn
 
     console.assert(this.parameters.trackingBackend === 'artoolkit')
     console.assert(this.arController, 'arController MUST be initialized to call this function')
+
     // get projectionMatrixArr from artoolkit
     var projectionMatrixArr = this.arController.getCameraMatrix();
     var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)
 
-    // apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-    // we exclude this for testing, with this the code not works
-    //projectionMatrix.multiply(this._artoolkitProjectionAxisTransformMatrix)
-
-    // return the result
     return projectionMatrix
 }
 
@@ -1630,8 +1566,6 @@ ARjs.Source.prototype._initSourceWebcam = function (onReady, onError) {
             document.body.addEventListener('click', function () {
                 domElement.play();
             });
-            // domElement.play();
-
             onReady();
         }).catch(function (error) {
             onError({
@@ -1810,7 +1744,6 @@ ARjs.Source.prototype.onResize = function (arToolkitContext, renderer, camera) {
 
     var trackingBackend = arToolkitContext.parameters.trackingBackend
 
-
     // RESIZE DOMELEMENT
     if (trackingBackend === 'artoolkit') {
 
@@ -1819,8 +1752,6 @@ ARjs.Source.prototype.onResize = function (arToolkitContext, renderer, camera) {
         var isAframe = renderer.domElement.dataset.aframeCanvas ? true : false
         if (isAframe === false) {
             this.copyElementSizeTo(renderer.domElement)
-        } else {
-
         }
 
         if (arToolkitContext.arController !== null) {
@@ -2573,7 +2504,7 @@ ARjs.Session = function(parameters){
 	//////////////////////////////////////////////////////////////////////////////
 
 	// create atToolkitContext
-	var arContext = _this.arContext = new ARjs.Context(parameters.contextParameters)
+	var arContext = _this.arContext = new ARjs.Context(parameters.contextParameters, parameters.sourceParameters)
 
 	// initialize it
 	_this.arContext.init()
@@ -3652,8 +3583,6 @@ AFRAME.registerComponent('arjs-anchor', {
                 markerParameters.type = _this.data.type
                 markerParameters.descriptorsUrl = _this.data.descriptorsUrl;
                 markerParameters.markersAreaEnabled = false
-            } else {
-                // console.assert( this.data.preset === '', 'illegal preset value '+this.data.preset)
             }
 
             markerParameters.smooth = _this.data.smooth;
@@ -3744,7 +3673,6 @@ AFRAME.registerPrimitive('a-anchor', AFRAME.utils.extendDeep({}, AFRAME.primitiv
         'type': 'arjs-anchor.type',
         'size': 'arjs-anchor.size',
         'url': 'arjs-anchor.patternUrl',
-        'descriptorsUrl': 'arjs-anchor.descriptorsUrl',
         'value': 'arjs-anchor.barcodeValue',
         'preset': 'arjs-anchor.preset',
         'min-confidence': 'arjs-anchor.minConfidence',
@@ -3775,8 +3703,17 @@ AFRAME.registerPrimitive('a-nft', AFRAME.utils.extendDeep({}, AFRAME.primitives.
         'arjs-hit-testing': {},
     },
     mappings: {
+        'type': 'arjs-anchor.type',
         'url': 'arjs-anchor.descriptorsUrl',
-    }
+        'size': 'arjs-anchor.size',
+        'smooth': 'arjs-anchor.smooth',
+        'smooth-count': 'arjs-anchor.smoothCount',
+        'smooth-tolerance': 'arjs-anchor.smoothTolerance',
+        'smooth-threshold': 'arjs-anchor.smoothThreshold',
+
+        'hit-testing-render-debug': 'arjs-hit-testing.renderDebug',
+        'hit-testing-enabled': 'arjs-hit-testing.enabled',
+    },
 }))
 
 
@@ -4511,10 +4448,8 @@ AFRAME.registerSystem('arjs', {
     //		Code Separator
     //////////////////////////////////////////////////////////////////////////////
 
-
     init: function () {
         var _this = this
-
 
         //////////////////////////////////////////////////////////////////////////////
         //		setup arProfile
@@ -4524,8 +4459,6 @@ AFRAME.registerSystem('arjs', {
             .trackingMethod(this.data.trackingMethod)
             .performance(this.data.performanceProfile)
             .defaultMarker()
-
-
 
         //////////////////////////////////////////////////////////////////////////////
         //		honor this.data and setup arProfile with it
@@ -4645,8 +4578,6 @@ AFRAME.registerSystem('arjs', {
 
         // skip it if not yet isInitialised
         if (this.isReady === false) return
-
-        var arSession = this._arSession
 
         // update arSession
         this._arSession.update()
