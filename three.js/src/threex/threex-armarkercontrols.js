@@ -1,7 +1,7 @@
 var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
-ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, camera, parameters) {
+ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, parameters) {
     var _this = this
 
     THREEx.ArBaseControls.call(this, object3d)
@@ -39,12 +39,10 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, cam
     var possibleValues = ['modelViewMatrix', 'cameraTransformMatrix']
     console.assert(possibleValues.indexOf(this.parameters.changeMatrixMode) !== -1, 'illegal value', this.parameters.changeMatrixMode)
 
-
     // create the marker Root
     this.object3d = object3d
     this.object3d.matrixAutoUpdate = false;
     this.object3d.visible = false
-    this.camera = camera;
 
     //////////////////////////////////////////////////////////////////////////////
     //		setParameters
@@ -114,7 +112,9 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function (modelViewMat
         tmpMatrix.multiply(modelViewMatrix)
 
         modelViewMatrix.copy(tmpMatrix)
-    } else console.assert(false)
+    } else {
+        console.assert(false)
+    }
 
     var renderReqd = false;
 
@@ -166,6 +166,7 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function (modelViewMat
     }
 
     // decompose - the matrix into .position, .quaternion, .scale
+
     markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
 
     // dispatchEvent
@@ -259,69 +260,14 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
 
     function handleNFT(descriptorsUrl, arController) {
         // create a Worker to handle loading of NFT marker and tracking of it
-        var worker = new Worker('../vendor/jsartoolkit5/js/artoolkit.worker.js');
 
-        function isMobile() {
-            return /Android|mobile|iPad|iPhone/i.test(navigator.userAgent);
-        }
+        var worker = new Worker(THREEx.ArToolkitContext.baseURL + 'vendor/jsartoolkit5/js/artoolkit.worker.js');
 
-        var pw = arController.canvas.width;
-        var ph = arController.canvas.height;
-        var vw, vh;
-        var sw, sh;
-        var pscale, sscale;
-        var w, h;
-        // this need to be fixed
-        /*window.addEventListener('arjs-video-loaded', function(ev) {
-        //var video = document.getElementById('arjs-video');
-        var video = ev.detail.component;
-        vw = video.clientWidth;
-        console.log(vw);
-        vh = video.clientHeight;
-      });*/
-        // we force video width and height ( because we know that is 640 x 480 )
-        vw = 640;
-        vh = 480;
-        pscale = 320 / Math.max(vw, vh / 3 * 4);
-        sscale = isMobile() ? window.outerWidth / vw : 1;
 
-        sw = vw * sscale;
-        sh = vh * sscale;
-        console.log(sw)
-        var canvas_draw = arController.canvas;
-        //var container = canvas_draw.parentElement || document.body;
-
-        //video.style.width = sw + "px";
-        //video.style.height = sh + "px";
-        //container.style.width = sw + "px";
-        //container.style.height = sh + "px";
-        canvas_draw.style.clientWidth = sw + "px";
-        canvas_draw.style.clientHeight = sh + "px";
-        //canvas_draw.style.clientWidth = "640px";
-        //canvas_draw.style.clientHeight = "480px";
-        canvas_draw.width = sw;
-        canvas_draw.height = sh;
-        //console.log(canvas_draw)
-
-        w = vw * pscale;
-        h = vh * pscale;
-        pw = Math.max(w, h / 3 * 4);
-        ph = Math.max(h, w / 4 * 3);
-        //console.log(pw)
+        var pw = _this.context.parameters.sourceWidth;
+        var ph = _this.context.parameters.sourceHeight;
 
         var context_process = arController.canvas.getContext('2d');
-
-        function setMatrix (matrix, value) {
-            var array = [];
-            for (var key in value) {
-                array[key] = value[key];
-            }
-            if (typeof matrix.elements.set === "function") {
-                matrix.elements.set(array);
-            } else {
-                matrix.elements = [].slice.call(array);
-            }
-        };
 
         function process() {
             var imageData = context_process.getImageData(0, 0, pw, ph);
@@ -338,21 +284,14 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         });
 
         worker.onmessage = function (ev) {
-            if (ev && ev.data && ev.data.type === 'loaded') {
-              var proj = JSON.parse(ev.data.proj);
-              var ratioW = pw / w;
-              var ratioH = ph / h;
-              proj[0] *= ratioW;
-              proj[4] *= ratioW;
-              proj[8] *= ratioW;
-              proj[12] *= ratioW;
-              proj[1] *= ratioH;
-              proj[5] *= ratioH;
-              proj[9] *= ratioH;
-              proj[13] *= ratioH;
-              setMatrix(_this.camera.projectionMatrix, proj); // need to pass to the camera
+            if (ev && ev.data && ev.data.type === 'endLoading') {
+                var loader = document.querySelector('.arjs-nft-loader');
+                if (loader) {
+                    loader.remove();
+                }
+            }
 
-            } else if (ev && ev.data && ev.data.type === 'found') {
+            if (ev && ev.data && ev.data.type === 'found') {
                 var matrix = JSON.parse(ev.data.matrix);
 
                 onMarkerFound({
@@ -376,7 +315,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
     function onMarkerFound(event) {
         if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return
-        if (event.data.type === artoolkit.NFT_MARKER && event.data.msg !== 'found') return
 
         var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
         _this.updateWithModelViewMatrix(modelViewMatrix)
