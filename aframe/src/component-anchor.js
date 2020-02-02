@@ -120,8 +120,6 @@ AFRAME.registerComponent('arjs-anchor', {
                 markerParameters.type = _this.data.type
                 markerParameters.descriptorsUrl = _this.data.descriptorsUrl;
                 markerParameters.markersAreaEnabled = false
-            } else {
-                // console.assert( this.data.preset === '', 'illegal preset value '+this.data.preset)
             }
 
             markerParameters.smooth = _this.data.smooth;

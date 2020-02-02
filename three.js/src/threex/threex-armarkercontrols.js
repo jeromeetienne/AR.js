@@ -166,6 +166,7 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function (modelViewMat
     }
 
     // decompose - the matrix into .position, .quaternion, .scale
+
     markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
 
     // dispatchEvent

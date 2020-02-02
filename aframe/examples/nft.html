@@ -4,10 +4,10 @@
 <script>ARjs.Context.baseURL = '../../three.js/'</script>
 
 <body style='margin : 0px; overflow: hidden;'>
-	<a-scene embedded arjs='trackingMethod: best;'>
+	<a-scene embedded arjs='trackingMethod: best; sourceType: webcam; debugUIEnabled: false;'>
         <!-- using bad url for marker for now, to be fixed -->
         <a-nft type="nft" url='../../../../aframe/examples/assets/nft/pinball'>
-            <a-box material='opacity: 0.5; side:double; color:yellow;'></a-box>
+            <a-box position="100 100 0" scale="100 100 100" material='color:yellow;'></a-box>
         </a-nft>
 		<a-entity camera></a-entity>
 	</a-scene>

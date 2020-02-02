@@ -61,7 +61,6 @@ if ('function' === typeof importScripts) {
             // ...and we listen for event when marker has been found from camera
             ar.addEventListener('getNFTMarker', function (ev) {
                 // let AR.js know that a NFT marker has been found, with its matrix for positioning
-                console.log('TROVATO SUL WORKERRRRRR', ev)
                 markerResult = {
                     type: 'found',
                     matrix: JSON.stringify(ev.data.matrix),
@@ -573,6 +572,7 @@ ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function (modelViewMat
     }
 
     // decompose - the matrix into .position, .quaternion, .scale
+
     markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
 
     // dispatchEvent
@@ -3590,8 +3590,6 @@ AFRAME.registerComponent('arjs-anchor', {
                 markerParameters.type = _this.data.type
                 markerParameters.descriptorsUrl = _this.data.descriptorsUrl;
                 markerParameters.markersAreaEnabled = false
-            } else {
-                // console.assert( this.data.preset === '', 'illegal preset value '+this.data.preset)
             }
 
             markerParameters.smooth = _this.data.smooth;
@@ -4457,10 +4455,8 @@ AFRAME.registerSystem('arjs', {
     //		Code Separator
     //////////////////////////////////////////////////////////////////////////////
 
-
     init: function () {
         var _this = this
-
 
         //////////////////////////////////////////////////////////////////////////////
         //		setup arProfile
@@ -4470,8 +4466,6 @@ AFRAME.registerSystem('arjs', {
             .trackingMethod(this.data.trackingMethod)
             .performance(this.data.performanceProfile)
             .defaultMarker()
-
-
 
         //////////////////////////////////////////////////////////////////////////////
         //		honor this.data and setup arProfile with it
@@ -4591,8 +4585,6 @@ AFRAME.registerSystem('arjs', {
 
         // skip it if not yet isInitialised
         if (this.isReady === false) return
-
-        var arSession = this._arSession
 
         // update arSession
         this._arSession.update()
