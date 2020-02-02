@@ -263,8 +263,8 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
 
         var worker = new Worker(THREEx.ArToolkitContext.baseURL + 'vendor/jsartoolkit5/js/artoolkit.worker.js');
 
-        var pw = arController.canvas.width;
-        var ph = arController.canvas.height;
+        var pw = window.arToolkitSource.parameters.sourceWidth;
+        var ph = window.arToolkitSource.parameters.sourceHeight;
 
         var context_process = arController.canvas.getContext('2d');
 
@@ -293,8 +293,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             if (ev && ev.data && ev.data.type === 'found') {
                 var matrix = JSON.parse(ev.data.matrix);
 
-                console.log('TROVATOOOOOOOOO')
-
                 onMarkerFound({
                     data: {
                         type: artoolkit.NFT_MARKER,
@@ -316,7 +314,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
     function onMarkerFound(event) {
         if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return
-        if (event.data.type === artoolkit.NFT_MARKER && event.data.msg !== 'found') return
 
         var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
         _this.updateWithModelViewMatrix(modelViewMatrix)

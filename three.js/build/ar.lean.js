@@ -2588,8 +2588,8 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
 
         var worker = new Worker(THREEx.ArToolkitContext.baseURL + 'vendor/jsartoolkit5/js/artoolkit.worker.js');
 
-        var pw = arController.canvas.width;
-        var ph = arController.canvas.height;
+        var pw = window.arToolkitSource.parameters.sourceWidth;
+        var ph = window.arToolkitSource.parameters.sourceHeight;
 
         var context_process = arController.canvas.getContext('2d');
 
@@ -2618,8 +2618,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             if (ev && ev.data && ev.data.type === 'found') {
                 var matrix = JSON.parse(ev.data.matrix);
 
-                console.log('TROVATOOOOOOOOO')
-
                 onMarkerFound({
                     data: {
                         type: artoolkit.NFT_MARKER,
@@ -2641,7 +2639,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
     function onMarkerFound(event) {
         if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
         if (event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return
-        if (event.data.type === artoolkit.NFT_MARKER && event.data.msg !== 'found') return
 
         var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
         _this.updateWithModelViewMatrix(modelViewMatrix)
@@ -3085,21 +3082,17 @@ ARjs.Context.prototype._initArtoolkit = function (onCompleted) {
 /**
  * return the projection matrix
  */
-ARjs.Context.prototype.getProjectionMatrix = function (srcElement) {
+ARjs.Context.prototype.getProjectionMatrix = function () {
     // FIXME rename this function to say it is artoolkit specific - getArtoolkitProjectMatrix
     // keep a backward compatibility with a console.warn
 
     console.assert(this.parameters.trackingBackend === 'artoolkit')
     console.assert(this.arController, 'arController MUST be initialized to call this function')
+
     // get projectionMatrixArr from artoolkit
     var projectionMatrixArr = this.arController.getCameraMatrix();
     var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)
 
-    // apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-    // we exclude this for testing, with this the code not works
-    //projectionMatrix.multiply(this._artoolkitProjectionAxisTransformMatrix)
-
-    // return the result
     return projectionMatrix
 }
 
@@ -3487,8 +3480,6 @@ ARjs.Source.prototype._initSourceWebcam = function (onReady, onError) {
             document.body.addEventListener('click', function () {
                 domElement.play();
             });
-            // domElement.play();
-
             onReady();
         }).catch(function (error) {
             onError({
@@ -3667,7 +3658,6 @@ ARjs.Source.prototype.onResize = function (arToolkitContext, renderer, camera) {
 
     var trackingBackend = arToolkitContext.parameters.trackingBackend
 
-
     // RESIZE DOMELEMENT
     if (trackingBackend === 'artoolkit') {
 
@@ -3676,8 +3666,6 @@ ARjs.Source.prototype.onResize = function (arToolkitContext, renderer, camera) {
         var isAframe = renderer.domElement.dataset.aframeCanvas ? true : false
         if (isAframe === false) {
             this.copyElementSizeTo(renderer.domElement)
-        } else {
-
         }
 
         if (arToolkitContext.arController !== null) {

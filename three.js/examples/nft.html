@@ -88,13 +88,19 @@
 
         var arToolkitSource = new THREEx.ArToolkitSource({
             sourceType : 'webcam',
+            sourceWidth: 480,
+            sourceHeight: 640,
+            displaWidth: 480,
+            displayHeight: 640,
         })
+
+        window.arToolkitSource = arToolkitSource;
 
         arToolkitSource.init(function onReady(){
             // use a resize to fullscreen mobile devices
             setTimeout(function() {
                 onResize()
-            }, 2000);
+            }, 1000);
         })
 
         // handle resize
@@ -118,8 +124,8 @@
         var arToolkitContext = new THREEx.ArToolkitContext({
             cameraParametersUrl: '../../../../data/data/camera_para.dat',
             detectionMode: 'mono',
-            canvasWidth: window.innerWidth,
-            canvasHeight: window.innerHeight,
+            canvasWidth: 480,
+            canvasHeight: 640,
         })
 
         // initialize it

@@ -214,8 +214,6 @@ ARjs.Source.prototype._initSourceWebcam = function (onReady, onError) {
             document.body.addEventListener('click', function () {
                 domElement.play();
             });
-            // domElement.play();
-
             onReady();
         }).catch(function (error) {
             onError({
@@ -394,7 +392,6 @@ ARjs.Source.prototype.onResize = function (arToolkitContext, renderer, camera) {
 
     var trackingBackend = arToolkitContext.parameters.trackingBackend
 
-
     // RESIZE DOMELEMENT
     if (trackingBackend === 'artoolkit') {
 
@@ -403,8 +400,6 @@ ARjs.Source.prototype.onResize = function (arToolkitContext, renderer, camera) {
         var isAframe = renderer.domElement.dataset.aframeCanvas ? true : false
         if (isAframe === false) {
             this.copyElementSizeTo(renderer.domElement)
-        } else {
-
         }
 
         if (arToolkitContext.arController !== null) {

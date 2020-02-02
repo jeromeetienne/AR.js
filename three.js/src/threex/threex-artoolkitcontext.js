@@ -245,21 +245,17 @@ ARjs.Context.prototype._initArtoolkit = function (onCompleted) {
 /**
  * return the projection matrix
  */
-ARjs.Context.prototype.getProjectionMatrix = function (srcElement) {
+ARjs.Context.prototype.getProjectionMatrix = function () {
     // FIXME rename this function to say it is artoolkit specific - getArtoolkitProjectMatrix
     // keep a backward compatibility with a console.warn
 
     console.assert(this.parameters.trackingBackend === 'artoolkit')
     console.assert(this.arController, 'arController MUST be initialized to call this function')
+
     // get projectionMatrixArr from artoolkit
     var projectionMatrixArr = this.arController.getCameraMatrix();
     var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)
 
-    // apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-    // we exclude this for testing, with this the code not works
-    //projectionMatrix.multiply(this._artoolkitProjectionAxisTransformMatrix)
-
-    // return the result
     return projectionMatrix
 }
 
