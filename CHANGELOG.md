@@ -1,3 +1,7 @@
+# 2.1.8
+
+- handle y position (height) of content in Location Based, using `position` property of A-FRAME
+
 # 2.1.7
 
 - enhanced `distance` property, now calculating combined distance for latitude/longitude
