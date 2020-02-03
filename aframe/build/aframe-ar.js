@@ -5925,7 +5925,7 @@ AFRAME.registerComponent('gps-entity-place', {
         }.bind(this));
 
         window.addEventListener('gps-camera-update-position', function (ev) {
-            if (!this.data) {
+            if (!this.data || !this._cameraGps) {
                 return;
             }
 
@@ -5959,7 +5959,7 @@ AFRAME.registerComponent('gps-entity-place', {
      * @returns {void}
      */
     _updatePosition: function () {
-        var position = { x: 0, y: 0, z: 0 }
+        var position = { x: 0, y: this.el.getAttribute('position').y || 0, z: 0 }
 
         // update position.x
         var dstCoords = {
