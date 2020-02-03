@@ -1,0 +1,21 @@
+<script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
+
+<script src='../../build/aframe-ar.js'></script>
+<script>ARjs.Context.baseURL = '../../../three.js/'</script>
+<script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+
+<body style='margin : 0px; overflow: hidden;'>
+	<a-scene embedded arjs='trackingMethod: best; sourceWidth:480; sourceHeight:640; canvasWidth: 480; canvasHeight: 640; sourceType: webcam; debugUIEnabled: false;'>
+        <!-- using bad url for marker for now, to be fixed -->
+        <a-nft
+            type="nft" url='../../../../../aframe/examples/assets/nft/pinball' >
+            <a-entity
+                gltf-model="./Flamingo.glb"
+                position="100 100 0"
+                animation-mixer
+                >
+            </a-entity>
+        </a-nft>
+		<a-entity camera></a-entity>
+	</a-scene>
+</body>
