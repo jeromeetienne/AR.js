@@ -1,0 +1,32 @@
+@font-face {
+    font-family: Chialab;
+    src: url('./font/diismono_chialab-medium.otf');
+}
+
+* {
+  font-family: "Chialab", Monospace;
+}
+
+.loader {
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.logo {
+    color: #f79239;
+    font-size: 4em;
+}
+
+.loading-text {
+  margin-top: 1em;
+  color: #f79239;
+}
