@@ -1,3 +1,7 @@
+# 2.1.7
+
+- enhanced `distance` property, now calculating combined distance for latitude/longitude
+
 # 2.1.6
 
 - set distance in `distance` property of `gps-entity-place` (location based) as z axis (previously was x axis)
