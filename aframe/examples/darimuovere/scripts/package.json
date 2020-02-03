@@ -1,0 +1,16 @@
+{
+  "name": "cartigli-ar-clean-data",
+  "version": "1.0.0",
+  "description": "Script to clean and fix data for cartigli-ar.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/chialab/cartigli-ar/issues"
+  },
+  "homepage": "https://gitlab.com/chialab/cartigli-ar#readme",
+  "dependencies": {
+    "@google/maps": "^1.1.0"
+  }
+}

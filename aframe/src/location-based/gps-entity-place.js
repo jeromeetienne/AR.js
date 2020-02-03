@@ -29,9 +29,8 @@ AFRAME.registerComponent('gps-entity-place', {
                 return;
             }
 
-            // update position.z
             var dstCoords = {
-                longitude: ev.detail.origin.longitude,
+                longitude: this.data.longitude,
                 latitude: this.data.latitude,
             };
 
