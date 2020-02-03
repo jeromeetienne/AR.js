@@ -194,6 +194,7 @@ AFRAME.registerComponent('gps-camera', {
             longitude: this.currentCoords.longitude,
             latitude: this.originCoords.latitude,
         };
+
         position.x = this.computeDistanceMeters(this.originCoords, dstCoords);
         position.x *= this.currentCoords.longitude > this.originCoords.longitude ? 1 : -1;
 
@@ -202,11 +203,13 @@ AFRAME.registerComponent('gps-camera', {
             longitude: this.originCoords.longitude,
             latitude: this.currentCoords.latitude,
         }
+
         position.z = this.computeDistanceMeters(this.originCoords, dstCoords);
         position.z *= this.currentCoords.latitude > this.originCoords.latitude ? -1 : 1;
 
         // update position
         this.el.setAttribute('position', position);
+
 
         window.dispatchEvent(new CustomEvent('gps-camera-update-position', { detail: { position: this.currentCoords, origin: this.originCoords }}));
     },
