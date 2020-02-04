@@ -4499,6 +4499,8 @@ AFRAME.registerSystem('arjs', {
             var camera = _this.el.sceneEl.camera
             var renderer = _this.el.sceneEl.renderer
 
+            console.log(renderer)
+
             //////////////////////////////////////////////////////////////////////////////
             //		build ARjs.Session
             //////////////////////////////////////////////////////////////////////////////
