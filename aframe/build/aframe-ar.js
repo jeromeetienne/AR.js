@@ -2698,7 +2698,6 @@ ARjs.Context.prototype._initArtoolkit = function (onCompleted) {
         console.assert(labelingModeType !== undefined);
         arController.setLabelingMode(labelingModeType);
 
-
         // set thresholding in artoolkit
         // this seems to be the default
         // arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_MANUAL)
