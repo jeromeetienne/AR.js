@@ -53,6 +53,9 @@ var parameters = {
 	matrixCodeType: '3x3',
 	// Pattern ratio for custom markers
 	patternRatio: 0.5
+	// Labeling mode for markers - ['black_region', 'white_region']
+	// black_region: Black bordered markers on a white background, white_region: White bordered markers on a black background
+	labelingMode: 'black_region',
 	
 	// url of the camera parameters
 	cameraParametersUrl: 'parameters/camera_para.dat',

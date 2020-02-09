@@ -29,6 +29,11 @@ ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
         // the patternRatio inside the artoolkit marker - artoolkit only
         patternRatio: 0.5,
 
+        // Labeling mode for markers - ['black_region', 'white_region']
+        // black_region: Black bordered markers on a white background, white_region: White bordered markers on a black background
+        labelingMode: 'black_region',
+
+
         // enable image smoothing or not for canvas copy - default to true
         // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
         imageSmoothingEnabled: false,
@@ -36,6 +41,7 @@ ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
     // parameters sanity check
     console.assert(['artoolkit', 'aruco'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
     console.assert(['color', 'color_and_matrix', 'mono', 'mono_and_matrix'].indexOf(this.parameters.detectionMode) !== -1, 'invalid parameter detectionMode', this.parameters.detectionMode)
+    console.assert(["black_region", "white_region"].indexOf(this.parameters.labelingMode) !== -1, "invalid parameter labelingMode", this.parameters.labelingMode);
 
     this.arController = null;
     this.arucoContext = null;
@@ -233,6 +239,16 @@ ARjs.Context.prototype._initArtoolkit = function (onCompleted) {
 
         // set the patternRatio for artoolkit
         arController.setPattRatio(_this.parameters.patternRatio);
+
+        // set the labelingMode for artoolkit
+        var labelingModeTypes = {
+            "black_region": artoolkit.AR_LABELING_BLACK_REGION,
+            "white_region": artoolkit.AR_LABELING_WHITE_REGION
+        }
+        var labelingModeType = labelingModeTypes[_this.parameters.labelingMode];
+        console.assert(labelingModeType !== undefined);
+        arController.setLabelingMode(labelingModeType);
+
 
         // set thresholding in artoolkit
         // this seems to be the default
