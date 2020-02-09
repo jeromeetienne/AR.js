@@ -33,7 +33,6 @@ ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
         // black_region: Black bordered markers on a white background, white_region: White bordered markers on a black background
         labelingMode: 'black_region',
 
-
         // enable image smoothing or not for canvas copy - default to true
         // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
         imageSmoothingEnabled: false,
