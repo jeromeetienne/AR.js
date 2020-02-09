@@ -7,7 +7,7 @@
        White region marker (markers with white borders) example, use <a href="assets/white_000.png">this inverted marker.</a>
     </div>
     <a-scene embedded
-        arjs='sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3; labelingMode: white_region;'>
+        arjs='sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3; labelingMode: white_region;' renderer='precision: mediump;'>
 
         <a-marker type='barcode' value='0'>
             <a-sphere position="0 0.5 0" radius="1" color="red" />
