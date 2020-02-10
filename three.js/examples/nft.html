@@ -3,6 +3,8 @@
 
 <!-- three.js library -->
 <script src='vendor/three.js/build/three.min.js'></script>
+<!-- three.js load GLTF -->
+<script src='vendor/three.js/GLTFLoader.js'></script>
 <!-- ar.js -->
 <script src='../build/ar.min.js'></script>
 
@@ -59,8 +61,13 @@
 
         var renderer = new THREE.WebGLRenderer({
             antialias: true,
-            alpha: true
+            alpha: true,
+            precision: 'mediump',
         });
+
+        var clock = new THREE.Clock();
+
+        var mixers = [];
 
         renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -81,6 +88,9 @@
         // Create a camera
         var camera = new THREE.Camera();
         scene.add(camera);
+
+        var light = new THREE.AmbientLight(0xffffff);
+        scene.add(light);
 
         ////////////////////////////////////////////////////////////////////////////////
         //          handle arToolkitSource
@@ -146,40 +156,61 @@
 
         scene.visible = false
 
+        var root = new THREE.Object3D();
+        scene.add(root);
+
         //////////////////////////////////////////////////////////////////////////////////
         //		add an object in the scene
         //////////////////////////////////////////////////////////////////////////////////
 
-        let sphere = new THREE.Mesh(
-            new THREE.SphereGeometry(0.5, 8, 8),
-            new THREE.MeshNormalMaterial()
-        );
+        var threeGLTFLoader = new THREE.GLTFLoader();
+        var model;
 
-        sphere.position.z = 0;
-        sphere.position.x = 100;
-        sphere.position.y = 100;
-        sphere.scale.set(80, 80, 80);
-        scene.add(sphere);
+        threeGLTFLoader.load("./Resources/Flamingo.glb", function (gltf) {
+            model = gltf.scene.children[0];
+            model.name = 'Flamingo';
 
-        //////////////////////////////////////////////////////////////////////////////////
-        //		render the whole thing on the page
-        //////////////////////////////////////////////////////////////////////////////////
+            var animation = gltf.animations[0];
+            var mixer = new THREE.AnimationMixer(model);
+            mixers.push(mixer);
+            var action = mixer.clipAction(animation);
+            action.play();
 
-        var animate = function() {
+            root.matrixAutoUpdate = false;
+            root.add(model);
+
+            model.position.z = 0;
+            model.position.x = 100;
+            model.position.y = 100;
+
+
+            //////////////////////////////////////////////////////////////////////////////////
+            //		render the whole thing on the page
+            //////////////////////////////////////////////////////////////////////////////////
+
+            var animate = function() {
+                requestAnimationFrame(animate);
+
+                if (mixers.length > 0) {
+                    for (var i = 0; i < mixers.length; i++) {
+                        mixers[i].update(clock.getDelta());
+                    }
+                }
+
+                if (!arToolkitSource.ready) {
+                    return;
+                }
+
+                arToolkitContext.update( arToolkitSource.domElement )
+
+                // update scene.visible if the marker is seen
+                scene.visible = camera.visible;
+
+                renderer.render(scene, camera);
+            };
+
             requestAnimationFrame(animate);
-
-            if (!arToolkitSource.ready) {
-                return;
-            }
-
-            arToolkitContext.update( arToolkitSource.domElement )
-
-            // update scene.visible if the marker is seen
-            scene.visible = camera.visible;
-
-            renderer.render(scene, camera);
-        };
-
-        requestAnimationFrame(animate);
+        }
+    );
     </script>
 </body>
