@@ -1,0 +1,19 @@
+<script
+    src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
+<script src="../build/aframe-ar.js"></script>
+
+<body style='margin : 0px; overflow: hidden;'>
+    <div style='position: fixed; top: 10px; text-align: center; z-index: 1; width: 100%; background: gray;'>
+       White region marker (markers with white borders) example, use <a href="assets/white_000.png">this inverted marker.</a>
+    </div>
+    <a-scene embedded
+        arjs='sourceType: webcam; detectionMode: mono_and_matrix; matrixCodeType: 3x3; labelingMode: white_region;' renderer='precision: mediump;'>
+
+        <a-marker type='barcode' value='0'>
+            <a-sphere position="0 0.5 0" radius="1" color="red" />
+        </a-marker>
+
+        <a-entity camera></a-entity>
+
+    </a-scene>
+</body>
