@@ -1,0 +1,36 @@
+<!-- include a-frame -->
+<script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
+
+<!-- include ar.js for aframe -->
+<script src='../../build/aframe-ar.js'></script>
+<script>ARjs.Context.baseURL = '../../../three.js/'</script>
+<script src="./index.js"></script>
+
+<!-- start the body of your page -->
+<body>
+    <div class="loader" style="width: 100%; height: 100%; position: absolute; z-index: 9999; top: 0; left: 0; display: flex; justify-content: flex-start;">
+        <div class="loader-text" style="text-align: center;">
+            Click on 'Allow' to start the Augmented Reality experience
+        </div>
+    </div>
+
+	<!-- Define your 3d scene and enabled ar.js -->
+	<a-scene embedded arjs='debugUIEnabled: false; trackingMethod: best; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960;'>
+
+		<!-- Create a anchor to attach your augmented reality -->
+		<a-anchor hit-testing-enabled='true'>
+
+			<!-- Add your augmented reality here -->
+			<a-box position='0 0.5 0' material='opacity: 0.5; side:double; color:red;'>
+				<a-torus-knot radius='0.26' radius-tubular='0.05'
+				animation="property: rotation; to:360 0 0; dur: 5000; easing: linear; loop: true">
+				</a-torus-knot>
+			</a-box>
+
+		</a-anchor>
+
+		<!-- Define a static camera -->
+		<a-camera-static/>
+
+	</a-scene>
+</body>
