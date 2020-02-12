@@ -69,6 +69,9 @@ In addition to that, as you can see on the example above, we also have to add `r
 | alert     | Whether to show a message when GPS signal is under the `positionMinAccuracy`                  | false |                                                                                                                                                                        | true          |
 | positionMinAccuracy        | Minimum accuracy allowed for position signal    | 100 |
 | minDistance        | If set, places with a distance from the user lower than this value, are not showed. Only a positive value is allowed. Value is in meters.    | 0 (disabled) |
+| simulateLatitude   | Setting this allows you to simulate the latitude of the camera, to aid in testing.    | 0 (disabled) |
+| simulateLongitude   | Setting this allows you to simulate the longitude of the camera, to aid in testing.    | 0 (disabled) |
+| simulateAltitude   | Setting this allows you to simulate the altitude of the camera in meters above sea level, to aid in testing.    | 0 (disabled) |
 
 ### `gps-entity-place`
 
@@ -82,6 +85,8 @@ It requires latitude and longitude as a single string parameter (example with `a
 ```HTML
 <a-box color="yellow" gps-entity-place="latitude: <your-latitude>; longitude: <your-longitude>"/>
 ```
+
+You may optionally add an `altitude` parameter, specified in meters above sea level.
 
 ### `gps-camera-debug`
 
