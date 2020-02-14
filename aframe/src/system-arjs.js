@@ -33,6 +33,10 @@ AFRAME.registerSystem('arjs', {
             type: 'number',
             default: -1,
         },
+        labelingMode: {
+            type: 'string',
+            default: '',
+        },
         cameraParametersUrl: {
             type: 'string',
             default: '',
@@ -108,6 +112,7 @@ AFRAME.registerSystem('arjs', {
         if (this.data.detectionMode !== '') arProfile.contextParameters.detectionMode = this.data.detectionMode
         if (this.data.matrixCodeType !== '') arProfile.contextParameters.matrixCodeType = this.data.matrixCodeType
         if (this.data.patternRatio !== -1) arProfile.contextParameters.patternRatio = this.data.patternRatio
+        if (this.data.labelingMode !== '') arProfile.contextParameters.labelingMode = this.data.labelingMode
         if (this.data.cameraParametersUrl !== '') arProfile.contextParameters.cameraParametersUrl = this.data.cameraParametersUrl
         if (this.data.maxDetectionRate !== -1) arProfile.contextParameters.maxDetectionRate = this.data.maxDetectionRate
         if (this.data.canvasWidth !== -1) arProfile.contextParameters.canvasWidth = this.data.canvasWidth

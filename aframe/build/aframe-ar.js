@@ -2479,6 +2479,10 @@ ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
         // the patternRatio inside the artoolkit marker - artoolkit only
         patternRatio: 0.5,
 
+        // Labeling mode for markers - ['black_region', 'white_region']
+        // black_region: Black bordered markers on a white background, white_region: White bordered markers on a black background
+        labelingMode: 'black_region',
+
         // enable image smoothing or not for canvas copy - default to true
         // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
         imageSmoothingEnabled: false,
@@ -2486,6 +2490,7 @@ ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
     // parameters sanity check
     console.assert(['artoolkit', 'aruco'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
     console.assert(['color', 'color_and_matrix', 'mono', 'mono_and_matrix'].indexOf(this.parameters.detectionMode) !== -1, 'invalid parameter detectionMode', this.parameters.detectionMode)
+    console.assert(["black_region", "white_region"].indexOf(this.parameters.labelingMode) !== -1, "invalid parameter labelingMode", this.parameters.labelingMode);
 
     this.arController = null;
     this.arucoContext = null;
@@ -2526,7 +2531,7 @@ Object.assign(ARjs.Context.prototype, THREE.EventDispatcher.prototype);
 // ARjs.Context.baseURL = '../'
 // default to github page
 ARjs.Context.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
-ARjs.Context.REVISION = '2.1.4';
+ARjs.Context.REVISION = '2.1.8';
 
 /**
  * Create a default camera for this trackingBackend
@@ -2684,6 +2689,15 @@ ARjs.Context.prototype._initArtoolkit = function (onCompleted) {
         // set the patternRatio for artoolkit
         arController.setPattRatio(_this.parameters.patternRatio);
 
+        // set the labelingMode for artoolkit
+        var labelingModeTypes = {
+            "black_region": artoolkit.AR_LABELING_BLACK_REGION,
+            "white_region": artoolkit.AR_LABELING_WHITE_REGION
+        }
+        var labelingModeType = labelingModeTypes[_this.parameters.labelingMode];
+        console.assert(labelingModeType !== undefined);
+        arController.setLabelingMode(labelingModeType);
+
         // set thresholding in artoolkit
         // this seems to be the default
         // arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_MANUAL)
@@ -2819,6 +2833,7 @@ ARjs.Profile.prototype.reset = function () {
     this.contextParameters = {
         cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
         detectionMode: 'mono',
+        labelingMode: "black_region"
     }
     this.defaultMarkerParameters = {
         type: 'pattern',
@@ -2878,10 +2893,12 @@ ARjs.Profile.prototype.defaultMarker = function (trackingBackend) {
         this.contextParameters.detectionMode = 'mono'
         this.defaultMarkerParameters.type = 'pattern'
         this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+        this.contextParameters.labelingMode = "black_region"
     } else if (trackingBackend === 'aruco') {
         this.contextParameters.detectionMode = 'mono'
         this.defaultMarkerParameters.type = 'barcode'
         this.defaultMarkerParameters.barcodeValue = 1001
+        this.contextParameters.labelingMode = "black_region"
     } else console.assert(false)
 
     return this
@@ -3047,7 +3064,7 @@ ARjs.Source.prototype._initSourceImage = function (onReady) {
     domElement.style.width = this.parameters.displayWidth + 'px';
     domElement.style.height = this.parameters.displayHeight + 'px';
 
-    onReady();
+    domElement.onload = onReady;
     return domElement
 }
 
@@ -3080,7 +3097,7 @@ ARjs.Source.prototype._initSourceVideo = function (onReady) {
     domElement.style.width = this.parameters.displayWidth + 'px';
     domElement.style.height = this.parameters.displayHeight + 'px';
 
-    onReady();
+    domElement.onloadeddata = onReady;
     return domElement
 }
 
@@ -5568,6 +5585,7 @@ AFRAME.registerComponent('gps-camera-debug', {
             var debugDiv = document.createElement('div');
             debugDiv.classList.add('debug-distance');
             debugDiv.innerHTML = element.getAttribute('value');
+            console.log(element.getAttribute('value'));
             debugDiv.setAttribute('value', element.getAttribute('value'));
             div.appendChild(debugDiv);
         });
@@ -5579,19 +5597,8 @@ AFRAME.registerComponent('gps-camera', {
     currentCoords: null,
     lookControls: null,
     heading: null,
+
     schema: {
-        simulateLatitude: {
-            type: 'number',
-            default: 0,
-        },
-        simulateLongitude: {
-            type: 'number',
-            default: 0,
-        },
-        simulateAltitude: {
-            type: 'number',
-            default: 0,
-        },
         positionMinAccuracy: {
             type: 'int',
             default: 100,
@@ -5603,7 +5610,7 @@ AFRAME.registerComponent('gps-camera', {
         minDistance: {
             type: 'int',
             default: 0,
-        }
+        },
     },
 
     init: function () {
@@ -5614,7 +5621,8 @@ AFRAME.registerComponent('gps-camera', {
         this.loader = document.createElement('DIV');
         this.loader.classList.add('arjs-loader');
         document.body.appendChild(this.loader);
-        window.addEventListener('gps-entity-place-added', function() {
+
+        window.addEventListener('gps-entity-place-added', function () {
             // if places are added after camera initialization is finished
             if (this.originCoords) {
                 window.dispatchEvent(new CustomEvent('gps-camera-origin-coord-set'));
@@ -5635,15 +5643,15 @@ AFRAME.registerComponent('gps-camera', {
         if (!!navigator.userAgent.match(/Version\/[\d.]+.*Safari/)) {
             // iOS 13+
             if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-                var handler = function() {
+                var handler = function () {
                     console.log('Requesting device orientation permissions...')
                     DeviceOrientationEvent.requestPermission();
                     document.removeEventListener('touchend', handler);
                 };
 
-                document.addEventListener('touchend', function() { handler() }, false);
+                document.addEventListener('touchend', function () { handler() }, false);
 
-                alert('After camera permission prompt, please tap the screen to activate geolocation.');
+                alert('After camera permission prompt, please tap the screen to active geolocation.');
             } else {
                 var timeout = setTimeout(function () {
                     alert('Please enable device orientation in Settings > Safari > Motion & Orientation Access.')
@@ -5657,18 +5665,7 @@ AFRAME.registerComponent('gps-camera', {
         window.addEventListener(eventName, this._onDeviceOrientation, false);
 
         this._watchPositionId = this._initWatchGPS(function (position) {
-            if(this.data.simulateLatitude !== 0 && this.data.simulateLongitude !== 0) {
-                localPosition = Object.assign({}, position.coords);
-                localPosition.longitude = this.data.simulateLongitude;
-                localPosition.latitude = this.data.simulateLatitude;
-                localPosition.altitude = this.data.simulateAltitude;
-                this.currentCoords = localPosition;
-            }
-            else {
-                this.currentCoords = position.coords;
-            }
-            
-            
+            this.currentCoords = position.coords;
             this._updatePosition();
         }.bind(this));
     },
@@ -5782,7 +5779,7 @@ AFRAME.registerComponent('gps-camera', {
             this._setPosition();
         }
     },
-    _setPosition: function() {
+    _setPosition: function () {
         var position = this.el.getAttribute('position');
 
         // compute position.x
@@ -5790,6 +5787,7 @@ AFRAME.registerComponent('gps-camera', {
             longitude: this.currentCoords.longitude,
             latitude: this.originCoords.latitude,
         };
+
         position.x = this.computeDistanceMeters(this.originCoords, dstCoords);
         position.x *= this.currentCoords.longitude > this.originCoords.longitude ? 1 : -1;
 
@@ -5798,11 +5796,15 @@ AFRAME.registerComponent('gps-camera', {
             longitude: this.originCoords.longitude,
             latitude: this.currentCoords.latitude,
         }
+
         position.z = this.computeDistanceMeters(this.originCoords, dstCoords);
         position.z *= this.currentCoords.latitude > this.originCoords.latitude ? -1 : 1;
 
         // update position
         this.el.setAttribute('position', position);
+
+
+        window.dispatchEvent(new CustomEvent('gps-camera-update-position', { detail: { position: this.currentCoords, origin: this.originCoords }}));
     },
     /**
      * Returns distance in meters between source and destination inputs.
@@ -5916,21 +5918,17 @@ AFRAME.registerComponent('gps-camera', {
 AFRAME.registerComponent('gps-entity-place', {
     _cameraGps: null,
     schema: {
-        longitude: {
-            type: 'number',
-            default: 0,
-        },
         latitude: {
             type: 'number',
             default: 0,
         },
-        altitude: {
+        longitude: {
             type: 'number',
             default: 0,
         },
     },
     init: function () {
-        window.addEventListener('gps-camera-origin-coord-set', function() {
+        window.addEventListener('gps-camera-origin-coord-set', function () {
             if (!this._cameraGps) {
                 var camera = document.querySelector('[gps-camera]');
                 if (!camera.components['gps-camera']) {
@@ -5941,6 +5939,23 @@ AFRAME.registerComponent('gps-entity-place', {
             }
 
             this._updatePosition();
+        }.bind(this));
+
+        window.addEventListener('gps-camera-update-position', function (ev) {
+            if (!this.data || !this._cameraGps) {
+                return;
+            }
+
+            var dstCoords = {
+                longitude: this.data.longitude,
+                latitude: this.data.latitude,
+            };
+
+            var distance = this._cameraGps.computeDistanceMeters(ev.detail.position, dstCoords, true);
+
+            this.el.setAttribute('distance', distance);
+            this.el.setAttribute('distanceMsg', formatDistance(distance));
+            this.el.dispatchEvent(new CustomEvent('gps-entity-place-update-positon', { detail: { distance: distance } }));
         }.bind(this));
 
         this._positionXDebug = 0;
@@ -5961,7 +5976,7 @@ AFRAME.registerComponent('gps-entity-place', {
      * @returns {void}
      */
     _updatePosition: function () {
-        var position = { x: 0, y: 0, z: 0 }
+        var position = { x: 0, y: this.el.getAttribute('position').y || 0, z: 0 }
 
         // update position.x
         var dstCoords = {
@@ -5971,6 +5986,7 @@ AFRAME.registerComponent('gps-entity-place', {
 
         position.x = this._cameraGps.computeDistanceMeters(this._cameraGps.originCoords, dstCoords, true);
         this._positionXDebug = position.x;
+
         position.x *= this.data.longitude > this._cameraGps.originCoords.longitude ? 1 : -1;
 
         // update position.z
@@ -5981,10 +5997,7 @@ AFRAME.registerComponent('gps-entity-place', {
 
         position.z = this._cameraGps.computeDistanceMeters(this._cameraGps.originCoords, dstCoords, true);
         position.z *= this.data.latitude > this._cameraGps.originCoords.latitude ? -1 : 1;
-        if(this.data.altitude !== 0) {
-            position.y = this.data.altitude - this._cameraGps.originCoords.altitude;
-        }
-        
+
         // update element's position in 3D world
         this.el.setAttribute('position', position);
     },
@@ -6052,6 +6065,10 @@ AFRAME.registerSystem('arjs', {
         patternRatio: {
             type: 'number',
             default: -1,
+        },
+        labelingMode: {
+            type: 'string',
+            default: '',
         },
         cameraParametersUrl: {
             type: 'string',
@@ -6128,6 +6145,7 @@ AFRAME.registerSystem('arjs', {
         if (this.data.detectionMode !== '') arProfile.contextParameters.detectionMode = this.data.detectionMode
         if (this.data.matrixCodeType !== '') arProfile.contextParameters.matrixCodeType = this.data.matrixCodeType
         if (this.data.patternRatio !== -1) arProfile.contextParameters.patternRatio = this.data.patternRatio
+        if (this.data.labelingMode !== '') arProfile.contextParameters.labelingMode = this.data.labelingMode
         if (this.data.cameraParametersUrl !== '') arProfile.contextParameters.cameraParametersUrl = this.data.cameraParametersUrl
         if (this.data.maxDetectionRate !== -1) arProfile.contextParameters.maxDetectionRate = this.data.maxDetectionRate
         if (this.data.canvasWidth !== -1) arProfile.contextParameters.canvasWidth = this.data.canvasWidth

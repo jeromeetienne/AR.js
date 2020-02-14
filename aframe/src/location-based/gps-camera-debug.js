@@ -107,6 +107,7 @@ AFRAME.registerComponent('gps-camera-debug', {
             var debugDiv = document.createElement('div');
             debugDiv.classList.add('debug-distance');
             debugDiv.innerHTML = element.getAttribute('value');
+            console.log(element.getAttribute('value'));
             debugDiv.setAttribute('value', element.getAttribute('value'));
             div.appendChild(debugDiv);
         });

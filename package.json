@@ -1,8 +1,8 @@
 {
   "name": "ar.js",
-  "version": "2.1.4",
+  "version": "2.1.8",
   "description": "Efficient Augmented Reality for the Web",
-  "main": "",
+  "main": "./aframe/build/aframe-ar.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "make minify"
@@ -33,5 +33,8 @@
   "bugs": {
     "url": "https://github.com/jeromeetienne/AR.js/issues"
   },
-  "homepage": "https://github.com/jeromeetienne/AR.js#readme"
+  "homepage": "https://github.com/jeromeetienne/AR.js#readme",
+  "devDependencies": {
+    "uglify-js": "^3.7.5"
+  }
 }
