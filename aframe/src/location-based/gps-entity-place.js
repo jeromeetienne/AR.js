@@ -8,11 +8,7 @@ AFRAME.registerComponent('gps-entity-place', {
         latitude: {
             type: 'number',
             default: 0,
-        },
-        altitude: {
-            type: 'number',
-            default: 0,
-        },
+        }
     },
     init: function () {
         window.addEventListener('gps-camera-origin-coord-set', function () {
@@ -84,8 +80,8 @@ AFRAME.registerComponent('gps-entity-place', {
 
         position.z = this._cameraGps.computeDistanceMeters(this._cameraGps.originCoords, dstCoords, true);
         position.z *= this.data.latitude > this._cameraGps.originCoords.latitude ? -1 : 1;
-        if(this.data.altitude !== 0) {
-            position.y = this.data.altitude - this._cameraGps.originCoords.altitude;
+        if(position.y !== 0) {
+            position.y = position.y - this._cameraGps.originCoords.altitude;
         }
         
         // update element's position in 3D world
