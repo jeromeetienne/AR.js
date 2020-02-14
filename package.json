@@ -2,7 +2,7 @@
   "name": "ar.js",
   "version": "2.1.8",
   "description": "Efficient Augmented Reality for the Web",
-  "main": "",
+  "main": "./aframe/build/aframe-ar.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "make minify"
