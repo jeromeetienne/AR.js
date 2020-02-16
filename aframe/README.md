@@ -87,6 +87,14 @@ It requires latitude and longitude as a single string parameter (example with `a
 <a-box color="yellow" gps-entity-place="latitude: <your-latitude>; longitude: <your-longitude>"/>
 ```
 
+In addition, you can use the a-frame "position" parameter to assign a y-value or altitude to the entity.  This value should be entered in meters above or below sea level. For example, this would assign a height of 300 meters above sea level, and will be displayed relative to the gps-camera's current altitude:
+
+```HTML
+<a-box color="yellow" gps-entity-place="latitude: <your-latitude>; longitude: <your-longitude>" position="0 300 0"/>
+```
+
+
+
 | Custom Attribute   | Description | Default Value |
 |------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
 | distance        | Distance from user, updated at every user position update. Value in meters.   | 0 |
