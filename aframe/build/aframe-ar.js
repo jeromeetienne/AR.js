@@ -5597,8 +5597,19 @@ AFRAME.registerComponent('gps-camera', {
     currentCoords: null,
     lookControls: null,
     heading: null,
-
     schema: {
+        simulateLatitude: {
+            type: 'number',
+            default: 0,
+        },
+        simulateLongitude: {
+            type: 'number',
+            default: 0,
+        },
+        simulateAltitude: {
+            type: 'number',
+            default: 0,
+        },
         positionMinAccuracy: {
             type: 'int',
             default: 100,
@@ -5610,7 +5621,7 @@ AFRAME.registerComponent('gps-camera', {
         minDistance: {
             type: 'int',
             default: 0,
-        },
+        }
     },
 
     init: function () {
@@ -5651,7 +5662,7 @@ AFRAME.registerComponent('gps-camera', {
 
                 document.addEventListener('touchend', function () { handler() }, false);
 
-                alert('After camera permission prompt, please tap the screen to active geolocation.');
+                alert('After camera permission prompt, please tap the screen to activate geolocation.');
             } else {
                 var timeout = setTimeout(function () {
                     alert('Please enable device orientation in Settings > Safari > Motion & Orientation Access.')
@@ -5665,7 +5676,18 @@ AFRAME.registerComponent('gps-camera', {
         window.addEventListener(eventName, this._onDeviceOrientation, false);
 
         this._watchPositionId = this._initWatchGPS(function (position) {
-            this.currentCoords = position.coords;
+            if(this.data.simulateLatitude !== 0 && this.data.simulateLongitude !== 0) {
+                localPosition = Object.assign({}, position.coords);
+                localPosition.longitude = this.data.simulateLongitude;
+                localPosition.latitude = this.data.simulateLatitude;
+                localPosition.altitude = this.data.simulateAltitude;
+                this.currentCoords = localPosition;
+            }
+            else {
+                this.currentCoords = position.coords;
+            }
+            
+            
             this._updatePosition();
         }.bind(this));
     },
@@ -5918,14 +5940,14 @@ AFRAME.registerComponent('gps-camera', {
 AFRAME.registerComponent('gps-entity-place', {
     _cameraGps: null,
     schema: {
-        latitude: {
-            type: 'number',
-            default: 0,
-        },
         longitude: {
             type: 'number',
             default: 0,
         },
+        latitude: {
+            type: 'number',
+            default: 0,
+        }
     },
     init: function () {
         window.addEventListener('gps-camera-origin-coord-set', function () {
@@ -5997,7 +6019,10 @@ AFRAME.registerComponent('gps-entity-place', {
 
         position.z = this._cameraGps.computeDistanceMeters(this._cameraGps.originCoords, dstCoords, true);
         position.z *= this.data.latitude > this._cameraGps.originCoords.latitude ? -1 : 1;
-
+        if(position.y !== 0) {
+            position.y = position.y - this._cameraGps.originCoords.altitude;
+        }
+        
         // update element's position in 3D world
         this.el.setAttribute('position', position);
     },
