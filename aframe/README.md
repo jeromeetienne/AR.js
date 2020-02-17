@@ -100,7 +100,7 @@ In addition, you can use the a-frame "position" parameter to assign a y-value or
 | distance        | Distance from user, updated at every user position update. Value in meters.   | 0 |
 | distanceMsg        | Distance from user, updated at every user position update. Value as `<distance> meters/kilometers`.   | '' |
 
-### `gps-camera-debug`
+### `gps-camera-debug` [deprecated, may not work]
 
 **Required**: no
 **Max allowed per scene**: 1

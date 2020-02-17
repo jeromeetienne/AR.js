@@ -17,8 +17,9 @@
 		embedded
 		arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
 
-        <a-box scale="15 15 15" position="0 200 0" gps-entity-place="latitude: 44.493271; longitude: 11.326040;"></a-box>
-        <a-camera gps-camera rotation-reader>
+        <a-box material="color: red;" scale="300 300 300" position="0 0 0" gps-entity-place="latitude: 44.498529; longitude: 11.356657;"></a-box>
+        <!-- use far property to hide objects over 5000 meters -->
+        <a-camera far="5000" gps-camera rotation-reader>
 		</a-camera>
 	</a-scene>
 </body>
