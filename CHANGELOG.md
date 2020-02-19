@@ -1,3 +1,9 @@
+# 2.2.0
+
+- it's now possible to track markers with white background and black shapes, using `labelingMode: white_region;` property on `arjs` component (thanks to @umutto)
+- in location based is now possible to simulate altitude, longitude and latitude for user position (thanks to @cmcfadden)
+- default package script for jsdelvr (thanks to @benalfree)
+
 # 2.1.8
 
 - handle y position (height) of content in Location Based, using `position` property of A-FRAME
