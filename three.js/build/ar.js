@@ -3141,20 +3141,20 @@ ARjs.Source.prototype._initSourceWebcam = function (onReady, onError) {
     navigator.mediaDevices.enumerateDevices().then(function (devices) {
         var userMediaConstraints = {
             audio: false,
-            video: {
-                facingMode: 'environment',
-                width: {
-                    ideal: _this.parameters.sourceWidth,
-                    // min: 1024,
-                    // max: 1920
-                },
-                height: {
-                    ideal: _this.parameters.sourceHeight,
-                    // min: 776,
-                    // max: 1080
-                }
-            }
+            video: true
         };
+
+        if (window.innerWidth < 800) {
+            var width = (window.innerWidth < window.innerHeight) ? 480 : 640;
+
+            userMediaConstraints = {
+                audio: false,
+                video: {
+                    facingMode: 'environment',
+                    width: { min: width, max: width }
+                },
+            };
+        }
 
         if (null !== _this.parameters.deviceId) {
             userMediaConstraints.video.deviceId = {
