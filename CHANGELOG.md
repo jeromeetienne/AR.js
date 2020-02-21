@@ -1,3 +1,33 @@
+# 2.2.1
+
+- enhanced camera contraints, fixing a bug on Chrome for Huaweis that was displaying rear camera stream in greyscale
+
+# 2.2.0
+
+- it's now possible to track markers with white background and black shapes, using `labelingMode: white_region;` property on `arjs` component (thanks to @umutto)
+- in location based is now possible to simulate altitude, longitude and latitude for user position (thanks to @cmcfadden)
+- default package script for jsdelvr (thanks to @benalfree)
+
+# 2.1.8
+
+- handle y position (height) of content in Location Based, using `position` property of A-FRAME
+
+# 2.1.7
+
+- enhanced `distance` property, now calculating combined distance for latitude/longitude
+
+# 2.1.6
+
+- set distance in `distance` property of `gps-entity-place` (location based) as z axis (previously was x axis)
+
+# 2.1.5
+
+- added `distance` and `distanceMsg` properties to `gps-entity-place` (location based)
+- added new example for distance property
+- added new example for a `gps-entity-place` that is always facing the user (location based)
+- fixed error when source is image or video and not camera
+- enhanced docs
+
 # 2.1.4
 
 - fixed wrong positioning of content on markers

@@ -46,6 +46,7 @@ ARjs.Profile.prototype.reset = function () {
     this.contextParameters = {
         cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
         detectionMode: 'mono',
+        labelingMode: "black_region"
     }
     this.defaultMarkerParameters = {
         type: 'pattern',
@@ -105,6 +106,12 @@ ARjs.Profile.prototype.defaultMarker = function (trackingBackend) {
         this.contextParameters.detectionMode = 'mono'
         this.defaultMarkerParameters.type = 'pattern'
         this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
+        this.contextParameters.labelingMode = "black_region"
+    } else if (trackingBackend === 'aruco') {
+        this.contextParameters.detectionMode = 'mono'
+        this.defaultMarkerParameters.type = 'barcode'
+        this.defaultMarkerParameters.barcodeValue = 1001
+        this.contextParameters.labelingMode = "black_region"
     } else console.assert(false)
 
     return this

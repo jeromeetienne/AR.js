@@ -69,6 +69,10 @@ In addition to that, as you can see on the example above, we also have to add `r
 | alert     | Whether to show a message when GPS signal is under the `positionMinAccuracy`                  | false |                                                                                                                                                                        | true          |
 | positionMinAccuracy        | Minimum accuracy allowed for position signal    | 100 |
 | minDistance        | If set, places with a distance from the user lower than this value, are not showed. Only a positive value is allowed. Value is in meters.    | 0 (disabled) |
+| simulateLatitude   | Setting this allows you to simulate the latitude of the camera, to aid in testing.    | 0 (disabled) |
+| simulateLongitude   | Setting this allows you to simulate the longitude of the camera, to aid in testing.    | 0 (disabled) |
+| simulateAltitude   | Setting this allows you to simulate the altitude of the camera in meters above sea level, to aid in testing.    | 0 (disabled) |
+
 
 ### `gps-entity-place`
 
@@ -83,7 +87,20 @@ It requires latitude and longitude as a single string parameter (example with `a
 <a-box color="yellow" gps-entity-place="latitude: <your-latitude>; longitude: <your-longitude>"/>
 ```
 
-### `gps-camera-debug`
+In addition, you can use the a-frame "position" parameter to assign a y-value or altitude to the entity.  This value should be entered in meters above or below sea level. For example, this would assign a height of 300 meters above sea level, and will be displayed relative to the gps-camera's current altitude:
+
+```HTML
+<a-box color="yellow" gps-entity-place="latitude: <your-latitude>; longitude: <your-longitude>" position="0 300 0"/>
+```
+
+
+
+| Custom Attribute   | Description | Default Value |
+|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|
+| distance        | Distance from user, updated at every user position update. Value in meters.   | 0 |
+| distanceMsg        | Distance from user, updated at every user position update. Value as `<distance> meters/kilometers`.   | '' |
+
+### `gps-camera-debug` [deprecated, may not work]
 
 **Required**: no
 **Max allowed per scene**: 1
@@ -91,11 +108,15 @@ It requires latitude and longitude as a single string parameter (example with `a
 This component should only be added in development environments, not in production environments.
 It shows a debug UI with camera informations and a list of registered `gps-entity-place` entities, showing also distance from the user for each one.
 
-This replaces the `gps-camera`:
-
 ```HTML
 <a-scene gps-camera-debug embedded arjs='sourceType: webcam; debugUIEnabled: false;'></a-scene>
 ```
+
+## Tips
+
+### **Content that will always face the user**
+
+Look at [this example](./examples/always-face-user/index.html) in order to create `gps-entity-place` entities that will always face the user (so the user camera).
 
 ## Location Based Support
 

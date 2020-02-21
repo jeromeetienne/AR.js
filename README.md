@@ -127,7 +127,7 @@ You can also use GeoAR.js **without** the script, adding `gps-entity-place` enti
 <!doctype HTML>
 <html>
 <script src="https://aframe.io/releases/1.0.0/aframe.min.js"></script>
-<script src="https://raw.githack.com/jeromeetienne/AR.js/2.1.4/aframe/build/aframe-ar.js"></script>
+<script src="https://raw.githack.com/jeromeetienne/AR.js/2.2.1/aframe/build/aframe-ar.js"></script>
   <body style='margin : 0px; overflow: hidden;'>
     <a-scene embedded arjs>
       <a-marker preset="hiro">
@@ -185,6 +185,7 @@ Try to get inspired by this great works:
 - [Click Places](./aframe/examples/click-places) - set up remote credentials to fetch remote places (`places.js` file)
 - [Places Name](./aframe/examples/places-name) - add new places statically on javascript (`places.js` file)
 - [Only HTML](./aframe/examples/only-html) - add new places statically on html (`index.html` file)
+- [Only HTML](./aframe/examples/always-face-user) - like only-html but here content always face the user (`index.html` file)
 
 # Related Projects
 - [Examples inspired from AR.js - not AR.js based](https://github.com/stemkoski/AR-Examples) from [@stemkoski](https://github.com/stemkoski)
@@ -298,6 +299,9 @@ Demo tested on the following browser setups:
 - **Chrome on Android 5.0** (doesn't work, asks for permission, I see black background, text and a chart)
 - **Safari and Chrome on iOS < 11** (doesn't work, doesn't ask for permission, I see white background and text)
 - **Microsoft Edge on Windows 10** (Chrome on Google Pixel phone to view hologram)
+
+To see the full compatibility list and contribute to it yourself go to this google spreadsheet:
+[AR.js platform and browser compatibility](https://docs.google.com/spreadsheets/d/1e5YimbF_D1Sou2bx2vdBH58s1WdB_LgzBVYYD_uQLJk/edit#gid=318398375)
 
 Credits: @HelloDeadline, @sorianog
 
