@@ -1,3 +1,7 @@
+# 2.2.1
+
+- enhanced camera contraints, fixing a bug on Chrome for Huaweis that was displaying rear camera stream in greyscale
+
 # 2.2.0
 
 - it's now possible to track markers with white background and black shapes, using `labelingMode: white_region;` property on `arjs` component (thanks to @umutto)
