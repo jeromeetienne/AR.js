@@ -258,14 +258,37 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         })
     }
 
+    function setMatrix(matrix, value) {
+        var array = [];
+        for (var key in value) {
+            array[key] = value[key];
+        }
+        if (typeof matrix.elements.set === "function") {
+            matrix.elements.set(array);
+        } else {
+            matrix.elements = [].slice.call(array);
+        }
+    };
+
     function handleNFT(descriptorsUrl, arController) {
         // create a Worker to handle loading of NFT marker and tracking of it
 
         var worker = new Worker(THREEx.ArToolkitContext.baseURL + 'vendor/jsartoolkit5/js/artoolkit.worker.js');
 
+        var vw = _this.context.parameters.sourceWidth;
+        var vh = _this.context.parameters.sourceHeight;
 
-        var pw = _this.context.parameters.sourceWidth;
-        var ph = _this.context.parameters.sourceHeight;
+        var pscale = 320 / Math.max(vw, vh / 3 * 4);
+
+        var w = vw * pscale;
+        var h = vh * pscale;
+        var pw = Math.max(w, h / 3 * 4);
+        var ph = Math.max(h, w / 4 * 3);
+
+        arController.canvas.style.clientWidth = pw + "px";
+        arController.canvas.style.clientHeight = ph + "px";
+        arController.canvas.width = pw;
+        arController.canvas.height = ph;
 
         var context_process = arController.canvas.getContext('2d');
 
@@ -289,6 +312,22 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
                 if (loader) {
                     loader.remove();
                 }
+            }
+
+            if (ev && ev.data && ev.data.type === 'loaded') {
+                var proj = JSON.parse(ev.data.proj);
+                var ratioW = pw / w;
+                var ratioH = ph / h;
+                proj[0] *= ratioW;
+                proj[4] *= ratioW;
+                proj[8] *= ratioW;
+                proj[12] *= ratioW;
+                proj[1] *= ratioH;
+                proj[5] *= ratioH;
+                proj[9] *= ratioH;
+                proj[13] *= ratioH;
+
+                setMatrix(_this.object3d.matrix, proj);
             }
 
             if (ev && ev.data && ev.data.type === 'found') {

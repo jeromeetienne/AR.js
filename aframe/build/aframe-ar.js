@@ -49,6 +49,7 @@ if ('function' === typeof importScripts) {
 
         var onLoad = function () {
             ar = new ARController(msg.pw, msg.ph, param);
+            var cameraMatrix = ar.getCameraMatrix();
 
             // after the ARController is set up, we load the NFT Marker
             ar.loadNFTMarker(path + msg.marker, function (markerId) {
@@ -66,6 +67,8 @@ if ('function' === typeof importScripts) {
                     matrix: JSON.stringify(ev.data.matrix),
                 };
             });
+
+            postMessage({type: "loaded", proj: JSON.stringify(cameraMatrix)});
         };
 
         var onError = function (error) {
@@ -664,14 +667,44 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         })
     }
 
+    function isMobile() {
+        return /Android|mobile|iPad|iPhone/i.test(navigator.userAgent);
+    }
+
+    function setMatrix(matrix, value) {
+        var array = [];
+        for (var key in value) {
+            array[key] = value[key];
+        }
+        if (typeof matrix.elements.set === "function") {
+            matrix.elements.set(array);
+        } else {
+            matrix.elements = [].slice.call(array);
+        }
+    };
+
     function handleNFT(descriptorsUrl, arController) {
         // create a Worker to handle loading of NFT marker and tracking of it
 
         var worker = new Worker(THREEx.ArToolkitContext.baseURL + 'vendor/jsartoolkit5/js/artoolkit.worker.js');
 
+        var vw = _this.context.parameters.sourceWidth;
+        var vh = _this.context.parameters.sourceHeight;
 
-        var pw = _this.context.parameters.sourceWidth;
-        var ph = _this.context.parameters.sourceHeight;
+        var pscale = 320 / Math.max(vw, vh / 3 * 4);
+        var sscale = isMobile() ? window.outerWidth / vw : 1;
+
+        var w = vw * pscale;
+        var h = vh * pscale;
+        var pw = Math.max(w, h / 3 * 4);
+        var ph = Math.max(h, w / 4 * 3);
+        var ox = (pw - w) / 2;
+        var oy = (ph - h) / 2;
+
+        arController.canvas.style.clientWidth = pw + "px";
+        arController.canvas.style.clientHeight = ph + "px";
+        arController.canvas.width = pw;
+        arController.canvas.height = ph;
 
         var context_process = arController.canvas.getContext('2d');
 
@@ -695,6 +728,22 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
                 if (loader) {
                     loader.remove();
                 }
+            }
+
+            if (ev && ev.data && ev.data.type === 'loaded') {
+                var proj = JSON.parse(ev.data.proj);
+                var ratioW = pw / w;
+                var ratioH = ph / h;
+                proj[0] *= ratioW;
+                proj[4] *= ratioW;
+                proj[8] *= ratioW;
+                proj[12] *= ratioW;
+                proj[1] *= ratioH;
+                proj[5] *= ratioH;
+                proj[9] *= ratioH;
+                proj[13] *= ratioH;
+
+                setMatrix(_this.object3d.matrix, proj);
             }
 
             if (ev && ev.data && ev.data.type === 'found') {
@@ -1555,19 +1604,19 @@ ARjs.Source.prototype._initSourceWebcam = function (onReady, onError) {
     navigator.mediaDevices.enumerateDevices().then(function (devices) {
         var userMediaConstraints = {
             audio: false,
-            video: {
-                facingMode: 'environment',
-                width: {
-                    ideal: _this.parameters.sourceWidth,
-                    // min: 1024,
-                    // max: 1920
+            video: true
+        };
+
+        if (window.innerWidth < 800) {
+            var width = (window.innerWidth < window.innerHeight) ? 480 : 640;
+
+            userMediaConstraints = {
+                audio: false,
+                video: {
+                    facingMode: 'environment',
+                    width: { min: width, max: width }
                 },
-                height: {
-                    ideal: _this.parameters.sourceHeight,
-                    // min: 776,
-                    // max: 1080
-                }
-            }
+            };
         }
 
         if (null !== _this.parameters.deviceId) {
