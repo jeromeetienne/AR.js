@@ -10,7 +10,7 @@
 <!-- Bind window error for error handling -->
 <script>
 	window.addEventListener('error', function(event) {
-		alert("ERROR: " + event.message + " at " + event.filename + " : " + event.lineno + " : " + event.colno);
+		console.log("ERROR: " + event.message + " at " + event.filename + " : " + event.lineno + " : " + event.colno);
 	});
 </script>
 
