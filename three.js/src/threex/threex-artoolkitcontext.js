@@ -26,10 +26,6 @@ ARjs.Context = THREEx.ArToolkitContext = function (parameters, sourceParameters)
         canvasWidth: 640,
         canvasHeight: 480,
 
-        // to use sourceWidth and sourceHeight if passed as input
-        sourceWidth: sourceParameters && sourceParameters.sourceWidth || 640,
-        sourceHeight: sourceParameters && sourceParameters.sourceHeight || 480,
-
         // the patternRatio inside the artoolkit marker - artoolkit only
         patternRatio: 0.5,
 
