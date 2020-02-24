@@ -258,57 +258,110 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         })
     }
 
+    function setMatrix(matrix, value) {
+        var array = [];
+        for (var key in value) {
+            array[key] = value[key];
+        }
+        if (typeof matrix.elements.set === "function") {
+            matrix.elements.set(array);
+        } else {
+            matrix.elements = [].slice.call(array);
+        }
+    };
+
     function handleNFT(descriptorsUrl, arController) {
         // create a Worker to handle loading of NFT marker and tracking of it
 
         var worker = new Worker(THREEx.ArToolkitContext.baseURL + 'vendor/jsartoolkit5/js/artoolkit.worker.js');
 
+        window.addEventListener('arjs-video-loaded', function (ev) {
+            var video = ev.detail.component;
+            var vw = video.clientWidth;
+            var vh = video.clientHeight;
 
-        var pw = _this.context.parameters.sourceWidth;
-        var ph = _this.context.parameters.sourceHeight;
+            var pscale = 320 / Math.max(vw, vh / 3 * 4);
 
-        var context_process = arController.canvas.getContext('2d');
+            w = vw * pscale;
+            h = vh * pscale;
+            pw = Math.max(w, h / 3 * 4);
+            ph = Math.max(h, w / 4 * 3);
+            ox = (pw - w) / 2;
+            oy = (ph - h) / 2;
 
-        function process() {
-            var imageData = context_process.getImageData(0, 0, pw, ph);
-            worker.postMessage({ type: "process", imagedata: imageData }, [imageData.data.buffer]);
-        }
+            arController.canvas.style.clientWidth = pw + "px";
+            arController.canvas.style.clientHeight = ph + "px";
+            arController.canvas.width = pw;
+            arController.canvas.height = ph;
 
-        // initialize the worker
-        worker.postMessage({
-            type: 'init',
-            pw: pw,
-            ph: ph,
-            marker: descriptorsUrl,
-            param: arController.cameraParam.src,
-        });
+            var context_process = arController.canvas.getContext('2d');
 
-        worker.onmessage = function (ev) {
-            if (ev && ev.data && ev.data.type === 'endLoading') {
-                var loader = document.querySelector('.arjs-nft-loader');
-                if (loader) {
-                    loader.remove();
-                }
+            function process() {
+                context_process.fillStyle = "black";
+                context_process.fillRect(0, 0, pw, ph);
+                context_process.drawImage(video, 0, 0, vw, vh, ox, oy, w, h);
+
+                var imageData = context_process.getImageData(0, 0, pw, ph);
+                worker.postMessage({ type: "process", imagedata: imageData }, [imageData.data.buffer]);
             }
 
-            if (ev && ev.data && ev.data.type === 'found') {
-                var matrix = JSON.parse(ev.data.matrix);
+            console.log(vw, vh, pscale, w, h, pw, ph)
 
-                onMarkerFound({
-                    data: {
-                        type: artoolkit.NFT_MARKER,
-                        matrix: matrix,
-                        msg: ev.data.type,
+            // initialize the worker
+            worker.postMessage({
+                type: 'init',
+                pw: pw,
+                ph: ph,
+                marker: descriptorsUrl,
+                param: arController.cameraParam.src,
+            });
+
+            worker.onmessage = function (ev) {
+                if (ev && ev.data && ev.data.type === 'endLoading') {
+                    var loader = document.querySelector('.arjs-nft-loader');
+                    if (loader) {
+                        loader.remove();
                     }
-                });
+                }
 
-                _this.context.arController.showObject = true;
-            } else {
-                _this.context.arController.showObject = false;
-            }
+                if (ev && ev.data && ev.data.type === 'loaded') {
+                    var proj = JSON.parse(ev.data.proj);
+                    var ratioW = pw / w;
+                    var ratioH = ph / h;
+                    proj[0] *= ratioW;
+                    proj[4] *= ratioW;
+                    proj[8] *= ratioW;
+                    proj[12] *= ratioW;
+                    proj[1] *= ratioH;
+                    proj[5] *= ratioH;
+                    proj[9] *= ratioH;
+                    proj[13] *= ratioH;
 
-            process();
-        };
+                    setMatrix(_this.object3d.matrix, proj);
+                }
+
+                if (ev && ev.data && ev.data.type === 'found') {
+                    var matrix = JSON.parse(ev.data.matrix);
+
+                    onMarkerFound({
+                        data: {
+                            type: artoolkit.NFT_MARKER,
+                            matrix: matrix,
+                            msg: ev.data.type,
+                        }
+                    });
+
+                    _this.context.arController.showObject = true;
+                } else {
+                    _this.context.arController.showObject = false;
+                }
+
+                process();
+            };
+
+        })
+
+
 
     }
 
