@@ -11,7 +11,6 @@
                 this.vid = document.querySelector("#vid");
 
                 marker.addEventListener('markerFound', function () {
-                    console.log('playing video', this.vid)
                     this.vid.play();
                 }.bind(this));
             }
