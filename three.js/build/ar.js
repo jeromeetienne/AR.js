@@ -714,8 +714,6 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
                 worker.postMessage({ type: "process", imagedata: imageData }, [imageData.data.buffer]);
             }
 
-            console.log(vw, vh, pscale, w, h, pw, ph)
-
             // initialize the worker
             worker.postMessage({
                 type: 'init',
