@@ -363,7 +363,10 @@
             this.debugDraw();
         }
     };
-
+  /**
+    Detects the NFT markers in the process() function,
+    with the given tracked id.
+  */
     ARController.prototype.detectNFTMarker = function () {
         artoolkit.detectNFTMarker(this.id);
     }
@@ -822,7 +825,18 @@
             return artoolkit.markerInfo;
         }
     };
+  /**
+    Get the NFT marker info struct for the given NFT marker index in detected markers.
+    The returned object is the global artoolkit.NFTMarkerInfo object and will be overwritten
+    by subsequent calls.
 
+		Returns undefined if no marker was found.
+
+		A markerIndex of -1 is used to access the global custom marker.
+
+    @param {number} markerIndex The index of the NFT marker to query.
+    @returns {Object} The NFTmarkerInfo struct.
+  */
     ARController.prototype.getNFTMarker = function (markerIndex) {
         if (0 === artoolkit.getNFTMarker(this.id, markerIndex)) {
             return artoolkit.NFTMarkerInfo;
@@ -951,32 +965,64 @@
 	/**
 		Sets the logging level to use by ARToolKit.
 
-		@param
+		@param {number} mode type for the log level.
 	*/
     ARController.prototype.setLogLevel = function (mode) {
         return artoolkit.setLogLevel(mode);
     };
 
+  /**
+  	Gets the logging level used by ARToolKit.
+    @return {number} return the log level in use.
+  */
     ARController.prototype.getLogLevel = function () {
         return artoolkit.getLogLevel();
     };
 
+  /**
+    Sets the dir (direction) of the marker. Direction that tells about the rotation
+    about the marker (possible values are 0, 1, 2 or 3).
+    This parameter makes it possible to tell about the line order of the detected marker
+     (so which line is the first one) and so find the first vertex.
+    This is important to compute the transformation matrix in arGetTransMat().
+    @param {number} markerIndex the index of the marker
+    @param {number} dir direction of the marker (possible values are 0, 1, 2 or 3).
+    @return {number}  0 (void)
+  */
     ARController.prototype.setMarkerInfoDir = function (markerIndex, dir) {
         return artoolkit.setMarkerInfoDir(this.id, markerIndex, dir);
     };
 
+  /**
+    Sets the value of the near plane of the camera.
+    @param {number} value the value of the near plane
+    @return {number} 0 (void)
+  */
     ARController.prototype.setProjectionNearPlane = function (value) {
         return artoolkit.setProjectionNearPlane(this.id, value);
     };
 
+  /**
+    Gets the value of the near plane of the camera with the give id.
+    @return {number} the value of the near plane.
+  */
     ARController.prototype.getProjectionNearPlane = function () {
         return artoolkit.getProjectionNearPlane(this.id);
     };
 
+  /**
+    Sets the value of the far plane of the camera.
+    @param {number} value the value of the far plane
+    @return {number} 0 (void)
+  */
     ARController.prototype.setProjectionFarPlane = function (value) {
         return artoolkit.setProjectionFarPlane(this.id, value);
     };
 
+  /**
+    Gets the value of the far plane of the camera with the give id.
+    @return {number} the value of the far plane.
+  */
     ARController.prototype.getProjectionFarPlane = function () {
         return artoolkit.getProjectionFarPlane(this.id);
     };
@@ -1212,6 +1258,7 @@
 		Draw the black and white image and debug markers to the ARController canvas.
 
 		See setDebugMode.
+    @return 0 (void)
 	*/
     ARController.prototype.debugDraw = function () {
         var debugBuffer = new Uint8ClampedArray(Module.HEAPU8.buffer, this._bwpointer, this.framesize);
@@ -1243,6 +1290,11 @@
 
     // private methods
 
+    /**
+      This function init the ArController with the necessary parmeters and variables.
+      Don't call directly this but instead instantiate a new ArController.
+      @return {number} 0 (void)
+    */
     ARController.prototype._initialize = function () {
         this.id = artoolkit.setup(this.width, this.height, this.cameraParam.id);
 
@@ -1273,10 +1325,18 @@
         }.bind(this), 1);
     };
 
+  /**
+    Init the necessary kpm handle for NFT and the settings for the CPU.
+    @return {number} 0 (void)
+  */
     ARController.prototype._initNFT = function () {
         artoolkit.setupAR2(this.id);
     };
 
+  /**
+    Copy the Image data to the HEAP for the debugSetup function.
+    @return {number} 0 (void)
+  */
     ARController.prototype._copyImageToHeap = function (image) {
         if (!image) {
             image = this.image;
@@ -1322,7 +1382,11 @@
         return false;
     };
 
-
+    /**
+      Draw a square black border around the detect marker with
+      red circle in the center. Used for debugging porpouse in debugSetup.
+      @return {number} 0 (void)
+    */
     ARController.prototype._debugMarker = function (marker) {
         var vertex, pos;
         vertex = marker.vertex;
