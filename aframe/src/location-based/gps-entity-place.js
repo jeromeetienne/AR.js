@@ -34,7 +34,8 @@ AFRAME.registerComponent('gps-entity-place', {
                 latitude: this.data.latitude,
             };
 
-            var distance = this._cameraGps.computeDistanceMeters(ev.detail.position, dstCoords, true);
+            // it's actually a 'distance place', but we don't call it with last param, because we want to retrieve distance even if it's < minDistance property
+            var distance = this._cameraGps.computeDistanceMeters(ev.detail.position, dstCoords);
 
             this.el.setAttribute('distance', distance);
             this.el.setAttribute('distanceMsg', formatDistance(distance));
@@ -60,6 +61,7 @@ AFRAME.registerComponent('gps-entity-place', {
      */
     _updatePosition: function () {
         var position = { x: 0, y: this.el.getAttribute('position').y || 0, z: 0 }
+        var hideEntity = false;
 
         // update position.x
         var dstCoords = {
@@ -68,6 +70,12 @@ AFRAME.registerComponent('gps-entity-place', {
         };
 
         position.x = this._cameraGps.computeDistanceMeters(this._cameraGps.originCoords, dstCoords, true);
+
+        // place has to be hide
+        if (position.x === Number.MAX_SAFE_INTEGER) {
+            hideEntity = true;
+        }
+
         this._positionXDebug = position.x;
 
         position.x *= this.data.longitude > this._cameraGps.originCoords.longitude ? 1 : -1;
@@ -79,11 +87,24 @@ AFRAME.registerComponent('gps-entity-place', {
         };
 
         position.z = this._cameraGps.computeDistanceMeters(this._cameraGps.originCoords, dstCoords, true);
+
+        // place has to be hide
+        if (position.z === Number.MAX_SAFE_INTEGER) {
+            hideEntity = true;
+        }
+
         position.z *= this.data.latitude > this._cameraGps.originCoords.latitude ? -1 : 1;
-        if(position.y !== 0) {
+
+        if (position.y !== 0) {
             position.y = position.y - this._cameraGps.originCoords.altitude;
         }
-        
+
+        if (hideEntity) {
+            this.el.setAttribute('visible', false);
+        } else {
+            this.el.setAttribute('visible', true);
+        }
+
         // update element's position in 3D world
         this.el.setAttribute('position', position);
     },

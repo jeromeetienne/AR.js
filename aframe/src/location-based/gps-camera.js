@@ -93,8 +93,8 @@ AFRAME.registerComponent('gps-camera', {
             else {
                 this.currentCoords = position.coords;
             }
-            
-            
+
+
             this._updatePosition();
         }.bind(this));
     },
@@ -245,7 +245,7 @@ AFRAME.registerComponent('gps-camera', {
      * @param {Position} dest
      * @param {Boolean} isPlace
      *
-     * @returns {number} distance
+     * @returns {number} distance | Number.MAX_SAFE_INTEGER
      */
     computeDistanceMeters: function (src, dest, isPlace) {
         var dlongitude = THREE.Math.degToRad(dest.longitude - src.longitude);
@@ -256,7 +256,7 @@ AFRAME.registerComponent('gps-camera', {
         var distance = angle * 6378160;
 
         // if function has been called for a place, and if it's too near and a min distance has been set,
-        // set a very high distance to hide the object
+        // return max distance possible - to be handled by the  method caller
         if (isPlace && this.data.minDistance && this.data.minDistance > 0 && distance < this.data.minDistance) {
             return Number.MAX_SAFE_INTEGER;
         }
