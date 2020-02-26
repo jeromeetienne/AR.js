@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<!-- three.js library -->
+<script src='vendor/three.js/build/three.min.js'></script>
+<!-- ar.js -->
+<script src="../build/ar.js"></script>
+<script>THREEx.ArToolkitContext.baseURL = '../'</script>
+
+<body style='position: absolute; top: 0; left: 0; width: 100%; height: 100%; margin : 0px; overflow: hidden;'><script>
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Init
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// init renderer
+	var renderer	= new THREE.WebGLRenderer({
+		antialias: true,
+		alpha: true
+	});
+	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.domElement.style.position = 'absolute'
+	renderer.domElement.style.top = '0px'
+	renderer.domElement.style.left = '0px'
+	document.body.appendChild( renderer.domElement );
+
+	// array of functions for the rendering loop
+	var onRenderFcts= [];
+
+	// init scene and camera
+	var scene	= new THREE.Scene();
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Initialize a basic camera
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// Create a camera
+	var camera = new THREE.Camera();
+	scene.add(camera);
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          handle arToolkitSource
+	////////////////////////////////////////////////////////////////////////////////
+
+	var arToolkitSource = new THREEx.ArToolkitSource({
+		// to read from the webcam
+		sourceType : 'webcam',
+		sourceWidth: 480,
+    sourceHeight: 640,
+	})
+
+  arToolkitSource.init(function onReady(){
+    // use a resize to fullscreen mobile devices
+	  setTimeout(function() {
+	    onResize()
+	  }, 1000);
+  })
+
+  // handle resize
+  window.addEventListener('resize', function(){
+	  onResize()
+  })
+
+  function onResize(){
+    arToolkitSource.onResizeElement()
+	  arToolkitSource.copyElementSizeTo(renderer.domElement)
+	  if( arToolkitContext.arController !== null ){
+	    arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
+	  }
+  }
+	////////////////////////////////////////////////////////////////////////////////
+	//          initialize arToolkitContext
+	////////////////////////////////////////////////////////////////////////////////
+
+
+	// create atToolkitContext
+	var arToolkitContext = new THREEx.ArToolkitContext({
+		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
+		//debug: true,
+		detectionMode: 'mono',
+		canvasWidth: 480,
+	  canvasHeight: 640,
+	  }, {
+	      sourceWidth: 480,
+	      sourceHeight: 640,
+	})
+	// initialize it
+	arToolkitContext.init(function onCompleted(){
+		// copy projection matrix to camera
+		camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+	})
+
+	////////////////////////////////////////////////////////////////////////////////
+	//          Create a ArMarkerControls
+	////////////////////////////////////////////////////////////////////////////////
+  var markerRoot = new THREE.Group
+	scene.add(markerRoot)
+	// init controls for camera
+	var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
+		type : 'pattern',
+		patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+		// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
+		// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
+		changeMatrixMode: 'cameraTransformMatrix'
+	  //changeMatrixMode: 'modelViewMatrix'
+	})
+	// as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
+	scene.visible = false
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		add an object in the scene
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// add a torus knot
+	var geometry	= new THREE.CubeGeometry(1,1,1);
+	var material	= new THREE.MeshNormalMaterial({
+		transparent : true,
+		opacity: 0.5,
+		side: THREE.DoubleSide
+	});
+	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.position.z	= geometry.parameters.height/2
+	scene.add( mesh );
+	mesh.name = 'simplecube';
+	console.log(scene.getObjectByName('simplecube'));
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		render the whole thing on the page
+	//////////////////////////////////////////////////////////////////////////////////
+
+	// run the rendering loop
+	var lastTimeMsec= null
+	requestAnimationFrame(function animate(nowMsec){
+		// keep looping
+		requestAnimationFrame( animate );
+
+		if (!arToolkitSource.ready) {
+                    return;
+                }
+
+    arToolkitContext.update( arToolkitSource.domElement )
+
+    // update scene.visible if the marker is seen
+    scene.visible = camera.visible;
+
+    renderer.render(scene, camera);
+	})
+</script></body>
