@@ -1216,13 +1216,6 @@ ARjs.Context.prototype._initArtoolkit = function (onCompleted) {
         console.assert(labelingModeType !== undefined);
         arController.setLabelingMode(labelingModeType);
 
-        // set thresholding in artoolkit
-        // this seems to be the default
-        // arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_MANUAL)
-        // adatative consume a LOT of cpu...
-        // arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_AUTO_ADAPTIVE)
-        // arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_AUTO_OTSU)
-
         // notify
         onCompleted()
     })
@@ -1233,17 +1226,12 @@ ARjs.Context.prototype._initArtoolkit = function (onCompleted) {
  * return the projection matrix
  */
 ARjs.Context.prototype.getProjectionMatrix = function () {
-    // FIXME rename this function to say it is artoolkit specific - getArtoolkitProjectMatrix
-    // keep a backward compatibility with a console.warn
-
     console.assert(this.parameters.trackingBackend === 'artoolkit')
     console.assert(this.arController, 'arController MUST be initialized to call this function')
 
     // get projectionMatrixArr from artoolkit
     var projectionMatrixArr = this.arController.getCameraMatrix();
     var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)
-
-    // projectionMatrix.multiply(this._artoolkitProjectionAxisTransformMatrix)
 
     return projectionMatrix
 }

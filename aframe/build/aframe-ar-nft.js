@@ -17,1638 +17,83 @@ var Qb=[Ik,Zh,_h,Qj,Qi,Pi,Ri,Ag,sg,qg,rg,yg,kh,jh,Oi,Mj];var Rb=[Jk,ki,ji,gi];va
 
 // EMSCRIPTEN_END_ASM
 (Module.asmGlobalArg,Module.asmLibraryArg,buffer);var _i64Subtract=Module["_i64Subtract"]=asm["_i64Subtract"];var __GLOBAL__sub_I_bind_cpp=Module["__GLOBAL__sub_I_bind_cpp"]=asm["__GLOBAL__sub_I_bind_cpp"];var _fflush=Module["_fflush"]=asm["_fflush"];var __GLOBAL__sub_I_ARToolKitJS_cpp=Module["__GLOBAL__sub_I_ARToolKitJS_cpp"]=asm["__GLOBAL__sub_I_ARToolKitJS_cpp"];var _i64Add=Module["_i64Add"]=asm["_i64Add"];var _memset=Module["_memset"]=asm["_memset"];var runPostSets=Module["runPostSets"]=asm["runPostSets"];var _malloc=Module["_malloc"]=asm["_malloc"];var _memcpy=Module["_memcpy"]=asm["_memcpy"];var ___getTypeName=Module["___getTypeName"]=asm["___getTypeName"];var _bitshift64Lshr=Module["_bitshift64Lshr"]=asm["_bitshift64Lshr"];var _free=Module["_free"]=asm["_free"];var ___errno_location=Module["___errno_location"]=asm["___errno_location"];var _bitshift64Shl=Module["_bitshift64Shl"]=asm["_bitshift64Shl"];var dynCall_iiii=Module["dynCall_iiii"]=asm["dynCall_iiii"];var dynCall_viiiii=Module["dynCall_viiiii"]=asm["dynCall_viiiii"];var dynCall_dii=Module["dynCall_dii"]=asm["dynCall_dii"];var dynCall_vid=Module["dynCall_vid"]=asm["dynCall_vid"];var dynCall_di=Module["dynCall_di"]=asm["dynCall_di"];var dynCall_i=Module["dynCall_i"]=asm["dynCall_i"];var dynCall_vi=Module["dynCall_vi"]=asm["dynCall_vi"];var dynCall_vii=Module["dynCall_vii"]=asm["dynCall_vii"];var dynCall_ii=Module["dynCall_ii"]=asm["dynCall_ii"];var dynCall_viii=Module["dynCall_viii"]=asm["dynCall_viii"];var dynCall_v=Module["dynCall_v"]=asm["dynCall_v"];var dynCall_viid=Module["dynCall_viid"]=asm["dynCall_viid"];var dynCall_iiiii=Module["dynCall_iiiii"]=asm["dynCall_iiiii"];var dynCall_viiiiii=Module["dynCall_viiiiii"]=asm["dynCall_viiiiii"];var dynCall_iii=Module["dynCall_iii"]=asm["dynCall_iii"];var dynCall_viiii=Module["dynCall_viiii"]=asm["dynCall_viiii"];Runtime.stackAlloc=asm["stackAlloc"];Runtime.stackSave=asm["stackSave"];Runtime.stackRestore=asm["stackRestore"];Runtime.establishStackSpace=asm["establishStackSpace"];Runtime.setTempRet0=asm["setTempRet0"];Runtime.getTempRet0=asm["getTempRet0"];function ExitStatus(status){this.name="ExitStatus";this.message="Program terminated with exit("+status+")";this.status=status}ExitStatus.prototype=new Error;ExitStatus.prototype.constructor=ExitStatus;var initialStackTop;var preloadStartTime=null;var calledMain=false;dependenciesFulfilled=function runCaller(){if(!Module["calledRun"])run();if(!Module["calledRun"])dependenciesFulfilled=runCaller};Module["callMain"]=Module.callMain=function callMain(args){assert(runDependencies==0,"cannot call main when async dependencies remain! (listen on __ATMAIN__)");assert(__ATPRERUN__.length==0,"cannot call main when preRun functions remain to be called");args=args||[];ensureInitRuntime();var argc=args.length+1;function pad(){for(var i=0;i<4-1;i++){argv.push(0)}}var argv=[allocate(intArrayFromString(Module["thisProgram"]),"i8",ALLOC_NORMAL)];pad();for(var i=0;i<argc-1;i=i+1){argv.push(allocate(intArrayFromString(args[i]),"i8",ALLOC_NORMAL));pad()}argv.push(0);argv=allocate(argv,"i32",ALLOC_NORMAL);try{var ret=Module["_main"](argc,argv,0);exit(ret,true)}catch(e){if(e instanceof ExitStatus){return}else if(e=="SimulateInfiniteLoop"){Module["noExitRuntime"]=true;return}else{if(e&&typeof e==="object"&&e.stack)Module.printErr("exception thrown: "+[e,e.stack]);throw e}}finally{calledMain=true}};function run(args){args=args||Module["arguments"];if(preloadStartTime===null)preloadStartTime=Date.now();if(runDependencies>0){return}preRun();if(runDependencies>0)return;if(Module["calledRun"])return;function doRun(){if(Module["calledRun"])return;Module["calledRun"]=true;if(ABORT)return;ensureInitRuntime();preMain();if(Module["onRuntimeInitialized"])Module["onRuntimeInitialized"]();if(Module["_main"]&&shouldRunNow)Module["callMain"](args);postRun()}if(Module["setStatus"]){Module["setStatus"]("Running...");setTimeout((function(){setTimeout((function(){Module["setStatus"]("")}),1);doRun()}),1)}else{doRun()}}Module["run"]=Module.run=run;function exit(status,implicit){if(implicit&&Module["noExitRuntime"]){return}if(Module["noExitRuntime"]){}else{ABORT=true;EXITSTATUS=status;STACKTOP=initialStackTop;exitRuntime();if(Module["onExit"])Module["onExit"](status)}if(ENVIRONMENT_IS_NODE){process["stdout"]["once"]("drain",(function(){process["exit"](status)}));console.log(" ");setTimeout((function(){process["exit"](status)}),500)}else if(ENVIRONMENT_IS_SHELL&&typeof quit==="function"){quit(status)}throw new ExitStatus(status)}Module["exit"]=Module.exit=exit;var abortDecorators=[];function abort(what){if(what!==undefined){Module.print(what);Module.printErr(what);what=JSON.stringify(what)}else{what=""}ABORT=true;EXITSTATUS=1;var extra="\nIf this abort() is unexpected, build with -s ASSERTIONS=1 which can give more information.";var output="abort("+what+") at "+stackTrace()+extra;if(abortDecorators){abortDecorators.forEach((function(decorator){output=decorator(output,what)}))}throw output}Module["abort"]=Module.abort=abort;if(Module["preInit"]){if(typeof Module["preInit"]=="function")Module["preInit"]=[Module["preInit"]];while(Module["preInit"].length>0){Module["preInit"].pop()()}}var shouldRunNow=true;if(Module["noInitialRun"]){shouldRunNow=false}run()
-;(function() {
-	'use strict'
+if ('function' === typeof importScripts) {
+    importScripts('../build/artoolkit.min.js');
+
+    self.onmessage = function (e) {
+        var msg = e.data;
+        switch (msg.type) {
+            case "init": {
+                load(msg);
+                return;
+            }
+            case "process": {
+                next = msg.imagedata;
+                process();
+                return;
+            }
+        }
+    };
+
+    var next = null;
+
+    var ar = null;
+    var markerResult = null;
+
+    function load(msg) {
+        var path = '../../';
+
+        var onLoad = function () {
+            ar = new ARController(msg.pw, msg.ph, param);
+            var cameraMatrix = ar.getCameraMatrix();
+
+            // after the ARController is set up, we load the NFT Marker
+            ar.loadNFTMarker(path + msg.marker, function (markerId) {
+                ar.trackNFTMarkerId(markerId);
+                postMessage({ type: 'endLoading' })
+            }, function (err) {
+                console.log('Error in loading marker on Worker', err)
+            });
+
+            // ...and we listen for event when marker has been found from camera
+            ar.addEventListener('getNFTMarker', function (ev) {
+                // let AR.js know that a NFT marker has been found, with its matrix for positioning
+                markerResult = {
+                    type: 'found',
+                    matrix: JSON.stringify(ev.data.matrix),
+                };
+            });
+
+            postMessage({type: "loaded", proj: JSON.stringify(cameraMatrix)});
+        };
+
+        var onError = function (error) {
+            console.error(error);
+        };
+
+        // we cannot pass the entire ARController, so we re-create one inside the Worker, starting from camera_param
+        var param = new ARCameraParam(path + msg.param, onLoad, onError);
+    }
+
+    function process() {
+        markerResult = null;
+
+        if (ar && ar.process) {
+            ar.process(next);
+        }
+
+        if (markerResult) {
+            postMessage(markerResult);
+        } else {
+            postMessage({
+                type: "not found",
+            });
+        }
+        next = null;
+    }
+
+}
 
-	/**
-		The ARController is the main object for doing AR marker detection with JSARToolKit.
-
-		To use an ARController, you need to tell it the dimensions to use for the AR processing canvas and
-		pass it an ARCameraParam to define the camera parameters to use when processing images. 
-		The ARCameraParam defines the lens distortion and aspect ratio of the camera used. 
-		See https://www.artoolworks.com/support/library/Calibrating_your_camera for more information about AR camera parameteters and how to make and use them.
-
-		If you pass an image as the first argument, the ARController uses that as the image to process,
-		using the dimensions of the image as AR processing canvas width and height. If the first argument
-		to ARController is an image, the second argument is used as the camera param.
-
-		The camera parameters argument can be either an ARCameraParam or an URL to a camera definition file.
-		If the camera argument is an URL, it is loaded into a new ARCameraParam, and the ARController dispatches
-		a 'load' event and calls the onload method if it is defined.
-
-	 	@exports ARController
-	 	@constructor
-
-		@param {number} width The width of the images to process.
-		@param {number} height The height of the images to process.
-		@param {ARCameraParam | string} camera The ARCameraParam to use for image processing. If this is a string, the ARController treats it as an URL and tries to load it as a ARCameraParam definition file, calling ARController#onload on success. 
-	*/
-	var ARController = function(width, height, camera) {
-		var id;
-		var w = width, h = height;
-
-		this.orientation = 'landscape';
-
-		this.listeners = {};
-
-		if (typeof width !== 'number') {
-			var image = width;
-			camera = height;
-			w = image.videoWidth || image.width;
-			h = image.videoHeight || image.height;
-			this.image = image;
-		}
-
-		this.defaultMarkerWidth = 1;
-		this.patternMarkers = {};
-		this.barcodeMarkers = {};
-		this.transform_mat = new Float32Array(16);
-
-		this.canvas = document.createElement('canvas');
-		this.canvas.width = w;
-		this.canvas.height = h;
-		this.ctx = this.canvas.getContext('2d');
-
-		this.videoWidth = w;
-		this.videoHeight = h;
-
-		if (typeof camera === 'string') {
-
-			var self = this;
-			this.cameraParam = new ARCameraParam(camera, function() {
-				self._initialize();
-			}, function(err) {
-				console.error("ARController: Failed to load ARCameraParam", err);
-			});
-
-		} else {
-
-			this.cameraParam = camera;
-			this._initialize();
-
-		}
-	};
-
-	/**
-		Destroys the ARController instance and frees all associated resources.
-		After calling dispose, the ARController can't be used any longer. Make a new one if you need one.
-
-		Calling this avoids leaking Emscripten memory, which may be important if you're using multiple ARControllers.
-	*/
-	ARController.prototype.dispose = function() {
-		artoolkit.teardown(this.id);
-
-		for (var t in this) {
-			this[t] = null;
-		}
-	};
-
-	/**
-		Detects markers in the given image. The process method dispatches marker detection events during its run.
-
-		The marker detection process proceeds by first dispatching a markerNum event that tells you how many
-		markers were found in the image. Next, a getMarker event is dispatched for each found marker square.
-		Finally, getMultiMarker is dispatched for every found multimarker, followed by getMultiMarkerSub events
-		dispatched for each of the markers in the multimarker.
-			
-			arController.addEventListener('markerNum', function(ev) {
-				console.log("Detected " + ev.data + " markers.")
-			});
-			arController.addEventListener('getMarker', function(ev) {
-				console.log("Detected marker with ids:", ev.data.marker.id, ev.data.marker.idPatt, ev.data.marker.idMatrix);
-				console.log("Marker data", ev.data.marker);
-				console.log("Marker transform matrix:", [].join.call(ev.data.matrix, ', '));
-			});
-			arController.addEventListener('getMultiMarker', function(ev) {
-				console.log("Detected multimarker with id:", ev.data.multiMarkerId);
-			});
-			arController.addEventListener('getMultiMarkerSub', function(ev) {
-				console.log("Submarker for " + ev.data.multiMarkerId, ev.data.markerIndex, ev.data.marker);
-			});
-			
-			arController.process(image);	
-
-
-		If no image is given, defaults to this.image.
-
-		If the debugSetup has been called, draws debug markers on the debug canvas.
-
-		@param {ImageElement | VideoElement} image The image to process [optional]. 
-	*/
-	ARController.prototype.process = function(image) {
-		this.detectMarker(image);
-
-		var markerNum = this.getMarkerNum();
-		var k,o;
-		for (k in this.patternMarkers) {
-			o = this.patternMarkers[k]
-			o.inPrevious = o.inCurrent;
-			o.inCurrent = false;
-		}
-		for (k in this.barcodeMarkers) {
-			o = this.barcodeMarkers[k]
-			o.inPrevious = o.inCurrent;
-			o.inCurrent = false;
-		}
-
-		for (var i=0; i<markerNum; i++) {
-			var markerInfo = this.getMarker(i);
-
-			var markerType = artoolkit.UNKNOWN_MARKER;
-			var visible = this.trackPatternMarkerId(-1);
-
-			if (markerInfo.idPatt > -1 && (markerInfo.id === markerInfo.idPatt || markerInfo.idMatrix === -1)) {
-				visible = this.trackPatternMarkerId(markerInfo.idPatt);
-				markerType = artoolkit.PATTERN_MARKER;
-
-				if (markerInfo.dir !== markerInfo.dirPatt) {
-					this.setMarkerInfoDir(i, markerInfo.dirPatt);
-				}
-
-			} else if (markerInfo.idMatrix > -1) {
-				visible = this.trackBarcodeMarkerId(markerInfo.idMatrix);
-				markerType = artoolkit.BARCODE_MARKER;
-
-				if (markerInfo.dir !== markerInfo.dirMatrix) {
-					this.setMarkerInfoDir(i, markerInfo.dirMatrix);
-				}
-			}
-
-			if (markerType !== artoolkit.UNKNOWN_MARKER && visible.inPrevious) {
-				this.getTransMatSquareCont(i, visible.markerWidth, visible.matrix, visible.matrix);
-			} else {
-				this.getTransMatSquare(i, visible.markerWidth, visible.matrix);
-			}
-// this.getTransMatSquare(i, visible.markerWidth, visible.matrix);
-
-			visible.inCurrent = true;
-			this.transMatToGLMat(visible.matrix, this.transform_mat);
-			this.dispatchEvent({
-				name: 'getMarker',
-				target: this,
-				data: {
-					index: i,
-					type: markerType,
-					marker: markerInfo,
-					matrix: this.transform_mat
-				}
-			});
-		}
-
-		var multiMarkerCount = this.getMultiMarkerCount();
-		for (var i=0; i<multiMarkerCount; i++) {
-			var subMarkerCount = this.getMultiMarkerPatternCount(i);
-			var visible = false;
-
-			artoolkit.getTransMatMultiSquareRobust(this.id, i);
-			this.transMatToGLMat(this.marker_transform_mat, this.transform_mat);
-			for (var j=0; j<subMarkerCount; j++) {
-				var multiEachMarkerInfo = this.getMultiEachMarker(i, j);
-				if (multiEachMarkerInfo.visible >= 0) {
-					visible = true;
-					this.dispatchEvent({
-						name: 'getMultiMarker',
-						target: this,
-						data: {
-							multiMarkerId: i,
-							matrix: this.transform_mat
-						}
-					});
-					break;
-				}
-			}
-			if (visible) {
-				for (var j=0; j<subMarkerCount; j++) {
-					var multiEachMarkerInfo = this.getMultiEachMarker(i, j);
-					this.transMatToGLMat(this.marker_transform_mat, this.transform_mat);
-					this.dispatchEvent({
-						name: 'getMultiMarkerSub',
-						target: this,
-						data: {
-							multiMarkerId: i,
-							markerIndex: j,
-							marker: multiEachMarkerInfo,
-							matrix: this.transform_mat
-						}
-					});
-				}
-			}
-		}
-		if (this._bwpointer) {
-			this.debugDraw();
-		}
-	};
-
-	/**
-		Adds the given pattern marker ID to the index of tracked IDs.
-		Sets the markerWidth for the pattern marker to markerWidth.
-
-		Used by process() to implement continuous tracking, 
-		keeping track of the marker's transformation matrix
-		and customizable marker widths.
-
-		@param {number} id ID of the pattern marker to track.
-		@param {number} markerWidth The width of the marker to track.
-		@return {Object} The marker tracking object.
-	*/
-	ARController.prototype.trackPatternMarkerId = function(id, markerWidth) {
-		var obj = this.patternMarkers[id];
-		if (!obj) {
-			this.patternMarkers[id] = obj = {
-				inPrevious: false,
-				inCurrent: false,
-				matrix: new Float32Array(12),
-				markerWidth: markerWidth || this.defaultMarkerWidth
-			};
-		}
-		if (markerWidth) {
-			obj.markerWidth = markerWidth;
-		}
-		return obj;
-	};
-
-	/**
-		Adds the given barcode marker ID to the index of tracked IDs.
-		Sets the markerWidth for the pattern marker to markerWidth.
-
-		Used by process() to implement continuous tracking, 
-		keeping track of the marker's transformation matrix
-		and customizable marker widths.
-
-		@param {number} id ID of the barcode marker to track.
-		@param {number} markerWidth The width of the marker to track.
-		@return {Object} The marker tracking object.
-	*/
-	ARController.prototype.trackBarcodeMarkerId = function(id, markerWidth) {
-		var obj = this.barcodeMarkers[id];
-		if (!obj) {
-			this.barcodeMarkers[id] = obj = {
-				inPrevious: false,
-				inCurrent: false,
-				matrix: new Float32Array(12),
-				markerWidth: markerWidth || this.defaultMarkerWidth
-			};
-		}
-		if (markerWidth) {
-			obj.markerWidth = markerWidth;
-		}
-		return obj;
-	};
-
-	/**
-		Returns the number of multimarkers registered on this ARController.
-
-		@return {number} Number of multimarkers registered.
-	*/
-	ARController.prototype.getMultiMarkerCount = function() {
-		return artoolkit.getMultiMarkerCount(this.id);
-	};
-
-	/**
-		Returns the number of markers in the multimarker registered for the given multiMarkerId.
-
-		@param {number} multiMarkerId The id number of the multimarker to access. Given by loadMultiMarker.
-		@return {number} Number of markers in the multimarker. Negative value indicates failure to find the multimarker.
-	*/
-	ARController.prototype.getMultiMarkerPatternCount = function(multiMarkerId) {
-		return artoolkit.getMultiMarkerNum(this.id, multiMarkerId);
-	};
-
-	/**
-		Add an event listener on this ARController for the named event, calling the callback function
-		whenever that event is dispatched.
-
-		Possible events are: 
-		  * getMarker - dispatched whenever process() finds a square marker
-		  * getMultiMarker - dispatched whenever process() finds a visible registered multimarker
-		  * getMultiMarkerSub - dispatched by process() for each marker in a visible multimarker
-		  * load - dispatched when the ARController is ready to use (useful if passing in a camera URL in the constructor)
-
-		@param {string} name Name of the event to listen to.
-		@param {function} callback Callback function to call when an event with the given name is dispatched.
-	*/
-	ARController.prototype.addEventListener = function(name, callback) {
-       if (!this.listeners[name]) {
-			this.listeners[name] = [];
-		}
-		this.listeners[name].push(callback);
-	};
-
-	/**
-		Remove an event listener from the named event.
-
-		@param {string} name Name of the event to stop listening to.
-		@param {function} callback Callback function to remove from the listeners of the named event.
-	*/
-	ARController.prototype.removeEventListener = function(name, callback) {
-		if (this.listeners[name]) {
-			var index = this.listeners[name].indexOf(callback);
-			if (index > -1) {
-				this.listeners[name].splice(index, 1);
-			}
-		}
-	};
-
-	/**
-		Dispatches the given event to all registered listeners on event.name.
-
-		@param {Object} event Event to dispatch.
-	*/
-	ARController.prototype.dispatchEvent = function(event) {
-		var listeners = this.listeners[event.name];
-		if (listeners) {
-			for (var i=0; i<listeners.length; i++) {
-				listeners[i].call(this, event);
-			}
-		}
-	};
-
-	/**
-		Sets up a debug canvas for the AR detection. Draws a red marker on top of each detected square in the image.
-
-		The debug canvas is added to document.body.
-	*/
-	ARController.prototype.debugSetup = function() {
-		document.body.appendChild(this.canvas)
-		this.setDebugMode(1);
-		this._bwpointer = this.getProcessingImage();
-	};
-
-	/**
-		Loads a pattern marker from the given URL and calls the onSuccess callback with the UID of the marker.
-
-		arController.loadMarker(markerURL, onSuccess, onError);
-
-		@param {string} markerURL - The URL of the marker pattern file to load.
-		@param {function} onSuccess - The success callback. Called with the id of the loaded marker on a successful load.
-		@param {function} onError - The error callback. Called with the encountered error if the load fails.
-	*/
-	ARController.prototype.loadMarker = function(markerURL, onSuccess, onError) {
-		return artoolkit.addMarker(this.id, markerURL, onSuccess, onError);
-	};
-
-	/**
-		Loads a multimarker from the given URL and calls the onSuccess callback with the UID of the marker.
-
-		arController.loadMultiMarker(markerURL, onSuccess, onError);
-
-		@param {string} markerURL - The URL of the multimarker pattern file to load.
-		@param {function} onSuccess - The success callback. Called with the id and the number of sub-markers of the loaded marker on a successful load.
-		@param {function} onError - The error callback. Called with the encountered error if the load fails.
-	*/
-	ARController.prototype.loadMultiMarker = function(markerURL, onSuccess, onError) {
-		return artoolkit.addMultiMarker(this.id, markerURL, onSuccess, onError);
-	};
-	
-	/**
-	 * Populates the provided float array with the current transformation for the specified marker. After 
-	 * a call to detectMarker, all marker information will be current. Marker transformations can then be 
-	 * checked.
-	 * @param {number} markerUID	The unique identifier (UID) of the marker to query
-	 * @param {number} markerWidth	The width of the marker
-	 * @param {Float64Array} dst	The float array to populate with the 3x4 marker transformation matrix
-	 * @return	{Float64Array} The dst array.
-	 */
-	ARController.prototype.getTransMatSquare = function(markerIndex, markerWidth, dst) {
-		artoolkit.getTransMatSquare(this.id, markerIndex, markerWidth);
-		dst.set(this.marker_transform_mat);
-		return dst;
-	};
-
-	/**
-	 * Populates the provided float array with the current transformation for the specified marker, using 
-	 * previousMarkerTransform as the previously detected transformation. After 
-	 * a call to detectMarker, all marker information will be current. Marker transformations can then be 
-	 * checked.
-	 * @param {number} markerUID	The unique identifier (UID) of the marker to query
-	 * @param {number} markerWidth	The width of the marker
-	 * @param {Float64Array} previousMarkerTransform	The float array to use as the previous 3x4 marker transformation matrix
-	 * @param {Float64Array} dst	The float array to populate with the 3x4 marker transformation matrix
-	 * @return	{Float64Array} The dst array.
-	 */
-	ARController.prototype.getTransMatSquareCont = function(markerIndex, markerWidth, previousMarkerTransform, dst) {
-		this.marker_transform_mat.set(previousMarkerTransform)
-		artoolkit.getTransMatSquareCont(this.id, markerIndex, markerWidth);
-		dst.set(this.marker_transform_mat);
-		return dst;
-	};
-
-	/**
-	 * Populates the provided float array with the current transformation for the specified multimarker. After 
-	 * a call to detectMarker, all marker information will be current. Marker transformations can then be 
-	 * checked.
-	 *
-	 * @param {number} markerUID	The unique identifier (UID) of the marker to query
-	 * @param {number} markerWidth	The width of the marker
-	 * @param {Float64Array} dst	The float array to populate with the 3x4 marker transformation matrix
-	 * @return	{Float64Array} The dst array.
-	 */
-	ARController.prototype.getTransMatMultiSquare = function(multiMarkerId, dst) {
-		artoolkit.getTransMatMultiSquare(this.id, multiMarkerId);
-		dst.set(this.marker_transform_mat);
-		return dst;
-	};
-
-	/**
-	 * Populates the provided float array with the current robust transformation for the specified multimarker. After 
-	 * a call to detectMarker, all marker information will be current. Marker transformations can then be 
-	 * checked.
-	 * @param {number} markerUID	The unique identifier (UID) of the marker to query
-	 * @param {number} markerWidth	The width of the marker
-	 * @param {Float64Array} dst	The float array to populate with the 3x4 marker transformation matrix
-	 * @return	{Float64Array} The dst array.
-	 */
-	ARController.prototype.getTransMatMultiSquareRobust = function(multiMarkerId, dst) {
-		artoolkit.getTransMatMultiSquare(this.id, multiMarkerId);
-		dst.set(this.marker_transform_mat);
-		return dst;
-	};
-
-	/**
-		Converts the given 3x4 marker transformation matrix in the 12-element transMat array
-		into a 4x4 WebGL matrix and writes the result into the 16-element glMat array.
-
-		If scale parameter is given, scales the transform of the glMat by the scale parameter.
-
-		@param {Float64Array} transMat The 3x4 marker transformation matrix.
-		@param {Float64Array} glMat The 4x4 GL transformation matrix.
-		@param {number} scale The scale for the transform.
-	*/ 
-	ARController.prototype.transMatToGLMat = function(transMat, glMat, scale) {
-		glMat[0 + 0*4] = transMat[0]; // R1C1
-		glMat[0 + 1*4] = transMat[1]; // R1C2
-		glMat[0 + 2*4] = transMat[2];
-		glMat[0 + 3*4] = transMat[3];
-		glMat[1 + 0*4] = transMat[4]; // R2
-		glMat[1 + 1*4] = transMat[5];
-		glMat[1 + 2*4] = transMat[6];
-		glMat[1 + 3*4] = transMat[7];
-		glMat[2 + 0*4] = transMat[8]; // R3
-		glMat[2 + 1*4] = transMat[9];
-		glMat[2 + 2*4] = transMat[10];
-		glMat[2 + 3*4] = transMat[11];
-		glMat[3 + 0*4] = 0.0;
-		glMat[3 + 1*4] = 0.0;
-		glMat[3 + 2*4] = 0.0;
-		glMat[3 + 3*4] = 1.0;
-		if (scale != undefined && scale !== 0.0) {
-			glMat[12] *= scale;
-			glMat[13] *= scale;
-			glMat[14] *= scale;
-		}
-		return glMat;
-	};
-
-	/**
-		This is the core ARToolKit marker detection function. It calls through to a set of
-		internal functions to perform the key marker detection steps of binarization and
-		labelling, contour extraction, and template matching and/or matrix code extraction.
-        
-        Typically, the resulting set of detected markers is retrieved by calling arGetMarkerNum
-        to get the number of markers detected and arGetMarker to get an array of ARMarkerInfo
-        structures with information on each detected marker, followed by a step in which
-        detected markers are possibly examined for some measure of goodness of match (e.g. by
-        examining the match confidence value) and pose extraction.
-
-		@param {image} Image to be processed to detect markers.
-		@return {number}     0 if the function proceeded without error, or a value less than 0 in case of error.
-			A result of 0 does not however, imply any markers were detected.
-	*/
-	ARController.prototype.detectMarker = function(image) {
-		if (this._copyImageToHeap(image)) {
-			return artoolkit.detectMarker(this.id);
-		}
-		return -99;
-	};
-
-	/**
-		Get the number of markers detected in a video frame.
-  
-	    @return {number}     The number of detected markers in the most recent image passed to arDetectMarker.
-    	    Note that this is actually a count, not an index. A better name for this function would be
-        	arGetDetectedMarkerCount, but the current name lives on for historical reasons.
-    */
-	ARController.prototype.getMarkerNum = function() {
-		return artoolkit.getMarkerNum(this.id);
-	};
-
-	/**
-		Get the marker info struct for the given marker index in detected markers.
-
-		Call this.detectMarker first, then use this.getMarkerNum to get the detected marker count.
-
-		The returned object is the global artoolkit.markerInfo object and will be overwritten
-		by subsequent calls. If you need to hang on to it, create a copy using this.cloneMarkerInfo();
-
-		Returns undefined if no marker was found.
-
-		A markerIndex of -1 is used to access the global custom marker.
-
-		The fields of the markerInfo struct are:
-		    @field      area Area in pixels of the largest connected region, comprising the marker border and regions connected to it. Note that this is
-		        not the same as the actual onscreen area inside the marker border.
-			@field      id If pattern detection mode is either pattern mode OR matrix but not both, will be marker ID (>= 0) if marker is valid, or -1 if invalid.
-			@field      idPatt If pattern detection mode includes a pattern mode, will be marker ID (>= 0) if marker is valid, or -1 if invalid.
-		    @field      idMatrix If pattern detection mode includes a matrix mode, will be marker ID (>= 0) if marker is valid, or -1 if invalid.
-			@field      dir If pattern detection mode is either pattern mode OR matrix but not both, and id != -1, will be marker direction (range 0 to 3, inclusive).
-			@field      dirPatt If pattern detection mode includes a pattern mode, and id != -1, will be marker direction (range 0 to 3, inclusive).
-			@field      dirMatrix If pattern detection mode includes a matrix mode, and id != -1, will be marker direction (range 0 to 3, inclusive).
-			@field      cf If pattern detection mode is either pattern mode OR matrix but not both, will be marker matching confidence (range 0.0 to 1.0 inclusive) if marker is valid, or -1.0 if marker is invalid.
-			@field      cfPatt If pattern detection mode includes a pattern mode, will be marker matching confidence (range 0.0 to 1.0 inclusive) if marker is valid, or -1.0 if marker is invalid.
-			@field      cfMatrix If pattern detection mode includes a matrix mode, will be marker matching confidence (range 0.0 to 1.0 inclusive) if marker is valid, or -1.0 if marker is invalid.
-			@field      pos 2D position (in camera image coordinates, origin at top-left) of the centre of the marker.
-			@field      line Line equations for the 4 sides of the marker.
-			@field      vertex 2D positions (in camera image coordinates, origin at top-left) of the corners of the marker. vertex[(4 - dir)%4][] is the top-left corner of the marker. Other vertices proceed clockwise from this. These are idealised coordinates (i.e. the onscreen position aligns correctly with the undistorted camera image.)
-
-
-		@param {number} markerIndex The index of the marker to query.
-		@returns {Object} The markerInfo struct.
-	*/
-	ARController.prototype.getMarker = function(markerIndex) {
-		if (0 === artoolkit.getMarker(this.id, markerIndex)) {
-			return artoolkit.markerInfo;
-		}
-	};
-
-	/**
-		Set marker vertices to the given vertexData[4][2] array.
-
-		Sets the marker pos to the center of the vertices.
-
-		Useful for building custom markers for getTransMatSquare.
-
-		A markerIndex of -1 is used to access the global custom marker.
-
-		@param {number} markerIndex The index of the marker to edit.
-	*/
-	ARController.prototype.setMarkerInfoVertex = function(markerIndex, vertexData) {
-		for (var i=0; i<vertexData.length; i++) {
-			this.marker_transform_mat[i*2+0] = vertexData[i][0];
-			this.marker_transform_mat[i*2+1] = vertexData[i][1];
-		}
-		return artoolkit.setMarkerInfoVertex(this.id, markerIndex);
-	};
-
-	/**
-		Makes a deep copy of the given marker info.
-
-		@param {Object} markerInfo The marker info object to copy.
-		@return {Object} The new copy of the marker info.
-	*/
-	ARController.prototype.cloneMarkerInfo = function(markerInfo) {
-		return JSON.parse(JSON.stringify(markerInfo));
-	};
-
-	/**
-		Get the marker info struct for the given marker index in detected markers.
-
-		Call this.detectMarker first, then use this.getMarkerNum to get the detected marker count.
-
-		The returned object is the global artoolkit.markerInfo object and will be overwritten
-		by subsequent calls. If you need to hang on to it, create a copy using this.cloneMarkerInfo();
-
-		Returns undefined if no marker was found.
-
-		@field {number} pattId The index of the marker.
-		@field {number} pattType The type of the marker. Either AR_MULTI_PATTERN_TYPE_TEMPLATE or AR_MULTI_PATTERN_TYPE_MATRIX.
-		@field {number} visible 0 or larger if the marker is visible
-		@field {number} width The width of the marker.
-
-		@param {number} multiMarkerId The multimarker to query.
-		@param {number} markerIndex The index of the marker to query.
-		@returns {Object} The markerInfo struct.
-	*/
-	ARController.prototype.getMultiEachMarker = function(multiMarkerId, markerIndex) {
-		if (0 === artoolkit.getMultiEachMarker(this.id, multiMarkerId, markerIndex)) {
-			return artoolkit.multiEachMarkerInfo;
-		}
-	};
-
-
-	/**
-		Returns the 16-element WebGL transformation matrix used by ARController.process to 
-		pass marker WebGL matrices to event listeners.
-
-		Unique to each ARController.
-
-		@return {Float64Array} The 16-element WebGL transformation matrix used by the ARController.
-	*/
-	ARController.prototype.getTransformationMatrix = function() {
-		return this.transform_mat;
-	};
-
-	/**
-	 * Returns the projection matrix computed from camera parameters for the ARController.
-	 *
-	 * @return {Float64Array} The 16-element WebGL camera matrix for the ARController camera parameters.
-	 */
-	ARController.prototype.getCameraMatrix = function() {
-		return this.camera_mat;
-	};
-
-	/**
-		Returns the shared ARToolKit 3x4 marker transformation matrix, used for passing and receiving
-		marker transforms to/from the Emscripten side.
-
-		@return {Float64Array} The 12-element 3x4 row-major marker transformation matrix used by ARToolKit.
-	*/
-	ARController.prototype.getMarkerTransformationMatrix = function() {
-		return this.marker_transform_mat;
-	};
-
-
-	/* Setter / Getter Proxies */
-
-	/**
-	 * Enables or disables debug mode in the tracker. When enabled, a black and white debug
-	 * image is generated during marker detection. The debug image is useful for visualising
-	 * the binarization process and choosing a threshold value.
-	 * @param {number} debug		true to enable debug mode, false to disable debug mode
-	 * @see				getDebugMode()
-	 */
-	ARController.prototype.setDebugMode = function(mode) {
-		return artoolkit.setDebugMode(this.id, mode);
-	};
-
-	/**
-	 * Returns whether debug mode is currently enabled.
-	 * @return			true when debug mode is enabled, false when debug mode is disabled
-	 * @see				setDebugMode()
-	 */
-	ARController.prototype.getDebugMode = function() {
-		return artoolkit.getDebugMode(this.id);
-	};
-
-	/**
-		Returns the Emscripten HEAP offset to the debug processing image used by ARToolKit.
-
-		@return {number} HEAP offset to the debug processing image.
-	*/
-	ARController.prototype.getProcessingImage = function() {
-		return artoolkit.getProcessingImage(this.id);
-	}
-
-	/**
-		Sets the logging level to use by ARToolKit.
-
-		@param 
-	*/
-	ARController.prototype.setLogLevel = function(mode) {
-		return artoolkit.setLogLevel(mode);
-	};
-
-	ARController.prototype.getLogLevel = function() {
-		return artoolkit.getLogLevel();
-	};
-
-	ARController.prototype.setMarkerInfoDir = function(markerIndex, dir) {
-		return artoolkit.setMarkerInfoDir(this.id, markerIndex, dir);
-	};
-
-	ARController.prototype.setProjectionNearPlane = function(value) {
-		return artoolkit.setProjectionNearPlane(this.id, value);
-	};
-
-	ARController.prototype.getProjectionNearPlane = function() {
-		return artoolkit.getProjectionNearPlane(this.id);
-	};
-
-	ARController.prototype.setProjectionFarPlane = function(value) {
-		return artoolkit.setProjectionFarPlane(this.id, value);
-	};
-
-	ARController.prototype.getProjectionFarPlane = function() {
-		return artoolkit.getProjectionFarPlane(this.id);
-	};
-
-
-	/**
-	    Set the labeling threshold mode (auto/manual).
-
-	    @param {number}		mode An integer specifying the mode. One of:
-	        AR_LABELING_THRESH_MODE_MANUAL,
-	        AR_LABELING_THRESH_MODE_AUTO_MEDIAN,
-	        AR_LABELING_THRESH_MODE_AUTO_OTSU,
-	        AR_LABELING_THRESH_MODE_AUTO_ADAPTIVE,
-	        AR_LABELING_THRESH_MODE_AUTO_BRACKETING
-	 */
- 	ARController.prototype.setThresholdMode = function(mode) {
-		return artoolkit.setThresholdMode(this.id, mode);
-	};
-
-	/**
-	 * Gets the current threshold mode used for image binarization.
-	 * @return	{number}		The current threshold mode
-	 * @see				getVideoThresholdMode()
-	 */
-	ARController.prototype.getThresholdMode = function() {
-		return artoolkit.getThresholdMode(this.id);
-	};
-
-	/**
-    	Set the labeling threshhold.
-
-        This function forces sets the threshold value.
-        The default value is AR_DEFAULT_LABELING_THRESH which is 100.
-        
-        The current threshold mode is not affected by this call.
-        Typically, this function is used when labeling threshold mode
-        is AR_LABELING_THRESH_MODE_MANUAL.
- 
-        The threshold value is not relevant if threshold mode is
-        AR_LABELING_THRESH_MODE_AUTO_ADAPTIVE.
- 
-        Background: The labeling threshold is the value which
-		the AR library uses to differentiate between black and white
-		portions of an ARToolKit marker. Since the actual brightness,
-		contrast, and gamma of incoming images can vary signficantly
-		between different cameras and lighting conditions, this
-		value typically needs to be adjusted dynamically to a
-		suitable midpoint between the observed values for black
-		and white portions of the markers in the image.
-
-		@param {number}     thresh An integer in the range [0,255] (inclusive).
-	*/
-	ARController.prototype.setThreshold = function(threshold) {
-		return artoolkit.setThreshold(this.id, threshold);
-	};
-
-	/**
-	    Get the current labeling threshold.
-
-		This function queries the current labeling threshold. For,
-		AR_LABELING_THRESH_MODE_AUTO_MEDIAN, AR_LABELING_THRESH_MODE_AUTO_OTSU,
-		and AR_LABELING_THRESH_MODE_AUTO_BRACKETING
-		the threshold value is only valid until the next auto-update.
-
-		The current threshold mode is not affected by this call.
-
-		The threshold value is not relevant if threshold mode is
-		AR_LABELING_THRESH_MODE_AUTO_ADAPTIVE.
-
-	    @return {number} The current threshold value.
-	*/
-	ARController.prototype.getThreshold = function() {
-		return artoolkit.getThreshold(this.id);
-	};
-
-
-	/**
-		Set the pattern detection mode
-
-		The pattern detection determines the method by which ARToolKit
-		matches detected squares in the video image to marker templates
-		and/or IDs. ARToolKit v4.x can match against pictorial "template" markers,
-		whose pattern files are created with the mk_patt utility, in either colour
-		or mono, and additionally can match against 2D-barcode-type "matrix"
-		markers, which have an embedded marker ID. Two different two-pass modes
-		are also available, in which a matrix-detection pass is made first,
-		followed by a template-matching pass.
-
-		@param {number} mode
-			Options for this field are:
-			AR_TEMPLATE_MATCHING_COLOR
-			AR_TEMPLATE_MATCHING_MONO
-			AR_MATRIX_CODE_DETECTION
-			AR_TEMPLATE_MATCHING_COLOR_AND_MATRIX
-			AR_TEMPLATE_MATCHING_MONO_AND_MATRIX
-			The default mode is AR_TEMPLATE_MATCHING_COLOR.
-	*/
-	ARController.prototype.setPatternDetectionMode = function(value) {
-		return artoolkit.setPatternDetectionMode(this.id, value);
-	};
-
-	/**
-		Returns the current pattern detection mode.
-
-		@return {number} The current pattern detection mode.
-	*/
-	ARController.prototype.getPatternDetectionMode = function() {
-		return artoolkit.getPatternDetectionMode(this.id);
-	};
-
-	/**
-		Set the size and ECC algorithm to be used for matrix code (2D barcode) marker detection.
-
-		When matrix-code (2D barcode) marker detection is enabled (see arSetPatternDetectionMode)
-		then the size of the barcode pattern and the type of error checking and correction (ECC)
-		with which the markers were produced can be set via this function.
-
-		This setting is global to a given ARHandle; It is not possible to have two different matrix
-		code types in use at once.
-
-	    @param      type The type of matrix code (2D barcode) in use. Options include:
-	        AR_MATRIX_CODE_3x3
-	        AR_MATRIX_CODE_3x3_HAMMING63
-	        AR_MATRIX_CODE_3x3_PARITY65
-	        AR_MATRIX_CODE_4x4
-	        AR_MATRIX_CODE_4x4_BCH_13_9_3
-	        AR_MATRIX_CODE_4x4_BCH_13_5_5
-	        The default mode is AR_MATRIX_CODE_3x3.
-	*/
-	ARController.prototype.setMatrixCodeType = function(value) {
-		return artoolkit.setMatrixCodeType(this.id, value);
-	};
-
-	/**
-		Returns the current matrix code (2D barcode) marker detection type.
-
-		@return {number} The current matrix code type.
-	*/
-	ARController.prototype.getMatrixCodeType = function() {
-		return artoolkit.getMatrixCodeType(this.id);
-	};
-
-	/**
-		Select between detection of black markers and white markers.
-	
-		ARToolKit's labelling algorithm can work with both black-bordered
-		markers on a white background (AR_LABELING_BLACK_REGION) or
-		white-bordered markers on a black background (AR_LABELING_WHITE_REGION).
-		This function allows you to specify the type of markers to look for.
-		Note that this does not affect the pattern-detection algorith
-		which works on the interior of the marker.
-
-		@param {number}      mode
-			Options for this field are:
-			AR_LABELING_WHITE_REGION
-			AR_LABELING_BLACK_REGION
-			The default mode is AR_LABELING_BLACK_REGION.
-	*/
-	ARController.prototype.setLabelingMode = function(value) {
-		return artoolkit.setLabelingMode(this.id, value);
-	};
-
-	/**
-		Enquire whether detection is looking for black markers or white markers.
-	    
-	    See discussion for setLabelingMode.
-
-	    @result {number} The current labeling mode.
-	*/
-	ARController.prototype.getLabelingMode = function() {
-		return artoolkit.getLabelingMode(this.id);
-	};
-
-	/**
-		Set the width/height of the marker pattern space, as a proportion of marker width/height.
-
-	    @param {number}		pattRatio The the width/height of the marker pattern space, as a proportion of marker
-	        width/height. To set the default, pass AR_PATT_RATIO.
-	        If compatibility with ARToolKit verions 1.0 through 4.4 is required, this value
-	        must be 0.5.
-	 */
- 	ARController.prototype.setPattRatio = function(value) {
-		return artoolkit.setPattRatio(this.id, value);
-	};
-
-	/**
-		Returns the current ratio of the marker pattern to the total marker size.
-
-		@return {number} The current pattern ratio.
-	*/
-	ARController.prototype.getPattRatio = function() {
-		return artoolkit.getPattRatio(this.id);
-	};
-
-	/**
-	    Set the image processing mode.
-
-        When the image processing mode is AR_IMAGE_PROC_FRAME_IMAGE,
-        ARToolKit processes all pixels in each incoming image
-        to locate markers. When the mode is AR_IMAGE_PROC_FIELD_IMAGE,
-        ARToolKit processes pixels in only every second pixel row and
-        column. This is useful both for handling images from interlaced
-        video sources (where alternate lines are assembled from alternate
-        fields and thus have one field time-difference, resulting in a
-        "comb" effect) such as Digital Video cameras.
-        The effective reduction by 75% in the pixels processed also
-        has utility in accelerating tracking by effectively reducing
-        the image size to one quarter size, at the cost of pose accuraccy.
-
-	    @param {number} mode
-			Options for this field are:
-			AR_IMAGE_PROC_FRAME_IMAGE
-			AR_IMAGE_PROC_FIELD_IMAGE
-			The default mode is AR_IMAGE_PROC_FRAME_IMAGE.
-	*/
-	ARController.prototype.setImageProcMode = function(value) {
-		return artoolkit.setImageProcMode(this.id, value);
-	};
-
-	/**
-	    Get the image processing mode.
-
-		See arSetImageProcMode() for a complete description.
-
-	    @return {number} The current image processing mode.
-	*/
-	ARController.prototype.getImageProcMode = function() {
-		return artoolkit.getImageProcMode(this.id);
-	};
-
-
-	/**
-		Draw the black and white image and debug markers to the ARController canvas.
-
-		See setDebugMode.
-	*/
-	ARController.prototype.debugDraw = function() {
-		var debugBuffer = new Uint8ClampedArray(Module.HEAPU8.buffer, this._bwpointer, this.framesize);
-		var id = new ImageData(debugBuffer, this.canvas.width, this.canvas.height)
-		this.ctx.putImageData(id, 0, 0)
-
-		var marker_num = this.getMarkerNum();
-		for (var i=0; i<marker_num; i++) {
-			this._debugMarker(this.getMarker(i));
-		}
-	};
-
-
-	// private
-
-	ARController.prototype._initialize = function() {
-		this.id = artoolkit.setup(this.canvas.width, this.canvas.height, this.cameraParam.id);
-
-		var params = artoolkit.frameMalloc;
-		this.framepointer = params.framepointer;
-		this.framesize = params.framesize;
-
-		this.dataHeap = new Uint8Array(Module.HEAPU8.buffer, this.framepointer, this.framesize);
-
-		this.camera_mat = new Float64Array(Module.HEAPU8.buffer, params.camera, 16);
-		this.marker_transform_mat = new Float64Array(Module.HEAPU8.buffer, params.transform, 12);
-
-		this.setProjectionNearPlane(0.1)
-		this.setProjectionFarPlane(1000);
-
-		var self = this;
-		setTimeout(function() {
-			if (self.onload) {
-				self.onload();
-			}
-			self.dispatchEvent({
-				name: 'load',
-				target: self
-			});
-		}, 1);
-	};
-/*
-	ARController.prototype._copyImageToHeap = function(image) {
-		if (!image) {
-			image = this.image;
-		}
-
-
-		// if (this.orientation === 'portrait') {
-		// 	this.ctx.save();
-		// 	this.ctx.translate(this.canvas.width, 0);
-		// 	this.ctx.rotate(Math.PI/2);
-		// 	this.ctx.drawImage(image, 0, 0, this.canvas.height, this.canvas.width); // draw video
-		// 	this.ctx.restore();
-		// } else {
-		// 	debugger
-		// 	this.ctx.drawImage(image, 0, 0, this.canvas.width, this.canvas.height); // draw video
-		// }
-
-
-		this.ctx.drawImage(image, 0, 0, this.canvas.width, this.canvas.height); // draw video
-		var imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
-		var data = imageData.data;
-
-		if (this.dataHeap) {
-			this.dataHeap.set( data );
-			return true;
-		}
-		return false;
-	};
-*/
-	
-	ARController.prototype._copyImageToHeap = function(image) {
-		if (!image) {
-			image = this.image;
-		}
-
-		if( (image.nodeName === 'IMG' && image.width > image.height ) ||
-			(image.nodeName === 'VIDEO' && image.videoWidth > image.videoHeight) ){
-			// if landscape
-			this.ctx.drawImage(image, 0, 0, this.canvas.width, this.canvas.height); // draw video
-		}else{
-			// if portrait
-			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-			var scale = this.canvas.height / this.canvas.width;
-			var scaledHeight = this.canvas.width*scale;
-			var scaledWidth = this.canvas.height*scale;
-			var marginLeft = ( this.canvas.width - scaledWidth)/2;
-			this.ctx.drawImage(image, marginLeft, 0, scaledWidth, scaledHeight); // draw video
-		}
-
-		var imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
-		var data = imageData.data;
-
-		if (this.dataHeap) {
-			this.dataHeap.set( data );
-			return true;
-		}
-		return false;
-	};
-	
-	ARController.prototype._debugMarker = function(marker) {
-		var vertex, pos;
-		vertex = marker.vertex;
-		var ctx = this.ctx;
-		ctx.strokeStyle = 'red';
-
-		ctx.beginPath()
-		ctx.moveTo(vertex[0][0], vertex[0][1])
-		ctx.lineTo(vertex[1][0], vertex[1][1])
-		ctx.stroke();
-
-		ctx.beginPath()
-		ctx.moveTo(vertex[2][0], vertex[2][1])
-		ctx.lineTo(vertex[3][0], vertex[3][1])
-		ctx.stroke()
-
-		ctx.strokeStyle = 'green';
-		ctx.beginPath()
-		ctx.lineTo(vertex[1][0], vertex[1][1])
-		ctx.lineTo(vertex[2][0], vertex[2][1])
-		ctx.stroke();
-
-		ctx.beginPath()
-		ctx.moveTo(vertex[3][0], vertex[3][1])
-		ctx.lineTo(vertex[0][0], vertex[0][1])
-		ctx.stroke();
-
-		pos = marker.pos
-		ctx.beginPath()
-		ctx.arc(pos[0], pos[1], 8, 0, Math.PI * 2)
-		ctx.fillStyle = 'red'
-		ctx.fill()
-	};
-
-
-	// static
-
-	/**
-		ARController.getUserMedia gets a device camera video feed and calls the given onSuccess callback with it.
-
-		Tries to start playing the video. Playing the video can fail on Chrome for Android,
-		so ARController.getUserMedia adds user input event listeners to the window
-		that try to start playing the video. On success, the event listeners are removed.
-
-		To use ARController.getUserMedia, call it with an object with the onSuccess attribute set to a callback function.
-
-			ARController.getUserMedia({
-				onSuccess: function(video) {
-					console.log("Got video", video);
-				}
-			});
-
-		The configuration object supports the following attributes:
-
-			{
-				onSuccess : function(video),
-				onError : function(error),
-
-				width : number | {min: number, ideal: number, max: number},
-				height : number | {min: number, ideal: number, max: number},
-
-				facingMode : 'environment' | 'user' | 'left' | 'right' | { exact: 'environment' | ... }
-			}
-
-		See https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia for more information about the
-		width, height and facingMode attributes.
-
-		@param {object} configuration The configuration object.
-		@return {VideoElement} Returns the created video element.
-	*/
-	ARController.getUserMedia = function(configuration) {
-		var facing = configuration.facingMode || 'environment';
-
-		var onSuccess = configuration.onSuccess;
-		var onError = configuration.onError || function(err) { console.error("ARController.getUserMedia", err); };
-
-		var video = document.createElement('video');
-
-		var initProgress = function() {
-			if (this.videoWidth !== 0) {
-				onSuccess(video);
-			}
-		};
-
-		var readyToPlay = false;
-		var eventNames = [
-			'touchstart', 'touchend', 'touchmove', 'touchcancel',
-			'click', 'mousedown', 'mouseup', 'mousemove',
-			'keydown', 'keyup', 'keypress', 'scroll'
-		];
-		var play = function(ev) {
-			if (readyToPlay) {
-				video.play();
-				if (!video.paused) {
-					eventNames.forEach(function(eventName) {
-						window.removeEventListener(eventName, play, true);
-					});
-				}
-			}
-		};
-		eventNames.forEach(function(eventName) {
-			window.addEventListener(eventName, play, true);
-		});
-
-		var success = function(stream) {
-			video.addEventListener('loadedmetadata', initProgress, false);
-			video.src = window.URL.createObjectURL(stream);
-			readyToPlay = true;
-			play(); // Try playing without user input, should work on non-Android Chrome
-		};
-
-		var constraints = {};
-		var mediaDevicesConstraints = {};
-		if (configuration.width) {
-			mediaDevicesConstraints.width = configuration.width;
-			if (typeof configuration.width === 'object') {
-				if (configuration.width.max) {
-					constraints.maxWidth = configuration.width.max;
-				}
-				if (configuration.width.min) {
-					constraints.minWidth = configuration.width.max;
-				}
-			} else {
-				constraints.maxWidth = configuration.width;
-			}
-		}
-
-		if (configuration.height) {
-			mediaDevicesConstraints.height = configuration.height;
-			if (typeof configuration.height === 'object') {
-				if (configuration.height.max) {
-					constraints.maxHeight = configuration.height.max;
-				}
-				if (configuration.height.min) {
-					constraints.minHeight = configuration.height.max;
-				}
-			} else {
-				constraints.maxHeight = configuration.height;
-			}
-		}
-
-		mediaDevicesConstraints.facingMode = facing;
-
-		navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-		var hdConstraints = {
-			audio: false,
-			video: {
-				mandatory: constraints
-		  	}
-		};
-
-		if ( false ) {
-		// if ( navigator.mediaDevices || window.MediaStreamTrack) {
-			if (navigator.mediaDevices) {
-				navigator.mediaDevices.getUserMedia({
-					audio: false,
-					video: mediaDevicesConstraints
-				}).then(success, onError); 
-			} else {
-				MediaStreamTrack.getSources(function(sources) {
-					var facingDir = mediaDevicesConstraints.facingMode;
-					if (facing && facing.exact) {
-						facingDir = facing.exact;
-					}
-					for (var i=0; i<sources.length; i++) {
-						if (sources[i].kind === 'video' && sources[i].facing === facingDir) {
-							hdConstraints.video.mandatory.sourceId = sources[i].id;
-							break;
-						}
-					}
-					if (facing && facing.exact && !hdConstraints.video.mandatory.sourceId) {
-						onError('Failed to get camera facing the wanted direction');
-					} else {
-						if (navigator.getUserMedia) {
-							navigator.getUserMedia(hdConstraints, success, onError);
-						} else {
-							onError('navigator.getUserMedia is not supported on your browser');
-						}
-					}
-				});
-			}
-		} else {
-			if (navigator.getUserMedia) {
-				navigator.getUserMedia(hdConstraints, success, onError);
-			} else {
-				onError('navigator.getUserMedia is not supported on your browser');
-			}
-		}
-
-		return video;
-	};
-
-	/**
-		ARController.getUserMediaARController gets an ARController for the device camera video feed and calls the 
-		given onSuccess callback with it.
-
-		To use ARController.getUserMediaARController, call it with an object with the cameraParam attribute set to
-		a camera parameter file URL, and the onSuccess attribute set to a callback function.
-
-			ARController.getUserMediaARController({
-				cameraParam: 'Data/camera_para.dat',
-				onSuccess: function(arController, arCameraParam) {
-					console.log("Got ARController", arController);
-					console.log("Got ARCameraParam", arCameraParam);
-					console.log("Got video", arController.image);
-				}
-			});
-
-		The configuration object supports the following attributes:
-
-			{
-				onSuccess : function(ARController, ARCameraParam),
-				onError : function(error),
-
-				cameraParam: url, // URL to camera parameters definition file.
-				maxARVideoSize: number, // Maximum max(width, height) for the AR processing canvas.
-
-				width : number | {min: number, ideal: number, max: number},
-				height : number | {min: number, ideal: number, max: number},
-
-				facingMode : 'environment' | 'user' | 'left' | 'right' | { exact: 'environment' | ... }
-			}
-
-		See https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia for more information about the
-		width, height and facingMode attributes.
-
-		The orientation attribute of the returned ARController is set to "portrait" if the userMedia video has larger
-		height than width. Otherwise it's set to "landscape". The videoWidth and videoHeight attributes of the arController
-		are set to be always in landscape configuration so that width is larger than height.
-
-		@param {object} configuration The configuration object.
-		@return {VideoElement} Returns the created video element.
-	*/
-	ARController.getUserMediaARController = function(configuration) {
-		var obj = {};
-		for (var i in configuration) {
-			obj[i] = configuration[i];
-		}
-		var onSuccess = configuration.onSuccess;
-		var cameraParamURL = configuration.cameraParam;
-
-		obj.onSuccess = function() {
-			new ARCameraParam(cameraParamURL, function() {
-				var arCameraParam = this;
-				var maxSize = configuration.maxARVideoSize || Math.max(video.videoWidth, video.videoHeight);
-				var f = maxSize / Math.max(video.videoWidth, video.videoHeight);
-				var w = f * video.videoWidth;
-				var h = f * video.videoHeight;
-				if (video.videoWidth < video.videoHeight) {
-					var tmp = w;
-					w = h;
-					h = tmp;
-				}
-				var arController = new ARController(w, h, arCameraParam);
-				arController.image = video;
-				if (video.videoWidth < video.videoHeight) {
-					arController.orientation = 'portrait';
-					arController.videoWidth = video.videoHeight;
-					arController.videoHeight = video.videoWidth;
-				} else {
-					arController.orientation = 'landscape';
-					arController.videoWidth = video.videoWidth;
-					arController.videoHeight = video.videoHeight;
-				}
-				onSuccess(arController, arCameraParam);
-			}, function(err) {
-				console.error("ARController: Failed to load ARCameraParam", err);
-			});
-		};
-
-		var video = this.getUserMedia(obj);
-		return video;
-	};
-
-
-	/** 
-		ARCameraParam is used for loading AR camera parameters for use with ARController.
-		Use by passing in an URL and a callback function.
-
-			var camera = new ARCameraParam('Data/camera_para.dat', function() {
-				console.log('loaded camera', this.id);
-			},
-			function(err) {
-				console.log('failed to load camera', err);
-			});
-
-		@exports ARCameraParam
-		@constructor
-	 
-		@param {string} src URL to load camera parameters from.
-		@param {string} onload Onload callback to be called on successful parameter loading.
-		@param {string} onerror Error callback to called when things don't work out.
-	*/
-	var ARCameraParam = function(src, onload, onerror) {
-		this.id = -1;
-		this._src = '';
-		this.complete = false;
-		this.onload = onload;
-		this.onerror = onerror;
-		if (src) {
-			this.load(src);
-		}
-	};
-
-	/** 
-		Loads the given URL as camera parameters definition file into this ARCameraParam.
-
-		Can only be called on an unloaded ARCameraParam instance. 
-
-		@param {string} src URL to load.
-	*/
-	ARCameraParam.prototype.load = function(src) {
-		if (this._src !== '') {
-			throw("ARCameraParam: Trying to load camera parameters twice.")
-		}
-		this._src = src;
-		if (src) {
-			var self = this;
-			artoolkit.loadCamera(src, function(id) {
-				self.id = id;
-				self.complete = true;
-				self.onload();
-			}, function(err) {
-				self.onerror(err);
-			});
-		}
-	};
-
-	Object.defineProperty(ARCameraParam.prototype, 'src', {
-		set: function(src) {
-			this.load(src);
-		},
-		get: function() {
-			return this._src;
-		}
-	});
-
-	/**
-		Destroys the camera parameter and frees associated Emscripten resources.
-
-	*/
-	ARCameraParam.prototype.dispose = function() {
-		if (this.id !== -1) {
-			artoolkit.deleteCamera(this.id);
-		}
-		this.id = -1;
-		this._src = '';
-		this.complete = false;
-	};
-
-
-
-	// ARToolKit exported JS API
-	//
-	var artoolkit = {
-
-		UNKNOWN_MARKER: -1,
-		PATTERN_MARKER: 0,
-		BARCODE_MARKER: 1,
-
-		loadCamera: loadCamera,
-
-		addMarker: addMarker,
-		addMultiMarker: addMultiMarker,
-
-	};
-
-	var FUNCTIONS = [
-		'setup',
-		'teardown',
-
-		'setLogLevel',
-		'getLogLevel',
-
-		'setDebugMode',
-		'getDebugMode',
-
-		'getProcessingImage',
-
-		'setMarkerInfoDir',
-		'setMarkerInfoVertex',
-
-		'getTransMatSquare',
-		'getTransMatSquareCont',
-
-		'getTransMatMultiSquare',
-		'getTransMatMultiSquareRobust',
-
-		'getMultiMarkerNum',
-		'getMultiMarkerCount',
-
-		'detectMarker',
-		'getMarkerNum',
-
-		'getMarker',
-		'getMultiEachMarker',
-
-		'setProjectionNearPlane',
-		'getProjectionNearPlane',
-
-		'setProjectionFarPlane',
-		'getProjectionFarPlane',
-
-		'setThresholdMode',
-		'getThresholdMode',
-
-		'setThreshold',
-		'getThreshold',
-
-		'setPatternDetectionMode',
-		'getPatternDetectionMode',
-
-		'setMatrixCodeType',
-		'getMatrixCodeType',
-
-		'setLabelingMode',
-		'getLabelingMode',
-
-		'setPattRatio',
-		'getPattRatio',
-
-		'setImageProcMode',
-		'getImageProcMode',
-	];
-
-	function runWhenLoaded() {
-		FUNCTIONS.forEach(function(n) {
-			artoolkit[n] = Module[n];
-		})
-
-		for (var m in Module) {
-			if (m.match(/^AR/))
-			artoolkit[m] = Module[m];
-		}
-	}
-
-	var marker_count = 0;
-	function addMarker(arId, url, callback) {
-		var filename = '/marker_' + marker_count++;
-		ajax(url, filename, function() {
-			var id = Module._addMarker(arId, filename);
-			if (callback) callback(id);
-		});
-	}
-
-	function bytesToString(array) {
-		return String.fromCharCode.apply(String, array);
-	}
-
-	function parseMultiFile(bytes) {
-		var str = bytesToString(bytes);
-
-		var lines = str.split('\n');
-
-		var files = [];
-
-		var state = 0; // 0 - read,
-		var markers = 0;
-
-		lines.forEach(function(line) {
-			line = line.trim();
-			if (!line || line.startsWith('#')) return;
-
-			switch (state) {
-				case 0:
-					markers = +line;
-					state = 1;
-					return;
-				case 1: // filename or barcode
-					if (!line.match(/^\d+$/)) {
-						files.push(line);
-					}
-				case 2: // width
-				case 3: // matrices
-				case 4:
-					state++;
-					return;
-				case 5:
-					state = 1;
-					return;
-			}
-		});
-
-		return files;
-	}
-
-	var multi_marker_count = 0;
-
-	function addMultiMarker(arId, url, callback) {
-		var filename = '/multi_marker_' + multi_marker_count++;
-		ajax(url, filename, function(bytes) {
-			var files = parseMultiFile(bytes);
-
-			function ok() {
-				var markerID = Module._addMultiMarker(arId, filename);
-				var markerNum = Module.getMultiMarkerNum(arId, markerID);
-				if (callback) callback(markerID, markerNum);
-			}
-
-			if (!files.length) return ok();
-
-			var path = url.split('/').slice(0, -1).join('/')
-			files = files.map(function(file) {
-				// FIXME super kludge - remove it
-				// console.assert(file !== '')
-				if( file === 'patt.hiro' || file === 'patt.kanji' || file === 'patt2.hiro' || file === 'patt2.kanji' ){
-					// debugger
-					return ['http://127.0.0.1:8080/data/data/' + file, file]
-				}
-				return [path + '/' + file, file]
-			})
-			ajaxDependencies(files, ok);
-		});
-	}
-
-	var camera_count = 0;
-	function loadCamera(url, callback) {
-		var filename = '/camera_param_' + camera_count++;
-		var writeCallback = function() {
-			var id = Module._loadCamera(filename);
-			if (callback) callback(id);
-		};
-		if (typeof url === 'object') { // Maybe it's a byte array
-			writeByteArrayToFS(filename, url, writeCallback);
-		} else if (url.indexOf("\n") > -1) { // Or a string with the camera param
-			writeStringToFS(filename, url, writeCallback);
-		} else {
-			ajax(url, filename, writeCallback);
-		}
-	}
-
-
-	// transfer image
-
-	function writeStringToFS(target, string, callback) {
-		var byteArray = new Uint8Array(string.length);
-		for (var i=0; i<byteArray.length; i++) {
-			byteArray[i] = string.charCodeAt(i) & 0xff;
-		}
-		writeByteArrayToFS(target, byteArray, callback);
-	}
-
-	function writeByteArrayToFS(target, byteArray, callback) {
-		FS.writeFile(target, byteArray, { encoding: 'binary' });
-		// console.log('FS written', target);
-
-		callback(byteArray);
-	}
-
-	// Eg.
-	//	ajax('../bin/Data2/markers.dat', '/Data2/markers.dat', callback);
-	//	ajax('../bin/Data/patt.hiro', '/patt.hiro', callback);
-
-	function ajax(url, target, callback) {
-		var oReq = new XMLHttpRequest();
-		oReq.open('GET', url, true);
-		oReq.responseType = 'arraybuffer'; // blob arraybuffer
-
-		oReq.onload = function(oEvent) {
-			// console.log('ajax done for ', url);
-			var arrayBuffer = oReq.response;
-			var byteArray = new Uint8Array(arrayBuffer);
-	// console.log('writeByteArrayToFS', target, byteArray.length, 'byte. url', url)
-			writeByteArrayToFS(target, byteArray, callback);
-		};
-
-		oReq.send();
-	}
-
-	function ajaxDependencies(files, callback) {
-		var next = files.pop();
-		if (next) {
-			ajax(next[0], next[1], function() {
-				ajaxDependencies(files, callback);
-			});
-		} else {
-			callback();
-		}
-	}
-
-	/* Exports */
-	window.artoolkit = artoolkit;
-	window.ARController = ARController;
-	window.ARCameraParam = ARCameraParam;
-
-	if (window.Module) {
-		runWhenLoaded();
-	} else {
-		window.Module = {
-			onRuntimeInitialized: function() {
-				runWhenLoaded();
-			}
-		};
-	}
-
-})();
 var THREEx = THREEx || {}
 
 THREEx.ArBaseControls = function(object3d){
@@ -1961,103 +406,95 @@ THREEx.ArMarkerCloak.fragmentShader = '\n'+
 var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
-ARjs.MarkerControls = THREEx.ArMarkerControls = function(context, object3d, parameters){
-	var _this = this
+ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, parameters) {
+    var _this = this
 
-	THREEx.ArBaseControls.call(this, object3d)
+    THREEx.ArBaseControls.call(this, object3d)
 
-	this.context = context
-	// handle default parameters
-	this.parameters = {
-		// size of the marker in meter
-		size : 1,
-		// type of marker - ['pattern', 'barcode', 'unknown' ]
-		type : 'unknown',
-		// url of the pattern - IIF type='pattern'
-		patternUrl : null,
-		// value of the barcode - IIF type='barcode'
-		barcodeValue : null,
-		// change matrix mode - [modelViewMatrix, cameraTransformMatrix]
-		changeMatrixMode : 'modelViewMatrix',
-		// minimal confidence in the marke recognition - between [0, 1] - default to 1
-		minConfidence: 0.6,
-		// turn on/off camera smoothing
-		smooth: false,
-		// number of matrices to smooth tracking over, more = smoother but slower follow
-		smoothCount: 5,
-		// distance tolerance for smoothing, if smoothThreshold # of matrices are under tolerance, tracking will stay still
-		smoothTolerance: 0.01,
-		// threshold for smoothing, will keep still unless enough matrices are over tolerance
-		smoothThreshold: 2,
-	}
+    this.context = context
+    // handle default parameters
+    this.parameters = {
+        // size of the marker in meter
+        size: 1,
+        // type of marker - ['pattern', 'barcode', 'nft', 'unknown' ]
+        type: 'unknown',
+        // url of the pattern - IIF type='pattern'
+        patternUrl: null,
+        // value of the barcode - IIF type='barcode'
+        barcodeValue: null,
+        // url of the descriptors of image - IIF type='nft'
+        descriptorsUrl: null,
+        // change matrix mode - [modelViewMatrix, cameraTransformMatrix]
+        changeMatrixMode: 'modelViewMatrix',
+        // minimal confidence in the marke recognition - between [0, 1] - default to 1
+        minConfidence: 0.6,
+        // turn on/off camera smoothing
+        smooth: false,
+        // number of matrices to smooth tracking over, more = smoother but slower follow
+        smoothCount: 5,
+        // distance tolerance for smoothing, if smoothThreshold # of matrices are under tolerance, tracking will stay still
+        smoothTolerance: 0.01,
+        // threshold for smoothing, will keep still unless enough matrices are over tolerance
+        smoothThreshold: 2,
+    }
 
-	// sanity check
-	var possibleValues = ['pattern', 'barcode', 'unknown']
-	console.assert(possibleValues.indexOf(this.parameters.type) !== -1, 'illegal value', this.parameters.type)
-	var possibleValues = ['modelViewMatrix', 'cameraTransformMatrix' ]
-	console.assert(possibleValues.indexOf(this.parameters.changeMatrixMode) !== -1, 'illegal value', this.parameters.changeMatrixMode)
+    // sanity check
+    var possibleValues = ['pattern', 'barcode', 'nft', 'unknown']
+    console.assert(possibleValues.indexOf(this.parameters.type) !== -1, 'illegal value', this.parameters.type)
+    var possibleValues = ['modelViewMatrix', 'cameraTransformMatrix']
+    console.assert(possibleValues.indexOf(this.parameters.changeMatrixMode) !== -1, 'illegal value', this.parameters.changeMatrixMode)
 
+    // create the marker Root
+    this.object3d = object3d
+    this.object3d.matrixAutoUpdate = false;
+    this.object3d.visible = false
 
-        // create the marker Root
-	this.object3d = object3d
-	this.object3d.matrixAutoUpdate = false;
-	this.object3d.visible = false
+    //////////////////////////////////////////////////////////////////////////////
+    //		setParameters
+    //////////////////////////////////////////////////////////////////////////////
+    setParameters(parameters)
+    function setParameters(parameters) {
+        if (parameters === undefined) return
+        for (var key in parameters) {
+            var newValue = parameters[key]
 
-	//////////////////////////////////////////////////////////////////////////////
-	//		setParameters
-	//////////////////////////////////////////////////////////////////////////////
-	setParameters(parameters)
-	function setParameters(parameters){
-		if( parameters === undefined )	return
-		for( var key in parameters ){
-			var newValue = parameters[ key ]
+            if (newValue === undefined) {
+                console.warn("THREEx.ArMarkerControls: '" + key + "' parameter is undefined.")
+                continue
+            }
 
-			if( newValue === undefined ){
-				console.warn( "THREEx.ArMarkerControls: '" + key + "' parameter is undefined." )
-				continue
-			}
+            var currentValue = _this.parameters[key]
 
-			var currentValue = _this.parameters[ key ]
+            if (currentValue === undefined) {
+                console.warn("THREEx.ArMarkerControls: '" + key + "' is not a property of this material.")
+                continue
+            }
 
-			if( currentValue === undefined ){
-				console.warn( "THREEx.ArMarkerControls: '" + key + "' is not a property of this material." )
-				continue
-			}
+            _this.parameters[key] = newValue
+        }
+    }
 
-			_this.parameters[ key ] = newValue
-		}
-	}
+    if (this.parameters.smooth) {
+        this.smoothMatrices = []; // last DEBOUNCE_COUNT modelViewMatrix
+    }
 
-	if (this.parameters.smooth) {
-		this.smoothMatrices = []; // last DEBOUNCE_COUNT modelViewMatrix
-	}
+    //////////////////////////////////////////////////////////////////////////////
+    //		Code Separator
+    //////////////////////////////////////////////////////////////////////////////
+    // add this marker to artoolkitsystem
+    // TODO rename that .addMarkerControls
+    context.addMarker(this)
 
-	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
-	//////////////////////////////////////////////////////////////////////////////
-	// add this marker to artoolkitsystem
-	// TODO rename that .addMarkerControls
-	context.addMarker(this)
-
-	if( _this.context.parameters.trackingBackend === 'artoolkit' ){
-		this._initArtoolkit()
-	}else if( _this.context.parameters.trackingBackend === 'aruco' ){
-		// TODO create a ._initAruco
-		// put aruco second
-		this._arucoPosit = new POS.Posit(this.parameters.size, _this.context.arucoContext.canvas.width)
-	}else if( _this.context.parameters.trackingBackend === 'tango' ){
-		this._initTango()
-	}else console.assert(false)
+    if (_this.context.parameters.trackingBackend === 'artoolkit') {
+        this._initArtoolkit()
+    } else console.assert(false)
 }
 
-ARjs.MarkerControls.prototype = Object.create( THREEx.ArBaseControls.prototype );
+ARjs.MarkerControls.prototype = Object.create(THREEx.ArBaseControls.prototype);
 ARjs.MarkerControls.prototype.constructor = THREEx.ArMarkerControls;
 
-ARjs.MarkerControls.prototype.dispose = function(){
-	this.context.removeMarker(this)
-
-	// TODO remove the event listener if needed
-	// unloadMaker ???
+ARjs.MarkerControls.prototype.dispose = function () {
+    this.context.removeMarker(this)
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -2068,194 +505,276 @@ ARjs.MarkerControls.prototype.dispose = function(){
  * When you actually got a new modelViewMatrix, you need to perfom a whole bunch
  * of things. it is done here.
  */
-ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function(modelViewMatrix){
-	var markerObject3D = this.object3d;
+ARjs.MarkerControls.prototype.updateWithModelViewMatrix = function (modelViewMatrix) {
+    var markerObject3D = this.object3d;
 
-	// mark object as visible
-	markerObject3D.visible = true
+    // mark object as visible
+    markerObject3D.visible = true
 
-	if( this.context.parameters.trackingBackend === 'artoolkit' ){
-		// apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-		var tmpMatrix = new THREE.Matrix4().copy(this.context._artoolkitProjectionAxisTransformMatrix)
-		tmpMatrix.multiply(modelViewMatrix)
+    if (this.context.parameters.trackingBackend === 'artoolkit') {
+        // apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
+        var tmpMatrix = new THREE.Matrix4().copy(this.context._artoolkitProjectionAxisTransformMatrix)
+        tmpMatrix.multiply(modelViewMatrix)
 
-		modelViewMatrix.copy(tmpMatrix)
-	}else if( this.context.parameters.trackingBackend === 'aruco' ){
-		// ...
-	}else if( this.context.parameters.trackingBackend === 'tango' ){
-		// ...
-	}else console.assert(false)
+        modelViewMatrix.copy(tmpMatrix)
+    } else {
+        console.assert(false)
+    }
 
+    var renderReqd = false;
 
-	if( this.context.parameters.trackingBackend !== 'tango' ){
+    // change markerObject3D.matrix based on parameters.changeMatrixMode
+    if (this.parameters.changeMatrixMode === 'modelViewMatrix') {
+        if (this.parameters.smooth) {
+            var sum,
+                i, j,
+                averages, // average values for matrix over last smoothCount
+                exceedsAverageTolerance = 0;
 
-		// change axis orientation on marker - artoolkit say Z is normal to the marker - ar.js say Y is normal to the marker
-		var markerAxisTransformMatrix = new THREE.Matrix4().makeRotationX(Math.PI/2)
-		modelViewMatrix.multiply(markerAxisTransformMatrix)
-	}
+            this.smoothMatrices.push(modelViewMatrix.elements.slice()); // add latest
 
-	var renderReqd = false;
+            if (this.smoothMatrices.length < (this.parameters.smoothCount + 1)) {
+                markerObject3D.matrix.copy(modelViewMatrix); // not enough for average
+            } else {
+                this.smoothMatrices.shift(); // remove oldest entry
+                averages = [];
 
-	// change markerObject3D.matrix based on parameters.changeMatrixMode
-	if( this.parameters.changeMatrixMode === 'modelViewMatrix' ){
-		if (this.parameters.smooth) {
-			var sum,
-					i, j,
-					averages, // average values for matrix over last smoothCount
-					exceedsAverageTolerance = 0;
+                for (i in modelViewMatrix.elements) { // loop over entries in matrix
+                    sum = 0;
+                    for (j in this.smoothMatrices) { // calculate average for this entry
+                        sum += this.smoothMatrices[j][i];
+                    }
+                    averages[i] = sum / this.parameters.smoothCount;
+                    // check how many elements vary from the average by at least AVERAGE_MATRIX_TOLERANCE
+                    if (Math.abs(averages[i] - modelViewMatrix.elements[i]) >= this.parameters.smoothTolerance) {
+                        exceedsAverageTolerance++;
+                    }
+                }
 
-			this.smoothMatrices.push(modelViewMatrix.elements.slice()); // add latest
+                // if moving (i.e. at least AVERAGE_MATRIX_THRESHOLD entries are over AVERAGE_MATRIX_TOLERANCE)
+                if (exceedsAverageTolerance >= this.parameters.smoothThreshold) {
+                    // then update matrix values to average, otherwise, don't render to minimize jitter
+                    for (i in modelViewMatrix.elements) {
+                        modelViewMatrix.elements[i] = averages[i];
+                    }
+                    markerObject3D.matrix.copy(modelViewMatrix);
+                    renderReqd = true; // render required in animation loop
+                }
+            }
+        } else {
+            markerObject3D.matrix.copy(modelViewMatrix)
+        }
+    } else if (this.parameters.changeMatrixMode === 'cameraTransformMatrix') {
+        markerObject3D.matrix.getInverse(modelViewMatrix)
+    } else {
+        console.assert(false)
+    }
 
-			if (this.smoothMatrices.length < (this.parameters.smoothCount + 1)) {
-				markerObject3D.matrix.copy(modelViewMatrix); // not enough for average
-			} else {
-				this.smoothMatrices.shift(); // remove oldest entry
-				averages = [];
+    // decompose - the matrix into .position, .quaternion, .scale
 
-				for (i in modelViewMatrix.elements) { // loop over entries in matrix
-					sum = 0;
-					for (j in this.smoothMatrices) { // calculate average for this entry
-						sum += this.smoothMatrices[j][i];
-					}
-					averages[i] = sum / this.parameters.smoothCount;
-					// check how many elements vary from the average by at least AVERAGE_MATRIX_TOLERANCE
-					if (Math.abs(averages[i] - modelViewMatrix.elements[i]) >= this.parameters.smoothTolerance) {
-						exceedsAverageTolerance++;
-					}
-				}
+    markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
 
-				// if moving (i.e. at least AVERAGE_MATRIX_THRESHOLD entries are over AVERAGE_MATRIX_TOLERANCE)
-				if (exceedsAverageTolerance >= this.parameters.smoothThreshold) {
-					// then update matrix values to average, otherwise, don't render to minimize jitter
-					for (i in modelViewMatrix.elements) {
-						modelViewMatrix.elements[i] = averages[i];
-					}
-					markerObject3D.matrix.copy(modelViewMatrix);
-					renderReqd = true; // render required in animation loop
-				}
-			}
-		} else {
-			markerObject3D.matrix.copy(modelViewMatrix)
-		}
-	}else if( this.parameters.changeMatrixMode === 'cameraTransformMatrix' ){
-		markerObject3D.matrix.getInverse( modelViewMatrix )
-	}else {
-		console.assert(false)
-	}
+    // dispatchEvent
+    this.dispatchEvent({ type: 'markerFound' });
 
-	// decompose - the matrix into .position, .quaternion, .scale
-	markerObject3D.matrix.decompose(markerObject3D.position, markerObject3D.quaternion, markerObject3D.scale)
-
-	// dispatchEvent
-	this.dispatchEvent( { type: 'markerFound' } );
-
-	return renderReqd;
+    return renderReqd;
 }
 
 //////////////////////////////////////////////////////////////////////////////
 //		utility functions
 //////////////////////////////////////////////////////////////////////////////
 
-/**
- * provide a name for a marker
- * - silly heuristic for now
- * - should be improved
- */
-ARjs.MarkerControls.prototype.name = function(){
-	var name = ''
-	name += this.parameters.type;
-	if( this.parameters.type === 'pattern' ){
-		var url = this.parameters.patternUrl
-		var basename = url.replace(/^.*\//g, '')
-		name += ' - ' + basename
-	}else if( this.parameters.type === 'barcode' ){
-		name += ' - ' + this.parameters.barcodeValue
-	}else{
-		console.assert(false, 'no .name() implemented for this marker controls')
-	}
-	return name
+ARjs.MarkerControls.prototype.name = function () {
+    var name = '';
+    name += this.parameters.type;
+
+    if (this.parameters.type === 'pattern') {
+        var url = this.parameters.patternUrl;
+        var basename = url.replace(/^.*\//g, '');
+        name += ' - ' + basename;
+    } else if (this.parameters.type === 'barcode') {
+        name += ' - ' + this.parameters.barcodeValue;
+    } else if (this.parameters.type === 'nft') {
+        var url = this.parameters.descriptorsUrl;
+        var basename = url.replace(/^.*\//g, '');
+        name += ' - ' + basename;
+    } else {
+        console.assert(false, 'no .name() implemented for this marker controls');
+    }
+
+    return name;
 }
 
 //////////////////////////////////////////////////////////////////////////////
 //		init for Artoolkit
 //////////////////////////////////////////////////////////////////////////////
-ARjs.MarkerControls.prototype._initArtoolkit = function(){
-	var _this = this
+ARjs.MarkerControls.prototype._initArtoolkit = function () {
+    var _this = this
 
-	var artoolkitMarkerId = null
+    var artoolkitMarkerId = null
 
-	var delayedInitTimerId = setInterval(function(){
-		// check if arController is init
-		var arController = _this.context.arController
-		if( arController === null )	return
-		// stop looping if it is init
-		clearInterval(delayedInitTimerId)
-		delayedInitTimerId = null
-		// launch the _postInitArtoolkit
-		postInit()
-	}, 1000/50)
+    var delayedInitTimerId = setInterval(function () {
+        // check if arController is init
+        var arController = _this.context.arController
+        if (arController === null) return
+        // stop looping if it is init
+        clearInterval(delayedInitTimerId)
+        delayedInitTimerId = null
+        // launch the _postInitArtoolkit
+        postInit()
+    }, 1000 / 50)
 
-	return
+    return
 
-	function postInit(){
-		// check if arController is init
-		var arController = _this.context.arController
-		console.assert(arController !== null )
+    function postInit() {
+        // check if arController is init
+        var arController = _this.context.arController
+        console.assert(arController !== null)
 
-		// start tracking this pattern
-		if( _this.parameters.type === 'pattern' ){
-	                arController.loadMarker(_this.parameters.patternUrl, function(markerId) {
-				artoolkitMarkerId = markerId
-	                        arController.trackPatternMarkerId(artoolkitMarkerId, _this.parameters.size);
-	                });
-		}else if( _this.parameters.type === 'barcode' ){
-			artoolkitMarkerId = _this.parameters.barcodeValue
-			arController.trackBarcodeMarkerId(artoolkitMarkerId, _this.parameters.size);
-		}else if( _this.parameters.type === 'unknown' ){
-			artoolkitMarkerId = null
-		}else{
-			console.log(false, 'invalid marker type', _this.parameters.type)
-		}
+        // start tracking this pattern
+        if (_this.parameters.type === 'pattern') {
+            arController.loadMarker(_this.parameters.patternUrl, function (markerId) {
+                artoolkitMarkerId = markerId
+                arController.trackPatternMarkerId(artoolkitMarkerId, _this.parameters.size);
+            });
+        } else if (_this.parameters.type === 'barcode') {
+            artoolkitMarkerId = _this.parameters.barcodeValue
+            arController.trackBarcodeMarkerId(artoolkitMarkerId, _this.parameters.size);
+        } else if (_this.parameters.type === 'nft') {
+            // use workers as default
+            handleNFT(_this.parameters.descriptorsUrl, arController);
+        } else if (_this.parameters.type === 'unknown') {
+            artoolkitMarkerId = null
+        } else {
+            console.log(false, 'invalid marker type', _this.parameters.type)
+        }
 
-		// listen to the event
-		arController.addEventListener('getMarker', function(event){
-			if( event.data.type === artoolkit.PATTERN_MARKER && _this.parameters.type === 'pattern' ){
-				if( artoolkitMarkerId === null )	return
-				if( event.data.marker.idPatt === artoolkitMarkerId ) onMarkerFound(event)
-			}else if( event.data.type === artoolkit.BARCODE_MARKER && _this.parameters.type === 'barcode' ){
-				// console.log('BARCODE_MARKER idMatrix', event.data.marker.idMatrix, artoolkitMarkerId )
-				if( artoolkitMarkerId === null )	return
-				if( event.data.marker.idMatrix === artoolkitMarkerId )  onMarkerFound(event)
-			}else if( event.data.type === artoolkit.UNKNOWN_MARKER && _this.parameters.type === 'unknown'){
-				onMarkerFound(event)
-			}
-		})
+        // listen to the event
+        arController.addEventListener('getMarker', function (event) {
+            if (event.data.type === artoolkit.PATTERN_MARKER && _this.parameters.type === 'pattern') {
+                if (artoolkitMarkerId === null) return
+                if (event.data.marker.idPatt === artoolkitMarkerId) onMarkerFound(event)
+            } else if (event.data.type === artoolkit.BARCODE_MARKER && _this.parameters.type === 'barcode') {
+                if (artoolkitMarkerId === null) return
+                if (event.data.marker.idMatrix === artoolkitMarkerId) onMarkerFound(event)
+            } else if (event.data.type === artoolkit.UNKNOWN_MARKER && _this.parameters.type === 'unknown') {
+                onMarkerFound(event);
+            }
+        })
+    }
 
-	}
+    function setMatrix(matrix, value) {
+        var array = [];
+        for (var key in value) {
+            array[key] = value[key];
+        }
+        if (typeof matrix.elements.set === "function") {
+            matrix.elements.set(array);
+        } else {
+            matrix.elements = [].slice.call(array);
+        }
+    };
 
-	function onMarkerFound(event){
-		// honor his.parameters.minConfidence
-		if( event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence )	return
-		if( event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence )	return
+    function handleNFT(descriptorsUrl, arController) {
+        // create a Worker to handle loading of NFT marker and tracking of it
 
-		var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
-		_this.updateWithModelViewMatrix(modelViewMatrix)
-	}
-}
+        var worker = new Worker(THREEx.ArToolkitContext.baseURL + 'vendor/jsartoolkit5/js/artoolkit.worker.js');
 
-//////////////////////////////////////////////////////////////////////////////
-//		aruco specific
-//////////////////////////////////////////////////////////////////////////////
-ARjs.MarkerControls.prototype._initAruco = function(){
-	this._arucoPosit = new POS.Posit(this.parameters.size, _this.context.arucoContext.canvas.width)
-}
+        window.addEventListener('arjs-video-loaded', function (ev) {
+            var video = ev.detail.component;
+            var vw = video.clientWidth;
+            var vh = video.clientHeight;
 
-//////////////////////////////////////////////////////////////////////////////
-//		init for Artoolkit
-//////////////////////////////////////////////////////////////////////////////
-ARjs.MarkerControls.prototype._initTango = function(){
-	var _this = this
-	console.log('init tango ArMarkerControls')
+            var pscale = 320 / Math.max(vw, vh / 3 * 4);
+
+            w = vw * pscale;
+            h = vh * pscale;
+            pw = Math.max(w, h / 3 * 4);
+            ph = Math.max(h, w / 4 * 3);
+            ox = (pw - w) / 2;
+            oy = (ph - h) / 2;
+
+            arController.canvas.style.clientWidth = pw + "px";
+            arController.canvas.style.clientHeight = ph + "px";
+            arController.canvas.width = pw;
+            arController.canvas.height = ph;
+
+            var context_process = arController.canvas.getContext('2d');
+
+            function process() {
+                context_process.fillStyle = "black";
+                context_process.fillRect(0, 0, pw, ph);
+                context_process.drawImage(video, 0, 0, vw, vh, ox, oy, w, h);
+
+                var imageData = context_process.getImageData(0, 0, pw, ph);
+                worker.postMessage({ type: "process", imagedata: imageData }, [imageData.data.buffer]);
+            }
+
+            // initialize the worker
+            worker.postMessage({
+                type: 'init',
+                pw: pw,
+                ph: ph,
+                marker: descriptorsUrl,
+                param: arController.cameraParam.src,
+            });
+
+            worker.onmessage = function (ev) {
+                if (ev && ev.data && ev.data.type === 'endLoading') {
+                    var loader = document.querySelector('.arjs-nft-loader');
+                    if (loader) {
+                        loader.remove();
+                    }
+                }
+
+                if (ev && ev.data && ev.data.type === 'loaded') {
+                    var proj = JSON.parse(ev.data.proj);
+                    var ratioW = pw / w;
+                    var ratioH = ph / h;
+                    proj[0] *= ratioW;
+                    proj[4] *= ratioW;
+                    proj[8] *= ratioW;
+                    proj[12] *= ratioW;
+                    proj[1] *= ratioH;
+                    proj[5] *= ratioH;
+                    proj[9] *= ratioH;
+                    proj[13] *= ratioH;
+
+                    setMatrix(_this.object3d.matrix, proj);
+                }
+
+                if (ev && ev.data && ev.data.type === 'found') {
+                    var matrix = JSON.parse(ev.data.matrix);
+
+                    onMarkerFound({
+                        data: {
+                            type: artoolkit.NFT_MARKER,
+                            matrix: matrix,
+                            msg: ev.data.type,
+                        }
+                    });
+
+                    _this.context.arController.showObject = true;
+                } else {
+                    _this.context.arController.showObject = false;
+                }
+
+                process();
+            };
+
+        })
+
+
+
+    }
+
+    function onMarkerFound(event) {
+        if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
+        if (event.data.type === artoolkit.BARCODE_MARKER && event.data.marker.cfMatt < _this.parameters.minConfidence) return
+
+        var modelViewMatrix = new THREE.Matrix4().fromArray(event.data.matrix)
+        _this.updateWithModelViewMatrix(modelViewMatrix)
+    }
 }
 var THREEx = THREEx || {}
 
@@ -2479,10 +998,6 @@ ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
         // the patternRatio inside the artoolkit marker - artoolkit only
         patternRatio: 0.5,
 
-        // Labeling mode for markers - ['black_region', 'white_region']
-        // black_region: Black bordered markers on a white background, white_region: White bordered markers on a black background
-        labelingMode: 'black_region',
-
         // enable image smoothing or not for canvas copy - default to true
         // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
         imageSmoothingEnabled: false,
@@ -2490,7 +1005,6 @@ ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
     // parameters sanity check
     console.assert(['artoolkit', 'aruco'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
     console.assert(['color', 'color_and_matrix', 'mono', 'mono_and_matrix'].indexOf(this.parameters.detectionMode) !== -1, 'invalid parameter detectionMode', this.parameters.detectionMode)
-    console.assert(["black_region", "white_region"].indexOf(this.parameters.labelingMode) !== -1, "invalid parameter labelingMode", this.parameters.labelingMode);
 
     this.arController = null;
     this.arucoContext = null;
@@ -2531,7 +1045,7 @@ Object.assign(ARjs.Context.prototype, THREE.EventDispatcher.prototype);
 // ARjs.Context.baseURL = '../'
 // default to github page
 ARjs.Context.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
-ARjs.Context.REVISION = '2.2.1';
+ARjs.Context.REVISION = '2.1.4';
 
 /**
  * Create a default camera for this trackingBackend
@@ -2688,15 +1202,6 @@ ARjs.Context.prototype._initArtoolkit = function (onCompleted) {
 
         // set the patternRatio for artoolkit
         arController.setPattRatio(_this.parameters.patternRatio);
-
-        // set the labelingMode for artoolkit
-        var labelingModeTypes = {
-            "black_region": artoolkit.AR_LABELING_BLACK_REGION,
-            "white_region": artoolkit.AR_LABELING_WHITE_REGION
-        }
-        var labelingModeType = labelingModeTypes[_this.parameters.labelingMode];
-        console.assert(labelingModeType !== undefined);
-        arController.setLabelingMode(labelingModeType);
 
         // set thresholding in artoolkit
         // this seems to be the default
@@ -3138,23 +1643,19 @@ ARjs.Source.prototype._initSourceWebcam = function (onReady, onError) {
     }
 
     // get available devices
-    navigator.mediaDevices.enumerateDevices().then(function (devices) {
+    navigator.mediaDevices.enumerateDevices().then(function () {
         var userMediaConstraints = {
             audio: false,
-            video: true
-        };
-
-        if (window.innerWidth < 800) {
-            var width = (window.innerWidth < window.innerHeight) ? 480 : 640;
-
-            userMediaConstraints = {
-                audio: false,
-                video: {
-                    facingMode: 'environment',
-                    width: { min: width, max: width }
+            video: {
+                facingMode: 'environment',
+                width: {
+                    ideal: _this.parameters.sourceWidth,
                 },
-            };
-        }
+                height: {
+                    ideal: _this.parameters.sourceHeight,
+                }
+            }
+        };
 
         if (null !== _this.parameters.deviceId) {
             userMediaConstraints.video.deviceId = {
@@ -3173,8 +1674,6 @@ ARjs.Source.prototype._initSourceWebcam = function (onReady, onError) {
             document.body.addEventListener('click', function () {
                 domElement.play();
             });
-            // domElement.play();
-
             onReady();
         }).catch(function (error) {
             onError({
@@ -3353,7 +1852,6 @@ ARjs.Source.prototype.onResize = function (arToolkitContext, renderer, camera) {
 
     var trackingBackend = arToolkitContext.parameters.trackingBackend
 
-
     // RESIZE DOMELEMENT
     if (trackingBackend === 'artoolkit') {
 
@@ -3362,18 +1860,11 @@ ARjs.Source.prototype.onResize = function (arToolkitContext, renderer, camera) {
         var isAframe = renderer.domElement.dataset.aframeCanvas ? true : false
         if (isAframe === false) {
             this.copyElementSizeTo(renderer.domElement)
-        } else {
-
         }
 
         if (arToolkitContext.arController !== null) {
             this.copyElementSizeTo(arToolkitContext.arController.canvas)
         }
-    } else if (trackingBackend === 'aruco') {
-        this.onResizeElement()
-        this.copyElementSizeTo(renderer.domElement)
-
-        this.copyElementSizeTo(arToolkitContext.arucoContext.canvas)
     } else console.assert(false, 'unhandled trackingBackend ' + trackingBackend)
 
 
@@ -3382,9 +1873,6 @@ ARjs.Source.prototype.onResize = function (arToolkitContext, renderer, camera) {
         if (arToolkitContext.arController !== null) {
             camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
         }
-    } else if (trackingBackend === 'aruco') {
-        camera.aspect = renderer.domElement.width / renderer.domElement.height;
-        camera.updateProjectionMatrix();
     } else console.assert(false, 'unhandled trackingBackend ' + trackingBackend)
 }
 var THREEx = THREEx || {}
@@ -3627,129 +2115,129 @@ var ARjs = ARjs || {}
  * @param {ARjs.Session} arSession - the session on which we create the anchor
  * @param {Object} markerParameters - parameter of this anchor
  */
-ARjs.Anchor = function(arSession, markerParameters){
-	var _this = this
-	var arContext = arSession.arContext
-	var scene = arSession.parameters.scene
-	var camera = arSession.parameters.camera
+ARjs.Anchor = function (arSession, markerParameters) {
+    var _this = this
+    var arContext = arSession.arContext
+    var scene = arSession.parameters.scene
+    var camera = arSession.parameters.camera
 
-	this.arSession = arSession
-	this.parameters = markerParameters
+    this.arSession = arSession
+    this.parameters = markerParameters
 
-	// log to debug
-	console.log('ARjs.Anchor -', 'changeMatrixMode:', this.parameters.changeMatrixMode, '/ markersAreaEnabled:', markerParameters.markersAreaEnabled)
+    // log to debug
+    console.log('ARjs.Anchor -', 'changeMatrixMode:', this.parameters.changeMatrixMode, '/ markersAreaEnabled:', markerParameters.markersAreaEnabled)
 
-	var markerRoot = new THREE.Group
-	scene.add(markerRoot)
+    var markerRoot = new THREE.Group
+    scene.add(markerRoot)
 
-	// set controlledObject depending on changeMatrixMode
-	if( markerParameters.changeMatrixMode === 'modelViewMatrix' ){
-		var controlledObject = markerRoot
-	}else if( markerParameters.changeMatrixMode === 'cameraTransformMatrix' ){
-		var controlledObject = camera
-	}else console.assert(false)
+    // set controlledObject depending on changeMatrixMode
+    if (markerParameters.changeMatrixMode === 'modelViewMatrix') {
+        var controlledObject = markerRoot
+    } else if (markerParameters.changeMatrixMode === 'cameraTransformMatrix') {
+        var controlledObject = camera
+    } else console.assert(false)
 
-	if( markerParameters.markersAreaEnabled === false ){
-		var markerControls = new THREEx.ArMarkerControls(arContext, controlledObject, markerParameters)
-		this.controls = markerControls
-	}else{
-		// sanity check - MUST be a trackingBackend with markers
-		console.assert( arContext.parameters.trackingBackend === 'artoolkit' || arContext.parameters.trackingBackend === 'aruco' )
+    if (markerParameters.markersAreaEnabled === false) {
+        var markerControls = new THREEx.ArMarkerControls(arContext, controlledObject, markerParameters)
+        this.controls = markerControls
+    } else {
+        // sanity check - MUST be a trackingBackend with markers
+        console.assert(arContext.parameters.trackingBackend === 'artoolkit')
 
-		// honor markers-page-resolution for https://webxr.io/augmented-website
-		if( location.hash.substring(1).startsWith('markers-page-resolution=') === true ){
-			// get resolutionW/resolutionH from url
-			var markerPageResolution = location.hash.substring(1)
-			var matches = markerPageResolution.match(/markers-page-resolution=(\d+)x(\d+)/)
-			console.assert(matches.length === 3)
-			var resolutionW = parseInt(matches[1])
-			var resolutionH = parseInt(matches[2])
-			var arContext = arSession.arContext
-			// generate and store the ARjsMultiMarkerFile
-			ARjs.MarkersAreaUtils.storeMarkersAreaFileFromResolution(arContext.parameters.trackingBackend, resolutionW, resolutionH)
-		}
+        // honor markers-page-resolution for https://webxr.io/augmented-website
+        if (location.hash.substring(1).startsWith('markers-page-resolution=') === true) {
+            // get resolutionW/resolutionH from url
+            var markerPageResolution = location.hash.substring(1)
+            var matches = markerPageResolution.match(/markers-page-resolution=(\d+)x(\d+)/)
+            console.assert(matches.length === 3)
+            var resolutionW = parseInt(matches[1])
+            var resolutionH = parseInt(matches[2])
+            var arContext = arSession.arContext
+            // generate and store the ARjsMultiMarkerFile
+            ARjs.MarkersAreaUtils.storeMarkersAreaFileFromResolution(arContext.parameters.trackingBackend, resolutionW, resolutionH)
+        }
 
-		// if there is no ARjsMultiMarkerFile, build a default one
-		if( localStorage.getItem('ARjsMultiMarkerFile') === null ){
-			ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile(arContext.parameters.trackingBackend)
-		}
+        // if there is no ARjsMultiMarkerFile, build a default one
+        if (localStorage.getItem('ARjsMultiMarkerFile') === null) {
+            ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile(arContext.parameters.trackingBackend)
+        }
 
-		// get multiMarkerFile from localStorage
-		console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
-		var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
+        // get multiMarkerFile from localStorage
+        console.assert(localStorage.getItem('ARjsMultiMarkerFile') !== null)
+        var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
 
-		// set controlledObject depending on changeMatrixMode
-		if( markerParameters.changeMatrixMode === 'modelViewMatrix' ){
-			var parent3D = scene
-		}else if( markerParameters.changeMatrixMode === 'cameraTransformMatrix' ){
-			var parent3D = camera
-		}else console.assert(false)
+        // set controlledObject depending on changeMatrixMode
+        if (markerParameters.changeMatrixMode === 'modelViewMatrix') {
+            var parent3D = scene
+        } else if (markerParameters.changeMatrixMode === 'cameraTransformMatrix') {
+            var parent3D = camera
+        } else console.assert(false)
 
-		// build a multiMarkerControls
-		var multiMarkerControls = ARjs.MarkersAreaControls.fromJSON(arContext, parent3D, controlledObject, multiMarkerFile)
-		this.controls = multiMarkerControls
+        // build a multiMarkerControls
+        var multiMarkerControls = ARjs.MarkersAreaControls.fromJSON(arContext, parent3D, controlledObject, multiMarkerFile)
+        this.controls = multiMarkerControls
 
-		// honor markerParameters.changeMatrixMode
-		multiMarkerControls.parameters.changeMatrixMode = markerParameters.changeMatrixMode
+        // honor markerParameters.changeMatrixMode
+        multiMarkerControls.parameters.changeMatrixMode = markerParameters.changeMatrixMode
 
-// TODO put subMarkerControls visibility into an external file. with 2 handling for three.js and babylon.js
-		// create ArMarkerHelper - useful to debug - super three.js specific
-		var markerHelpers = []
-		multiMarkerControls.subMarkersControls.forEach(function(subMarkerControls){
-			// add an helper to visuable each sub-marker
-			var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
-			markerHelper.object3d.visible = false
-			// subMarkerControls.object3d.add( markerHelper.object3d )
-			subMarkerControls.object3d.add( markerHelper.object3d )
-			// add it to markerHelpers
-			markerHelpers.push(markerHelper)
-		})
-		// define API specific to markersArea
-		this.markersArea = {}
-		this.markersArea.setSubMarkersVisibility = function(visible){
-			markerHelpers.forEach(function(markerHelper){
-				markerHelper.object3d.visible = visible
-			})
-		}
-	}
+        // TODO put subMarkerControls visibility into an external file. with 2 handling for three.js and babylon.js
+        // create ArMarkerHelper - useful to debug - super three.js specific
+        var markerHelpers = []
+        multiMarkerControls.subMarkersControls.forEach(function (subMarkerControls) {
+            // add an helper to visuable each sub-marker
+            var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
+            markerHelper.object3d.visible = false
+            // subMarkerControls.object3d.add( markerHelper.object3d )
+            subMarkerControls.object3d.add(markerHelper.object3d)
+            // add it to markerHelpers
+            markerHelpers.push(markerHelper)
+        })
+        // define API specific to markersArea
+        this.markersArea = {}
+        this.markersArea.setSubMarkersVisibility = function (visible) {
+            markerHelpers.forEach(function (markerHelper) {
+                markerHelper.object3d.visible = visible
+            })
+        }
+    }
 
-	this.object3d = new THREE.Group()
+    this.object3d = new THREE.Group()
 
-	//////////////////////////////////////////////////////////////////////////////
-	//		THREEx.ArSmoothedControls
-	//////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////
+    //		THREEx.ArSmoothedControls
+    //////////////////////////////////////////////////////////////////////////////
 
-	var shouldBeSmoothed = true
+    var shouldBeSmoothed = true
 
-	if( shouldBeSmoothed === true ){
-		// build a smoothedControls
-		var smoothedRoot = new THREE.Group()
-		scene.add(smoothedRoot)
-		var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
-		smoothedRoot.add(this.object3d)
-	}else{
-		markerRoot.add(this.object3d)
-	}
+    if (shouldBeSmoothed === true) {
+        // build a smoothedControls
+        var smoothedRoot = new THREE.Group()
+        scene.add(smoothedRoot)
+        var smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot)
+        smoothedRoot.add(this.object3d)
+    } else {
+        markerRoot.add(this.object3d)
+    }
 
 
-	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
-	//////////////////////////////////////////////////////////////////////////////
-	this.update = function(){
-		// update _this.object3d.visible
-		_this.object3d.visible = _this.object3d.parent.visible
+    //////////////////////////////////////////////////////////////////////////////
+    //		Code Separator
+    //////////////////////////////////////////////////////////////////////////////
+    this.update = function () {
+        // update _this.object3d.visible
+        _this.object3d.visible = _this.object3d.parent.visible
 
-		// console.log('controlledObject.visible', _this.object3d.parent.visible)
-		if( smoothedControls !== undefined ){
-			// update smoothedControls parameters depending on how many markers are visible in multiMarkerControls
-			if( multiMarkerControls !== undefined ){
-				multiMarkerControls.updateSmoothedControls(smoothedControls)
-			}
+        // console.log('controlledObject.visible', _this.object3d.parent.visible)
+        if (smoothedControls !== undefined) {
+            // update smoothedControls parameters depending on how many markers are visible in multiMarkerControls
+            if (multiMarkerControls !== undefined) {
+                multiMarkerControls.updateSmoothedControls(smoothedControls)
+            }
 
-			// update smoothedControls
-			smoothedControls.update(markerRoot)
-		}
-	}
+            // update smoothedControls
+            smoothedControls.update(markerRoot)
+        }
+    }
 }
 // @namespace
 var ARjs = ARjs || {}
@@ -4124,7 +2612,7 @@ ARjs.Session = function(parameters){
 	//////////////////////////////////////////////////////////////////////////////
 
 	// create atToolkitContext
-	var arContext = _this.arContext = new ARjs.Context(parameters.contextParameters)
+	var arContext = _this.arContext = new ARjs.Context(parameters.contextParameters, parameters.sourceParameters)
 
 	// initialize it
 	_this.arContext.init()
@@ -4161,8 +2649,6 @@ ARjs.Utils.createDefaultCamera = function (trackingMethod) {
     // Create a camera
     if (trackingBackend === 'artoolkit') {
         var camera = new THREE.Camera();
-    } else if (trackingBackend === 'aruco') {
-        var camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.01, 100);
     } else console.assert(false, 'unknown trackingBackend: ' + trackingBackend)
 
     return camera
@@ -4857,17 +3343,17 @@ ARjs.MarkersAreaUtils = THREEx.ArMultiMarkerUtils = {}
 
 /**
  * Navigate to the multi-marker learner page
- * 
+ *
  * @param {String} learnerBaseURL  - the base url for the learner
  * @param {String} trackingBackend - the tracking backend to use
  */
-ARjs.MarkersAreaUtils.navigateToLearnerPage = function(learnerBaseURL, trackingBackend){
-	var learnerParameters = {
-		backURL : location.href,
-		trackingBackend: trackingBackend,
-		markersControlsParameters: ARjs.MarkersAreaUtils.createDefaultMarkersControlsParameters(trackingBackend),
-	}
-	location.href = learnerBaseURL + '?' + encodeURIComponent(JSON.stringify(learnerParameters))
+ARjs.MarkersAreaUtils.navigateToLearnerPage = function (learnerBaseURL, trackingBackend) {
+    var learnerParameters = {
+        backURL: location.href,
+        trackingBackend: trackingBackend,
+        markersControlsParameters: ARjs.MarkersAreaUtils.createDefaultMarkersControlsParameters(trackingBackend),
+    }
+    location.href = learnerBaseURL + '?' + encodeURIComponent(JSON.stringify(learnerParameters))
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -4876,13 +3362,13 @@ ARjs.MarkersAreaUtils.navigateToLearnerPage = function(learnerBaseURL, trackingB
 
 /**
  * Create and store a default multi-marker file
- * 
+ *
  * @param {String} trackingBackend - the tracking backend to use
  */
-ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile = function(trackingBackend){
-	var file = ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile(trackingBackend)
-	// json.strinfy the value and store it in localStorage
-	localStorage.setItem('ARjsMultiMarkerFile', JSON.stringify(file))
+ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile = function (trackingBackend) {
+    var file = ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile(trackingBackend)
+    // json.strinfy the value and store it in localStorage
+    localStorage.setItem('ARjsMultiMarkerFile', JSON.stringify(file))
 }
 
 
@@ -4892,41 +3378,38 @@ ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile = function(trackingBackend){
  * @param {String} trackingBackend - the tracking backend to use
  * @return {Object} - json object of the multi-marker file
  */
-ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile = function(trackingBackend){
-	console.assert(trackingBackend)
-	if( trackingBackend === undefined )	debugger
-	
-	// create absoluteBaseURL
-	var link = document.createElement('a')
-	link.href = ARjs.Context.baseURL
-	var absoluteBaseURL = link.href
+ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile = function (trackingBackend) {
+    console.assert(trackingBackend)
+    if (trackingBackend === undefined) debugger
 
-	// create the base file
-	var file = {
-		meta : {
-			createdBy : 'AR.js ' + ARjs.Context.REVISION + ' - Default Marker',
-			createdAt : new Date().toJSON(),
-		},
-		trackingBackend : trackingBackend,
-		subMarkersControls : [
-			// empty for now... being filled 
-		]
-	}
-	// add a subMarkersControls
-	file.subMarkersControls[0] = {
-		parameters: {},
-		poseMatrix: new THREE.Matrix4().makeTranslation(0,0, 0).toArray(),
-	}
-	if( trackingBackend === 'artoolkit' ){
-		file.subMarkersControls[0].parameters.type = 'pattern'
-		file.subMarkersControls[0].parameters.patternUrl = absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt'
-	}else if( trackingBackend === 'aruco' ){
-		file.subMarkersControls[0].parameters.type = 'barcode'
-		file.subMarkersControls[0].parameters.barcodeValue = 1001
-	}else console.assert(false)
-	
-	// json.strinfy the value and store it in localStorage
-	return file
+    // create absoluteBaseURL
+    var link = document.createElement('a')
+    link.href = ARjs.Context.baseURL
+    var absoluteBaseURL = link.href
+
+    // create the base file
+    var file = {
+        meta: {
+            createdBy: 'AR.js ' + ARjs.Context.REVISION + ' - Default Marker',
+            createdAt: new Date().toJSON(),
+        },
+        trackingBackend: trackingBackend,
+        subMarkersControls: [
+            // empty for now... being filled
+        ]
+    }
+    // add a subMarkersControls
+    file.subMarkersControls[0] = {
+        parameters: {},
+        poseMatrix: new THREE.Matrix4().makeTranslation(0, 0, 0).toArray(),
+    }
+    if (trackingBackend === 'artoolkit') {
+        file.subMarkersControls[0].parameters.type = 'pattern'
+        file.subMarkersControls[0].parameters.patternUrl = absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt'
+    } else console.assert(false)
+
+    // json.strinfy the value and store it in localStorage
+    return file
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -4935,74 +3418,47 @@ ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile = function(trackingBackend){
 
 /**
  * Create a default controls parameters for the multi-marker learner
- * 
+ *
  * @param {String} trackingBackend - the tracking backend to use
  * @return {Object} - json object containing the controls parameters
  */
-ARjs.MarkersAreaUtils.createDefaultMarkersControlsParameters = function(trackingBackend){
-	// create absoluteBaseURL
-	var link = document.createElement('a')
-	link.href = ARjs.Context.baseURL
-	var absoluteBaseURL = link.href
+ARjs.MarkersAreaUtils.createDefaultMarkersControlsParameters = function (trackingBackend) {
+    // create absoluteBaseURL
+    var link = document.createElement('a')
+    link.href = ARjs.Context.baseURL
+    var absoluteBaseURL = link.href
 
 
-	if( trackingBackend === 'artoolkit' ){
-		// pattern hiro/kanji/a/b/c/f
-		var markersControlsParameters = [
-			{
-				type : 'pattern',
-				patternUrl : absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt',
-			},
-			{
-				type : 'pattern',
-				patternUrl : absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-kanji.patt',
-			},
-			{
-				type : 'pattern',
-				patternUrl : absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterA.patt',
-			},
-			{
-				type : 'pattern',
-				patternUrl : absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterB.patt',
-			},
-			{
-				type : 'pattern',
-				patternUrl : absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterC.patt',
-			},
-			{
-				type : 'pattern',
-				patternUrl : absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterF.patt',
-			},
-		]		
-	}else if( trackingBackend === 'aruco' ){
-		var markersControlsParameters = [
-			{
-				type : 'barcode',
-				barcodeValue: 1001,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1002,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1003,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1004,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1005,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1006,
-			},
-		]
-	}else console.assert(false)
-	return markersControlsParameters
+    if (trackingBackend === 'artoolkit') {
+        // pattern hiro/kanji/a/b/c/f
+        var markersControlsParameters = [
+            {
+                type: 'pattern',
+                patternUrl: absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt',
+            },
+            {
+                type: 'pattern',
+                patternUrl: absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-kanji.patt',
+            },
+            {
+                type: 'pattern',
+                patternUrl: absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterA.patt',
+            },
+            {
+                type: 'pattern',
+                patternUrl: absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterB.patt',
+            },
+            {
+                type: 'pattern',
+                patternUrl: absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterC.patt',
+            },
+            {
+                type: 'pattern',
+                patternUrl: absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterF.patt',
+            },
+        ]
+    } else console.assert(false)
+    return markersControlsParameters
 }
 
 
@@ -5013,118 +3469,1282 @@ ARjs.MarkersAreaUtils.createDefaultMarkersControlsParameters = function(tracking
  * generate areaFile
  */
 ARjs.MarkersAreaUtils.storeMarkersAreaFileFromResolution = function (trackingBackend, resolutionW, resolutionH) {
-	// generate areaFile
-	var areaFile = this.buildMarkersAreaFileFromResolution(trackingBackend, resolutionW, resolutionH)
-	// store areaFile in localStorage
-	localStorage.setItem('ARjsMultiMarkerFile', JSON.stringify(areaFile))
+    // generate areaFile
+    var areaFile = this.buildMarkersAreaFileFromResolution(trackingBackend, resolutionW, resolutionH)
+    // store areaFile in localStorage
+    localStorage.setItem('ARjsMultiMarkerFile', JSON.stringify(areaFile))
 }
 
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-	
-ARjs.MarkersAreaUtils.buildMarkersAreaFileFromResolution = function(trackingBackend, resolutionW, resolutionH){
-	// create the base file
-	var file = {
-		meta : {
-			createdBy : 'AR.js - Augmented Website',
-			createdAt : new Date().toJSON(),
-		},
-		trackingBackend : trackingBackend,
-		subMarkersControls : [
-			// empty for now...
-		]
-	}
-	
-	var whiteMargin = 0.1
-	if( resolutionW > resolutionH ){
-		var markerImageSize = 0.4 * resolutionH
-	}else if( resolutionW < resolutionH ){
-		var markerImageSize = 0.4 * resolutionW
-	}else if( resolutionW === resolutionH ){
-		// specific for twitter player - https://dev.twitter.com/cards/types/player
-		var markerImageSize = 0.33 * resolutionW
-	}else console.assert(false)
 
-	// console.warn('using new markerImageSize computation')
-	var actualMarkerSize = markerImageSize * (1 - 2*whiteMargin)
-	
-	var deltaX = (resolutionW - markerImageSize)/2 / actualMarkerSize
-	var deltaZ = (resolutionH - markerImageSize)/2 / actualMarkerSize
+ARjs.MarkersAreaUtils.buildMarkersAreaFileFromResolution = function (trackingBackend, resolutionW, resolutionH) {
+    // create the base file
+    var file = {
+        meta: {
+            createdBy: 'AR.js - Augmented Website',
+            createdAt: new Date().toJSON(),
+        },
+        trackingBackend: trackingBackend,
+        subMarkersControls: [
+            // empty for now...
+        ]
+    }
 
-	var subMarkerControls = buildSubMarkerControls('center', 0, 0)
-	file.subMarkersControls.push(subMarkerControls)
+    var whiteMargin = 0.1
+    if (resolutionW > resolutionH) {
+        var markerImageSize = 0.4 * resolutionH
+    } else if (resolutionW < resolutionH) {
+        var markerImageSize = 0.4 * resolutionW
+    } else if (resolutionW === resolutionH) {
+        // specific for twitter player - https://dev.twitter.com/cards/types/player
+        var markerImageSize = 0.33 * resolutionW
+    } else console.assert(false)
 
-	var subMarkerControls = buildSubMarkerControls('topleft', -deltaX, -deltaZ)
-	file.subMarkersControls.push(subMarkerControls)
-	
-	var subMarkerControls = buildSubMarkerControls('topright', +deltaX, -deltaZ)
-	file.subMarkersControls.push(subMarkerControls)
+    // console.warn('using new markerImageSize computation')
+    var actualMarkerSize = markerImageSize * (1 - 2 * whiteMargin)
 
-	var subMarkerControls = buildSubMarkerControls('bottomleft', -deltaX, +deltaZ)
-	file.subMarkersControls.push(subMarkerControls)
-	
-	var subMarkerControls = buildSubMarkerControls('bottomright', +deltaX, +deltaZ)
-	file.subMarkersControls.push(subMarkerControls)
+    var deltaX = (resolutionW - markerImageSize) / 2 / actualMarkerSize
+    var deltaZ = (resolutionH - markerImageSize) / 2 / actualMarkerSize
 
-	return file
-	
-	//////////////////////////////////////////////////////////////////////////////
-	//		Code Separator
-	//////////////////////////////////////////////////////////////////////////////
+    var subMarkerControls = buildSubMarkerControls('center', 0, 0)
+    file.subMarkersControls.push(subMarkerControls)
 
-	function buildSubMarkerControls(layout, positionX, positionZ){
-		console.log('buildSubMarkerControls', layout, positionX, positionZ)
-		// create subMarkersControls
-		var subMarkersControls = {
-			parameters: {},
-			poseMatrix: new THREE.Matrix4().makeTranslation(positionX,0, positionZ).toArray(),
-		}
-		// fill the parameters
-		if( trackingBackend === 'artoolkit' ){
-			layout2MarkerParametersArtoolkit(subMarkersControls.parameters, layout)
-		}else if( trackingBackend === 'aruco' ){
-			layout2MarkerParametersAruco(subMarkersControls.parameters, layout)
-		}else console.assert(false)
-		// return subMarkersControls
-		return subMarkersControls
-	}
+    var subMarkerControls = buildSubMarkerControls('topleft', -deltaX, -deltaZ)
+    file.subMarkersControls.push(subMarkerControls)
 
-	function layout2MarkerParametersArtoolkit(parameters, layout){
-		// create absoluteBaseURL
-		var link = document.createElement('a')
-		link.href = ARjs.Context.baseURL
-		var absoluteBaseURL = link.href
-			
-		var layout2PatternUrl = {
-			'center' : convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt'),
-			'topleft' : convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterA.patt'),
-			'topright' : convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterB.patt'),
-			'bottomleft' : convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterC.patt'),
-			'bottomright' : convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterF.patt'),
-		}
-		console.assert(layout2PatternUrl[layout] !== undefined )
-		parameters.type = 'pattern'
-		parameters.patternUrl = layout2PatternUrl[layout]
-		return
-		function convertRelativeUrlToAbsolute(relativeUrl){
-			var tmpLink = document.createElement('a');
-			tmpLink.href = relativeUrl
-			return tmpLink.href
-		}
-	}
+    var subMarkerControls = buildSubMarkerControls('topright', +deltaX, -deltaZ)
+    file.subMarkersControls.push(subMarkerControls)
 
-	function layout2MarkerParametersAruco(parameters, layout){
-		var layout2Barcode = {
-			'center' : 1001,
-			'topleft' : 1002,
-			'topright' : 1003,
-			'bottomleft' : 1004,
-			'bottomright' : 1005,
-		}
-		console.assert(layout2Barcode[layout])
-		parameters.type = 'barcode'
-		parameters.barcodeValue = layout2Barcode[layout]
-	}
+    var subMarkerControls = buildSubMarkerControls('bottomleft', -deltaX, +deltaZ)
+    file.subMarkersControls.push(subMarkerControls)
+
+    var subMarkerControls = buildSubMarkerControls('bottomright', +deltaX, +deltaZ)
+    file.subMarkersControls.push(subMarkerControls)
+
+    return file
+
+    //////////////////////////////////////////////////////////////////////////////
+    //		Code Separator
+    //////////////////////////////////////////////////////////////////////////////
+
+    function buildSubMarkerControls(layout, positionX, positionZ) {
+        console.log('buildSubMarkerControls', layout, positionX, positionZ)
+        // create subMarkersControls
+        var subMarkersControls = {
+            parameters: {},
+            poseMatrix: new THREE.Matrix4().makeTranslation(positionX, 0, positionZ).toArray(),
+        }
+
+        // fill the parameters
+        if (trackingBackend === 'artoolkit') {
+            layout2MarkerParametersArtoolkit(subMarkersControls.parameters, layout)
+        } else console.assert(false)
+        return subMarkersControls
+    }
+
+    function layout2MarkerParametersArtoolkit(parameters, layout) {
+        // create absoluteBaseURL
+        var link = document.createElement('a')
+        link.href = ARjs.Context.baseURL
+        var absoluteBaseURL = link.href
+
+        var layout2PatternUrl = {
+            'center': convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt'),
+            'topleft': convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterA.patt'),
+            'topright': convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterB.patt'),
+            'bottomleft': convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterC.patt'),
+            'bottomright': convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterF.patt'),
+        }
+        console.assert(layout2PatternUrl[layout] !== undefined)
+        parameters.type = 'pattern'
+        parameters.patternUrl = layout2PatternUrl[layout]
+        return
+        function convertRelativeUrlToAbsolute(relativeUrl) {
+            var tmpLink = document.createElement('a');
+            tmpLink.href = relativeUrl
+            return tmpLink.href
+        }
+    }
 }
+//////////////////////////////////////////////////////////////////////////////
+//		arjs-anchor
+//////////////////////////////////////////////////////////////////////////////
+AFRAME.registerComponent('arjs-anchor', {
+    dependencies: ['arjs', 'artoolkit'],
+    schema: {
+        preset: {
+            type: 'string',
+        },
+        markerhelpers: {	// IIF preset === 'area'
+            type: 'boolean',
+            default: false,
+        },
+
+        // controls parameters
+        size: {
+            type: 'number',
+            default: 1
+        },
+        type: {
+            type: 'string',
+        },
+        patternUrl: {
+            type: 'string',
+        },
+        descriptorsUrl: {
+            type: 'string',
+        },
+        barcodeValue: {
+            type: 'number'
+        },
+        changeMatrixMode: {
+            type: 'string',
+            default: 'modelViewMatrix',
+        },
+        minConfidence: {
+            type: 'number',
+            default: 0.6,
+        },
+        smooth: {
+            type: 'boolean',
+            default: false,
+        },
+        smoothCount: {
+            type: 'number',
+            default: 5,
+        },
+        smoothTolerance: {
+            type: 'number',
+            default: 0.01,
+        },
+        smoothThreshold: {
+            type: 'number',
+            default: 2,
+        },
+    },
+    init: function () {
+        var _this = this
+
+        // get arjsSystem
+        var arjsSystem = this.el.sceneEl.systems.arjs || this.el.sceneEl.systems.artoolkit
+
+        //////////////////////////////////////////////////////////////////////////////
+        //		Code Separator
+        //////////////////////////////////////////////////////////////////////////////
+
+        _this.isReady = false
+        _this._arAnchor = null
+
+        // honor object visibility
+        if (_this.data.changeMatrixMode === 'modelViewMatrix') {
+            _this.el.object3D.visible = false
+        } else if (_this.data.changeMatrixMode === 'cameraTransformMatrix') {
+            _this.el.sceneEl.object3D.visible = false
+        } else console.assert(false)
+
+        // trick to wait until arjsSystem is isReady
+        var startedAt = Date.now()
+        var timerId = setInterval(function () {
+            // wait until the system is isReady
+            if (arjsSystem.isReady === false) return
+
+            clearInterval(timerId)
+
+            //////////////////////////////////////////////////////////////////////////////
+            //		update arProfile
+            //////////////////////////////////////////////////////////////////////////////
+            var arProfile = arjsSystem._arProfile
+
+            // arProfile.changeMatrixMode('modelViewMatrix')
+            arProfile.changeMatrixMode(_this.data.changeMatrixMode)
+
+            // honor this.data.preset
+            var markerParameters = Object.assign({}, arProfile.defaultMarkerParameters)
+
+            if (_this.data.preset === 'hiro') {
+                markerParameters.type = 'pattern'
+                markerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt'
+                markerParameters.markersAreaEnabled = false
+            } else if (_this.data.preset === 'kanji') {
+                markerParameters.type = 'pattern'
+                markerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + 'examples/marker-training/examples/pattern-files/pattern-kanji.patt'
+                markerParameters.markersAreaEnabled = false
+            } else if (_this.data.preset === 'area') {
+                markerParameters.type = 'barcode'
+                markerParameters.barcodeValue = 1001
+                markerParameters.markersAreaEnabled = true
+            } else if (_this.data.type === 'barcode') {
+                markerParameters = {
+                    type: _this.data.type,
+                    changeMatrixMode: 'modelViewMatrix',
+                    barcodeValue: _this.data.barcodeValue,
+                    markersAreaEnabled: false
+                }
+            } else if (_this.data.type === 'pattern') {
+                markerParameters.type = _this.data.type
+                markerParameters.patternUrl = _this.data.patternUrl;
+                markerParameters.markersAreaEnabled = false
+            } else if (_this.data.type === 'nft') {
+                markerParameters.type = _this.data.type
+                markerParameters.descriptorsUrl = _this.data.descriptorsUrl;
+                markerParameters.markersAreaEnabled = false
+            }
+
+            markerParameters.smooth = _this.data.smooth;
+            markerParameters.smoothCount = _this.data.smoothCount;
+            markerParameters.smoothTolerance = _this.data.smoothTolerance;
+            markerParameters.smoothThreshold = _this.data.smoothThreshold;
+
+            //////////////////////////////////////////////////////////////////////////////
+            //		create arAnchor
+            //////////////////////////////////////////////////////////////////////////////
+
+            var arSession = arjsSystem._arSession
+            var arAnchor = _this._arAnchor = new ARjs.Anchor(arSession, markerParameters)
+
+            // it is now considered isReady
+            _this.isReady = true
+
+            //////////////////////////////////////////////////////////////////////////////
+            //		honor .debugUIEnabled
+            //////////////////////////////////////////////////////////////////////////////
+            if (arjsSystem.data.debugUIEnabled) {
+                // get or create containerElement
+                var containerElement = document.querySelector('#arjsDebugUIContainer')
+                if (containerElement === null) {
+                    containerElement = document.createElement('div')
+                    containerElement.id = 'arjsDebugUIContainer'
+                    containerElement.setAttribute('style', 'position: fixed; bottom: 10px; width:100%; text-align: center; z-index: 1; color: grey;')
+                    document.body.appendChild(containerElement)
+                }
+                // create anchorDebugUI
+                var anchorDebugUI = new ARjs.AnchorDebugUI(arAnchor)
+                containerElement.appendChild(anchorDebugUI.domElement)
+            }
+        }, 1000 / 60)
+    },
+    remove: function () {
+    },
+    update: function () {
+    },
+    tick: function () {
+        var _this = this
+        // if not yet isReady, do nothing
+        if (this.isReady === false) return
+
+        //////////////////////////////////////////////////////////////////////////////
+        //		update arAnchor
+        //////////////////////////////////////////////////////////////////////////////
+        var arjsSystem = this.el.sceneEl.systems.arjs || this.el.sceneEl.systems.artoolkit
+        this._arAnchor.update()
+
+        //////////////////////////////////////////////////////////////////////////////
+        //		honor pose
+        //////////////////////////////////////////////////////////////////////////////
+        var arWorldRoot = this._arAnchor.object3d
+        arWorldRoot.updateMatrixWorld(true)
+        arWorldRoot.matrixWorld.decompose(this.el.object3D.position, this.el.object3D.quaternion, this.el.object3D.scale)
+
+        //////////////////////////////////////////////////////////////////////////////
+        //		honor visibility
+        //////////////////////////////////////////////////////////////////////////////
+        if (_this._arAnchor.parameters.changeMatrixMode === 'modelViewMatrix') {
+            var wasVisible = _this.el.object3D.visible
+            _this.el.object3D.visible = this._arAnchor.object3d.visible
+        } else if (_this._arAnchor.parameters.changeMatrixMode === 'cameraTransformMatrix') {
+            var wasVisible = _this.el.sceneEl.object3D.visible
+            _this.el.sceneEl.object3D.visible = this._arAnchor.object3d.visible
+        } else console.assert(false)
+
+        // emit markerFound markerLost
+        if (_this._arAnchor.object3d.visible === true && wasVisible === false) {
+            _this.el.emit('markerFound')
+        } else if (_this._arAnchor.object3d.visible === false && wasVisible === true) {
+            _this.el.emit('markerLost')
+        }
+    }
+})
+
+//////////////////////////////////////////////////////////////////////////////
+//                define some primitives shortcuts
+//////////////////////////////////////////////////////////////////////////////
+
+AFRAME.registerPrimitive('a-anchor', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
+    defaultComponents: {
+        'arjs-anchor': {},
+        'arjs-hit-testing': {},
+    },
+    mappings: {
+        'type': 'arjs-anchor.type',
+        'size': 'arjs-anchor.size',
+        'url': 'arjs-anchor.patternUrl',
+        'value': 'arjs-anchor.barcodeValue',
+        'preset': 'arjs-anchor.preset',
+        'min-confidence': 'arjs-anchor.minConfidence',
+        'marker-helpers': 'arjs-anchor.markerhelpers',
+        'smooth': 'arjs-anchor.smooth',
+        'smooth-count': 'arjs-anchor.smoothCount',
+        'smooth-tolerance': 'arjs-anchor.smoothTolerance',
+        'smooth-threshold': 'arjs-anchor.smoothThreshold',
+
+        'hit-testing-render-debug': 'arjs-hit-testing.renderDebug',
+        'hit-testing-enabled': 'arjs-hit-testing.enabled',
+    }
+}))
+
+
+AFRAME.registerPrimitive('a-camera-static', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
+    defaultComponents: {
+        'camera': {},
+    },
+    mappings: {
+    }
+}))
+
+
+AFRAME.registerPrimitive('a-nft', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
+    defaultComponents: {
+        'arjs-anchor': {},
+        'arjs-hit-testing': {},
+    },
+    mappings: {
+        'type': 'arjs-anchor.type',
+        'url': 'arjs-anchor.descriptorsUrl',
+        'size': 'arjs-anchor.size',
+        'smooth': 'arjs-anchor.smooth',
+        'smooth-count': 'arjs-anchor.smoothCount',
+        'smooth-tolerance': 'arjs-anchor.smoothTolerance',
+        'smooth-threshold': 'arjs-anchor.smoothThreshold',
+
+        'hit-testing-render-debug': 'arjs-hit-testing.renderDebug',
+        'hit-testing-enabled': 'arjs-hit-testing.enabled',
+    },
+}))
+
+
+//////////////////////////////////////////////////////////////////////////////
+//		backward compatibility
+//////////////////////////////////////////////////////////////////////////////
+AFRAME.registerPrimitive('a-marker', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
+    defaultComponents: {
+        'arjs-anchor': {},
+        'arjs-hit-testing': {},
+    },
+    mappings: {
+        'type': 'arjs-anchor.type',
+        'size': 'arjs-anchor.size',
+        'url': 'arjs-anchor.patternUrl',
+        'value': 'arjs-anchor.barcodeValue',
+        'preset': 'arjs-anchor.preset',
+        'min-confidence': 'arjs-anchor.minConfidence',
+        'marker-helpers': 'arjs-anchor.markerhelpers',
+        'smooth': 'arjs-anchor.smooth',
+        'smooth-count': 'arjs-anchor.smoothCount',
+        'smooth-tolerance': 'arjs-anchor.smoothTolerance',
+        'smooth-threshold': 'arjs-anchor.smoothThreshold',
+
+        'hit-testing-render-debug': 'arjs-hit-testing.renderDebug',
+        'hit-testing-enabled': 'arjs-hit-testing.enabled',
+    }
+}))
+
+AFRAME.registerPrimitive('a-marker-camera', AFRAME.utils.extendDeep({}, AFRAME.primitives.getMeshMixin(), {
+    defaultComponents: {
+        'arjs-anchor': {
+            changeMatrixMode: 'cameraTransformMatrix'
+        },
+        'camera': {},
+    },
+    mappings: {
+        'type': 'arjs-anchor.type',
+        'size': 'arjs-anchor.size',
+        'url': 'arjs-anchor.patternUrl',
+        'descriptorsUrl': 'arjs-anchor.descriptorsUrl',
+        'value': 'arjs-anchor.barcodeValue',
+        'preset': 'arjs-anchor.preset',
+        'min-confidence': 'arjs-anchor.minConfidence',
+        'marker-helpers': 'arjs-anchor.markerhelpers',
+    }
+}))
+//////////////////////////////////////////////////////////////////////////////
+//		arjs-hit-testing
+//////////////////////////////////////////////////////////////////////////////
+AFRAME.registerComponent('arjs-hit-testing', {
+	dependencies: ['arjs', 'artoolkit'],
+	schema: {
+		enabled : {
+			type: 'boolean',
+			default: false,
+		},
+		renderDebug : {
+			type: 'boolean',
+			default: false,
+		},
+	},
+	init: function () {
+		var _this = this
+		var arjsSystem = this.el.sceneEl.systems.arjs || this.el.sceneEl.systems.artoolkit
+
+// TODO make it work on cameraTransformMatrix too
+//
+		_this.isReady = false
+		_this._arAnchor = null
+		_this._arHitTesting = null
+
+		// trick to wait until arjsSystem is isReady
+		var startedAt = Date.now()
+		var timerId = setInterval(function(){
+			var anchorEl = _this.el
+			var anchorComponent = anchorEl.components['arjs-anchor']
+			// wait until anchorComponent is isReady
+			if( anchorComponent === undefined || anchorComponent.isReady === false )	return
+
+			clearInterval(timerId)
+
+			//////////////////////////////////////////////////////////////////////////////
+			//		create arAnchor
+			//////////////////////////////////////////////////////////////////////////////
+			var arAnchor = anchorComponent._arAnchor
+			var arSession = arjsSystem._arSession
+			var renderer = arSession.parameters.renderer
+
+			var hitTesting = _this._arHitTesting = new ARjs.HitTesting(arSession)
+			hitTesting.enabled = _this.data.enabled
+
+			_this.isReady = true
+		}, 1000/60)
+	},
+	remove : function(){
+	},
+	update: function () {
+	},
+	tick: function(){
+		var _this = this
+		// if not yet isReady, do nothing
+		if( this.isReady === false )	return
+
+		var arjsSystem = this.el.sceneEl.systems.arjs || this.el.sceneEl.systems.artoolkit
+		var arSession = arjsSystem._arSession
+
+		var anchorEl = _this.el
+		var anchorComponent = anchorEl.components['arjs-anchor']
+		var arAnchor = anchorComponent._arAnchor
+
+
+		var hitTesting = this._arHitTesting
+		var camera = arSession.parameters.camera
+// console.log(camera.position)
+		hitTesting.update(camera, arAnchor.object3d, arAnchor.parameters.changeMatrixMode)
+	}
+});
+AFRAME.registerComponent('gps-camera-debug', {
+    init: function () {
+        this.current_coords_latitude;
+        this.current_coords_longitude;
+        this.origin_coords_latitude;
+        this.origin_coords_longitude;
+        this.camera_p_x;
+        this.camera_p_z;
+        this.entities = 0;
+
+        // initialize
+        this._buildCameraDebugUI(document.body);
+
+        // retrieve specific UI components
+        this.current_coords_latitude = document.querySelector('#current_coords_latitude');
+        this.current_coords_longitude = document.querySelector('#current_coords_longitude');
+        this.origin_coords_latitude = document.querySelector('#origin_coords_latitude');
+        this.origin_coords_longitude = document.querySelector('#origin_coords_longitude');
+        this.camera_p_x = document.querySelector('#camera_p_x');
+        this.camera_p_z = document.querySelector('#camera_p_z');
+
+        this.placesLoadedEventHandler = function() {
+            this.entities++;
+            var entities = document.querySelectorAll('[gps-entity-place]') && document.querySelectorAll('[gps-entity-place]').length || 0;
+
+            if (entities === this.entities) {
+                // all entities added, we can build debug UI
+                this._buildDistancesDebugUI();
+                window.removeEventListener('gps-entity-place-loaded', this.placesLoadedEventHandler.bind(this));
+                window.dispatchEvent(new CustomEvent('debug-ui-added'));
+            }
+        };
+
+        window.addEventListener('gps-entity-place-loaded', this.placesLoadedEventHandler.bind(this));
+    },
+    tick: function () {
+        var camera = document.querySelector('[gps-camera]');
+        var position = camera.getAttribute('position');
+
+        this.camera_p_x.innerText = position.x.toFixed(6);
+        this.camera_p_z.innerText = position.z.toFixed(6);
+
+        var gpsPosition = camera.components['gps-camera'];
+        if (gpsPosition) {
+            if (gpsPosition.currentCoords) {
+                this.current_coords_longitude.innerText = gpsPosition.currentCoords.longitude.toFixed(6);
+                this.current_coords_latitude.innerText = gpsPosition.currentCoords.latitude.toFixed(6);
+            }
+
+            if (gpsPosition.originCoords) {
+                this.origin_coords_longitude.innerText = gpsPosition.originCoords.longitude.toFixed(6);
+                this.origin_coords_latitude.innerText = gpsPosition.originCoords.latitude.toFixed(6);
+            }
+        }
+    },
+    /**
+     * Build and attach debug UI elements
+     *
+     * @param {HTMLElement} parent parent element where to attach debug UI elements
+     */
+    _buildCameraDebugUI: function(parent) {
+        var container = document.createElement('div');
+        container.classList.add('debug');
+
+        var currentLatLng = document.createElement('div');
+        currentLatLng.innerText = 'current lng/lat coords: ';
+        var spanLng = document.createElement('span');
+        spanLng.id = 'current_coords_longitude';
+        var spanLat = document.createElement('span');
+        spanLat.id = 'current_coords_latitude';
+        currentLatLng.appendChild(spanLng);
+        currentLatLng.appendChild(spanLat);
+
+        container.appendChild(currentLatLng);
+
+        var originLatLng = document.createElement('div');
+        originLatLng.innerText = 'origin lng/lat coords: ';
+        var originSpanLng = document.createElement('span');
+        originSpanLng.id = 'origin_coords_longitude';
+        var originSpanLat = document.createElement('span');
+        originSpanLat.id = 'origin_coords_latitude';
+        originLatLng.appendChild(originSpanLng);
+        originLatLng.appendChild(originSpanLat);
+
+        container.appendChild(originLatLng);
+
+        var cameraDiv = document.createElement('div');
+        cameraDiv.innerText = 'camera 3d position: ';
+        var cameraSpanX = document.createElement('span');
+        cameraSpanX.id = 'camera_p_x';
+        var cameraSpanZ = document.createElement('span');
+        cameraSpanZ.id = 'camera_p_z';
+
+        cameraDiv.appendChild(cameraSpanX);
+        cameraDiv.appendChild(cameraSpanZ);
+        container.appendChild(cameraDiv);
+
+        parent.appendChild(container);
+    },
+    /**
+     * Build distances UI elements
+     * @returns {void}
+     */
+    _buildDistancesDebugUI: function() {
+        var div = document.querySelector('.debug');
+        document.querySelectorAll('[gps-entity-place]').forEach(function(element) {
+            var debugDiv = document.createElement('div');
+            debugDiv.classList.add('debug-distance');
+            debugDiv.innerHTML = element.getAttribute('value');
+            console.log(element.getAttribute('value'));
+            debugDiv.setAttribute('value', element.getAttribute('value'));
+            div.appendChild(debugDiv);
+        });
+    },
+});
+AFRAME.registerComponent('gps-camera', {
+    _watchPositionId: null,
+    originCoords: null,
+    currentCoords: null,
+    lookControls: null,
+    heading: null,
+    schema: {
+        simulateLatitude: {
+            type: 'number',
+            default: 0,
+        },
+        simulateLongitude: {
+            type: 'number',
+            default: 0,
+        },
+        simulateAltitude: {
+            type: 'number',
+            default: 0,
+        },
+        positionMinAccuracy: {
+            type: 'int',
+            default: 100,
+        },
+        alert: {
+            type: 'boolean',
+            default: false,
+        },
+        minDistance: {
+            type: 'int',
+            default: 0,
+        }
+    },
+
+    init: function () {
+        if (!this.el.components['look-controls']) {
+            return;
+        }
+
+        this.loader = document.createElement('DIV');
+        this.loader.classList.add('arjs-loader');
+        document.body.appendChild(this.loader);
+
+        window.addEventListener('gps-entity-place-added', function () {
+            // if places are added after camera initialization is finished
+            if (this.originCoords) {
+                window.dispatchEvent(new CustomEvent('gps-camera-origin-coord-set'));
+                console.debug('gps-camera-origin-coord-set');
+            }
+            if (this.loader && this.loader.parentElement) {
+                document.body.removeChild(this.loader)
+            }
+        }.bind(this));
+
+        this.lookControls = this.el.components['look-controls'];
+
+        // listen to deviceorientation event
+        var eventName = this._getDeviceOrientationEventName();
+        this._onDeviceOrientation = this._onDeviceOrientation.bind(this);
+
+        // if Safari
+        if (!!navigator.userAgent.match(/Version\/[\d.]+.*Safari/)) {
+            // iOS 13+
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                var handler = function () {
+                    console.log('Requesting device orientation permissions...')
+                    DeviceOrientationEvent.requestPermission();
+                    document.removeEventListener('touchend', handler);
+                };
+
+                document.addEventListener('touchend', function () { handler() }, false);
+
+                alert('After camera permission prompt, please tap the screen to activate geolocation.');
+            } else {
+                var timeout = setTimeout(function () {
+                    alert('Please enable device orientation in Settings > Safari > Motion & Orientation Access.')
+                }, 750);
+                window.addEventListener(eventName, function () {
+                    clearTimeout(timeout);
+                });
+            }
+        }
+
+        window.addEventListener(eventName, this._onDeviceOrientation, false);
+
+        this._watchPositionId = this._initWatchGPS(function (position) {
+            if(this.data.simulateLatitude !== 0 && this.data.simulateLongitude !== 0) {
+                localPosition = Object.assign({}, position.coords);
+                localPosition.longitude = this.data.simulateLongitude;
+                localPosition.latitude = this.data.simulateLatitude;
+                localPosition.altitude = this.data.simulateAltitude;
+                this.currentCoords = localPosition;
+            }
+            else {
+                this.currentCoords = position.coords;
+            }
+            
+            
+            this._updatePosition();
+        }.bind(this));
+    },
+
+    tick: function () {
+        if (this.heading === null) {
+            return;
+        }
+        this._updateRotation();
+    },
+
+    remove: function () {
+        if (this._watchPositionId) {
+            navigator.geolocation.clearWatch(this._watchPositionId);
+        }
+        this._watchPositionId = null;
+
+        var eventName = this._getDeviceOrientationEventName();
+        window.removeEventListener(eventName, this._onDeviceOrientation, false);
+    },
+
+    /**
+     * Get device orientation event name, depends on browser implementation.
+     * @returns {string} event name
+     */
+    _getDeviceOrientationEventName: function () {
+        if ('ondeviceorientationabsolute' in window) {
+            var eventName = 'deviceorientationabsolute'
+        } else if ('ondeviceorientation' in window) {
+            var eventName = 'deviceorientation'
+        } else {
+            var eventName = ''
+            console.error('Compass not supported')
+        }
+
+        return eventName
+    },
+
+    /**
+     * Get current user position.
+     *
+     * @param {function} onSuccess
+     * @param {function} onError
+     * @returns {Promise}
+     */
+    _initWatchGPS: function (onSuccess, onError) {
+        if (!onError) {
+            onError = function (err) {
+                console.warn('ERROR(' + err.code + '): ' + err.message)
+
+                if (err.code === 1) {
+                    // User denied GeoLocation, let their know that
+                    alert('Please activate Geolocation and refresh the page. If it is already active, please check permissions for this website.');
+                    return;
+                }
+
+                if (err.code === 3) {
+                    alert('Cannot retrieve GPS position. Signal is absent.');
+                    return;
+                }
+            };
+        }
+
+        if ('geolocation' in navigator === false) {
+            onError({ code: 0, message: 'Geolocation is not supported by your browser' });
+            return Promise.resolve();
+        }
+
+        // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/watchPosition
+        return navigator.geolocation.watchPosition(onSuccess, onError, {
+            enableHighAccuracy: true,
+            maximumAge: 0,
+            timeout: 27000,
+        });
+    },
+
+    /**
+     * Update user position.
+     *
+     * @returns {void}
+     */
+    _updatePosition: function () {
+        // don't update if accuracy is not good enough
+        if (this.currentCoords.accuracy > this.data.positionMinAccuracy) {
+            if (this.data.alert && !document.getElementById('alert-popup')) {
+                var popup = document.createElement('div');
+                popup.innerHTML = 'GPS signal is very poor. Try move outdoor or to an area with a better signal.'
+                popup.setAttribute('id', 'alert-popup');
+                document.body.appendChild(popup);
+            }
+            return;
+        }
+
+        var alertPopup = document.getElementById('alert-popup');
+        if (this.currentCoords.accuracy <= this.data.positionMinAccuracy && alertPopup) {
+            document.body.removeChild(alertPopup);
+        }
+
+        if (!this.originCoords) {
+            // first camera initialization
+            this.originCoords = this.currentCoords;
+            this._setPosition();
+
+            var loader = document.querySelector('.arjs-loader');
+            if (loader) {
+                document.body.removeChild(loader)
+            }
+            window.dispatchEvent(new CustomEvent('gps-camera-origin-coord-set'));
+            console.debug('gps-camera-origin-coord-set');
+        } else {
+            this._setPosition();
+        }
+    },
+    _setPosition: function () {
+        var position = this.el.getAttribute('position');
+
+        // compute position.x
+        var dstCoords = {
+            longitude: this.currentCoords.longitude,
+            latitude: this.originCoords.latitude,
+        };
+
+        position.x = this.computeDistanceMeters(this.originCoords, dstCoords);
+        position.x *= this.currentCoords.longitude > this.originCoords.longitude ? 1 : -1;
+
+        // compute position.z
+        var dstCoords = {
+            longitude: this.originCoords.longitude,
+            latitude: this.currentCoords.latitude,
+        }
+
+        position.z = this.computeDistanceMeters(this.originCoords, dstCoords);
+        position.z *= this.currentCoords.latitude > this.originCoords.latitude ? -1 : 1;
+
+        // update position
+        this.el.setAttribute('position', position);
+
+
+        window.dispatchEvent(new CustomEvent('gps-camera-update-position', { detail: { position: this.currentCoords, origin: this.originCoords }}));
+    },
+    /**
+     * Returns distance in meters between source and destination inputs.
+     *
+     *  Calculate distance, bearing and more between Latitude/Longitude points
+     *  Details: https://www.movable-type.co.uk/scripts/latlong.html
+     *
+     * @param {Position} src
+     * @param {Position} dest
+     * @param {Boolean} isPlace
+     *
+     * @returns {number} distance
+     */
+    computeDistanceMeters: function (src, dest, isPlace) {
+        var dlongitude = THREE.Math.degToRad(dest.longitude - src.longitude);
+        var dlatitude = THREE.Math.degToRad(dest.latitude - src.latitude);
+
+        var a = (Math.sin(dlatitude / 2) * Math.sin(dlatitude / 2)) + Math.cos(THREE.Math.degToRad(src.latitude)) * Math.cos(THREE.Math.degToRad(dest.latitude)) * (Math.sin(dlongitude / 2) * Math.sin(dlongitude / 2));
+        var angle = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var distance = angle * 6378160;
+
+        // if function has been called for a place, and if it's too near and a min distance has been set,
+        // set a very high distance to hide the object
+        if (isPlace && this.data.minDistance && this.data.minDistance > 0 && distance < this.data.minDistance) {
+            return Number.MAX_SAFE_INTEGER;
+        }
+
+        return distance;
+    },
+
+    /**
+     * Compute compass heading.
+     *
+     * @param {number} alpha
+     * @param {number} beta
+     * @param {number} gamma
+     *
+     * @returns {number} compass heading
+     */
+    _computeCompassHeading: function (alpha, beta, gamma) {
+
+        // Convert degrees to radians
+        var alphaRad = alpha * (Math.PI / 180);
+        var betaRad = beta * (Math.PI / 180);
+        var gammaRad = gamma * (Math.PI / 180);
+
+        // Calculate equation components
+        var cA = Math.cos(alphaRad);
+        var sA = Math.sin(alphaRad);
+        var sB = Math.sin(betaRad);
+        var cG = Math.cos(gammaRad);
+        var sG = Math.sin(gammaRad);
+
+        // Calculate A, B, C rotation components
+        var rA = - cA * sG - sA * sB * cG;
+        var rB = - sA * sG + cA * sB * cG;
+
+        // Calculate compass heading
+        var compassHeading = Math.atan(rA / rB);
+
+        // Convert from half unit circle to whole unit circle
+        if (rB < 0) {
+            compassHeading += Math.PI;
+        } else if (rA < 0) {
+            compassHeading += 2 * Math.PI;
+        }
+
+        // Convert radians to degrees
+        compassHeading *= 180 / Math.PI;
+
+        return compassHeading;
+    },
+
+    /**
+     * Handler for device orientation event.
+     *
+     * @param {Event} event
+     * @returns {void}
+     */
+    _onDeviceOrientation: function (event) {
+        if (event.webkitCompassHeading !== undefined) {
+            if (event.webkitCompassAccuracy < 50) {
+                this.heading = event.webkitCompassHeading;
+            } else {
+                console.warn('webkitCompassAccuracy is event.webkitCompassAccuracy');
+            }
+        } else if (event.alpha !== null) {
+            if (event.absolute === true || event.absolute === undefined) {
+                this.heading = this._computeCompassHeading(event.alpha, event.beta, event.gamma);
+            } else {
+                console.warn('event.absolute === false');
+            }
+        } else {
+            console.warn('event.alpha === null');
+        }
+    },
+
+    /**
+     * Update user rotation data.
+     *
+     * @returns {void}
+     */
+    _updateRotation: function () {
+        var heading = 360 - this.heading;
+        var cameraRotation = this.el.getAttribute('rotation').y;
+        var yawRotation = THREE.Math.radToDeg(this.lookControls.yawObject.rotation.y);
+        var offset = (heading - (cameraRotation - yawRotation)) % 360;
+        this.lookControls.yawObject.rotation.y = THREE.Math.degToRad(offset);
+    },
+});
+AFRAME.registerComponent('gps-entity-place', {
+    _cameraGps: null,
+    schema: {
+        longitude: {
+            type: 'number',
+            default: 0,
+        },
+        latitude: {
+            type: 'number',
+            default: 0,
+        }
+    },
+    init: function () {
+        window.addEventListener('gps-camera-origin-coord-set', function () {
+            if (!this._cameraGps) {
+                var camera = document.querySelector('[gps-camera]');
+                if (!camera.components['gps-camera']) {
+                    console.error('gps-camera not initialized')
+                    return;
+                }
+                this._cameraGps = camera.components['gps-camera'];
+            }
+
+            this._updatePosition();
+        }.bind(this));
+
+        window.addEventListener('gps-camera-update-position', function (ev) {
+            if (!this.data || !this._cameraGps) {
+                return;
+            }
+
+            var dstCoords = {
+                longitude: this.data.longitude,
+                latitude: this.data.latitude,
+            };
+
+            var distance = this._cameraGps.computeDistanceMeters(ev.detail.position, dstCoords, true);
+
+            this.el.setAttribute('distance', distance);
+            this.el.setAttribute('distanceMsg', formatDistance(distance));
+            this.el.dispatchEvent(new CustomEvent('gps-entity-place-update-positon', { detail: { distance: distance } }));
+        }.bind(this));
+
+        this._positionXDebug = 0;
+
+        window.dispatchEvent(new CustomEvent('gps-entity-place-added'));
+        console.debug('gps-entity-place-added');
+
+        this.debugUIAddedHandler = function () {
+            this.setDebugData(this.el);
+            window.removeEventListener('debug-ui-added', this.debugUIAddedHandler.bind(this));
+        };
+
+        window.addEventListener('debug-ui-added', this.debugUIAddedHandler.bind(this));
+    },
+
+    /**
+     * Update place position
+     * @returns {void}
+     */
+    _updatePosition: function () {
+        var position = { x: 0, y: this.el.getAttribute('position').y || 0, z: 0 }
+
+        // update position.x
+        var dstCoords = {
+            longitude: this.data.longitude,
+            latitude: this._cameraGps.originCoords.latitude,
+        };
+
+        position.x = this._cameraGps.computeDistanceMeters(this._cameraGps.originCoords, dstCoords, true);
+        this._positionXDebug = position.x;
+
+        position.x *= this.data.longitude > this._cameraGps.originCoords.longitude ? 1 : -1;
+
+        // update position.z
+        var dstCoords = {
+            longitude: this._cameraGps.originCoords.longitude,
+            latitude: this.data.latitude,
+        };
+
+        position.z = this._cameraGps.computeDistanceMeters(this._cameraGps.originCoords, dstCoords, true);
+        position.z *= this.data.latitude > this._cameraGps.originCoords.latitude ? -1 : 1;
+        if(position.y !== 0) {
+            position.y = position.y - this._cameraGps.originCoords.altitude;
+        }
+        
+        // update element's position in 3D world
+        this.el.setAttribute('position', position);
+    },
+
+    /**
+     * Set places distances from user on debug UI
+     * @returns {void}
+     */
+    setDebugData: function (element) {
+        var elements = document.querySelectorAll('.debug-distance');
+        elements.forEach(function (el) {
+            var distance = formatDistance(this._positionXDebug);
+            if (element.getAttribute('value') == el.getAttribute('value')) {
+                el.innerHTML = el.getAttribute('value') + ': ' + distance + 'far';
+            }
+        });
+    },
+});
+
+/**
+ * Format distances string
+ *
+ * @param {String} distance
+ */
+function formatDistance(distance) {
+    distance = distance.toFixed(0);
+
+    if (distance >= 1000) {
+        return (distance / 1000) + ' kilometers';
+    }
+
+    return distance + ' meters';
+};
+AFRAME.registerSystem('arjs', {
+    schema: {
+        trackingMethod: {
+            type: 'string',
+            default: 'best',
+        },
+        debugUIEnabled: {
+            type: 'boolean',
+            default: false,
+        },
+        areaLearningButton: {
+            type: 'boolean',
+            default: true,
+        },
+        performanceProfile: {
+            type: 'string',
+            default: 'default',
+        },
+        // old parameters
+        debug: {
+            type: 'boolean',
+            default: false
+        },
+        detectionMode: {
+            type: 'string',
+            default: '',
+        },
+        matrixCodeType: {
+            type: 'string',
+            default: '',
+        },
+        patternRatio: {
+            type: 'number',
+            default: -1,
+        },
+        labelingMode: {
+            type: 'string',
+            default: '',
+        },
+        cameraParametersUrl: {
+            type: 'string',
+            default: '',
+        },
+        maxDetectionRate: {
+            type: 'number',
+            default: -1
+        },
+        sourceType: {
+            type: 'string',
+            default: '',
+        },
+        sourceUrl: {
+            type: 'string',
+            default: '',
+        },
+        sourceWidth: {
+            type: 'number',
+            default: -1
+        },
+        sourceHeight: {
+            type: 'number',
+            default: -1
+        },
+        deviceId: {
+            type: 'string',
+            default: ''
+        },
+        displayWidth: {
+            type: 'number',
+            default: -1
+        },
+        displayHeight: {
+            type: 'number',
+            default: -1
+        },
+        canvasWidth: {
+            type: 'number',
+            default: -1
+        },
+        canvasHeight: {
+            type: 'number',
+            default: -1
+        },
+    },
+
+    //////////////////////////////////////////////////////////////////////////////
+    //		Code Separator
+    //////////////////////////////////////////////////////////////////////////////
+
+    init: function () {
+        var _this = this
+
+        //////////////////////////////////////////////////////////////////////////////
+        //		setup arProfile
+        //////////////////////////////////////////////////////////////////////////////
+
+        var arProfile = this._arProfile = new ARjs.Profile()
+            .trackingMethod(this.data.trackingMethod)
+            .performance(this.data.performanceProfile)
+            .defaultMarker()
+
+        //////////////////////////////////////////////////////////////////////////////
+        //		honor this.data and setup arProfile with it
+        //////////////////////////////////////////////////////////////////////////////
+
+        // honor this.data and push what has been modified into arProfile
+        if (this.data.debug !== false) arProfile.contextParameters.debug = this.data.debug
+        if (this.data.detectionMode !== '') arProfile.contextParameters.detectionMode = this.data.detectionMode
+        if (this.data.matrixCodeType !== '') arProfile.contextParameters.matrixCodeType = this.data.matrixCodeType
+        if (this.data.patternRatio !== -1) arProfile.contextParameters.patternRatio = this.data.patternRatio
+        if (this.data.labelingMode !== '') arProfile.contextParameters.labelingMode = this.data.labelingMode
+        if (this.data.cameraParametersUrl !== '') arProfile.contextParameters.cameraParametersUrl = this.data.cameraParametersUrl
+        if (this.data.maxDetectionRate !== -1) arProfile.contextParameters.maxDetectionRate = this.data.maxDetectionRate
+        if (this.data.canvasWidth !== -1) arProfile.contextParameters.canvasWidth = this.data.canvasWidth
+        if (this.data.canvasHeight !== -1) arProfile.contextParameters.canvasHeight = this.data.canvasHeight
+
+        if (this.data.sourceType !== '') arProfile.sourceParameters.sourceType = this.data.sourceType
+        if (this.data.sourceUrl !== '') arProfile.sourceParameters.sourceUrl = this.data.sourceUrl
+        if (this.data.sourceWidth !== -1) arProfile.sourceParameters.sourceWidth = this.data.sourceWidth
+        if (this.data.sourceHeight !== -1) arProfile.sourceParameters.sourceHeight = this.data.sourceHeight
+        if (this.data.deviceId !== '') arProfile.sourceParameters.deviceId = this.data.deviceId
+        if (this.data.displayWidth !== -1) arProfile.sourceParameters.displayWidth = this.data.displayWidth
+        if (this.data.displayHeight !== -1) arProfile.sourceParameters.displayHeight = this.data.displayHeight
+
+        arProfile.checkIfValid()
+
+        //////////////////////////////////////////////////////////////////////////////
+        //		Code Separator
+        //////////////////////////////////////////////////////////////////////////////
+
+        this._arSession = null
+
+        _this.isReady = false
+        _this.needsOverride = true
+
+        // wait until the renderer is isReady
+        this.el.sceneEl.addEventListener('renderstart', function () {
+            var scene = _this.el.sceneEl.object3D
+            var camera = _this.el.sceneEl.camera
+            var renderer = _this.el.sceneEl.renderer
+
+            //////////////////////////////////////////////////////////////////////////////
+            //		build ARjs.Session
+            //////////////////////////////////////////////////////////////////////////////
+            var arSession = _this._arSession = new ARjs.Session({
+                scene: scene,
+                renderer: renderer,
+                camera: camera,
+                sourceParameters: arProfile.sourceParameters,
+                contextParameters: arProfile.contextParameters
+            })
+
+            //////////////////////////////////////////////////////////////////////////////
+            //		Code Separator
+            //////////////////////////////////////////////////////////////////////////////
+
+            _this.isReady = true
+
+            //////////////////////////////////////////////////////////////////////////////
+            //		awful resize trick
+            //////////////////////////////////////////////////////////////////////////////
+            // KLUDGE
+            window.addEventListener('resize', onResize)
+            function onResize() {
+                var arSource = _this._arSession.arSource
+
+                // ugly kludge to get resize on aframe... not even sure it works
+                if (arProfile.contextParameters.trackingBackend !== 'tango') {
+                    arSource.copyElementSizeTo(document.body)
+                }
+
+                // fixing a-frame css
+                var buttonElement = document.querySelector('.a-enter-vr')
+                if (buttonElement) {
+                    buttonElement.style.position = 'fixed'
+                }
+            }
+
+
+            //////////////////////////////////////////////////////////////////////////////
+            //		honor .debugUIEnabled
+            //////////////////////////////////////////////////////////////////////////////
+            if (_this.data.debugUIEnabled) initDebugUI()
+            function initDebugUI() {
+                // get or create containerElement
+                var containerElement = document.querySelector('#arjsDebugUIContainer')
+                if (containerElement === null) {
+                    containerElement = document.createElement('div')
+                    containerElement.id = 'arjsDebugUIContainer'
+                    containerElement.setAttribute('style', 'position: fixed; bottom: 10px; width:100%; text-align: center; z-index: 1;color: grey;')
+                    document.body.appendChild(containerElement)
+                }
+
+                // create sessionDebugUI
+                var sessionDebugUI = new ARjs.SessionDebugUI(arSession)
+                containerElement.appendChild(sessionDebugUI.domElement)
+            }
+        })
+
+        //////////////////////////////////////////////////////////////////////////////
+        //		Code Separator
+        //////////////////////////////////////////////////////////////////////////////
+        // TODO this is crappy - code an exponential backoff - max 1 seconds
+        // KLUDGE: kludge to write a 'resize' event
+        var startedAt = Date.now()
+        var timerId = setInterval(function () {
+            if (Date.now() - startedAt > 10000 * 1000) {
+                clearInterval(timerId)
+                return
+            }
+            // onResize()
+            window.dispatchEvent(new Event('resize'));
+        }, 1000 / 30)
+    },
+
+    tick: function (now, delta) {
+        var _this = this
+
+        // skip it if not yet isInitialised
+        if (this.isReady === false) return
+
+        // update arSession
+        this._arSession.update()
+
+        // copy projection matrix to camera
+        this._arSession.onResize()
+    },
+})

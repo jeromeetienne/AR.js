@@ -11,12 +11,14 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, par
     this.parameters = {
         // size of the marker in meter
         size: 1,
-        // type of marker - ['pattern', 'barcode',, 'unknown' ]
+        // type of marker - ['pattern', 'barcode', 'nft', 'unknown' ]
         type: 'unknown',
         // url of the pattern - IIF type='pattern'
         patternUrl: null,
         // value of the barcode - IIF type='barcode'
         barcodeValue: null,
+        // url of the descriptors of image - IIF type='nft'
+        descriptorsUrl: null,
         // change matrix mode - [modelViewMatrix, cameraTransformMatrix]
         changeMatrixMode: 'modelViewMatrix',
         // minimal confidence in the marke recognition - between [0, 1] - default to 1
@@ -32,7 +34,7 @@ ARjs.MarkerControls = THREEx.ArMarkerControls = function (context, object3d, par
     }
 
     // sanity check
-    var possibleValues = ['pattern', 'barcode', 'unknown']
+    var possibleValues = ['pattern', 'barcode', 'nft', 'unknown']
     console.assert(possibleValues.indexOf(this.parameters.type) !== -1, 'illegal value', this.parameters.type)
     var possibleValues = ['modelViewMatrix', 'cameraTransformMatrix']
     console.assert(possibleValues.indexOf(this.parameters.changeMatrixMode) !== -1, 'illegal value', this.parameters.changeMatrixMode)
@@ -187,6 +189,10 @@ ARjs.MarkerControls.prototype.name = function () {
         name += ' - ' + basename;
     } else if (this.parameters.type === 'barcode') {
         name += ' - ' + this.parameters.barcodeValue;
+    } else if (this.parameters.type === 'nft') {
+        var url = this.parameters.descriptorsUrl;
+        var basename = url.replace(/^.*\//g, '');
+        name += ' - ' + basename;
     } else {
         console.assert(false, 'no .name() implemented for this marker controls');
     }
@@ -229,6 +235,9 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
         } else if (_this.parameters.type === 'barcode') {
             artoolkitMarkerId = _this.parameters.barcodeValue
             arController.trackBarcodeMarkerId(artoolkitMarkerId, _this.parameters.size);
+        } else if (_this.parameters.type === 'nft') {
+            // use workers as default
+            handleNFT(_this.parameters.descriptorsUrl, arController);
         } else if (_this.parameters.type === 'unknown') {
             artoolkitMarkerId = null
         } else {
@@ -260,6 +269,99 @@ ARjs.MarkerControls.prototype._initArtoolkit = function () {
             matrix.elements = [].slice.call(array);
         }
     };
+
+    function handleNFT(descriptorsUrl, arController) {
+        // create a Worker to handle loading of NFT marker and tracking of it
+
+        var worker = new Worker(THREEx.ArToolkitContext.baseURL + 'vendor/jsartoolkit5/js/artoolkit.worker.js');
+
+        window.addEventListener('arjs-video-loaded', function (ev) {
+            var video = ev.detail.component;
+            var vw = video.clientWidth;
+            var vh = video.clientHeight;
+
+            var pscale = 320 / Math.max(vw, vh / 3 * 4);
+
+            w = vw * pscale;
+            h = vh * pscale;
+            pw = Math.max(w, h / 3 * 4);
+            ph = Math.max(h, w / 4 * 3);
+            ox = (pw - w) / 2;
+            oy = (ph - h) / 2;
+
+            arController.canvas.style.clientWidth = pw + "px";
+            arController.canvas.style.clientHeight = ph + "px";
+            arController.canvas.width = pw;
+            arController.canvas.height = ph;
+
+            var context_process = arController.canvas.getContext('2d');
+
+            function process() {
+                context_process.fillStyle = "black";
+                context_process.fillRect(0, 0, pw, ph);
+                context_process.drawImage(video, 0, 0, vw, vh, ox, oy, w, h);
+
+                var imageData = context_process.getImageData(0, 0, pw, ph);
+                worker.postMessage({ type: "process", imagedata: imageData }, [imageData.data.buffer]);
+            }
+
+            // initialize the worker
+            worker.postMessage({
+                type: 'init',
+                pw: pw,
+                ph: ph,
+                marker: descriptorsUrl,
+                param: arController.cameraParam.src,
+            });
+
+            worker.onmessage = function (ev) {
+                if (ev && ev.data && ev.data.type === 'endLoading') {
+                    var loader = document.querySelector('.arjs-nft-loader');
+                    if (loader) {
+                        loader.remove();
+                    }
+                }
+
+                if (ev && ev.data && ev.data.type === 'loaded') {
+                    var proj = JSON.parse(ev.data.proj);
+                    var ratioW = pw / w;
+                    var ratioH = ph / h;
+                    proj[0] *= ratioW;
+                    proj[4] *= ratioW;
+                    proj[8] *= ratioW;
+                    proj[12] *= ratioW;
+                    proj[1] *= ratioH;
+                    proj[5] *= ratioH;
+                    proj[9] *= ratioH;
+                    proj[13] *= ratioH;
+
+                    setMatrix(_this.object3d.matrix, proj);
+                }
+
+                if (ev && ev.data && ev.data.type === 'found') {
+                    var matrix = JSON.parse(ev.data.matrix);
+
+                    onMarkerFound({
+                        data: {
+                            type: artoolkit.NFT_MARKER,
+                            matrix: matrix,
+                            msg: ev.data.type,
+                        }
+                    });
+
+                    _this.context.arController.showObject = true;
+                } else {
+                    _this.context.arController.showObject = false;
+                }
+
+                process();
+            };
+
+        })
+
+
+
+    }
 
     function onMarkerFound(event) {
         if (event.data.type === artoolkit.PATTERN_MARKER && event.data.marker.cfPatt < _this.parameters.minConfidence) return
