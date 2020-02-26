@@ -1243,6 +1243,8 @@ ARjs.Context.prototype.getProjectionMatrix = function () {
     var projectionMatrixArr = this.arController.getCameraMatrix();
     var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)
 
+    // projectionMatrix.multiply(this._artoolkitProjectionAxisTransformMatrix)
+
     return projectionMatrix
 }
 
@@ -1602,23 +1604,19 @@ ARjs.Source.prototype._initSourceWebcam = function (onReady, onError) {
     }
 
     // get available devices
-    navigator.mediaDevices.enumerateDevices().then(function (devices) {
+    navigator.mediaDevices.enumerateDevices().then(function () {
         var userMediaConstraints = {
             audio: false,
-            video: true
-        };
-
-        if (window.innerWidth < 800) {
-            var width = (window.innerWidth < window.innerHeight) ? 480 : 640;
-
-            userMediaConstraints = {
-                audio: false,
-                video: {
-                    facingMode: 'environment',
-                    width: { min: width, max: width }
+            video: {
+                facingMode: 'environment',
+                width: {
+                    ideal: _this.parameters.sourceWidth,
                 },
-            };
-        }
+                height: {
+                    ideal: _this.parameters.sourceHeight,
+                }
+            }
+        };
 
         if (null !== _this.parameters.deviceId) {
             userMediaConstraints.video.deviceId = {
