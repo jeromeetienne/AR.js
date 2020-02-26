@@ -1,5 +1,5 @@
 if ('function' === typeof importScripts) {
-    importScripts('../build/artoolkit.min.js');
+    importScripts('../build/artoolkit-nft.min.js');
 
     self.onmessage = function (e) {
         var msg = e.data;
@@ -74,4 +74,3 @@ if ('function' === typeof importScripts) {
     }
 
 }
-
