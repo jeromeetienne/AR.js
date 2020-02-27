@@ -37,7 +37,7 @@ ARjs.Anchor = function(arSession, markerParameters){
 		this.controls = markerControls
 	}else{
 		// sanity check - MUST be a trackingBackend with markers
-		console.assert( arContext.parameters.trackingBackend === 'artoolkit' || arContext.parameters.trackingBackend === 'aruco' )
+		console.assert( arContext.parameters.trackingBackend === 'artoolkit' )
 
 		// honor markers-page-resolution for https://webxr.io/augmented-website
 		if( location.hash.substring(1).startsWith('markers-page-resolution=') === true ){

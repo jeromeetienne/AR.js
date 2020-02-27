@@ -15,7 +15,7 @@ THREEx.ARClickability = function (sourceElement) {
     this._cameraPicking = new THREE.PerspectiveCamera(42, fullWidth / fullHeight, 0.1, 100);
 
     console.warn('THREEx.ARClickability works only in modelViewMatrix')
-    console.warn('OBSOLETE OBSOLETE! instead use THREEx.HitTestingPlane or THREEx.HitTestingTango')
+    console.warn('OBSOLETE OBSOLETE! instead use THREEx.HitTestingPlane')
 }
 
 THREEx.ARClickability.prototype.onResize = function () {
