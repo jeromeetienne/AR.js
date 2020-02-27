@@ -4,8 +4,8 @@ watch: build
 
 build-main:
 	echo	> build/ar.js
-	cat vendor/jsartoolkit5/build/artoolkit.min.js >> build/ar.js
-	cat	src/threex/threex-arbasecontrols.js					\
+	cat vendor/jsartoolkit5/build/artoolkit.min.js \
+		src/threex/threex-arbasecontrols.js					\
 		src/threex/threex-arclickability.js					\
 		src/threex/threex-armarkercloak.js					\
 		src/threex/threex-armarkercontrols.js					\
@@ -17,13 +17,13 @@ build-main:
 		src/threex/threex-arvideoinwebgl.js					\
 		src/threex/threex-hittesting-plane.js					\
 		src/new-api/*.js 				\
-		src/markers-area/*.js 				>> build/ar.js
+		src/markers-area/*.js 				> build/ar.js
 
 build-main-nft:
 	echo	> build/ar-nft.js
 	cat vendor/jsartoolkit5/build/artoolkit-nft.min.js	\
-		vendor/jsartoolkit5/js/artoolkit.worker.js		>> build/ar-nft.js
-	cat	src/threex/threex-arbasecontrols.js					\
+		vendor/jsartoolkit5/js/artoolkit.worker.js		\
+		src/threex/threex-arbasecontrols.js					\
 		src/threex/threex-arclickability.js					\
 		src/threex/threex-armarkercloak.js					\
 		src/threex/threex-armarkercontrols-nft.js					\
@@ -35,7 +35,7 @@ build-main-nft:
 		src/threex/threex-arvideoinwebgl.js					\
 		src/threex/threex-hittesting-plane.js					\
 		src/new-api/*.js 				\
-		src/markers-area/*.js 				>> build/ar-nft.js
+		src/markers-area/*.js 				> build/ar-nft.js
 
 .PHONY: build
 
