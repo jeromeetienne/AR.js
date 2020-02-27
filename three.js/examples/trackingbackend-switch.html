@@ -5,13 +5,6 @@
 <!-- include for artoolkit trackingMethod -->
 <script src='../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
 <script src='../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
-<!-- include for aruco trackingMethod -->
-<script src='../vendor/js-aruco/src/svd.js'></script>
-<script src='../vendor/js-aruco/src/posit1.js'></script>
-<script src='../vendor/js-aruco/src/cv.js'></script>
-<script src='../vendor/js-aruco/src/aruco.js'></script>
-<script src='../src/threex/threex-aruco/threex-arucocontext.js'></script>
-<script src='../src/threex/threex-aruco/threex-arucodebug.js'></script>
 <!-- include ar.js -->
 <script src='../src/new-api/arjs-utils.js'></script>
 <script src='../src/threex/threex-artoolkitsource.js'></script>
@@ -31,21 +24,17 @@
         Marker image
         <a href='../../data/images/hiro.jpg' target='_blank'>hiro for artoolkit</a>
         /
-        <a href='../../three.js/threex/threex-aruco/examples/images/1001.png' target='_blank'>1001 for aruco</a>
         <br />
         <strong>Tracking Backend:</strong> <span id='currentTracking'>unknown</span>
         -
         Switch to :
         <a href='?artoolkit'>artoolkit</a>
-        /
-        <a href='?aruco'>aruco</a>
     </div>
     <script>
         var trackingMethod = location.search.substring(1) ? location.search.substring(1) : 'artoolkit'
         document.querySelector('#currentTracking').innerHTML = trackingMethod
 
         // TODO make the multi-markers too
-        // - aruco-area
         // - artoolkit-area
         // - trackingMethod=
         // - trackingMethod=
@@ -191,13 +180,13 @@
             side: THREE.DoubleSide
         });
         var mesh = new THREE.Mesh(geometry, material);
-        mesh.position.y = geometry.parameters.height / 2
+        mesh.position.z = geometry.parameters.height / 2
         arWorldRoot.add(mesh);
 
         var geometry = new THREE.TorusKnotGeometry(0.3, 0.1, 64, 16);
         var material = new THREE.MeshNormalMaterial();
         var mesh = new THREE.Mesh(geometry, material);
-        mesh.position.y = 0.5
+        mesh.position.z = 0.5
         arWorldRoot.add(mesh);
 
         onRenderFcts.push(function (delta) {

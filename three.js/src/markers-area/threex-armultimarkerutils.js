@@ -11,7 +11,7 @@ ARjs.MarkersAreaUtils = THREEx.ArMultiMarkerUtils = {}
 
 /**
  * Navigate to the multi-marker learner page
- * 
+ *
  * @param {String} learnerBaseURL  - the base url for the learner
  * @param {String} trackingBackend - the tracking backend to use
  */
@@ -30,7 +30,7 @@ ARjs.MarkersAreaUtils.navigateToLearnerPage = function(learnerBaseURL, trackingB
 
 /**
  * Create and store a default multi-marker file
- * 
+ *
  * @param {String} trackingBackend - the tracking backend to use
  */
 ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile = function(trackingBackend){
@@ -49,7 +49,7 @@ ARjs.MarkersAreaUtils.storeDefaultMultiMarkerFile = function(trackingBackend){
 ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile = function(trackingBackend){
 	console.assert(trackingBackend)
 	if( trackingBackend === undefined )	debugger
-	
+
 	// create absoluteBaseURL
 	var link = document.createElement('a')
 	link.href = ARjs.Context.baseURL
@@ -63,7 +63,7 @@ ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile = function(trackingBackend){
 		},
 		trackingBackend : trackingBackend,
 		subMarkersControls : [
-			// empty for now... being filled 
+			// empty for now... being filled
 		]
 	}
 	// add a subMarkersControls
@@ -74,11 +74,8 @@ ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile = function(trackingBackend){
 	if( trackingBackend === 'artoolkit' ){
 		file.subMarkersControls[0].parameters.type = 'pattern'
 		file.subMarkersControls[0].parameters.patternUrl = absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt'
-	}else if( trackingBackend === 'aruco' ){
-		file.subMarkersControls[0].parameters.type = 'barcode'
-		file.subMarkersControls[0].parameters.barcodeValue = 1001
 	}else console.assert(false)
-	
+
 	// json.strinfy the value and store it in localStorage
 	return file
 }
@@ -89,7 +86,7 @@ ARjs.MarkersAreaUtils.createDefaultMultiMarkerFile = function(trackingBackend){
 
 /**
  * Create a default controls parameters for the multi-marker learner
- * 
+ *
  * @param {String} trackingBackend - the tracking backend to use
  * @return {Object} - json object containing the controls parameters
  */
@@ -127,33 +124,6 @@ ARjs.MarkersAreaUtils.createDefaultMarkersControlsParameters = function(tracking
 				type : 'pattern',
 				patternUrl : absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterF.patt',
 			},
-		]		
-	}else if( trackingBackend === 'aruco' ){
-		var markersControlsParameters = [
-			{
-				type : 'barcode',
-				barcodeValue: 1001,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1002,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1003,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1004,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1005,
-			},
-			{
-				type : 'barcode',
-				barcodeValue: 1006,
-			},
 		]
 	}else console.assert(false)
 	return markersControlsParameters
@@ -177,7 +147,7 @@ ARjs.MarkersAreaUtils.storeMarkersAreaFileFromResolution = function (trackingBac
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
-	
+
 ARjs.MarkersAreaUtils.buildMarkersAreaFileFromResolution = function(trackingBackend, resolutionW, resolutionH){
 	// create the base file
 	var file = {
@@ -190,7 +160,7 @@ ARjs.MarkersAreaUtils.buildMarkersAreaFileFromResolution = function(trackingBack
 			// empty for now...
 		]
 	}
-	
+
 	var whiteMargin = 0.1
 	if( resolutionW > resolutionH ){
 		var markerImageSize = 0.4 * resolutionH
@@ -203,7 +173,7 @@ ARjs.MarkersAreaUtils.buildMarkersAreaFileFromResolution = function(trackingBack
 
 	// console.warn('using new markerImageSize computation')
 	var actualMarkerSize = markerImageSize * (1 - 2*whiteMargin)
-	
+
 	var deltaX = (resolutionW - markerImageSize)/2 / actualMarkerSize
 	var deltaZ = (resolutionH - markerImageSize)/2 / actualMarkerSize
 
@@ -212,18 +182,18 @@ ARjs.MarkersAreaUtils.buildMarkersAreaFileFromResolution = function(trackingBack
 
 	var subMarkerControls = buildSubMarkerControls('topleft', -deltaX, -deltaZ)
 	file.subMarkersControls.push(subMarkerControls)
-	
+
 	var subMarkerControls = buildSubMarkerControls('topright', +deltaX, -deltaZ)
 	file.subMarkersControls.push(subMarkerControls)
 
 	var subMarkerControls = buildSubMarkerControls('bottomleft', -deltaX, +deltaZ)
 	file.subMarkersControls.push(subMarkerControls)
-	
+
 	var subMarkerControls = buildSubMarkerControls('bottomright', +deltaX, +deltaZ)
 	file.subMarkersControls.push(subMarkerControls)
 
 	return file
-	
+
 	//////////////////////////////////////////////////////////////////////////////
 	//		Code Separator
 	//////////////////////////////////////////////////////////////////////////////
@@ -238,8 +208,6 @@ ARjs.MarkersAreaUtils.buildMarkersAreaFileFromResolution = function(trackingBack
 		// fill the parameters
 		if( trackingBackend === 'artoolkit' ){
 			layout2MarkerParametersArtoolkit(subMarkersControls.parameters, layout)
-		}else if( trackingBackend === 'aruco' ){
-			layout2MarkerParametersAruco(subMarkersControls.parameters, layout)
 		}else console.assert(false)
 		// return subMarkersControls
 		return subMarkersControls
@@ -250,7 +218,7 @@ ARjs.MarkersAreaUtils.buildMarkersAreaFileFromResolution = function(trackingBack
 		var link = document.createElement('a')
 		link.href = ARjs.Context.baseURL
 		var absoluteBaseURL = link.href
-			
+
 		var layout2PatternUrl = {
 			'center' : convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-hiro.patt'),
 			'topleft' : convertRelativeUrlToAbsolute(absoluteBaseURL + 'examples/marker-training/examples/pattern-files/pattern-letterA.patt'),
@@ -267,18 +235,5 @@ ARjs.MarkersAreaUtils.buildMarkersAreaFileFromResolution = function(trackingBack
 			tmpLink.href = relativeUrl
 			return tmpLink.href
 		}
-	}
-
-	function layout2MarkerParametersAruco(parameters, layout){
-		var layout2Barcode = {
-			'center' : 1001,
-			'topleft' : 1002,
-			'topright' : 1003,
-			'bottomleft' : 1004,
-			'bottomright' : 1005,
-		}
-		console.assert(layout2Barcode[layout])
-		parameters.type = 'barcode'
-		parameters.barcodeValue = layout2Barcode[layout]
 	}
 }
