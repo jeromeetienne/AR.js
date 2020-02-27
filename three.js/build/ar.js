@@ -2822,10 +2822,6 @@ ARjs.Profile.prototype.defaultMarker = function (trackingBackend) {
         this.contextParameters.detectionMode = 'mono'
         this.defaultMarkerParameters.type = 'pattern'
         this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro'
-    } else if (trackingBackend === 'aruco') {
-        this.contextParameters.detectionMode = 'mono'
-        this.defaultMarkerParameters.type = 'barcode'
-        this.defaultMarkerParameters.barcodeValue = 1001
     } else console.assert(false)
 
     return this
