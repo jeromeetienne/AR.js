@@ -270,7 +270,7 @@ ARjs.Context.prototype.getProjectionMatrix = function () {
     var projectionMatrixArr = this.arController.getCameraMatrix();
     var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)
 
-    projectionMatrix.multiply(this._artoolkitProjectionAxisTransformMatrix)
+    // projectionMatrix.multiply(this._artoolkitProjectionAxisTransformMatrix)
 
     return projectionMatrix
 }
