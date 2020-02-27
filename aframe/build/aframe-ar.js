@@ -5875,7 +5875,7 @@ AFRAME.registerSystem('arjs', {
         },
         debugUIEnabled: {
             type: 'boolean',
-            default: true,
+            default: false,
         },
         areaLearningButton: {
             type: 'boolean',
@@ -5952,10 +5952,8 @@ AFRAME.registerSystem('arjs', {
     //		Code Separator
     //////////////////////////////////////////////////////////////////////////////
 
-
     init: function () {
         var _this = this
-
 
         //////////////////////////////////////////////////////////////////////////////
         //		setup arProfile
@@ -5965,8 +5963,6 @@ AFRAME.registerSystem('arjs', {
             .trackingMethod(this.data.trackingMethod)
             .performance(this.data.performanceProfile)
             .defaultMarker()
-
-
 
         //////////////////////////////////////////////////////////////////////////////
         //		honor this.data and setup arProfile with it
@@ -6044,7 +6040,6 @@ AFRAME.registerSystem('arjs', {
                 }
             }
 
-
             //////////////////////////////////////////////////////////////////////////////
             //		honor .debugUIEnabled
             //////////////////////////////////////////////////////////////////////////////
@@ -6087,7 +6082,7 @@ AFRAME.registerSystem('arjs', {
         // skip it if not yet isInitialised
         if (this.isReady === false) return
 
-        var arSession = this._arSession
+        //var arSession = this._arSession
 
         // update arSession
         this._arSession.update()
