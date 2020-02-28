@@ -207,13 +207,9 @@ AFRAME.registerSystem('arjs', {
         }, 1000 / 30)
     },
 
-    tick: function (now, delta) {
-        var _this = this
-
+    tick: function () {
         // skip it if not yet isInitialised
         if (this.isReady === false) return
-
-        //var arSession = this._arSession
 
         // update arSession
         this._arSession.update()
