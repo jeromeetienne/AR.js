@@ -6,13 +6,6 @@
 <!-- jsartookit -->
 <script src='../../../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
 <script src='../../../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
-<!-- aruco -->
-<script src='../../../vendor/js-aruco/src/svd.js'></script>
-<script src='../../../vendor/js-aruco/src/posit1.js'></script>
-<script src='../../../vendor/js-aruco/src/cv.js'></script>
-<script src='../../../vendor/js-aruco/src/aruco.js'></script>
-<script src='../../../src/threex/threex-aruco/threex-arucocontext.js'></script>
-<script src='../../../src/threex/threex-aruco/threex-arucodebug.js'></script>
 <!-- include threex.artoolkit -->
 <script src='../../../src/threex/threex-artoolkitsource.js'></script>
 <script src='../../../src/threex/threex-artoolkitcontext.js'></script>
@@ -38,8 +31,6 @@
 <div style='position: fixed; bottom: 10px; width:100%; text-align: center;z-index:1';>
 	tracking backend:
 		<a href='javascript:void(0)' onclick='trackingBackendSet("artoolkit")'>artoolkit</a>
-		/
-		<a href='javascript:void(0)' onclick='trackingBackendSet("aruco")'>aruco</a>
 	<br>
 	<a href='javascript:void(0)' onclick='markerHelpersToggleVisibility()'>Marker helpers</a>
 	-
@@ -101,8 +92,6 @@
 	// Create a camera
 	if( urlOptions.trackingBackend === 'artoolkit' ){
 		var camera = new THREE.Camera();
-	}else if( urlOptions.trackingBackend === 'aruco' ){
-		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
 	}else console.assert(false)
 	scene.add(camera);
 
@@ -131,10 +120,6 @@
 			if( arToolkitContext.arController !== null ){
 				arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
 			}
-		}else if( urlOptions.trackingBackend === 'aruco' ){
-			arToolkitSource.copyElementSizeTo(arToolkitContext.arucoContext.canvas)
-			camera.aspect = renderer.domElement.width / renderer.domElement.height;
-			camera.updateProjectionMatrix();
 		}else console.assert(false)
 	}
 

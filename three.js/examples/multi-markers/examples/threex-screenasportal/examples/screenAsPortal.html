@@ -6,13 +6,6 @@
 <!-- jsartookit -->
 <script src='../../../../../vendor/jsartoolkit5/build/artoolkit.min.js'></script>
 <script src='../../../../../vendor/jsartoolkit5/js/artoolkit.api.js'></script>
-<!-- aruco -->
-<script src='../../../../../vendor/js-aruco/src/svd.js'></script> 
-<script src='../../../../../vendor/js-aruco/src/posit1.js'></script> 
-<script src='../../../../../vendor/js-aruco/src/cv.js'></script> 
-<script src='../../../../../vendor/js-aruco/src/aruco.js'></script> 
-<script src='../../../../../src/threex/threex-aruco/threex-arucocontext.js'></script> 
-<script src='../../../../../src/threex/threex-aruco/threex-arucodebug.js'></script>
 <!-- include threex.artoolkit -->
 <script src='../../../../../src/threex/threex-artoolkitsource.js'></script>
 <script src='../../../../../src/threex/threex-artoolkitcontext.js'></script>
@@ -63,7 +56,7 @@
 		var urlOptions = {}
 	}
 	if( urlOptions.trackingBackend === undefined ) urlOptions.trackingBackend = 'artoolkit'
-	
+
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////
@@ -90,9 +83,7 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// Create a camera
-	if( urlOptions.trackingBackend === 'aruco' ){
-		var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
-	}else if( urlOptions.trackingBackend === 'artoolkit' ){
+	if( urlOptions.trackingBackend === 'artoolkit' ){
 		var camera = new THREE.Camera();
 	}else console.assert(false)
 	scene.add(camera);
@@ -109,29 +100,24 @@
 	arToolkitSource.init(function onReady(){
 		onResize()
 	})
-	
+
 	// handle resize
 	window.addEventListener('resize', function(){
 		onResize()
 	})
 	function onResize(){
 		arToolkitSource.onResize()
-		arToolkitSource.copySizeTo(renderer.domElement)	
-		if( urlOptions.trackingBackend === 'aruco' ){
-			arToolkitSource.copySizeTo(arToolkitContext.arucoContext.canvas)	
-
-			camera.aspect = renderer.domElement.width / renderer.domElement.height;
-			camera.updateProjectionMatrix();			
-		}else if( urlOptions.trackingBackend === 'artoolkit' ){
+		arToolkitSource.copySizeTo(renderer.domElement)
+	if( urlOptions.trackingBackend === 'artoolkit' ){
 			if( arToolkitContext.arController !== null ){
-				arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
-			}	
+				arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)
+			}
 		}else console.assert(false)
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
 	//          initialize arToolkitContext
-	////////////////////////////////////////////////////////////////////////////////	
+	////////////////////////////////////////////////////////////////////////////////
 
 	// create atToolkitContext
 	var arToolkitContext = new THREEx.ArToolkitContext(artoolkitProfile.contextParameters)
@@ -139,7 +125,7 @@
 	arToolkitContext.init(function onCompleted(){
 		// if artoolkit, copy projection matrix to camera
 		if( arToolkitContext.parameters.trackingBackend === 'artoolkit' ){
-			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );			
+			camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
 		}
 	})
 
@@ -153,16 +139,16 @@
 	//////////////////////////////////////////////////////////////////////////////
 	//		get multiMarkerFile
 	//////////////////////////////////////////////////////////////////////////////
-	
+
 	// if no localStorage.ARjsMultiMarkerFile, then write one with default marker
 	if( localStorage.getItem('ARjsMultiMarkerFile') === null ){
 		THREEx.ArMultiMarkerUtils.storeDefaultMultiMarkerFile(urlOptions.trackingBackend)
 	}
-	
+
 	// get multiMarkerFile from localStorage
 	console.assert( localStorage.getItem('ARjsMultiMarkerFile') !== null )
 	var multiMarkerFile = localStorage.getItem('ARjsMultiMarkerFile')
-		
+
 
 	//////////////////////////////////////////////////////////////////////////////
 	//		Create ArMultiMarkerControls
@@ -170,7 +156,7 @@
 	// build a markerRoot
 	var markerRoot = new THREE.Group()
 	scene.add(markerRoot)
-	
+
 	// build a multiMarkerControls
 	var multiMarkerControls = THREEx.ArMultiMarkerControls.fromJSON(arToolkitContext, scene, markerRoot, multiMarkerFile)
 
@@ -195,7 +181,7 @@
 
 	var arWorldRoot = new THREE.Group()
 	var averageMatrix = THREEx.ArMultiMarkerControls.computeCenter(multiMarkerFile)
-	averageMatrix.decompose(arWorldRoot.position, arWorldRoot.quaternion, arWorldRoot.scale)		
+	averageMatrix.decompose(arWorldRoot.position, arWorldRoot.quaternion, arWorldRoot.scale)
 	smoothedRoot.add(arWorldRoot)
 	//////////////////////////////////////////////////////////////////////////////
 	//		markerHelpers
@@ -207,11 +193,11 @@
 		// add an helper to visuable each sub-marker
 		var markerHelper = new THREEx.ArMarkerHelper(subMarkerControls)
 		markerHelpers.push(markerHelper)
-		subMarkerControls.object3d.add( markerHelper.object3d )		
+		subMarkerControls.object3d.add( markerHelper.object3d )
 	})
 
 	function markerHelpersToggleVisibility(){
-		var wasVisible = markerHelpers[0].object3d.visible 
+		var wasVisible = markerHelpers[0].object3d.visible
 		markerHelpers.forEach(function(markerHelper){
 			markerHelper.object3d.visible = wasVisible ? false : true
 		})
@@ -227,7 +213,7 @@
 		var learnerURL = THREEx.ArToolkitContext.baseURL + 'examples/multi-markers/examples/learner.html'
 		THREEx.ArMultiMarkerUtils.navigateToLearnerPage(learnerURL, urlOptions.trackingBackend)
 	})
-	
+
 	document.querySelector('#markerHelpersButton').addEventListener('click', function(){
 		markerHelpersToggleVisibility()
 	})
