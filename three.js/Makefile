@@ -32,7 +32,7 @@ build-main-nft:
 		src/threex/threex-arsmoothedcontrols.js					\
 		src/threex/threex-artoolkitcontext-nft.js					\
 		src/threex/threex-artoolkitprofile.js					\
-		src/threex/threex-artoolkitsource-nft.js					\
+		src/threex/threex-artoolkitsource.js					\
 		src/threex/threex-arvideoinwebgl.js					\
 		src/threex/threex-hittesting-plane.js					\
 		src/new-api/*.js 				\

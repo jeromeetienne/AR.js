@@ -1228,7 +1228,7 @@ ARjs.Context.prototype.getProjectionMatrix = function (srcElement) {
     var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)
 
     // apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-    projectionMatrix.multiply(this._artoolkitProjectionAxisTransformMatrix)
+    //projectionMatrix.multiply(this._artoolkitProjectionAxisTransformMatrix)
 
     // return the result
     return projectionMatrix
@@ -1586,20 +1586,20 @@ ARjs.Source.prototype._initSourceWebcam = function (onReady, onError) {
     navigator.mediaDevices.enumerateDevices().then(function (devices) {
         var userMediaConstraints = {
             audio: false,
-            video: true
-        };
-
-        if (window.innerWidth < 800) {
-            var width = (window.innerWidth < window.innerHeight) ? 480 : 640;
-
-            userMediaConstraints = {
-                audio: false,
-                video: {
-                    facingMode: 'environment',
-                    width: { min: width, max: width }
+            video: {
+                facingMode: 'environment',
+                width: {
+                    ideal: _this.parameters.sourceWidth,
+                    // min: 1024,
+                    // max: 1920
                 },
-            };
-        }
+                height: {
+                    ideal: _this.parameters.sourceHeight,
+                    // min: 776,
+                    // max: 1080
+                }
+            }
+        };
 
         if (null !== _this.parameters.deviceId) {
             userMediaConstraints.video.deviceId = {
@@ -1618,6 +1618,8 @@ ARjs.Source.prototype._initSourceWebcam = function (onReady, onError) {
             document.body.addEventListener('click', function () {
                 domElement.play();
             });
+            // domElement.play();
+
             onReady();
         }).catch(function (error) {
             onError({
@@ -1796,6 +1798,7 @@ ARjs.Source.prototype.onResize = function (arToolkitContext, renderer, camera) {
 
     var trackingBackend = arToolkitContext.parameters.trackingBackend
 
+
     // RESIZE DOMELEMENT
     if (trackingBackend === 'artoolkit') {
 
@@ -1804,6 +1807,8 @@ ARjs.Source.prototype.onResize = function (arToolkitContext, renderer, camera) {
         var isAframe = renderer.domElement.dataset.aframeCanvas ? true : false
         if (isAframe === false) {
             this.copyElementSizeTo(renderer.domElement)
+        } else {
+
         }
 
         if (arToolkitContext.arController !== null) {
