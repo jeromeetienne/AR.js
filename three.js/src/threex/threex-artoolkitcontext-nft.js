@@ -1,7 +1,7 @@
 var ARjs = ARjs || {}
 var THREEx = THREEx || {}
 
-ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
+ARjs.Context = THREEx.ArToolkitContext = function (parameters, sourceParameters) {
     var _this = this
 
     _this._updatedAt = null
@@ -29,6 +29,10 @@ ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
         // the patternRatio inside the artoolkit marker - artoolkit only
         patternRatio: 0.5,
 
+        // Labeling mode for markers - ['black_region', 'white_region']
+        // black_region: Black bordered markers on a white background, white_region: White bordered markers on a black background
+        labelingMode: 'black_region',
+
         // enable image smoothing or not for canvas copy - default to true
         // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
         imageSmoothingEnabled: false,
@@ -36,6 +40,7 @@ ARjs.Context = THREEx.ArToolkitContext = function (parameters) {
     // parameters sanity check
     console.assert(['artoolkit'].indexOf(this.parameters.trackingBackend) !== -1, 'invalid parameter trackingBackend', this.parameters.trackingBackend)
     console.assert(['color', 'color_and_matrix', 'mono', 'mono_and_matrix'].indexOf(this.parameters.detectionMode) !== -1, 'invalid parameter detectionMode', this.parameters.detectionMode)
+    console.assert(["black_region", "white_region"].indexOf(this.parameters.labelingMode) !== -1, "invalid parameter labelingMode", this.parameters.labelingMode);
 
     this.arController = null;
 
@@ -75,7 +80,7 @@ Object.assign(ARjs.Context.prototype, THREE.EventDispatcher.prototype);
 // ARjs.Context.baseURL = '../'
 // default to github page
 ARjs.Context.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
-ARjs.Context.REVISION = '2.1.4';
+ARjs.Context.REVISION = '2.2.1';
 
 /**
  * Create a default camera for this trackingBackend
@@ -131,13 +136,15 @@ ARjs.Context.prototype.update = function (srcElement) {
 
     // mark all markers to invisible before processing this frame
     this._arMarkersControls.forEach(function (markerControls) {
-        markerControls.object3d.visible = false
+        if (!markerControls.context.arController.showObject) {
+            markerControls.object3d.visible = false
+        }
     })
 
     // process this frame
     if (this.parameters.trackingBackend === 'artoolkit') {
         this._updateArtoolkit(srcElement)
-    }  else {
+    } else {
         console.assert(false)
     }
 
@@ -227,6 +234,15 @@ ARjs.Context.prototype._initArtoolkit = function (onCompleted) {
         // set the patternRatio for artoolkit
         arController.setPattRatio(_this.parameters.patternRatio);
 
+        // set the labelingMode for artoolkit
+        var labelingModeTypes = {
+            "black_region": artoolkit.AR_LABELING_BLACK_REGION,
+            "white_region": artoolkit.AR_LABELING_WHITE_REGION
+        }
+        var labelingModeType = labelingModeTypes[_this.parameters.labelingMode];
+        console.assert(labelingModeType !== undefined);
+        arController.setLabelingMode(labelingModeType);
+
         // set thresholding in artoolkit
         // this seems to be the default
         // arController.setThresholdMode(artoolkit.AR_LABELING_THRESH_MODE_MANUAL)
@@ -243,22 +259,19 @@ ARjs.Context.prototype._initArtoolkit = function (onCompleted) {
 /**
  * return the projection matrix
  */
-ARjs.Context.prototype.getProjectionMatrix = function (srcElement) {
-
-
+ARjs.Context.prototype.getProjectionMatrix = function () {
     // FIXME rename this function to say it is artoolkit specific - getArtoolkitProjectMatrix
     // keep a backward compatibility with a console.warn
 
     console.assert(this.parameters.trackingBackend === 'artoolkit')
     console.assert(this.arController, 'arController MUST be initialized to call this function')
+
     // get projectionMatrixArr from artoolkit
     var projectionMatrixArr = this.arController.getCameraMatrix();
     var projectionMatrix = new THREE.Matrix4().fromArray(projectionMatrixArr)
 
-    // apply context._axisTransformMatrix - change artoolkit axis to match usual webgl one
-    //projectionMatrix.multiply(this._artoolkitProjectionAxisTransformMatrix)
+    // projectionMatrix.multiply(this._artoolkitProjectionAxisTransformMatrix)
 
-    // return the result
     return projectionMatrix
 }
 
