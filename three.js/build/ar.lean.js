@@ -2531,7 +2531,7 @@ Object.assign(ARjs.Context.prototype, THREE.EventDispatcher.prototype);
 // ARjs.Context.baseURL = '../'
 // default to github page
 ARjs.Context.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
-ARjs.Context.REVISION = '2.2.1';
+ARjs.Context.REVISION = '2.2.2';
 
 /**
  * Create a default camera for this trackingBackend
@@ -3141,20 +3141,16 @@ ARjs.Source.prototype._initSourceWebcam = function (onReady, onError) {
     navigator.mediaDevices.enumerateDevices().then(function (devices) {
         var userMediaConstraints = {
             audio: false,
-            video: true
-        };
-
-        if (window.innerWidth < 800) {
-            var width = (window.innerWidth < window.innerHeight) ? 480 : 640;
-
-            userMediaConstraints = {
-                audio: false,
-                video: {
-                    facingMode: 'environment',
-                    width: { min: width, max: width }
+            video: {
+                facingMode: 'environment',
+                width: {
+                    ideal: _this.parameters.sourceWidth,
                 },
-            };
-        }
+                height: {
+                    ideal: _this.parameters.sourceHeight,
+                }
+            }
+        };
 
         if (null !== _this.parameters.deviceId) {
             userMediaConstraints.video.deviceId = {

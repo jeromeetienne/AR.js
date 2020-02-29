@@ -1,6 +1,6 @@
-# 2.2.1
+# 2.2.2
 
-- enhanced camera contraints, fixing a bug on Chrome for Huaweis that was displaying rear camera stream in greyscale
+- Restored old camera constraints, was giving better performances for some devices but worst for others.
 
 # 2.2.0
 
